@@ -1,0 +1,150 @@
+<?php
+
+namespace App\Filament\Resources;
+
+use App\Filament\Resources\StudentResource\Pages;
+use App\Filament\Resources\StudentResource\RelationManagers;
+use App\Models\Student;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+
+class StudentResource extends Resource
+{
+    protected static ?string $model = Student::class;
+
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\TextInput::make('year_id')
+                    ->numeric(),
+                Forms\Components\TextInput::make('gender_id')
+                    ->numeric(),
+                Forms\Components\TextInput::make('pin')
+                    ->numeric(),
+                Forms\Components\TextInput::make('full_name')
+                    ->maxLength(191),
+                Forms\Components\TextInput::make('first_name')
+                    ->maxLength(191),
+                Forms\Components\TextInput::make('last_name')
+                    ->maxLength(191),
+                Forms\Components\TextInput::make('email_perso')
+                    ->email()
+                    ->maxLength(191),
+                Forms\Components\TextInput::make('phone')
+                    ->tel()
+                    ->maxLength(191),
+                Forms\Components\TextInput::make('cv')
+                    ->maxLength(191),
+                Forms\Components\TextInput::make('lm')
+                    ->maxLength(191),
+                Forms\Components\TextInput::make('photo')
+                    ->maxLength(191),
+                Forms\Components\DatePicker::make('birth_date'),
+                Forms\Components\TextInput::make('program_id')
+                    ->numeric(),
+                Forms\Components\TextInput::make('stream_id')
+                    ->numeric(),
+                Forms\Components\TextInput::make('filiere_text')
+                    ->maxLength(191),
+                Forms\Components\Toggle::make('is_mobility'),
+                Forms\Components\TextInput::make('abroad_school')
+                    ->maxLength(191),
+                Forms\Components\Toggle::make('is_active'),
+                Forms\Components\Toggle::make('model_status_id'),
+                Forms\Components\DatePicker::make('graduated_at'),
+            ]);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                Tables\Columns\TextColumn::make('id')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('year_id')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('gender_id')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('pin')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('full_name')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('first_name')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('last_name')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('email_perso')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('phone')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('cv')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('lm')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('photo')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('birth_date')
+                    ->date()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('program_id')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('stream_id')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('filiere_text')
+                    ->searchable(),
+                Tables\Columns\IconColumn::make('is_mobility')
+                    ->boolean(),
+                Tables\Columns\TextColumn::make('abroad_school')
+                    ->searchable(),
+                Tables\Columns\IconColumn::make('is_active')
+                    ->boolean(),
+                Tables\Columns\IconColumn::make('model_status_id')
+                    ->boolean(),
+                Tables\Columns\TextColumn::make('graduated_at')
+                    ->date()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+            ])
+            ->filters([
+                //
+            ])
+            ->actions([
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ]);
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ManageStudents::route('/'),
+        ];
+    }
+}
