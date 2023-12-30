@@ -11,8 +11,8 @@ enum Status: string implements HasLabel
     case Approved = 'Approved';
     case Declined = 'Declined';
     case SignedOff = 'Signed Off';
-    case Started = 'Started';
-    case Completed = 'Completed';
+    case Started = 'Started'; // calculated
+    case Completed = 'Completed'; // calculated
 
     public function getLabel(): ?string
     {
