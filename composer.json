@@ -12,6 +12,8 @@
         "filament/filament": "^3.1",
         "filament/forms": "^3.1",
         "filament/tables": "^3.1",
+        "filament/widgets": "^3.1",
+        "flowframe/laravel-trend": "^0.1.5",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
