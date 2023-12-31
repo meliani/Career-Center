@@ -5,6 +5,7 @@ use Filament\Support\Contracts\HasLabel;
 enum Role: string implements HasLabel
 {
     case ProgramCoordinator = 'Program Coordinator';
+    case Professor = 'Professor';
     case InternshipSupervisor = 'Internship Supervisor';
     case HeadOfDepartment = 'Head of Department';
     case Administrator = 'Administrator';

@@ -29,9 +29,24 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            'role' => 'Professor',
         ];
     }
-
+    /**
+     * Indicate that the model's state should be root.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function root(): Factory
+    {
+        return $this->state([
+            'name' => 'meliani',
+            'email' => 'elmeliani@inpt.ac.ma',
+            'role' => 'SuperAdministrator',
+            'password' => bcrypt('root_password'), // replace 'root_password' with the actual password
+            'remember_token' => Str::random(10),
+        ]);
+    }
     /**
      * Indicate that the model's email address should be unverified.
      */
