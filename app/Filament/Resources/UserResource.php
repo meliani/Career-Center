@@ -25,6 +25,8 @@ class UserResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required(),
+                Forms\Components\TextInput::make('role')
+                    ->required(),
                 Forms\Components\TextInput::make('email')
                     ->email()
                     ->required(),
@@ -40,6 +42,8 @@ class UserResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('role')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
