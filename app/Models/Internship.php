@@ -92,6 +92,8 @@ class Internship extends baseModel
         'administration_signed_at' => 'date',
         'meta_administration_signature' => 'array',
         'notes' => 'array',
+        // add datetime fields here
+        'reviewed_at' => 'datetime',
         'created_at'=> 'datetime',
         'updated_at'=> 'datetime',
         'deleted_at'=> 'datetime',    
