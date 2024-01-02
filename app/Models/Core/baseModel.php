@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class baseModel extends Model
 {
     protected $connection = 'front_database';
-    protected $dateFormat = 'd M Y';
+    // protected $dateFormat = 'd M Y';
     
     public function scopeActive($query) {
             return $query->where('is_active', true);
