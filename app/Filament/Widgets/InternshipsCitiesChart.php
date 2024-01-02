@@ -21,7 +21,7 @@ class InternshipsCitiesChart extends ChartWidget
             // start: now()->startOfYear(),
             start: now()->subMonths(4)->startOfMonth(),
             end: now()->endOfMonth(),
-            // end: now()->endOfYear(),
+            // end: now()->endOfYear(), ===
         )
         ->perMonth()
         ->count();
