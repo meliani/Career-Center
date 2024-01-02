@@ -12,6 +12,10 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\InternshipResource\Actions\ReviewAction;
+use Filament\Tables\Enums\ActionsPosition;
+use Filament\Actions\Action;
+use Illuminate\Support\Carbon;
 
 class InternshipResource extends Resource
 {
@@ -34,7 +38,7 @@ class InternshipResource extends Resource
                 Forms\Components\TextInput::make('ville')
                     ->required()
                     ->maxLength(191),
-                Forms\Components\TextInput::make('pays')
+                Forms\Components\TextInput::make('country')
                     ->required()
                     ->maxLength(191),
                 Forms\Components\TextInput::make('office_location')
@@ -124,21 +128,21 @@ class InternshipResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('student_id')
+                Tables\Columns\TextColumn::make('student.full_name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('raison_sociale')
+                Tables\Columns\TextColumn::make('organization_name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('adresse')
-                    ->searchable(),
+                // Tables\Columns\TextColumn::make('adresse')
+                //     ->searchable(),
                 Tables\Columns\TextColumn::make('ville')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('pays')
+                Tables\Columns\TextColumn::make('country')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('office_location')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('parrain_titre')
-                    ->searchable(),
+                // Tables\Columns\TextColumn::make('office_location')
+                //     ->searchable(),
+                // Tables\Columns\TextColumn::make('parrain_titre')
+                //     ->searchable(),
                 Tables\Columns\TextColumn::make('parrain_nom')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('parrain_prenom')
@@ -149,8 +153,8 @@ class InternshipResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('parrain_mail')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('encadrant_ext_titre')
-                    ->searchable(),
+                // Tables\Columns\TextColumn::make('encadrant_ext_titre')
+                //     ->searchable(),
                 Tables\Columns\TextColumn::make('encadrant_ext_nom')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('encadrant_ext_prenom')
@@ -167,8 +171,8 @@ class InternshipResource extends Resource
                 Tables\Columns\TextColumn::make('date_fin')
                     ->date()
                     ->sortable(),
-                Tables\Columns\IconColumn::make('abroad')
-                    ->boolean(),
+                // Tables\Columns\IconColumn::make('abroad')
+                //     ->boolean(),
                 Tables\Columns\TextColumn::make('remuneration')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('currency')
@@ -182,12 +186,12 @@ class InternshipResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('int_adviser_name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('year_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('partner_id')
-                    ->numeric()
-                    ->sortable(),
+                // Tables\Columns\TextColumn::make('year_id')
+                //     ->numeric()
+                //     ->sortable(),
+                // Tables\Columns\TextColumn::make('partner_id')
+                //     ->numeric()
+                //     ->sortable(),
                 Tables\Columns\IconColumn::make('is_valid')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('status')
@@ -222,11 +226,43 @@ class InternshipResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-                Tables\Actions\ForceDeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
-            ])
+
+                // ReviewAction::make('Review Internship'),
+
+                // Tables\Actions\Action::make('review')
+                //     // ->label('Review')
+                //     // ->message('Are you sure you want to review this internship?')
+                //     // ->confirmText('Review')
+                //     // ->cancelText('Cancel')
+                //     // ->confirmButtonColor('blue')
+                //     // ->cancelButtonColor('gray')
+                //     // ->icon('heroicon-o-clipboard-check')
+                //     ->requiresConfirmation()
+                //     ->action(fn (Internship $record) => $record->pedagogic_validation_date = Carbon::now()),
+                Tables\Actions\Action::make('ReviewInternship')
+                    ->fillForm(fn (Internship $record): array => [
+                        'internshipId' => $record->student->id,
+                    ])
+                    ->form([
+                        Forms\Components\Select::make('authorId')
+                            ->label('Author')
+                            ->options(\App\Models\User::query()->pluck('name', 'id'))
+                            ->required(),
+                    ])
+                    ->action(function (array $data, Internship $record): void {
+                        //  return carbon object with this format 2024-01-02 15:40:05, its a datetime format i mysql database
+                        
+
+                        $record->reviewed_at = Carbon::now()->format('yy-m-d H:i:s');
+                        $record->save();
+                    })
+                // Add action to review an internship
+                // ReviewAction::make('Review Internship'),
+                // Tables\Actions\EditAction::make(),
+                // Tables\Actions\DeleteAction::make(),
+                // Tables\Actions\ForceDeleteAction::make(),
+                // Tables\Actions\RestoreAction::make(),
+            ], position: ActionsPosition::BeforeCells)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
