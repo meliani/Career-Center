@@ -49,8 +49,9 @@ class Internship extends baseModel
             $this->reviewed_at = now();
             $this->save();
             Notification::make()
-                ->title('Saved successfully')
-                ->send();
+            ->title('Saved successfully')
+            ->success()
+            ->send();
         } catch (AuthorizationException $e) {
 
             Notification::make()
