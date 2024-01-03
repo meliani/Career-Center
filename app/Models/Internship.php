@@ -15,6 +15,9 @@ use Carbon\Carbon;
 use Collective\Html\Eloquent\FormAccessible;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\School\Project\Project;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Auth\Access\AuthorizationException;
+use Filament\Notifications\Notification;
 
 class Internship extends baseModel
 {
@@ -35,10 +38,27 @@ class Internship extends baseModel
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
     ];
+    /* Review function to be exexuted only by SuperAdministrator Administrator ProgramCoordinator */
+
     public function review()
     {
-        $this->reviewed_at = now();
-        $this->save();
+        try {
+            if (Gate::denies('review', $this)) {
+                throw new AuthorizationException();
+            }
+            $this->reviewed_at = now();
+            $this->save();
+            Notification::make()
+                ->title('Saved successfully')
+                ->send();
+        } catch (AuthorizationException $e) {
+
+            Notification::make()
+                ->title('Sorry You must be a Program Coordinator.')
+                ->danger()
+                ->send();
+            return response()->json(['error' => 'This action is unauthorized.'], 403);
+        }
     }
     public function binome()
     {
