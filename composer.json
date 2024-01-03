@@ -11,6 +11,7 @@
         "php": "^8.1",
         "filament/filament": "^3.1",
         "filament/forms": "^3.1",
+        "filament/notifications": "^3.1",
         "filament/tables": "^3.1",
         "filament/widgets": "^3.1",
         "flowframe/laravel-trend": "^0.1.5",
