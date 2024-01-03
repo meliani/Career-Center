@@ -12,10 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\InternshipResource\Actions\ReviewAction;
 use Filament\Tables\Enums\ActionsPosition;
-use Filament\Actions\Action;
-use Illuminate\Support\Carbon;
 
 class InternshipResource extends Resource
 {
@@ -29,13 +26,13 @@ class InternshipResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('student_id')
                     ->numeric(),
-                Forms\Components\TextInput::make('raison_sociale')
+                Forms\Components\TextInput::make('organization_name')
                     ->required()
                     ->maxLength(191),
                 Forms\Components\TextInput::make('adresse')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('ville')
+                Forms\Components\TextInput::make('city')
                     ->required()
                     ->maxLength(191),
                 Forms\Components\TextInput::make('country')
@@ -81,11 +78,11 @@ class InternshipResource extends Resource
                 Forms\Components\TextInput::make('encadrant_ext_mail')
                     ->required()
                     ->maxLength(191),
-                Forms\Components\Textarea::make('intitule')
+                Forms\Components\Textarea::make('title')
                     ->required()
                     ->maxLength(65535)
                     ->columnSpanFull(),
-                Forms\Components\Textarea::make('descriptif')
+                Forms\Components\Textarea::make('description')
                     ->required()
                     ->maxLength(65535)
                     ->columnSpanFull(),
@@ -93,26 +90,27 @@ class InternshipResource extends Resource
                     ->required()
                     ->maxLength(65535)
                     ->columnSpanFull(),
-                Forms\Components\DatePicker::make('date_debut')
+                Forms\Components\DatePicker::make('starting_at')
                     ->required(),
-                Forms\Components\DatePicker::make('date_fin')
+                Forms\Components\DatePicker::make('ending_at')
                     ->required(),
-                Forms\Components\Toggle::make('abroad'),
+                // Forms\Components\Toggle::make('abroad'),
                 Forms\Components\TextInput::make('remuneration')
                     ->maxLength(191),
                 Forms\Components\TextInput::make('currency')
                     ->maxLength(10),
                 Forms\Components\TextInput::make('load')
                     ->maxLength(191),
-                Forms\Components\TextInput::make('abroad_school')
-                    ->maxLength(191),
-                Forms\Components\TextInput::make('int_adviser_id')
-                    ->numeric(),
+                // Forms\Components\TextInput::make('abroad_school')
+                // ->maxLength(191),
+                // Forms\Components\TextInput::make('int_adviser_id')
+                // ->numeric(),
                 Forms\Components\TextInput::make('int_adviser_name')
                     ->maxLength(191),
-                Forms\Components\TextInput::make('year_id')
-                    ->numeric(),
-                Forms\Components\TextInput::make('partner_id')
+                Forms\Components\Toggle::make('is_signed'),
+                // Forms\Components\TextInput::make('year_id')
+                //     ->numeric(),
+                Forms\Components\TextInput::make('binome_user_id')
                     ->numeric(),
                 Forms\Components\Toggle::make('is_valid'),
                 Forms\Components\TextInput::make('status')
@@ -120,7 +118,11 @@ class InternshipResource extends Resource
                 Forms\Components\DateTimePicker::make('anounced_at'),
                 Forms\Components\DateTimePicker::make('reviewed_at'),
                 Forms\Components\DateTimePicker::make('approved_at'),
-                Forms\Components\DateTimePicker::make('signed_off_at'),
+                Forms\Components\DateTimePicker::make('signed_at'),
+                // Forms\Components\TextInput::make('partner_internship_id')
+                //     ->numeric(),
+                // Forms\Components\TextInput::make('partnership_status')
+                //     ->maxLength(50),
             ]);
     }
 
@@ -128,14 +130,17 @@ class InternshipResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('student.full_name')
+                Tables\Columns\TextColumn::make('student_id')
                     ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('reviewed_at')
+                    ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('organization_name')
                     ->searchable(),
                 // Tables\Columns\TextColumn::make('adresse')
                 //     ->searchable(),
-                Tables\Columns\TextColumn::make('ville')
+                Tables\Columns\TextColumn::make('city')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('country')
                     ->searchable(),
@@ -165,49 +170,54 @@ class InternshipResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('encadrant_ext_mail')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('date_debut')
+                Tables\Columns\TextColumn::make('starting_at')
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('date_fin')
+                Tables\Columns\TextColumn::make('ending_at')
                     ->date()
                     ->sortable(),
                 // Tables\Columns\IconColumn::make('abroad')
                 //     ->boolean(),
-                Tables\Columns\TextColumn::make('remuneration')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('currency')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('load')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('abroad_school')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('int_adviser_id')
-                    ->numeric()
-                    ->sortable(),
+                // Tables\Columns\TextColumn::make('remuneration')
+                //     ->searchable(),
+                // Tables\Columns\TextColumn::make('currency')
+                //     ->searchable(),
+                // Tables\Columns\TextColumn::make('load')
+                //     ->searchable(),
+                // Tables\Columns\TextColumn::make('abroad_school')
+                //     ->searchable(),
+                // Tables\Columns\TextColumn::make('int_adviser_id')
+                //     ->numeric()
+                //     ->sortable(),
                 Tables\Columns\TextColumn::make('int_adviser_name')
                     ->searchable(),
+                // Tables\Columns\IconColumn::make('is_signed')
+                //     ->boolean(),
                 // Tables\Columns\TextColumn::make('year_id')
                 //     ->numeric()
                 //     ->sortable(),
-                // Tables\Columns\TextColumn::make('partner_id')
+                // Tables\Columns\TextColumn::make('binome_user_id')
                 //     ->numeric()
                 //     ->sortable(),
-                Tables\Columns\IconColumn::make('is_valid')
-                    ->boolean(),
-                Tables\Columns\TextColumn::make('status')
-                    ->searchable(),
+                // Tables\Columns\IconColumn::make('is_valid')
+                //     ->boolean(),
+                // Tables\Columns\TextColumn::make('status')
+                //     ->searchable(),
                 Tables\Columns\TextColumn::make('anounced_at')
                     ->dateTime()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('reviewed_at')
-                    ->dateTime()
-                    ->sortable(),
+
                 Tables\Columns\TextColumn::make('approved_at')
                     ->dateTime()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('signed_off_at')
+                Tables\Columns\TextColumn::make('signed_at')
                     ->dateTime()
                     ->sortable(),
+                // Tables\Columns\TextColumn::make('partner_internship_id')
+                //     ->numeric()
+                //     ->sortable(),
+                // Tables\Columns\TextColumn::make('partnership_status')
+                //     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -226,49 +236,20 @@ class InternshipResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-
-                // ReviewAction::make('Review Internship'),
-
-                // Tables\Actions\Action::make('review')
-                //     // ->label('Review')
-                //     // ->message('Are you sure you want to review this internship?')
-                //     // ->confirmText('Review')
-                //     // ->cancelText('Cancel')
-                //     // ->confirmButtonColor('blue')
-                //     // ->cancelButtonColor('gray')
-                //     // ->icon('heroicon-o-clipboard-check')
-                //     ->requiresConfirmation()
-                //     ->action(fn (Internship $record) => $record->pedagogic_validation_date = Carbon::now()),
-                Tables\Actions\Action::make('ReviewInternship')
-                    ->fillForm(fn (Internship $record): array => [
-                        'internshipId' => $record->student->id,
-                    ])
-                    ->form([
-                        Forms\Components\Select::make('authorId')
-                            ->label('Author')
-                            ->options(\App\Models\User::query()->pluck('name', 'id'))
-                            ->required(),
-                    ])
-                    ->action(function (array $data, Internship $record): void {
-                        //  return carbon object with this format 2024-01-02 15:40:05, its a datetime format i mysql database
-                        
-
-                        $record->reviewed_at = Carbon::now()->format('yy-m-d H:i:s');
-                        $record->save();
-                    })
-                // Add action to review an internship
-                // ReviewAction::make('Review Internship'),
-                // Tables\Actions\EditAction::make(),
-                // Tables\Actions\DeleteAction::make(),
-                // Tables\Actions\ForceDeleteAction::make(),
-                // Tables\Actions\RestoreAction::make(),
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ForceDeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
+                Tables\Actions\Action::make('review')->action(fn (Internship $internship) => $internship->review())
+                    ->requiresConfirmation(fn (Internship $internship) => "Are you sure you want to mark this internship as reviewed?"),
+                // \App\Filament\Resources\InternshipResource\Actions\ReviewAction::make()->action(fn (Internship $internship) => $internship->review()),
             ], position: ActionsPosition::BeforeCells)
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
-                ]),
+                // Tables\Actions\BulkActionGroup::make([
+                //     Tables\Actions\DeleteBulkAction::make(),
+                //     Tables\Actions\ForceDeleteBulkAction::make(),
+                //     Tables\Actions\RestoreBulkAction::make(),
+                // ]),
             ]);
     }
 
