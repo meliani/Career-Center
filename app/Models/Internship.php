@@ -51,8 +51,8 @@ class Internship extends baseModel
     //     'intitule',
     //     'descriptif',
     //     'keywords',
-    //     'date_debut',
-    //     'date_fin',
+    //     'starting_at',
+    //     'ending_at',
     //     'abroad',
     //     'remuneration',
     //     'currency',
@@ -79,19 +79,6 @@ class Internship extends baseModel
     // ];
 
     protected $casts = [
-        'date_debut' => 'date',
-        'date_fin' => 'date',
-        'defense_at' => 'date',
-        'defense_start_time' => 'time:H:i',
-        'defense_end_time' => 'time:H:i',
-        'procedure_achieved_at' => 'date',
-        'meta_pedagogic_validation' => 'array',
-        'pedagogic_validation_date' => 'date',
-        'adviser_validated_at' => 'date',
-        'meta_adviser_validation' => 'array',
-        'administration_signed_at' => 'date',
-        'meta_administration_signature' => 'array',
-        'notes' => 'array',
         // add datetime fields here
         'reviewed_at' => 'datetime',
         'created_at'=> 'datetime',
@@ -120,22 +107,11 @@ class Internship extends baseModel
 
     public function getDureeAttribute()
 	{
-        return $this->date_fin->diffInWeeks($this->date_debut).' semaines';
+        return $this->ending_at->diffInWeeks($this->starting_at).' semaines';
     }
     public function getDurationInMonthsAttribute()
 	{
-        return $this->date_fin->diffInMonths($this->date_debut).' mois';
-    }
-    public function getNotesTipAttribute()
-    {
-        $notes = null;
-        if(!empty($this->attributes['notes'])){
-            $note = json_decode($this->attributes['notes']);
-            if(isset($note->note))
-            $notes = $note->agent_name.': '.$note->note.' @ '.Carbon::create($note->noted_at)->format('j M Y h:m:s');
-        }
-
-        return $notes;
+        return $this->ending_at->diffInMonths($this->starting_at).' mois';
     }
 
 }
