@@ -13,6 +13,13 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Enums\ActionsPosition;
+use Filament\Tables\Grouping\Group;
+use Filament\Tables\Columns\Summarizers\Sum;
+use Filament\Tables\Columns\Layout\Split;
+use Filament\Tables\Columns\Layout\Stack;
+use Filament\Support\Enums\Alignment;
+use Filament\Tables\Columns\Layout\Panel;
+
 
 class InternshipResource extends Resource
 {
@@ -129,107 +136,142 @@ class InternshipResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->groups([
+                Group::make('status')
+                    ->collapsible(),
+                Group::make('student.filiere_text')
+                    ->label('Program')
+                    ->titlePrefixedWithLabel(false)
+                    ->getTitleFromRecordUsing(fn (Internship $record): string => ucfirst($record->filiere_text)),
+            ])->defaultGroup('status') //->groupingSettingsHidden()
+            ->emptyStateDescription('Once students starts announcing internships, it will appear here.')
             ->columns([
-                Tables\Columns\TextColumn::make('student_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('reviewed_at')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('organization_name')
-                    ->searchable(),
-                // Tables\Columns\TextColumn::make('adresse')
-                //     ->searchable(),
-                Tables\Columns\TextColumn::make('city')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('country')
-                    ->searchable(),
-                // Tables\Columns\TextColumn::make('office_location')
-                //     ->searchable(),
-                // Tables\Columns\TextColumn::make('parrain_titre')
-                //     ->searchable(),
-                Tables\Columns\TextColumn::make('parrain_nom')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('parrain_prenom')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('parrain_fonction')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('parrain_tel')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('parrain_mail')
-                    ->searchable(),
-                // Tables\Columns\TextColumn::make('encadrant_ext_titre')
-                //     ->searchable(),
-                Tables\Columns\TextColumn::make('encadrant_ext_nom')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('encadrant_ext_prenom')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('encadrant_ext_fonction')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('encadrant_ext_tel')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('encadrant_ext_mail')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('starting_at')
-                    ->date()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('ending_at')
-                    ->date()
-                    ->sortable(),
-                // Tables\Columns\IconColumn::make('abroad')
-                //     ->boolean(),
-                // Tables\Columns\TextColumn::make('remuneration')
-                //     ->searchable(),
-                // Tables\Columns\TextColumn::make('currency')
-                //     ->searchable(),
-                // Tables\Columns\TextColumn::make('load')
-                //     ->searchable(),
-                // Tables\Columns\TextColumn::make('abroad_school')
-                //     ->searchable(),
-                // Tables\Columns\TextColumn::make('int_adviser_id')
-                //     ->numeric()
-                //     ->sortable(),
-                Tables\Columns\TextColumn::make('int_adviser_name')
-                    ->searchable(),
-                // Tables\Columns\IconColumn::make('is_signed')
-                //     ->boolean(),
-                // Tables\Columns\TextColumn::make('year_id')
-                //     ->numeric()
-                //     ->sortable(),
-                // Tables\Columns\TextColumn::make('binome_user_id')
-                //     ->numeric()
-                //     ->sortable(),
-                // Tables\Columns\IconColumn::make('is_valid')
-                //     ->boolean(),
-                // Tables\Columns\TextColumn::make('status')
-                //     ->searchable(),
-                Tables\Columns\TextColumn::make('anounced_at')
-                    ->dateTime()
-                    ->sortable(),
+                Split::make([
+                    Stack::make([
+                        // Tables\Columns\TextColumn::make('student_id')
+                        //     ->numeric()
+                        //     ->sortable(),
+                        // add reviewed_at as date column with d/m/y format
+                        Tables\Columns\TextColumn::make('reviewed_at')
+                            ->dateTime()
+                            ->sortable(),
+                        Tables\Columns\TextColumn::make('anounced_at')
+                            ->dateTime()
+                            ->sortable(),
 
-                Tables\Columns\TextColumn::make('approved_at')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('signed_at')
-                    ->dateTime()
-                    ->sortable(),
-                // Tables\Columns\TextColumn::make('partner_internship_id')
-                //     ->numeric()
-                //     ->sortable(),
-                // Tables\Columns\TextColumn::make('partnership_status')
-                //     ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                        Tables\Columns\TextColumn::make('approved_at')
+                            ->dateTime()
+                            ->sortable(),
+                        Tables\Columns\TextColumn::make('signed_at')
+                            ->dateTime()
+                            ->sortable(),
+                    ])->alignment(Alignment::Start),
+
+                    // Stack::make([
+                    //     Tables\Columns\TextColumn::make('parrain_nom')
+                    //         ->searchable(),
+                    //     Tables\Columns\TextColumn::make('parrain_prenom')
+                    //         ->searchable(),
+                    //     Tables\Columns\TextColumn::make('parrain_fonction')
+                    //         ->searchable(),
+                    //     Tables\Columns\TextColumn::make('parrain_tel')
+                    //         ->searchable()->icon('heroicon-m-phone'),
+                    //     Tables\Columns\TextColumn::make('parrain_mail')
+                    //         ->searchable()->icon('heroicon-m-envelope'),
+                    // ]),
+                    
+                    Split::make([
+                        Stack::make([
+                        Tables\Columns\TextColumn::make('organization_name')
+                            ->searchable(),
+                        // Tables\Columns\TextColumn::make('adresse')
+                        //     ->searchable(),
+                        // Tables\Columns\TextColumn::make('city')
+                        //     ->searchable(),
+                        Tables\Columns\TextColumn::make('country')
+                            ->searchable(),
+                        ]),
+                        // Tables\Columns\TextColumn::make('office_location')
+                        //     ->searchable(),
+                        // Tables\Columns\TextColumn::make('parrain_titre')
+                        //     ->searchable(),
+                        Stack::make([
+                            Tables\Columns\TextColumn::make('starting_at')
+                                ->date()
+                                ->sortable(),
+                            Tables\Columns\TextColumn::make('ending_at')
+                                ->date()
+                                ->sortable(),
+                            ])->alignment(Alignment::End),
+                    ]),
+                    Panel::make([
+
+                        Stack::make([
+
+                            // Tables\Columns\TextColumn::make('encadrant_ext_titre')
+                            //     ->searchable(),
+                            Tables\Columns\TextColumn::make('encadrant_ext_nom')
+                                ->searchable(),
+                            Tables\Columns\TextColumn::make('encadrant_ext_prenom')
+                                ->searchable(),
+                            Tables\Columns\TextColumn::make('encadrant_ext_fonction')
+                                ->searchable(),
+                            Tables\Columns\TextColumn::make('encadrant_ext_tel')
+                                ->searchable()->icon('heroicon-m-phone'),
+                            Tables\Columns\TextColumn::make('encadrant_ext_mail')
+                                ->searchable()->icon('heroicon-m-envelope'),
+                        ])->grow(true)->alignment(Alignment::End),
+                    ])->collapsible(),
+
+                    // Tables\Columns\IconColumn::make('abroad')
+                    //     ->boolean(),
+                    // Tables\Columns\TextColumn::make('remuneration')
+                    //     ->searchable(),
+                    // Tables\Columns\TextColumn::make('currency')
+                    //     ->searchable(),
+                    // Tables\Columns\TextColumn::make('load')
+                    //     ->searchable(),
+                    // Tables\Columns\TextColumn::make('abroad_school')
+                    //     ->searchable(),
+                    // Tables\Columns\TextColumn::make('int_adviser_id')
+                    //     ->numeric()
+                    //     ->sortable(),
+                    Tables\Columns\TextColumn::make('int_adviser_name')
+                        ->searchable(),
+                    // Tables\Columns\IconColumn::make('is_signed')
+                    //     ->boolean(),
+                    // Tables\Columns\TextColumn::make('year_id')
+                    //     ->numeric()
+                    //     ->sortable(),
+                    // Tables\Columns\TextColumn::make('binome_user_id')
+                    //     ->numeric()
+                    //     ->sortable(),
+                    // Tables\Columns\IconColumn::make('is_valid')
+                    //     ->boolean(),
+                    // Tables\Columns\TextColumn::make('status')
+                    //     ->searchable(),
+
+                    // Tables\Columns\TextColumn::make('partner_internship_id')
+                    //     ->numeric()
+                    //     ->sortable(),
+                    // Tables\Columns\TextColumn::make('partnership_status')
+                    //     ->searchable(),
+                    Tables\Columns\TextColumn::make('created_at')
+                        ->dateTime()
+                        ->sortable()
+                        ->toggleable(isToggledHiddenByDefault: true),
+                    Tables\Columns\TextColumn::make('updated_at')
+                        ->dateTime()
+                        ->sortable()
+                        ->toggleable(isToggledHiddenByDefault: true),
+                    Tables\Columns\TextColumn::make('deleted_at')
+                        ->dateTime()
+                        ->sortable()
+                        ->toggleable(isToggledHiddenByDefault: true),
+                ]),
+            ])->contentGrid([
+                'md' => 2,
+                'xl' => 3,
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
