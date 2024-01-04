@@ -25,7 +25,7 @@ class InternshipPolicy extends CorePolicy
     public function view(User $user, Internship $internship)
     {
         // Check if the user is a professor and the internship's student's program matches the user's program
-        if ($user->hasAnyRole($this->powerProfessors) && $internship->student->filiere_text === "SUD") {
+        if ($user->hasAnyRole($this->powerProfessors)) {
             return true;
         }
     }
@@ -41,7 +41,7 @@ class InternshipPolicy extends CorePolicy
 
     public function update(User $user, Internship $internship)
     {
-        return $user->hasRole($this->administrators);
+        return $user->hasAnyRole($this->powerProfessors);
     }
 
     public function delete(User $user, Internship $internship)
