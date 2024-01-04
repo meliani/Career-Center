@@ -21,7 +21,7 @@ class OfferPolicy
      */
     public function view(User $user, Offer $offer): bool
     {
-        //
+        return $user->hasRole('SuperAdministrator');
     }
 
     /**
@@ -29,7 +29,7 @@ class OfferPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->hasRole('SuperAdministrator');
     }
 
     /**
@@ -37,7 +37,7 @@ class OfferPolicy
      */
     public function update(User $user, Offer $offer): bool
     {
-        //
+        return $user->hasRole('SuperAdministrator');
     }
 
     /**
@@ -45,7 +45,7 @@ class OfferPolicy
      */
     public function delete(User $user, Offer $offer): bool
     {
-        //
+        return $user->hasRole('SuperAdministrator');
     }
 
     /**
@@ -53,7 +53,7 @@ class OfferPolicy
      */
     public function restore(User $user, Offer $offer): bool
     {
-        //
+        return $user->hasRole('SuperAdministrator');
     }
 
     /**
@@ -61,6 +61,6 @@ class OfferPolicy
      */
     public function forceDelete(User $user, Offer $offer): bool
     {
-        //
+        return $user->hasRole('SuperAdministrator');
     }
 }

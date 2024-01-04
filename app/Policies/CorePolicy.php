@@ -5,12 +5,15 @@ namespace App\Policies;
 use App\Models\User;
 use App\Models\Internship;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use App\Enums\Role;
 
 class CorePolicy
 {
     use HandlesAuthorization;
-    protected $administrators = ['SuperAdministrator', 'Administrator'];
-    protected $professors = ['Professor', 'HeadOfDepartment', 'ProgramCoordinator'];
+
+    // public $role = Role::Administrator;
+    protected $administrators = [ 'SuperAdministrator' , 'Administrator'];
+    protected $professors = [ 'SuperAdministrator', 'Administrator','Professor', 'HeadOfDepartment', 'ProgramCoordinator'];
     protected $powerProfessors = ['SuperAdministrator', 'Administrator', 'ProgramCoordinator'];
 
 }

@@ -21,7 +21,7 @@ class StudentPolicy
      */
     public function view(User $user, Student $student): bool
     {
-        //
+        return $user->hasRole('SuperAdministrator');
     }
 
     /**
@@ -29,7 +29,7 @@ class StudentPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->hasRole('SuperAdministrator');
     }
 
     /**
@@ -37,7 +37,7 @@ class StudentPolicy
      */
     public function update(User $user, Student $student): bool
     {
-        //
+        return $user->hasRole('SuperAdministrator');
     }
 
     /**
@@ -45,7 +45,7 @@ class StudentPolicy
      */
     public function delete(User $user, Student $student): bool
     {
-        //
+        return $user->hasRole('SuperAdministrator');
     }
 
     /**
@@ -53,7 +53,7 @@ class StudentPolicy
      */
     public function restore(User $user, Student $student): bool
     {
-        //
+        return $user->hasRole('SuperAdministrator');
     }
 
     /**
