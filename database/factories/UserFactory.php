@@ -62,7 +62,7 @@ class UserFactory extends Factory
             'email' => 'issati@inpt.ac.ma',
             'role' => 'ProgramCoordinator',
             'department' => 'SC',
-            'program_head' => 'SESNUM',
+            'program_coordinator' => 'SESNUM',
             'password' => bcrypt('professor_password'), // replace 'professor_password' with the actual password
             'remember_token' => Str::random(10),
         ]);
@@ -75,7 +75,7 @@ class UserFactory extends Factory
             'email' => 'ennouaary@inpt.ac.ma',
             'role' => 'ProgramCoordinator',
             'department' => 'RIM',
-            'program_head' => 'SUD',
+            'program_coordinator' => 'SUD',
             'password' => bcrypt('professor_password'), // replace 'professor_password' with the actual password
             'remember_token' => Str::random(10),
         ]);
