@@ -30,6 +30,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('')
+            ->brandName('INPT Entreprises')
             ->login()
             ->colors([
                 'primary' => Color::Amber,

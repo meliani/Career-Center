@@ -26,7 +26,8 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Mail\Mailable;
 use Illuminate\Support\Testing\Fakes\MailFake;
 use App\Mail\GenericContactEmail;
-
+use App\Mail\DefenseReadyEmail;
+use Filament\Support\Enums\FontWeight;
 class InternshipResource extends Resource
 {
 
@@ -38,8 +39,8 @@ class InternshipResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('student_id')
-                    ->numeric(),
+                // Forms\Components\TextInput::make('student_id')
+                //     ->numeric(),
                 Forms\Components\TextInput::make('organization_name')
                     ->required()
                     ->maxLength(191),
@@ -54,9 +55,9 @@ class InternshipResource extends Resource
                     ->maxLength(191),
                 Forms\Components\TextInput::make('office_location')
                     ->maxLength(255),
-                Forms\Components\TextInput::make('parrain_titre')
-                    ->required()
-                    ->maxLength(191),
+                // Forms\Components\TextInput::make('parrain_titre')
+                //     ->required()
+                //     ->maxLength(191),
                 Forms\Components\TextInput::make('parrain_nom')
                     ->required()
                     ->maxLength(191),
@@ -73,9 +74,9 @@ class InternshipResource extends Resource
                 Forms\Components\TextInput::make('parrain_mail')
                     ->required()
                     ->maxLength(191),
-                Forms\Components\TextInput::make('encadrant_ext_titre')
-                    ->required()
-                    ->maxLength(191),
+                // Forms\Components\TextInput::make('encadrant_ext_titre')
+                //     ->required()
+                //     ->maxLength(191),
                 Forms\Components\TextInput::make('encadrant_ext_nom')
                     ->required()
                     ->maxLength(191),
@@ -121,18 +122,18 @@ class InternshipResource extends Resource
                 // ->numeric(),
                 Forms\Components\TextInput::make('int_adviser_name')
                     ->maxLength(191),
-                Forms\Components\Toggle::make('is_signed'),
+                // Forms\Components\Toggle::make('is_signed'),
                 // Forms\Components\TextInput::make('year_id')
                 //     ->numeric(),
-                Forms\Components\TextInput::make('binome_user_id')
-                    ->numeric(),
-                Forms\Components\Toggle::make('is_valid'),
+                // Forms\Components\TextInput::make('binome_user_id')
+                //     ->numeric(),
+                // Forms\Components\Toggle::make('is_valid'),
                 Forms\Components\TextInput::make('status')
                     ->maxLength(255),
-                Forms\Components\DateTimePicker::make('anounced_at'),
-                Forms\Components\DateTimePicker::make('reviewed_at'),
-                Forms\Components\DateTimePicker::make('approved_at'),
-                Forms\Components\DateTimePicker::make('signed_at'),
+                // Forms\Components\DateTimePicker::make('anounced_at'),
+                // Forms\Components\DateTimePicker::make('reviewed_at'),
+                // Forms\Components\DateTimePicker::make('approved_at'),
+                // Forms\Components\DateTimePicker::make('signed_at'),
                 // Forms\Components\TextInput::make('partner_internship_id')
                 //     ->numeric(),
                 // Forms\Components\TextInput::make('partnership_status')
@@ -158,8 +159,12 @@ class InternshipResource extends Resource
             ])->defaultGroup('status') //->groupingSettingsHidden()
             ->emptyStateDescription('Once students starts announcing internships, it will appear here.')
             ->columns([
-                Tables\Columns\TextColumn::make('student.full_name'),
-                Tables\Columns\TextColumn::make('title'),
+                Tables\Columns\TextColumn::make('student.full_name')
+                ->weight(FontWeight::Bold)
+                ->searchable(),
+                Tables\Columns\TextColumn::make('title')
+                ->weight(FontWeight::Bold)
+                ->searchable(),
                 // Split::make([
                 Stack::make([
                     // Tables\Columns\TextColumn::make('student_id')
@@ -232,7 +237,9 @@ class InternshipResource extends Resource
                         Tables\Columns\TextColumn::make('encadrant_ext_tel')
                             ->searchable()->icon('heroicon-m-phone'),
                         Tables\Columns\TextColumn::make('encadrant_ext_mail')
-                            ->searchable()->icon('heroicon-m-envelope'),
+                            ->searchable()->icon('heroicon-m-envelope')
+                            ->copyable()
+                            ->copyMessage('Email address copied'),
                     ])->grow(true)->alignment(Alignment::End),
                 ])->collapsible(),
 
@@ -249,8 +256,8 @@ class InternshipResource extends Resource
                 // Tables\Columns\TextColumn::make('int_adviser_id')
                 //     ->numeric()
                 //     ->sortable(),
-                Tables\Columns\TextColumn::make('int_adviser_name')
-                    ->searchable(),
+                // Tables\Columns\TextColumn::make('int_adviser_name')
+                //     ->searchable(),
                 // Tables\Columns\IconColumn::make('is_signed')
                 //     ->boolean(),
                 // Tables\Columns\TextColumn::make('year_id')
@@ -303,7 +310,7 @@ class InternshipResource extends Resource
                 //     RichEditor::make('body')->required(),
                 // ])
                 // ->action(fn (array $data, Internship $internship) => Mail::to($internship->student->email_perso)
-                //     ->send(new GenericContactEmail(
+                //     ->send(new DefenseReadyEmail(
                 //         $data['subject'],
                 //         $data['body'],
                 //     ))
