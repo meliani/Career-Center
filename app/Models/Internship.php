@@ -28,7 +28,12 @@ class Internship extends baseModel
     {
         parent::boot();
     }
-
+    public function scopeFilterByProgramHead($query)
+    {
+        return $query->whereHas('student', function ($q) {
+            $q->where('filiere_text', auth()->user()->program_coordinator);
+        });
+    }
     protected $guarded = [];
 
     protected $casts = [
@@ -43,7 +48,7 @@ class Internship extends baseModel
     public function review()
     {
         try {
-            if (Gate::denies('review', $this)) {
+            if (Gate::denies('review-internship', $this)) {
                 throw new AuthorizationException();
             }
             $this->reviewed_at = now();
