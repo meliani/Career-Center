@@ -10,6 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Filament\Models\Contracts\HasName;
+use App\Enums\Role;
 
 class User extends Authenticatable implements FilamentUser, HasName
 {
@@ -21,11 +22,15 @@ class User extends Authenticatable implements FilamentUser, HasName
      * @var array<int, string>
      */
     protected $guarded = [];
-    // protected $fillable = [
-    //     'name',
-    //     'email',
-    //     'password',
-    // ];
+    protected $fillable = [
+        'first_name',
+        'last_name',
+        'role',
+        'department',
+        'program_coordinator',
+        'email',
+        'password',
+    ];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -45,6 +50,7 @@ class User extends Authenticatable implements FilamentUser, HasName
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        // 'role' => Role::class,
     ];
     public function getFilamentName(): string
     {
