@@ -9,6 +9,8 @@ use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvid
 // use Illuminate\Support\Facades\Gate;
 // use Illuminate\Auth\Access\Response;
 // use App\Models\User;
+use Spatie\Activitylog\Models\Activity;
+use App\Policies\ActivityPolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -17,14 +19,16 @@ class AuthServiceProvider extends ServiceProvider
      *
      * @var array<class-string, class-string>
      */
-    protected $policies = [];
+    protected $policies = [
+        Activity::class => ActivityPolicy::class,
+    ];
 
     /**
      * Register any authentication / authorization services.
      */
     public function boot(): void
     {
-        // $this->registerPolicies();
+        $this->registerPolicies();
         // Gate::define('review-internship', [InternshipPolicy::class, 'update']);
     }
 }

@@ -5,8 +5,9 @@ namespace App\Policies;
 use App\Models\User;
 use App\Models\Internship;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use App\Policies\CorePolicy;
 
-class InternshipPolicy
+class InternshipPolicy extends CorePolicy
 {
     use HandlesAuthorization;
     protected $administrators = ['SuperAdministrator', 'Administrator'];
