@@ -3,7 +3,7 @@ namespace App\Enums;
 
 use Filament\Support\Contracts\HasLabel;
 
-enum Status: string implements HasLabel
+enum Action: string implements HasLabel
 {
     case PendingAnnouncement = 'Pending Announcement';
     case PendingReview = 'Pending Review';
