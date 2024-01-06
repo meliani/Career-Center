@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 use Livewire\Livewire;
+use Illuminate\Support\Facades\App;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -37,11 +38,11 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
         });
-        // if (app()->environment() === "production") {
+        if (App::environment('production')) {
             Livewire::setUpdateRoute(function ($handle) {
                 $url = env('LIVEWIRE_UPDATE_URL') . '/livewire/update';
                 return Route::post($url, $handle);
             });
-        // }
+        }
     }
 }
