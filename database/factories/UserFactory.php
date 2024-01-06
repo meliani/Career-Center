@@ -24,6 +24,7 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
+            'name' => fake()->name(),
             'first_name' => fake()->name(),
             'last_name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
@@ -41,6 +42,7 @@ class UserFactory extends Factory
     public function root(): Factory
     {
         return $this->state([
+            'name' => 'meliani mohamed',
             'first_name' => 'meliani',
             'last_name' => 'mohamed',
             'email' => 'elmeliani@inpt.ac.ma',
@@ -57,6 +59,7 @@ class UserFactory extends Factory
     public function issati(): Factory
     {
         return $this->state([
+            'name' => 'EL ISSATI Oussama',
             'first_name' => 'Oussama',
             'last_name' => 'EL ISSATI',
             'email' => 'issati@inpt.ac.ma',
@@ -70,6 +73,7 @@ class UserFactory extends Factory
     public function ennouaary(): Factory
     {
         return $this->state([
+            'name' => 'EN-NOUAARY Abdeslam',
             'first_name' => 'Abdeslam',
             'last_name' => 'EN-NOUAARY',
             'email' => 'ennouaary@inpt.ac.ma',

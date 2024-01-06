@@ -23,6 +23,7 @@ class User extends Authenticatable implements FilamentUser, HasName
      */
     protected $guarded = [];
     protected $fillable = [
+        'name',
         'first_name',
         'last_name',
         'role',
@@ -41,7 +42,8 @@ class User extends Authenticatable implements FilamentUser, HasName
         'password',
         'remember_token',
     ];
-
+    // protected $appends = [
+    // ];
     /**
      * The attributes that should be cast.
      *
@@ -52,6 +54,10 @@ class User extends Authenticatable implements FilamentUser, HasName
         'password' => 'hashed',
         // 'role' => Role::class,
     ];
+    public function getNameAttribute()
+	{
+        return "{$this->first_name} {$this->last_name}";
+    }
     public function getFilamentName(): string
     {
         return "{$this->first_name} {$this->last_name}";
