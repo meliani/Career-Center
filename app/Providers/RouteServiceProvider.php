@@ -38,10 +38,10 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/web.php'));
         });
         // if (app()->environment() === "production") {
-        //     Livewire::setUpdateRoute(function ($handle) {
-        //         $url = env('LIVEWIRE_UPDATE_URL') . '/livewire/update';
-        //         return Route::post($url, $handle);
-        //     });
+            Livewire::setUpdateRoute(function ($handle) {
+                $url = env('LIVEWIRE_UPDATE_URL') . '/livewire/update';
+                return Route::post($url, $handle);
+            });
         // }
     }
 }
