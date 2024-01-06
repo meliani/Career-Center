@@ -7,6 +7,7 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvi
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
+use Livewire\Livewire;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -35,6 +36,10 @@ class RouteServiceProvider extends ServiceProvider
 
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
+        });
+        Livewire::setUpdateRoute(function ($handle) {
+            $url = env('LIVEWIRE_UPDATE_URL') . '/livewire/update';
+            return Route::post($url, $handle);
         });
     }
 }
