@@ -187,7 +187,8 @@ class InternshipResource extends Resource
                     Tables\Columns\TextColumn::make('signed_at')
                         ->dateTime()
                         ->sortable(),
-                ])->alignment(Alignment::Start),
+                ])
+                ->alignment(Alignment::Start),
 
                 // Stack::make([
                 //     Tables\Columns\TextColumn::make('parrain_nom')
