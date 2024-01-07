@@ -14,6 +14,7 @@ use App\Enums\Role;
 
 class User extends Authenticatable implements FilamentUser, HasName
 {
+    
     use HasApiTokens, HasFactory, Notifiable;
 
     /**

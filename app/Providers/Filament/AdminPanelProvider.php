@@ -63,9 +63,11 @@ class AdminPanelProvider extends PanelProvider
                 config('filament-logger.activity_resource')
             ])
 
-            ->plugins([FilamentFullCalendarPlugin::make()
+            ->plugins([FilamentFullCalendarPlugin::make(),
                             // ->selectable()
                     // ->editable(),
+                    new \RickDBCN\FilamentEmail\FilamentEmail(),
+                    \EightyNine\Approvals\ApprovalPlugin::make()
                 ]);
     }
 }

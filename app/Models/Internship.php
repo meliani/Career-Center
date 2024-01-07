@@ -18,10 +18,9 @@ use App\Models\School\Project\Project;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Auth\Access\AuthorizationException;
 use Filament\Notifications\Notification;
+use EightyNine\Approvals\Models\ApprovableModel;
 
-class Internship extends baseModel
-{
-
+class Internship extends baseModel {
     use SoftDeletes;
 
     protected static function boot()
