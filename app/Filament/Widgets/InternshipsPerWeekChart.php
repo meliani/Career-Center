@@ -7,29 +7,29 @@ use Flowframe\Trend\Trend;
 use Flowframe\Trend\TrendValue;
 use App\Models\Internship;
 
-class InternshipsCitiesChart extends ChartWidget
+class InternshipsPerWeekChart extends ChartWidget
 {
-    protected static ?string $heading = 'Internships Chart';
+    protected static ?string $heading = 'Daily Internships per week';
     public function getDescription(): ?string
     {
-        return 'The number of Internships per month.';
+        return __('Daily number of Internships displayed by week.');
     }
     protected function getData(): array
     {
         $data = Trend::model(Internship::class)
         ->between(
             // start: now()->startOfYear(),
-            start: now()->subMonths(4)->startOfMonth(),
-            end: now()->endOfMonth(),
+            start: now()->subWeeks(1)->startOfWeek(),
+            end: now()->endOfWeek(),
             // end: now()->endOfYear(), ===
         )
-        ->perMonth()
+        ->perDay()
         ->count();
  
     return [
         'datasets' => [
             [
-                'label' => 'Internships per month',
+                'label' => 'Internships per day',
                 'data' => $data->map(fn (TrendValue $value) => $value->aggregate),
             ],
         ],

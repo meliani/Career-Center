@@ -5,21 +5,21 @@ namespace App\Filament\Widgets;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 use App\Models\Internship;
 
-class InternshipsOrganizationsChart extends ApexChartWidget
+class InternshipsPerOrganizationChart extends ApexChartWidget
 {
     /**
      * Chart Id
      *
      * @var string
      */
-    protected static string $chartId = 'internshipsOrganizationsChart';
+    protected static string $chartId = 'internshipsPerOrganizationChart';
 
     /**
      * Widget Title
      *
      * @var string|null
      */
-    protected static ?string $heading = 'InternshipsOrganizationsChart';
+    protected static ?string $heading = 'Internships per Organizations Chart';
 
     /**
      * Chart options (series, labels, types, size, animations...)

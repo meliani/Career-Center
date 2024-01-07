@@ -7,13 +7,13 @@ use Flowframe\Trend\Trend;
 use Flowframe\Trend\TrendValue;
 use App\Models\Internship;
 
-class InternshipsCountriesChart extends ChartWidget
+class InternshipsPerMonthChart extends ChartWidget
 {
-    protected static ?string $heading = 'Internships Chart';
+    protected static ?string $heading = 'Monthly Internships.';
     
     public function getDescription(): ?string
     {
-        return 'The number of Internships per Country.';
+        return __('Number of Internships per Month during the academic year.');
     }
 
     protected function getData(): array
