@@ -24,6 +24,7 @@
         "munafio/chatify": "^1.6",
         "pxlrbt/filament-excel": "^2.3",
         "spatie/laravel-medialibrary": "^11.0",
+        "stechstudio/filament-impersonate": "^3.5",
         "z3d0x/filament-logger": "^0.6.2"
     },
     "require-dev": {
