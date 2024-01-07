@@ -28,9 +28,9 @@ use Illuminate\Support\Testing\Fakes\MailFake;
 use App\Mail\GenericContactEmail;
 use App\Mail\DefenseReadyEmail;
 use Filament\Support\Enums\FontWeight;
+
 class InternshipResource extends Resource
 {
-
     protected static ?string $model = Internship::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -143,6 +143,7 @@ class InternshipResource extends Resource
 
     public static function table(Table $table): Table
     {
+        $livewire = $table->getLivewire();
         return $table
             ->modifyQueryUsing(fn (Builder $query) =>
             $query->whereHas(
@@ -156,7 +157,8 @@ class InternshipResource extends Resource
                     ->label('Program')
                 // ->titlePrefixedWithLabel(false)
                 // ->getTitleFromRecordUsing(fn (Internship $record): string => ucfirst($record->filiere_text)),
-            ])->defaultGroup('status') //->groupingSettingsHidden()
+            ])
+            ->defaultGroup('status') //->groupingSettingsHidden()
             ->emptyStateDescription('Once students starts announcing internships, it will appear here.')
             ->columns([
                 Tables\Columns\TextColumn::make('student.full_name')
@@ -289,10 +291,11 @@ class InternshipResource extends Resource
                 //     ->sortable()
                 //     ->toggleable(isToggledHiddenByDefault: true),
                 // ]),
-            ])->contentGrid([
-                'md' => 2,
-                'xl' => 3,
             ])
+            // ->contentGrid([
+            //     'md' => 2,
+            //     'xl' => 3,
+            // ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
             ])
@@ -325,7 +328,7 @@ class InternshipResource extends Resource
                 // ]),
             ]);
     }
-
+    
     public static function getPages(): array
     {
         return [
