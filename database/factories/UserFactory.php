@@ -42,11 +42,47 @@ class UserFactory extends Factory
     public function root(): Factory
     {
         return $this->state([
-            'name' => 'meliani mohamed',
-            'first_name' => 'meliani',
-            'last_name' => 'mohamed',
+            'name' => 'Meliani',
+            'first_name' => 'Meliani',
+            'last_name' => 'Mohamed',
             'email' => 'elmeliani@inpt.ac.ma',
             'role' => 'SuperAdministrator',
+            'password' => bcrypt('root_password'), // replace 'root_password' with the actual password
+            'remember_token' => Str::random(10),
+        ]);
+    }
+    public function kensi(): Factory
+    {
+        return $this->state([
+            'name' => 'Kensi Ahmed',
+            'first_name' => 'Kensi',
+            'last_name' => 'Ahmed',
+            'email' => 'a.kensi@inpt.ac.ma',
+            'role' => 'Administrator',
+            'password' => bcrypt('root_password'), // replace 'root_password' with the actual password
+            'remember_token' => Str::random(10),
+        ]);
+    }
+    public function samira(): Factory
+    {
+        return $this->state([
+            'name' => 'Bellahcen Samira',
+            'first_name' => 'Bellahcen',
+            'last_name' => 'Samira',
+            'email' => 'b.samira@inpt.ac.ma',
+            'role' => 'Administrator',
+            'password' => bcrypt('root_password'), // replace 'root_password' with the actual password
+            'remember_token' => Str::random(10),
+        ]);
+    }
+    public function nisrine(): Factory
+    {
+        return $this->state([
+            'name' => 'Azzi Nisrine',
+            'first_name' => 'Azzi',
+            'last_name' => 'Nisrine',
+            'email' => 'n.azzi@inpt.ac.ma',
+            'role' => 'Administrator',
             'password' => bcrypt('root_password'), // replace 'root_password' with the actual password
             'remember_token' => Str::random(10),
         ]);
