@@ -28,6 +28,7 @@ use Illuminate\Support\Testing\Fakes\MailFake;
 use App\Mail\GenericContactEmail;
 use App\Mail\DefenseReadyEmail;
 use Filament\Support\Enums\FontWeight;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 
 class InternshipResource extends Resource
 {
@@ -321,6 +322,7 @@ class InternshipResource extends Resource
                 // \App\Filament\Resources\InternshipResource\Actions\ReviewAction::make()->action(fn (Internship $internship) => $internship->review()),
             ], position: ActionsPosition::BeforeCells)
             ->bulkActions([
+                ExportBulkAction::make()
                 // Tables\Actions\BulkActionGroup::make([
                 //     Tables\Actions\DeleteBulkAction::make(),
                 //     Tables\Actions\ForceDeleteBulkAction::make(),
