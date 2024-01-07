@@ -20,27 +20,29 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Filament\Support\Enums\MaxWidth;
 use Saade\FilamentFullCalendar\FilamentFullCalendarPlugin;
 
-class AdminPanelProvider extends PanelProvider
+class ProgramCoordinatorPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
         return $panel
+            ->id('programCoordinator')
+            ->path('programCoordinator')
+            ->colors([
+                'primary' => Color::Amber,
+            ])
             ->spa()
             ->maxContentWidth(MaxWidth::Full)
-            ->default()
-            ->id('admin')
-            ->path('')
-            ->brandName('Careers Management System')
+            ->brandName('Program Coordinator Panel')
             ->login()
             ->colors([
                 'primary' => Color::Amber,
             ])
-            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
-            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
+            ->discoverResources(in: app_path('Filament/ProgramCoordinator/Resources'), for: 'App\\Filament\\ProgramCoordinator\\Resources')
+            ->discoverPages(in: app_path('Filament/ProgramCoordinator/Pages'), for: 'App\\Filament\\ProgramCoordinator\\Pages')
             ->pages([
                 Pages\Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
+            ->discoverWidgets(in: app_path('Filament/ProgramCoordinator/Widgets'), for: 'App\\Filament\\ProgramCoordinator\\Widgets')
             ->widgets([
                 // Widgets\AccountWidget::class,
                 // Widgets\FilamentInfoWidget::class,
@@ -59,15 +61,10 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->resources([
-                config('filament-logger.activity_resource')
-            ])
-
-            ->plugins([FilamentFullCalendarPlugin::make(),
-                            // ->selectable()
-                    // ->editable(),
-                    new \RickDBCN\FilamentEmail\FilamentEmail(),
-                    \EightyNine\Approvals\ApprovalPlugin::make()
-                ]);
+            ->plugins([
+                FilamentFullCalendarPlugin::make(),
+                // ->selectable()
+                // ->editable(),
+            ]);;
     }
 }
