@@ -31,6 +31,10 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Gate::define('view-internship', function (User $user, Internship $internship) {
+            // Check if the user is an administrator
+            if ($user->hasAnyRole($this->administrators)) {
+                return true;
+            }
             return $internship->student->filiere_text === $user->program_coordinator;
         });
         Gate::define('review-internship', [InternshipPolicy::class, 'update']);
