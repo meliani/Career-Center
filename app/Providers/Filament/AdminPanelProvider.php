@@ -29,7 +29,7 @@ class AdminPanelProvider extends PanelProvider
             ->maxContentWidth(MaxWidth::Full)
             ->default()
             ->id('admin')
-            ->path('backend/admin')
+            ->path('admin')
             ->brandName('Careers Management System')
             ->login()
             ->colors([
