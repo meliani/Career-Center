@@ -26,7 +26,7 @@ class ProgramCoordinatorPanelProvider extends PanelProvider
     {
         return $panel
             ->id('programCoordinator')
-            ->path('programCoordinator')
+            ->path('backend/programCoordinator')
             ->colors([
                 'primary' => Color::Amber,
             ])
