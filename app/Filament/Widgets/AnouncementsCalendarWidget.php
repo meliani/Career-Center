@@ -46,8 +46,8 @@ class AnouncementsCalendarWidget extends FullCalendarWidget
             ->map(function (Internship $task) {
                 return [
                     'id'    => $task->id,
-                    'title' => $task->student->full_name,
-                    'start' => $task->created_at,
+                    'title' => $task->student?->full_name,
+                    'start' => $task?->created_at,
                     // 'end'   => $task->updated_at,
                 ];
             })
