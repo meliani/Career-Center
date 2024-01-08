@@ -86,4 +86,8 @@ class AnouncementsCalendarWidget extends FullCalendarWidget
                 ]),
         ];
     }
+    public static function canView(): bool
+{
+    return false;
+}
 }
