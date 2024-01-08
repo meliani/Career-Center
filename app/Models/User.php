@@ -10,7 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Filament\Models\Contracts\HasName;
-use App\Enums\Role;
+// use \App\Enums\Role;
 
 class User extends Authenticatable implements FilamentUser, HasName
 {
@@ -79,7 +79,13 @@ class User extends Authenticatable implements FilamentUser, HasName
 
     public function canAccessPanel(Panel $panel): bool
     {
+        if ($panel->getId() === 'admin') {
+            return $this->hasAnyRole(['SuperAdministrator', 'Administrator']);
+        }
+        if ($panel->getId() === 'ProgramCoordinator') {
+            return $this->haAnyRole(['SuperAdministrator', 'Administrator', 'ProgramCoordinator']);
+        }
+      // return str_ends_with($this->email, '@inpt.ac.ma') && $this->hasVerifiedEmail();
         return true;
-        // return str_ends_with($this->email, '@inpt.ac.ma') && $this->hasVerifiedEmail();
     }
 }

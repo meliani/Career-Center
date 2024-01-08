@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\InternshipResource\Pages;
 
-use App\Filament\Resources\InternshipResource;
+use App\Filament\Resources\InternshipTableResource as InternshipResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
 

@@ -65,6 +65,6 @@ class ProgramCoordinatorPanelProvider extends PanelProvider
                 FilamentFullCalendarPlugin::make(),
                 // ->selectable()
                 // ->editable(),
-            ]);;
+            ]);
     }
 }

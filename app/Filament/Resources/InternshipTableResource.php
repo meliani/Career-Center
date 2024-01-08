@@ -30,7 +30,7 @@ use App\Mail\DefenseReadyEmail;
 use Filament\Support\Enums\FontWeight;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 
-class InternshipResource extends Resource
+class InternshipTableResource extends Resource
 {
     protected static ?string $model = Internship::class;
 
@@ -146,11 +146,11 @@ class InternshipResource extends Resource
     {
         $livewire = $table->getLivewire();
         return $table
-            ->modifyQueryUsing(fn (Builder $query) =>
-            $query->whereHas(
-                'student',
-                fn (Builder $query) => $query->where('filiere_text', Auth::user()->program_coordinator)
-            ))
+            // ->modifyQueryUsing(fn (Builder $query) =>
+            // $query->whereHas(
+            //     'student',
+            //     fn (Builder $query) => $query->where('filiere_text', Auth::user()->program_coordinator)
+            // ))
             ->groups([
                 Group::make('status')
                     ->collapsible(),
@@ -163,11 +163,15 @@ class InternshipResource extends Resource
             ->emptyStateDescription('Once students starts announcing internships, it will appear here.')
             ->columns([
                 Tables\Columns\TextColumn::make('student.full_name')
-                ->weight(FontWeight::Bold)
-                ->searchable(),
+                    ->weight(FontWeight::Bold)
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('title')
-                ->weight(FontWeight::Bold)
-                ->searchable(),
+                    ->weight(FontWeight::Bold)
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('keywords')
+                    ->searchable()
+                    ->badge()
+                    ->separator(','),
                 // Split::make([
                 Stack::make([
                     // Tables\Columns\TextColumn::make('student_id')
@@ -188,7 +192,7 @@ class InternshipResource extends Resource
                         ->dateTime()
                         ->sortable(),
                 ])
-                ->alignment(Alignment::Start),
+                    ->alignment(Alignment::Start),
 
                 // Stack::make([
                 //     Tables\Columns\TextColumn::make('parrain_nom')
@@ -303,10 +307,10 @@ class InternshipResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                // Tables\Actions\EditAction::make(),
-                // Tables\Actions\DeleteAction::make(),
-                // Tables\Actions\ForceDeleteAction::make(),
-                // Tables\Actions\RestoreAction::make(),
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ForceDeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
                 Tables\Actions\Action::make('review')->action(fn (Internship $internship) => $internship->review())
                     ->requiresConfirmation(fn (Internship $internship) => "Are you sure you want to mark this internship as reviewed?"),
                 // Tables\Actions\Action::make('sendEmail')
@@ -331,7 +335,7 @@ class InternshipResource extends Resource
                 // ]),
             ]);
     }
-    
+
     public static function getPages(): array
     {
         return [
