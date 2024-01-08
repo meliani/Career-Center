@@ -29,7 +29,7 @@ class AdminPanelProvider extends PanelProvider
             ->maxContentWidth(MaxWidth::Full)
             ->default()
             ->id('admin')
-            ->path('https://carrieres.inpt.ac.ma/backend/admin')
+            ->path('/https://carrieres.inpt.ac.ma/backend/admin')
             ->brandName('Careers Management System')
             ->login()
             ->colors([
