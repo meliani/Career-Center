@@ -65,6 +65,27 @@ class Internship extends baseModel {
             return response()->json(['error' => 'This action is unauthorized.'], 403);
         }
     }
+    public function sign_off()
+    {
+        try {
+            if (Gate::denies('review-internship', $this)) {
+                throw new AuthorizationException();
+            }
+            $this->signed_at = now();
+            $this->save();
+            Notification::make()
+            ->title('Signed successfully')
+            ->success()
+            ->send();
+        } catch (AuthorizationException $e) {
+
+            Notification::make()
+                ->title('Sorry You must be an Administrator.')
+                ->danger()
+                ->send();
+            return response()->json(['error' => 'This action is unauthorized.'], 403);
+        }
+    }
     public function binome()
     {
         return $this->belongsTo(Student::class, 'binome_user_id', 'id');

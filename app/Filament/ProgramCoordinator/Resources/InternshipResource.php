@@ -178,8 +178,8 @@ class InternshipResource extends Resource
                     Tables\Columns\TextColumn::make('reviewed_at')
                         ->dateTime()
                         ->sortable()
-                        ->label('Reviewed at')->since()
-                        ->description('Review time', 'above')
+                        ->label('Reviewe time')->since()
+                        ->description('Reviewed', 'above')
                         ->placeholder('Not reviewed')
                         ->badge(function (Internship $internship) {
                             return $internship->reviewed_at ? 'Reviewed' : 'Not reviewed';
@@ -193,7 +193,13 @@ class InternshipResource extends Resource
                         ->sortable(),
                     Tables\Columns\TextColumn::make('signed_at')
                         ->dateTime()
-                        ->sortable(),
+                        ->sortable()
+                        ->label('Signed at')->since()
+                        ->description('Signed', 'above')
+                        ->placeholder('Not signed yet')
+                        ->badge(function (Internship $internship) {
+                            return $internship->signed_at ? 'Signed' : 'Not signed';
+                        }),
                 ])
                     ->alignment(Alignment::Start),
 

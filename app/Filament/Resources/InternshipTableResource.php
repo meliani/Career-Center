@@ -168,10 +168,7 @@ class InternshipTableResource extends Resource
                 Tables\Columns\TextColumn::make('title')
                     ->weight(FontWeight::Bold)
                     ->searchable(),
-                Tables\Columns\TextColumn::make('keywords')
-                    ->searchable()
-                    ->badge()
-                    ->separator(','),
+
                 // Split::make([
                 Stack::make([
                     // Tables\Columns\TextColumn::make('student_id')
@@ -190,7 +187,13 @@ class InternshipTableResource extends Resource
                         ->sortable(),
                     Tables\Columns\TextColumn::make('signed_at')
                         ->dateTime()
-                        ->sortable(),
+                        ->sortable()
+                        ->label('Signed at')->since()
+                        ->description('Signed', 'above')
+                        ->placeholder('Not signed yet')
+                        ->badge(function (Internship $internship) {
+                            return $internship->signed_at ? 'Signed' : 'Not signed';
+                        }),
                 ])
                     ->alignment(Alignment::Start),
 
@@ -248,6 +251,10 @@ class InternshipTableResource extends Resource
                             ->searchable()->icon('heroicon-m-envelope')
                             ->copyable()
                             ->copyMessage('Email address copied'),
+                        Tables\Columns\TextColumn::make('keywords')
+                            ->searchable()
+                            ->badge()
+                            ->separator(','),
                     ])->grow(true)->alignment(Alignment::End),
                 ])->collapsible(),
 
@@ -311,8 +318,8 @@ class InternshipTableResource extends Resource
                 Tables\Actions\DeleteAction::make(),
                 Tables\Actions\ForceDeleteAction::make(),
                 Tables\Actions\RestoreAction::make(),
-                Tables\Actions\Action::make('review')->action(fn (Internship $internship) => $internship->review())
-                    ->requiresConfirmation(fn (Internship $internship) => "Are you sure you want to mark this internship as reviewed?"),
+                Tables\Actions\Action::make('Sign off')->action(fn (Internship $internship) => $internship->sign_off())
+                    ->requiresConfirmation(fn (Internship $internship) => "Are you sure you want to mark this internship as Signed?"),
                 // Tables\Actions\Action::make('sendEmail')
                 // ->form([
                 //     TextInput::make('subject')->required(),
