@@ -22,14 +22,20 @@ use Saade\FilamentFullCalendar\FilamentFullCalendarPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
+    // public static ?string $label = 'Program Coordinator Panel';
+
+    // protected static string $routePath = 'backend/admin';
+
+    // // protected static ?string $title = 'Program coordinator dashboard';
     public function panel(Panel $panel): Panel
     {
+
         return $panel
             ->spa()
             ->maxContentWidth(MaxWidth::Full)
             ->default()
             ->id('admin')
-            ->path('/carrieres.inpt.ac.ma/backend/admin')
+            ->path('admin')
             ->brandName('Careers Management System')
             ->login()
             ->colors([

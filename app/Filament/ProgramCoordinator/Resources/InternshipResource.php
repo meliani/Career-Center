@@ -3,37 +3,35 @@
 namespace App\Filament\ProgramCoordinator\Resources;
 
 use App\Filament\ProgramCoordinator\Resources\InternshipResource\Pages;
-use App\Filament\ProgramCoordinator\Resources\InternshipResource\RelationManagers;
+use App\Mail\DefenseReadyEmail;
 use App\Models\Internship;
 use Filament\Forms;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\Alignment;
+use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
+use Filament\Tables\Columns\Layout\Panel;
+use Filament\Tables\Columns\Layout\Split;
+use Filament\Tables\Columns\Layout\Stack;
+use Filament\Tables\Enums\ActionsPosition;
+use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Tables\Enums\ActionsPosition;
-use Filament\Tables\Grouping\Group;
-use Filament\Tables\Columns\Summarizers\Sum;
-use Filament\Tables\Columns\Layout\Split;
-use Filament\Tables\Columns\Layout\Stack;
-use Filament\Support\Enums\Alignment;
-use Filament\Tables\Columns\Layout\Panel;
 use Illuminate\Support\Facades\Auth;
-use Filament\Forms\Components\RichEditor;
-use Filament\Forms\Components\TextInput;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Mail\Mailable;
-use Illuminate\Support\Testing\Fakes\MailFake;
-use App\Mail\GenericContactEmail;
-use App\Mail\DefenseReadyEmail;
-use Filament\Support\Enums\FontWeight;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
-use Filament\Tables\Columns\BadgeColumn;
 
 class InternshipResource extends Resource
 {
     protected static ?string $model = Internship::class;
+
+    public static ?string $label = 'Internship';
+    // protected static string $routePath = 'backend/admin';
+    // protected static ?string $title = 'Program coordinator dashboard';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -146,9 +144,9 @@ class InternshipResource extends Resource
     public static function table(Table $table): Table
     {
         $livewire = $table->getLivewire();
+
         return $table
-            ->modifyQueryUsing(fn (Builder $query) =>
-            $query->whereHas(
+            ->modifyQueryUsing(fn (Builder $query) => $query->whereHas(
                 'student',
                 fn (Builder $query) => $query->where('filiere_text', Auth::user()->program_coordinator)
             ))
@@ -156,7 +154,7 @@ class InternshipResource extends Resource
                 Group::make('status')
                     ->collapsible(),
                 Group::make('student.filiere_text')
-                    ->label('Program')
+                    ->label('Program'),
                 // ->titlePrefixedWithLabel(false)
                 // ->getTitleFromRecordUsing(fn (Internship $record): string => ucfirst($record->filiere_text)),
             ])
@@ -324,7 +322,7 @@ class InternshipResource extends Resource
                 // Tables\Actions\ForceDeleteAction::make(),
                 // Tables\Actions\RestoreAction::make(),
                 Tables\Actions\Action::make('review')->action(fn (Internship $internship) => $internship->review())
-                    ->requiresConfirmation(fn (Internship $internship) => "Are you sure you want to mark this internship as reviewed?"),
+                    ->requiresConfirmation(fn (Internship $internship) => 'Are you sure you want to mark this internship as reviewed?'),
                 // Tables\Actions\Action::make('sendEmail')
                 // ->form([
                 //     TextInput::make('subject')->required(),
@@ -339,7 +337,7 @@ class InternshipResource extends Resource
                 // \App\Filament\ProgramCoordinator\Resources\InternshipResource\Actions\ReviewAction::make()->action(fn (Internship $internship) => $internship->review()),
             ], position: ActionsPosition::BeforeCells)
             ->bulkActions([
-                ExportBulkAction::make()
+                ExportBulkAction::make(),
                 // Tables\Actions\BulkActionGroup::make([
                 //     Tables\Actions\DeleteBulkAction::make(),
                 //     Tables\Actions\ForceDeleteBulkAction::make(),
