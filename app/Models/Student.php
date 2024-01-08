@@ -25,13 +25,13 @@ class Student extends Person implements HasMedia
     {
         parent::boot();
 
-        if (app()->isProduction()) {
-            static::addGlobalScope(function ($query) {
-                $query
-                // ->where('model_status_id', config('school.current.model_status.prod'))
-                    ->where('year_id', config('school.current.year_id'));
-            });
-        }
+        // if (app()->isProduction()) {
+        //     static::addGlobalScope(function ($query) {
+        //         $query
+        //         // ->where('model_status_id', config('school.current.model_status.prod'))
+        //             ->where('year_id', config('school.current.year_id'));
+        //     });
+        // }
     }
 
     public function setPin(Student $student, $currentPin, $streamOrder)
