@@ -29,13 +29,12 @@ class ProgramCoordinatorPanelProvider extends PanelProvider
     {
         return $panel
             ->id('programCoordinator')
-            ->path('')
             ->colors([
                 'primary' => Color::Amber,
             ])
             ->spa()
             ->maxContentWidth(MaxWidth::Full)
-            ->brandName('Program Coordinator Panel')
+            ->brandName('INPT Entreprises')
             ->login()
             ->path('programCoordinator')
             ->colors([

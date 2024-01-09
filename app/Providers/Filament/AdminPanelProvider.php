@@ -36,7 +36,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->brandName('Careers Management System')
+            ->brandName('INPT Entreprises')
             ->login()
             ->colors([
                 'primary' => Color::Amber,
