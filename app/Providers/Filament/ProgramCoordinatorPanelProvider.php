@@ -37,6 +37,7 @@ class ProgramCoordinatorPanelProvider extends PanelProvider
             ->maxContentWidth(MaxWidth::Full)
             ->brandName('Program Coordinator Panel')
             ->login()
+            ->path('programCoordinator')
             ->colors([
                 'primary' => Color::Amber,
             ])
