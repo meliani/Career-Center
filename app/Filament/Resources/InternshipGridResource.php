@@ -347,4 +347,17 @@ class InternshipGridResource extends Resource
                 SoftDeletingScope::class,
             ]);
     }
+    public static function getNavigationLabel(): string
+    {
+        return InternshipTableResource::getPluralModelLabel().' '.__('card view');
+    }
+    public static function getModelLabel(): string
+    {
+        return __('Internship');
+    }
+    
+    public static function getPluralModelLabel(): string
+    {
+        return __('Internships');
+    }
 }

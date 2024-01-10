@@ -14,7 +14,7 @@ enum Role: string implements HasLabel
 
     public function getLabel(): ?string
     {
-        return $this->name;
+        return __($this->name);
 
         /*  return match ($this) {
             self::Draft => 'Draft',

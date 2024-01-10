@@ -29,7 +29,7 @@ class InternshipResource extends Resource
 {
     protected static ?string $model = Internship::class;
 
-    public static ?string $label = 'Internship';
+    // public static ?string $label = 'Internship';
     // protected static string $routePath = 'backend/admin';
     // protected static ?string $title = 'Program coordinator dashboard';
 
@@ -154,7 +154,7 @@ class InternshipResource extends Resource
                 Group::make('status')
                     ->collapsible(),
                 Group::make('student.filiere_text')
-                    ->label('Program'),
+                    ->label(__('Program')),
                 // ->titlePrefixedWithLabel(false)
                 // ->getTitleFromRecordUsing(fn (Internship $record): string => ucfirst($record->filiere_text)),
             ])
@@ -359,5 +359,14 @@ class InternshipResource extends Resource
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);
+    }
+    public static function getModelLabel(): string
+    {
+        return __('Internship');
+    }
+    
+    public static function getPluralModelLabel(): string
+    {
+        return __('Internships');
     }
 }

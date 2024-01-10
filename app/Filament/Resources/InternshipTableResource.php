@@ -35,6 +35,7 @@ class InternshipTableResource extends Resource
     protected static ?string $model = Internship::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    // protected static ?string $navigationLabel = 'Internships Management';
 
     public static function form(Form $form): Form
     {
@@ -318,7 +319,7 @@ class InternshipTableResource extends Resource
                 Tables\Actions\DeleteAction::make(),
                 Tables\Actions\ForceDeleteAction::make(),
                 Tables\Actions\RestoreAction::make(),
-                Tables\Actions\Action::make('Sign off')->action(fn (Internship $internship) => $internship->sign_off())
+                Tables\Actions\Action::make('Mark as Signed')->action(fn (Internship $internship) => $internship->sign_off())
                     ->requiresConfirmation(fn (Internship $internship) => "Are you sure you want to mark this internship as Signed?"),
                 // Tables\Actions\Action::make('sendEmail')
                 // ->form([
@@ -343,6 +344,7 @@ class InternshipTableResource extends Resource
             ]);
     }
 
+
     public static function getPages(): array
     {
         return [
@@ -356,5 +358,18 @@ class InternshipTableResource extends Resource
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);
+    }
+    public static function getNavigationLabel(): string
+    {
+        return InternshipTableResource::getPluralModelLabel().' '.__('table view');
+    }
+    public static function getModelLabel(): string
+    {
+        return __('Internship');
+    }
+    
+    public static function getPluralModelLabel(): string
+    {
+        return __('Internships');
     }
 }
