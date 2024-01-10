@@ -34,8 +34,8 @@ class AdminPanelProvider extends PanelProvider
             ->spa()
             ->maxContentWidth(MaxWidth::Full)
             ->default()
-            ->id('admin')
-            ->path('admin')
+            ->id('Administration')
+            ->path('Administration')
             ->brandName('INPT Entreprises')
             ->login()
             ->colors([
