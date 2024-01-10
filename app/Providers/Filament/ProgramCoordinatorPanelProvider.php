@@ -43,7 +43,7 @@ class ProgramCoordinatorPanelProvider extends PanelProvider
             ->discoverResources(in: app_path('Filament/ProgramCoordinator/Resources'), for: 'App\\Filament\\ProgramCoordinator\\Resources')
             ->discoverPages(in: app_path('Filament/ProgramCoordinator/Pages'), for: 'App\\Filament\\ProgramCoordinator\\Pages')
             ->pages([
-                Pages\Dashboard::class,
+                // Pages\Dashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/ProgramCoordinator/Widgets'), for: 'App\\Filament\\ProgramCoordinator\\Widgets')
             ->widgets([

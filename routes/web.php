@@ -20,6 +20,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return redirect('/admin/login');
 });
-Route::get('/programCoordinator', function () {
-    return redirect('/programCoordinator/login');
-});
+// Route::get('/programCoordinator', function () {
+//     return redirect('/programCoordinator/login');
+// });
