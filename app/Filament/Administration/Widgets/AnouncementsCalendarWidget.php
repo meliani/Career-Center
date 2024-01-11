@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Widgets;
+namespace App\Filament\Administration\Widgets;
 
 use Filament\Widgets\Widget;
 use Saade\FilamentFullCalendar\Widgets\FullCalendarWidget;
@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Saade\FilamentFullCalendar\Actions;
 use Filament\Actions\Action;
 use App\Models\Internship;
-use App\Filament\Resources\InternshipResource;
+use App\Filament\Administration\Resources\InternshipResource;
 use Saade\FilamentFullCalendar\Data\EventData;
 
 class AnouncementsCalendarWidget extends FullCalendarWidget

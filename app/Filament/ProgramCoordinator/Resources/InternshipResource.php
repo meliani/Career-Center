@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use App\Filament\ProgramCoordinator\Resources\InternshipResource\Actions\ReviewAction;
 
 class InternshipResource extends Resource
 {
@@ -321,6 +322,7 @@ class InternshipResource extends Resource
                 // Tables\Actions\DeleteAction::make(),
                 // Tables\Actions\ForceDeleteAction::make(),
                 // Tables\Actions\RestoreAction::make(),
+                ReviewAction::make(),
                 Tables\Actions\Action::make('review')->action(fn (Internship $internship) => $internship->review())
                     ->requiresConfirmation(fn (Internship $internship) => 'Are you sure you want to mark this internship as reviewed?'),
                 // Tables\Actions\Action::make('sendEmail')

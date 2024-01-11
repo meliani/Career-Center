@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Administration\Resources;
 
-use App\Filament\Resources\InternshipResource\Pages;
-use App\Filament\Resources\InternshipResource\RelationManagers;
+use App\Filament\Administration\Resources\InternshipResource\Pages;
+use App\Filament\Administration\Resources\InternshipResource\RelationManagers;
 use App\Models\Internship;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -30,12 +30,11 @@ use App\Mail\DefenseReadyEmail;
 use Filament\Support\Enums\FontWeight;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 
-class InternshipTableResource extends Resource
+class InternshipGridResource extends Resource
 {
     protected static ?string $model = Internship::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    // protected static ?string $navigationLabel = 'Internships Management';
 
     public static function form(Form $form): Form
     {
@@ -164,12 +163,11 @@ class InternshipTableResource extends Resource
             ->emptyStateDescription('Once students starts announcing internships, it will appear here.')
             ->columns([
                 Tables\Columns\TextColumn::make('student.full_name')
-                    ->weight(FontWeight::Bold)
-                    ->searchable(),
+                ->weight(FontWeight::Bold)
+                ->searchable(),
                 Tables\Columns\TextColumn::make('title')
-                    ->weight(FontWeight::Bold)
-                    ->searchable(),
-
+                ->weight(FontWeight::Bold)
+                ->searchable(),
                 // Split::make([
                 Stack::make([
                     // Tables\Columns\TextColumn::make('student_id')
@@ -178,7 +176,8 @@ class InternshipTableResource extends Resource
                     // add reviewed_at as date column with d/m/y format
                     Tables\Columns\TextColumn::make('reviewed_at')
                         ->dateTime()
-                        ->sortable(),
+                        ->sortable()
+                        ->label('Reviewed at'),
                     Tables\Columns\TextColumn::make('anounced_at')
                         ->dateTime()
                         ->sortable(),
@@ -188,15 +187,9 @@ class InternshipTableResource extends Resource
                         ->sortable(),
                     Tables\Columns\TextColumn::make('signed_at')
                         ->dateTime()
-                        ->sortable()
-                        ->label('Signed at')->since()
-                        ->description('Signed', 'above')
-                        ->placeholder('Not signed yet')
-                        ->badge(function (Internship $internship) {
-                            return $internship->signed_at ? 'Signed' : 'Not signed';
-                        }),
+                        ->sortable(),
                 ])
-                    ->alignment(Alignment::Start),
+                ->alignment(Alignment::Start),
 
                 // Stack::make([
                 //     Tables\Columns\TextColumn::make('parrain_nom')
@@ -252,10 +245,6 @@ class InternshipTableResource extends Resource
                             ->searchable()->icon('heroicon-m-envelope')
                             ->copyable()
                             ->copyMessage('Email address copied'),
-                        Tables\Columns\TextColumn::make('keywords')
-                            ->searchable()
-                            ->badge()
-                            ->separator(','),
                     ])->grow(true)->alignment(Alignment::End),
                 ])->collapsible(),
 
@@ -306,10 +295,10 @@ class InternshipTableResource extends Resource
                 //     ->toggleable(isToggledHiddenByDefault: true),
                 // ]),
             ])
-            // ->contentGrid([
-            //     'md' => 2,
-            //     'xl' => 3,
-            // ])
+            ->contentGrid([
+                'md' => 2,
+                'xl' => 3,
+            ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
             ])
@@ -319,19 +308,19 @@ class InternshipTableResource extends Resource
                 Tables\Actions\DeleteAction::make(),
                 Tables\Actions\ForceDeleteAction::make(),
                 Tables\Actions\RestoreAction::make(),
-                Tables\Actions\Action::make('Mark as Signed')->action(fn (Internship $internship) => $internship->sign_off())
-                    ->requiresConfirmation(fn (Internship $internship) => "Are you sure you want to mark this internship as Signed?"),
-                // Tables\Actions\Action::make('sendEmail')
-                // ->form([
-                //     TextInput::make('subject')->required(),
-                //     RichEditor::make('body')->required(),
-                // ])
-                // ->action(fn (array $data, Internship $internship) => Mail::to($internship->student->email_perso)
-                //     ->send(new DefenseReadyEmail(
-                //         $data['subject'],
-                //         $data['body'],
-                //     ))
-                // )
+                Tables\Actions\Action::make('review')->action(fn (Internship $internship) => $internship->review())
+                    ->requiresConfirmation(fn (Internship $internship) => "Are you sure you want to mark this internship as reviewed?"),
+                Tables\Actions\Action::make('sendEmail')
+                ->form([
+                    TextInput::make('subject')->required(),
+                    RichEditor::make('body')->required(),
+                ])
+                ->action(fn (array $data, Internship $internship) => Mail::to($internship->student->email_perso)
+                    ->send(new DefenseReadyEmail(
+                        $data['subject'],
+                        $data['body'],
+                    ))
+                )
                 // \App\Filament\Resources\InternshipResource\Actions\ReviewAction::make()->action(fn (Internship $internship) => $internship->review()),
             ], position: ActionsPosition::BeforeCells)
             ->bulkActions([
@@ -343,8 +332,7 @@ class InternshipTableResource extends Resource
                 // ]),
             ]);
     }
-
-
+    
     public static function getPages(): array
     {
         return [
@@ -361,7 +349,7 @@ class InternshipTableResource extends Resource
     }
     public static function getNavigationLabel(): string
     {
-        return InternshipTableResource::getPluralModelLabel().' '.__('table view');
+        return InternshipTableResource::getPluralModelLabel().' '.__('card view');
     }
     public static function getModelLabel(): string
     {

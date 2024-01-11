@@ -1,5 +1,5 @@
 <?php
-namespace App\Filament\Resources\InternshipResource\Actions;
+namespace App\Filament\Administration\Resources\InternshipResource\Actions;
 
 use Filament\Tables\Actions\Action;
 use Illuminate\Support\Carbon;

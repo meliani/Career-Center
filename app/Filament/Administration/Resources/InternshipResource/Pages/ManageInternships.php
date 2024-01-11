@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\InternshipResource\Pages;
+namespace App\Filament\Administration\Resources\InternshipResource\Pages;
 
-use App\Filament\Resources\InternshipTableResource as InternshipResource;
+use App\Filament\Administration\Resources\InternshipTableResource as InternshipResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
 
