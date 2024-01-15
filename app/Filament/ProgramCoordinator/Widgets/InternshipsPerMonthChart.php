@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Administration\Widgets;
+namespace App\Filament\ProgramCoordinator\Widgets;
 
 use Filament\Widgets\ChartWidget;
 use Flowframe\Trend\Trend;

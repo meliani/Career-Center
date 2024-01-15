@@ -8,6 +8,7 @@ use BezhanSalleh\FilamentLanguageSwitch\LanguageSwitch;
 use BezhanSalleh\PanelSwitch\PanelSwitch;
 use Illuminate\Support\Facades\App;
 use Illuminate\Routing\UrlGenerator;
+use Filament\Tables\Columns\TextColumn;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -38,6 +39,12 @@ class AppServiceProvider extends ServiceProvider
                     'Administrator',
                     'SuperAdministrator',
                 ]));
+        });
+
+        TextColumn::configureUsing(function (TextColumn $column): void {
+            $column
+                ->toggleable()
+                ->searchable();
         });
     }
 }

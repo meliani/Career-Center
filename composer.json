@@ -27,6 +27,7 @@
         "laravel/tinker": "^2.8",
         "leandrocfe/filament-apex-charts": "^3.0",
         "munafio/chatify": "^1.6",
+        "pxlrbt/filament-activity-log": "^1.0",
         "pxlrbt/filament-excel": "^2.3",
         "rickdbcn/filament-email": "^1.0",
         "saade/filament-fullcalendar": "^3.1",

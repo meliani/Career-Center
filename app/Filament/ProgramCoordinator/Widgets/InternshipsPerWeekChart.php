@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Administration\Widgets;
+namespace App\Filament\ProgramCoordinator\Widgets;
 
 use Filament\Widgets\ChartWidget;
 use Flowframe\Trend\Trend;
@@ -19,7 +19,7 @@ class InternshipsPerWeekChart extends ChartWidget
         $data = Trend::model(Internship::class)
         ->between(
             // start: now()->startOfYear(),
-            start: now()->subWeeks(1)->startOfWeek(),
+            start: now()->subWeeks(8)->startOfWeek(),
             end: now()->endOfWeek(),
             // end: now()->endOfYear(), ===
         )

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Administration\Widgets;
+namespace App\Filament\ProgramCoordinator\Widgets;
 
 use App\Filament\Core\Widgets\ApexChartsParentWidget;
 use App\Models\Internship;
@@ -36,6 +36,10 @@ class InternshipsPerOrganizationChart extends ApexChartsParentWidget
         //     ->get();
             //  return apex chart data
             $internshipData = Internship::select('organization_name', \DB::raw('count(*) as count'))
+            // where internship.student.filiere_text like AMOA
+            ->whereHas('student', function ($q) {
+                $q->where('filiere_text', 'like', '%AMOA%');
+            })
             ->groupBy('organization_name')
             ->get()
             ->toArray();
@@ -53,9 +57,5 @@ class InternshipsPerOrganizationChart extends ApexChartsParentWidget
                 ],
             ],
         ];
-    }
-    protected function getHeading(): ?string
-    {
-        return __(static::$heading);
     }
 }

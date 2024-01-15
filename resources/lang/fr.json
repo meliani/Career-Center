@@ -11,6 +11,13 @@
     "Program":"Filière",
     "Programs":"Filières",
     "table view":"vue en tableau",
-    "card view":"vue en cartes"
+    "card view":"vue en cartes",
+    "Students":"Étudiants",
+    "Calendar":"Calendrier",
+    "Offers":"Offres",
+    "Offer":"Offre",
+    "Daily number of anounced Internships.":"Nombre quotidien de stages déclarés.",
+    "Anounced Internships per Organization":"Stages déclarés par organisation",
+    "Anounced  Internships per month":"Stages déclarés par mois"
 
 }

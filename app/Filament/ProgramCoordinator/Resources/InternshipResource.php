@@ -323,8 +323,8 @@ class InternshipResource extends Resource
                 // Tables\Actions\ForceDeleteAction::make(),
                 // Tables\Actions\RestoreAction::make(),
                 ReviewAction::make(),
-                Tables\Actions\Action::make('review')->action(fn (Internship $internship) => $internship->review())
-                    ->requiresConfirmation(fn (Internship $internship) => 'Are you sure you want to mark this internship as reviewed?'),
+                // Tables\Actions\Action::make('review')->action(fn (Internship $internship) => $internship->review())
+                //     ->requiresConfirmation(fn (Internship $internship) => 'Are you sure you want to mark this internship as reviewed?'),
                 // Tables\Actions\Action::make('sendEmail')
                 // ->form([
                 //     TextInput::make('subject')->required(),
@@ -336,7 +336,7 @@ class InternshipResource extends Resource
                 //         $data['body'],
                 //     ))
                 // )
-                // \App\Filament\ProgramCoordinator\Resources\InternshipResource\Actions\ReviewAction::make()->action(fn (Internship $internship) => $internship->review()),
+                \App\Filament\ProgramCoordinator\Resources\InternshipResource\Actions\ReviewAction::make(),//->action(fn (Internship $internship) => $internship->review()),
             ], position: ActionsPosition::BeforeCells)
             ->bulkActions([
                 ExportBulkAction::make(),
