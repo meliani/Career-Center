@@ -8,7 +8,7 @@ enum Status: string implements HasLabel
     case Draft = 'Draft';
     case Announced = 'Announced';
     case Rejected = 'Rejected';
-    case Reviewed = 'Reviewed';
+    case Validated = 'Validated';
     case Approved = 'Approved';
     case Declined = 'Declined';
     case SignedOff = 'Signed Off';

@@ -132,7 +132,7 @@ class InternshipGridResource extends Resource
                 Forms\Components\TextInput::make('status')
                     ->maxLength(255),
                 // Forms\Components\DateTimePicker::make('announced_at'),
-                // Forms\Components\DateTimePicker::make('reviewed_at'),
+                // Forms\Components\DateTimePicker::make('validated_at'),
                 // Forms\Components\DateTimePicker::make('approved_at'),
                 // Forms\Components\DateTimePicker::make('signed_at'),
                 // Forms\Components\TextInput::make('partner_internship_id')
@@ -173,11 +173,11 @@ class InternshipGridResource extends Resource
                     // Tables\Columns\TextColumn::make('student_id')
                     //     ->numeric()
                     //     ->sortable(),
-                    // add reviewed_at as date column with d/m/y format
-                    Tables\Columns\TextColumn::make('reviewed_at')
+                    // add validated_at as date column with d/m/y format
+                    Tables\Columns\TextColumn::make('validated_at')
                         ->dateTime()
                         ->sortable()
-                        ->label('Reviewed at'),
+                        ->label('Validated at'),
                     Tables\Columns\TextColumn::make('announced_at')
                         ->dateTime()
                         ->sortable(),
@@ -308,8 +308,8 @@ class InternshipGridResource extends Resource
                 Tables\Actions\DeleteAction::make(),
                 Tables\Actions\ForceDeleteAction::make(),
                 Tables\Actions\RestoreAction::make(),
-                Tables\Actions\Action::make('review')->action(fn (Internship $internship) => $internship->review())
-                    ->requiresConfirmation(fn (Internship $internship) => "Are you sure you want to mark this internship as reviewed?"),
+                Tables\Actions\Action::make('validate')->action(fn (Internship $internship) => $internship->validate())
+                    ->requiresConfirmation(fn (Internship $internship) => "Are you sure you want to mark this internship as validated?"),
                 Tables\Actions\Action::make('sendEmail')
                 ->form([
                     TextInput::make('subject')->required(),
@@ -321,7 +321,7 @@ class InternshipGridResource extends Resource
                         $data['body'],
                     ))
                 )
-                // \App\Filament\Resources\InternshipResource\Actions\ReviewAction::make()->action(fn (Internship $internship) => $internship->review()),
+                // \App\Filament\Resources\InternshipResource\Actions\ValidateAction::make()->action(fn (Internship $internship) => $internship->validate()),
             ], position: ActionsPosition::BeforeCells)
             ->bulkActions([
                 ExportBulkAction::make()

@@ -37,20 +37,20 @@ class Internship extends baseModel {
 
     protected $casts = [
         // add datetime fields here
-        'reviewed_at' => 'datetime',
+        'validated_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
     ];
-    /* Review function to be exexuted only by SuperAdministrator Administrator ProgramCoordinator */
+    /* Validate function to be exexuted only by SuperAdministrator Administrator ProgramCoordinator */
 
-    public function review()
+    public function validate()
     {
         try {
-            if (Gate::denies('review-internship', $this)) {
+            if (Gate::denies('validate-internship', $this)) {
                 throw new AuthorizationException();
             }
-            $this->reviewed_at = now();
+            $this->validated_at = now();
             $this->save();
             Notification::make()
             ->title('Saved successfully')
@@ -68,7 +68,7 @@ class Internship extends baseModel {
     public function sign_off()
     {
         try {
-            if (Gate::denies('review-internship', $this)) {
+            if (Gate::denies('validate-internship', $this)) {
                 throw new AuthorizationException();
             }
             $this->signed_at = now();

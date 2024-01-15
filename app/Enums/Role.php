@@ -18,7 +18,7 @@ enum Role: string implements HasLabel
 
         /*  return match ($this) {
             self::Draft => 'Draft',
-            self::Reviewing => 'Reviewing',
+            self::Validating => 'Validating',
             self::Published => 'Published',
             self::Rejected => 'Rejected',
         }; */

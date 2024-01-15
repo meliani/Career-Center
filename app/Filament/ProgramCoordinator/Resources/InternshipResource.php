@@ -24,7 +24,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
-use App\Filament\ProgramCoordinator\Resources\InternshipResource\Actions\ReviewAction;
+use App\Filament\ProgramCoordinator\Resources\InternshipResource\Actions\ValidateAction;
 
 class InternshipResource extends Resource
 {
@@ -132,7 +132,7 @@ class InternshipResource extends Resource
                 Forms\Components\TextInput::make('status')
                     ->maxLength(255),
                 // Forms\Components\DateTimePicker::make('announced_at'),
-                // Forms\Components\DateTimePicker::make('reviewed_at'),
+                // Forms\Components\DateTimePicker::make('validated_at'),
                 // Forms\Components\DateTimePicker::make('approved_at'),
                 // Forms\Components\DateTimePicker::make('signed_at'),
                 // Forms\Components\TextInput::make('partner_internship_id')
@@ -173,15 +173,15 @@ class InternshipResource extends Resource
                     // Tables\Columns\TextColumn::make('student_id')
                     //     ->numeric()
                     //     ->sortable(),
-                    // add reviewed_at as date column with d/m/y format
-                    Tables\Columns\TextColumn::make('reviewed_at')
+                    // add validated_at as date column with d/m/y format
+                    Tables\Columns\TextColumn::make('validated_at')
                         ->dateTime()
                         ->sortable()
-                        ->label('Reviewe time')->since()
-                        ->description('Reviewed', 'above')
-                        ->placeholder('Not reviewed')
+                        ->label('Validation time')->since()
+                        ->description('Validated', 'above')
+                        ->placeholder('Not validated')
                         ->badge(function (Internship $internship) {
-                            return $internship->reviewed_at ? 'Reviewed' : 'Not reviewed';
+                            return $internship->validated_at ? 'Validated' : 'Not validated';
                         }),
                     Tables\Columns\TextColumn::make('announced_at')
                         ->dateTime()
@@ -322,9 +322,9 @@ class InternshipResource extends Resource
                 // Tables\Actions\DeleteAction::make(),
                 // Tables\Actions\ForceDeleteAction::make(),
                 // Tables\Actions\RestoreAction::make(),
-                ReviewAction::make(),
-                // Tables\Actions\Action::make('review')->action(fn (Internship $internship) => $internship->review())
-                //     ->requiresConfirmation(fn (Internship $internship) => 'Are you sure you want to mark this internship as reviewed?'),
+                ValidateAction::make(),
+                // Tables\Actions\Action::make('validate')->action(fn (Internship $internship) => $internship->validate())
+                //     ->requiresConfirmation(fn (Internship $internship) => 'Are you sure you want to mark this internship as validated?'),
                 // Tables\Actions\Action::make('sendEmail')
                 // ->form([
                 //     TextInput::make('subject')->required(),
@@ -336,7 +336,7 @@ class InternshipResource extends Resource
                 //         $data['body'],
                 //     ))
                 // )
-                \App\Filament\ProgramCoordinator\Resources\InternshipResource\Actions\ReviewAction::make(),//->action(fn (Internship $internship) => $internship->review()),
+                \App\Filament\ProgramCoordinator\Resources\InternshipResource\Actions\ValidateAction::make(),//->action(fn (Internship $internship) => $internship->validate()),
             ], position: ActionsPosition::BeforeCells)
             ->bulkActions([
                 ExportBulkAction::make(),

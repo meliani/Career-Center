@@ -37,7 +37,7 @@ class AuthServiceProvider extends ServiceProvider
             }
             return $internship->student->filiere_text === $user->program_coordinator;
         });
-        Gate::define('review-internship', [InternshipPolicy::class, 'update']);
+        Gate::define('validate-internship', [InternshipPolicy::class, 'update']);
         
         Gate::define('viewPulse', function (User $user) {
             return $user->role === 'SuperAdministrator';

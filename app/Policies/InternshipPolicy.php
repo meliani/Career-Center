@@ -30,9 +30,9 @@ class InternshipPolicy extends CorePolicy
         }
     }
     /**
-     * Review function to be executed only by SuperAdministrator, Administrator, or ProgramCoordinator
+     * Validate function to be executed only by SuperAdministrator, Administrator, or ProgramCoordinator
      */
-    // public function review(User $user, Internship $internship)
+    // public function validate(User $user, Internship $internship)
     // {
     //     if ($user->hasAnyRole($this->powerProfessors) && $internship->student->filiere_text === "SUD") {
     //         return true;
