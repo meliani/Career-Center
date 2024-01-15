@@ -32,12 +32,11 @@ class InternshipsPerProgramChart extends ApexChartsParentWidget
 
         // get number of internships per program
 
-        // $internshipData = Student::query()->select('filiere_text', \DB::raw('count(*) as count'))
-        //     ->whereHas('internship')
-        //     ->groupBy('filiere_text')
-        //     ->get('filiere_text', 'count')
-        //     ->makeHidden(['full_name'])
-        //     ->toArray();
+        
+
+
+// dd($internshipData);
+
         $internshipData = Student::query()->select('filiere_text', \DB::raw('count(*) as count'))
             ->whereHas('internship',
                 function ($q) {
@@ -59,7 +58,7 @@ class InternshipsPerProgramChart extends ApexChartsParentWidget
         //     ->groupBy('filiere_text')
         //     ->get();
 
-        dd($internshipData);
+        // dd($internshipData);
 
         // dd(array_column($internshipData, 'organization_name'));
         return [

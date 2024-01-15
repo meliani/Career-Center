@@ -134,7 +134,7 @@ class InternshipTableResource extends Resource
                 // Forms\Components\Toggle::make('is_valid'),
                 Forms\Components\TextInput::make('status')
                     ->maxLength(255),
-                // Forms\Components\DateTimePicker::make('anounced_at'),
+                // Forms\Components\DateTimePicker::make('announced_at'),
                 // Forms\Components\DateTimePicker::make('reviewed_at'),
                 // Forms\Components\DateTimePicker::make('approved_at'),
                 // Forms\Components\DateTimePicker::make('signed_at'),
@@ -181,7 +181,7 @@ class InternshipTableResource extends Resource
                     Tables\Columns\TextColumn::make('reviewed_at')
                         ->dateTime()
                         ->sortable(),
-                    Tables\Columns\TextColumn::make('anounced_at')
+                    Tables\Columns\TextColumn::make('announced_at')
                         ->dateTime()
                         ->sortable(),
 

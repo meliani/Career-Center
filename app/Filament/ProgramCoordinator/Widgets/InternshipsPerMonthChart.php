@@ -9,7 +9,7 @@ use App\Models\Internship;
 
 class InternshipsPerMonthChart extends ChartWidget
 {
-    protected static ?string $heading = 'Anounced  Internships per month.';
+    protected static ?string $heading = 'Announced  Internships per month.';
     
     public function getDescription(): ?string
     {

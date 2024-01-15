@@ -16,8 +16,9 @@
     "Calendar":"Calendrier",
     "Offers":"Offres",
     "Offer":"Offre",
-    "Daily number of anounced Internships.":"Nombre quotidien de stages déclarés.",
-    "Anounced Internships per Organization":"Stages déclarés par organisation",
-    "Anounced  Internships per month":"Stages déclarés par mois"
+    "Daily number of announced Internships.":"Nombre quotidien de stages déclarés.",
+    "Announced Internships per Organization":"Stages déclarés par organisation",
+    "Announced  Internships per month":"Stages déclarés par mois",
+    "Anounced Internships per Program":"Stages déclarés par filière"
 
 }

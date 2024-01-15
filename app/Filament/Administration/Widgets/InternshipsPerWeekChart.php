@@ -12,7 +12,7 @@ class InternshipsPerWeekChart extends ChartWidget
     protected static ?string $heading = 'Daily Internships per week';
     public function getDescription(): ?string
     {
-        return __('Daily number of anounced Internships.');
+        return __('Daily number of announced Internships.');
     }
     protected function getData(): array
     {

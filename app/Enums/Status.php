@@ -6,7 +6,7 @@ use Filament\Support\Contracts\HasLabel;
 enum Status: string implements HasLabel
 {
     case Draft = 'Draft';
-    case Anounced = 'Anounced';
+    case Announced = 'Announced';
     case Rejected = 'Rejected';
     case Reviewed = 'Reviewed';
     case Approved = 'Approved';

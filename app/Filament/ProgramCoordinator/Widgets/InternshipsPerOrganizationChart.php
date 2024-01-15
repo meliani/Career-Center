@@ -15,7 +15,7 @@ class InternshipsPerOrganizationChart extends ApexChartsParentWidget
     /**
      * Widget Title
      */
-    protected static ?string $heading = 'Anounced Internships per Organization';
+    protected static ?string $heading = 'Announced Internships per Organization';
 
     /**
      * Chart options (series, labels, types, size, animations...)
