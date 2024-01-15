@@ -9,23 +9,17 @@ class InternshipsPerOrganizationChart extends ApexChartsParentWidget
 {
     /**
      * Chart Id
-     *
-     * @var string
      */
-    protected static string $chartId = 'internshipsPerOrganizationChart';
+    protected static ?string $chartId = 'internshipsPerOrganizationChart';
 
     /**
      * Widget Title
-     *
-     * @var string|null
      */
     protected static ?string $heading = 'Anounced Internships per Organization';
 
     /**
      * Chart options (series, labels, types, size, animations...)
      * https://apexcharts.com/docs/options
-     *
-     * @return array
      */
     protected function getOptions(): array
     {
@@ -34,12 +28,13 @@ class InternshipsPerOrganizationChart extends ApexChartsParentWidget
         //     ->select('organization_name')
         //     ->groupBy('organization_name')
         //     ->get();
-            //  return apex chart data
-            $internshipData = Internship::select('organization_name', \DB::raw('count(*) as count'))
+        //  return apex chart data
+        $internshipData = Internship::select('organization_name', \DB::raw('count(*) as count'))
             ->groupBy('organization_name')
             ->get()
             ->toArray();
-// dd(array_column($internshipData, 'organization_name'));
+
+        // dd(array_column($internshipData, 'organization_name'));
         return [
             'chart' => [
                 'type' => 'pie',
@@ -54,6 +49,7 @@ class InternshipsPerOrganizationChart extends ApexChartsParentWidget
             ],
         ];
     }
+
     protected function getHeading(): ?string
     {
         return __(static::$heading);

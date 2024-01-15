@@ -3,26 +3,14 @@
 namespace App\Models;
 
 use App\Models\Core\baseModel;
-use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
-use App\Models\School\Internship\Internship;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
-use App\Models\Profile\Professor;
-use App\Models\Profile\Student;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
-
-use Illuminate\Http\File;
-use Illuminate\Support\Facades\Storage;
 
 class Person extends baseModel
 {
-
     protected $table = 'people';
 
     protected $appends = [
         'full_name',
-        'long_full_name'
+        'long_full_name',
     ];
 
     protected $guarded = [];
@@ -47,30 +35,37 @@ class Person extends baseModel
         'abroad_school',
         'year_id',
         'is_active',
-        'model_status_id'
+        'model_status_id',
     ];
+
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
-    public function getFullNameAttribute()
-    {
-        // dd($this->attributes);
-        return $this->attributes['first_name'] . ' ' . $this->attributes['last_name'];
-    }
+
+    // public function getFullNameAttribute()
+    // {
+    //     // dd($this->attributes);
+
+    //     return $this->attributes['first_name'].' '.$this->attributes['last_name'];
+    // }
+
     public function getLongFullNameAttribute()
     {
-        return $this->getTitleAttribute() . ' ' . $this->attributes['first_name'] . ' ' . $this->attributes['last_name'];
+        return $this->getTitleAttribute().' '.$this->attributes['first_name'].' '.$this->attributes['last_name'];
     }
+
     public function getTitleAttribute()
     {
-        if ($this->attributes['gender_id'] == 0)
-            return "Mme";
-        elseif ($this->attributes['gender_id'] == 1)
-            return "M.";
-        else
-            return "Mme/M.";
+        if ($this->attributes['gender_id'] == 0) {
+            return 'Mme';
+        } elseif ($this->attributes['gender_id'] == 1) {
+            return 'M.';
+        } else {
+            return 'Mme/M.';
+        }
     }
+
     public function activate()
     {
         $this->is_active = true;
