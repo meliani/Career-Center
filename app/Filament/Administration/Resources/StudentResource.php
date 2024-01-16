@@ -48,11 +48,11 @@ class StudentResource extends Resource
                 Forms\Components\TextInput::make('photo')
                     ->maxLength(191),
                 Forms\Components\DatePicker::make('birth_date'),
-                Forms\Components\TextInput::make('program_id')
+                Forms\Components\TextInput::make('current_year')
                     ->numeric(),
                 Forms\Components\TextInput::make('stream_id')
                     ->numeric(),
-                Forms\Components\TextInput::make('filiere_text')
+                Forms\Components\TextInput::make('program')
                     ->maxLength(191),
                 Forms\Components\Toggle::make('is_mobility'),
                 Forms\Components\TextInput::make('abroad_school')
@@ -98,13 +98,13 @@ class StudentResource extends Resource
                 Tables\Columns\TextColumn::make('birth_date')
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('program_id')
+                Tables\Columns\TextColumn::make('current_year')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('stream_id')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('filiere_text')
+                Tables\Columns\TextColumn::make('program')
                     ->searchable(),
                 Tables\Columns\IconColumn::make('is_mobility')
                     ->boolean(),

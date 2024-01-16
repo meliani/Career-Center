@@ -152,15 +152,15 @@ class InternshipTableResource extends Resource
             // ->modifyQueryUsing(fn (Builder $query) =>
             // $query->whereHas(
             //     'student',
-            //     fn (Builder $query) => $query->where('filiere_text', Auth::user()->program_coordinator)
+            //     fn (Builder $query) => $query->where('program', Auth::user()->program_coordinator)
             // ))
             ->groups([
                 Group::make(__('status'))
                     ->collapsible(),
-                Group::make('student.filiere_text')
+                Group::make('student.program')
                     ->label(__('Program'))
                 // ->titlePrefixedWithLabel(false)
-                // ->getTitleFromRecordUsing(fn (Internship $record): string => ucfirst($record->filiere_text)),
+                // ->getTitleFromRecordUsing(fn (Internship $record): string => ucfirst($record->program)),
             ])
             ->defaultGroup('status') //->groupingSettingsHidden()
             ->emptyStateDescription('Once students starts announcing internships, it will appear here.')
@@ -324,13 +324,13 @@ class InternshipTableResource extends Resource
                 ])
                 // ->default('announced')
                 ->translateLabel(),
-                SelectFilter::make('student.filiere_text')
+                SelectFilter::make('student.program')
                 ->multiple()
                 ->options([
                     'SESNUM' => __('SESNUM'),
                     'DATA' => __('DATA'),
                 ])
-                // ->relationship('student', 'filiere_text')
+                // ->relationship('student', 'program')
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

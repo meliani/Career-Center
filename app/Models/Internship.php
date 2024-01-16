@@ -30,7 +30,7 @@ class Internship extends baseModel {
     public function scopeFilterByProgramHead($query)
     {
         return $query->whereHas('student', function ($q) {
-            $q->where('filiere_text', auth()->user()->program_coordinator);
+            $q->where('program', auth()->user()->program_coordinator);
         });
     }
     protected $guarded = [];

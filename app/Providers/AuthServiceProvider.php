@@ -35,7 +35,7 @@ class AuthServiceProvider extends ServiceProvider
             if ($user->hasAnyRole($this->administrators)) {
                 return true;
             }
-            return $internship->student->filiere_text === $user->program_coordinator;
+            return $internship->student->program === $user->program_coordinator;
         });
         Gate::define('validate-internship', [InternshipPolicy::class, 'update']);
         
@@ -49,7 +49,7 @@ class AuthServiceProvider extends ServiceProvider
         //     }
 
         //     // Check if the user is a professor and the internship's student's program matches the user's program
-        //     if ($user->hasAnyRole($this->professors) && $internship->student->filiere_text == $user->program_coordinator) {
+        //     if ($user->hasAnyRole($this->professors) && $internship->student->program == $user->program_coordinator) {
         //         return true;
         //     }
 

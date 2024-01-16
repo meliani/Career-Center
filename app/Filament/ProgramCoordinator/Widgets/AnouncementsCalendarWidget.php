@@ -29,7 +29,7 @@ class AnouncementsCalendarWidget extends FullCalendarWidget
         // You can also return an array of EventData objects. See: https://github.com/saade/filament-fullcalendar/blob/3.x/#the-eventdata-class
         return Internship::
         whereHas('student', function ($q) {
-            $q->where('filiere_text', 'like', '%AMOA%');
+            $q->where('program', 'like', '%AMOA%');
         })            ->where('created_at', '>=', $fetchInfo['start'])
             // ->where('ending_at', '<=', $fetchInfo['end'])
             ->get()

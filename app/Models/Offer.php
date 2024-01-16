@@ -22,7 +22,7 @@ class Offer extends BaseModel
     public $fillable = [
         'id',
         'year_id',
-        'program_id',
+        'current_year',
         'organization_name',
         'country',
         'internship_type',
@@ -60,7 +60,7 @@ class Offer extends BaseModel
     protected $casts = [
     //     'id' => 'string',
     //     'year_id' => 'string',
-    //     'program_id' => 'string',
+    //     'current_year' => 'string',
     //     'organization_name' => 'string',
         'internship_type' => 'enum',
     //     'responsible_fullname' => 'string',

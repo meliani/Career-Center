@@ -149,15 +149,15 @@ class InternshipGridResource extends Resource
             // ->modifyQueryUsing(fn (Builder $query) =>
             // $query->whereHas(
             //     'student',
-            //     fn (Builder $query) => $query->where('filiere_text', Auth::user()->program_coordinator)
+            //     fn (Builder $query) => $query->where('program', Auth::user()->program_coordinator)
             // ))
             ->groups([
                 Group::make('status')
                     ->collapsible(),
-                Group::make('student.filiere_text')
+                Group::make('student.program')
                     ->label('Program')
                 // ->titlePrefixedWithLabel(false)
-                // ->getTitleFromRecordUsing(fn (Internship $record): string => ucfirst($record->filiere_text)),
+                // ->getTitleFromRecordUsing(fn (Internship $record): string => ucfirst($record->program)),
             ])
             ->defaultGroup('status') //->groupingSettingsHidden()
             ->emptyStateDescription('Once students starts announcing internships, it will appear here.')

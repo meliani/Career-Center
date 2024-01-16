@@ -34,7 +34,7 @@ class InternshipPolicy extends CorePolicy
      */
     // public function validate(User $user, Internship $internship)
     // {
-    //     if ($user->hasAnyRole($this->powerProfessors) && $internship->student->filiere_text === "SUD") {
+    //     if ($user->hasAnyRole($this->powerProfessors) && $internship->student->program === "SUD") {
     //         return true;
     //     }
     // }
@@ -51,7 +51,7 @@ class InternshipPolicy extends CorePolicy
 
     public function viewSome(User $user, Internship $internship)
     {
-        if ($user->hasAnyRole($this->powerProfessors) && $internship->student->filiere_text === "SUD") //$user->program_coordinator)
+        if ($user->hasAnyRole($this->powerProfessors) && $internship->student->program === "SUD") //$user->program_coordinator)
         {
             return true;
         }
@@ -59,13 +59,13 @@ class InternshipPolicy extends CorePolicy
 
     public function viewRelated(User $user, Internship $internship)
     {
-        if ($user->hasAnyRole($this->powerProfessors) && $internship->student->filiere_text === "SUD") {
+        if ($user->hasAnyRole($this->powerProfessors) && $internship->student->program === "SUD") {
             return true;
         }
     }
 
     public function updateCertain(User $user, Internship $internship)
     {
-        return $user->hasRole($this->powerProfessors) && $user->program_coordinator == $internship->student->filiere_text;
+        return $user->hasRole($this->powerProfessors) && $user->program_coordinator == $internship->student->program;
     }
 }
