@@ -32,18 +32,21 @@ class InternshipsPerProgramChart extends ApexChartsParentWidget
 
         // get number of internships per program
 
-        
 
 
-// dd($internshipData);
 
-// calculate ratio of each program number of students with numbers of students that had Announced internship
+        // dd($internshipData);
+
+        // calculate ratio of each program number of students with numbers of students that had Announced internship
 
 
-        $internshipData = Student::query()->select('program', \DB::raw('count(*) as count'))
-            ->whereHas('internship',
+        /*         $internshipData = Student::query()->select('program', \DB::raw('count(*) as count'))
+            ->whereHas(
+                'internship',
                 function ($q) {
-                    $q->select('id', \DB::raw('count(*) as count'),
+                    $q->select(
+                        'id',
+                        \DB::raw('count(*) as count'),
                         \DB::raw('sum(case when id is not null then 1 else 0 end) / count(*) as internship_ratio')
                     );
                 }
@@ -51,7 +54,7 @@ class InternshipsPerProgramChart extends ApexChartsParentWidget
             ->groupBy('program')
             ->get('program', 'count')
             ->makeHidden(['full_name'])
-            ->toArray();
+            ->toArray(); */
         // $internshipData = Student::query()
         //     ->select('program',
         //         \DB::raw('count(*) as total_students'),
@@ -60,27 +63,103 @@ class InternshipsPerProgramChart extends ApexChartsParentWidget
         //     )
         //     ->groupBy('program')
         //     ->get();
-        $internshipData = Student::query()
-        ->select('program', \DB::raw('COUNT(*) as total_students'), \DB::raw('SUM(CASE WHEN id IS NOT NULL THEN 1 ELSE 0 END) as internship_students'))
-        ->groupBy('program')
-        ->get()
-        ->map(function ($program) {
-            return [
-                'program' => $program->program,
-                'total_students' => $program->total_students,
-                'internship_students' => $program->internship_students,
-                'internship_ratio' => $program->total_students > 0 ? $program->internship_students / $program->total_students : 0,
-            ];
-        });
-        dd($internshipData);
+        // $internshipData = Student::query()
+        // ->select('program', \DB::raw('COUNT(*) as total_students'), \DB::raw('SUM(CASE WHEN id IS NOT NULL THEN 1 ELSE 0 END) as internship_students'))
+        // ->groupBy('program')
+        // ->get()
+        // ->map(function ($program) {
+        //     return [
+        //         'program' => $program->program,
+        //         'total_students' => $program->total_students,
+        //         'internship_students' => $program->internship_students,
+        //         'internship_ratio' => $program->total_students > 0 ? $program->internship_students / $program->total_students : 0,
+        //     ];
+        // });
 
+        /*         $percentages = \DB::connection('front_database')
+            ->table('people')
+            ->leftjoin('internships', 'people.id', '=', 'internships.student_id')
+            ->groupBy('program')
+            ->select(
+                'program',
+                \DB::connection('front_database')->raw('count(distinct people.id) as total_students'),
+                \DB::connection('front_database')->raw('count(internships.id) as total_internships'),
+                \DB::connection('front_database')->raw('round((count(internships.id) / count(distinct people.id)) * 100, 2) as percentage')
+            )
+            ->get(); */
+
+        // $internshipData = Student::on('front_database')
+        //     ->leftJoin('internships', 'people.id', '=', 'internships.student_id')
+        //     // ->where('people.year_id', 7)
+        //     // ->where('current_year', 3)
+        //     // ->whereHas(
+        //     //     'internship',
+        //     //     function ($q) {
+        //     //         $q->where(
+        //     //         );
+        //     //     }
+        //     // )
+        //     ->groupBy('program')
+        //     ->select(
+        //         'program',
+        //         \DB::raw('COUNT(DISTINCT people.id) AS total_students'),
+        //         \DB::raw('COUNT(internships.id) AS total_internships'),
+        //         \DB::raw('ROUND((COUNT(internships.id) / COUNT(DISTINCT people.id)) * 100, 2) AS percentage')
+        //     )
+        //     ->get()
+        //     ->map(function ($program) {
+        //         return [
+        //             'program' => $program->program,
+        //             'total_students' => $program->total_students,
+        //             'total_internships' => $program->total_internships,
+        //             'percentage' => $program->percentage,
+        //         ];
+        //     });
+
+        $internshipData = \DB::connection('front_database')->table('people')
+            ->leftJoin('internships', 'people.id', '=', 'internships.student_id')
+            ->where('people.year_id', 7)
+            ->groupBy('program')
+            ->select(
+                'program',
+                \DB::connection('front_database')->raw('COUNT(DISTINCT people.id) AS total_students'),
+                \DB::connection('front_database')->raw('COUNT(internships.id) AS total_internships'),
+                \DB::connection('front_database')->raw('ROUND((COUNT(internships.id) / COUNT(DISTINCT people.id)) * 100, 2) AS percentage')
+            )
+            ->get()
+            ->toArray();
+            // ->map(function ($program) {
+            //     return [
+            //         'program' => $program->program,
+            //         'total_students' => $program->total_students,
+            //         'total_internships' => $program->total_internships,
+            //         'percentage' => $program->percentage,
+            //     ];
+            // });
+        // dd($internshipData);
+
+        // dd($percentages);
         // dd(array_column($internshipData, 'organization_name'));
+        // return bar chart with percetage , total students and total internships
         return [
             'chart' => [
-                'type' => 'pie',
+                'type' => 'bar',
                 'height' => 300,
             ],
-            'series' => array_column($internshipData, 'count'),
+            'series' => [
+                [
+                    'name' => 'Total Students',
+                    'data' => array_column($internshipData, 'total_students'),
+                ],
+                [
+                    'name' => 'Total Internships',
+                    'data' => array_column($internshipData, 'total_internships'),
+                ],
+                [
+                    'name' => 'Percentage',
+                    'data' => array_column($internshipData, 'percentage'),
+                ],
+            ],
             'labels' => array_column($internshipData, 'program'),
             'legend' => [
                 'labels' => [
@@ -88,5 +167,19 @@ class InternshipsPerProgramChart extends ApexChartsParentWidget
                 ],
             ],
         ];
+
+/*         return [
+            'chart' => [
+                'type' => 'bar',
+                'height' => 300,
+            ],
+            'series' => array_column($internshipData, 'total_students'),
+            'labels' => array_column($internshipData, 'program'),
+            'legend' => [
+                'labels' => [
+                    'fontFamily' => 'inherit',
+                ],
+            ],
+        ]; */
     }
 }
