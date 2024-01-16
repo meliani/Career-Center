@@ -2,17 +2,19 @@
 
 namespace App\Filament\Administration\Widgets;
 
-use Filament\Widgets\ChartWidget;
+// use Filament\Widgets\ChartWidget;
+use App\Filament\Core\Widgets\FilamentChartsParentWidget as ChartWidget;
 use Flowframe\Trend\Trend;
 use Flowframe\Trend\TrendValue;
 use App\Models\Internship;
 
 class InternshipsPerWeekChart extends ChartWidget
 {
-    protected static ?string $heading = 'Daily Internships per week';
+    protected static ?string $heading = 'Daily Announced Internships';
+    protected static ?string $type = 'bar';
     public function getDescription(): ?string
     {
-        return __('Daily number of announced Internships.');
+        return __('Daily number of announced Internships');
     }
     protected function getData(): array
     {
