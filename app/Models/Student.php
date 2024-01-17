@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\School\Internship\Project;
-use App\Models\School\Stream;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Spatie\MediaLibrary\HasMedia;
@@ -26,11 +24,11 @@ class Student extends Person implements HasMedia
         parent::boot();
 
         // if (app()->isProduction()) {
-            static::addGlobalScope(function ($query) {
-                $query
-                // ->where('model_status_id', config('school.current.model_status.prod'))
-                    ->where('year_id', 7);
-            });
+        static::addGlobalScope(function ($query) {
+            $query
+            // ->where('model_status_id', config('school.current.model_status.prod'))
+                ->where('year_id', 7);
+        });
         // }
     }
 
@@ -40,24 +38,23 @@ class Student extends Person implements HasMedia
         $student->save();
     }
 
+    /* New edits for a new logic by mel */
     public function internship()
     {
-        return $this->hasOne(Internship::class);
+        return $this->belongsTo(Internship::class);
     }
+    /* End edits for a new logic by mel */
 
-    public function stream()
-    {
-        return $this->belongsTo(Stream::class);
-    }
+    /* commented by mel by implementing the other field */
+
+    // public function internship()
+    // {
+    //     return $this->hasOne(Internship::class);
+    // }
 
     public function program()
     {
         return $this->belongsTo(Program::class);
-    }
-
-    public function project()
-    {
-        return $this->belongsTo(Project::class, 'id', 'student_id');
     }
 
     public function registerMediaCollections(): void

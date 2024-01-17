@@ -4,17 +4,17 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasName;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Filament\Models\Contracts\HasName;
+
 // use \App\Enums\Role;
 
 class User extends Authenticatable implements FilamentUser, HasName
 {
-    
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
@@ -23,6 +23,7 @@ class User extends Authenticatable implements FilamentUser, HasName
      * @var array<int, string>
      */
     protected $guarded = [];
+
     protected $fillable = [
         'name',
         'first_name',
@@ -43,6 +44,7 @@ class User extends Authenticatable implements FilamentUser, HasName
         'password',
         'remember_token',
     ];
+
     // protected $appends = [
     // ];
     /**
@@ -55,14 +57,17 @@ class User extends Authenticatable implements FilamentUser, HasName
         'password' => 'hashed',
         // 'role' => Role::class,
     ];
+
     public function getNameAttribute()
-	{
+    {
         return "{$this->first_name} {$this->last_name}";
     }
+
     public function getFilamentName(): string
     {
         return "{$this->first_name} {$this->last_name}";
     }
+
     public function hasRole($role)
     {
         return $this->role === $role;
@@ -85,7 +90,8 @@ class User extends Authenticatable implements FilamentUser, HasName
         if ($panel->getId() === 'ProgramCoordinator') {
             return $this->haAnyRole(['SuperAdministrator', 'Administrator', 'ProgramCoordinator']);
         }
-      // return str_ends_with($this->email, '@inpt.ac.ma') && $this->hasVerifiedEmail();
+
+        // return str_ends_with($this->email, '@inpt.ac.ma') && $this->hasVerifiedEmail();
         return true;
     }
 }

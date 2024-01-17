@@ -3,36 +3,28 @@
 namespace App\Models;
 
 use App\Models\Core\baseModel;
-use App\Models\Person;
-use App\Models\Professor;
-use App\Models\Student;
-use App\Models\School\Internship\Adviser;
-use App\Models\School\Internship\Advising;
-use App\Models\School\Internship\Defense;
-use App\Models\School\Project\Team;
-use App\Models\User;
-use Carbon\Carbon;
-use Collective\Html\Eloquent\FormAccessible;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\School\Project\Project;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Auth\Access\AuthorizationException;
 use Filament\Notifications\Notification;
-use EightyNine\Approvals\Models\ApprovableModel;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Gate;
 
-class Internship extends baseModel {
+class Internship extends baseModel
+{
     use SoftDeletes;
 
     protected static function boot()
     {
         parent::boot();
     }
+
     public function scopeFilterByProgramHead($query)
     {
         return $query->whereHas('student', function ($q) {
             $q->where('program', auth()->user()->program_coordinator);
         });
     }
+
     protected $guarded = [];
 
     protected $casts = [
@@ -53,18 +45,20 @@ class Internship extends baseModel {
             $this->validated_at = now();
             $this->save();
             Notification::make()
-            ->title('Saved successfully')
-            ->success()
-            ->send();
+                ->title('Saved successfully')
+                ->success()
+                ->send();
         } catch (AuthorizationException $e) {
 
             Notification::make()
                 ->title('Sorry You must be a Program Coordinator.')
                 ->danger()
                 ->send();
+
             return response()->json(['error' => 'This action is unauthorized.'], 403);
         }
     }
+
     public function sign_off()
     {
         try {
@@ -74,18 +68,32 @@ class Internship extends baseModel {
             $this->signed_at = now();
             $this->save();
             Notification::make()
-            ->title('Signed successfully')
-            ->success()
-            ->send();
+                ->title('Signed successfully')
+                ->success()
+                ->send();
         } catch (AuthorizationException $e) {
 
             Notification::make()
                 ->title('Sorry You must be an Administrator.')
                 ->danger()
                 ->send();
+
             return response()->json(['error' => 'This action is unauthorized.'], 403);
         }
     }
+
+    /* New edits for a new logic by mel */
+    public function students()
+    {
+        return $this->hasMany(Student::class);
+    }
+
+    public function project()
+    {
+        return $this->belongsTo(Project::class);
+    }
+    /* End edits for a new logic by mel */
+
     public function binome()
     {
         return $this->belongsTo(Student::class, 'binome_user_id', 'id');
@@ -98,19 +106,21 @@ class Internship extends baseModel {
 
     public function getParrainNameAttribute()
     {
-        return $this->getTitle($this->parrain_titre) . ' ' . $this->parrain_nom . ' ' . $this->parrain_prenom;
+        return $this->getTitle($this->parrain_titre).' '.$this->parrain_nom.' '.$this->parrain_prenom;
     }
+
     public function getEncadrantExtNameAttribute()
     {
-        return $this->getTitle($this->encadrant_ext_titre) . ' ' . $this->encadrant_ext_nom . ' ' . $this->encadrant_ext_prenom;
+        return $this->getTitle($this->encadrant_ext_titre).' '.$this->encadrant_ext_nom.' '.$this->encadrant_ext_prenom;
     }
 
     public function getDureeAttribute()
     {
-        return $this->ending_at->diffInWeeks($this->starting_at) . ' semaines';
+        return $this->ending_at->diffInWeeks($this->starting_at).' semaines';
     }
+
     public function getDurationInMonthsAttribute()
     {
-        return $this->ending_at->diffInMonths($this->starting_at) . ' mois';
+        return $this->ending_at->diffInMonths($this->starting_at).' mois';
     }
 }
