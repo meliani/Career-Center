@@ -17,40 +17,43 @@ class Offer extends BaseModel
     protected $table="internship_offers";
     use SoftDeletes;
 
+    protected $append = [
+        'expire_at_human_readable',
+    ];
     // non fillable fields
     protected $guarded = [];
-    public $fillable = [
-        'id',
-        'year_id',
-        'current_year',
-        'organization_name',
-        'country',
-        'internship_type',
-        'responsible_fullname',
-        'responsible_occupation',
-        'responsible_phone',
-        'responsible_email',        
-        'project_title',
-        'project_details',
-        'internship_location',
-        'keywords',
-        'attached_file',
-        'link',
-        'internship_duration',
-        'remuneration',
-        'currency',
-        'recruting_type',
-        'application_email',
-        'event_id',
-        'event_date',
-        'badge',
-        'display_permissions',
-        'status',
-        'is_valid',
-        'applyable',
-        'contact_email',
-        'expire_at',
-    ];
+    // public $fillable = [
+    //     'id',
+    //     'year_id',
+    //     'current_year',
+    //     'organization_name',
+    //     'country',
+    //     'internship_type',
+    //     'responsible_fullname',
+    //     'responsible_occupation',
+    //     'responsible_phone',
+    //     'responsible_email',        
+    //     'project_title',
+    //     'project_details',
+    //     'internship_location',
+    //     'keywords',
+    //     'attached_file',
+    //     'link',
+    //     'internship_duration',
+    //     'remuneration',
+    //     'currency',
+    //     'recruting_type',
+    //     'application_email',
+    //     'event_id',
+    //     'event_date',
+    //     'badge',
+    //     'display_permissions',
+    //     'status',
+    //     'is_valid',
+    //     'applyable',
+    //     'contact_email',
+    //     'expire_at',
+    // ];
 
     /**
      * The attributes that should be casted to native types.
@@ -62,7 +65,7 @@ class Offer extends BaseModel
     //     'year_id' => 'string',
     //     'current_year' => 'string',
     //     'organization_name' => 'string',
-        'internship_type' => 'enum',
+        'internship_type' => 'string',
     //     'responsible_fullname' => 'string',
     //     'responsible_occupation' => 'string',
     //     'responsible_phone' => 'string',
@@ -74,8 +77,8 @@ class Offer extends BaseModel
     //     'attached_file' => 'string',
     //     'link' => 'string',
     //     'remuneration' => 'string',
-        'recruting_type' => 'enum',
-        'internship_duration' => 'enum',
+        'recruting_type' => 'string',
+        'internship_duration' => 'string',
 
     //     'event_id' => 'string',
     //     'event_date' => 'string',
@@ -145,7 +148,7 @@ class Offer extends BaseModel
         return $this->hasMany('App\Models\School\Internship\Application', 'offre_de_stage_id', 'id');
     }
 
-    public function getExpireAtAttribute()
+    public function getExpireAtHumanReadableAttribute()
     {
         //Carbon::now();
         $date=$this->attributes['expire_at'];

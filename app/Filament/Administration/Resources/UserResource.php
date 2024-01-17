@@ -12,7 +12,6 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use STS\FilamentImpersonate\Tables\Actions\Impersonate;
 
 class UserResource extends Resource
 {
@@ -25,16 +24,39 @@ class UserResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->required(),
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('first_name')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('last_name')
+                    ->required()
+                    ->maxLength(255),
                 Forms\Components\TextInput::make('role')
                     ->required(),
                 Forms\Components\TextInput::make('email')
                     ->email()
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('department')
+                    ->required(),
+                Forms\Components\TextInput::make('program_coordinator')
                     ->required(),
                 Forms\Components\DateTimePicker::make('email_verified_at'),
                 Forms\Components\TextInput::make('password')
                     ->password()
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\Toggle::make('active_status')
                     ->required(),
+                Forms\Components\TextInput::make('avatar')
+                    ->required()
+                    ->maxLength(255)
+                    ->default('avatar.png'),
+                Forms\Components\Toggle::make('dark_mode')
+                    ->required(),
+                Forms\Components\TextInput::make('messenger_color')
+                    ->maxLength(255),
             ]);
     }
 
@@ -44,9 +66,17 @@ class UserResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('first_name')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('last_name')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('role')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('department')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('program_coordinator')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email_verified_at')
                     ->dateTime()
@@ -59,6 +89,14 @@ class UserResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\IconColumn::make('active_status')
+                    ->boolean(),
+                Tables\Columns\TextColumn::make('avatar')
+                    ->searchable(),
+                Tables\Columns\IconColumn::make('dark_mode')
+                    ->boolean(),
+                Tables\Columns\TextColumn::make('messenger_color')
+                    ->searchable(),
             ])
             ->filters([
                 //
@@ -67,7 +105,6 @@ class UserResource extends Resource
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
-                Impersonate::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

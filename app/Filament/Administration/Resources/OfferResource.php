@@ -23,7 +23,64 @@ class OfferResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('year_id')
+                    ->numeric(),
+                Forms\Components\TextInput::make('current_year')
+                    ->numeric(),
+                Forms\Components\TextInput::make('organization_name')
+                    ->maxLength(191),
+                Forms\Components\TextInput::make('country')
+                    ->maxLength(191),
+                Forms\Components\TextInput::make('internship_type')
+                    ->maxLength(10),
+                Forms\Components\TextInput::make('responsible_fullname')
+                    ->maxLength(191),
+                Forms\Components\TextInput::make('responsible_occupation')
+                    ->maxLength(191),
+                Forms\Components\TextInput::make('responsible_phone')
+                    ->tel()
+                    ->maxLength(191),
+                Forms\Components\TextInput::make('responsible_email')
+                    ->email()
+                    ->maxLength(191),
+                Forms\Components\Textarea::make('project_title')
+                    ->maxLength(65535)
+                    ->columnSpanFull(),
+                Forms\Components\Textarea::make('project_details')
+                    ->maxLength(65535)
+                    ->columnSpanFull(),
+                Forms\Components\TextInput::make('internship_location')
+                    ->maxLength(191),
+                Forms\Components\TextInput::make('keywords')
+                    ->maxLength(191),
+                Forms\Components\TextInput::make('attached_file')
+                    ->maxLength(191),
+                Forms\Components\Textarea::make('link')
+                    ->maxLength(65535)
+                    ->columnSpanFull(),
+                Forms\Components\TextInput::make('internship_duration')
+                    ->maxLength(10),
+                Forms\Components\TextInput::make('remuneration')
+                    ->maxLength(191),
+                Forms\Components\TextInput::make('currency')
+                    ->maxLength(10),
+                Forms\Components\TextInput::make('recruting_type')
+                    ->maxLength(10),
+                Forms\Components\TextInput::make('application_email')
+                    ->email()
+                    ->maxLength(191),
+                Forms\Components\TextInput::make('event_id')
+                    ->numeric(),
+                Forms\Components\TextInput::make('event_date')
+                    ->maxLength(191),
+                Forms\Components\TextInput::make('badge')
+                    ->maxLength(191),
+                Forms\Components\TextInput::make('display_permissions')
+                    ->maxLength(191),
+                Forms\Components\Toggle::make('status'),
+                Forms\Components\Toggle::make('is_valid'),
+                Forms\Components\Toggle::make('applyable'),
+                Forms\Components\DatePicker::make('expire_at'),
             ]);
     }
 
@@ -31,7 +88,72 @@ class OfferResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('year_id')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('current_year')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('organization_name')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('country')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('internship_type')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('responsible_fullname')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('responsible_occupation')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('responsible_phone')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('responsible_email')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('internship_location')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('keywords')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('attached_file')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('internship_duration')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('remuneration')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('currency')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('recruting_type')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('application_email')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('event_id')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('event_date')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('badge')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('display_permissions')
+                    ->searchable(),
+                Tables\Columns\IconColumn::make('status')
+                    ->boolean(),
+                Tables\Columns\IconColumn::make('is_valid')
+                    ->boolean(),
+                Tables\Columns\IconColumn::make('applyable')
+                    ->boolean(),
+                Tables\Columns\TextColumn::make('expire_at')
+                    ->date()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('deleted_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
