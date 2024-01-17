@@ -10,7 +10,15 @@ class FilamentChartsParentWidget extends ChartWidget
     // {
     //     return __(static::$heading);
     // }
-
+    // protected function getFilters(): ?array
+    // {
+    //     return [
+    //         'today' => 'Today',
+    //         'week' => 'Last week',
+    //         'month' => 'Last month',
+    //         'year' => 'This year',
+    //     ];
+    // }
     public function getDescription(): ?string
     {
         return __(static::$description);

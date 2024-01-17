@@ -26,19 +26,15 @@ class InternshipsPerMonthChart extends ChartWidget
             ->perMonth()
             ->aggregate('country', 'count');
 
-            return [
-                'datasets' => [
-                    [
-                        'label' => 'Internships per month',
-                        'data' => $data->map(fn (TrendValue $value) => $value->aggregate),
-                    ],
+        return [
+            'datasets' => [
+                [
+                    'label' => 'Internships per month',
+                    'data' => $data->map(fn (TrendValue $value) => $value->aggregate),
                 ],
-                'labels' => $data->map(fn (TrendValue $value) => $value->date),
-            ];
-    }
-
-    protected function getType(): string
-    {
-        return 'bar';
+            ],
+            'labels' => $data->map(fn (TrendValue $value) => $value->date),
+        ];
+        $data = $this->filter;
     }
 }
