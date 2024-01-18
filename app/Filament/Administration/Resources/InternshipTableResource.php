@@ -378,10 +378,10 @@ class InternshipTableResource extends Resource
                 SoftDeletingScope::class,
             ]);
     }
-    public static function getNavigationLabel(): string
-    {
-        return InternshipTableResource::getPluralModelLabel().' '.__('table view');
-    }
+    // public static function getNavigationLabel(): string
+    // {
+    //     return InternshipTableResource::getPluralModelLabel().' '.__('table view');
+    // }
     public static function getModelLabel(): string
     {
         return __('Internship');
@@ -391,4 +391,5 @@ class InternshipTableResource extends Resource
     {
         return __('Internships');
     }
+    
 }

@@ -21,6 +21,7 @@
         "filament/widgets": "^3.1",
         "flowframe/laravel-trend": "^0.1.5",
         "guzzlehttp/guzzle": "^7.2",
+        "hydrat/filament-table-layout-toggle": "^1.0",
         "laravel/framework": "^10.10",
         "laravel/pulse": "^1.0@beta",
         "laravel/sanctum": "^3.3",
