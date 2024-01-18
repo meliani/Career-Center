@@ -50,8 +50,6 @@ class StudentResource extends Resource
                 Forms\Components\DatePicker::make('birth_date'),
                 Forms\Components\TextInput::make('current_year')
                     ->numeric(),
-                Forms\Components\TextInput::make('stream_id')
-                    ->numeric(),
                 Forms\Components\TextInput::make('program')
                     ->maxLength(191),
                 Forms\Components\Toggle::make('is_mobility'),
@@ -68,6 +66,7 @@ class StudentResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id')
+                    ->label('ID')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('year_id')
@@ -99,9 +98,6 @@ class StudentResource extends Resource
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('current_year')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('stream_id')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('program')
