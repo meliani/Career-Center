@@ -28,6 +28,8 @@ use App\Mail\DefenseReadyEmail;
 use Filament\Support\Enums\FontWeight;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use Filament\Tables\Grouping\Group;
+use Filament\Tables\Filters\SelectFilter;
+
 
 class InternshipResource extends Resource
 {
@@ -171,6 +173,15 @@ class InternshipResource extends Resource
             )
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
+                SelectFilter::make('status')
+                ->multiple()
+                ->options([
+                    'Draft' => __('Draft'),
+                    'Announced' => __('Announced'),
+                    'Validated' => __('Validated'),
+                    'Approved' => __('Approved'),
+                    'Signed' => __('Signed'),
+                ])
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
