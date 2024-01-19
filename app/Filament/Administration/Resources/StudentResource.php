@@ -128,7 +128,9 @@ class StudentResource extends Resource
                 ->options([
                     '0' => __('Inactive'),
                     '1' => __('Active'),
-                ])            ])
+                ])->placeholder(__('Filter by status'))
+               ])
+                
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
