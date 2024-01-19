@@ -25,8 +25,8 @@ class StudentResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('year_id')
                     ->numeric(),
-                Forms\Components\TextInput::make('gender_id')
-                    ->numeric(),
+                Forms\Components\TextInput::make('title')
+                    ->maxLength(5),
                 Forms\Components\TextInput::make('pin')
                     ->numeric(),
                 Forms\Components\TextInput::make('full_name')
@@ -49,9 +49,9 @@ class StudentResource extends Resource
                     ->maxLength(191),
                 Forms\Components\DatePicker::make('birth_date'),
                 Forms\Components\TextInput::make('current_year')
-                    ->numeric(),
+                    ->maxLength(10),
                 Forms\Components\TextInput::make('program')
-                    ->maxLength(191),
+                    ->maxLength(10),
                 Forms\Components\Toggle::make('is_mobility'),
                 Forms\Components\TextInput::make('abroad_school')
                     ->maxLength(191),
@@ -72,9 +72,8 @@ class StudentResource extends Resource
                 Tables\Columns\TextColumn::make('year_id')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('gender_id')
-                    ->numeric()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('title')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('pin')
                     ->numeric()
                     ->sortable(),
@@ -98,8 +97,7 @@ class StudentResource extends Resource
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('current_year')
-                    ->numeric()
-                    ->sortable(),
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('program')
                     ->searchable(),
                 Tables\Columns\IconColumn::make('is_mobility')

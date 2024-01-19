@@ -17,7 +17,7 @@ class Person extends baseModel
 
     public $fillable = [
         'id',
-        'gender_id',
+        'titkle',
         'pin',
         'full_name',
         'first_name',
@@ -55,16 +55,16 @@ class Person extends baseModel
         return $this->getTitleAttribute().' '.$this->attributes['first_name'].' '.$this->attributes['last_name'];
     }
 
-    public function getTitleAttribute()
-    {
-        if ($this->attributes['gender_id'] == 0) {
-            return 'Mme';
-        } elseif ($this->attributes['gender_id'] == 1) {
-            return 'M.';
-        } else {
-            return 'Mme/M.';
-        }
-    }
+    // public function getTitleAttribute()
+    // {
+    //     if ($this->attributes['gender_id'] == 0) {
+    //         return 'Mme';
+    //     } elseif ($this->attributes['gender_id'] == 1) {
+    //         return 'M.';
+    //     } else {
+    //         return 'Mme/M.';
+    //     }
+    // }
 
     public function activate()
     {
