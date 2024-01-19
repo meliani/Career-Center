@@ -141,4 +141,13 @@ class StudentResource extends Resource
             'index' => Pages\ManageStudents::route('/'),
         ];
     }
+    public static function getModelLabel(): string
+    {
+        return __('Student');
+    }
+    
+    public static function getPluralModelLabel(): string
+    {
+        return __('Students');
+    }
 }
