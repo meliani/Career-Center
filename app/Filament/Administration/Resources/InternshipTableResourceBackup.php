@@ -32,7 +32,7 @@ use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 
-class InternshipTableResource extends Resource
+class InternshipTableResourceBackup extends Resource
 {
     protected static ?string $model = Internship::class;
 

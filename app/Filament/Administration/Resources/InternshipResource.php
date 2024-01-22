@@ -366,9 +366,17 @@ class InternshipResource extends Resource
     {
         return [
 
-            Tables\Columns\TextColumn::make('student_id')
-                ->numeric()
-                ->sortable(),
+            // Tables\Columns\TextColumn::make('student_id')
+            //     ->numeric()
+            //     ->sortable(),
+            Tables\Columns\TextColumn::make('student.full_name')
+            ->label(__('Full Name'))
+            ->weight(FontWeight::Bold)
+            ->searchable(),
+            Tables\Columns\TextColumn::make('student.program')
+            ->label(__('Program'))
+            ->weight(FontWeight::Bold)
+            ->searchable(),
             Tables\Columns\TextColumn::make('organization_name')
                 ->searchable(),
             Tables\Columns\TextColumn::make('adresse')
