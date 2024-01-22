@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Filters\SelectFilter;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use App\Filament\Actions\SendBulkEmail;
 
 class StudentResource extends Resource
 {
@@ -138,6 +139,7 @@ class StudentResource extends Resource
             ])
             ->bulkActions([
                 ExportBulkAction::make(),
+                SendBulkEmail::make('send_emails'),
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),

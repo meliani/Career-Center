@@ -189,6 +189,7 @@ class InternshipResource extends Resource
                 Tables\Actions\DeleteAction::make(),
                 Tables\Actions\ForceDeleteAction::make(),
                 Tables\Actions\RestoreAction::make(),
+                \App\Filament\Actions\SignAction::make(),
             ])
             ->bulkActions([
                 ExportBulkAction::make(),
