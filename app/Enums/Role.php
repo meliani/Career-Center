@@ -11,6 +11,7 @@ enum Role: string implements HasLabel
     case HeadOfDepartment = 'Head of Department';
     case Administrator = 'Administrator';
     case SuperAdministrator = 'Super Administrator';
+    case AdministrativeSupervisor = 'Administrative Supervisor';
 
     public function getLabel(): ?string
     {
