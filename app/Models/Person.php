@@ -17,7 +17,7 @@ class Person extends baseModel
 
     public $fillable = [
         'id',
-        'titkle',
+        'title',
         'pin',
         'full_name',
         'first_name',
