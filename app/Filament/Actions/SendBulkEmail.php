@@ -56,13 +56,24 @@ class SendBulkEmail extends BulkAction
 
                 foreach ($records as $record) {
                     if ($record->email_perso) {
-                        Mail::to($record->email_perso)
-                            // ->send(new StudentMail($record, $emailSubject, $emailBody));
-                            ->send(new StudentMail(
-                                $record,
-                                $data['emailSubject'],
-                                $data['emailBody'],
-                            ));
+                        dispatch(function () use ($record, $emailSubject, $emailBody) {
+                            Mail::to($record->email_perso)
+                                ->send(new StudentMail($record, $emailSubject, $emailBody));
+                        });
+                        // Mail::to($record->email_perso)
+                        //     // ->send(new StudentMail($record, $emailSubject, $emailBody));
+                        //     // ->send(new StudentMail(
+                        //     //     $record,
+                        //     //     $data['emailSubject'],
+                        //     //     $data['emailBody'],
+                        //     // ));
+                            
+                            // ->queue(new StudentMail(
+                            //     $record,
+                            //     $data['emailSubject'],
+                            //     $data['emailBody'],
+                            // ));
+                            
                     }
                 }
             });

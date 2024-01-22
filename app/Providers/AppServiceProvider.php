@@ -16,6 +16,10 @@ use Illuminate\Support\Facades\Schema;
 use Doctrine\DBAL\Types\StringType;
 use Doctrine\DBAL\Connection;
 
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Support\Facades\RateLimiter;
+
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -60,5 +64,14 @@ class AppServiceProvider extends ServiceProvider
         // $connection = $this->app->make('db')->connection();
         // $platform = $connection->getDoctrineConnection()->getDatabasePlatform();
         $platform->registerDoctrineTypeMapping('enum', 'string');
+
+
+        /* Jobs / Queue configuration */
+        RateLimiter::for('default', function (object $job) {
+            return $job->user->vipCustomer()
+                ? Limit::none()
+                : Limit::perMinute(3)->by($job->user->id);
+        });
+        /* end of Jobs/Queues Config  */
     }
 }
