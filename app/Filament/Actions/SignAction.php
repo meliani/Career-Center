@@ -2,9 +2,9 @@
 
 namespace App\Filament\Actions;
 
+use App\Models\Internship;
 use Filament\Tables\Actions\Action;
 use Illuminate\Support\Carbon;
-use App\Models\Internship;
 
 class SignAction extends Action
 {
@@ -14,7 +14,7 @@ class SignAction extends Action
 
     public static function getDefaultName(): string
     {
-        return 'validate';
+        return 'Signature';
     }
 
     public function handle(Internship $internship): void
@@ -22,6 +22,7 @@ class SignAction extends Action
         $internship->validate();
         // dd('SignAction action called');
     }
+
     public static function make(?string $name = null): static
     {
 
@@ -36,6 +37,7 @@ class SignAction extends Action
         ]);
         $static->configure()->action(function (array $data, Internship $record): void {
             //  return carbon object with this format 2024-01-02 15:40:05, its a datetime format i mysql database
+            $record->disabletilestamps();
             $record->validated_at = Carbon::now()->format('yy-m-d H:i:s');
             $record->save();
         });

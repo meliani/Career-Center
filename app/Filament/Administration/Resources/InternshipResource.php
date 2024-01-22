@@ -3,33 +3,25 @@
 namespace App\Filament\Administration\Resources;
 
 use App\Filament\Administration\Resources\InternshipResource\Pages;
-use App\Filament\Administration\Resources\InternshipResource\RelationManagers;
 use App\Models\Internship;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\Alignment;
+use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
-use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Hydrat\TableLayoutToggle\Concerns\HasToggleableTable;
+use Filament\Tables\Columns\Layout\Panel;
 use Filament\Tables\Columns\Layout\Split;
 use Filament\Tables\Columns\Layout\Stack;
-use Filament\Support\Enums\Alignment;
-use Filament\Tables\Columns\Layout\Panel;
-use Illuminate\Support\Facades\Auth;
-use Filament\Forms\Components\RichEditor;
-use Filament\Forms\Components\TextInput;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Mail\Mailable;
-use Illuminate\Support\Testing\Fakes\MailFake;
-use App\Mail\GenericContactEmail;
-use App\Mail\DefenseReadyEmail;
-use Filament\Support\Enums\FontWeight;
-use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
-use Filament\Tables\Grouping\Group;
+use Filament\Tables\Enums\ActionsPosition;
 use Filament\Tables\Filters\SelectFilter;
-
+use Filament\Tables\Grouping\Group;
+use Filament\Tables\Table;
+use Hydrat\TableLayoutToggle\Concerns\HasToggleableTable;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Mail;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 
 class InternshipResource extends Resource
 {
@@ -152,7 +144,7 @@ class InternshipResource extends Resource
                     ->titlePrefixedWithLabel(false),
                 Group::make('student.program')
                     ->label(__('Program'))
-                    ->collapsible()
+                    ->collapsible(),
                 // ->titlePrefixedWithLabel(false)
                 // ->getTitleFromRecordUsing(fn (Internship $record): string => ucfirst($record->program)),
             ])
@@ -174,14 +166,14 @@ class InternshipResource extends Resource
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
                 SelectFilter::make('status')
-                ->multiple()
-                ->options([
-                    'Draft' => __('Draft'),
-                    'Announced' => __('Announced'),
-                    'Validated' => __('Validated'),
-                    'Approved' => __('Approved'),
-                    'Signed' => __('Signed'),
-                ])
+                    ->multiple()
+                    ->options([
+                        'Draft' => __('Draft'),
+                        'Announced' => __('Announced'),
+                        'Validated' => __('Validated'),
+                        'Approved' => __('Approved'),
+                        'Signed' => __('Signed'),
+                    ]),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
@@ -190,7 +182,7 @@ class InternshipResource extends Resource
                 Tables\Actions\ForceDeleteAction::make(),
                 Tables\Actions\RestoreAction::make(),
                 \App\Filament\Actions\SignAction::make(),
-            ])
+            ], position: ActionsPosition::BeforeCells)
             ->bulkActions([
                 ExportBulkAction::make(),
                 Tables\Actions\BulkActionGroup::make([
@@ -208,15 +200,17 @@ class InternshipResource extends Resource
             // 'card-view' => Pages\ManageInternships::route('/card-view'),
         ];
     }
+
     public static function getModelLabel(): string
     {
         return __('Internship');
     }
-    
+
     public static function getPluralModelLabel(): string
     {
         return __('Internships');
     }
+
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
@@ -224,6 +218,7 @@ class InternshipResource extends Resource
                 SoftDeletingScope::class,
             ]);
     }
+
     public static function getGridTableColumns(): array
     {
         return [
@@ -370,24 +365,27 @@ class InternshipResource extends Resource
             //     ->numeric()
             //     ->sortable(),
             Tables\Columns\TextColumn::make('student.full_name')
-            ->label(__('Full Name'))
-            ->weight(FontWeight::Bold)
-            ->searchable(),
+                ->label(__('Full Name'))
+                ->weight(FontWeight::Bold)
+                ->searchable(),
             Tables\Columns\TextColumn::make('student.program')
-            ->label(__('Program'))
-            ->weight(FontWeight::Bold)
-            ->searchable(),
+                ->label(__('Program'))
+                ->weight(FontWeight::Bold)
+                ->searchable(),
             Tables\Columns\TextColumn::make('organization_name')
                 ->searchable(),
             Tables\Columns\TextColumn::make('adresse')
+                ->toggleable(isToggledHiddenByDefault: true)
                 ->searchable(),
             Tables\Columns\TextColumn::make('city')
                 ->searchable(),
             Tables\Columns\TextColumn::make('country')
                 ->searchable(),
             Tables\Columns\TextColumn::make('office_location')
+                ->toggleable(isToggledHiddenByDefault: true)
                 ->searchable(),
             Tables\Columns\TextColumn::make('parrain_titre')
+                ->toggleable(isToggledHiddenByDefault: true)
                 ->searchable(),
             Tables\Columns\TextColumn::make('parrain_nom')
                 ->searchable(),
@@ -400,6 +398,7 @@ class InternshipResource extends Resource
             Tables\Columns\TextColumn::make('parrain_mail')
                 ->searchable(),
             Tables\Columns\TextColumn::make('encadrant_ext_titre')
+                ->toggleable(isToggledHiddenByDefault: true)
                 ->searchable(),
             Tables\Columns\TextColumn::make('encadrant_ext_nom')
                 ->searchable(),
@@ -418,23 +417,35 @@ class InternshipResource extends Resource
                 ->date()
                 ->sortable(),
             Tables\Columns\TextColumn::make('remuneration')
+                ->toggleable(isToggledHiddenByDefault: true)
                 ->searchable(),
             Tables\Columns\TextColumn::make('currency')
+                ->toggleable(isToggledHiddenByDefault: true)
                 ->searchable(),
             Tables\Columns\TextColumn::make('load')
+                ->toggleable(isToggledHiddenByDefault: true)
                 ->searchable(),
             Tables\Columns\TextColumn::make('int_adviser_name')
                 ->searchable(),
             Tables\Columns\TextColumn::make('year_id')
+                ->toggleable(isToggledHiddenByDefault: true)
                 ->numeric()
                 ->sortable(),
             Tables\Columns\IconColumn::make('is_valid')
+                ->toggleable(isToggledHiddenByDefault: true)
                 ->boolean(),
             Tables\Columns\TextColumn::make('status')
+                ->toggleable(isToggledHiddenByDefault: true)
                 ->searchable(),
             Tables\Columns\TextColumn::make('announced_at')
                 ->dateTime()
-                ->sortable(),
+                ->sortable()
+                ->label('Announced at')->since()
+                ->description('Announced', 'above')
+                ->placeholder('Not Announced yet')
+                ->badge(function (Internship $internship) {
+                    return $internship->announced_at ? 'Announced' : 'Not announced yet';
+                }),
             Tables\Columns\TextColumn::make('validated_at')
                 ->dateTime()
                 ->sortable(),
@@ -445,15 +456,19 @@ class InternshipResource extends Resource
                 ->dateTime()
                 ->sortable(),
             Tables\Columns\TextColumn::make('project_id')
+                ->toggleable(isToggledHiddenByDefault: true)
                 ->numeric()
                 ->sortable(),
             Tables\Columns\TextColumn::make('binome_user_id')
+                ->toggleable(isToggledHiddenByDefault: true)
                 ->numeric()
                 ->sortable(),
             Tables\Columns\TextColumn::make('partner_internship_id')
+                ->toggleable(isToggledHiddenByDefault: true)
                 ->numeric()
                 ->sortable(),
             Tables\Columns\TextColumn::make('partnership_status')
+                ->toggleable(isToggledHiddenByDefault: true)
                 ->searchable(),
             Tables\Columns\TextColumn::make('created_at')
                 ->dateTime()

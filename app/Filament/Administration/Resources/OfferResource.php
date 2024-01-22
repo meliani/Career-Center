@@ -3,7 +3,6 @@
 namespace App\Filament\Administration\Resources;
 
 use App\Filament\Administration\Resources\OfferResource\Pages;
-use App\Filament\Administration\Resources\OfferResource\RelationManagers;
 use App\Models\Offer;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -89,9 +88,11 @@ class OfferResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('year_id')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('current_year')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('organization_name')
@@ -99,6 +100,7 @@ class OfferResource extends Resource
                 Tables\Columns\TextColumn::make('country')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('internship_type')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('responsible_fullname')
                     ->searchable(),
@@ -125,19 +127,24 @@ class OfferResource extends Resource
                 Tables\Columns\TextColumn::make('application_email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('event_id')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('event_date')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('badge')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('display_permissions')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\IconColumn::make('status')
                     ->boolean(),
                 Tables\Columns\IconColumn::make('is_valid')
                     ->boolean(),
                 Tables\Columns\IconColumn::make('applyable')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->boolean(),
                 Tables\Columns\TextColumn::make('expire_at')
                     ->date()
