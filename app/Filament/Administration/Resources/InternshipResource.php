@@ -176,13 +176,14 @@ class InternshipResource extends Resource
                     ]),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-                Tables\Actions\ForceDeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
+                Tables\Actions\ViewAction::make()->label(''),
+                Tables\Actions\EditAction::make()->label(''),
+                Tables\Actions\DeleteAction::make()->label(''),
+                Tables\Actions\ForceDeleteAction::make()->label(''),
+                Tables\Actions\RestoreAction::make()->label(''),
                 \App\Filament\Actions\SignAction::make(),
-            ], position: ActionsPosition::BeforeCells)
+                \App\Filament\Actions\ValidateAction::make(),
+            ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
                 ExportBulkAction::make(),
                 Tables\Actions\BulkActionGroup::make([

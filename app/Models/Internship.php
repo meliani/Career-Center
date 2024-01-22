@@ -36,13 +36,15 @@ class Internship extends baseModel
     ];
     /* Validate function to be exexuted only by SuperAdministrator Administrator ProgramCoordinator */
 
-    public function validate()
+    public function validate(String $department)
     {
         try {
             if (Gate::denies('validate-internship', $this)) {
                 throw new AuthorizationException();
             }
+
             $this->validated_at = now();
+            // $this->department =$department;
             $this->save();
             Notification::make()
                 ->title('Saved successfully')
@@ -59,10 +61,10 @@ class Internship extends baseModel
         }
     }
 
-    public function sign_off()
+    public function sign()
     {
         try {
-            if (Gate::denies('validate-internship', $this)) {
+            if (Gate::denies('sign-internship', $this)) {
                 throw new AuthorizationException();
             }
             $this->signed_at = now();

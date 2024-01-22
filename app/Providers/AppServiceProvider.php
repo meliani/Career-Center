@@ -54,7 +54,8 @@ class AppServiceProvider extends ServiceProvider
         TextColumn::configureUsing(function (TextColumn $column): void {
             $column
                 ->toggleable()
-                ->searchable();
+                ->searchable()
+                ->translateLabel();
         });
         /* Add Enum support to DBAL */
         Type::addType('enum', StringType::class);
@@ -68,9 +69,10 @@ class AppServiceProvider extends ServiceProvider
 
         /* Jobs / Queue configuration */
         RateLimiter::for('default', function (object $job) {
-            return $job->user->vipCustomer()
-                ? Limit::none()
-                : Limit::perMinute(3)->by($job->user->id);
+            return Limit::perMinute(1)->by($job->user->id);
+        //     return $job->user->vipCustomer()
+        //         ? Limit::none()
+        //         : Limit::perMinute(3)->by($job->user->id);
         });
         /* end of Jobs/Queues Config  */
     }

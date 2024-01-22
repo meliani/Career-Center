@@ -14,7 +14,7 @@ class SignAction extends Action
 
     public static function getDefaultName(): string
     {
-        return 'Signature';
+        return __('Sign');
     }
 
     public function handle(Internship $internship): void
@@ -37,9 +37,9 @@ class SignAction extends Action
         ]);
         $static->configure()->action(function (array $data, Internship $record): void {
             //  return carbon object with this format 2024-01-02 15:40:05, its a datetime format i mysql database
-            $record->disabletilestamps();
-            $record->validated_at = Carbon::now()->format('yy-m-d H:i:s');
-            $record->save();
+            $record->withoutTimestamps(fn () => $record->sign('RIM'));
+            // $record->validated_at = Carbon::now()->format('yy-m-d H:i:s');
+            // $record->save();
         });
 
         return $static;
