@@ -465,8 +465,9 @@ class InternshipResource extends Resource
                 ->toggleable(isToggledHiddenByDefault: true)
                 ->boolean(),
             Tables\Columns\TextColumn::make('status')
-                ->toggleable(isToggledHiddenByDefault: true)
-                ->searchable(),
+            ->badge(),
+                // ->toggleable(isToggledHiddenByDefault: true)
+                // ->searchable(),
             Tables\Columns\TextColumn::make('announced_at')
                 ->dateTime()
                 ->sortable()

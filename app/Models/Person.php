@@ -43,12 +43,12 @@ class Person extends baseModel
         'updated_at' => 'datetime',
     ];
 
-    // public function getFullNameAttribute()
-    // {
-    //     // dd($this->attributes);
+    public function getFullNameAttribute()
+    {
+        // dd($this->attributes);
 
-    //     return $this->attributes['first_name'].' '.$this->attributes['last_name'];
-    // }
+        return $this->attributes['first_name'].' '.$this->attributes['last_name'];
+    }
 
     public function getLongFullNameAttribute()
     {

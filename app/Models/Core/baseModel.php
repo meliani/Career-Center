@@ -23,13 +23,13 @@ class baseModel extends Model
     }
 
     /* Common methods */
-    static function getTitle($gender)
-	{
-        if($gender==1)
-        return "M.";
-        elseif($gender==0)
-        return "Mme";
-        else
-        return "Mme/M.";
-    }
+    // static function getTitle($gender)
+	// {
+    //     if($gender==1)
+    //     return "M.";
+    //     elseif($gender==0)
+    //     return "Mme";
+    //     else
+    //     return "Mme/M.";
+    // }
 }

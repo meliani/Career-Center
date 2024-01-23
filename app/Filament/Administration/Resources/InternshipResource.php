@@ -119,7 +119,8 @@ class InternshipResource extends Resource
                     ->maxLength(191),
                 Forms\Components\TextInput::make('year_id')
                     ->numeric(),
-                Forms\Components\Toggle::make('is_valid'),
+                Forms\Components\Toggle::make('is_valid')
+                ->label('Student validation'),
                 Forms\Components\ToggleButtons::make('status')
                 ->options([
                     'Draft' => __('Draft'),
@@ -264,7 +265,7 @@ class InternshipResource extends Resource
                 Tables\Columns\TextColumn::make('assigned_department')
                     ->dateTime()
                     ->sortable()
-                    ->label('Assigned to department at'),
+                    ->label('Assigned department'),
                 Tables\Columns\TextColumn::make('announced_at')
                     ->dateTime()
                     ->sortable(),
@@ -358,8 +359,9 @@ class InternshipResource extends Resource
             // Tables\Columns\TextColumn::make('binome_user_id')
             //     ->numeric()
             //     ->sortable(),
-            // Tables\Columns\IconColumn::make('is_valid')
-            //     ->boolean(),
+            Tables\Columns\IconColumn::make('is_valid')
+            ->label(__('Validated by student'))
+                ->boolean(),
             // Tables\Columns\TextColumn::make('status')
             //     ->searchable(),
 
@@ -463,25 +465,26 @@ class InternshipResource extends Resource
                 ->sortable(),
             Tables\Columns\IconColumn::make('is_valid')
                 ->toggleable(isToggledHiddenByDefault: true)
-                ->boolean(),
-            Tables\Columns\TextColumn::make('status')
+                ->boolean()
+                ->label(__('Validated by student')),
+                Tables\Columns\TextColumn::make('status')
                 ->toggleable(isToggledHiddenByDefault: true)
                 ->searchable(),
             Tables\Columns\TextColumn::make('announced_at')
                 ->dateTime()
                 ->sortable()
-                ->label('Announced at')->since()
-                ->description('Announced', 'above')
+                ->label(__('Announced at'))->since()
+                ->description(__('Announced'), 'above')
                 ->placeholder('Not Announced yet')
                 ->badge(function (Internship $internship) {
-                    return $internship->announced_at ? 'Announced' : 'Not announced yet';
+                    return $internship->announced_at ? __('Announced') : __('Not announced yet');
                 }),
             Tables\Columns\TextColumn::make('validated_at')
                 ->dateTime()
                 ->sortable(),
                 Tables\Columns\TextColumn::make('assigned_department')
                 ->sortable()
-                ->label('Assigned to department'),
+                ->label(__('Assigned department')),
             Tables\Columns\TextColumn::make('approved_at')
                 ->dateTime()
                 ->sortable(),

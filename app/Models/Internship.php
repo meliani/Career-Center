@@ -8,6 +8,12 @@ use Filament\Notifications\Notification;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Gate;
+use \App\Enums\Title;
+use \App\Enums\Status;
+use App\Casts\TitleCast;
+use App\Casts\StatusCast;
+
+use Filament\Widgets\StatsOverviewWidget\Stat;
 
 class Internship extends baseModel
 {
@@ -16,6 +22,10 @@ class Internship extends baseModel
     protected static function boot()
     {
         parent::boot();
+        // dd(Title::Mr);
+
+        // dd(Status::Draft);
+
     }
 
     public function scopeFilterByProgramHead($query)
@@ -26,10 +36,15 @@ class Internship extends baseModel
     }
 
     protected $guarded = [];
-
     protected $casts = [
-        // add datetime fields here
+        // 'title' => Title::class,
+        'status' => StatusCast::class,
+
+        'starting_at' => 'date',
+        'ending_at' => 'date',
         'validated_at' => 'datetime',
+        'signed_at' => 'datetime',
+        'received_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
@@ -93,6 +108,28 @@ class Internship extends baseModel
             $this->save();
             Notification::make()
                 ->title('Assigned successfully')
+                ->success()
+                ->send();
+        } catch (AuthorizationException $e) {
+
+            Notification::make()
+                ->title('Sorry You must be a Program Coordinator.')
+                ->danger()
+                ->send();
+
+            return response()->json(['error' => 'This action is unauthorized.'], 403);
+        }
+    }
+    public function changeStatus($status)
+    {
+        try {
+            if (Gate::denies('validate-internship', $this)) {
+                throw new AuthorizationException();
+            }
+            $this->status = $status;
+            $this->save();
+            Notification::make()
+                ->title('Status changed successfully')
                 ->success()
                 ->send();
         } catch (AuthorizationException $e) {

@@ -45,5 +45,15 @@
     "Announced": "Déclaré",
     "Draft": "Brouillon",
     "Validate": "Valider",
-    "Assign departiment": "Assigner un département"
+    "Assign departiment": "Assigner un département",
+    "Assigned department": "Département affecté",
+    "Validated by student": "Validé par l'étudiant",
+    "Student id": "Identifiant de l'étudiant",
+    "City": "Ville",
+    "Country": "Pays",
+    "Office location": "Lieu de travail",
+    "Created at": "Créé le",
+    "Updated at": "Mis à jour le",
+    "Deleted at": "Supprimé le",
+    "Int adviser name": "Encadrant interne (Stage en France)"
 }
