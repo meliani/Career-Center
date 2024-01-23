@@ -52,13 +52,13 @@ class SendBulkEmail extends BulkAction
 
                 // dd emailSubject and emailBody from the form cause dd($emailSubject) doesn't work
                 // $static = $this;
-                // dd($emailSubject, $emailBody);
+                // dd($data);
 
                 foreach ($records as $record) {
                     if ($record->email_perso) {
-                        dispatch(function () use ($record, $emailSubject, $emailBody) {
+                        dispatch(function () use ($record, $data) {
                             Mail::to($record->email_perso)
-                                ->send(new StudentMail($record, $emailSubject, $emailBody));
+                                ->send(new StudentMail($record, $data['emailSubject'], $data['emailBody']));
                         });
                         // Mail::to($record->email_perso)
                         //     // ->send(new StudentMail($record, $emailSubject, $emailBody));

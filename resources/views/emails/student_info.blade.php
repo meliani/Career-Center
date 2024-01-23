@@ -1,5 +1,9 @@
 <x-mail::message>
-# {{$emailSubject}}
+{{-- email header will be emailSubject --}}
+<x-slot:emailSubject>
+<br>
+{{$emailSubject}}
+</x-slot::emailSubject>
 # Bonjour {{$student->full_name}},
 
 {!!$emailBody!!}
