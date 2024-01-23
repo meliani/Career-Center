@@ -41,7 +41,14 @@ class SignAction extends Action
             $record->withoutTimestamps(fn () => $record->sign());
             // $record->validated_at = Carbon::now()->format('yy-m-d H:i:s');
             // $record->save();
-        });
+        })
+        ->requiresConfirmation(fn () => "Are you sure you want to mark this internship as Signed?")
+        ->modalIconColor('success')
+        ->modalIcon('heroicon-o-check')
+        ->modalHeading('Sign internship agreement')
+        ->modalDescription(__('Are you sure you want to mark this internship as Signed?'))
+        ->modalSubmitActionLabel(__('Mark as signed'))
+        ->color('success');
 
         return $static;
     }

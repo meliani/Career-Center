@@ -55,5 +55,10 @@
     "Created at": "Créé le",
     "Updated at": "Mis à jour le",
     "Deleted at": "Supprimé le",
-    "Int adviser name": "Encadrant interne (Stage en France)"
+    "Int adviser name": "Encadrant interne (Stage en France)",
+    "Sign internship agrrement": "Signer la convention de stage",
+    "Internship agreement": "Convention de stage",
+    "Are you sure you want to mark this internship as Signed?": "Êtes-vous sûr de vouloir marquer ce stage comme signé?",
+    "Mark as signed": "Marquer comme signé"
+
 }

@@ -27,6 +27,7 @@ class ValidateAction extends Action
             // $record->validated_at = Carbon::now()->format('yy-m-d H:i:s');
             // $record->save();
         })
+        ->requiresConfirmation(fn (Internship $internship) => "Are you sure you want to mark this internship as Signed?")
         ->form([\Filament\Forms\Components\Select::make('assigned_department')
         ->options([
             'SC' => 'SC',
