@@ -40,5 +40,10 @@
     "Head of Department": "Chef de département",
     "Administrator": "Administrateur",
     "Super Administrator": "Super administrateur",
-    "Administrative Supervisor": "Référent administratif"
+    "Administrative Supervisor": "Référent administratif",
+    "Signed": "Signé",
+    "Announced": "Déclaré",
+    "Draft": "Brouillon",
+    "Validate": "Valider",
+    "Assign departiment": "Assigner un département"
 }

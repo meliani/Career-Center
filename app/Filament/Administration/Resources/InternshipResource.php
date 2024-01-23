@@ -120,8 +120,21 @@ class InternshipResource extends Resource
                 Forms\Components\TextInput::make('year_id')
                     ->numeric(),
                 Forms\Components\Toggle::make('is_valid'),
-                Forms\Components\TextInput::make('status')
-                    ->maxLength(255),
+                Forms\Components\ToggleButtons::make('status')
+                ->options([
+                    'Draft' => __('Draft'),
+                    'Announced' => __('Announced'),
+                    'Validated' => __('Validated'),
+                    'Approved' => __('Approved'),
+                    'Signed' => __('Signed'),
+                ]),
+                Forms\Components\Select::make('assigned_department')
+                    ->options([
+                        'SC' => 'SC',
+                        'MIR' => 'MIR',
+                        'EMO' => 'EMO',
+                        'GLC' => 'GLC',
+                    ]),                    
                 Forms\Components\DateTimePicker::make('announced_at'),
                 Forms\Components\DateTimePicker::make('validated_at'),
                 Forms\Components\DateTimePicker::make('received_at'),
@@ -191,6 +204,7 @@ class InternshipResource extends Resource
                 Tables\Actions\RestoreAction::make()->label(''),
                 \App\Filament\Actions\SignAction::make(),
                 \App\Filament\Actions\ValidateAction::make(),
+                \App\Filament\Actions\AssignDepartmentAction::make(),
             ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
                 ExportBulkAction::make(),
@@ -247,6 +261,10 @@ class InternshipResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->label('Validated at'),
+                Tables\Columns\TextColumn::make('assigned_department')
+                    ->dateTime()
+                    ->sortable()
+                    ->label('Assigned to department at'),
                 Tables\Columns\TextColumn::make('announced_at')
                     ->dateTime()
                     ->sortable(),
@@ -461,6 +479,9 @@ class InternshipResource extends Resource
             Tables\Columns\TextColumn::make('validated_at')
                 ->dateTime()
                 ->sortable(),
+                Tables\Columns\TextColumn::make('assigned_department')
+                ->sortable()
+                ->label('Assigned to department'),
             Tables\Columns\TextColumn::make('approved_at')
                 ->dateTime()
                 ->sortable(),

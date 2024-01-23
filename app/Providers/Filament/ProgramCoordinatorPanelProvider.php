@@ -18,7 +18,9 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Leandrocfe\FilamentApexCharts\FilamentApexChartsPlugin;
 use Saade\FilamentFullCalendar\FilamentFullCalendarPlugin;
+use Hydrat\TableLayoutToggle\TableLayoutTogglePlugin;
 
 class ProgramCoordinatorPanelProvider extends PanelProvider
 {
@@ -28,18 +30,19 @@ class ProgramCoordinatorPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
+        ->passwordReset()
+        ->profile()
+        ->spa()
+        ->maxContentWidth(MaxWidth::Full)
+        ->default()
+        ->brandName('INPT Entreprises')
+        ->login()
+        ->colors([
+            'primary' => Color::Amber,
+        ])
             ->id('programCoordinator')
-            ->colors([
-                'primary' => Color::Amber,
-            ])
-            ->spa()
-            ->maxContentWidth(MaxWidth::Full)
-            ->brandName('INPT Entreprises')
-            ->login()
             ->path('programCoordinator')
-            ->colors([
-                'primary' => Color::Amber,
-            ])
+
             ->discoverResources(in: app_path('Filament/ProgramCoordinator/Resources'), for: 'App\\Filament\\ProgramCoordinator\\Resources')
             ->discoverPages(in: app_path('Filament/ProgramCoordinator/Pages'), for: 'App\\Filament\\ProgramCoordinator\\Pages')
             ->pages([
@@ -68,6 +71,14 @@ class ProgramCoordinatorPanelProvider extends PanelProvider
                 FilamentFullCalendarPlugin::make(),
                 // ->selectable()
                 // ->editable(),
+                FilamentApexChartsPlugin::make(),
+
+                TableLayoutTogglePlugin::make()
+                    ->persistLayoutInLocalStorage(true) // allow user to keep his layout preference in his local storage
+                    ->shareLayoutBetweenPages(true) // allow all tables to share the layout option (requires persistLayoutInLocalStorage to be true)
+                    ->displayToggleAction() // used to display the toogle button automatically, on the desired filament hook (defaults to table bar)
+                    ->listLayoutButtonIcon('heroicon-o-list-bullet')
+                    ->gridLayoutButtonIcon('heroicon-o-squares-2x2'),
             ]);
     }
 }

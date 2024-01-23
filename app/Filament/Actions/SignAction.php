@@ -37,7 +37,8 @@ class SignAction extends Action
         ]);
         $static->configure()->action(function (array $data, Internship $record): void {
             //  return carbon object with this format 2024-01-02 15:40:05, its a datetime format i mysql database
-            $record->withoutTimestamps(fn () => $record->sign('RIM'));
+            // dd('action called');
+            $record->withoutTimestamps(fn () => $record->sign());
             // $record->validated_at = Carbon::now()->format('yy-m-d H:i:s');
             // $record->save();
         });

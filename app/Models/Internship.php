@@ -36,7 +36,7 @@ class Internship extends baseModel
     ];
     /* Validate function to be exexuted only by SuperAdministrator Administrator ProgramCoordinator */
 
-    public function validate(String $department)
+    public function validate(?String $department=null)
     {
         try {
             if (Gate::denies('validate-internship', $this)) {
@@ -83,7 +83,28 @@ class Internship extends baseModel
             return response()->json(['error' => 'This action is unauthorized.'], 403);
         }
     }
+    public function assignDepartment($department)
+    {
+        try {
+            if (Gate::denies('validate-internship', $this)) {
+                throw new AuthorizationException();
+            }
+            $this->assigned_department = $department;
+            $this->save();
+            Notification::make()
+                ->title('Assigned successfully')
+                ->success()
+                ->send();
+        } catch (AuthorizationException $e) {
 
+            Notification::make()
+                ->title('Sorry You must be a Program Coordinator.')
+                ->danger()
+                ->send();
+
+            return response()->json(['error' => 'This action is unauthorized.'], 403);
+        }
+    }
     /* New edits for a new logic by mel */
     public function students()
     {

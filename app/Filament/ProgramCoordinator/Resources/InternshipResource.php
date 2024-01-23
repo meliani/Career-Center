@@ -2,12 +2,9 @@
 
 namespace App\Filament\ProgramCoordinator\Resources;
 
-use App\Filament\ProgramCoordinator\Resources\InternshipResource\Pages;
-use App\Mail\DefenseReadyEmail;
+use App\Filament\Administration\Resources\InternshipResource\Pages;
 use App\Models\Internship;
 use Filament\Forms;
-use Filament\Forms\Components\RichEditor;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\Alignment;
@@ -17,22 +14,22 @@ use Filament\Tables\Columns\Layout\Panel;
 use Filament\Tables\Columns\Layout\Split;
 use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Enums\ActionsPosition;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
+use Hydrat\TableLayoutToggle\Concerns\HasToggleableTable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
-use App\Filament\ProgramCoordinator\Resources\InternshipResource\Actions\ValidateAction;
+use App\Models\Student;
+
 
 class InternshipResource extends Resource
 {
-    protected static ?string $model = Internship::class;
+    // use HasToggleableTable;
 
-    // public static ?string $label = 'Internship';
-    // protected static string $routePath = 'backend/admin';
-    // protected static ?string $title = 'Program coordinator dashboard';
+    protected static ?string $model = Internship::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -40,8 +37,10 @@ class InternshipResource extends Resource
     {
         return $form
             ->schema([
-                // Forms\Components\TextInput::make('student_id')
-                //     ->numeric(),
+                Forms\Components\TextInput::make('student_id')
+                    ->numeric(),
+                    Forms\Components\TextInput::make('id_pfe')
+                    ->numeric(),
                 Forms\Components\TextInput::make('organization_name')
                     ->required()
                     ->maxLength(191),
@@ -56,9 +55,9 @@ class InternshipResource extends Resource
                     ->maxLength(191),
                 Forms\Components\TextInput::make('office_location')
                     ->maxLength(255),
-                // Forms\Components\TextInput::make('parrain_titre')
-                //     ->required()
-                //     ->maxLength(191),
+                Forms\Components\TextInput::make('parrain_titre')
+                    ->required()
+                    ->maxLength(191),
                 Forms\Components\TextInput::make('parrain_nom')
                     ->required()
                     ->maxLength(191),
@@ -75,9 +74,9 @@ class InternshipResource extends Resource
                 Forms\Components\TextInput::make('parrain_mail')
                     ->required()
                     ->maxLength(191),
-                // Forms\Components\TextInput::make('encadrant_ext_titre')
-                //     ->required()
-                //     ->maxLength(191),
+                Forms\Components\TextInput::make('encadrant_ext_titre')
+                    ->required()
+                    ->maxLength(191),
                 Forms\Components\TextInput::make('encadrant_ext_nom')
                     ->required()
                     ->maxLength(191),
@@ -110,35 +109,48 @@ class InternshipResource extends Resource
                     ->required(),
                 Forms\Components\DatePicker::make('ending_at')
                     ->required(),
-                // Forms\Components\Toggle::make('abroad'),
                 Forms\Components\TextInput::make('remuneration')
                     ->maxLength(191),
                 Forms\Components\TextInput::make('currency')
                     ->maxLength(10),
                 Forms\Components\TextInput::make('load')
                     ->maxLength(191),
-                // Forms\Components\TextInput::make('abroad_school')
-                // ->maxLength(191),
-                // Forms\Components\TextInput::make('int_adviser_id')
-                // ->numeric(),
                 Forms\Components\TextInput::make('int_adviser_name')
                     ->maxLength(191),
-                // Forms\Components\Toggle::make('is_signed'),
-                // Forms\Components\TextInput::make('year_id')
-                //     ->numeric(),
+                Forms\Components\TextInput::make('year_id')
+                    ->numeric(),
+                Forms\Components\Toggle::make('is_valid'),
+                Forms\Components\ToggleButtons::make('status')
+                ->options([
+                    'Draft' => __('Draft'),
+                    'Announced' => __('Announced'),
+                    'Validated' => __('Validated'),
+                    'Approved' => __('Approved'),
+                    'Signed' => __('Signed'),
+                ]),
+                Forms\Components\Select::make('assigned_department')
+                    ->options([
+                        'SC' => 'SC',
+                        'MIR' => 'MIR',
+                        'EMO' => 'EMO',
+                        'GLC' => 'GLC',
+                    ]),                    
+                Forms\Components\DateTimePicker::make('announced_at'),
+                Forms\Components\DateTimePicker::make('validated_at'),
+                Forms\Components\DateTimePicker::make('received_at'),
+                Forms\Components\DateTimePicker::make('signed_at'),
+                Forms\Components\TextInput::make('project_id')
+                    ->numeric(),
                 // Forms\Components\TextInput::make('binome_user_id')
                 //     ->numeric(),
-                // Forms\Components\Toggle::make('is_valid'),
-                Forms\Components\TextInput::make('status')
-                    ->maxLength(255),
-                // Forms\Components\DateTimePicker::make('announced_at'),
-                // Forms\Components\DateTimePicker::make('validated_at'),
-                // Forms\Components\DateTimePicker::make('approved_at'),
-                // Forms\Components\DateTimePicker::make('signed_at'),
-                // Forms\Components\TextInput::make('partner_internship_id')
-                //     ->numeric(),
-                // Forms\Components\TextInput::make('partnership_status')
-                //     ->maxLength(50),
+                Forms\Components\Select::make('binome_user_id')
+                    ->options(function () {
+                        return Student::all()->pluck('full_name', 'id');
+                    }),
+                Forms\Components\TextInput::make('partner_internship_id')
+                    ->numeric(),
+                Forms\Components\TextInput::make('partnership_status')
+                    ->maxLength(50),
             ]);
     }
 
@@ -147,197 +159,53 @@ class InternshipResource extends Resource
         $livewire = $table->getLivewire();
 
         return $table
-            ->modifyQueryUsing(fn (Builder $query) => $query->whereHas(
-                'student',
-                fn (Builder $query) => $query->where('program', Auth::user()->program_coordinator)
-            ))
             ->groups([
-                Group::make('status')
-                    ->collapsible(),
+                Group::make(__('status'))
+                    ->collapsible()
+                    ->titlePrefixedWithLabel(false),
                 Group::make('student.program')
-                    ->label(__('Program')),
+                    ->label(__('Program'))
+                    ->collapsible(),
                 // ->titlePrefixedWithLabel(false)
                 // ->getTitleFromRecordUsing(fn (Internship $record): string => ucfirst($record->program)),
             ])
             ->defaultGroup('status') //->groupingSettingsHidden()
             ->emptyStateDescription('Once students starts announcing internships, it will appear here.')
-            ->columns([
-                Tables\Columns\TextColumn::make('student.full_name')
-                    ->weight(FontWeight::Bold)
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('title')
-                    ->weight(FontWeight::Bold)
-                    ->searchable(),
-                // Split::make([
-                Stack::make([
-                    // Tables\Columns\TextColumn::make('student_id')
-                    //     ->numeric()
-                    //     ->sortable(),
-                    // add validated_at as date column with d/m/y format
-                    Tables\Columns\TextColumn::make('validated_at')
-                        ->dateTime()
-                        ->sortable()
-                        ->label('Validation time')->since()
-                        ->description('Validated', 'above')
-                        ->placeholder('Not validated')
-                        ->badge(function (Internship $internship) {
-                            return $internship->validated_at ? 'Validated' : 'Not validated';
-                        }),
-                    Tables\Columns\TextColumn::make('announced_at')
-                        ->dateTime()
-                        ->sortable(),
-
-                    Tables\Columns\TextColumn::make('approved_at')
-                        ->dateTime()
-                        ->sortable(),
-                    Tables\Columns\TextColumn::make('signed_at')
-                        ->dateTime()
-                        ->sortable()
-                        ->label('Signed at')->since()
-                        ->description('Signed', 'above')
-                        ->placeholder('Not signed yet')
-                        ->badge(function (Internship $internship) {
-                            return $internship->signed_at ? 'Signed' : 'Not signed';
-                        }),
-                ])
-                    ->alignment(Alignment::Start),
-
-                // Stack::make([
-                //     Tables\Columns\TextColumn::make('parrain_nom')
-                //         ->searchable(),
-                //     Tables\Columns\TextColumn::make('parrain_prenom')
-                //         ->searchable(),
-                //     Tables\Columns\TextColumn::make('parrain_fonction')
-                //         ->searchable(),
-                //     Tables\Columns\TextColumn::make('parrain_tel')
-                //         ->searchable()->icon('heroicon-m-phone'),
-                //     Tables\Columns\TextColumn::make('parrain_mail')
-                //         ->searchable()->icon('heroicon-m-envelope'),
-                // ]),
-
-                Split::make([
-                    Stack::make([
-                        Tables\Columns\TextColumn::make('organization_name')
-                            ->searchable(),
-                        // Tables\Columns\TextColumn::make('adresse')
-                        //     ->searchable(),
-                        // Tables\Columns\TextColumn::make('city')
-                        //     ->searchable(),
-                        Tables\Columns\TextColumn::make('country')
-                            ->searchable(),
-                    ]),
-                    // Tables\Columns\TextColumn::make('office_location')
-                    //     ->searchable(),
-                    // Tables\Columns\TextColumn::make('parrain_titre')
-                    //     ->searchable(),
-                    Stack::make([
-                        Tables\Columns\TextColumn::make('starting_at')
-                            ->date()
-                            ->sortable(),
-                        Tables\Columns\TextColumn::make('ending_at')
-                            ->date()
-                            ->sortable(),
-                    ])->alignment(Alignment::End),
-                ]),
-                Panel::make([
-
-                    Stack::make([
-                        // Tables\Columns\TextColumn::make('encadrant_ext_titre')
-                        //     ->searchable(),
-                        Tables\Columns\TextColumn::make('encadrant_ext_nom')
-                            ->searchable(),
-                        Tables\Columns\TextColumn::make('encadrant_ext_prenom')
-                            ->searchable(),
-                        Tables\Columns\TextColumn::make('encadrant_ext_fonction')
-                            ->searchable(),
-                        Tables\Columns\TextColumn::make('encadrant_ext_tel')
-                            ->searchable()->icon('heroicon-m-phone'),
-                        Tables\Columns\TextColumn::make('encadrant_ext_mail')
-                            ->searchable()->icon('heroicon-m-envelope')
-                            ->copyable()
-                            ->copyMessage('Email address copied'),
-                    ])->grow(true)->alignment(Alignment::End),
-                ])->collapsible(),
-                // Tables\Columns\TextColumn::make('keywords')
-                //     ->searchable()
-                //     ->badge()
-                //     ->separator(','),
-                // Tables\Columns\IconColumn::make('abroad')
-                //     ->boolean(),
-                // Tables\Columns\TextColumn::make('remuneration')
-                //     ->searchable(),
-                // Tables\Columns\TextColumn::make('currency')
-                //     ->searchable(),
-                // Tables\Columns\TextColumn::make('load')
-                //     ->searchable(),
-                // Tables\Columns\TextColumn::make('abroad_school')
-                //     ->searchable(),
-                // Tables\Columns\TextColumn::make('int_adviser_id')
-                //     ->numeric()
-                //     ->sortable(),
-                // Tables\Columns\TextColumn::make('int_adviser_name')
-                //     ->searchable(),
-                // Tables\Columns\IconColumn::make('is_signed')
-                //     ->boolean(),
-                // Tables\Columns\TextColumn::make('year_id')
-                //     ->numeric()
-                //     ->sortable(),
-                // Tables\Columns\TextColumn::make('binome_user_id')
-                //     ->numeric()
-                //     ->sortable(),
-                // Tables\Columns\IconColumn::make('is_valid')
-                //     ->boolean(),
-                // Tables\Columns\TextColumn::make('status')
-                //     ->searchable(),
-
-                // Tables\Columns\TextColumn::make('partner_internship_id')
-                //     ->numeric()
-                //     ->sortable(),
-                // Tables\Columns\TextColumn::make('partnership_status')
-                //     ->searchable(),
-                // Tables\Columns\TextColumn::make('created_at')
-                //     ->dateTime()
-                //     ->sortable()
-                //     ->toggleable(isToggledHiddenByDefault: true),
-                // Tables\Columns\TextColumn::make('updated_at')
-                //     ->dateTime()
-                //     ->sortable()
-                //     ->toggleable(isToggledHiddenByDefault: true),
-                // Tables\Columns\TextColumn::make('deleted_at')
-                //     ->dateTime()
-                //     ->sortable()
-                //     ->toggleable(isToggledHiddenByDefault: true),
-                // ]),
-            ])
-            ->contentGrid([
-                'md' => 2,
-                'xl' => 3,
-            ])
+            ->columns(
+                $livewire->isGridLayout()
+                    ? static::getGridTableColumns()
+                    : static::getTableColumns(),
+            )
+            ->contentGrid(
+                fn () => $livewire->isGridLayout()
+                    ? [
+                        'md' => 2,
+                        'lg' => 3,
+                        'xl' => 4,
+                    ] : null
+            )
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
+                SelectFilter::make('status')
+                    ->multiple()
+                    ->options([
+                        'Draft' => __('Draft'),
+                        'Announced' => __('Announced'),
+                        'Validated' => __('Validated'),
+                        'Approved' => __('Approved'),
+                        'Signed' => __('Signed'),
+                    ]),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                // Tables\Actions\EditAction::make(),
-                // Tables\Actions\DeleteAction::make(),
-                // Tables\Actions\ForceDeleteAction::make(),
-                // Tables\Actions\RestoreAction::make(),
-                ValidateAction::make(),
-                // Tables\Actions\Action::make('validate')->action(fn (Internship $internship) => $internship->validate())
-                //     ->requiresConfirmation(fn (Internship $internship) => 'Are you sure you want to mark this internship as validated?'),
-                // Tables\Actions\Action::make('sendEmail')
-                // ->form([
-                //     TextInput::make('subject')->required(),
-                //     RichEditor::make('body')->required(),
-                // ])
-                // ->action(fn (array $data, Internship $internship) => Mail::to($internship->student->email_perso)
-                //     ->send(new DefenseReadyEmail(
-                //         $data['subject'],
-                //         $data['body'],
-                //     ))
-                // )
-                \App\Filament\ProgramCoordinator\Resources\InternshipResource\Actions\ValidateAction::make(),//->action(fn (Internship $internship) => $internship->validate()),
-            ], position: ActionsPosition::BeforeCells)
+                Tables\Actions\ViewAction::make()->label(''),
+                Tables\Actions\EditAction::make()->label(''),
+                // Tables\Actions\DeleteAction::make()->label(''),
+                // Tables\Actions\ForceDeleteAction::make()->label(''),
+                // Tables\Actions\RestoreAction::make()->label(''),
+                // \App\Filament\Actions\SignAction::make(),
+                \App\Filament\Actions\ValidateAction::make(),
+                \App\Filament\Actions\AssignDepartmentAction::make(),
+            ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
                 ExportBulkAction::make(),
                 // Tables\Actions\BulkActionGroup::make([
@@ -352,7 +220,18 @@ class InternshipResource extends Resource
     {
         return [
             'index' => Pages\ManageInternships::route('/'),
+            // 'card-view' => Pages\ManageInternships::route('/card-view'),
         ];
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('Internship');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Internships');
     }
 
     public static function getEloquentQuery(): Builder
@@ -362,13 +241,280 @@ class InternshipResource extends Resource
                 SoftDeletingScope::class,
             ]);
     }
-    public static function getModelLabel(): string
+
+    public static function getGridTableColumns(): array
     {
-        return __('Internship');
+        return [
+            Tables\Columns\TextColumn::make('student.full_name')
+                ->weight(FontWeight::Bold)
+                ->searchable(),
+            Tables\Columns\TextColumn::make('title')
+                ->weight(FontWeight::Bold)
+                ->searchable(),
+            // Split::make([
+            Stack::make([
+                // Tables\Columns\TextColumn::make('student_id')
+                //     ->numeric()
+                //     ->sortable(),
+                // add validated_at as date column with d/m/y format
+                Tables\Columns\TextColumn::make('validated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->label('Validated at'),
+                Tables\Columns\TextColumn::make('assigned_department')
+                    ->dateTime()
+                    ->sortable()
+                    ->label('Assigned to department at'),
+                Tables\Columns\TextColumn::make('announced_at')
+                    ->dateTime()
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('approved_at')
+                    ->dateTime()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('signed_at')
+                    ->dateTime()
+                    ->sortable(),
+            ])
+                ->alignment(Alignment::Start),
+
+            // Stack::make([
+            //     Tables\Columns\TextColumn::make('parrain_nom')
+            //         ->searchable(),
+            //     Tables\Columns\TextColumn::make('parrain_prenom')
+            //         ->searchable(),
+            //     Tables\Columns\TextColumn::make('parrain_fonction')
+            //         ->searchable(),
+            //     Tables\Columns\TextColumn::make('parrain_tel')
+            //         ->searchable()->icon('heroicon-m-phone'),
+            //     Tables\Columns\TextColumn::make('parrain_mail')
+            //         ->searchable()->icon('heroicon-m-envelope'),
+            // ]),
+
+            Split::make([
+                Stack::make([
+                    Tables\Columns\TextColumn::make('organization_name')
+                        ->searchable(),
+                    // Tables\Columns\TextColumn::make('adresse')
+                    //     ->searchable(),
+                    // Tables\Columns\TextColumn::make('city')
+                    //     ->searchable(),
+                    Tables\Columns\TextColumn::make('country')
+                        ->searchable(),
+                ]),
+                // Tables\Columns\TextColumn::make('office_location')
+                //     ->searchable(),
+                // Tables\Columns\TextColumn::make('parrain_titre')
+                //     ->searchable(),
+                Stack::make([
+                    Tables\Columns\TextColumn::make('starting_at')
+                        ->date()
+                        ->sortable(),
+                    Tables\Columns\TextColumn::make('ending_at')
+                        ->date()
+                        ->sortable(),
+                ])->alignment(Alignment::End),
+            ]),
+            Panel::make([
+
+                Stack::make([
+                    // Tables\Columns\TextColumn::make('encadrant_ext_titre')
+                    //     ->searchable(),
+                    Tables\Columns\TextColumn::make('encadrant_ext_nom')
+                        ->searchable(),
+                    Tables\Columns\TextColumn::make('encadrant_ext_prenom')
+                        ->searchable(),
+                    Tables\Columns\TextColumn::make('encadrant_ext_fonction')
+                        ->searchable(),
+                    Tables\Columns\TextColumn::make('encadrant_ext_tel')
+                        ->searchable()->icon('heroicon-m-phone'),
+                    Tables\Columns\TextColumn::make('encadrant_ext_mail')
+                        ->searchable()->icon('heroicon-m-envelope')
+                        ->copyable()
+                        ->copyMessage('Email address copied'),
+                ])->grow(true)->alignment(Alignment::End),
+            ])->collapsible(),
+
+            // Tables\Columns\IconColumn::make('abroad')
+            //     ->boolean(),
+            // Tables\Columns\TextColumn::make('remuneration')
+            //     ->searchable(),
+            // Tables\Columns\TextColumn::make('currency')
+            //     ->searchable(),
+            // Tables\Columns\TextColumn::make('load')
+            //     ->searchable(),
+            // Tables\Columns\TextColumn::make('abroad_school')
+            //     ->searchable(),
+            // Tables\Columns\TextColumn::make('int_adviser_id')
+            //     ->numeric()
+            //     ->sortable(),
+            // Tables\Columns\TextColumn::make('int_adviser_name')
+            //     ->searchable(),
+            // Tables\Columns\IconColumn::make('is_signed')
+            //     ->boolean(),
+            // Tables\Columns\TextColumn::make('year_id')
+            //     ->numeric()
+            //     ->sortable(),
+            // Tables\Columns\TextColumn::make('binome_user_id')
+            //     ->numeric()
+            //     ->sortable(),
+            // Tables\Columns\IconColumn::make('is_valid')
+            //     ->boolean(),
+            // Tables\Columns\TextColumn::make('status')
+            //     ->searchable(),
+
+            // Tables\Columns\TextColumn::make('partner_internship_id')
+            //     ->numeric()
+            //     ->sortable(),
+            // Tables\Columns\TextColumn::make('partnership_status')
+            //     ->searchable(),
+            // Tables\Columns\TextColumn::make('created_at')
+            //     ->dateTime()
+            //     ->sortable()
+            //     ->toggleable(isToggledHiddenByDefault: true),
+            // Tables\Columns\TextColumn::make('updated_at')
+            //     ->dateTime()
+            //     ->sortable()
+            //     ->toggleable(isToggledHiddenByDefault: true),
+            // Tables\Columns\TextColumn::make('deleted_at')
+            //     ->dateTime()
+            //     ->sortable()
+            //     ->toggleable(isToggledHiddenByDefault: true),
+            // ]),
+        ];
     }
-    
-    public static function getPluralModelLabel(): string
+
+    public static function getTableColumns(): array
     {
-        return __('Internships');
+        return [
+
+            Tables\Columns\TextColumn::make('student_id')
+                ->numeric()
+                ->sortable(),
+                Tables\Columns\TextColumn::make('id_pfe')
+                ->numeric()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('student.full_name')
+                ->label(__('Full Name'))
+                ->weight(FontWeight::Bold)
+                ->searchable(),
+            Tables\Columns\TextColumn::make('student.program')
+                ->label(__('Program'))
+                ->weight(FontWeight::Bold)
+                ->searchable(),
+            Tables\Columns\TextColumn::make('organization_name')
+                ->searchable(),
+            Tables\Columns\TextColumn::make('adresse')
+                ->toggleable(isToggledHiddenByDefault: true)
+                ->searchable(),
+            Tables\Columns\TextColumn::make('city')
+                ->searchable(),
+            Tables\Columns\TextColumn::make('country')
+                ->searchable(),
+            Tables\Columns\TextColumn::make('office_location')
+                ->toggleable(isToggledHiddenByDefault: true)
+                ->searchable(),
+            Tables\Columns\TextColumn::make('parrain_titre')
+                ->toggleable(isToggledHiddenByDefault: true)
+                ->searchable(),
+            Tables\Columns\TextColumn::make('parrain_nom')
+                ->searchable(),
+            Tables\Columns\TextColumn::make('parrain_prenom')
+                ->searchable(),
+            Tables\Columns\TextColumn::make('parrain_fonction')
+                ->searchable(),
+            Tables\Columns\TextColumn::make('parrain_tel')
+                ->searchable(),
+            Tables\Columns\TextColumn::make('parrain_mail')
+                ->searchable(),
+            Tables\Columns\TextColumn::make('encadrant_ext_titre')
+                ->toggleable(isToggledHiddenByDefault: true)
+                ->searchable(),
+            Tables\Columns\TextColumn::make('encadrant_ext_nom')
+                ->searchable(),
+            Tables\Columns\TextColumn::make('encadrant_ext_prenom')
+                ->searchable(),
+            Tables\Columns\TextColumn::make('encadrant_ext_fonction')
+                ->searchable(),
+            Tables\Columns\TextColumn::make('encadrant_ext_tel')
+                ->searchable(),
+            Tables\Columns\TextColumn::make('encadrant_ext_mail')
+                ->searchable(),
+            Tables\Columns\TextColumn::make('starting_at')
+                ->date()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('ending_at')
+                ->date()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('remuneration')
+                ->toggleable(isToggledHiddenByDefault: true)
+                ->searchable(),
+            Tables\Columns\TextColumn::make('currency')
+                ->toggleable(isToggledHiddenByDefault: true)
+                ->searchable(),
+            Tables\Columns\TextColumn::make('load')
+                ->toggleable(isToggledHiddenByDefault: true)
+                ->searchable(),
+            Tables\Columns\TextColumn::make('int_adviser_name')
+                ->searchable(),
+            Tables\Columns\TextColumn::make('year_id')
+                ->toggleable(isToggledHiddenByDefault: true)
+                ->numeric()
+                ->sortable(),
+            Tables\Columns\IconColumn::make('is_valid')
+                ->toggleable(isToggledHiddenByDefault: true)
+                ->boolean(),
+            Tables\Columns\TextColumn::make('status')
+                ->toggleable(isToggledHiddenByDefault: true)
+                ->searchable(),
+            Tables\Columns\TextColumn::make('announced_at')
+                ->dateTime()
+                ->sortable()
+                ->label('Announced at')->since()
+                ->description('Announced', 'above')
+                ->placeholder('Not Announced yet')
+                ->badge(function (Internship $internship) {
+                    return $internship->announced_at ? 'Announced' : 'Not announced yet';
+                }),
+            Tables\Columns\TextColumn::make('validated_at')
+                ->dateTime()
+                ->sortable(),
+                Tables\Columns\TextColumn::make('assigned_department')
+                ->sortable()
+                ->label('Assigned to department'),
+            Tables\Columns\TextColumn::make('approved_at')
+                ->dateTime()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('signed_at')
+                ->dateTime()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('project_id')
+                ->toggleable(isToggledHiddenByDefault: true)
+                ->numeric()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('binome_user_id')
+                ->toggleable(isToggledHiddenByDefault: true)
+                ->numeric()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('partner_internship_id')
+                ->toggleable(isToggledHiddenByDefault: true)
+                ->numeric()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('partnership_status')
+                ->toggleable(isToggledHiddenByDefault: true)
+                ->searchable(),
+            Tables\Columns\TextColumn::make('created_at')
+                ->dateTime()
+                ->sortable()
+                ->toggleable(isToggledHiddenByDefault: true),
+            Tables\Columns\TextColumn::make('updated_at')
+                ->dateTime()
+                ->sortable()
+                ->toggleable(isToggledHiddenByDefault: true),
+            Tables\Columns\TextColumn::make('deleted_at')
+                ->dateTime()
+                ->sortable()
+                ->toggleable(isToggledHiddenByDefault: true),
+        ];
     }
 }
