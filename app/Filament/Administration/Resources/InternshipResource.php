@@ -25,6 +25,9 @@ use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use App\Models\Student;
 use Filament\Support\Enums\ActionSize;
 use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Columns\Summarizers\Sum;
+use Filament\Tables\Columns\TextColumn;
+use App\Enums\Status;
 
 
 class InternshipResource extends Resource
@@ -41,7 +44,7 @@ class InternshipResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('student_id')
                     ->numeric(),
-                    Forms\Components\TextInput::make('id_pfe')
+                Forms\Components\TextInput::make('id_pfe')
                     ->numeric(),
                 Forms\Components\TextInput::make('organization_name')
                     ->required()
@@ -122,22 +125,29 @@ class InternshipResource extends Resource
                 Forms\Components\TextInput::make('year_id')
                     ->numeric(),
                 Forms\Components\Toggle::make('is_valid')
-                ->label('Student validation'),
+                    ->label('Student validation'),
                 Forms\Components\ToggleButtons::make('status')
-                ->options([
-                    'Draft' => __('Draft'),
-                    'Announced' => __('Announced'),
-                    'Validated' => __('Validated'),
-                    'Approved' => __('Approved'),
-                    'Signed' => __('Signed'),
-                ]),
+                    ->label(__('Status'))
+                    ->options(Status::class)
+                    ->required()
+                    // ->multiple()
+                    ->native(false)
+                    ->selectablePlaceholder(false),
+                // Forms\Components\ToggleButtons::make('status')
+                // ->options([
+                //     'Draft' => __('Draft'),
+                //     'Announced' => __('Announced'),
+                //     'Validated' => __('Validated'),
+                //     'Approved' => __('Approved'),
+                //     'Signed' => __('Signed'),
+                // ]),
                 Forms\Components\Select::make('assigned_department')
                     ->options([
                         'SC' => 'SC',
                         'MIR' => 'MIR',
                         'EMO' => 'EMO',
                         'GLC' => 'GLC',
-                    ]),                    
+                    ]),
                 Forms\Components\DateTimePicker::make('announced_at'),
                 Forms\Components\DateTimePicker::make('validated_at'),
                 Forms\Components\DateTimePicker::make('received_at'),
@@ -172,13 +182,19 @@ class InternshipResource extends Resource
                 // ->titlePrefixedWithLabel(false)
                 // ->getTitleFromRecordUsing(fn (Internship $record): string => ucfirst($record->program)),
             ])
-            ->defaultGroup('status') //->groupingSettingsHidden()
+            //->groupingSettingsHidden()
+            // ->groupsOnly()
             ->emptyStateDescription('Once students starts announcing internships, it will appear here.')
             ->columns(
                 $livewire->isGridLayout()
                     ? static::getGridTableColumns()
                     : static::getTableColumns(),
+                // TextColumn::make('is_valid')
+                //     ->summarize(Sum::make()),
             )
+            // ->defaultGroup('status')
+            // ->groupsOnly()
+
             ->contentGrid(
                 fn () => $livewire->isGridLayout()
                     ? [
@@ -191,27 +207,22 @@ class InternshipResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
                 SelectFilter::make('status')
                     ->multiple()
-                    ->options([
-                        'Draft' => __('Draft'),
-                        'Announced' => __('Announced'),
-                        'Validated' => __('Validated'),
-                        'Approved' => __('Approved'),
-                        'Signed' => __('Signed'),
-                    ]),
+                    ->options(Status::class),
             ])
+
             ->actions([
                 ActionGroup::make([
                     \App\Filament\Actions\SignAction::make()
-                    ->disabled(fn ($record): bool => $record['signed_at'] !== null),
+                        ->disabled(fn ($record): bool => $record['signed_at'] !== null),
                     \App\Filament\Actions\ReceiveAction::make()
-                    ->disabled(fn ($record): bool => $record['received_at'] !== null),
+                        ->disabled(fn ($record): bool => $record['received_at'] !== null),
                     ActionGroup::make([
                         \App\Filament\Actions\ValidateAction::make()
-                        ->disabled(fn ($record): bool => $record['validated_at'] !== null),
+                            ->disabled(fn ($record): bool => $record['validated_at'] !== null),
                         \App\Filament\Actions\AssignDepartmentAction::make()
-                        ->disabled(fn ($record): bool => $record['assigned_department'] !== null),
-                        ])->dropdown(false)
-                    ])
+                            ->disabled(fn ($record): bool => $record['assigned_department'] !== null),
+                    ])->dropdown(false)
+                ])
                     ->label(__('DASRE'))
                     ->icon('')
                     // ->size(ActionSize::ExtraSmall)
@@ -225,7 +236,7 @@ class InternshipResource extends Resource
                     // ->disabled(! auth()->user()->can('delete', $this->post)),
                     Tables\Actions\ForceDeleteAction::make(),
                     Tables\Actions\RestoreAction::make(),
-                    ])
+                ])
                     ->label(__('Manage'))
                     ->icon('')
                     // ->size(ActionSize::ExtraSmall)
@@ -240,7 +251,7 @@ class InternshipResource extends Resource
                 //     ->icon('heroicon-m-ellipsis-vertical')
                 //     ->size(ActionSize::Medium)
                 //     ->color('danger')
-                    // ->button()
+                // ->button()
             ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
                 ExportBulkAction::make(),
@@ -288,31 +299,30 @@ class InternshipResource extends Resource
                 ->weight(FontWeight::Bold)
                 ->searchable(),
             // Split::make([
-            Stack::make([
-                // Tables\Columns\TextColumn::make('student_id')
-                //     ->numeric()
-                //     ->sortable(),
-                // add validated_at as date column with d/m/y format
-                Tables\Columns\TextColumn::make('validated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->label('Validated at'),
-                Tables\Columns\TextColumn::make('assigned_department')
-                    ->dateTime()
-                    ->sortable()
-                    ->label('Assigned department'),
-                Tables\Columns\TextColumn::make('announced_at')
-                    ->dateTime()
-                    ->sortable(),
+            // Stack::make([
+            //     // Tables\Columns\TextColumn::make('student_id')
+            //     //     ->numeric()
+            //     //     ->sortable(),
+            //     // add validated_at as date column with d/m/y format
+            //     Tables\Columns\TextColumn::make('validated_at')
+            //         ->dateTime()
+            //         ->sortable()
+            //         ->label('Validated at'),
+            //     Tables\Columns\TextColumn::make('assigned_department')
+            //         ->sortable()
+            //         ->label('Assigned department'),
+            //     Tables\Columns\TextColumn::make('announced_at')
+            //         ->dateTime()
+            //         ->sortable(),
 
-                Tables\Columns\TextColumn::make('approved_at')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('signed_at')
-                    ->dateTime()
-                    ->sortable(),
-            ])
-                ->alignment(Alignment::Start),
+            //     Tables\Columns\TextColumn::make('approved_at')
+            //         ->dateTime()
+            //         ->sortable(),
+            //     Tables\Columns\TextColumn::make('signed_at')
+            //         ->dateTime()
+            //         ->sortable(),
+            // ])
+            //     ->alignment(Alignment::Start),
 
             // Stack::make([
             //     Tables\Columns\TextColumn::make('parrain_nom')
@@ -395,7 +405,7 @@ class InternshipResource extends Resource
             //     ->numeric()
             //     ->sortable(),
             Tables\Columns\IconColumn::make('is_valid')
-            ->label(__('Validated by student'))
+                ->label(__('Validated by student'))
                 ->boolean(),
             // Tables\Columns\TextColumn::make('status')
             //     ->searchable(),
@@ -428,7 +438,7 @@ class InternshipResource extends Resource
             Tables\Columns\TextColumn::make('student_id')
                 ->numeric()
                 ->sortable(),
-                Tables\Columns\TextColumn::make('id_pfe')
+            Tables\Columns\TextColumn::make('id_pfe')
                 ->numeric()
                 ->sortable(),
             Tables\Columns\TextColumn::make('student.full_name')
@@ -502,7 +512,7 @@ class InternshipResource extends Resource
                 ->toggleable(isToggledHiddenByDefault: true)
                 ->boolean()
                 ->label(__('Validated by student')),
-                Tables\Columns\TextColumn::make('status')
+            Tables\Columns\TextColumn::make('status')
                 ->toggleable(isToggledHiddenByDefault: true)
                 ->searchable(),
             Tables\Columns\TextColumn::make('announced_at')
@@ -517,7 +527,7 @@ class InternshipResource extends Resource
             Tables\Columns\TextColumn::make('validated_at')
                 ->dateTime()
                 ->sortable(),
-                Tables\Columns\TextColumn::make('assigned_department')
+            Tables\Columns\TextColumn::make('assigned_department')
                 ->sortable()
                 ->label(__('Assigned department')),
             Tables\Columns\TextColumn::make('approved_at')

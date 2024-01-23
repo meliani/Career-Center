@@ -38,7 +38,7 @@ class Internship extends baseModel
     protected $guarded = [];
     protected $casts = [
         // 'title' => Title::class,
-        'status' => StatusCast::class,
+        'status' => Status::class,
 
         'starting_at' => 'date',
         'ending_at' => 'date',
