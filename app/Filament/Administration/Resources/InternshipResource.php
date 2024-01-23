@@ -201,28 +201,35 @@ class InternshipResource extends Resource
             ])
             ->actions([
                 ActionGroup::make([
-                    \App\Filament\Actions\SignAction::make(),
-                    \App\Filament\Actions\ReceiveAction::make(),
+                    \App\Filament\Actions\SignAction::make()
+                    ->disabled(fn ($record): bool => $record['signed_at'] !== null),
+                    \App\Filament\Actions\ReceiveAction::make()
+                    ->disabled(fn ($record): bool => $record['received_at'] !== null),
                     ActionGroup::make([
-                        \App\Filament\Actions\ValidateAction::make(),
-                        \App\Filament\Actions\AssignDepartmentAction::make(),
+                        \App\Filament\Actions\ValidateAction::make()
+                        ->disabled(fn ($record): bool => $record['validated_at'] !== null),
+                        \App\Filament\Actions\AssignDepartmentAction::make()
+                        ->disabled(fn ($record): bool => $record['assigned_department'] !== null),
                         ])->dropdown(false)
                     ])
                     ->label(__('DASRE'))
                     ->icon('')
                     // ->size(ActionSize::ExtraSmall)
                     ->color('warning')
+                    ->outlined()
                     ->button(),
                 ActionGroup::make([
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\DeleteAction::make(),
+                    // ->disabled(! auth()->user()->can('delete', $this->post)),
                     Tables\Actions\ForceDeleteAction::make(),
                     Tables\Actions\RestoreAction::make(),
                     ])
                     ->label(__('Manage'))
                     ->icon('')
                     // ->size(ActionSize::ExtraSmall)
+                    ->outlined()
                     ->color('warning')
                     ->button(),
                 // ActionGroup::make([
