@@ -22,6 +22,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Mail;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use App\Models\Student;
+
 
 class InternshipResource extends Resource
 {
@@ -36,6 +38,8 @@ class InternshipResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('student_id')
+                    ->numeric(),
+                    Forms\Components\TextInput::make('id_pfe')
                     ->numeric(),
                 Forms\Components\TextInput::make('organization_name')
                     ->required()
@@ -120,12 +124,16 @@ class InternshipResource extends Resource
                     ->maxLength(255),
                 Forms\Components\DateTimePicker::make('announced_at'),
                 Forms\Components\DateTimePicker::make('validated_at'),
-                Forms\Components\DateTimePicker::make('approved_at'),
+                Forms\Components\DateTimePicker::make('received_at'),
                 Forms\Components\DateTimePicker::make('signed_at'),
                 Forms\Components\TextInput::make('project_id')
                     ->numeric(),
-                Forms\Components\TextInput::make('binome_user_id')
-                    ->numeric(),
+                // Forms\Components\TextInput::make('binome_user_id')
+                //     ->numeric(),
+                Forms\Components\Select::make('binome_user_id')
+                    ->options(function () {
+                        return Student::all()->pluck('full_name', 'id');
+                    }),
                 Forms\Components\TextInput::make('partner_internship_id')
                     ->numeric(),
                 Forms\Components\TextInput::make('partnership_status')
@@ -362,9 +370,12 @@ class InternshipResource extends Resource
     {
         return [
 
-            // Tables\Columns\TextColumn::make('student_id')
-            //     ->numeric()
-            //     ->sortable(),
+            Tables\Columns\TextColumn::make('student_id')
+                ->numeric()
+                ->sortable(),
+                Tables\Columns\TextColumn::make('id_pfe')
+                ->numeric()
+                ->sortable(),
             Tables\Columns\TextColumn::make('student.full_name')
                 ->label(__('Full Name'))
                 ->weight(FontWeight::Bold)
