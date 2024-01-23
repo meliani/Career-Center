@@ -13,13 +13,15 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->enum('title', ['Mr', 'Mrs']);
             $table->string('name');
             $table->string('first_name');
             $table->string('last_name');
+            $table->enum('department', ['SC', 'RIM']);
             $table->enum('role', ['ProgramCoordinator', 'Professor', 'InternshipSupervisor', 'HeadOfDepartment', 'Administrator', 'SuperAdministrator'])->default('Professor');
             $table->string('email')->unique();
-            $table->enum('department', ['SC', 'RIM']);
             $table->enum('program_coordinator', ['SESNUM', 'SUD']);
+            $table->number('is_enabled')->default('0');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

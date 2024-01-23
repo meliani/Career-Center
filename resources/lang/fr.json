@@ -3,7 +3,6 @@
     "Month view": "Affichage mensuel",
     "activity": "activité",
     "activities": "activités",
-    "Program Coordinator": "Coordinateur de filière",
     "Mark as Signed": "Marquer comme signé",
     "Internship": "Stage",
     "Internships": "Stages",
@@ -34,5 +33,12 @@
     "Validated at": "Validé le",
     "Approved": "Approuvé",
     "Approved at": "Approuvé le",
-    "Signed at": "Signé le"
+    "Signed at": "Signé le",
+    "Program Coordinator": "Coordonnateur de filière",
+    "Professor": "Professeur",
+    "Internship Supervisor": "Superviseur de stage",
+    "Head of Department": "Chef de département",
+    "Administrator": "Administrateur",
+    "Super Administrator": "Super administrateur",
+    "Administrative Supervisor": "Référent administratif"
 }
