@@ -24,7 +24,7 @@
     "Number of Internships per Month during the academic year": "Nombre de stages par mois pendant l'année académique",
     "Full Name": "Nom complet",
     "Organization name": "Nom de l'organisation",
-    "Sign": "Signer",
+    "Sign": "Signer le document",
     "Announced at": "Déclaré le",
     "Internship Offer": "Offre de stage",
     "Internship offers": "Offres de stage",
@@ -59,6 +59,10 @@
     "Sign internship agrrement": "Signer la convention de stage",
     "Internship agreement": "Convention de stage",
     "Are you sure you want to mark this internship as Signed?": "Êtes-vous sûr de vouloir marquer ce stage comme signé?",
-    "Mark as signed": "Marquer comme signé"
+    "Mark as signed": "Marquer comme signé",
+    "Program Coordinator validation": "Validation du coordinateur de filière",
+    "Manage": "Gérer",
+    "Achieved successfully": "Convention de stage Achevé",
+    "Internship agreement received": "Convention de stage reçue"
 
 }

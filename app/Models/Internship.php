@@ -98,6 +98,28 @@ class Internship extends baseModel
             return response()->json(['error' => 'This action is unauthorized.'], 403);
         }
     }
+    public function receive()
+    {
+        try {
+            if (Gate::denies('sign-internship', $this)) {
+                throw new AuthorizationException();
+            }
+            $this->received_at = now();
+            $this->save();
+            Notification::make()
+                ->title('Achieved successfully')
+                ->success()
+                ->send();
+        } catch (AuthorizationException $e) {
+
+            Notification::make()
+                ->title('Sorry You must be an Administrator.')
+                ->danger()
+                ->send();
+
+            return response()->json(['error' => 'This action is unauthorized.'], 403);
+        }
+    }
     public function assignDepartment($department)
     {
         try {

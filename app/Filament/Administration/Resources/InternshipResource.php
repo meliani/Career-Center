@@ -23,6 +23,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Mail;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use App\Models\Student;
+use Filament\Support\Enums\ActionSize;
+use Filament\Tables\Actions\ActionGroup;
 
 
 class InternshipResource extends Resource
@@ -198,14 +200,40 @@ class InternshipResource extends Resource
                     ]),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make()->label(''),
-                Tables\Actions\EditAction::make()->label(''),
-                Tables\Actions\DeleteAction::make()->label(''),
-                Tables\Actions\ForceDeleteAction::make()->label(''),
-                Tables\Actions\RestoreAction::make()->label(''),
-                \App\Filament\Actions\SignAction::make(),
-                \App\Filament\Actions\ValidateAction::make(),
-                \App\Filament\Actions\AssignDepartmentAction::make(),
+                ActionGroup::make([
+                    \App\Filament\Actions\SignAction::make(),
+                    \App\Filament\Actions\ReceiveAction::make(),
+                    ActionGroup::make([
+                        \App\Filament\Actions\ValidateAction::make(),
+                        \App\Filament\Actions\AssignDepartmentAction::make(),
+                        ])->dropdown(false)
+                    ])
+                    ->label(__('DASRE'))
+                    ->icon('')
+                    // ->size(ActionSize::ExtraSmall)
+                    ->color('warning')
+                    ->button(),
+                ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\ForceDeleteAction::make(),
+                    Tables\Actions\RestoreAction::make(),
+                    ])
+                    ->label(__('Manage'))
+                    ->icon('')
+                    // ->size(ActionSize::ExtraSmall)
+                    ->color('warning')
+                    ->button(),
+                // ActionGroup::make([
+                //     \App\Filament\Actions\ValidateAction::make(),
+                //     \App\Filament\Actions\AssignDepartmentAction::make(),
+                //     ])
+                //     ->label(__())
+                //     ->icon('heroicon-m-ellipsis-vertical')
+                //     ->size(ActionSize::Medium)
+                //     ->color('danger')
+                    // ->button()
             ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
                 ExportBulkAction::make(),

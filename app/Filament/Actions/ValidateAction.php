@@ -12,7 +12,7 @@ class ValidateAction extends Action
 
     public static function getDefaultName(): string
     {
-        return __('Validate');
+        return __('Program Coordinator validation');
     }
 
     public static function make(?string $name = null): static

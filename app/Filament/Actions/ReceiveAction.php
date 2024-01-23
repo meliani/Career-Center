@@ -6,7 +6,7 @@ use App\Models\Internship;
 use Filament\Tables\Actions\Action;
 use Illuminate\Support\Carbon;
 
-class SignAction extends Action
+class ReceiveAction extends Action
 {
     // protected ?string $name = null;
 
@@ -14,7 +14,7 @@ class SignAction extends Action
 
     public static function getDefaultName(): string
     {
-        return __('Sign');
+        return __('Internship agreement received');
     }
 
     public static function make(?string $name = null): static
@@ -24,15 +24,8 @@ class SignAction extends Action
             'name' => $name ?? static::getDefaultName(),
         ]);
         $static->configure()->action(function (array $data, Internship $record): void {
-            $record->withoutTimestamps(fn () => $record->sign());
-        })
-        ->requiresConfirmation(fn () => "Are you sure you want to mark this internship as Signed?")
-        ->modalIconColor('success')
-        ->modalIcon('heroicon-o-check')
-        ->modalHeading('Sign internship agreement')
-        ->modalDescription(__('Are you sure you want to mark this internship as Signed?'))
-        ->modalSubmitActionLabel(__('Mark as signed'))
-        ->color('success');
+            $record->withoutTimestamps(fn () => $record->receive());
+        });
 
         return $static;
     }
