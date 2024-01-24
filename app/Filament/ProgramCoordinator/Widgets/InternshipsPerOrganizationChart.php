@@ -32,7 +32,7 @@ class InternshipsPerOrganizationChart extends ApexChartsParentWidget
         $internshipData = Internship::select('organization_name', \DB::raw('count(*) as count'))
         // where internship.student.program like AMOA
             ->whereHas('student', function ($q) {
-                $q->where('program', 'like', '%AMOA%');
+                $q->where('program', 'like', '%SESNUM%');
             })
             ->groupBy('organization_name')
             ->get()
