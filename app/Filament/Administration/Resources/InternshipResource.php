@@ -175,6 +175,7 @@ class InternshipResource extends Resource
         $livewire = $table->getLivewire();
 
         return $table
+        ->defaultSort('announced_at', 'asc')
             ->groups([
                 Group::make(__('status'))
                     ->collapsible()

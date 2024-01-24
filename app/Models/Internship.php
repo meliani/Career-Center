@@ -27,7 +27,10 @@ class Internship extends baseModel
         // dd(Status::Draft);
 
     }
-
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new Scopes\DepartmentCoordinator());
+    }
     public function scopeFilterByProgramHead($query)
     {
         return $query->whereHas('student', function ($q) {
