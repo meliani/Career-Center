@@ -207,7 +207,7 @@ class InternshipResource extends Resource
                     ] : null
             )
             ->filters([
-                Tables\Filters\TrashedFilter::make(),->label(__('Send email'))
+                Tables\Filters\TrashedFilter::make(),
                 SelectFilter::make('status')
                     ->multiple()
                     ->options(Status::class),
