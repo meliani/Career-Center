@@ -28,6 +28,9 @@ use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
 use App\Enums\Status;
+use App\Mail\GenericEmail;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\RichEditor;
 
 
 class InternshipResource extends Resource
@@ -243,15 +246,18 @@ class InternshipResource extends Resource
                     ->outlined()
                     ->color('warning')
                     ->button(),
-                // ActionGroup::make([
-                //     \App\Filament\Actions\ValidateAction::make(),
-                //     \App\Filament\Actions\AssignDepartmentAction::make(),
-                //     ])
-                //     ->label(__())
-                //     ->icon('heroicon-m-ellipsis-vertical')
-                //     ->size(ActionSize::Medium)
-                //     ->color('danger')
-                // ->button()
+                    Tables\Actions\Action::make('sendEmail')
+                    ->form([
+                        TextInput::make('subject')->required(),
+                        RichEditor::make('body')->required(),
+                    ])
+                    ->action(fn (array $data, Internship $internship) => Mail::to($internship->student->email_perso)
+                        ->send(new GenericEmail(
+                            $internship->student,
+                            $data['subject'],
+                            $data['body'],
+                        ))
+                    )
             ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
                 ExportBulkAction::make(),
