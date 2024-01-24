@@ -530,7 +530,7 @@ class InternshipResource extends Resource
             Tables\Columns\TextColumn::make('assigned_department')
                 ->sortable()
                 ->label(__('Assigned department')),
-            Tables\Columns\TextColumn::make('approved_at')
+            Tables\Columns\TextColumn::make('received_at')
                 ->dateTime()
                 ->sortable(),
             Tables\Columns\TextColumn::make('signed_at')
