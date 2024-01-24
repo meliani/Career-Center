@@ -257,7 +257,7 @@ class InternshipResource extends Resource
                             $data['subject'],
                             $data['body'],
                         ))
-                    )
+                    )->label(__('Send email'))
             ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
                 ExportBulkAction::make(),

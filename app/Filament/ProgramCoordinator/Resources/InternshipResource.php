@@ -207,7 +207,7 @@ class InternshipResource extends Resource
                     ] : null
             )
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
+                Tables\Filters\TrashedFilter::make(),->label(__('Send email'))
                 SelectFilter::make('status')
                     ->multiple()
                     ->options(Status::class),
@@ -257,7 +257,7 @@ class InternshipResource extends Resource
                             $data['subject'],
                             $data['body'],
                         ))
-                    )
+                    )->label(__('Send email'))
             ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
                 ExportBulkAction::make(),
