@@ -31,10 +31,10 @@ class InternshipsPerCityChart extends ApexChartsParentWidget
         //  return apex chart data
         $internshipData = Internship::select('city', \DB::raw('count(*) as count'))
         // where internship.student.program like AMOA
-            ->whereHas('student', function ($q) {
+            // ->whereHas('student', function ($q) {
 
-                $q->where('program', auth()->user()->program_coordinator);
-            })
+            //     $q->where('program', auth()->user()->program_coordinator);
+            // })
             ->groupBy('city')
             ->get()
             ->toArray();

@@ -98,4 +98,13 @@ class User extends Authenticatable implements FilamentUser, HasName
         // return str_ends_with($this->email, '@inpt.ac.ma') && $this->hasVerifiedEmail();
         return true;
     }
+
+    public function isSuperAdministrator()
+    {
+        return $this->role === 'SuperAdministrator';
+    }
+    public function isAdministrator()
+    {
+        return $this->role === 'Administrator';
+    }
 }

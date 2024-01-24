@@ -13,6 +13,9 @@ class DepartmentCoordinator implements Scope
      */
     public function apply(Builder $builder, Model $model): void
     {
+        if (auth()->user()->isSuperAdministrator() || auth()->user()->isAdministrator()) {
+            return;
+        }
         $builder
         // ->where('assigned_department', '=', auth()->user()->department)
         ->whereHas('student', function ($q) {
