@@ -10,7 +10,7 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Student;
 
-class StudentMail extends Mailable
+class GenericEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -18,10 +18,10 @@ class StudentMail extends Mailable
     public $emailSubject;
     public $emailBody;
 
-    public function __construct(Student $student, string $emailSubject, string $emailBody)
+    public function __construct($person, string $emailSubject, string $emailBody)
     {
         // dd($emailSubject);
-        $this->student = $student;
+        $this->student = $person;
         $this->emailSubject = $emailSubject;
         $this->emailBody = $emailBody;
     }
@@ -29,7 +29,7 @@ class StudentMail extends Mailable
     public function build()
     {
         // dd($this->emailSubject);
-        return $this->markdown('emails.student_info')
+        return $this->markdown('emails.generic_email')
             ->with('student', $this->student);
     }
 
@@ -49,7 +49,7 @@ class StudentMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.student_info',
+            markdown: 'emails.generic_email',
         );
     }
 

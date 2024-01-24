@@ -28,7 +28,7 @@ use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
 use App\Enums\Status;
-use App\Mail\StudentMail;
+use App\Mail\GenericEmail;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\RichEditor;
 
@@ -252,7 +252,7 @@ class InternshipResource extends Resource
                         RichEditor::make('body')->required(),
                     ])
                     ->action(fn (array $data, Internship $internship) => Mail::to($internship->student->email_perso)
-                        ->send(new StudentMail(
+                        ->send(new GenericEmail(
                             $internship->student,
                             $data['subject'],
                             $data['body'],

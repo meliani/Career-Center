@@ -4,7 +4,7 @@ namespace App\Filament\Actions;
 
 use Filament\Tables\Actions\BulkAction;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\StudentMail;
+use App\Mail\GenericEmail;
 use Illuminate\Support\Collection;
 use App\Models\Internship;
 use Illuminate\Support\Carbon;
@@ -58,7 +58,7 @@ class SendBulkEmail extends BulkAction
                     if ($record->email_perso) {
                         dispatch(function () use ($record, $data) {
                             Mail::to($record->email_perso)
-                                ->send(new StudentMail($record, $data['emailSubject'], $data['emailBody']));
+                                ->send(new GenericEmail($record, $data['emailSubject'], $data['emailBody']));
                         });
                         // Mail::to($record->email_perso)
                         //     // ->send(new StudentMail($record, $emailSubject, $emailBody));
