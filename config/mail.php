@@ -131,4 +131,27 @@ return [
         ],
     ],
 
+
+    /* New optional parametres */
+    'driver' => env('MAIL_DRIVER', 'smtp'),
+
+    'host' => env('MAIL_HOST', '192.168.1.101'),
+
+    'local_domain' => env('MAIL_LOCAL_DOMAIN', 'localhost'),
+
+    'port' => env('MAIL_PORT', 25),
+
+    'from' => [
+        'address' => env('MAIL_FROM_ADDRESS', 'entreprises@inpt.ac.ma'),
+        'name' => env('MAIL_FROM_NAME', 'Portail Carrières'),
+    ],
+    'encryption' => env('MAIL_ENCRYPTION', 'tls'),
+
+    'username' => env('MAIL_USERNAME'),
+
+    'password' => env('MAIL_PASSWORD'),
+
+    'sendmail' => '/usr/sbin/sendmail -bs',
+
+
 ];
