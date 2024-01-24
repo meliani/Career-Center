@@ -35,7 +35,7 @@ class ProgramCoordinatorPanelProvider extends PanelProvider
         ->spa()
         ->maxContentWidth(MaxWidth::Full)
         ->default()
-        ->brandName('INPT Entreprises')
+        ->brandName('Plateforme Carrières')
         ->login()
         ->colors([
             'primary' => Color::Amber,

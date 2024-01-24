@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'INPT Entreprises'),
+    'name' => env('APP_NAME', 'Plateforme Carrières'),
 
     /*
     |--------------------------------------------------------------------------
