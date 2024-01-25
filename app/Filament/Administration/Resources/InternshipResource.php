@@ -129,21 +129,22 @@ class InternshipResource extends Resource
                     ->numeric(),
                 Forms\Components\Toggle::make('is_valid')
                     ->label('Student validation'),
-                // Forms\Components\ToggleButtons::make('status')
-                //     ->label(__('Status'))
-                //     ->options(Status::class)
-                //     ->required()
-                //     // ->multiple()
-                //     // ->native(false)
-                //     ->selectablePlaceholder(false),
                 Forms\Components\ToggleButtons::make('status')
-                ->options([
-                    'Draft' => __('Draft'),
-                    'Announced' => __('Announced'),
-                    'Validated' => __('Validated'),
-                    'Approved' => __('Approved'),
-                    'Signed' => __('Signed'),
-                ]),
+                    ->label(__('Status'))
+                    ->options(Status::class)
+                    ->inline()
+                    ->required(),
+                    // ->multiple()
+                    // ->native(false),
+                    // ->selectablePlaceholder(false),
+                // Forms\Components\ToggleButtons::make('status')
+                // ->options([
+                //     'Draft' => __('Draft'),
+                //     'Announced' => __('Announced'),
+                //     'Validated' => __('Validated'),
+                //     'Approved' => __('Approved'),
+                //     'Signed' => __('Signed'),
+                // ]),
                 Forms\Components\Select::make('assigned_department')
                     ->options([
                         'SC' => 'SC',
