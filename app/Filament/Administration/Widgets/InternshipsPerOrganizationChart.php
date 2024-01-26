@@ -18,6 +18,10 @@ class InternshipsPerOrganizationChart extends ApexChartsParentWidget
      * Widget Title
      */
     protected static ?string $heading = 'Announced Internships per Organization';
+    protected function getContentHeight(): ?int
+    {
+        return 600;
+    }
     public static function canView(): bool
     {
         return true;
@@ -43,11 +47,13 @@ class InternshipsPerOrganizationChart extends ApexChartsParentWidget
         return [
             'chart' => [
                 'type' => 'pie',
-                'height' => 300,
+                'height' => 600,
             ],
             'series' => array_column($internshipData, 'count'),
             'labels' => array_column($internshipData, 'organization_name'),
+            // display legend on the bottom
             'legend' => [
+                'position' => 'bottom',
                 'labels' => [
                     'fontFamily' => 'inherit',
                 ],
