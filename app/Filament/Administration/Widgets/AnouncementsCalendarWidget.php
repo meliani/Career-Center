@@ -14,10 +14,16 @@ use Saade\FilamentFullCalendar\Data\EventData;
 
 class AnouncementsCalendarWidget extends FullCalendarWidget
 {
+    protected static ?int $sort = 10;
+
     public Model | string | null $model = Internship::class;
 
     // protected static string $view = 'filament.widgets.calendar-widget';
 
+    public static function canView(): bool
+    {
+        return false;
+    }
     /**
      * FullCalendar will call this function whenever it needs new event data.
      * This is triggered when the user clicks prev/next or switches views on the calendar.
@@ -86,8 +92,5 @@ class AnouncementsCalendarWidget extends FullCalendarWidget
                 ]),
         ];
     }
-    public static function canView(): bool
-{
-    return false;
-}
+
 }

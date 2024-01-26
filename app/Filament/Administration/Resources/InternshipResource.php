@@ -31,7 +31,8 @@ use App\Enums\Status;
 use App\Mail\GenericEmail;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\RichEditor;
-
+use Filament\Resources\Pages\ListRecords\Tab;
+use Filament\Resources\Pages\ListRecords;
 
 class InternshipResource extends Resource
 {
@@ -270,7 +271,16 @@ class InternshipResource extends Resource
                 ]),
             ]);
     }
-
+    public function getTabs(): array
+    {
+        return [
+            'all' => Tab::make(),
+            'active' => Tab::make()
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('active', true)),
+            'inactive' => Tab::make()
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('active', false)),
+        ];
+    }
     public static function getPages(): array
     {
         return [

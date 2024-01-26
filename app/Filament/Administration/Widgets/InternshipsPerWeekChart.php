@@ -10,8 +10,14 @@ use App\Models\Internship;
 
 class InternshipsPerWeekChart extends ChartWidget
 {
+    protected static ?int $sort = 10;
+
     protected static ?string $heading = 'Daily Announced Internships';
     protected static ?string $type = 'bar';
+    public static function canView(): bool
+    {
+        return true;
+    }
     public function getDescription(): ?string
     {
         return __('Daily number of announced Internships');

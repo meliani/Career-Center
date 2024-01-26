@@ -9,8 +9,15 @@ use App\Models\Internship;
 
 class InternshipsPerMonthChart extends ChartWidget
 {
+    protected static ?int $sort = 10;
+
     protected static ?string $heading = 'Announced Internships per month';
     protected static ?string $type = 'bar';
+
+    public static function canView(): bool
+    {
+        return true;
+    }
     public function getDescription(): ?string
     {
         return __('Number of Internships per Month during the academic year');

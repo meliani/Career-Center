@@ -7,6 +7,8 @@ use App\Models\Student;
 
 class InternshipsPerProgramChart extends ApexChartsParentWidget
 {
+    protected static ?int $sort = 1;
+
     /**
      * Chart Id
      */
@@ -16,7 +18,10 @@ class InternshipsPerProgramChart extends ApexChartsParentWidget
      * Widget Title
      */
     protected static ?string $heading = 'Anounced Internships per Program';
-
+    public static function canView(): bool
+{
+    return true;
+}
     /**
      * Chart options (series, labels, types, size, animations...)
      * https://apexcharts.com/docs/options

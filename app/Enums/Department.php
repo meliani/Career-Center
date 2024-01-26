@@ -4,7 +4,7 @@ namespace App\Enums;
 
 use Filament\Support\Contracts\HasLabel;
 
-enum Program: string implements HasLabel
+enum Department: string implements HasLabel
 {
     // case AMOA = 'Ingénieur Innovation et AMOA';
     // case ASEDS = 'Advanced Software Engineering for Digital Services';

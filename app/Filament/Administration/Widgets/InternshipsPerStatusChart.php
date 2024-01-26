@@ -5,27 +5,26 @@ namespace App\Filament\Administration\Widgets;
 use App\Filament\Core\Widgets\ApexChartsParentWidget;
 use App\Models\Internship;
 
-class InternshipsPerOrganizationChart extends ApexChartsParentWidget
+class InternshipsPerStatusChart extends ApexChartsParentWidget
 {
-    protected static ?int $sort = 10;
-
     /**
      * Chart Id
      */
-    protected static ?string $chartId = 'internshipsPerOrganizationChart';
+    protected static ?string $chartId = 'internshipsPerStatusChart';
 
     /**
      * Widget Title
      */
-    protected static ?string $heading = 'Announced Internships per Organization';
-    public static function canView(): bool
-    {
-        return true;
-    }
+    protected static ?string $heading = 'Internships advancement status';
+
     /**
      * Chart options (series, labels, types, size, animations...)
      * https://apexcharts.com/docs/options
      */
+    public static function canView(): bool
+    {
+        return false;
+    }
     protected function getOptions(): array
     {
         // get internships per organization_name
@@ -34,19 +33,19 @@ class InternshipsPerOrganizationChart extends ApexChartsParentWidget
         //     ->groupBy('organization_name')
         //     ->get();
         //  return apex chart data
-        $internshipData = Internship::select('organization_name', \DB::raw('count(*) as count'))
-            ->groupBy('organization_name')
+        $internshipData = Internship::select('status', \DB::raw('count(*) as count'))
+            ->groupBy('status')
             ->get()
             ->toArray();
 
         // dd(array_column($internshipData, 'organization_name'));
         return [
             'chart' => [
-                'type' => 'pie',
+                'type' => 'bar',
                 'height' => 300,
             ],
             'series' => array_column($internshipData, 'count'),
-            'labels' => array_column($internshipData, 'organization_name'),
+            'labels' => array_column($internshipData, 'status'),
             'legend' => [
                 'labels' => [
                     'fontFamily' => 'inherit',
@@ -55,8 +54,9 @@ class InternshipsPerOrganizationChart extends ApexChartsParentWidget
         ];
     }
 
-    protected function getHeading(): ?string
-    {
-        return __(static::$heading);
-    }
+    public static function shouldAutoDiscover(): bool
+{
+    return false;
+}
+
 }
