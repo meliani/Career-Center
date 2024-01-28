@@ -14,7 +14,7 @@ class AssignDepartmentAction extends Action
 
     public static function getDefaultName(): string
     {
-        return __('Assign departiment');
+        return __('Assign department');
     }
 
     public static function make(?string $name = null): static
