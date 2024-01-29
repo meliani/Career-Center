@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up()
     {
+        Schema::connection('front_database')->dropIfExists('project_professor');
         Schema::connection('front_database')
             ->create('project_professor', function (Blueprint $table) {
                 $table->id();
