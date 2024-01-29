@@ -21,7 +21,7 @@ return new class extends Migration
             $table->enum('role', ['ProgramCoordinator', 'Professor', 'InternshipSupervisor', 'HeadOfDepartment', 'Administrator', 'SuperAdministrator'])->default('Professor');
             $table->string('email')->unique();
             $table->enum('program_coordinator', ['SESNUM', 'SUD']);
-            $table->number('is_enabled')->default('0');
+            $table->integer('is_enabled')->default('0');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

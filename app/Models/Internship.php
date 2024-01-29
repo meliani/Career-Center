@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Core\baseModel;
-use App\Models\School\Project\Project;
 use Filament\Notifications\Notification;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -12,10 +10,12 @@ use \App\Enums\Title;
 use \App\Enums\Status;
 use App\Casts\TitleCast;
 use App\Casts\StatusCast;
-
+use App\Models\Project;
 use Filament\Widgets\StatsOverviewWidget\Stat;
+// use Illuminate\Database\Eloquent\Model;
+use App\Models\Core\baseModel as Model;
 
-class Internship extends baseModel
+class Internship extends Model
 {
     use SoftDeletes;
 
@@ -167,7 +167,11 @@ class Internship extends baseModel
             return response()->json(['error' => 'This action is unauthorized.'], 403);
         }
     }
-    /* New edits for a new logic by mel */
+    /* New edits for a new logic by mel from bottom to top */
+    public function defenses()
+    {
+        return $this->belongsToMany(Defense::class, 'defense_internship');
+    }
     public function students()
     {
         return $this->hasMany(Student::class);
@@ -175,7 +179,7 @@ class Internship extends baseModel
 
     public function project()
     {
-        return $this->belongsTo(Project::class);
+        return $this->belongsToMany(Project::class);
     }
     /* End edits for a new logic by mel */
 

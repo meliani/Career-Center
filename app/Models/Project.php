@@ -12,8 +12,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Project extends Model
 {
     use HasFactory;
-    use HasUuids;
-
+    // use HasUuids;
+    protected $connection = 'mysql';
+    
     public function internships()
     {
         return $this->hasMany(Internship::class);
