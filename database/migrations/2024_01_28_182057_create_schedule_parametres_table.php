@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('schedule_parameters', function (Blueprint $table) {
             $table->id();
-            $table->date('starting_from');
-            $table->date('ending_at');
-            $table->time('working_from');
-            $table->time('working_to');
+            $table->dateTime('schedule_starting_at');
+            $table->dateTime('schedule_ending_at');
+            $table->time('day_starting_at');
+            $table->time('day_ending_at');
             $table->integer('number_of_rooms');
             $table->integer('max_defenses_per_professor');
             $table->integer('max_rooms');

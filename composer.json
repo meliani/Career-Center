@@ -11,6 +11,7 @@
         "php": "^8.1",
         "bezhansalleh/filament-language-switch": "^3.0",
         "bezhansalleh/filament-panel-switch": "^1.0",
+        "cmixin/enhanced-period": "^1.2",
         "eightynine/filament-approvals": "^3.0",
         "filament/filament": "^3.1",
         "filament/forms": "^3.1",
@@ -33,6 +34,7 @@
         "rickdbcn/filament-email": "^1.0",
         "saade/filament-fullcalendar": "^3.1",
         "spatie/laravel-medialibrary": "^11.0",
+        "spatie/period": "^2.4",
         "stechstudio/filament-impersonate": "^3.5",
         "z3d0x/filament-logger": "^0.6.2"
     },

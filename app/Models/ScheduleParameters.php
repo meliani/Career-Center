@@ -3,24 +3,34 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class ScheduleParameters extends Model
 {
+
     protected $fillable = [
-        'starting_from',
-        'ending_at',
-        'working_from',
-        'working_to',
+        'schedule_starting_at',
+        'schedule_ending_at',
+        'day_starting_at',
+        'day_ending_at',
         'number_of_rooms',
         'max_defenses_per_professor',
         'max_rooms',
         'minutes_per_slot',
     ];
     protected $casts = [
-        'starting_from' => 'date',
-        'ending_at' => 'date',
-        // 'working_from' => 'time',
-        // 'working_to' => 'time',
+        'schedule_starting_at' => 'datetime',
+        'schedule_ending_at' => 'datetime',
+        'day_starting_at' => 'datetime',
+        'day_ending_at' => 'datetime',
     ];
+    // public function getDayEndingAtAttribute($value)
+    // {
+    //     return Carbon::createFromFormat('H:i:s', $value);
+    // }
+    // public function getDayStartingAtAttribute($value)
+    // {
+    //     return Carbon::parse($value);
+    // }
 
 }

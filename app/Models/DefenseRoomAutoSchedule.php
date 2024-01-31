@@ -1,16 +1,17 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Project;
 
-class DefenseTimeAutoSchedule extends Model
+class DefenseRoomAutoSchedule extends Model
 {
     protected $fillable = [
-        'starts_at',
-        'ends_at',
-        'score',
+        'room_id',
+        'timeslot_id',
         'project_id',
+        'score',
 
     ];
     protected $casts = [
@@ -22,5 +23,4 @@ class DefenseTimeAutoSchedule extends Model
     {
         return $this->belongsTo(Project::class);
     }
-
 }

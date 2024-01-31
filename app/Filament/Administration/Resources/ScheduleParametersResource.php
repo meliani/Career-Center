@@ -17,6 +17,7 @@ use Filament\Forms\Components\Actions\Action;
 use App\Filament\Actions\AssignDepartmentAction;
 use App\Filament\Actions\ScheduleHeadOfJury;
 use App\Filament\Actions\AssignInternshipsToProjects;
+use App\Filament\Actions\GenerateTimeslotsAction;
 
 class ScheduleParametersResource extends Resource
 {
@@ -37,13 +38,13 @@ class ScheduleParametersResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\DatePicker::make('starting_from')
+                Forms\Components\DatePicker::make('schedule_starting_at')
                     ->required(),
-                Forms\Components\DatePicker::make('ending_at')
+                Forms\Components\DatePicker::make('schedule_ending_at')
                     ->required(),
-                Forms\Components\TextInput::make('working_from')
+                Forms\Components\TextInput::make('day_starting_at')
                     ->required(),
-                Forms\Components\TextInput::make('working_to')
+                Forms\Components\TextInput::make('day_ending_at')
                     ->required(),
                 Forms\Components\TextInput::make('number_of_rooms')
                     ->required()
@@ -62,7 +63,8 @@ class ScheduleParametersResource extends Resource
                     // \Filament\Forms\Components\Actions\Action::make('ScheduleHeadOfDepartment')
                     AssignInternshipsToProjects::make('Assign Internships To Projects'),
 
-                    ScheduleHeadOfJury::make('Schedule Head of Department')
+                    // ScheduleHeadOfJury::make('Schedule Head of Department'),
+                    GenerateTimeslotsAction::make('Generate Timeslots'),
                         // ->requiresConfirmation(),
                         // ->action(function (ScheduleHeadOfDepartment $ScheduleHeadOfDepartment) {
                         //     dd('action called')
@@ -76,14 +78,14 @@ class ScheduleParametersResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('starting_from')
+                Tables\Columns\TextColumn::make('schedule_starting_at')
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('ending_at')
+                Tables\Columns\TextColumn::make('schedule_ending_at')
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('working_from'),
-                Tables\Columns\TextColumn::make('working_to'),
+                Tables\Columns\TextColumn::make('day_starting_at'),
+                Tables\Columns\TextColumn::make('day_ending_at'),
                 Tables\Columns\TextColumn::make('number_of_rooms')
                     ->numeric()
                     ->sortable(),
