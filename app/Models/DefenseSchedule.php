@@ -1,8 +1,8 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Project;
 
 class DefenseTimeAutoSchedule extends Model
 {
@@ -13,6 +13,7 @@ class DefenseTimeAutoSchedule extends Model
         'project_id',
 
     ];
+
     protected $casts = [
         'starts_at' => 'date',
         'ends_at' => 'date',
@@ -23,4 +24,8 @@ class DefenseTimeAutoSchedule extends Model
         return $this->belongsTo(Project::class);
     }
 
+    public function professors()
+    {
+        return $this->belongsToMany(Professor::class);
+    }
 }
