@@ -17,6 +17,8 @@ return new class extends Migration
             $table->dateTime('schedule_ending_at');
             $table->time('day_starting_at');
             $table->time('day_ending_at');
+            $table->time('lunch_starting_at');
+            $table->time('lunch_ending_at');
             $table->integer('number_of_rooms');
             $table->integer('max_defenses_per_professor');
             $table->integer('max_rooms');

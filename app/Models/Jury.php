@@ -2,10 +2,18 @@
 
 namespace App\Models;
 
-class Jury extends User
-{    
-    public function projects()
+use Illuminate\Database\Eloquent\Model;
+
+class Jury extends Model
+{
+    public function professors()
     {
-        return $this->belongsToMany(Project::class, 'project_jury');
+        return $this->belongsToMany(Professor::class, 'jury_professor')
+            ->withPivot('is_president', 'role')
+            ->withTimestamps();
+    }
+    public function project()
+    {
+        return $this->hasOne(Project::class);
     }
 }

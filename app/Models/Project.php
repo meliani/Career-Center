@@ -26,6 +26,9 @@ class Project extends Model
         ->withPivot('role');
         // ->withTimestamps();
     }
-
+    public function jury()
+    {
+        return $this->belongsTo(Jury::class);
+    }
 
 }

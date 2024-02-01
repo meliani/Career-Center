@@ -1,10 +1,9 @@
 <?php
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTimeslotsTable extends Migration
+class CreateJuryProfessorTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +12,12 @@ class CreateTimeslotsTable extends Migration
      */
     public function up()
     {
-        Schema::create('timeslots', function (Blueprint $table) {
+        Schema::create('jury_professor', function (Blueprint $table) {
             $table->id();
-            $table->timestamp('start_time');
-            $table->timestamp('end_time');
-            $table->boolean('is_enabled')->default(true);
-            $table->boolean('is_taken')->default(false);
-            $table->integer('remaining_slots')->nullable();
+            $table->foreignId('jury_id');
+            $table->foreignId('professor_id');
+            $table->boolean('is_president')->default(false);
+            $table->enum('role', ['Supervisor', 'Reviewer'])->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ class CreateTimeslotsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('timeslots');
+        Schema::dropIfExists('jury_professor');
     }
 }

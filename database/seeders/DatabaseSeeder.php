@@ -4,8 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Models\Defense;
-use App\Models\DefenseSchedule;
+
 use Illuminate\Database\Seeder;
 use App\Models\User;
 
@@ -28,7 +27,7 @@ class DatabaseSeeder extends Seeder
         User::factory()->samira()->create();
         User::factory()->nisrine()->create();
         User::factory()->kensi()->create();
-        $this->call(DefenseScheduleSettingsSeeder::class);
+        $this->call(ScheduleSettingsSeeder::class);
         // User::factory(10)->create();
         // User::factory()->create([
         //     'name' => 'Test User',
