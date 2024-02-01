@@ -19,12 +19,9 @@ class Project extends Model
     {
         return $this->hasMany(Internship::class);
     }
-
-    public function professors()
+    public function internship()
     {
-        return $this->belongsToMany(Professor::class, 'project_professor')
-        ->withPivot('role');
-        // ->withTimestamps();
+        return $this->hasOne(Internship::class)->latestOfMany();
     }
     public function jury()
     {

@@ -18,7 +18,7 @@ use App\Filament\Actions\AssignDepartmentAction;
 use App\Filament\Actions\ScheduleHeadOfJury;
 use App\Filament\Actions\AssignInternshipsToProjects;
 use App\Filament\Actions\GenerateTimeslotsAction;
-
+use App\Filament\Actions\GenerateProjectsJuryAction;
 class ScheduleParametersResource extends Resource
 {
     public $starting_from;
@@ -65,6 +65,8 @@ class ScheduleParametersResource extends Resource
 
                     // ScheduleHeadOfJury::make('Schedule Head of Department'),
                     GenerateTimeslotsAction::make('Generate Timeslots'),
+                    GenerateProjectsJuryAction::make('Generate Projects Jury')
+
                         // ->requiresConfirmation(),
                         // ->action(function (ScheduleHeadOfDepartment $ScheduleHeadOfDepartment) {
                         //     dd('action called')

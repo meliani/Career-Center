@@ -10,4 +10,9 @@ class Professor extends User
     {
         return $this->belongsToMany(Project::class, 'project_professor')->withPivot('role');
     }
+    public function juries()
+{
+    return $this->belongsToMany(Jury::class, 'jury_professor')
+                ->withTimestamps();
+}
 }

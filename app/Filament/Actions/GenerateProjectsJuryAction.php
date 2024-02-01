@@ -8,7 +8,7 @@ use Illuminate\Support\Carbon;
 use App\Models\ScheduleParameters;
 use App\Services\ProjectService;
 
-class AssignInternshipsToProjects extends Action
+class GenerateProjectsJuryAction extends Action
 {
     public static function make(?string $name = null): static
     {
@@ -16,7 +16,7 @@ class AssignInternshipsToProjects extends Action
             'name' => $name ?? static::getDefaultName(),
         ]);
         $static->configure()->action(function (array $data, ScheduleParameters $record): void {
-            ProjectService::AssignInternshipsToProjects($record);
+            ProjectService::GenerateProjectsJury($record);
         });
         return $static;
     }
