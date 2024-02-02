@@ -76,7 +76,6 @@ class JuryResource extends Resource
     {
         return [
             RelationManagers\ProfessorsRelationManager::class,
-            RelationManagers\TimeslotRelationManager::class,
         ];
     }
 
