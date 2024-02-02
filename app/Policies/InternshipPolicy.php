@@ -8,6 +8,7 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 use App\Policies\CorePolicy;
 use Illuminate\Support\Facades\Gate;
 
+
 class InternshipPolicy extends CorePolicy
 {
     public function viewAny(User $user): bool
@@ -46,12 +47,12 @@ class InternshipPolicy extends CorePolicy
 
     public function delete(User $user, Internship $internship)
     {
-        return $user->hasRole('SuperAdministrator');
+        return $user->hasAnyRole($this->administrators);
     }
 
     public function viewSome(User $user, Internship $internship)
     {
-        if ($user->hasAnyRole($this->powerProfessors) && $internship->student->program === "SUD") //$user->program_coordinator)
+        if ($user->hasAnyRole($this->powerProfessors) && $internship->student->program === $user->program_coordinator)
         {
             return true;
         }
@@ -59,13 +60,13 @@ class InternshipPolicy extends CorePolicy
 
     public function viewRelated(User $user, Internship $internship)
     {
-        if ($user->hasAnyRole($this->powerProfessors) && $internship->student->program === "SUD") {
+        if ($user->hasAnyRole($this->powerProfessors) && $internship->student->program === $user->program_coordinator) {
             return true;
         }
     }
 
     public function updateCertain(User $user, Internship $internship)
     {
-        return $user->hasRole($this->powerProfessors) && $user->program_coordinator == $internship->student->program;
+        return $user->hasAnyRole($this->powerProfessors) && $user->program_coordinator === $internship->student->program;
     }
 }

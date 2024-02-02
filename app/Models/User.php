@@ -26,7 +26,7 @@ class User extends Authenticatable implements FilamentUser, HasName
      */
     protected $guarded = [];
     protected $administrators = [ Role::SuperAdministrator , Role::Administrator];
-    protected $professors = [ Role::SuperAdministrator, Role::Administrator, Role::Professor, Role::HeadOfDepartment, Role::ProgramCoordinator];
+    protected $professors = [ Role::SuperAdministrator, Role::Administrator, Role::Professor, Role::DepartmentHead, Role::ProgramCoordinator];
     protected $powerProfessors = [Role::SuperAdministrator, Role::Administrator, Role::ProgramCoordinator];
 
     protected $fillable = [

@@ -64,7 +64,7 @@ class ScheduleParametersResource extends Resource
                     ->numeric(),
 
                 \Filament\Forms\Components\Actions::make([
-                    // \Filament\Forms\Components\Actions\Action::make('ScheduleHeadOfDepartment')
+                    // \Filament\Forms\Components\Actions\Action::make('ScheduleDepartmentHead')
                     AssignInternshipsToProjects::make('Assign Internships To Projects'),
 
                     // ScheduleHeadOfJury::make('Schedule Head of Department'),
@@ -72,9 +72,9 @@ class ScheduleParametersResource extends Resource
                     GenerateProjectsJuryAction::make('Generate Projects Jury')
 
                         // ->requiresConfirmation(),
-                        // ->action(function (ScheduleHeadOfDepartment $ScheduleHeadOfDepartment) {
+                        // ->action(function (ScheduleDepartmentHead $ScheduleDepartmentHead) {
                         //     dd('action called')
-                        //     // $scheduleHeadOfDepartment = new ScheduleHeadOfDepartment('Schedule Head of Department');
+                        //     // $scheduleDepartmentHead = new ScheduleDepartmentHead('Schedule Head of Department');
                         // })
                 ])
             ]);

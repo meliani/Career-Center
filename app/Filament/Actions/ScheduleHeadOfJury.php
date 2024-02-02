@@ -30,8 +30,8 @@ class ScheduleHeadOfJury extends Action
         $static->configure()->action(function (array $data, ScheduleParameters $record): void {
             // add a form to select the department
             // $record->withoutTimestamps(fn () => $record->assignDepartment($data['assigned_department']));
-            // $record->withoutTimestamps(fn () => $record->ScheduleHeadOfDepartment());
-            ScheduleService::ScheduleHeadOfDepartment($record);
+            // $record->withoutTimestamps(fn () => $record->ScheduleDepartmentHead());
+            ScheduleService::ScheduleDepartmentHead($record);
 
             // dd($record);
 

@@ -12,6 +12,10 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Enums\Role;
+use App\Enums\Department;
+use App\Enums\Program;
+use App\Enums\Title;
 
 class ProfessorResource extends Resource
 {
@@ -23,7 +27,8 @@ class ProfessorResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('title')
+                Forms\Components\Select::make('title')
+                    ->options(Title::class)
                     ->required(),
                 Forms\Components\TextInput::make('name')
                     ->required()
@@ -34,35 +39,36 @@ class ProfessorResource extends Resource
                 Forms\Components\TextInput::make('last_name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('department')
+                Forms\Components\Select::make('department')
+                    ->options(Department::class)
                     ->required(),
-                Forms\Components\TextInput::make('role')
+                Forms\Components\Select::make('role')
+                    ->options(Role::class)
                     ->required(),
                 Forms\Components\TextInput::make('email')
                     ->email()
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('program_coordinator')
+                Forms\Components\Select::make('program_coordinator')
+                    ->options(Program::class)
                     ->required(),
-                Forms\Components\TextInput::make('is_enabled')
-                    ->required()
-                    ->numeric()
-                    ->default(0),
-                Forms\Components\DateTimePicker::make('email_verified_at'),
-                Forms\Components\TextInput::make('password')
-                    ->password()
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Toggle::make('active_status')
+                Forms\Components\Toggle::make('is_enabled')
                     ->required(),
-                Forms\Components\TextInput::make('avatar')
-                    ->required()
-                    ->maxLength(255)
-                    ->default('avatar.png'),
-                Forms\Components\Toggle::make('dark_mode')
-                    ->required(),
-                Forms\Components\TextInput::make('messenger_color')
-                    ->maxLength(255),
+                // Forms\Components\DateTimePicker::make('email_verified_at'),
+                // Forms\Components\TextInput::make('password')
+                //     ->password()
+                //     ->required()
+                //     ->maxLength(255),
+                // Forms\Components\Toggle::make('active_status')
+                //     ->required(),
+                // Forms\Components\TextInput::make('avatar')
+                //     ->required()
+                //     ->maxLength(255)
+                //     ->default('avatar.png'),
+                // Forms\Components\Toggle::make('dark_mode')
+                //     ->required(),
+                // Forms\Components\TextInput::make('messenger_color')
+                //     ->maxLength(255),
             ]);
     }
 

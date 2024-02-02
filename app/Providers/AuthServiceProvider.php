@@ -11,12 +11,13 @@ use App\Policies\InternshipPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Spatie\Activitylog\Models\Activity;
+use App\Enums\Role;
 
 class AuthServiceProvider extends ServiceProvider
 {
-    protected $administrators = ['SuperAdministrator', 'Administrator'];
+    protected $administrators = [Role::SuperAdministrator, Role::Administrator];
 
-    protected $professors = ['Professor', 'HeadOfDepartment', 'ProgramCoordinator'];
+    protected $professors = [Role::Professor, Role::ProgramCoordinator, Role::DepartmentHead];
 
     /**
      * The model to policy mappings for the application.
@@ -37,16 +38,15 @@ class AuthServiceProvider extends ServiceProvider
             if ($user->hasAnyRole($this->administrators)) {
                 return true;
             }
-
             return $internship->student->program === $user->program_coordinator;
         });
-        Gate::define('assign-projects', function (User $user) {
-            // Check if the user is an administrator
+        Gate::define('batch-assign-internships-to-projects', function (User $user) {
             if ($user->hasAnyRole($this->administrators)) {
                 return true;
             }
+            return false;
 
-            return $internship->student->program === $user->program_coordinator;
+            // return $internship->student->program === $user->program_coordinator;
         });
         Gate::define('validate-internship', [InternshipPolicy::class, 'update']);
         Gate::define('sign-internship', [InternshipPolicy::class, 'update']);

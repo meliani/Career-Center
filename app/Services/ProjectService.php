@@ -26,7 +26,7 @@ class ProjectService
         $assignedInternships = 0;
         $forceOverwrite = true;
         try {
-            if (Gate::denies('assign-projects')) {
+            if (Gate::denies('batch-assign-internships-to-projects', )) {
                 throw new AuthorizationException();
             }
             $signedInternships = Internship::where('status', '=', 'Signed')->get();
