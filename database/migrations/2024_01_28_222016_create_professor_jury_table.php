@@ -13,7 +13,7 @@ class CreateProfessorJuryTable extends Migration
     public function up()
     {
         Schema::create('professor_jury', function (Blueprint $table) {
-            $table->id();
+            // $table->id();
             $table->foreignId('professor_id')->constrained('users', 'id');
             $table->foreignId('jury_id')->constrained();
             $table->string('role');
