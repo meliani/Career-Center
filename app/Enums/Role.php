@@ -8,7 +8,7 @@ enum Role: string implements HasLabel
     case ProgramCoordinator = 'ProgramCoordinator';
     case Professor = 'Professor';
     case InternshipSupervisor = 'InternshipSupervisor';
-    case HeadOfDepartment = 'HeadOfDepartment';
+    case DepartmentHead = 'DepartmentHead';
     case Administrator = 'Administrator';
     case SuperAdministrator = 'SuperAdministrator';
     case AdministrativeSupervisor = 'AdministrativeSupervisor';
@@ -19,7 +19,7 @@ enum Role: string implements HasLabel
             Role::ProgramCoordinator => 'Program Coordinator',
             Role::Professor => 'Professor',
             Role::InternshipSupervisor => 'Internship Supervisor',
-            Role::HeadOfDepartment => 'Head of Department',
+            Role::DepartmentHead => 'Head of Department',
             Role::Administrator => 'Administrator',
             Role::SuperAdministrator => 'Super Administrator',
             Role::AdministrativeSupervisor => 'Administrative Supervisor',

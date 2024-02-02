@@ -7,12 +7,15 @@ use Filament\Support\Contracts\HasColor;
 
 enum Title: string implements HasLabel, HasColor
 {
-    case Mrs = 'Mrs.';
-    case Mr = 'Mr.';
+    case Mrs = 'Mrs';
+    case Mr = 'Mr';
 
     public function getLabel(): ?string
     {
-        return __($this->name);
+        return match ($this) {
+            self::Mrs => 'Mrs.',
+            self::Mr => 'Mr.',
+        };
     }
     public function getColor(): ?string
     {

@@ -20,10 +20,10 @@ enum Department: string implements HasLabel
     public function getLabel(): ?string
     {
         return match ($this) {
-            self::EMO => 'Département Électronique, Micro-ondes et Optique',
-            self::MIR => 'Département Systèmes de Communications',
-            self::GLC => 'Département Gestion, Langues et Communications',
-            self::SC => 'Département Mathématiques, Informatique et Réseaux',
+            self::EMO => 'Électronique, Micro-ondes et Optique',
+            self::MIR => 'Systèmes de Communications',
+            self::GLC => 'Gestion, Langues et Communications',
+            self::SC => 'Mathématiques, Informatique et Réseaux',
         };
     }
 }
