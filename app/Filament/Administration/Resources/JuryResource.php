@@ -23,15 +23,9 @@ class JuryResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('jury_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('professor_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\Toggle::make('is_president')
-                    ->required(),
-                Forms\Components\TextInput::make('role'),
+                // Forms\Components\TextInput::make('project_id')
+                //     ->required()
+                //     ->numeric(),
             ]);
     }
 
@@ -39,20 +33,17 @@ class JuryResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('jury_id')
+                Tables\Columns\TextColumn::make('project_id')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('professor_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('project.title')
                     ->sortable(),
-                    Tables\Columns\TextColumn::make('professor.name')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\IconColumn::make('is_president')
-                    ->boolean(),
-                Tables\Columns\TextColumn::make('role')
+                Tables\Columns\TextColumn::make('professors.name')
+                    ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
+                    // ->relationships('professors', 'name'),
+                    // ->displayUsing(fn (Jury $jury) => $jury->professors->pluck('name')->join(', ')),
+                    Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -66,7 +57,6 @@ class JuryResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -75,10 +65,23 @@ class JuryResource extends Resource
             ]);
     }
 
+    public static function getRelations(): array
+    {
+        return [
+            RelationManagers\ProfessorsRelationManager::class,
+        ];
+    }
+
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageJuries::route('/'),
+            'index' => Pages\ListJuries::route('/'),
+            // 'create' => Pages\CreateJury::route('/create'),
+            'edit' => Pages\EditJury::route('/{record}/edit'),
         ];
+    }
+    public static function canCreate(): bool
+    {
+       return false;
     }
 }

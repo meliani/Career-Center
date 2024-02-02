@@ -12,10 +12,6 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Resources\Forms\Components\BelongsToSelect;
-use Filament\Forms\Components\Fieldset;
-use App\Models\Professor;
-use Filament\Forms\Components\Repeater;
 
 class ProjectResource extends Resource
 {
@@ -27,29 +23,21 @@ class ProjectResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\TextInput::make('pfe_id')
+                    ->numeric(),
                 Forms\Components\Textarea::make('title')
                     ->required()
                     ->maxLength(65535)
                     ->columnSpanFull(),
+                Forms\Components\TextInput::make('organization')
+                    ->maxLength(255),
                 Forms\Components\Textarea::make('description')
                     ->maxLength(65535)
                     ->columnSpanFull(),
-                // Fieldset::make('Jury')
-                //     ->relationship('jury')
-                //     ->schema([
-                Forms\Components\Repeater::make('Jury')
-                    ->relationship('jury')
-                    ->schema([
-                        Forms\Components\Select::make('professor_id')
-                            ->relationship('professors', 'name')
-                            ->searchable(),
-                        Forms\Components\Select::make('role')
-                            ->options([
-                                'Supervisor' => 'Supervisor',
-                                'Reviewer' => 'Reviewer',
-                            ]),
-                    ]),
-                // ]),
+                Forms\Components\DatePicker::make('start_date'),
+                Forms\Components\DatePicker::make('end_date'),
+                Forms\Components\TextInput::make('jury_id')
+                    ->numeric(),
             ]);
     }
 
@@ -57,10 +45,20 @@ class ProjectResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id'),
-                Tables\Columns\TextColumn::make('title'),
-                Tables\Columns\TextColumn::make('description')
-                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('pfe_id')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('organization')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('start_date')
+                    ->date()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('end_date')
+                    ->date()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('jury_id')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -74,9 +72,7 @@ class ProjectResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -85,10 +81,19 @@ class ProjectResource extends Resource
             ]);
     }
 
+    public static function getRelations(): array
+    {
+        return [
+            RelationManagers\ProfessorsRelationManager::class,
+        ];
+    }
+
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageProjects::route('/'),
+            'index' => Pages\ListProjects::route('/'),
+            'create' => Pages\CreateProject::route('/create'),
+            'edit' => Pages\EditProject::route('/{record}/edit'),
         ];
     }
 }
