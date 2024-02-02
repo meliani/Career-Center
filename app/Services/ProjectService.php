@@ -98,13 +98,10 @@ class ProjectService
                         $project->pfe_id = $project->id;
                     }
                     $jury = Jury::create([
-                        'jury_id' => $project->pfe_id,
-                        'professor_id' => $professor->id,
-                        'is_president' => false,
-                        'role' => 'supervisor',
+                        'project_id' => $project->id,
                     ]);
-                    $project->jury_id = $jury->id;
-                    $project->save();
+                    $professor->juries()->attach($jury, ['role' => 'supervisor']);
+                    
                 }
 
             }

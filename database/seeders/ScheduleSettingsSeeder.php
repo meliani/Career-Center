@@ -14,8 +14,8 @@ class ScheduleSettingsSeeder extends Seeder
     public function run(): void
     {
         ScheduleParameters::create([
-            'schedule_starting_at' => '2022-01-01',
-            'schedule_ending_at' => '2022-12-31',
+            'schedule_starting_at' => '2024-07-01',
+            'schedule_ending_at' => '2024-07-15',
             'day_starting_at' => '09:00:00',
             'day_ending_at' => '18:00:00',
             'lunch_starting_at' => '12:00:00',

@@ -12,9 +12,10 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Resources\Forms\Components\TextInput;
-use Filament\Resources\Forms\Components\Textarea;
 use Filament\Resources\Forms\Components\BelongsToSelect;
+use Filament\Forms\Components\Fieldset;
+use App\Models\Professor;
+use Filament\Forms\Components\Repeater;
 
 class ProjectResource extends Resource
 {
@@ -33,17 +34,22 @@ class ProjectResource extends Resource
                 Forms\Components\Textarea::make('description')
                     ->maxLength(65535)
                     ->columnSpanFull(),
-                    Forms\Components\Select::make('role')
-                    ->options([
-                        'Supervisor' => 'Supervisor',
-                        'Reviewer' => 'Reviewer',
+                // Fieldset::make('Jury')
+                //     ->relationship('jury')
+                //     ->schema([
+                Forms\Components\Repeater::make('Jury')
+                    ->relationship('jury')
+                    ->schema([
+                        Forms\Components\Select::make('professor_id')
+                            ->relationship('professors', 'name')
+                            ->searchable(),
+                        Forms\Components\Select::make('role')
+                            ->options([
+                                'Supervisor' => 'Supervisor',
+                                'Reviewer' => 'Reviewer',
+                            ]),
                     ]),
-                    Forms\Components\Repeater::make('professors')
-                    ->relationship('professors')
-                    // ->recordData([
-                    //     'role' => fn ($data) => $data['role'] ?? null,
-                    // ])
-
+                // ]),
             ]);
     }
 
