@@ -19,11 +19,13 @@ class Project extends Model
     // use HasUuids;
     protected $connection = 'mysql';
     protected $fillable = [
+        'pfe_id',
         'title',
+        'organization',
         'description',
-        'role',
+        'start_date',
+        'end_date',
         'jury_id',
-        'internship_id',
     ];
     public function internships(): HasMany
     {

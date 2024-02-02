@@ -50,6 +50,7 @@ class ProjectResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('organization')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('title'),
                 Tables\Columns\TextColumn::make('start_date')
                     ->date()
                     ->sortable(),
@@ -84,7 +85,7 @@ class ProjectResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\ProfessorsRelationManager::class,
+            // RelationManagers\ProfessorsRelationManager::class,
         ];
     }
 
