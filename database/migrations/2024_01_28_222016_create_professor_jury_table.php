@@ -14,12 +14,13 @@ class CreateProfessorJuryTable extends Migration
     {
         Schema::create('professor_jury', function (Blueprint $table) {
             // $table->id();
-            $table->foreignId('professor_id')->constrained('users', 'id');
+            // professor id and jury id are the primarykey
+            $table->foreignId('professor_id')->constrained();
             $table->foreignId('jury_id')->constrained();
             $table->string('role');
             $table->boolean('is_president')->default(false);
             $table->timestamps();
-            $table->unique(['professor_id', 'jury_id']);
+            $table->primary(['professor_id', 'jury_id']);
 
         });
     }
