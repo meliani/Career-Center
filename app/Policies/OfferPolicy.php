@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Offer;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
+use App\Enums\Role;
 
 class OfferPolicy
 {
@@ -13,7 +14,7 @@ class OfferPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole('SuperAdministrator');
+        return $user->hasRole(Role::SuperAdministrator);
     }
 
     /**
@@ -21,7 +22,7 @@ class OfferPolicy
      */
     public function view(User $user, Offer $offer): bool
     {
-        return $user->hasRole('SuperAdministrator');
+        return $user->hasRole(Role::SuperAdministrator);
     }
 
     /**
@@ -29,7 +30,7 @@ class OfferPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole('SuperAdministrator');
+        return $user->hasRole(Role::SuperAdministrator);
     }
 
     /**
@@ -37,7 +38,7 @@ class OfferPolicy
      */
     public function update(User $user, Offer $offer): bool
     {
-        return $user->hasRole('SuperAdministrator');
+        return $user->hasRole(Role::SuperAdministrator);
     }
 
     /**
@@ -45,7 +46,7 @@ class OfferPolicy
      */
     public function delete(User $user, Offer $offer): bool
     {
-        return $user->hasRole('SuperAdministrator');
+        return $user->hasRole(Role::SuperAdministrator);
     }
 
     /**
@@ -53,14 +54,14 @@ class OfferPolicy
      */
     public function restore(User $user, Offer $offer): bool
     {
-        return $user->hasRole('SuperAdministrator');
+        return $user->hasRole(Role::SuperAdministrator);
+    
     }
-
     /**
      * Determine whether the user can permanently delete the model.
      */
     public function forceDelete(User $user, Offer $offer): bool
     {
-        return $user->hasRole('SuperAdministrator');
+        return $user->hasRole(Role::SuperAdministrator);
     }
 }
