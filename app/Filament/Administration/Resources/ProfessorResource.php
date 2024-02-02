@@ -80,10 +80,13 @@ class ProfessorResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('department')
                     ->searchable(),
-                    Tables\Columns\TextColumn::make('juries.id')
+                Tables\Columns\TextColumn::make('juries_count')
+                    ->searchable()->counts('juries'),
+                Tables\Columns\TextColumn::make('juries.id')
                     ->searchable(),
-                    Tables\Columns\TextColumn::make('juries.projects.title')
+                Tables\Columns\TextColumn::make('juries.projects.title')
                     ->searchable(),
+
                 // Tables\Columns\TextColumn::make('role')
                 //     ->searchable(),
                 // Tables\Columns\TextColumn::make('email')
