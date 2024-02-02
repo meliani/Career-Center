@@ -32,6 +32,6 @@ class CreateProfessorJuryTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('jury_professor');
+        Schema::dropIfExists('professor_jury');
     }
 }

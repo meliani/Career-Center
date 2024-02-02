@@ -36,6 +36,13 @@ class JuryResource extends Resource
                 Tables\Columns\TextColumn::make('project_id')
                     ->numeric()
                     ->sortable(),
+                    // add timeslot informations
+                Tables\Columns\TextColumn::make('timeslot.start_time')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('timeslot.end_time')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('project.title')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('professors.name')
@@ -69,6 +76,7 @@ class JuryResource extends Resource
     {
         return [
             RelationManagers\ProfessorsRelationManager::class,
+            RelationManagers\TimeslotRelationManager::class,
         ];
     }
 

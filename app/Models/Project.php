@@ -38,16 +38,16 @@ class Project extends Model
     public function jury() {
         return $this->hasOne(Jury::class);
     }
-    public function professors_jury() {
-        return $this->hasManyThrough(
-            Professor::class,
-            Jury::class,
-            'project_id', // Foreign key on the professor_jury table
-            'id', // Local key on the juries table
-            'id', // Local key on the professors table
-            'professor_id' // Foreign key on the professor_jury table
-        );
-        }
+    // public function professors_jury() {
+    //     return $this->hasManyThrough(
+    //         Professor::class,
+    //         Jury::class,
+    //         'project_id', // Foreign key on the professor_jury table
+    //         'id', // Local key on the juries table
+    //         'id', // Local key on the professors table
+    //         'professor_id' // Foreign key on the professor_jury table
+    //     );
+    //     }
     
     //     // Additional method to get professors with roles
     //     public function professorsWithRoles() {

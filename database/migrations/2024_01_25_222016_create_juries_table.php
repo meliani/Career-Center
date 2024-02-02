@@ -15,8 +15,8 @@ class CreateJuriesTable extends Migration
         Schema::create('juries', function (Blueprint $table) {
             $table->id();
             $table->foreignId('project_id');
-            $table->foreignId('timeslot_id');
-            $table->unique(['project_id', 'timeslot_id']);
+            $table->foreignId('timetable_id')->nullable();
+            $table->unique(['project_id', 'timetable_id']);
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreateJuriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('jury_professor');
+        Schema::dropIfExists('juries');
     }
 }

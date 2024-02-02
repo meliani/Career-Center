@@ -46,6 +46,10 @@ class ScheduleParametersResource extends Resource
                     ->required(),
                 Forms\Components\TextInput::make('day_ending_at')
                     ->required(),
+                    Forms\Components\TextInput::make('lunch_starting_at')
+                    ->required(),
+                Forms\Components\TextInput::make('lunch_ending_at')
+                    ->required(),
                 Forms\Components\TextInput::make('number_of_rooms')
                     ->required()
                     ->numeric(),
