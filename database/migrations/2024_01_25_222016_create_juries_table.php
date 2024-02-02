@@ -15,6 +15,8 @@ class CreateJuriesTable extends Migration
         Schema::create('juries', function (Blueprint $table) {
             $table->id();
             $table->foreignId('project_id');
+            $table->foreignId('timeslot_id');
+            $table->unique(['project_id', 'timeslot_id']);
             $table->timestamps();
         });
     }

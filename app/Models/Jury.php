@@ -9,6 +9,7 @@ class Jury extends Model
 
     protected $fillable = [
         'project_id',
+        'timeslot_id',
     ];
     public function project() {
         return $this->belongsTo(Project::class);

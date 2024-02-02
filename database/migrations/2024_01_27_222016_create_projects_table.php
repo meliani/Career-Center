@@ -19,7 +19,7 @@ class CreateProjectsTable extends Migration
             $table->text('description')->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
-            $table->integer('jury_id')->nullable();
+            $table->integer('jury_id')->nullable()->constrained();
             $table->timestamps();
         });
     }
