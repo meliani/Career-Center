@@ -11,7 +11,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-// use \App\Enums\Role;
+use \App\Enums\Role;
+use \App\Enums\Department;
+use \App\Enums\Program;
 
 class User extends Authenticatable implements FilamentUser, HasName
 {
@@ -55,7 +57,9 @@ class User extends Authenticatable implements FilamentUser, HasName
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
-        // 'role' => Role::class,
+        'role' => Role::class,
+        'department' => Department::class,
+        'program_coordinator' => Program::class,
     ];
 
     public function getNameAttribute()
