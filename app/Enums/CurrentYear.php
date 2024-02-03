@@ -5,9 +5,9 @@ use Filament\Support\Contracts\HasLabel;
 
 enum CurrentYear: string implements HasLabel
 {
-    case FirstYear = 'First Year';
-    case SecondYear = 'Second Year';
-    case ThirdYear = 'Third Year';
+    case FirstYear = 'FirstYear';
+    case SecondYear = 'SecondYear';
+    case ThirdYear = 'ThirdYear';
 
     public function getLabel(): ?string
     {

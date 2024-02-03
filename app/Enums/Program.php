@@ -11,8 +11,9 @@ enum Program: string implements HasLabel
     case DATA = 'DATA';
     case ICCN = 'ICCN';
     case SESNUM = 'SESNUM';
-    case SMARTICT = 'SMARTICT';
+    case SMARTICT = 'SMART-ICT';
     case SUD = 'SUD';
+    case NULL = '';
 
     public function getLabel(): ?string
     {
@@ -24,6 +25,8 @@ enum Program: string implements HasLabel
             self::SESNUM => 'Systèmes Embraqués et Services Numériques',
             self::SMARTICT => 'Smart Information & Communication Technology Engineering',
             self::SUD => 'Systèmes Ubiquitaires et Distribués',
+            self::NULL => 'N/A',
+            default => 'N/A',
         };
     }
 
