@@ -2,10 +2,17 @@
 
 namespace App\Models;
 
+use App\Enums;
 class Professor extends User
 {
     protected $table = 'users';
-
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+        'role' => Enums\Role::class,
+        'department' => Enums\Department::class,
+        'program_coordinator' => Enums\Program::class,
+    ];
     public function projects()
     {
         return $this->belongsToMany(Project::class, 'project_professor')->withPivot('role');

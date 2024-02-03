@@ -25,21 +25,10 @@ class InternshipPolicy extends CorePolicy
 
     public function view(User $user, Internship $internship)
     {
-        // Check if the user is a professor and the internship's student's program matches the user's program
         if ($user->hasAnyRole($this->powerProfessors)) {
             return true;
         }
     }
-    /**
-     * Validate function to be executed only by SuperAdministrator, Administrator, or ProgramCoordinator
-     */
-    // public function validate(User $user, Internship $internship)
-    // {
-    //     if ($user->hasAnyRole($this->powerProfessors) && $internship->student->program === "SUD") {
-    //         return true;
-    //     }
-    // }
-
     public function update(User $user, Internship $internship)
     {
         return $user->hasAnyRole($this->powerProfessors);

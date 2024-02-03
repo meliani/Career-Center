@@ -18,7 +18,7 @@ use Doctrine\DBAL\Connection;
 
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Support\Facades\RateLimiter;
-
+use App\Enums\Role;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -46,8 +46,8 @@ class AppServiceProvider extends ServiceProvider
         PanelSwitch::configureUsing(function (PanelSwitch $panelSwitch) {
             $panelSwitch
                 ->visible(fn (): bool => auth()->user()?->hasAnyRole([
-                    'Administrator',
-                    'SuperAdministrator',
+                    Role::SuperAdministrator,
+                    Role::Administrator,
                 ]));
         });
 

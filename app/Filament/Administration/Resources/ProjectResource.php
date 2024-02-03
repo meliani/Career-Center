@@ -23,7 +23,7 @@ class ProjectResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('pfe_id')
+                Forms\Components\TextInput::make('id_pfe')
                     ->numeric(),
                 Forms\Components\Textarea::make('title')
                     ->required()
@@ -45,7 +45,7 @@ class ProjectResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('pfe_id')
+                Tables\Columns\TextColumn::make('id_pfe')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('organization')

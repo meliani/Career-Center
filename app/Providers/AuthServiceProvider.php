@@ -52,7 +52,7 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('sign-internship', [InternshipPolicy::class, 'update']);
 
         Gate::define('viewPulse', function (User $user) {
-            return $user->role === 'SuperAdministrator';
+            return $user->role === Role::SuperAdministrator;
         });
         // Gate::define('viewAny-internship', function ($user, $internship) {
         //     // Check if the user is an administrator

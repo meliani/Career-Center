@@ -23,23 +23,10 @@ class InternshipsPerOrganizationChart extends ApexChartsParentWidget
      */
     protected function getOptions(): array
     {
-        // get internships per organization_name
-        // $data = Internship::query()
-        //     ->select('organization_name')
-        //     ->groupBy('organization_name')
-        //     ->get();
-        //  return apex chart data
         $internshipData = Internship::select('organization_name', \DB::raw('count(*) as count'))
-        // where internship.student.program like AMOA
-            // ->whereHas('student', function ($q) {
-
-            //     $q->where('program', auth()->user()->program_coordinator);
-            // })
             ->groupBy('organization_name')
             ->get()
             ->toArray();
-
-        // dd(array_column($internshipData, 'organization_name'));
         return [
             'chart' => [
                 'type' => 'pie',
