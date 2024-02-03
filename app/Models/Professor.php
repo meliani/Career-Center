@@ -6,6 +6,14 @@ use App\Enums;
 class Professor extends User
 {
     protected $table = 'users';
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'role',
+        'department',
+        'program_coordinator',
+    ];
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
