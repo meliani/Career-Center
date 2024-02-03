@@ -49,6 +49,7 @@
         "spatie/laravel-ignition": "^2.0"
     },
     "autoload": {
+        "exclude-from-classmap": ["app/developer_docs"],
         "psr-4": {
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",

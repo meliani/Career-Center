@@ -5,7 +5,7 @@ namespace App\Enums;
 use Filament\Support\Contracts\HasLabel;
 use Filament\Support\Contracts\HasColor;
 
-enum Title: string implements HasLabel, HasColor
+enum JuryRole: string implements HasLabel, HasColor
 {
     case Supervisor = 'Supervisor';
     case Reviewer = 'Reviewer';
