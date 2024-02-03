@@ -35,7 +35,7 @@ class ProjectService
                 try {
                     $project = Project::create([
                         'id' => $signedInternship->id,
-                        'pfe_id' => $signedInternship->pfe_id,
+                        'id_pfe' => $signedInternship->id_pfe,
                         'title' => $signedInternship->title,
                         'description' => $signedInternship->description,
                         'organization' => $signedInternship->organization_name,
@@ -49,7 +49,7 @@ class ProjectService
                         // duplicate entry
                         if ($forceOverwrite) {
                             $project = Project::find($signedInternship->id);
-                            $project->pfe_id = $signedInternship->pfe_id;
+                            $project->id_pfe = $signedInternship->id_pfe;
                             $project->title = $signedInternship->title;
                             $project->description = $signedInternship->description;
                             $project->organization = $signedInternship->organization;
@@ -94,8 +94,8 @@ class ProjectService
                 $professor = Professor::where('name', 'like', '%'.$supervisorName.'%')->first();
                 $professors[] = $professor;
                 if ($professor != null) {
-                    if ($project->pfe_id == null) {
-                        $project->pfe_id = $project->id;
+                    if ($project->id_pfe == null) {
+                        $project->id_pfe = $project->id;
                     }
                     $jury = Jury::create([
                         'project_id' => $project->id,

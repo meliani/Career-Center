@@ -5,7 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-
+use App\Enums\Role;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
  */
@@ -46,7 +46,7 @@ class UserFactory extends Factory
             'first_name' => 'Meliani',
             'last_name' => 'Mohamed',
             'email' => 'elmeliani@inpt.ac.ma',
-            'role' => 'SuperAdministrator',
+            'role' => Role::SuperAdministrator,
             'password' => bcrypt('root_password'), // replace 'root_password' with the actual password
             'remember_token' => Str::random(10),
         ]);
@@ -58,7 +58,7 @@ class UserFactory extends Factory
             'first_name' => 'Kensi',
             'last_name' => 'Ahmed',
             'email' => 'a.kensi@inpt.ac.ma',
-            'role' => 'Administrator',
+            'role' => Role::Administrator,
             'password' => bcrypt('root_password'), // replace 'root_password' with the actual password
             'remember_token' => Str::random(10),
         ]);
@@ -70,7 +70,7 @@ class UserFactory extends Factory
             'first_name' => 'Bellahcen',
             'last_name' => 'Samira',
             'email' => 'b.samira@inpt.ac.ma',
-            'role' => 'Administrator',
+            'role' => Role::Administrator,
             'password' => bcrypt('root_password'), // replace 'root_password' with the actual password
             'remember_token' => Str::random(10),
         ]);
@@ -82,16 +82,12 @@ class UserFactory extends Factory
             'first_name' => 'Azzi',
             'last_name' => 'Nisrine',
             'email' => 'n.azzi@inpt.ac.ma',
-            'role' => 'Administrator',
+            'role' => Role::Administrator,
             'password' => bcrypt('root_password'), // replace 'root_password' with the actual password
             'remember_token' => Str::random(10),
         ]);
     }
-    /* 
-    * wil add some professors with ProgramCoordinator roles
-    * we'll test with Oussama EL ISSATI / SESNUM
-    * and with Abdeslam EN-NOUAARY / SUD
-    */
+
     public function issati(): Factory
     {
         return $this->state([
@@ -99,7 +95,7 @@ class UserFactory extends Factory
             'first_name' => 'Oussama',
             'last_name' => 'EL ISSATI',
             'email' => 'issati@inpt.ac.ma',
-            'role' => 'ProgramCoordinator',
+            'role' => Role::ProgramCoordinator,
             'department' => 'SC',
             'program_coordinator' => 'SESNUM',
             'password' => bcrypt('professor_password'), // replace 'professor_password' with the actual password
@@ -113,7 +109,7 @@ class UserFactory extends Factory
             'first_name' => 'Abdeslam',
             'last_name' => 'EN-NOUAARY',
             'email' => 'ennouaary@inpt.ac.ma',
-            'role' => 'ProgramCoordinator',
+            'role' => Role::ProgramCoordinator,
             'department' => 'RIM',
             'program_coordinator' => 'SUD',
             'password' => bcrypt('professor_password'), // replace 'professor_password' with the actual password

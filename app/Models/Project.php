@@ -19,7 +19,7 @@ class Project extends Model
     // use HasUuids;
     protected $connection = 'mysql';
     protected $fillable = [
-        'pfe_id',
+        'id_pfe',
         'title',
         'organization',
         'description',
