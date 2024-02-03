@@ -23,9 +23,11 @@ class JuryResource extends Resource
     {
         return $form
             ->schema([
-                // Forms\Components\TextInput::make('project_id')
-                //     ->required()
-                //     ->numeric(),
+                Forms\Components\TextInput::make('project_id')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('timetable_id')
+                    ->numeric(),
             ]);
     }
 
@@ -36,7 +38,10 @@ class JuryResource extends Resource
                 Tables\Columns\TextColumn::make('project_id')
                     ->numeric()
                     ->sortable(),
-                    // add timeslot informations
+                Tables\Columns\TextColumn::make('timetable_id')
+                    ->numeric()
+                    ->sortable(),
+                // add timeslot informations
                 Tables\Columns\TextColumn::make('timeslot.start_time')
                     ->sortable()
                     ->searchable(),
@@ -48,9 +53,9 @@ class JuryResource extends Resource
                 Tables\Columns\TextColumn::make('professors.name')
                     ->sortable()
                     ->searchable(),
-                    // ->relationships('professors', 'name'),
-                    // ->displayUsing(fn (Jury $jury) => $jury->professors->pluck('name')->join(', ')),
-                    Tables\Columns\TextColumn::make('created_at')
+                // ->relationships('professors', 'name'),
+                // ->displayUsing(fn (Jury $jury) => $jury->professors->pluck('name')->join(', ')),
+                Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -83,12 +88,12 @@ class JuryResource extends Resource
     {
         return [
             'index' => Pages\ListJuries::route('/'),
-            // 'create' => Pages\CreateJury::route('/create'),
+            'create' => Pages\CreateJury::route('/create'),
             'edit' => Pages\EditJury::route('/{record}/edit'),
         ];
     }
     public static function canCreate(): bool
     {
-       return false;
+        return false;
     }
 }
