@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->date('date');
             $table->foreignId('timeslot_id')->constrained();
-            // $table->foreignId('room_id')->constrained();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('room_id')->constrained();
+            $table->foreignId('jury_id')->constrained();
+            $table->foreignId('user_id')->constrained()->nullable();
             $table->boolean('is_enabled')->default(true);
             $table->boolean('is_taken')->default(false);
             $table->boolean('is_confirmed')->default(false);
@@ -34,6 +35,8 @@ return new class extends Migration
             $table->foreignId('created_by')->constrained('users');
             $table->foreignId('updated_by')->constrained('users');
             $table->timestamps();
+            // timeslot_id and date should be unique
+            $table->unique(['timeslot_id', 'date', 'room_id', 'jury_id']);
         });
     }
 
