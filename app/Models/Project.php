@@ -17,7 +17,7 @@ class Project extends Model
 {
     // use HasFactory;
     // use HasUuids;
-    protected $connection = 'mysql';
+    protected $connection = 'backend_database';
     protected $fillable = [
         'id_pfe',
         'title',
