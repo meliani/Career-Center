@@ -81,19 +81,19 @@ class InternshipsPerProgramChart extends ApexChartsParentWidget
         //     ];
         // });
 
-        /*         $percentages = \DB::connection('front_database')
+        /*         $percentages = \DB::connection('frontend_database')
             ->table('people')
             ->leftjoin('internships', 'people.id', '=', 'internships.student_id')
             ->groupBy('program')
             ->select(
                 'program',
-                \DB::connection('front_database')->raw('count(distinct people.id) as total_students'),
-                \DB::connection('front_database')->raw('count(internships.id) as total_internships'),
-                \DB::connection('front_database')->raw('round((count(internships.id) / count(distinct people.id)) * 100, 2) as percentage')
+                \DB::connection('frontend_database')->raw('count(distinct people.id) as total_students'),
+                \DB::connection('frontend_database')->raw('count(internships.id) as total_internships'),
+                \DB::connection('frontend_database')->raw('round((count(internships.id) / count(distinct people.id)) * 100, 2) as percentage')
             )
             ->get(); */
 
-        // $internshipData = Student::on('front_database')
+        // $internshipData = Student::on('frontend_database')
         //     ->leftJoin('internships', 'people.id', '=', 'internships.student_id')
         //     // ->where('people.year_id', 7)
         //     // ->where('current_year', 3)
@@ -121,15 +121,15 @@ class InternshipsPerProgramChart extends ApexChartsParentWidget
         //         ];
         //     });
 
-        $internshipData = \DB::connection('front_database')->table('people')
+        $internshipData = \DB::connection('frontend_database')->table('people')
             ->leftJoin('internships', 'people.id', '=', 'internships.student_id')
             ->where('people.year_id', 7)
             ->groupBy('program')
             ->select(
                 'program',
-                \DB::connection('front_database')->raw('COUNT(DISTINCT people.id) AS total_students'),
-                \DB::connection('front_database')->raw('COUNT(internships.id) AS total_internships'),
-                \DB::connection('front_database')->raw('ROUND((COUNT(internships.id) / COUNT(DISTINCT people.id)) * 100, 2) AS percentage')
+                \DB::connection('frontend_database')->raw('COUNT(DISTINCT people.id) AS total_students'),
+                \DB::connection('frontend_database')->raw('COUNT(internships.id) AS total_internships'),
+                \DB::connection('frontend_database')->raw('ROUND((COUNT(internships.id) / COUNT(DISTINCT people.id)) * 100, 2) AS percentage')
             )
             ->get()
             ->toArray();

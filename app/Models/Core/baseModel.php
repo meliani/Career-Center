@@ -12,7 +12,7 @@ use App\Enums\Title;
 
 class baseModel extends Model
 {
-    protected $connection = 'front_database';
+    protected $connection = 'frontend_database';
     // protected $dateFormat = 'd M Y';
     
     public function scopeActive($query) {
