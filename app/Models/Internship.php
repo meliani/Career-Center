@@ -6,8 +6,7 @@ use Filament\Notifications\Notification;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Gate;
-use \App\Enums\Title;
-use \App\Enums\Status;
+use \App\Enums;
 use App\Casts\TitleCast;
 use App\Casts\StatusCast;
 use App\Models\Project;
@@ -83,7 +82,7 @@ class Internship extends Model
     ];
         protected $casts = [
         // 'title' => Title::class,
-        'status' => Status::class,
+        'status' => Enums\Status::class,
 
         'starting_at' => 'date',
         'ending_at' => 'date',
@@ -95,8 +94,9 @@ class Internship extends Model
         'deleted_at' => 'datetime',
         'is_active' => 'boolean',
         'is_mobility' => 'boolean',
-        'parrain_titre' => Title::class,
-        'encadrant_ext_titre' => Title::class,
+        'parrain_titre' => Enums\Title::class,
+        'encadrant_ext_titre' => Enums\Title::class,
+        'assigned_department' => Enums\Department::class,
     ];
     /* Validate function to be exexuted only by SuperAdministrator Administrator ProgramCoordinator */
 

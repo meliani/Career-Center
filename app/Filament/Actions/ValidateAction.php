@@ -6,6 +6,7 @@ use Filament\Tables\Actions\Action;
 use Illuminate\Support\Carbon;
 use App\Models\Internship;
 use Closure;
+use App\Enums;
 
 class ValidateAction extends Action
 {
@@ -29,12 +30,7 @@ class ValidateAction extends Action
         })
         ->requiresConfirmation(fn (Internship $internship) => "Are you sure you want to mark this internship as Signed?")
         ->form([\Filament\Forms\Components\Select::make('assigned_department')
-        ->options([
-            'SC' => 'SC',
-            'MIR' => 'MIR',
-            'EMO' => 'EMO',
-            'GLC' => 'GLC',
-        ])
+        ->options(Enums\Department::class)
         ->placeholder('Select a department or leave empty if not assigned yet')
     ]);
 
@@ -67,12 +63,7 @@ class ValidateAction extends Action
                 //     RichEditor::make('body')->required(),
                 // ])
             ->form([\Filament\Forms\Components\Select::make('assigned_department')
-            ->options([
-                'SC' => 'SC',
-                'MIR' => 'MIR',
-                'EMO' => 'EMO',
-                'GLC' => 'GLC',
-            ])])
+            ->options(Enums\Department::class)])
 
                 // ->fillForm(fn (Internship $record): array => [
                 //     'internshipId' => $record->student->id,

@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => env('BACKEND_DB_CONNECTION', 'imaginary_connection'),
 
     /*
     |--------------------------------------------------------------------------
@@ -43,15 +43,15 @@ return [
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
         ],
 
-        'mysql' => [
+        'backend_database' => [
             'driver' => 'mysql',
-            'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
-            'unix_socket' => env('DB_SOCKET', ''),
+            'url' => env('BACKEND_DATABASE_URL'),
+            'host' => env('BACKEND_DB_HOST', '127.0.0.1'),
+            'port' => env('BACKEND_DB_PORT', '3306'),
+            'database' => env('BACKEND_DB_DATABASE', 'forge'),
+            'username' => env('BACKEND_DB_USERNAME', 'forge'),
+            'password' => env('BACKEND_DB_PASSWORD', ''),
+            'unix_socket' => env('BACKEND_DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
             'prefix' => '',
@@ -62,15 +62,15 @@ return [
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
         ],
-        'front_database' => [
+        'frontend_database' => [
             'driver' => 'mysql',
-            'url' => env('FRONT_DATABASE_URL'),
-            'host' => env('FRONT_DB_HOST', '127.0.0.1'),
-            'port' => env('FRONT_DB_PORT', '3306'),
-            'database' => env('FRONT_DB_DATABASE', 'forge'),
-            'username' => env('FRONT_DB_USERNAME', 'forge'),
-            'password' => env('FRONT_DB_PASSWORD', ''),
-            'unix_socket' => env('FRONT_DB_SOCKET', ''),
+            'url' => env('FRONTEND_DATABASE_URL'),
+            'host' => env('FRONTEND_DB_HOST', '127.0.0.1'),
+            'port' => env('FRONTEND_DB_PORT', '3306'),
+            'database' => env('FRONTEND_DB_DATABASE', 'forge'),
+            'username' => env('FRONTEND_DB_USERNAME', 'forge'),
+            'password' => env('FRONTEND_DB_PASSWORD', ''),
+            'unix_socket' => env('FRONTEND_DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
             'prefix' => '',

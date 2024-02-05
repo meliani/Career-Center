@@ -10,6 +10,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Actions\AttachAction;
+use App\Enums\Department;
 
 class ProfessorsRelationManager extends RelationManager
 {
@@ -41,7 +42,7 @@ class ProfessorsRelationManager extends RelationManager
                 Tables\Actions\AttachAction::make()
                 ->form(fn (AttachAction $action): array => [
                     $action->getRecordSelect(),
-                    Forms\Components\TextInput::make('role')->required(),
+                    Forms\Components\Select::make('department')->options(Department::class),
                     Forms\Components\Select::make('is_president')->options([
                         '0' => 'No',
                         '1' => 'Yes',
