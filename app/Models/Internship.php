@@ -2,17 +2,13 @@
 
 namespace App\Models;
 
+use App\Enums;
+use App\Models\Core\baseModel as Model;
 use Filament\Notifications\Notification;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Gate;
-use \App\Enums;
-use App\Casts\TitleCast;
-use App\Casts\StatusCast;
-use App\Models\Project;
-use Filament\Widgets\StatsOverviewWidget\Stat;
 // use Illuminate\Database\Eloquent\Model;
-use App\Models\Core\baseModel as Model;
+use Illuminate\Support\Facades\Gate;
 
 class Internship extends Model
 {
@@ -26,10 +22,12 @@ class Internship extends Model
         // dd(Status::Draft);
 
     }
+
     protected static function booted(): void
     {
         static::addGlobalScope(new Scopes\DepartmentCoordinator());
     }
+
     public function scopeFilterByProgramHead($query)
     {
         return $query->whereHas('student', function ($q) {
@@ -80,10 +78,8 @@ class Internship extends Model
         'partnership_status',
         'observations',
     ];
-        protected $casts = [
-        // 'title' => Title::class,
-        'status' => Enums\Status::class,
 
+    protected $casts = [
         'starting_at' => 'date',
         'ending_at' => 'date',
         'validated_at' => 'datetime',
@@ -94,13 +90,18 @@ class Internship extends Model
         'deleted_at' => 'datetime',
         'is_active' => 'boolean',
         'is_mobility' => 'boolean',
+        'status' => Enums\Status::class,
         'parrain_titre' => Enums\Title::class,
         'encadrant_ext_titre' => Enums\Title::class,
         'assigned_department' => Enums\Department::class,
+        // 'status' => 'string',
+        // 'parrain_titre' => 'string',
+        // 'encadrant_ext_titre' => 'string',
+        // 'assigned_department' => 'string',
     ];
     /* Validate function to be exexuted only by SuperAdministrator Administrator ProgramCoordinator */
 
-    public function validate(?String $department=null)
+    public function validate(?string $department = null)
     {
         try {
             if (Gate::denies('validate-internship', $this)) {
@@ -147,6 +148,7 @@ class Internship extends Model
             return response()->json(['error' => 'This action is unauthorized.'], 403);
         }
     }
+
     public function receive()
     {
         try {
@@ -169,6 +171,7 @@ class Internship extends Model
             return response()->json(['error' => 'This action is unauthorized.'], 403);
         }
     }
+
     public function assignDepartment($department)
     {
         try {
@@ -191,6 +194,7 @@ class Internship extends Model
             return response()->json(['error' => 'This action is unauthorized.'], 403);
         }
     }
+
     public function changeStatus($status)
     {
         try {
@@ -213,11 +217,13 @@ class Internship extends Model
             return response()->json(['error' => 'This action is unauthorized.'], 403);
         }
     }
+
     /* New edits for a new logic by mel from bottom to top */
     public function defenses()
     {
         return $this->belongsToMany(Defense::class, 'defense_internship');
     }
+
     public function students()
     {
         return $this->hasMany(Student::class);
