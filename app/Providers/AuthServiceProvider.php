@@ -3,19 +3,22 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
-use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use App\Models\Internship;
-use App\Policies\InternshipPolicy;
-use Illuminate\Support\Facades\Gate;
-// use Illuminate\Auth\Access\Response;
 use App\Models\User;
-use Spatie\Activitylog\Models\Activity;
 use App\Policies\ActivityPolicy;
+use App\Policies\InternshipPolicy;
+// use Illuminate\Auth\Access\Response;
+use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate;
+use Spatie\Activitylog\Models\Activity;
+use App\Enums\Role;
 
 class AuthServiceProvider extends ServiceProvider
 {
-    protected $administrators = ['SuperAdministrator', 'Administrator'];
-    protected $professors = ['Professor', 'HeadOfDepartment', 'ProgramCoordinator'];
+    protected $administrators = [Role::SuperAdministrator, Role::Administrator];
+
+    protected $professors = [Role::Professor, Role::ProgramCoordinator, Role::DepartmentHead];
+
     /**
      * The model to policy mappings for the application.
      *
@@ -37,11 +40,19 @@ class AuthServiceProvider extends ServiceProvider
             }
             return $internship->student->program === $user->program_coordinator;
         });
+        Gate::define('batch-assign-internships-to-projects', function (User $user) {
+            if ($user->hasAnyRole($this->administrators)) {
+                return true;
+            }
+            return false;
+
+            // return $internship->student->program === $user->program_coordinator;
+        });
         Gate::define('validate-internship', [InternshipPolicy::class, 'update']);
         Gate::define('sign-internship', [InternshipPolicy::class, 'update']);
-        
+
         Gate::define('viewPulse', function (User $user) {
-            return $user->role === 'SuperAdministrator';
+            return $user->role === Role::SuperAdministrator;
         });
         // Gate::define('viewAny-internship', function ($user, $internship) {
         //     // Check if the user is an administrator

@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Models\Core\baseModel;
+use App\Enums;
+use Illuminate\Validation\Rules\Enum;
 
 class Person extends baseModel
 {
@@ -15,8 +17,7 @@ class Person extends baseModel
 
     protected $guarded = [];
 
-    public $fillable = [
-        'id',
+    protected $fillable = [
         'title',
         'pin',
         'full_name',
@@ -29,18 +30,25 @@ class Person extends baseModel
         'photo',
         'birth_date',
         'current_year',
-        'branche_id',
         'program',
         'is_mobility',
         'abroad_school',
         'year_id',
         'is_active',
         'model_status_id',
+        'graduated_at',
     ];
 
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'birth_date' => 'date',
+        'is_active' => 'boolean',
+        'is_mobility' => 'boolean',
+        
+        'program' => Enums\Program::class,
+        'title' => Enums\Title::class,
+        'current_year' => Enums\CurrentYear::class,
     ];
 
     public function getFullNameAttribute()

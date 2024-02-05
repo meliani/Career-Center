@@ -5,23 +5,24 @@ use Filament\Support\Contracts\HasLabel;
 
 enum Role: string implements HasLabel
 {
-    case ProgramCoordinator = 'Program Coordinator';
+    case ProgramCoordinator = 'ProgramCoordinator';
     case Professor = 'Professor';
-    case InternshipSupervisor = 'Internship Supervisor';
-    case HeadOfDepartment = 'Head of Department';
+    case InternshipSupervisor = 'InternshipSupervisor';
+    case DepartmentHead = 'DepartmentHead';
     case Administrator = 'Administrator';
-    case SuperAdministrator = 'Super Administrator';
-    case AdministrativeSupervisor = 'Administrative Supervisor';
+    case SuperAdministrator = 'SuperAdministrator';
+    case AdministrativeSupervisor = 'AdministrativeSupervisor';
 
     public function getLabel(): ?string
     {
-        return __($this->name);
-
-        /*  return match ($this) {
-            self::Draft => 'Draft',
-            self::Validating => 'Validating',
-            self::Published => 'Published',
-            self::Rejected => 'Rejected',
-        }; */
+        return match ($this) {
+            Role::ProgramCoordinator => 'Program Coordinator',
+            Role::Professor => 'Professor',
+            Role::InternshipSupervisor => 'Internship Supervisor',
+            Role::DepartmentHead => 'Head of Department',
+            Role::Administrator => 'Administrator',
+            Role::SuperAdministrator => 'Super Administrator',
+            Role::AdministrativeSupervisor => 'Administrative Supervisor',
+        };
     }
 }

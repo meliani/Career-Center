@@ -10,10 +10,9 @@ use App\Enums\Role;
 class CorePolicy
 {
     use HandlesAuthorization;
-
-    // public $role = Role::Administrator;
-    protected $administrators = [ 'SuperAdministrator' , 'Administrator'];
-    protected $professors = [ 'SuperAdministrator', 'Administrator','Professor', 'HeadOfDepartment', 'ProgramCoordinator'];
-    protected $powerProfessors = ['SuperAdministrator', 'Administrator', 'ProgramCoordinator'];
+    
+    protected $administrators = [ Role::SuperAdministrator , Role::Administrator];
+    protected $professors = [ Role::SuperAdministrator, Role::Administrator, Role::Professor, Role::DepartmentHead, Role::ProgramCoordinator];
+    protected $powerProfessors = [Role::SuperAdministrator, Role::Administrator, Role::ProgramCoordinator];
 
 }

@@ -4,6 +4,8 @@ namespace App\Policies;
 
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use App\Enums\Role;
+
 
 class ActivityPolicy
 {
@@ -18,10 +20,10 @@ class ActivityPolicy
     }
     public function viewAny(User $user): bool
     {
-        return $user->hasRole('SuperAdministrator');
+        return $user->hasRole(Role::SuperAdministrator);
     }
     public function view(User $user): bool
     {
-        return $user->hasRole('SuperAdministrator');
+        return $user->hasRole(Role::SuperAdministrator);
     }
 }

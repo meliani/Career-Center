@@ -6,8 +6,7 @@ use Filament\Notifications\Notification;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Gate;
-use \App\Enums\Title;
-use \App\Enums\Status;
+use \App\Enums;
 use App\Casts\TitleCast;
 use App\Casts\StatusCast;
 use App\Models\Project;
@@ -38,10 +37,52 @@ class Internship extends Model
         });
     }
 
-    protected $guarded = [];
-    protected $casts = [
+    public $fillable = [
+        'id_pfe',
+        'organization_name',
+        'adresse',
+        'city',
+        'country',
+        'office_location',
+        'parrain_titre',
+        'parrain_nom',
+        'parrain_prenom',
+        'parrain_fonction',
+        'parrain_tel',
+        'parrain_mail',
+        'encadrant_ext_titre',
+        'encadrant_ext_nom',
+        'encadrant_ext_prenom',
+        'encadrant_ext_fonction',
+        'encadrant_ext_tel',
+        'encadrant_ext_mail',
+        'title',
+        'description',
+        'keywords',
+        'starting_at',
+        'ending_at',
+        'remuneration',
+        'currency',
+        'load',
+        'int_adviser_name',
+        'student_id',
+        'year_id',
+        'is_valid',
+        'status',
+        'announced_at',
+        'validated_at',
+        'assigned_department',
+        'received_at',
+        'signed_at',
+        'project_id',
+        'binome_user_id',
+        'partner_internship_id',
+        'partnership_status',
+        'observations',
+    ];
+        protected $casts = [
         // 'title' => Title::class,
-        'status' => Status::class,
+        'status' => Enums\Status::class,
 
         'starting_at' => 'date',
         'ending_at' => 'date',
@@ -51,6 +92,11 @@ class Internship extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
+        'is_active' => 'boolean',
+        'is_mobility' => 'boolean',
+        'parrain_titre' => Enums\Title::class,
+        'encadrant_ext_titre' => Enums\Title::class,
+        'assigned_department' => Enums\Department::class,
     ];
     /* Validate function to be exexuted only by SuperAdministrator Administrator ProgramCoordinator */
 

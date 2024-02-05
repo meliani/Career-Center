@@ -11,7 +11,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-// use \App\Enums\Role;
+use \App\Enums\Role;
+use \App\Enums\Department;
+use \App\Enums\Program;
 
 class User extends Authenticatable implements FilamentUser, HasName
 {
@@ -23,6 +25,9 @@ class User extends Authenticatable implements FilamentUser, HasName
      * @var array<int, string>
      */
     protected $guarded = [];
+    protected $administrators = [ Role::SuperAdministrator , Role::Administrator];
+    protected $professors = [ Role::SuperAdministrator, Role::Administrator, Role::Professor, Role::DepartmentHead, Role::ProgramCoordinator];
+    protected $powerProfessors = [Role::SuperAdministrator, Role::Administrator, Role::ProgramCoordinator];
 
     protected $fillable = [
         'name',
@@ -55,7 +60,9 @@ class User extends Authenticatable implements FilamentUser, HasName
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
-        // 'role' => Role::class,
+        'role' => Role::class,
+        'department' => Department::class,
+        'program_coordinator' => Program::class,
     ];
 
     public function getNameAttribute()
@@ -72,27 +79,23 @@ class User extends Authenticatable implements FilamentUser, HasName
         return "{$this->first_name} {$this->last_name}";
     }
 
-    public function hasRole($role)
+    public function hasRole(Role $role)
     {
         return $this->role === $role;
     }
 
     public function hasAnyRole(array $roles)
     {
-        if ($this->role) {
-            return in_array($this->role, $roles);
-        }
-
-        return false;
+        return in_array($this->role, $roles);
     }
 
     public function canAccessPanel(Panel $panel): bool
     {
         if ($panel->getId() === 'Administration') {
-            return $this->hasAnyRole(['SuperAdministrator', 'Administrator']);
+            return $this->hasAnyRole($this->administrators);
         }
         if ($panel->getId() === 'ProgramCoordinator') {
-            return $this->haAnyRole(['SuperAdministrator', 'Administrator', 'ProgramCoordinator']);
+            return $this->haAnyRole($this->powerProfessors);
         }
 
         // return str_ends_with($this->email, '@inpt.ac.ma') && $this->hasVerifiedEmail();
@@ -101,10 +104,10 @@ class User extends Authenticatable implements FilamentUser, HasName
 
     public function isSuperAdministrator()
     {
-        return $this->role === 'SuperAdministrator';
+        return $this->hasRole(Role::SuperAdministrator);
     }
     public function isAdministrator()
     {
-        return $this->role === 'Administrator';
+        return $this->hasAnyRole($this->administrators);
     }
 }

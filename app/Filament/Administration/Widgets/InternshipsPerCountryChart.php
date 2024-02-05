@@ -28,23 +28,12 @@ class InternshipsPerCountryChart extends ApexChartsParentWidget
      */
     protected function getOptions(): array
     {
-        // get internships per Country_name
-        // $data = Internship::query()
-        //     ->select('Country_name')
-        //     ->groupBy('Country_name')
-        //     ->get();
-        //  return apex chart data
-        $internshipData = Internship::select('country', \DB::raw('count(*) as count'))
-        // where internship.student.program like AMOA
-            // ->whereHas('student', function ($q) {
 
-            //     $q->where('program', auth()->user()->program_coordinator);
-            // })
+        $internshipData = Internship::select('country', \DB::raw('count(*) as count'))
+
             ->groupBy('country')
             ->get()
             ->toArray();
-
-        // dd(array_column($internshipData, 'country'));
         return [
             'chart' => [
                 'type' => 'pie',
