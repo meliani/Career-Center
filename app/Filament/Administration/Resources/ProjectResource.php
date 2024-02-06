@@ -36,8 +36,7 @@ class ProjectResource extends Resource
                     ->columnSpanFull(),
                 Forms\Components\DatePicker::make('start_date'),
                 Forms\Components\DatePicker::make('end_date'),
-                Forms\Components\TextInput::make('jury_id')
-                    ->numeric(),
+                // Forms\Components\TextInput::make('jury_id')->numeric(),
             ]);
     }
 
@@ -86,6 +85,7 @@ class ProjectResource extends Resource
     {
         return [
             // RelationManagers\ProfessorsRelationManager::class,
+            RelationManagers\TeammateRelationManager::class,
         ];
     }
 
