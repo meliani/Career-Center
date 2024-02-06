@@ -19,6 +19,7 @@ use App\Filament\Actions\ScheduleHeadOfJury;
 use App\Filament\Actions\AssignInternshipsToProjects;
 use App\Filament\Actions\GenerateTimeslotsAction;
 use App\Filament\Actions\GenerateProjectsJuryAction;
+
 class ScheduleParametersResource extends Resource
 {
     public $starting_from;
@@ -30,9 +31,16 @@ class ScheduleParametersResource extends Resource
     public $max_rooms;
     public $minutes_per_slot;
 
+    // protected static ?string $navigationParentItem = 'Notifications';
+
+    // protected static ?string $navigationGroup = 'Settings';
+
+
     protected static ?string $model = ScheduleParameters::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+
 
     public static function form(Form $form): Form
     {
@@ -46,7 +54,7 @@ class ScheduleParametersResource extends Resource
                     ->required(),
                 Forms\Components\TextInput::make('day_ending_at')
                     ->required(),
-                    Forms\Components\TextInput::make('lunch_starting_at')
+                Forms\Components\TextInput::make('lunch_starting_at')
                     ->required(),
                 Forms\Components\TextInput::make('lunch_ending_at')
                     ->required(),
@@ -71,11 +79,11 @@ class ScheduleParametersResource extends Resource
                     GenerateTimeslotsAction::make('Generate Timeslots'),
                     GenerateProjectsJuryAction::make('Generate Projects Jury')
 
-                        // ->requiresConfirmation(),
-                        // ->action(function (ScheduleDepartmentHead $ScheduleDepartmentHead) {
-                        //     dd('action called')
-                        //     // $scheduleDepartmentHead = new ScheduleDepartmentHead('Schedule Head of Department');
-                        // })
+                    // ->requiresConfirmation(),
+                    // ->action(function (ScheduleDepartmentHead $ScheduleDepartmentHead) {
+                    //     dd('action called')
+                    //     // $scheduleDepartmentHead = new ScheduleDepartmentHead('Schedule Head of Department');
+                    // })
                 ])
             ]);
     }
@@ -130,6 +138,10 @@ class ScheduleParametersResource extends Resource
         return [
             //
         ];
+    }
+    public static function getnavigationGroup(): string
+    {
+        return __('Planning');
     }
 
     public static function getPages(): array

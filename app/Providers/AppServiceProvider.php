@@ -23,6 +23,8 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
+use App\Models\Project;
+use App\Observers\ProjectObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
