@@ -65,6 +65,9 @@ class ProjectService
                     }
                 }
                 $signedInternship->project_id = $project->id;
+
+                // $project->students()->attach($student);
+
                 $signedInternship->save();
                 $assignedInternships++;
                 // if ($assignedInternships == 5) {
