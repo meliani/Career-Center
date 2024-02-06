@@ -4,7 +4,7 @@ namespace App\Enums;
 
 use Filament\Support\Contracts\HasLabel;
 
-enum Program: string implements HasLabel
+enum Program: string implements HasLabel, BaseEnum
 {
     case AMOA = 'AMOA';
     case ASEDS = 'ASEDS';

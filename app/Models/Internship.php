@@ -66,7 +66,6 @@ class Internship extends Core\FrontendBaseModel
         'assigned_department',
         'received_at',
         'signed_at',
-        'project_id',
         'observations',
     ];
 
@@ -210,6 +209,7 @@ class Internship extends Core\FrontendBaseModel
             return response()->json(['error' => 'This action is unauthorized.'], 403);
         }
     }
+
     public function students()
     {
         return $this->hasMany(Student::class);
@@ -219,10 +219,12 @@ class Internship extends Core\FrontendBaseModel
     {
         return $this->hasOne(Project::class);
     }
+
     public function teammate()
     {
         return $this->belongsTo(Student::class, 'teammate_id');
     }
+
     public function student()
     {
         return $this->belongsTo(Student::class);

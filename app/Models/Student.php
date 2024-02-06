@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Enums;
+use App\Models\Core\BackendBaseModel;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use App\Enums;
-use App\Models\Core\BackendBaseModel;
+
 class Student extends BackendBaseModel implements HasMedia
 {
     use InteractsWithMedia;
@@ -18,6 +19,7 @@ class Student extends BackendBaseModel implements HasMedia
     protected $appends = [
         'full_name',
     ];
+
     protected $fillable = [
         'title',
         'pin',
@@ -29,7 +31,7 @@ class Student extends BackendBaseModel implements HasMedia
         'lm',
         'photo',
         'birth_date',
-        'current_year',
+        'level',
         'program',
         'is_mobility',
         'abroad_school',
@@ -41,6 +43,7 @@ class Student extends BackendBaseModel implements HasMedia
         'encadrant_ext_titre',
         'encadrant_int_titre',
     ];
+
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
@@ -51,9 +54,10 @@ class Student extends BackendBaseModel implements HasMedia
         'parrain_titre' => Enums\Title::class,
         'encadrant_ext_titre' => Enums\Title::class,
         'encadrant_int_titre' => Enums\Title::class,
-        'current_year' => Enums\CurrentYear::class,
+        'level' => Enums\StudentLevel::class,
 
     ];
+
     public static function boot()
     {
         parent::boot();
@@ -82,7 +86,6 @@ class Student extends BackendBaseModel implements HasMedia
     {
         return $this->belongsToMany(Project::class)->withTimestamps();
     }
-
 
     public function registerMediaCollections(): void
     {

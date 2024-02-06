@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Enums;
-use Illuminate\Validation\Rules\Enum;
 
 class Person extends Core\FrontendBaseModel
 {
@@ -28,7 +27,7 @@ class Person extends Core\FrontendBaseModel
         'lm',
         'photo',
         'birth_date',
-        'current_year',
+        'level',
         'program',
         'is_mobility',
         'abroad_school',
@@ -44,10 +43,10 @@ class Person extends Core\FrontendBaseModel
         'birth_date' => 'date',
         'is_active' => 'boolean',
         'is_mobility' => 'boolean',
-        
+
         'program' => Enums\Program::class,
         'title' => Enums\Title::class,
-        'current_year' => Enums\CurrentYear::class,
+        'level' => Enums\StudentLevel::class,
     ];
 
     public function getFullNameAttribute()

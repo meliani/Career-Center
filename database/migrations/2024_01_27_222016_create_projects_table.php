@@ -21,6 +21,7 @@ class CreateProjectsTable extends Migration
             $table->date('end_date')->nullable();
             $table->integer('jury_id')->nullable()->constrained();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -31,4 +32,4 @@ class CreateProjectsTable extends Migration
     {
         Schema::dropIfExists('projects');
     }
-};
+}

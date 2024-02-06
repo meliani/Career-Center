@@ -15,7 +15,15 @@ enum Department: string implements HasLabel
     case GLC = 'GLC';
     case SC = 'SC';
 
-
+    public static function getArray(): array
+    {
+        return [
+            'EMO' => 'Électronique, Micro-ondes et Optique',
+            'MIR' => 'Systèmes de Communications',
+            'GLC' => 'Gestion, Langues et Communications',
+            'SC' => 'Mathématiques, Informatique et Réseaux',
+        ];
+    }
 
     public function getLabel(): ?string
     {

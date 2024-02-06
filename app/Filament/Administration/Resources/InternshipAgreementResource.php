@@ -2,18 +2,21 @@
 
 namespace App\Filament\Administration\Resources;
 
+use App\Enums;
+use App\Enums\Status;
 use App\Filament\Administration\Resources\InternshipAgreementResource\Pages;
-use App\Filament\Administration\Resources\InternshipAgreementResource\RelationManagers;
+use App\Models\Internship;
 use App\Models\InternshipAgreement;
+use App\Models\Student;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use App\Enums;
-use App\Models\Student;
 use Filament\Tables;
+use Filament\Tables\Columns\Summarizers\Sum;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class InternshipAgreementResource extends Resource
 {
@@ -113,16 +116,16 @@ class InternshipAgreementResource extends Resource
                     ->options(Enums\Status::class)
                     ->inline()
                     ->required(),
-                    
+
                 Forms\Components\DateTimePicker::make('announced_at'),
                 Forms\Components\DateTimePicker::make('validated_at'),
                 Forms\Components\Select::make('assigned_department')
-                ->options(Enums\Department::class),
+                    ->options(Enums\Department::class),
                 Forms\Components\DateTimePicker::make('received_at'),
                 Forms\Components\DateTimePicker::make('signed_at'),
                 Forms\Components\TextInput::make('project_id')
                     ->numeric(),
-                    Forms\Components\Select::make('binome_user_id')
+                Forms\Components\Select::make('binome_user_id')
                     ->options(function () {
                         return Student::all()->pluck('full_name', 'id');
                     }),
@@ -138,106 +141,45 @@ class InternshipAgreementResource extends Resource
 
     public static function table(Table $table): Table
     {
+        $livewire = $table->getLivewire();
+
         return $table
-            ->columns([
-                Tables\Columns\TextColumn::make('student_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('id_pfe')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('organization_name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('adresse')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('city')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('country')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('office_location')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('parrain_titre')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('parrain_nom')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('parrain_prenom')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('parrain_fonction')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('parrain_tel')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('parrain_mail')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('encadrant_ext_titre')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('encadrant_ext_nom')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('encadrant_ext_prenom')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('encadrant_ext_fonction')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('encadrant_ext_tel')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('encadrant_ext_mail')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('starting_at')
-                    ->date()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('ending_at')
-                    ->date()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('remuneration')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('currency')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('load')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('int_adviser_name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('year_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\IconColumn::make('is_valid')
-                    ->boolean(),
-                Tables\Columns\TextColumn::make('status')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('announced_at')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('validated_at')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('assigned_department')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('received_at')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('signed_at')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('project_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('binome_user_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('partner_internship_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('partnership_status')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+            ->defaultSort('announced_at', 'asc')
+            ->groups([
+                Group::make(__('status'))
+                    ->collapsible()
+                    ->titlePrefixedWithLabel(false),
+                Group::make('student.program')
+                    ->label(__('Program'))
+                    ->collapsible(),
+                // ->titlePrefixedWithLabel(false)
+                // ->getTitleFromRecordUsing(fn (Internship $record): string => ucfirst($record->program)),
+            ])
+        //->groupingSettingsHidden()
+        // ->groupsOnly()
+            ->emptyStateDescription('Once students starts announcing internships, it will appear here.')
+            ->columns(
+                $livewire->isGridLayout()
+                ? static::getGridTableColumns()
+                : static::getTableColumns(),
+                // TextColumn::make('is_valid')
+                //     ->summarize(Sum::make()),
+            )
+        // ->defaultGroup('status')
+        // ->groupsOnly()
+            ->contentGrid(
+                fn () => $livewire->isGridLayout()
+                    ? [
+                        'md' => 2,
+                        'lg' => 3,
+                        'xl' => 4,
+                    ] : null
+            )
+            ->filters([
+                Tables\Filters\TrashedFilter::make(),
+                SelectFilter::make('status')
+                    ->multiple()
+                    ->options(Status::class),
             ])
             ->filters([
                 //
@@ -250,6 +192,114 @@ class InternshipAgreementResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public static function getGridTableColumns(): array
+    {
+        return [
+            Tables\Columns\TextColumn::make('id')
+                ->label(__('ID'))
+                ->searchable()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('student_id')
+                ->label(__('Student'))
+                ->searchable()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('organization_name')
+                ->label(__('Organization'))
+                ->searchable()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('parrain_nom')
+                ->label(__('Parrain'))
+                ->searchable()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('encadrant_ext_nom')
+                ->label(__('Encadrant'))
+                ->searchable()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('status')
+                ->label(__('Status'))
+                ->searchable()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('announced_at')
+                ->label(__('Announced'))
+                ->searchable()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('validated_at')
+                ->label(__('Validated'))
+                ->searchable()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('signed_at')
+                ->label(__('Signed'))
+                ->searchable()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('received_at')
+                ->label(__('Received'))
+                ->searchable()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('starting_at')
+                ->label(__('Start'))
+                ->searchable()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('ending_at')
+                ->label(__('End'))
+                ->searchable()
+                ->sortable(),
+        ];
+    }
+
+    public static function getTableColumns(): array
+    {
+        return [
+            Tables\Columns\TextColumn::make('id')
+                ->label(__('ID'))
+                ->searchable()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('student_id')
+                ->label(__('Student'))
+                ->searchable()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('organization_name')
+                ->label(__('Organization'))
+                ->searchable()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('parrain_nom')
+                ->label(__('Parrain'))
+                ->searchable()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('encadrant_ext_nom')
+                ->label(__('Encadrant'))
+                ->searchable()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('status')
+                ->label(__('Status'))
+                ->searchable()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('announced_at')
+                ->label(__('Announced'))
+                ->searchable()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('validated_at')
+                ->label(__('Validated'))
+                ->searchable()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('signed_at')
+                ->label(__('Signed'))
+                ->searchable()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('received_at')
+                ->label(__('Received'))
+                ->searchable()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('starting_at')
+                ->label(__('Start'))
+                ->searchable()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('ending_at')
+                ->label(__('End'))
+                ->searchable()
+                ->sortable(),
+        ];
     }
 
     public static function getRelations(): array

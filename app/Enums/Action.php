@@ -1,9 +1,10 @@
 <?php
+
 namespace App\Enums;
 
 use Filament\Support\Contracts\HasLabel;
 
-enum Action: string implements HasLabel
+enum Action: string implements BaseEnum, HasLabel
 {
     case PendingAnnouncement = 'Pending Announcement';
     case PendingValidation = 'Pending Validate';

@@ -5,7 +5,7 @@ namespace App\Enums;
 use Filament\Support\Contracts\HasLabel;
 use Filament\Support\Contracts\HasColor;
 
-enum Title: string implements HasLabel, HasColor
+enum Title: string implements HasLabel, BaseEnum, HasColor
 {
     case Mrs = 'Mrs';
     case Mr = 'Mr';

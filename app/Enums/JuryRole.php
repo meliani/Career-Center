@@ -2,10 +2,10 @@
 
 namespace App\Enums;
 
-use Filament\Support\Contracts\HasLabel;
 use Filament\Support\Contracts\HasColor;
+use Filament\Support\Contracts\HasLabel;
 
-enum JuryRole: string implements HasLabel, HasColor
+enum JuryRole: string implements BaseEnum, HasColor, HasLabel
 {
     case Supervisor = 'Supervisor';
     case Reviewer = 'Reviewer';
@@ -14,6 +14,7 @@ enum JuryRole: string implements HasLabel, HasColor
     {
         return __($this->name);
     }
+
     public function getColor(): ?string
     {
         return match ($this) {
@@ -21,6 +22,4 @@ enum JuryRole: string implements HasLabel, HasColor
             self::Reviewer => 'info',
         };
     }
-
-
 }

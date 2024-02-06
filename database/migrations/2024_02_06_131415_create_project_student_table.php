@@ -11,7 +11,7 @@ class CreateProjectStudentTable extends Migration
         Schema::create('project_student', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('project_id');
-            $table->unsignedInteger('student_id');
+            $table->foreignId('student_id');
             $table->timestamps();
 
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');

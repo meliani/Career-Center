@@ -2,19 +2,16 @@
 
 namespace App\Filament\Administration\Resources;
 
+use App\Filament\Actions\SendBulkEmail;
 use App\Filament\Administration\Resources\StudentResource\Pages;
-use App\Filament\Administration\Resources\StudentResource\RelationManagers;
 use App\Models\Student;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Table;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
-use App\Filament\Actions\SendBulkEmail;
 
 class StudentResource extends Resource
 {
@@ -51,7 +48,7 @@ class StudentResource extends Resource
                 Forms\Components\TextInput::make('photo')
                     ->maxLength(191),
                 Forms\Components\DatePicker::make('birth_date'),
-                Forms\Components\TextInput::make('current_year')
+                Forms\Components\TextInput::make('level')
                     ->maxLength(10),
                 Forms\Components\TextInput::make('program')
                     ->maxLength(10),
@@ -99,7 +96,7 @@ class StudentResource extends Resource
                 Tables\Columns\TextColumn::make('birth_date')
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('current_year')
+                Tables\Columns\TextColumn::make('level')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('program')
                     ->searchable(),
@@ -125,13 +122,13 @@ class StudentResource extends Resource
             ])
             ->filters([
                 SelectFilter::make('is_active')
-                ->multiple()
-                ->options([
-                    '0' => __('Inactive'),
-                    '1' => __('Active'),
-                ])->placeholder(__('Filter by status'))
-               ])
-                
+                    ->multiple()
+                    ->options([
+                        '0' => __('Inactive'),
+                        '1' => __('Active'),
+                    ])->placeholder(__('Filter by status')),
+            ])
+
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
@@ -152,11 +149,12 @@ class StudentResource extends Resource
             'index' => Pages\ManageStudents::route('/'),
         ];
     }
+
     public static function getModelLabel(): string
     {
         return __('Student');
     }
-    
+
     public static function getPluralModelLabel(): string
     {
         return __('Students');

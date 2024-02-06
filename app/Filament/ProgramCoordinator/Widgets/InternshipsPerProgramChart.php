@@ -32,13 +32,9 @@ class InternshipsPerProgramChart extends ApexChartsParentWidget
 
         // get number of internships per program
 
-
-
-
         // dd($internshipData);
 
         // calculate ratio of each program number of students with numbers of students that had Announced internship
-
 
         /*         $internshipData = Student::query()->select('program', \DB::raw('count(*) as count'))
             ->whereHas(
@@ -91,7 +87,7 @@ class InternshipsPerProgramChart extends ApexChartsParentWidget
         // $internshipData = Student::on('frontend_database')
         //     ->leftJoin('internships', 'people.id', '=', 'internships.student_id')
         //     // ->where('people.year_id', 7)
-        //     // ->where('current_year', 3)
+        //     // ->where('level', 3)
         //     // ->whereHas(
         //     //     'internship',
         //     //     function ($q) {
@@ -128,14 +124,14 @@ class InternshipsPerProgramChart extends ApexChartsParentWidget
             )
             ->get()
             ->toArray();
-            // ->map(function ($program) {
-            //     return [
-            //         'program' => $program->program,
-            //         'total_students' => $program->total_students,
-            //         'total_internships' => $program->total_internships,
-            //         'percentage' => $program->percentage,
-            //     ];
-            // });
+        // ->map(function ($program) {
+        //     return [
+        //         'program' => $program->program,
+        //         'total_students' => $program->total_students,
+        //         'total_internships' => $program->total_internships,
+        //         'percentage' => $program->percentage,
+        //     ];
+        // });
         // dd($internshipData);
 
         // dd($percentages);
@@ -168,18 +164,18 @@ class InternshipsPerProgramChart extends ApexChartsParentWidget
             ],
         ];
 
-/*         return [
-            'chart' => [
-                'type' => 'bar',
-                'height' => 300,
-            ],
-            'series' => array_column($internshipData, 'total_students'),
-            'labels' => array_column($internshipData, 'program'),
-            'legend' => [
-                'labels' => [
-                    'fontFamily' => 'inherit',
-                ],
-            ],
-        ]; */
+        /*         return [
+                    'chart' => [
+                        'type' => 'bar',
+                        'height' => 300,
+                    ],
+                    'series' => array_column($internshipData, 'total_students'),
+                    'labels' => array_column($internshipData, 'program'),
+                    'legend' => [
+                        'labels' => [
+                            'fontFamily' => 'inherit',
+                        ],
+                    ],
+                ]; */
     }
 }

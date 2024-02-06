@@ -24,7 +24,7 @@ class OfferResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('year_id')
                     ->numeric(),
-                Forms\Components\TextInput::make('current_year')
+                Forms\Components\TextInput::make('level')
                     ->numeric(),
                 Forms\Components\TextInput::make('organization_name')
                     ->maxLength(191),
@@ -91,7 +91,7 @@ class OfferResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('current_year')
+                Tables\Columns\TextColumn::make('level')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->numeric()
                     ->sortable(),
