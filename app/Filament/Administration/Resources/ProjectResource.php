@@ -85,7 +85,7 @@ class ProjectResource extends Resource
     {
         return [
             // RelationManagers\ProfessorsRelationManager::class,
-            RelationManagers\TeammateRelationManager::class,
+            // RelationManagers\TeammateRelationManager::class,
         ];
     }
 
