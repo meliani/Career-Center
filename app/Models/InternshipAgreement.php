@@ -93,6 +93,7 @@ class InternshipAgreement extends Core\FrontendBaseModel
         // 'parrain_titre' => 'string',
         // 'encadrant_ext_titre' => 'string',
         // 'assigned_department' => 'string',
+        // 'teammate_status' => 'string',
     ];
     /* Validate function to be exexuted only by SuperAdministrator Administrator ProgramCoordinator */
 

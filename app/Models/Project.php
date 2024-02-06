@@ -47,8 +47,12 @@ class Project extends Core\BackendBaseModel
     public function jury() {
         return $this->hasOne(Jury::class);
     }
-    public function teammate(): BelongsTo
+    public function students()
     {
-        return $this->belongsTo(Student::class, 'teammate_id');
+        return $this->belongsToMany(Student::class)->withTimestamps();
     }
+    // public function teammate(): BelongsTo
+    // {
+    //     return $this->belongsTo(Student::class, 'teammate_id');
+    // }
 }

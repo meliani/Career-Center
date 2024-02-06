@@ -7,12 +7,12 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use App\Enums;
-
-class Student extends Person implements HasMedia
+use App\Models\Core\BackendBaseModel;
+class Student extends BackendBaseModel implements HasMedia
 {
     use InteractsWithMedia;
 
-    protected $table = 'people';
+    // protected $table = 'people';
     // protected $primaryKey = "id";
 
     protected $appends = [
@@ -74,10 +74,15 @@ class Student extends Person implements HasMedia
         return $this->belongsTo(Internship::class);
     }
 
-    public function teammate()
+    // public function teammate()
+    // {
+    //     return $this->hasOne(Student::class, 'teammate_id');
+    // }
+    public function projects()
     {
-        return $this->hasOne(Student::class, 'teammate_id');
+        return $this->belongsToMany(Project::class)->withTimestamps();
     }
+
 
     public function registerMediaCollections(): void
     {
