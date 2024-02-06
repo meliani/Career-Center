@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Models;
-use Illuminate\Database\Eloquent\Model;
 
-class ProfessorJury extends Model {
-    // Assuming you have a table named 'professor_jury'
+
+class ProfessorJury extends Core\BackendBaseModel 
+{
     protected $table = 'professor_jury';
 
     public function professor() {

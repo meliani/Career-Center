@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums;
+
 class Professor extends User
 {
     protected $table = 'users';

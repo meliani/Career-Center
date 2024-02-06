@@ -3,9 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Core\baseModel;
 
-class Year extends BaseModel
+class Year extends Core\BackendBaseModel
 {
     /**
      * The attributes that are mass assignable.
@@ -41,7 +40,7 @@ class Year extends BaseModel
      */
     public function internships()
     {
-        return $this->belongsToMany(\App\Internship::class);
+        return $this->belongsToMany(Internship::class);
     }
 
 }

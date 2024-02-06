@@ -2,9 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 
-class Jury extends Model
+class Jury extends Core\BackendBaseModel
 {
 
     protected $fillable = [

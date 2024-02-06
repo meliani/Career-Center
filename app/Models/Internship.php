@@ -3,24 +3,18 @@
 namespace App\Models;
 
 use App\Enums;
-use App\Models\Core\baseModel as Model;
 use Filament\Notifications\Notification;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\SoftDeletes;
-// use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Gate;
 
-class Internship extends Model
+class Internship extends Core\FrontendBaseModel
 {
     use SoftDeletes;
 
     protected static function boot()
     {
         parent::boot();
-        // dd(Title::Mr);
-
-        // dd(Status::Draft);
-
     }
 
     protected static function booted(): void
@@ -73,9 +67,6 @@ class Internship extends Model
         'received_at',
         'signed_at',
         'project_id',
-        'binome_user_id',
-        'partner_internship_id',
-        'partnership_status',
         'observations',
     ];
 
@@ -94,6 +85,8 @@ class Internship extends Model
         'parrain_titre' => Enums\Title::class,
         'encadrant_ext_titre' => Enums\Title::class,
         'assigned_department' => Enums\Department::class,
+        'teammate_status' => Enums\TeammateStatus::class,
+
         // 'status' => 'string',
         // 'parrain_titre' => 'string',
         // 'encadrant_ext_titre' => 'string',
@@ -217,13 +210,6 @@ class Internship extends Model
             return response()->json(['error' => 'This action is unauthorized.'], 403);
         }
     }
-
-    /* New edits for a new logic by mel from bottom to top */
-    public function defenses()
-    {
-        return $this->belongsToMany(Defense::class, 'defense_internship');
-    }
-
     public function students()
     {
         return $this->hasMany(Student::class);
@@ -231,15 +217,12 @@ class Internship extends Model
 
     public function project()
     {
-        return $this->belongsToMany(Project::class);
+        return $this->hasOne(Project::class);
     }
-    /* End edits for a new logic by mel */
-
-    public function binome()
+    public function teammate()
     {
-        return $this->belongsTo(Student::class, 'binome_user_id', 'id');
+        return $this->belongsTo(Student::class, 'teammate_id');
     }
-
     public function student()
     {
         return $this->belongsTo(Student::class);

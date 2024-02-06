@@ -2,10 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
-class ScheduleParameters extends Model
+class ScheduleParameters extends Core\BackendBaseModel
 {
 
     protected $fillable = [

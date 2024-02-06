@@ -2,11 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use App\Models\Core\baseModel;
 use App\Enums\Room as RoomEnum;
 
-class Timeslot extends Model
+class Timeslot extends Core\BackendBaseModel
 {
     protected $remaining_slots;
     protected $scheduleParameters;

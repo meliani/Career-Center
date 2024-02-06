@@ -2,17 +2,14 @@
 
 namespace App\Models;
 
-// use Illuminate\Database\Eloquent\Model;
 
 use Carbon\Carbon;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\Core\baseModel;
-
 use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
 
-class Offer extends BaseModel
+class Offer extends Core\FrontendBaseModel
 {
     protected $table="internship_offers";
     use SoftDeletes;

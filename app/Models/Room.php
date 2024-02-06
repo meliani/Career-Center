@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use App\Models\Core\baseModel;
 use App\Enums\Room as RoomEnum;
 use App\Enums;
-class Room extends BaseModel
+
+class Room extends Core\BackendBaseModel
 {
 
     // public static function getInstances(): array

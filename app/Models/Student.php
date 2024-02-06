@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -73,6 +72,11 @@ class Student extends Person implements HasMedia
     public function internship()
     {
         return $this->belongsTo(Internship::class);
+    }
+
+    public function teammate()
+    {
+        return $this->hasOne(Student::class, 'teammate_id');
     }
 
     public function registerMediaCollections(): void

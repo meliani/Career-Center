@@ -5,19 +5,18 @@ namespace App\Models;
 use App\Enum\ProjectRoleEnum;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use App\Enums;
 
-class Project extends Model
+class Project extends Core\BackendBaseModel
 {
     // use HasFactory;
     // use HasUuids;
-    protected $connection = 'backend_database';
     protected $fillable = [
         'id_pfe',
         'title',
@@ -26,16 +25,30 @@ class Project extends Model
         'start_date',
         'end_date',
         'jury_id',
+        'status',
+        'has_teammate',
+        'teammate_status',
+        'teammate_id',
+    ];
+    protected $casts = [
+        'start_date' => 'datetime',
+        'end_date' => 'datetime',
+        'teammate_status' => Enums\TeammateStatus::class,
+        'status' => Enums\Status::class,
     ];
     public function internships(): HasMany
     {
         return $this->hasMany(Internship::class);
     }
-    public function internship(): HasOne
+    public function LastInternship(): HasOne
     {
         return $this->hasOne(Internship::class)->latestOfMany();
     }
     public function jury() {
         return $this->hasOne(Jury::class);
+    }
+    public function teammate(): BelongsTo
+    {
+        return $this->belongsTo(Student::class, 'teammate_id');
     }
 }

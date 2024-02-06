@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\Core\baseModel;
 use App\Enums;
 use Illuminate\Validation\Rules\Enum;
 
-class Person extends baseModel
+class Person extends Core\FrontendBaseModel
 {
     protected $table = 'people';
 
