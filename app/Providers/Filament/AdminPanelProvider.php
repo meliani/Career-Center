@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use Croustibat\FilamentJobsMonitor\FilamentJobsMonitorPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -11,6 +12,7 @@ use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\MaxWidth;
 use Filament\Widgets;
+use Hydrat\TableLayoutToggle\TableLayoutTogglePlugin;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -20,7 +22,6 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Leandrocfe\FilamentApexCharts\FilamentApexChartsPlugin;
 use Saade\FilamentFullCalendar\FilamentFullCalendarPlugin;
-use Hydrat\TableLayoutToggle\TableLayoutTogglePlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -87,6 +88,7 @@ class AdminPanelProvider extends PanelProvider
                         ->displayToggleAction() // used to display the toogle button automatically, on the desired filament hook (defaults to table bar)
                         ->listLayoutButtonIcon('heroicon-o-list-bullet')
                         ->gridLayoutButtonIcon('heroicon-o-squares-2x2'),
+                    FilamentJobsMonitorPlugin::make(),
                 ]
             );
     }

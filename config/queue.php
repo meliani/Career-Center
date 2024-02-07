@@ -91,7 +91,7 @@ return [
     */
 
     'batching' => [
-        'database' => env('FRONTEND_DB_CONNECTION', 'mysql'),
+        'database' => env('BACKEND_DB_CONNECTION', 'mysql'),
         'table' => 'job_batches',
     ],
 
@@ -108,7 +108,7 @@ return [
 
     'failed' => [
         'driver' => env('QUEUE_FAILED_DRIVER', 'database-uuids'),
-        'database' => env('FRONTEND_DB_CONNECTION', 'mysql'),
+        'database' => env('BACKEND_DB_CONNECTION', 'mysql'),
         'table' => 'failed_jobs',
     ],
 

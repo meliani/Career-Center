@@ -2,17 +2,27 @@
 
 namespace App\Filament\Administration\Resources;
 
+use App\Enums\Status;
 use App\Filament\Administration\Resources\InternshipResource\Pages;
+use App\Mail\GenericEmail;
 use App\Models\Internship;
+use App\Models\Student;
 use Filament\Forms;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Resources\Pages\ListRecords\Tab;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\ActionSize;
 use Filament\Support\Enums\Alignment;
 use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Columns\Layout\Panel;
 use Filament\Tables\Columns\Layout\Split;
 use Filament\Tables\Columns\Layout\Stack;
+use Filament\Tables\Columns\Summarizers\Sum;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\ActionsPosition;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Grouping\Group;
@@ -22,17 +32,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Mail;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
-use App\Models\Student;
-use Filament\Support\Enums\ActionSize;
-use Filament\Tables\Actions\ActionGroup;
-use Filament\Tables\Columns\Summarizers\Sum;
-use Filament\Tables\Columns\TextColumn;
-use App\Enums\Status;
-use App\Mail\GenericEmail;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\RichEditor;
-use Filament\Resources\Pages\ListRecords\Tab;
-use Filament\Resources\Pages\ListRecords;
 
 class InternshipResource extends Resource
 {
@@ -135,9 +134,9 @@ class InternshipResource extends Resource
                     ->options(Status::class)
                     ->inline()
                     ->required(),
-                    // ->multiple()
-                    // ->native(false),
-                    // ->selectablePlaceholder(false),
+                // ->multiple()
+                // ->native(false),
+                // ->selectablePlaceholder(false),
                 // Forms\Components\ToggleButtons::make('status')
                 // ->options([
                 //     'Draft' => __('Draft'),
@@ -177,7 +176,7 @@ class InternshipResource extends Resource
         $livewire = $table->getLivewire();
 
         return $table
-        ->defaultSort('announced_at', 'asc')
+            ->defaultSort('announced_at', 'asc')
             ->groups([
                 Group::make(__('status'))
                     ->collapsible()
@@ -227,7 +226,7 @@ class InternshipResource extends Resource
                             ->disabled(fn ($record): bool => $record['validated_at'] !== null),
                         \App\Filament\Actions\AssignDepartmentAction::make()
                             ->disabled(fn ($record): bool => $record['assigned_department'] !== null),
-                    ])->dropdown(false)
+                    ])->dropdown(false),
                 ])
                     ->label(__('DASRE'))
                     ->icon('')
@@ -249,7 +248,7 @@ class InternshipResource extends Resource
                     ->outlined()
                     ->color('warning')
                     ->button(),
-                    Tables\Actions\Action::make('sendEmail')
+                Tables\Actions\Action::make('sendEmail')
                     ->form([
                         TextInput::make('subject')->required(),
                         RichEditor::make('body')->required(),
@@ -260,7 +259,7 @@ class InternshipResource extends Resource
                             $data['subject'],
                             $data['body'],
                         ))
-                    )->label(__('Send email'))
+                    )->label(__('Send email')),
             ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
                 ExportBulkAction::make(),
@@ -271,6 +270,7 @@ class InternshipResource extends Resource
                 ]),
             ]);
     }
+
     public function getTabs(): array
     {
         return [
@@ -281,6 +281,7 @@ class InternshipResource extends Resource
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('active', false)),
         ];
     }
+
     public static function getPages(): array
     {
         return [

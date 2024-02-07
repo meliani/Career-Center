@@ -12,6 +12,9 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (Schema::hasTable('students')) {
+            return;
+        }
         Schema::create('internships', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('id_pfe')->nullable();

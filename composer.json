@@ -12,6 +12,7 @@
         "bezhansalleh/filament-language-switch": "^3.0",
         "bezhansalleh/filament-panel-switch": "^1.0",
         "cmixin/enhanced-period": "^1.2",
+        "croustibat/filament-jobs-monitor": "^2.1",
         "doctrine/dbal": "^3.8",
         "eightynine/filament-approvals": "^3.0",
         "filament/filament": "^3.1",

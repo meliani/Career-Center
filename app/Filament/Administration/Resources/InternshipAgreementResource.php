@@ -9,6 +9,7 @@ use App\Filament\Imports\InternshipAgreementImporter;
 use App\Models\InternshipAgreement;
 use App\Models\Student;
 use Filament\Forms;
+use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -27,8 +28,15 @@ class InternshipAgreementResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('student_id')
-                    ->numeric(),
+                Fieldset::make('Student')
+                    ->relationship('student')
+                    ->schema([
+                        Forms\Components\TextInput::make('first_name')
+                            ->disabled(),
+                        Forms\Components\TextInput::make('last_name')
+                            ->disabled(),
+                    ]),
+
                 Forms\Components\TextInput::make('id_pfe')
                     ->numeric(),
                 Forms\Components\TextInput::make('organization_name')
@@ -159,8 +167,8 @@ class InternshipAgreementResource extends Resource
             ->emptyStateDescription('Once students starts announcing internships, it will appear here.')
             ->columns(
                 $livewire->isGridLayout()
-                ? static::getGridTableColumns()
-                : static::getTableColumns(),
+                ? \App\Services\Filament\InternshipAgreementGrid::get()
+                : \App\Services\Filament\InternshipAgreementTable::get(),
             )
             ->contentGrid(
                 fn () => $livewire->isGridLayout()
@@ -196,7 +204,7 @@ class InternshipAgreementResource extends Resource
                 ->label(__('ID'))
                 ->searchable()
                 ->sortable(),
-            Tables\Columns\TextColumn::make('student.long_full_name', 'student.first_name')
+            Tables\Columns\TextColumn::make('student.long_full_name')
                 ->label(__('Student'))
                 ->searchable()
                 ->sortable(),
@@ -250,7 +258,7 @@ class InternshipAgreementResource extends Resource
                 ->label(__('ID'))
                 ->searchable()
                 ->sortable(),
-            Tables\Columns\TextColumn::make('student_id')
+            Tables\Columns\TextColumn::make('student.long_full_name')
                 ->label(__('Student'))
                 ->searchable()
                 ->sortable(),
