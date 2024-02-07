@@ -45,6 +45,7 @@ class Student extends BackendBaseModel implements HasMedia
     ];
 
     protected $casts = [
+        'title' => Enums\Title::class,
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'birth_date' => 'date',
@@ -97,5 +98,15 @@ class Student extends BackendBaseModel implements HasMedia
     public function media(): MorphMany
     {
         return $this->morphMany(Media::class, 'model');
+    }
+
+    public function getFullNameAttribute()
+    {
+        return $this->attributes['first_name'].' '.$this->attributes['last_name'];
+    }
+
+    public function getLongFullNameAttribute()
+    {
+        return $this->title->getLabel().' '.$this->attributes['first_name'].' '.$this->attributes['last_name'];
     }
 }

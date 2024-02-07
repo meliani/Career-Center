@@ -5,15 +5,14 @@ namespace App\Filament\Administration\Resources;
 use App\Enums;
 use App\Enums\Status;
 use App\Filament\Administration\Resources\InternshipAgreementResource\Pages;
-use App\Models\Internship;
+use App\Filament\Imports\InternshipAgreementImporter;
 use App\Models\InternshipAgreement;
 use App\Models\Student;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Columns\Summarizers\Sum;
-use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Actions\ImportAction;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
@@ -144,6 +143,10 @@ class InternshipAgreementResource extends Resource
         $livewire = $table->getLivewire();
 
         return $table
+            ->headerActions([
+                ImportAction::make()
+                    ->importer(InternshipAgreementImporter::class),
+            ])
             ->defaultSort('announced_at', 'asc')
             ->groups([
                 Group::make(__('status'))
@@ -152,21 +155,13 @@ class InternshipAgreementResource extends Resource
                 Group::make('student.program')
                     ->label(__('Program'))
                     ->collapsible(),
-                // ->titlePrefixedWithLabel(false)
-                // ->getTitleFromRecordUsing(fn (Internship $record): string => ucfirst($record->program)),
             ])
-        //->groupingSettingsHidden()
-        // ->groupsOnly()
             ->emptyStateDescription('Once students starts announcing internships, it will appear here.')
             ->columns(
                 $livewire->isGridLayout()
                 ? static::getGridTableColumns()
                 : static::getTableColumns(),
-                // TextColumn::make('is_valid')
-                //     ->summarize(Sum::make()),
             )
-        // ->defaultGroup('status')
-        // ->groupsOnly()
             ->contentGrid(
                 fn () => $livewire->isGridLayout()
                     ? [
@@ -201,7 +196,7 @@ class InternshipAgreementResource extends Resource
                 ->label(__('ID'))
                 ->searchable()
                 ->sortable(),
-            Tables\Columns\TextColumn::make('student_id')
+            Tables\Columns\TextColumn::make('student.long_full_name', 'student.first_name')
                 ->label(__('Student'))
                 ->searchable()
                 ->sortable(),
