@@ -8,7 +8,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Gate;
 
-class Internship extends Core\FrontendBaseModel
+class Internship extends Core\BackendBaseModel
 {
     use SoftDeletes;
 

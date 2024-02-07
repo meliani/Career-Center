@@ -8,7 +8,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Gate;
 
-class InternshipAgreement extends Core\FrontendBaseModel
+class InternshipAgreement extends Core\BackendBaseModel
 {
     use SoftDeletes;
 
@@ -213,6 +213,7 @@ class InternshipAgreement extends Core\FrontendBaseModel
             return response()->json(['error' => 'This action is unauthorized.'], 403);
         }
     }
+
     public function students()
     {
         return $this->hasMany(Student::class);
@@ -222,10 +223,12 @@ class InternshipAgreement extends Core\FrontendBaseModel
     {
         return $this->hasOne(Project::class);
     }
+
     public function teammate()
     {
         return $this->belongsTo(Student::class, 'teammate_id');
     }
+
     public function student()
     {
         return $this->belongsTo(Student::class);
