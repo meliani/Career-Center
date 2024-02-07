@@ -9,6 +9,8 @@ class InternshipsPerProgramChart extends ApexChartsParentWidget
 {
     protected static ?int $sort = 1;
 
+    protected int|string|array $columnSpan = 'full';
+
     /**
      * Chart Id
      */
