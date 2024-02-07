@@ -119,15 +119,15 @@ class InternshipsPerProgramChart extends ApexChartsParentWidget
         //         ];
         //     });
 
-        $internshipData = \DB::connection('frontend_database')->table('people')
-            ->leftJoin('internships', 'people.id', '=', 'internships.student_id')
-            ->where('people.year_id', 7)
+        $internshipData = \DB::table('students')
+            ->leftJoin('internships', 'students.id', '=', 'internships.student_id')
+            ->where('students.year_id', 7)
             ->groupBy('program')
             ->select(
                 'program',
-                \DB::connection('frontend_database')->raw('COUNT(DISTINCT people.id) AS total_students'),
+                \DB::raw('COUNT(DISTINCT students.id) AS total_students'),
                 \DB::connection('frontend_database')->raw('COUNT(internships.id) AS total_internships'),
-                \DB::connection('frontend_database')->raw('ROUND((COUNT(internships.id) / COUNT(DISTINCT people.id)) * 100, 2) AS percentage')
+                \DB::connection('frontend_database')->raw('ROUND((COUNT(internships.id) / COUNT(DISTINCT students.id)) * 100, 2) AS percentage')
             )
             ->get()
             ->toArray();
@@ -148,6 +148,7 @@ class InternshipsPerProgramChart extends ApexChartsParentWidget
             'chart' => [
                 'type' => 'bar',
                 'height' => 300,
+                'with: 100%',
             ],
             'series' => [
                 [
@@ -167,6 +168,8 @@ class InternshipsPerProgramChart extends ApexChartsParentWidget
             'legend' => [
                 'labels' => [
                     'fontFamily' => 'inherit',
+                    'color' => '#ffffff',
+                    'fontColor' => '#ffffff',
                 ],
             ],
         ];
