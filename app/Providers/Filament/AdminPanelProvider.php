@@ -2,6 +2,8 @@
 
 namespace App\Providers\Filament;
 
+use Awcodes\LightSwitch\Enums\Alignment;
+use Awcodes\LightSwitch\LightSwitchPlugin;
 use Croustibat\FilamentJobsMonitor\FilamentJobsMonitorPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -89,6 +91,7 @@ class AdminPanelProvider extends PanelProvider
                         ->listLayoutButtonIcon('heroicon-o-list-bullet')
                         ->gridLayoutButtonIcon('heroicon-o-squares-2x2'),
                     FilamentJobsMonitorPlugin::make(),
+                    LightSwitchPlugin::make()->position(Alignment::BottomCenter),
                 ]
             );
     }
