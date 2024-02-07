@@ -4,7 +4,7 @@ namespace App\Enums;
 
 use Filament\Support\Contracts\HasLabel;
 
-enum Room: string implements BaseEnum, HasLabel
+enum Room: string implements HasLabel
 {
     case Amphi1 = 'Amphi 1';
     case Amphi2 = 'Amphi 2';

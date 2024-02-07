@@ -2,10 +2,10 @@
 
 namespace App\Enums;
 
-use Filament\Support\Contracts\HasLabel;
 use Filament\Support\Contracts\HasColor;
+use Filament\Support\Contracts\HasLabel;
 
-enum Title: string implements HasLabel, BaseEnum, HasColor
+enum Title: string implements HasColor, HasLabel
 {
     case Mrs = 'Mrs';
     case Mr = 'Mr';
@@ -17,6 +17,7 @@ enum Title: string implements HasLabel, BaseEnum, HasColor
             self::Mr => 'Mr.',
         };
     }
+
     public function getColor(): ?string
     {
         return match ($this) {
@@ -24,6 +25,4 @@ enum Title: string implements HasLabel, BaseEnum, HasColor
             self::Mr => 'info',
         };
     }
-
-
 }
