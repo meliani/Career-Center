@@ -2,17 +2,26 @@
 
 namespace App\Filament\Administration\Resources;
 
-use App\Enums\Status;
-use App\Filament\Administration\Resources\InternshipAgreementResource\Pages;
 use App\Filament\Imports\InternshipAgreementImporter;
 use App\Models\InternshipAgreement;
 use Filament\Forms\Form;
-use Filament\Resources\Resource;
+use App\Filament\Core\BaseResource as Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\ImportAction;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
+use Filament\Resources\Components\Tab;
+use Illuminate\Database\Eloquent\Builder;
+use App\Enums;
+use App\Filament\Administration\Resources\InternshipAgreementResource\Pages;
+use App\Mail\GenericEmail;
+use App\Models\Internship;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\TextInput;
+use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Enums\ActionsPosition;
+use Illuminate\Support\Facades\Mail;
 
 class InternshipAgreementResource extends Resource
 {
@@ -29,6 +38,15 @@ class InternshipAgreementResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'title';
 
+    public static function getModelLabel(): string
+    {
+        return __('Internship Agreement');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Internship Agreements');
+    }
     public static function getGloballySearchableAttributes(): array
     {
         return ['title', 'organization_name', 'student.full_name'];
@@ -36,9 +54,19 @@ class InternshipAgreementResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::count();
+        return static::getModel()::where('status', Enums\Status::Announced)->count('id');
     }
 
+    public function getTabs(): array
+    {
+        return [
+            'all' => Tab::make(),
+            'draft' => Tab::make()
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', Enums\Status::Draft)),
+            'announced' => Tab::make()
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('active', Enums\Status::Announced)),
+        ];
+    }
     public static function form(Form $form): Form
     {
         return $form
@@ -68,8 +96,8 @@ class InternshipAgreementResource extends Resource
             ->emptyStateDescription('Once students starts announcing internships, it will appear here.')
             ->columns(
                 $livewire->isGridLayout()
-                ? \App\Services\Filament\InternshipAgreementGrid::get()
-                : \App\Services\Filament\InternshipAgreementTable::get(),
+                    ? \App\Services\Filament\InternshipAgreementGrid::get()
+                    : \App\Services\Filament\InternshipAgreementTable::get(),
             )
             ->contentGrid(
                 fn () => $livewire->isGridLayout()
@@ -83,15 +111,60 @@ class InternshipAgreementResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
                 SelectFilter::make('status')
                     ->multiple()
-                    ->options(Status::class),
+                    ->options(Enums\Status::class),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
+                ActionGroup::make([
+                    \App\Filament\Actions\SignAction::make()
+                        ->disabled(fn ($record): bool => $record['signed_at'] !== null),
+                    \App\Filament\Actions\ReceiveAction::make()
+                        ->disabled(fn ($record): bool => $record['received_at'] !== null),
+                    ActionGroup::make([
+                        \App\Filament\Actions\ValidateAction::make()
+                            ->disabled(fn ($record): bool => $record['validated_at'] !== null),
+                        \App\Filament\Actions\AssignDepartmentAction::make()
+                            ->disabled(fn ($record): bool => $record['assigned_department'] !== null),
+                    ])->dropdown(false),
+                ])
+                    ->label(__('Validation'))
+                    ->icon('')
+                    // ->size(ActionSize::ExtraSmall)
+                    ->color('warning')
+                    ->outlined()
+                    ->button(),
+                ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                    // ->disabled(! auth()->user()->can('delete', $this->post)),
+                    Tables\Actions\ForceDeleteAction::make(),
+                    Tables\Actions\RestoreAction::make(),
+                ])
+                    ->label(__('Manage'))
+                    ->icon('')
+                    // ->size(ActionSize::ExtraSmall)
+                    ->outlined()
+                    ->color('warning')
+                    ->button(),
+                Tables\Actions\Action::make('sendEmail')
+                    ->form([
+                        TextInput::make('subject')->required(),
+                        RichEditor::make('body')->required(),
+                    ])
+                    ->action(
+                        fn (array $data, Internship $internship) => Mail::to($internship->student->email_perso)
+                            ->send(new GenericEmail(
+                                $internship->student,
+                                $data['subject'],
+                                $data['body'],
+                            ))
+                    )->label(__('Send email')),
+            ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
+                \pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction::make(),
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),

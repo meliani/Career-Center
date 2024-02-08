@@ -7,7 +7,7 @@ use App\Filament\Administration\Resources\ScheduleParametersResource\RelationMan
 use App\Models\ScheduleParameters;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Resources\Resource;
+use App\Filament\Core\BaseResource as Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;

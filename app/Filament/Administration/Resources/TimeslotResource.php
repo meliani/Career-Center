@@ -6,7 +6,7 @@ use App\Filament\Administration\Resources\TimeslotResource\Pages;
 use App\Models\Timeslot;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Resources\Resource;
+use App\Filament\Core\BaseResource as Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 

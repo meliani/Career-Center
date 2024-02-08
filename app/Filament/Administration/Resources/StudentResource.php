@@ -8,7 +8,7 @@ use App\Models\Student;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\GlobalSearch\Actions\Action;
-use Filament\Resources\Resource;
+use App\Filament\Core\BaseResource as Resource;
 use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;

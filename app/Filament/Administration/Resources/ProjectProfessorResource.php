@@ -6,7 +6,7 @@
 // use Filament\Forms\Components\RelationshipSelect;
 // use Filament\Forms\Form;
 // use Filament\Resources\Forms\Components\Select as FilamentSelect;
-// use Filament\Resources\Resource;
+// use App\Filament\Core\BaseResource as Resource;
 // use Filament\Tables\Columns\Text as TextColumn;
 // use Filament\Tables\Table;
 

@@ -6,7 +6,7 @@ use App\Filament\Administration\Resources\OfferResource\Pages;
 use App\Models\Offer;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Resources\Resource;
+use App\Filament\Core\BaseResource as Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
