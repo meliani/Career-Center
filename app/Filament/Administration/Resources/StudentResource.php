@@ -106,8 +106,6 @@ class StudentResource extends Resource
                     ->searchable(),
                 Tables\Columns\IconColumn::make('is_active')
                     ->boolean(),
-                Tables\Columns\IconColumn::make('model_status_id')
-                    ->boolean(),
                 Tables\Columns\TextColumn::make('graduated_at')
                     ->date()
                     ->sortable(),
