@@ -2,6 +2,7 @@
 
 namespace App\Services\Filament;
 
+use App\Models\InternshipAgreement;
 use Filament\Tables;
 
 class InternshipAgreementTable
@@ -13,10 +14,13 @@ class InternshipAgreementTable
                 ->label(__('ID'))
                 ->searchable()
                 ->sortable(),
-            Tables\Columns\TextColumn::make('student.long_full_name')
-                ->label(__('Student'))
+            Tables\Columns\TextColumn::make('student.first_name')
+                ->label(__('Student name'))
                 ->searchable()
-                ->sortable(),
+                ->sortable()
+                ->formatStateUsing(function ($state, InternshipAgreement $internship) {
+                    return $internship->student->title->getLabel().' '.$internship->student->first_name.' '.$internship->student->last_name;
+                }),
             Tables\Columns\TextColumn::make('organization_name')
                 ->label(__('Organization'))
                 ->searchable()

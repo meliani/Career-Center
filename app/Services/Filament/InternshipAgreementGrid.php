@@ -4,6 +4,7 @@ namespace App\Services\Filament;
 
 use App\Enums\Status;
 use App\Models\Internship;
+use App\Models\InternshipAgreement;
 use App\Models\Student;
 use Filament\Support\Enums\Alignment;
 use Filament\Support\Enums\FontWeight;
@@ -18,9 +19,14 @@ class InternshipAgreementGrid
     public static function get()
     {
         return [
-            Tables\Columns\TextColumn::make('student.full_name')
-                ->weight(FontWeight::Bold)
-                ->searchable(),
+            Tables\Columns\TextColumn::make('student.first_name')
+                ->label(__('Student first name'))
+                ->searchable()
+                ->sortable()
+                ->formatStateUsing(function ($state, InternshipAgreement $internship) {
+                    return $internship->student->title->getLabel().' '.$internship->student->first_name.' '.$internship->student->last_name;
+                })
+                ->weight(FontWeight::Bold),
             Tables\Columns\TextColumn::make('title')
                 ->weight(FontWeight::Bold)
                 ->searchable(),
