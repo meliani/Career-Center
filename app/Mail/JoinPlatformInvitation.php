@@ -47,7 +47,7 @@ class JoinPlatformInvitation extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.join_platfor_invitation',
+            markdown: 'emails.join_platform_invitation',
         );
     }
 

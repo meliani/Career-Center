@@ -14,17 +14,15 @@ class SendBulkInvitationEmail extends BulkAction
             'name' => $name ?? static::getDefaultName(),
         ]);
 
-        $static->configure()->form([
-        ])
-            ->action(function (array $data, $records): void {
+        $static->configure()->action(function ($records): void {
 
-                foreach ($records as $record) {
-                    dispatch(function () use ($record) {
-                        Mail::to($record->email)
-                            ->send(new JoinPlatformInvitation($record));
-                    });
-                }
-            });
+            foreach ($records as $record) {
+                dispatch(function () use ($record) {
+                    Mail::to($record->email)
+                        ->send(new JoinPlatformInvitation($record));
+                });
+            }
+        });
 
         return $static;
     }
