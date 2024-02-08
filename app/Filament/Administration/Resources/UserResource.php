@@ -2,19 +2,14 @@
 
 namespace App\Filament\Administration\Resources;
 
+use App\Filament\Actions\SendUsersBulkEmail;
 use App\Filament\Administration\Resources\UserResource\Pages;
-use App\Filament\Administration\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Tables\Filters\SelectFilter;
-use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
-use App\Filament\Actions\SendUsersBulkEmail;
 
 class UserResource extends Resource
 {
@@ -41,19 +36,15 @@ class UserResource extends Resource
                     ->email()
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('department')
-                    ->required(),
-                Forms\Components\TextInput::make('program_coordinator')
-                    ->required(),
+                Forms\Components\TextInput::make('department'),
+                Forms\Components\TextInput::make('program_coordinator'),
                 Forms\Components\DateTimePicker::make('email_verified_at'),
                 Forms\Components\TextInput::make('password')
                     ->password()
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Toggle::make('active_status')
-                    ->required(),
+                    ->maxLength(255)
+                    ->dehydrated(fn (?string $state): bool => filled($state)),
+                Forms\Components\Toggle::make('active_status'),
                 Forms\Components\TextInput::make('avatar')
-                    ->required()
                     ->maxLength(255)
                     ->default('avatar.png'),
                 Forms\Components\Toggle::make('dark_mode')
