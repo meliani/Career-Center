@@ -10,12 +10,12 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class JuryResource extends Resource
 {
     protected static ?string $model = Jury::class;
+
+    protected static ?string $navigationGroup = 'Juries et Professeurs';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -92,6 +92,7 @@ class JuryResource extends Resource
             'edit' => Pages\EditJury::route('/{record}/edit'),
         ];
     }
+
     public static function canCreate(): bool
     {
         return false;

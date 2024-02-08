@@ -2,24 +2,23 @@
 
 namespace App\Filament\Administration\Resources;
 
+use App\Enums\Department;
+use App\Enums\Program;
+use App\Enums\Role;
+use App\Enums\Title;
 use App\Filament\Administration\Resources\ProfessorResource\Pages;
-use App\Filament\Administration\Resources\ProfessorResource\RelationManagers;
 use App\Models\Professor;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Enums\Role;
-use App\Enums\Department;
-use App\Enums\Program;
-use App\Enums\Title;
 
 class ProfessorResource extends Resource
 {
     protected static ?string $model = Professor::class;
+
+    protected static ?string $navigationGroup = 'Juries et Professeurs';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 

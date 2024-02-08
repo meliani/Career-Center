@@ -39,6 +39,8 @@ class InternshipResource extends Resource
 
     protected static ?string $model = Internship::class;
 
+    protected static ?string $navigationGroup = 'Internships';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form

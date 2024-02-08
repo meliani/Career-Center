@@ -16,6 +16,13 @@ use Filament\Tables\Table;
 
 class InternshipAgreementResource extends Resource
 {
+    protected static ?string $modelLabel = 'internship agreement';
+
+    // protected static ?string $pluralModelLabel = 'internship agreements';
+    // protected static ?string $navigationParentItem = '';
+
+    protected static ?string $navigationGroup = 'Internships';
+
     protected static ?string $model = InternshipAgreement::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -93,5 +100,10 @@ class InternshipAgreementResource extends Resource
             'create' => Pages\CreateInternshipAgreement::route('/create'),
             'edit' => Pages\EditInternshipAgreement::route('/{record}/edit'),
         ];
+    }
+
+    public static function viewAny(): bool
+    {
+        return false;
     }
 }

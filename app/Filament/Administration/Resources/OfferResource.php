@@ -16,6 +16,8 @@ class OfferResource extends Resource
 {
     protected static ?string $model = Offer::class;
 
+    protected static ?string $navigationGroup = 'Internships';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
