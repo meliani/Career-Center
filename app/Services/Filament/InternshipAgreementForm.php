@@ -36,7 +36,7 @@ class InternshipAgreementForm
                 ->maxLength(191),
             Forms\Components\TextInput::make('office_location')
                 ->maxLength(255),
-            Forms\Components\TextInput::make('parrain_titre')
+            Forms\Components\Select::make('parrain_titre')
                 ->options(Enums\Title::class)
                 ->required(),
             Forms\Components\TextInput::make('parrain_nom')
@@ -111,7 +111,7 @@ class InternshipAgreementForm
             Forms\Components\Select::make('assigned_department')
                 ->options(Enums\Department::class),
             Forms\Components\DateTimePicker::make('received_at'),
-            Forms\Components\DateTimePicker::make('signed_at'), ,
+            Forms\Components\DateTimePicker::make('signed_at'),
             Forms\Components\Textarea::make('observations')
                 ->maxLength(65535)
                 ->columnSpanFull(),
