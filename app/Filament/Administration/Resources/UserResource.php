@@ -3,6 +3,7 @@
 namespace App\Filament\Administration\Resources;
 
 use App\Enums;
+use App\Filament\Actions\SendBulkInvitationEmail;
 use App\Filament\Actions\SendUsersBulkEmail;
 use App\Filament\Administration\Resources\UserResource\Pages;
 use App\Models\User;
@@ -33,7 +34,8 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('last_name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('role')
+                Forms\Components\Select::make('role')
+                    ->options(Enums\Role::class)
                     ->required(),
                 Forms\Components\TextInput::make('email')
                     ->email()
@@ -107,6 +109,7 @@ class UserResource extends Resource
             ])
             ->bulkActions([
                 SendUsersBulkEmail::make('send_emails'),
+                SendBulkInvitationEmail::make('send_invitations'),
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),

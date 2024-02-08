@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasName;
 use Filament\Panel;
@@ -10,10 +11,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-
-use \App\Enums\Role;
-use \App\Enums\Department;
-use \App\Enums\Program;
 
 class User extends Authenticatable implements FilamentUser, HasName
 {
@@ -25,19 +22,29 @@ class User extends Authenticatable implements FilamentUser, HasName
      * @var array<int, string>
      */
     protected $guarded = [];
-    protected $administrators = [ Role::SuperAdministrator , Role::Administrator];
-    protected $professors = [ Role::SuperAdministrator, Role::Administrator, Role::Professor, Role::DepartmentHead, Role::ProgramCoordinator];
-    protected $powerProfessors = [Role::SuperAdministrator, Role::Administrator, Role::ProgramCoordinator];
+
+    protected $administrators = [Enums\Role::SuperAdministrator, Enums\Role::Administrator];
+
+    protected $professors = [Enums\Role::SuperAdministrator, Enums\Role::Administrator, Enums\Role::Professor, Enums\Role::DepartmentHead, Enums\Role::ProgramCoordinator];
+
+    protected $powerProfessors = [Enums\Role::SuperAdministrator, Enums\Role::Administrator, Enums\Role::ProgramCoordinator];
 
     protected $fillable = [
-        'name',
+        'title',
         'first_name',
         'last_name',
-        'role',
         'department',
-        'program_coordinator',
+        'role',
         'email',
+        'program_coordinator',
+        'is_enabled',
+        'email_verified_at',
         'password',
+        'remember_token',
+        'active_status',
+        'avatar',
+        'dark_mode',
+        'messenger_color',
     ];
 
     /**
@@ -60,18 +67,20 @@ class User extends Authenticatable implements FilamentUser, HasName
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
-        'role' => Role::class,
-        'department' => Department::class,
-        'program_coordinator' => Program::class,
+        'role' => Enums\Role::class,
+        'department' => Enums\Department::class,
+        'program_coordinator' => Enums\Program::class,
+        'title' => Enums\Title::class,
     ];
 
     public function getNameAttribute()
     {
         return "{$this->first_name} {$this->last_name}";
     }
+
     public function getFullNameAttribute()
     {
-        return "{$this->first_name} {$this->last_name}";
+        return "{$this->title} {$this->first_name} {$this->last_name}";
     }
 
     public function getFilamentName(): string
@@ -79,7 +88,7 @@ class User extends Authenticatable implements FilamentUser, HasName
         return "{$this->first_name} {$this->last_name}";
     }
 
-    public function hasRole(Role $role)
+    public function hasRole(Enums\Role $role)
     {
         return $this->role === $role;
     }
@@ -104,8 +113,9 @@ class User extends Authenticatable implements FilamentUser, HasName
 
     public function isSuperAdministrator()
     {
-        return $this->hasRole(Role::SuperAdministrator);
+        return $this->hasRole(Enums\Role::SuperAdministrator);
     }
+
     public function isAdministrator()
     {
         return $this->hasAnyRole($this->administrators);
