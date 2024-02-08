@@ -1,0 +1,116 @@
+<?php
+
+namespace App\Filament\Widgets;
+
+use App\Models\InternshipAgreement;
+use Flowframe\Trend\Trend;
+use Flowframe\Trend\TrendValue;
+use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
+
+class InternshipsByEndDateChart extends ApexChartWidget
+{
+    protected static ?int $sort = 2;
+
+    /**
+     * Chart Id
+     */
+    protected static ?string $chartId = 'internshipsByEndDateChart';
+
+    /**
+     * Widget Title
+     */
+    protected static ?string $heading = 'InternshipsByEndDateChart';
+
+    /**
+     * Chart options (series, labels, types, size, animations...)
+     * https://apexcharts.com/docs/options
+     */
+    protected function getOptions(): array
+    {
+        // return [
+        //     'chart' => [
+        //         'type' => 'bar',
+        //         'height' => 300,
+        //     ],
+        //     'series' => [
+        //         [
+        //             'name' => 'BasicBarChart',
+        //             'data' => [7, 10, 13, 15, 18],
+        //         ],
+        //     ],
+        //     'xaxis' => [
+        //         'categories' => ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+        //         'labels' => [
+        //             'style' => [
+        //                 'fontFamily' => 'inherit',
+        //             ],
+        //         ],
+        //     ],
+        //     'yaxis' => [
+        //         'labels' => [
+        //             'style' => [
+        //                 'fontFamily' => 'inherit',
+        //             ],
+        //         ],
+        //     ],
+        //     'colors' => ['#f59e0b'],
+        //     'plotOptions' => [
+        //         'bar' => [
+        //             'borderRadius' => 3,
+        //             'horizontal' => true,
+        //         ],
+        //     ],
+        // ];
+        return $this->getData();
+    }
+
+    protected function getData(): array
+    {
+        $data = Trend::query(InternshipAgreement::query())
+            ->between(
+                start: now()->startOfMonth(),
+                //
+                end: now()->addMonths(10)->endOfMonth(),
+            )
+            ->perMonth()
+            ->dateColumn('ending_at')
+            ->aggregate('ending_at', 'count');
+        // dd($data);
+
+        return
+        [
+            'chart' => [
+                'type' => 'bar',
+                'height' => 300,
+            ],
+            'series' => [
+                [
+                    'name' => 'Internships per month',
+                    'data' => $data->map(fn (TrendValue $value) => $value->aggregate),
+                ],
+            ],
+            'xaxis' => [
+                'categories' => $data->map(fn (TrendValue $value) => $value->date),
+                'labels' => [
+                    'style' => [
+                        'fontFamily' => 'inherit',
+                    ],
+                ],
+            ],
+            'yaxis' => [
+                'labels' => [
+                    'style' => [
+                        'fontFamily' => 'inherit',
+                    ],
+                ],
+            ],
+            'colors' => ['#f59e0b'],
+            'plotOptions' => [
+                'bar' => [
+                    'borderRadius' => 3,
+                    'horizontal' => true,
+                ],
+            ],
+        ];
+    }
+}

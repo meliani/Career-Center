@@ -7,6 +7,7 @@ use App\Filament\Administration\Resources\StudentResource\Pages;
 use App\Models\Student;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\GlobalSearch\Actions\Action;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
@@ -29,6 +30,19 @@ class StudentResource extends Resource
     // {
     //     return $record->name;
     // }
+
+    // public static function getGlobalSearchResultActions(Model $record): array
+    // {
+    //     return [
+    //         Action::make('edit')
+    //             ->url(static::getUrl('edit', ['record' => $record])),
+    //     ];
+    // }
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
     public static function getGloballySearchableAttributes(): array
     {
         return ['full_name'];
