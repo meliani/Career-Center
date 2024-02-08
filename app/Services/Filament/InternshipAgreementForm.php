@@ -55,7 +55,7 @@ class InternshipAgreementForm
             Forms\Components\TextInput::make('parrain_mail')
                 ->required()
                 ->maxLength(191),
-            Forms\Components\Select::make('encadrant_int_titre')
+            Forms\Components\Select::make('encadrant_ext_titre')
                 ->options(Enums\Title::class)
                 ->required(),
             Forms\Components\TextInput::make('encadrant_ext_nom')
