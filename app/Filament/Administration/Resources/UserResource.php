@@ -2,6 +2,7 @@
 
 namespace App\Filament\Administration\Resources;
 
+use App\Enums;
 use App\Filament\Actions\SendUsersBulkEmail;
 use App\Filament\Administration\Resources\UserResource\Pages;
 use App\Models\User;
@@ -36,8 +37,10 @@ class UserResource extends Resource
                     ->email()
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('department'),
-                Forms\Components\TextInput::make('program_coordinator'),
+                Forms\Components\Select::make('department')
+                    ->options(Enums\Department::class),
+                Forms\Components\Select::make('program_coordinator')
+                    ->options(Enums\Program::class),
                 Forms\Components\DateTimePicker::make('email_verified_at'),
                 Forms\Components\TextInput::make('password')
                     ->password()

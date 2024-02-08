@@ -14,6 +14,7 @@ enum Department: string implements HasLabel
     case MIR = 'MIR';
     case GLC = 'GLC';
     case SC = 'SC';
+    case NULL = '';
 
     public static function getArray(): array
     {
@@ -22,6 +23,7 @@ enum Department: string implements HasLabel
             'MIR' => 'Systèmes de Communications',
             'GLC' => 'Gestion, Langues et Communications',
             'SC' => 'Mathématiques, Informatique et Réseaux',
+            '' => 'Non défini',
         ];
     }
 
@@ -32,6 +34,7 @@ enum Department: string implements HasLabel
             self::MIR => 'Systèmes de Communications',
             self::GLC => 'Gestion, Langues et Communications',
             self::SC => 'Mathématiques, Informatique et Réseaux',
+            self::NULL => 'Non défini',
         };
     }
 }
