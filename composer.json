@@ -8,7 +8,7 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^8.1",
+        "php": "^8.2",
         "awcodes/light-switch": "^1.0",
         "bezhansalleh/filament-language-switch": "^3.0",
         "bezhansalleh/filament-panel-switch": "^1.0",
@@ -52,7 +52,9 @@
         "spatie/laravel-ignition": "^2.0"
     },
     "autoload": {
-        "exclude-from-classmap": ["app/developer_docs"],
+        "exclude-from-classmap": [
+            "app/developer_docs"
+        ],
         "psr-4": {
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
