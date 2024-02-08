@@ -21,6 +21,19 @@ class StudentResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $recordFirstNameAttribute = 'first_name';
+
+    protected static ?string $recordTitleAttribute = 'full_name';
+
+    // public static function getGlobalSearchResultTitle(Model $record): string
+    // {
+    //     return $record->name;
+    // }
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['full_name'];
+    }
+
     public static function form(Form $form): Form
     {
         return $form

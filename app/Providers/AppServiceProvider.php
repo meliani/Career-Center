@@ -12,9 +12,9 @@ use Doctrine\DBAL\Types\Type;
 use Filament\Forms\Components\Field;
 use Filament\Forms\Components\Placeholder;
 use Filament\Infolists\Components\Entry;
+use Filament\Navigation\NavigationGroup;
 use Filament\Tables\Columns\Column;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\BaseFilter;
 use Filament\Tables\Filters\Filter;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
@@ -23,8 +23,6 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
-use App\Models\Project;
-use App\Observers\ProjectObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -98,13 +96,12 @@ class AppServiceProvider extends ServiceProvider
         Entry::configureUsing(function (Entry $entry): void {
             $entry->translateLabel();
         });
-        // $this->translateLabels([
-        //     Field::class,
-        //     BaseFilter::class,
-        //     Placeholder::class,
-        //     Column::class,
-        //     // or even `BaseAction::class`,
-        // ]);
+        Placeholder::configureUsing(function (Placeholder $placeholder): void {
+            $placeholder->translateLabel();
+        });
+        // NavigationGroup::configureUsing(function (NavigationGroup $group): void {
+        //     $group->translateLabel();
+        // });
     }
 
     private function translateLabels(array $components = [])
