@@ -4,10 +4,12 @@ namespace App\Enums;
 
 use Filament\Support\Contracts\HasLabel;
 use Filament\Support\Contracts\HasColor;
-
+use Mokhosh\FilamentKanban\Concerns\IsKanbanStatus;
 
 enum Status: string implements  HasLabel, HasColor
 {
+    use IsKanbanStatus;
+    
     case Draft = "Draft";
     case Announced = "Announced";
     case Rejected = "Rejected";
