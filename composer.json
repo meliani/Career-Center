@@ -34,6 +34,7 @@
         "munafio/chatify": "^1.6",
         "pxlrbt/filament-activity-log": "^1.0",
         "pxlrbt/filament-excel": "^2.3",
+        "rabol/filament-logviewer": "^0.20.0",
         "rickdbcn/filament-email": "^1.0",
         "saade/filament-fullcalendar": "^3.1",
         "spatie/laravel-medialibrary": "^11.0",
