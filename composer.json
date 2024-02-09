@@ -10,6 +10,7 @@
     "require": {
         "php": "^8.1",
         "42coders/document-templates": "^5.2",
+        "amendozaaguiar/filament-route-statistics": "^2.5",
         "awcodes/light-switch": "^1.0",
         "bezhansalleh/filament-language-switch": "^3.0",
         "bezhansalleh/filament-panel-switch": "^1.0",
@@ -32,6 +33,7 @@
         "laravel/tinker": "^2.8",
         "leandrocfe/filament-apex-charts": "^3.0",
         "munafio/chatify": "^1.6",
+        "parallax/filament-comments": "^1.0",
         "pxlrbt/filament-excel": "^2.3",
         "rabol/filament-logviewer": "^0.20.0",
         "rickdbcn/filament-email": "^1.0",

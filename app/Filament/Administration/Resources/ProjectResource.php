@@ -10,7 +10,7 @@ use Filament\Forms\Form;
 use App\Filament\Core\BaseResource as Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-
+use Parallax\FilamentComments\Actions\CommentsAction;
 class ProjectResource extends Resource
 {
     protected static ?string $model = Project::class;
@@ -22,6 +22,13 @@ class ProjectResource extends Resource
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
+    }
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            CommentsAction::make(),
+        ];
     }
 
     public static function form(Form $form): Form
@@ -78,6 +85,8 @@ class ProjectResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
+                \Parallax\FilamentComments\Tables\Actions\CommentsAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

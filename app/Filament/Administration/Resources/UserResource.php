@@ -106,6 +106,7 @@ class UserResource extends Resource
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+                \STS\FilamentImpersonate\Tables\Actions\Impersonate::make()
             ])
             ->bulkActions([
                 SendUsersBulkEmail::make('send_emails'),

@@ -12,9 +12,12 @@ use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use App\Enums;
+use Parallax\FilamentComments\Models\Traits\HasFilamentComments;
 
 class Project extends Core\BackendBaseModel
 {
+    use HasFilamentComments;
+
     // use HasFactory;
     // use HasUuids;
     protected $fillable = [
@@ -36,6 +39,7 @@ class Project extends Core\BackendBaseModel
         'teammate_status' => Enums\TeammateStatus::class,
         'status' => Enums\Status::class,
     ];
+
     public function internships(): HasMany
     {
         return $this->hasMany(InternshipAgreement::class);
