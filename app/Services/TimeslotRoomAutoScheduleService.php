@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\DefenseAutoSchedule;
-use App\Models\Internship;
+use App\Models\InternshipAgreement;
 use App\Models\Project;
 use App\Models\Room;
 use App\Models\Timeslot;

@@ -2,7 +2,7 @@
 
 namespace App\Filament\Actions;
 
-use App\Models\Internship;
+use App\Models\InternshipAgreement;
 use Filament\Forms\Components\Actions\Action;
 use Illuminate\Support\Carbon;
 use App\Models\ScheduleParameters;

@@ -16,7 +16,6 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Enums;
 use App\Filament\Administration\Resources\InternshipAgreementResource\Pages;
 use App\Mail\GenericEmail;
-use App\Models\Internship;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Actions\ActionGroup;
@@ -40,12 +39,12 @@ class InternshipAgreementResource extends Resource
 
     public static function getModelLabel(): string
     {
-        return __('Internship Agreement');
+        return __('InternshipAgreement Agreement');
     }
 
     public static function getPluralModelLabel(): string
     {
-        return __('Internship Agreements');
+        return __('InternshipAgreement Agreements');
     }
     public static function getGloballySearchableAttributes(): array
     {
@@ -155,7 +154,7 @@ class InternshipAgreementResource extends Resource
                         RichEditor::make('body')->required(),
                     ])
                     ->action(
-                        fn (array $data, Internship $internship) => Mail::to($internship->student->email_perso)
+                        fn (array $data, InternshipAgreement $internship) => Mail::to($internship->student->email_perso)
                             ->send(new GenericEmail(
                                 $internship->student,
                                 $data['subject'],

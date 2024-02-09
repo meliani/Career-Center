@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\Internship;
+use App\Models\InternshipAgreement;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use App\Enums\Role;
 

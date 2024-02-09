@@ -2,7 +2,7 @@
 
 namespace App\Filament\Actions;
 
-use App\Models\Internship;
+use App\Models\InternshipAgreement;
 use Filament\Tables\Actions\Action;
 use Illuminate\Support\Carbon;
 
@@ -24,7 +24,7 @@ class AssignDepartmentAction extends Action
         $static = app(static::class, [
             'name' => $name ?? static::getDefaultName(),
         ]);
-        $static->configure()->action(function (array $data, Internship $record): void {
+        $static->configure()->action(function (array $data, InternshipAgreement $record): void {
             // add a form to select the department
             // dd('action called');
             $record->withoutTimestamps(fn () => $record->assignDepartment($data['assigned_department']));

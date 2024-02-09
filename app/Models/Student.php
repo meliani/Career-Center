@@ -76,7 +76,7 @@ class Student extends BackendBaseModel implements HasMedia
 
     public function internship()
     {
-        return $this->belongsTo(Internship::class);
+        return $this->belongsTo(InternshipAgreement::class);
     }
 
     // public function teammate()

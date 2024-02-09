@@ -2,7 +2,7 @@
 
 namespace App\Filament\Widgets;
 
-use App\Models\Internship;
+use App\Models\InternshipAgreement;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
 /* We want to display timeline for internships based on time of Announcement, Validation ... etc */
@@ -30,7 +30,7 @@ class ProgressionTimelineChart extends ApexChartWidget
      */
     protected function getOptions(): array
     {
-        $internshipData = Internship::select('status', \DB::raw('count(`status`) as count'))
+        $internshipData = InternshipAgreement::select('status', \DB::raw('count(`status`) as count'))
             ->groupBy('status')
             ->get()
             ->toArray();

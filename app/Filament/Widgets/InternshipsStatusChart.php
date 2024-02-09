@@ -4,7 +4,7 @@ namespace App\Filament\Widgets;
 
 // use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 use App\Filament\Core\Widgets\ApexChartsParentWidget as ApexChartWidget;
-use App\Models\Internship;
+use App\Models\InternshipAgreement;
 
 class InternshipsStatusChart extends ApexChartWidget
 {
@@ -30,7 +30,7 @@ class InternshipsStatusChart extends ApexChartWidget
     protected function getOptions(): array
     {
         //  will get status of internships
-        $internshipData = Internship::select('status', \DB::raw('count(`status`) as count'))
+        $internshipData = InternshipAgreement::select('status', \DB::raw('count(`status`) as count'))
             ->groupBy('status')
             ->get()
             ->toArray();

@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
-use App\Models\Internship;
+use App\Models\InternshipAgreement;
 use App\Models\User;
 use App\Policies\ActivityPolicy;
 use App\Policies\InternshipPolicy;
@@ -33,7 +33,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Gate::define('view-internship', function (User $user, Internship $internship) {
+        Gate::define('view-internship', function (User $user, InternshipAgreement $internship) {
             // Check if the user is an administrator
             if ($user->hasAnyRole($this->administrators)) {
                 return true;
@@ -51,9 +51,10 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('validate-internship', [InternshipPolicy::class, 'update']);
         Gate::define('sign-internship', [InternshipPolicy::class, 'update']);
 
-        Gate::define('viewPulse', function (User $user) {
+        /* Gate::define('viewPulse', function (User $user) {
             return $user->role === Role::SuperAdministrator;
-        });
+        }); */
+
         // Gate::define('viewAny-internship', function ($user, $internship) {
         //     // Check if the user is an administrator
         //     if ($user->hasAnyRole($this->administrators)) {

@@ -38,11 +38,11 @@ class Project extends Core\BackendBaseModel
     ];
     public function internships(): HasMany
     {
-        return $this->hasMany(Internship::class);
+        return $this->hasMany(InternshipAgreement::class);
     }
     public function LastInternship(): HasOne
     {
-        return $this->hasOne(Internship::class)->latestOfMany();
+        return $this->hasOne(InternshipAgreement::class)->latestOfMany();
     }
     public function jury() {
         return $this->hasOne(Jury::class);

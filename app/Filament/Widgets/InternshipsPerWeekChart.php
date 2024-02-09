@@ -4,7 +4,7 @@ namespace App\Filament\Widgets;
 
 // use Filament\Widgets\ChartWidget;
 use App\Filament\Core\Widgets\FilamentChartsParentWidget as ChartWidget;
-use App\Models\Internship;
+use App\Models\InternshipAgreement;
 use Flowframe\Trend\Trend;
 use Flowframe\Trend\TrendValue;
 
@@ -28,7 +28,7 @@ class InternshipsPerWeekChart extends ChartWidget
 
     protected function getData(): array
     {
-        $data = Trend::model(Internship::class)
+        $data = Trend::model(InternshipAgreement::class)
             ->between(
                 // start: now()->startOfYear(),
                 start: now()->subWeeks(1)->startOfWeek(),

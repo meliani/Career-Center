@@ -147,7 +147,7 @@ class Offer extends Core\FrontendBaseModel
 
     public function applications()
     {
-        return $this->hasMany('App\Models\School\Internship\Application', 'offre_de_stage_id', 'id');
+        return $this->hasMany('App\Models\School\InternshipAgreement\Application', 'offre_de_stage_id', 'id');
     }
 
     public function getExpireAtHumanReadableAttribute()

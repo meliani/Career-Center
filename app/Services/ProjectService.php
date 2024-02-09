@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\DefenseSchedule;
-use App\Models\Internship;
+use App\Models\InternshipAgreement;
 use App\Models\Project;
 use Filament\Notifications\Notification;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -29,7 +29,7 @@ class ProjectService
             if (Gate::denies('batch-assign-internships-to-projects', )) {
                 throw new AuthorizationException();
             }
-            $signedInternships = Internship::where('status', '=', 'Signed')->get();
+            $signedInternships = InternshipAgreement::where('status', '=', 'Signed')->get();
 
             foreach ($signedInternships as $signedInternship) {
                 try {

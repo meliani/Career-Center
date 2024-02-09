@@ -2,7 +2,7 @@
 
 namespace App\Filament\Actions;
 
-use App\Models\Internship;
+use App\Models\InternshipAgreement;
 use Filament\Tables\Actions\Action;
 use Illuminate\Support\Carbon;
 
@@ -14,7 +14,7 @@ class ReceiveAction extends Action
 
     public static function getDefaultName(): string
     {
-        return __('Internship agreement received');
+        return __('InternshipAgreement agreement received');
     }
 
     public static function make(?string $name = null): static
@@ -23,7 +23,7 @@ class ReceiveAction extends Action
         $static = app(static::class, [
             'name' => $name ?? static::getDefaultName(),
         ]);
-        $static->configure()->action(function (array $data, Internship $record): void {
+        $static->configure()->action(function (array $data, InternshipAgreement $record): void {
             $record->withoutTimestamps(fn () => $record->receive());
         });
 

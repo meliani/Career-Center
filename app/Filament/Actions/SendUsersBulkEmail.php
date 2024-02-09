@@ -6,7 +6,7 @@ use Filament\Tables\Actions\BulkAction;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\GenericEmail;
 use Illuminate\Support\Collection;
-use App\Models\Internship;
+use App\Models\InternshipAgreement;
 use Illuminate\Support\Carbon;
 use App\Models\Student;
 use Filament\Forms\Components;

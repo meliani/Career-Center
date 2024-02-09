@@ -3,7 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Filament\Core\Widgets\ApexChartsParentWidget;
-use App\Models\Internship;
+use App\Models\InternshipAgreement;
 
 class InternshipsPerCityChart extends ApexChartsParentWidget
 {
@@ -30,7 +30,7 @@ class InternshipsPerCityChart extends ApexChartsParentWidget
      */
     protected function getOptions(): array
     {
-        $internshipData = Internship::select('city', \DB::raw('count(*) as count'))
+        $internshipData = InternshipAgreement::select('city', \DB::raw('count(*) as count'))
             ->groupBy('city')
             ->get()
             ->toArray();

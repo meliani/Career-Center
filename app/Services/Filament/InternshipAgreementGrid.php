@@ -3,7 +3,7 @@
 namespace App\Services\Filament;
 
 use App\Enums\Status;
-use App\Models\Internship;
+use App\Models\InternshipAgreement;
 use App\Models\InternshipAgreement;
 use App\Models\Student;
 use Filament\Support\Enums\Alignment;

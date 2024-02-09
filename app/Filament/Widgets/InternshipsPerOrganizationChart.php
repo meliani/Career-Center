@@ -3,7 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Filament\Core\Widgets\ApexChartsParentWidget;
-use App\Models\Internship;
+use App\Models\InternshipAgreement;
 
 class InternshipsPerOrganizationChart extends ApexChartsParentWidget
 {
@@ -36,12 +36,12 @@ class InternshipsPerOrganizationChart extends ApexChartsParentWidget
     protected function getOptions(): array
     {
         // get internships per organization_name
-        // $data = Internship::query()
+        // $data = InternshipAgreement::query()
         //     ->select('organization_name')
         //     ->groupBy('organization_name')
         //     ->get();
         //  return apex chart data
-        $internshipData = Internship::select('organization_name', \DB::raw('count(*) as count'))
+        $internshipData = InternshipAgreement::select('organization_name', \DB::raw('count(*) as count'))
             ->groupBy('organization_name')
             ->get()
             ->toArray();

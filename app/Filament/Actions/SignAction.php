@@ -2,7 +2,7 @@
 
 namespace App\Filament\Actions;
 
-use App\Models\Internship;
+use App\Models\InternshipAgreement;
 use Filament\Tables\Actions\Action;
 use Illuminate\Support\Carbon;
 
@@ -23,7 +23,7 @@ class SignAction extends Action
         $static = app(static::class, [
             'name' => $name ?? static::getDefaultName(),
         ]);
-        $static->configure()->action(function (array $data, Internship $record): void {
+        $static->configure()->action(function (array $data, InternshipAgreement $record): void {
             $record->withoutTimestamps(fn () => $record->sign());
         })
         ->requiresConfirmation(fn () => "Are you sure you want to mark this internship as Signed?")

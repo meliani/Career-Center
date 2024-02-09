@@ -6,7 +6,7 @@ use Filament\Tables\Actions\BulkAction;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\GenericEmail;
 use Illuminate\Support\Collection;
-use App\Models\Internship;
+use App\Models\InternshipAgreement;
 use Illuminate\Support\Carbon;
 use App\Models\Student;
 use Filament\Forms\Components;
@@ -79,22 +79,22 @@ class SendBulkEmail extends BulkAction
             });
 
         // Tables\Actions\Action::make('Mark as Signed')
-        // ->action(fn (Internship $internship) => $internship->sign_off())
+        // ->action(fn (InternshipAgreement $internship) => $internship->sign_off())
         // ->requiresConfirmation(
-        //     fn (Internship $internship) => "Are you sure you want to mark this internship as Signed?"),
+        //     fn (InternshipAgreement $internship) => "Are you sure you want to mark this internship as Signed?"),
         // Tables\Actions\Action::make('sendEmail')
         // ->form([
         //     TextInput::make('subject')->required(),
         //     RichEditor::make('body')->required(),
         // ])
-        // ->action(fn (array $data, Internship $internship) => Mail::to($internship->student->email_perso)
+        // ->action(fn (array $data, InternshipAgreement $internship) => Mail::to($internship->student->email_perso)
         //     ->send(new DefenseReadyEmail(
         //         $data['subject'],
         //         $data['body'],
         //     ))
         // )
         // \App\Filament\Resources\InternshipResource\Actions\ValidateAction::make()
-        // ->action(fn (Internship $internship) => $internship->validate()),
+        // ->action(fn (InternshipAgreement $internship) => $internship->validate()),
         return $static;
     }
     // public function handle($selectedRowsQuery)

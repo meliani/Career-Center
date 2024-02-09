@@ -3,7 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Filament\Administration\Resources\InternshipResource;
-use App\Models\Internship;
+use App\Models\InternshipAgreement;
 use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Widgets\Widget;
@@ -16,7 +16,7 @@ class AnouncementsCalendarWidget extends FullCalendarWidget
 {
     protected static ?int $sort = 10;
 
-    public Model|string|null $model = Internship::class;
+    public Model|string|null $model = InternshipAgreement::class;
 
     // protected static string $view = 'filament.widgets.calendar-widget';
 
@@ -34,11 +34,11 @@ class AnouncementsCalendarWidget extends FullCalendarWidget
         // You can use $fetchInfo to filter events by date.
         // This method should return an array of event-like objects. See: https://github.com/saade/filament-fullcalendar/blob/3.x/#returning-events
         // You can also return an array of EventData objects. See: https://github.com/saade/filament-fullcalendar/blob/3.x/#the-eventdata-class
-        return Internship::where('created_at', '>=', $fetchInfo['start'])
+        return InternshipAgreement::where('created_at', '>=', $fetchInfo['start'])
             // ->where('ending_at', '<=', $fetchInfo['end'])
             ->get()
             // ->map(
-            //     fn (Internship $event) => EventData::make()
+            //     fn (InternshipAgreement $event) => EventData::make()
             //         ->id($event->id)
             //         ->title($event->title)
             //         ->start($event->stating_at)
@@ -49,7 +49,7 @@ class AnouncementsCalendarWidget extends FullCalendarWidget
             //         )
             // )
             // ->all();
-            ->map(function (Internship $task) {
+            ->map(function (InternshipAgreement $task) {
                 return [
                     'id' => $task->id,
                     'title' => $task->student?->full_name,

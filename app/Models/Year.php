@@ -40,7 +40,7 @@ class Year extends Core\BackendBaseModel
      */
     public function internships()
     {
-        return $this->belongsToMany(Internship::class);
+        return $this->belongsToMany(InternshipAgreement::class);
     }
 
 }

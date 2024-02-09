@@ -3,7 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Filament\Core\Widgets\FilamentChartsParentWidget as ChartWidget;
-use App\Models\Internship;
+use App\Models\InternshipAgreement;
 use Flowframe\Trend\Trend;
 use Flowframe\Trend\TrendValue;
 
@@ -27,7 +27,7 @@ class InternshipsPerMonthChart extends ChartWidget
 
     protected function getData(): array
     {
-        $data = Trend::query(Internship::query())/* ->groupBy('country') */
+        $data = Trend::query(InternshipAgreement::query())/* ->groupBy('country') */
             ->between(
                 start: now()->subMonths(6)->startOfMonth(),
                 end: now()->endOfMonth(),

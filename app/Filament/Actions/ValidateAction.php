@@ -4,7 +4,7 @@ namespace App\Filament\Actions;
 
 use Filament\Tables\Actions\Action;
 use Illuminate\Support\Carbon;
-use App\Models\Internship;
+use App\Models\InternshipAgreement;
 use Closure;
 use App\Enums;
 
@@ -21,14 +21,14 @@ class ValidateAction extends Action
         $static = app(static::class, [
             'name' => $name ?? static::getDefaultName(),
         ]);
-        $static->configure()->action(function (array $data, Internship $record): void {
+        $static->configure()->action(function (array $data, InternshipAgreement $record): void {
             //  return carbon object with this format 2024-01-02 15:40:05, its a datetime format i mysql database
             // dd('action called');
             $record->withoutTimestamps(fn () => $record->validate());
             // $record->validated_at = Carbon::now()->format('yy-m-d H:i:s');
             // $record->save();
         })
-        ->requiresConfirmation(fn (Internship $internship) => "Are you sure you want to mark this internship as Signed?")
+        ->requiresConfirmation(fn (InternshipAgreement $internship) => "Are you sure you want to mark this internship as Signed?")
         ->form([\Filament\Forms\Components\Select::make('assigned_department')
         ->options(Enums\Department::class)
         ->placeholder('Select a department or leave empty if not assigned yet')
@@ -65,17 +65,17 @@ class ValidateAction extends Action
             ->form([\Filament\Forms\Components\Select::make('assigned_department')
             ->options(Enums\Department::class)])
 
-                // ->fillForm(fn (Internship $record): array => [
+                // ->fillForm(fn (InternshipAgreement $record): array => [
                 //     'internshipId' => $record->student->id,
                 // ])
                 // ->form([])
-                ->action(function (array $data, Internship $record): void {
+                ->action(function (array $data, InternshipAgreement $record): void {
                     //  return carbon object with this format 2024-01-02 15:40:05, its a datetime format i mysql database
                     $record->validated_at = Carbon::now()->format('yy-m-d H:i:s');
                     $record->save();
                 })
             // Add action to validate an internship
-            // ValidateAction::make('Validate Internship'),
+            // ValidateAction::make('Validate InternshipAgreement'),
             // Tables\Actions\EditAction::make(),
             // Tables\Actions\DeleteAction::make(),
             // Tables\Actions\ForceDeleteAction::make(),
