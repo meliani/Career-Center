@@ -14,6 +14,7 @@
         "awcodes/light-switch": "^1.0",
         "bezhansalleh/filament-language-switch": "^3.0",
         "bezhansalleh/filament-panel-switch": "^1.0",
+        "bilfeldt/laravel-route-statistics": "^3.1",
         "cmixin/enhanced-period": "^1.2",
         "croustibat/filament-jobs-monitor": "^2.1",
         "doctrine/dbal": "^3.8",

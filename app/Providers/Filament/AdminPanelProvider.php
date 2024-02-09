@@ -24,7 +24,7 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Leandrocfe\FilamentApexCharts\FilamentApexChartsPlugin;
 use Saade\FilamentFullCalendar\FilamentFullCalendarPlugin;
-
+use Amendozaaguiar\FilamentRouteStatistics\FilamentRouteStatisticsPlugin;
 class AdminPanelProvider extends PanelProvider
 {
     // public static ?string $label = 'Program Coordinator Panel';
@@ -78,6 +78,7 @@ class AdminPanelProvider extends PanelProvider
 
             ->plugins(
                 [
+                    FilamentRouteStatisticsPlugin::make(),
                     FilamentFullCalendarPlugin::make(),
                     // ->selectable()
                     // ->editable(),

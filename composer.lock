@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b5cb81f61395f8a6f403153d3b582841",
+    "content-hash": "9cd01ac811543e066d92e13b9906a04a",
     "packages": [
         {
             "name": "42coders/document-templates",
