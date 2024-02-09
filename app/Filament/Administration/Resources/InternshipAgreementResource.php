@@ -5,7 +5,7 @@ namespace App\Filament\Administration\Resources;
 use App\Filament\Imports\InternshipAgreementImporter;
 use App\Models\InternshipAgreement;
 use Filament\Forms\Form;
-use App\Filament\Core\BaseResource as Resource;
+use App\Filament\Core\BaseResource;
 use Filament\Tables;
 use Filament\Tables\Actions\ImportAction;
 use Filament\Tables\Filters\SelectFilter;
@@ -22,7 +22,7 @@ use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Enums\ActionsPosition;
 use Illuminate\Support\Facades\Mail;
 
-class InternshipAgreementResource extends Resource
+class InternshipAgreementResource extends BaseResource
 {
     protected static ?string $modelLabel = 'internship agreement';
 

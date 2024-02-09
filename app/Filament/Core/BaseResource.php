@@ -20,4 +20,16 @@ class BaseResource extends Resource
     {
         return true;
     }
+    public static function view(): bool
+    {
+        return true;
+    }
+    public static function create(): bool
+    {
+        return false;
+    }
+    public static function update(): bool
+    {
+        return false;
+    }
 }

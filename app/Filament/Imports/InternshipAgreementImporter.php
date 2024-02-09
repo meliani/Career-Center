@@ -106,19 +106,19 @@ class InternshipAgreementImporter extends Importer
                 ->rules(['max:255'])
                 ->ignoreBlankState(),
             ImportColumn::make('announced_at')
-                ->rules(['datetime'])
+                ->rules(['date'])
                 ->ignoreBlankState(),
             ImportColumn::make('validated_at')
-                ->rules(['datetime'])
+                ->rules(['date'])
                 ->ignoreBlankState(),
             ImportColumn::make('assigned_department')
                 ->rules(['max:10'])
                 ->ignoreBlankState(),
             ImportColumn::make('received_at')
-                ->rules(['datetime'])
+                ->rules(['date'])
                 ->ignoreBlankState(),
             ImportColumn::make('signed_at')
-                ->rules(['datetime'])
+                ->rules(['date'])
                 ->ignoreBlankState(),
             ImportColumn::make('observations')
                 ->rules(['max:65535'])

@@ -24,7 +24,15 @@ class OfferResource extends Resource
     // {
     //     return static::getModel()::count();
     // }
+    public static function getModelLabel(): string
+    {
+        return __('Internship offer');
+    }
 
+    public static function getPluralModelLabel(): string
+    {
+        return __('Internship offers');
+    }
     public static function form(Form $form): Form
     {
         return $form

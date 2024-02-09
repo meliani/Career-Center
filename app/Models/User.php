@@ -100,13 +100,15 @@ class User extends Authenticatable implements FilamentUser, HasName
 
     public function canAccessPanel(Panel $panel): bool
     {
-        if ($panel->getId() === 'Administration') {
+        /* if ($panel->getId() === 'Administration') {
             return $this->hasAnyRole($this->administrators);
         }
         if ($panel->getId() === 'ProgramCoordinator') {
             return $this->haAnyRole($this->powerProfessors);
+        } */
+        if ($panel->getId() === 'Administration') {
+            return $this->hasAnyRole($this->professors);
         }
-
         // return str_ends_with($this->email, '@inpt.ac.ma') && $this->hasVerifiedEmail();
         return true;
     }
