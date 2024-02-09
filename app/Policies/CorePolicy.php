@@ -16,6 +16,6 @@ class CorePolicy
     protected $powerProfessors = [Role::SuperAdministrator, Role::Administrator, Role::ProgramCoordinator];
     public function viewAny(User $user): bool
     {
-        return false;
+        return $user->hasAnyRole($this->administrators);
     }
 }

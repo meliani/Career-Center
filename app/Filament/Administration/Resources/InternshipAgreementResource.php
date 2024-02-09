@@ -37,6 +37,8 @@ class InternshipAgreementResource extends BaseResource
 
     protected static ?string $recordTitleAttribute = 'title';
 
+    protected static ?string $navigationBadgeTooltip = 'Announced internships';
+
     public static function getModelLabel(): string
     {
         return __('Internship Agreement');

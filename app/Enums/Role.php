@@ -13,6 +13,7 @@ enum Role: string implements HasLabel
     case Administrator = 'Administrator';
     case SuperAdministrator = 'SuperAdministrator';
     case AdministrativeSupervisor = 'AdministrativeSupervisor';
+    case Direction = 'Direction';
 
     public function getLabel(): ?string
     {
@@ -24,6 +25,7 @@ enum Role: string implements HasLabel
             Role::Administrator => 'Administrator',
             Role::SuperAdministrator => 'Super Administrator',
             Role::AdministrativeSupervisor => 'Administrative Supervisor',
+            Role::Direction => 'Direction',
         };
     }
 }

@@ -2,7 +2,7 @@
 
 return [
     'resources' => [
-        'enabled' => true,
+        'enabled' => false,
         'label' => 'Job',
         'plural_label' => 'Jobs',
         'navigation_group' => 'Settings',
