@@ -27,10 +27,16 @@ class InternshipAgreementTable
                 ->sortable(),
             Tables\Columns\TextColumn::make('parrain_nom')
                 ->label(__('Parrain'))
+                ->formatStateUsing(function ($state, InternshipAgreement $internship) {
+                    return $internship->parrain_titre->getLabel().' '.$internship->parrain_nom.' '.$internship->parrain_prenom;
+                })
                 ->searchable()
                 ->sortable(),
             Tables\Columns\TextColumn::make('encadrant_ext_nom')
                 ->label(__('Encadrant'))
+                ->formatStateUsing(function ($state, InternshipAgreement $internship) {
+                    return $internship->encadrant_ext_titre->getLabel().' '.$internship->encadrant_ext_nom.' '.$internship->encadrant_ext_prenom;
+                })
                 ->searchable()
                 ->sortable(),
             Tables\Columns\TextColumn::make('status')
