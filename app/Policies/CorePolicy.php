@@ -14,5 +14,8 @@ class CorePolicy
     protected $administrators = [ Role::SuperAdministrator , Role::Administrator];
     protected $professors = [ Role::SuperAdministrator, Role::Administrator, Role::Professor, Role::DepartmentHead, Role::ProgramCoordinator];
     protected $powerProfessors = [Role::SuperAdministrator, Role::Administrator, Role::ProgramCoordinator];
-
+    public function viewAny(User $user): bool
+    {
+        return false;
+    }
 }

@@ -17,7 +17,7 @@ class InternshipAgreementPolicy extends CorePolicy
         // if (! Gate::allows('view-internship', $internship)) {
         //     return true;
         // }
-        if ($user->hasAnyRole($this->professors)){
+        if ($user->hasAnyRole($this->administrators)){
             return true;
         }
         return false;
