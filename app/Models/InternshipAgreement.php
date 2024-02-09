@@ -95,7 +95,10 @@ class InternshipAgreement extends Core\BackendBaseModel
         // 'assigned_department' => 'string',
         // 'teammate_status' => 'string',
     ];
-    /* Validate function to be exexuted only by SuperAdministrator Administrator ProgramCoordinator */
+    public function student()
+    {
+        return $this->belongsTo(Student::class);
+    }
 
     public function validate(?string $department = null)
     {
@@ -212,26 +215,6 @@ class InternshipAgreement extends Core\BackendBaseModel
 
             return response()->json(['error' => 'This action is unauthorized.'], 403);
         }
-    }
-
-    public function students()
-    {
-        return $this->hasMany(Student::class);
-    }
-
-    public function project()
-    {
-        return $this->hasOne(Project::class);
-    }
-
-    public function teammate()
-    {
-        return $this->belongsTo(Student::class, 'teammate_id');
-    }
-
-    public function student()
-    {
-        return $this->belongsTo(Student::class);
     }
 
     public function getParrainNameAttribute()

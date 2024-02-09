@@ -21,6 +21,7 @@ class ProjectService
     {
         self::$forceOverwrite = $value;
     }
+
     public static function AssignInternshipsToProjects($record)
     {
         $assignedInternships = 0;
@@ -64,10 +65,12 @@ class ProjectService
                         throw new \Exception('There was an error creating the project. Please try again.');
                     }
                 }
-                $signedInternship->project_id = $project->id;
+                // $signedInternship->attach($project);
 
                 // $project->students()->attach($student);
-
+                $project = New Project();
+                $project->attach($signedInternship);
+                $project->save();
                 $signedInternship->save();
                 $assignedInternships++;
                 // if ($assignedInternships == 5) {
@@ -114,70 +117,39 @@ class ProjectService
         ->success()
         ->send();
     }
+    public static function CreateFromInternshipAgreement(InternshipAgreement $record)
+    {
+        $project = Project::create([
+        /* Fields
+        'id_pfe',
+        'title',
+        'organization',
+        'description',
+        'start_date',
+        'end_date',
+        'jury_id',
+        'status',
+        'has_teammate',
+        'teammate_status',
+        'teammate_id', 
+        */
+        'id_pfe' => $record->id_pfe,
+        'title' => $record->title,
+        'organization' => $record->organization_name,
+        'description' => $record->description,
+        'start_date' => $record->starting_at,
+        'end_date' => $record->ending_at,
+        // 'has_teammate' => false,
+        // 'teammate_status' => null,
+        // 'teammate_id' => null,
+
+        ]);
+        // dd($record->student->projects);
+        $project->students()->attach($record->student);
+        $project->save();
+        Notification::make()
+        ->title('Project created successfully')
+        ->success()
+        ->send();
+    }
 }
-
-// public function internshipContracts(): BelongsToMany
-    // {
-    //     return $this->belongsToMany(InternshipContract::class, 'project_internship_contract')
-    //         ->withTimestamps()
-    //         ->limit(2);
-    // }
-    // public function users(): BelongsToMany
-    // {
-    //     return $this->belongsToMany(User::class, 'project_user')
-    //         ->withPivot('role')
-    //         ->withTimestamps();
-    // }
-
-    // public function worker(): HasMany
-    // {
-    //     return $this->hasMany(User::class)->where('role', 'worker');
-    // }
-
-    // public function supervisors(): BelongsToMany
-    // {
-    //     return $this->belongsToMany(User::class, 'project_user')
-    //         ->wherePivot('role', ProjectRoleEnum::supervisor())
-    //         ->using(ProjectUser::class);
-    // }
-
-    // public function hasMaxSupervisorsReached(): bool
-    // {
-    //     return $this->supervisors()->count() >= 2; // Adjust the maximum number of supervisors as needed
-    // }
-    // public function hasMaxWorkersReached(): bool
-    // {
-    //     return $this->workers()->count() >= 2; // Adjust the maximum number of supervisors as needed
-    // }
-
-    // public function workers(): BelongsToMany
-    // {
-    //     return $this->belongsToMany(User::class, 'project_user')
-    //         ->wherePivot('role', ProjectRoleEnum::worker()->value);
-    // }
-
-    // public function assignStudent(Student $student, array $attributes = []): void
-    // {
-    //     if ($this->hasMaxWorkersReached()) {
-    //         throw new \Exception('Maximum number of workers reached');
-    //     }
-
-    //     $this->users()->attach(
-    //         $student, $attributes ??
-    //         [
-    //             'role' => ProjectRoleEnum::worker(),
-    //         ]
-    //     );
-    // }
-    // public function assignProfessor(Professor $professor, array $attributes = []): void
-    // {
-    //     if ($this->hasMaxSupervisorsReached()) {
-    //         throw new \Exception('Maximum number of supervisors reached');
-    //     }
-    //     $this->users()->attach(
-    //         $professor, $attributes ??
-    //         [
-    //             'role' => ProjectRoleEnum::supervisor(),
-    //         ]
-    //     );
-    // }

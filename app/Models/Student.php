@@ -5,18 +5,10 @@ namespace App\Models;
 use App\Enums;
 use App\Models\Core\BackendBaseModel;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-// use Spatie\MediaLibrary\HasMedia;
-// use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Student extends BackendBaseModel 
-// implements HasMedia
 {
-    // use InteractsWithMedia;
-
-    // protected $table = 'people';
-    // protected $primaryKey = "id";
-
     protected $appends = [
         'full_name',
     ];
@@ -79,28 +71,15 @@ class Student extends BackendBaseModel
     {
         return $this->belongsTo(InternshipAgreement::class);
     }
-
-    // public function teammate()
-    // {
-    //     return $this->hasOne(Student::class, 'teammate_id');
-    // }
     public function projects()
     {
-        return $this->belongsToMany(Project::class)->withTimestamps();
+        return $this->belongsToMany(Project::class)->withTimestamps()
+            ->withPivot('id');
     }
-
-    public function registerMediaCollections(): void
-    {
-        $this
-            ->addMediaCollection('internship')
-            ->useDisk('userfiles');
-    }
-
-    public function media(): MorphMany
-    {
-        return $this->morphMany(Media::class, 'model');
-    }
-
+    // public function project()
+    // {
+    //     return $this->belongsTo(Project::class);
+    // }
     public function getFullNameAttribute()
     {
         return $this->attributes['first_name'].' '.$this->attributes['last_name'];

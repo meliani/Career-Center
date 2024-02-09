@@ -20,6 +20,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Enums\ActionsPosition;
 use Illuminate\Support\Facades\Mail;
+use App\Filament\Administration\Resources\InternshipAgreementResource\RelationManagers;
 
 class InternshipAgreementResource extends BaseResource
 {
@@ -54,14 +55,16 @@ class InternshipAgreementResource extends BaseResource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::where('status', Enums\Status::Announced)->count('id');
+        return static::getModel()::count('id');
     }
     public static function form(Form $form): Form
     {
         return $form
             ->schema(
                 \App\Services\Filament\InternshipAgreementForm::get(),
+                \App\Filament\Actions\CreateProjectFromInternshipAgreement::make('Create Project From Internship Agreement'),
             );
+    
     }
 
     public static function table(Table $table): Table
@@ -163,7 +166,8 @@ class InternshipAgreementResource extends BaseResource
     public static function getRelations(): array
     {
         return [
-            //
+            // RelationManagers\ProjectRelationManager::class,
+            // RelationManagers\StudentRelationManager::class,
         ];
     }
 
@@ -175,5 +179,4 @@ class InternshipAgreementResource extends BaseResource
             'edit' => Pages\EditInternshipAgreement::route('/{record}/edit'),
         ];
     }
-
 }
