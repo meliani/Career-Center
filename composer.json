@@ -8,7 +8,8 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^8.1",
+        "42coders/document-templates": "^5.2",
         "awcodes/light-switch": "^1.0",
         "bezhansalleh/filament-language-switch": "^3.0",
         "bezhansalleh/filament-panel-switch": "^1.0",
@@ -31,12 +32,10 @@
         "laravel/tinker": "^2.8",
         "leandrocfe/filament-apex-charts": "^3.0",
         "munafio/chatify": "^1.6",
-        "pxlrbt/filament-activity-log": "^1.0",
         "pxlrbt/filament-excel": "^2.3",
         "rabol/filament-logviewer": "^0.20.0",
         "rickdbcn/filament-email": "^1.0",
         "saade/filament-fullcalendar": "^3.1",
-        "spatie/laravel-medialibrary": "^11.0",
         "spatie/period": "^2.4",
         "stechstudio/filament-impersonate": "^3.5",
         "z3d0x/filament-logger": "^0.6.2"
@@ -67,6 +66,7 @@
         }
     },
     "scripts": {
+        "test": "vendor/bin/pest",
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi",
@@ -96,6 +96,6 @@
             "php-http/discovery": true
         }
     },
-    "minimum-stability": "beta",
+    "minimum-stability": "stable",
     "prefer-stable": true
 }

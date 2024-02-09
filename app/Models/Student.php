@@ -5,13 +5,14 @@ namespace App\Models;
 use App\Enums;
 use App\Models\Core\BackendBaseModel;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
+// use Spatie\MediaLibrary\HasMedia;
+// use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Student extends BackendBaseModel implements HasMedia
+class Student extends BackendBaseModel 
+// implements HasMedia
 {
-    use InteractsWithMedia;
+    // use InteractsWithMedia;
 
     // protected $table = 'people';
     // protected $primaryKey = "id";
