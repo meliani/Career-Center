@@ -18,11 +18,11 @@ class BaseResource extends Resource
     // }
     public static function viewAny(): bool
     {
-        return true;
+        return false;
     }
     public static function view(): bool
     {
-        return true;
+        return false;
     }
     public static function create(): bool
     {

@@ -6,7 +6,7 @@ namespace App\Providers;
 use App\Models\InternshipAgreement;
 use App\Models\User;
 use App\Policies\ActivityPolicy;
-use App\Policies\InternshipPolicy;
+use App\Policies\InternshipAgreementPolicy;
 // use Illuminate\Auth\Access\Response;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
@@ -48,8 +48,8 @@ class AuthServiceProvider extends ServiceProvider
 
             // return $internship->student->program === $user->program_coordinator;
         });
-        Gate::define('validate-internship', [InternshipPolicy::class, 'update']);
-        Gate::define('sign-internship', [InternshipPolicy::class, 'update']);
+        Gate::define('validate-internship', [InternshipAgreementPolicy::class, 'update']);
+        Gate::define('sign-internship', [InternshipAgreementPolicy::class, 'update']);
 
         /* Gate::define('viewPulse', function (User $user) {
             return $user->role === Role::SuperAdministrator;

@@ -9,7 +9,7 @@ use App\Policies\CorePolicy;
 use Illuminate\Support\Facades\Gate;
 
 
-class InternshipPolicy extends CorePolicy
+class InternshipAgreementPolicy extends CorePolicy
 {
     public function viewAny(User $user): bool
     {

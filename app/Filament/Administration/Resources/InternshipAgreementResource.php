@@ -186,8 +186,4 @@ class InternshipAgreementResource extends BaseResource
         ];
     }
 
-    public static function viewAny(): bool
-    {
-        return false;
-    }
 }
