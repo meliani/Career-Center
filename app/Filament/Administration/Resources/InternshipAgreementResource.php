@@ -11,8 +11,7 @@ use Filament\Tables\Actions\ImportAction;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
-use Filament\Resources\Components\Tab;
-use Illuminate\Database\Eloquent\Builder;
+
 use App\Enums;
 use App\Filament\Administration\Resources\InternshipAgreementResource\Pages;
 use App\Mail\GenericEmail;
@@ -56,17 +55,6 @@ class InternshipAgreementResource extends BaseResource
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::where('status', Enums\Status::Announced)->count('id');
-    }
-
-    public function getTabs(): array
-    {
-        return [
-            'all' => Tab::make(),
-            'draft' => Tab::make()
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', Enums\Status::Draft)),
-            'announced' => Tab::make()
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('active', Enums\Status::Announced)),
-        ];
     }
     public static function form(Form $form): Form
     {

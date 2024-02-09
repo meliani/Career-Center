@@ -38,6 +38,7 @@
         "pxlrbt/filament-excel": "^2.3",
         "rabol/filament-logviewer": "^0.20.0",
         "rickdbcn/filament-email": "^1.0",
+        "ryangjchandler/filament-progress-column": "^0.4.1",
         "saade/filament-fullcalendar": "^3.1",
         "spatie/period": "^2.4",
         "stechstudio/filament-impersonate": "^3.5",
