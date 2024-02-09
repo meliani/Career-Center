@@ -14,7 +14,7 @@ class ReceiveAction extends Action
 
     public static function getDefaultName(): string
     {
-        return __('InternshipAgreement agreement received');
+        return __('Internship Agreement received');
     }
 
     public static function make(?string $name = null): static

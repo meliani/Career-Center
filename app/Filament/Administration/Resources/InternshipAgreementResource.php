@@ -39,12 +39,12 @@ class InternshipAgreementResource extends Resource
 
     public static function getModelLabel(): string
     {
-        return __('InternshipAgreement Agreement');
+        return __('Internship Agreement');
     }
 
     public static function getPluralModelLabel(): string
     {
-        return __('InternshipAgreement Agreements');
+        return __('Internship Agreements');
     }
     public static function getGloballySearchableAttributes(): array
     {
