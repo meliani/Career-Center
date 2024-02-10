@@ -46,6 +46,7 @@ return new class extends Migration
             $table->string('int_adviser_name', 191)->nullable();
             $table->unsignedInteger('student_id')->nullable();
             $table->unsignedInteger('year_id')->nullable();
+            $table->unsignedInteger('project_id')->nullable();
             $table->string('status', 255)->nullable();
             $table->dateTime('announced_at')->nullable();
             $table->dateTime('validated_at')->nullable();

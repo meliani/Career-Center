@@ -122,4 +122,16 @@ class User extends Authenticatable implements FilamentUser, HasName
     {
         return $this->hasAnyRole($this->administrators);
     }
+    public function isProfessor()
+    {
+        return $this->hasAnyRole($this->professors);
+    }
+    public function isProgramCoordinator()
+    {
+        return $this->hasAnyRole($this->powerProfessors);
+    }
+    public function isDepartmentHead()
+    {
+        return $this->hasRole(Enums\Role::DepartmentHead);
+    }
 }

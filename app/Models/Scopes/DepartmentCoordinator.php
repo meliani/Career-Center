@@ -16,11 +16,23 @@ class DepartmentCoordinator implements Scope
         if (auth()->user()->isSuperAdministrator() || auth()->user()->isAdministrator()) {
             return;
         }
-        $builder
-        // ->where('assigned_department', '=', auth()->user()->department)
-        ->whereHas('student', function ($q) {
-            $q->where('program', '=',auth()->user()->program_coordinator);
-        });
+        elseif (auth()->user()->isProgramCoordinator()) {
+            $builder
+                ->whereHas('student', function ($q) {
+                    $q->where('program', '=', auth()->user()->program_coordinator);
+                });
+            return;
+        }
+        elseif (auth()->user()->isDepartmentHead()) {
+            $builder
+                ->whereHas('student', function ($q) {
+                    $q->where('department', '=', auth()->user()->department);
+                });
+            return;
+        }
+        else {
+            $builder->where('student_id', '=', auth()->user()->id);
+        }
 
     }
 }
