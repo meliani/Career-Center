@@ -97,47 +97,43 @@ class StudentResource extends Resource
                 Tables\Columns\TextColumn::make('id')
                     ->label('ID')
                     ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('year_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('title')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('pin')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('full_name')
-                    ->searchable(),
+                    ->sortable()
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('first_name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('last_name')
-                    ->searchable(),
+                ->label(__('Full name'))
+                ->searchable()
+                ->sortable()
+                ->formatStateUsing(function ($record) {
+                    return $record->long_full_name;
+                }),
                 Tables\Columns\TextColumn::make('email_perso')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phone')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('cv')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('lm')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('photo')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('birth_date')
-                    ->date()
-                    ->sortable(),
+                // Tables\Columns\TextColumn::make('cv')
+                //     ->searchable(),
+                // Tables\Columns\TextColumn::make('lm')
+                //     ->searchable(),
+                // Tables\Columns\TextColumn::make('photo')
+                //     ->searchable(),
+                // Tables\Columns\TextColumn::make('birth_date')
+                //     ->date()
+                //     ->sortable(),
                 Tables\Columns\TextColumn::make('level')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('program')
                     ->searchable(),
-                Tables\Columns\IconColumn::make('is_mobility')
-                    ->boolean(),
+                // Tables\Columns\IconColumn::make('is_mobility')
+                //     ->boolean(),
                 Tables\Columns\TextColumn::make('abroad_school')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\IconColumn::make('is_active')
-                    ->boolean(),
-                Tables\Columns\TextColumn::make('graduated_at')
-                    ->date()
-                    ->sortable(),
+                    ->boolean()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                // Tables\Columns\TextColumn::make('graduated_at')
+                //     ->date()
+                //     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

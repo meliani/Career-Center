@@ -15,6 +15,46 @@ enum Role: string implements HasLabel
     case AdministrativeSupervisor = 'AdministrativeSupervisor';
     case Direction = 'Direction';
 
+    public static function getProfessorRoles(): array
+    {
+        return [
+            Role::Professor,
+            Role::DepartmentHead,
+            Role::ProgramCoordinator,
+        ];
+    }
+    public static function getProgramCoordinatorRoles(): array
+    {
+        return [
+            Role::ProgramCoordinator,
+        ];
+    }
+    public static function getDepartmentHeadRoles(): array
+    {
+        return [
+            Role::DepartmentHead,
+        ];
+    }
+    public static function getAdministrativeSupervisorRoles(): array
+    {
+        return [
+            Role::AdministrativeSupervisor,
+        ];
+    }
+    public static function getDirectionRoles(): array
+    {
+        return [
+            Role::Direction,
+        ];
+    }
+    public static function getAdministratorRoles(): array
+    {
+        return [
+            Role::Administrator,
+            Role::SuperAdministrator,
+        ];
+    }
+
     public function getLabel(): ?string
     {
         return match ($this) {
