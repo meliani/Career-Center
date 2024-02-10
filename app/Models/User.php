@@ -11,10 +11,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use LaraZeus\Boredom\Concerns\HasBoringAvatar;
 
 class User extends Authenticatable implements FilamentUser, HasName
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HasBoringAvatar;
 
     /**
      * The attributes that are mass assignable.
@@ -107,12 +108,12 @@ class User extends Authenticatable implements FilamentUser, HasName
             return $this->haAnyRole($this->powerProfessors);
         } */
         if ($panel->getId() === 'Administration') {
-            return $this->hasAnyRole($this->professors);
+            return $this->hasAnyRole(Enums\Role::toArray());
         }
+
         // return str_ends_with($this->email, '@inpt.ac.ma') && $this->hasVerifiedEmail();
         return true;
     }
-
     public function isSuperAdministrator()
     {
         return $this->hasRole(Enums\Role::SuperAdministrator);

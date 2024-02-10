@@ -55,6 +55,19 @@ enum Role: string implements HasLabel
         ];
     }
 
+    public static function toArray(): array
+    {
+        return [
+            Role::ProgramCoordinator,
+            Role::Professor,
+            Role::InternshipSupervisor,
+            Role::DepartmentHead,
+            Role::Administrator,
+            Role::SuperAdministrator,
+            Role::AdministrativeSupervisor,
+            Role::Direction,
+        ];
+    }
     public function getLabel(): ?string
     {
         return match ($this) {

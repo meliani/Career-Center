@@ -25,6 +25,8 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Leandrocfe\FilamentApexCharts\FilamentApexChartsPlugin;
 use Saade\FilamentFullCalendar\FilamentFullCalendarPlugin;
 use Amendozaaguiar\FilamentRouteStatistics\FilamentRouteStatisticsPlugin;
+use LaraZeus\Boredom\Enums\Variants;
+
 class AdminPanelProvider extends PanelProvider
 {
     // public static ?string $label = 'Program Coordinator Panel';
@@ -94,7 +96,15 @@ class AdminPanelProvider extends PanelProvider
                         ->gridLayoutButtonIcon('heroicon-o-squares-2x2'),
                     FilamentJobsMonitorPlugin::make(),
                     LightSwitchPlugin::make()->position(Alignment::BottomCenter),
+                    \LaraZeus\Boredom\BoringAvatarPlugin::make()
+                        ->variant(Variants::BEAM)
+                        ->size(60)
+                        ->square()
+                        ->colors(['0A0310', '49007E', 'FF005B', 'FF7D10', 'FFB238'])
                 ]
+            )
+            ->defaultAvatarProvider(
+                \LaraZeus\Boredom\BoringAvatarsProvider::class
             );
     }
 }

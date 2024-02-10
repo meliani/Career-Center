@@ -29,6 +29,7 @@
         "flowframe/laravel-trend": "^0.1.5",
         "guzzlehttp/guzzle": "^7.2",
         "hydrat/filament-table-layout-toggle": "^1.0",
+        "lara-zeus/boredom": "^1.0",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
