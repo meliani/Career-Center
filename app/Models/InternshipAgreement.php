@@ -61,7 +61,7 @@ class InternshipAgreement extends Core\BackendBaseModel
         'int_adviser_name',
         'student_id',
         'year_id',
-        'is_valid',
+        'project_id',
         'status',
         'announced_at',
         'validated_at',
@@ -95,10 +95,14 @@ class InternshipAgreement extends Core\BackendBaseModel
         // 'assigned_department' => 'string',
         // 'teammate_status' => 'string',
     ];
-    public function student()
-    {
+    public function student() {
         return $this->belongsTo(Student::class);
     }
+    
+    public function project() {
+        return $this->belongsTo(Project::class);
+    }
+
 
     public function validate(?string $department = null)
     {

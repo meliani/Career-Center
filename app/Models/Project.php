@@ -17,9 +17,7 @@ use Parallax\FilamentComments\Models\Traits\HasFilamentComments;
 class Project extends Core\BackendBaseModel
 {
     use HasFilamentComments;
-
-    // use HasFactory;
-    // use HasUuids;
+    
     protected $fillable = [
         'id_pfe',
         'title',
@@ -39,24 +37,16 @@ class Project extends Core\BackendBaseModel
         'teammate_status' => Enums\TeammateStatus::class,
         'status' => Enums\Status::class,
     ];
-
-    public function internships(): HasMany
-    {
+    public function students() {
+        return $this->belongsToMany(Student::class,
+        'project_student'
+        );
+    }
+    public function internshipAgreements() {
         return $this->hasMany(InternshipAgreement::class);
     }
-    public function LastInternship(): HasOne
-    {
-        return $this->hasOne(InternshipAgreement::class)->latestOfMany();
-    }
+
     public function jury() {
         return $this->hasOne(Jury::class);
     }
-    public function students()
-    {
-        return $this->belongsToMany(Student::class)->withTimestamps();
-    }
-    // public function teammate(): BelongsTo
-    // {
-    //     return $this->belongsTo(Student::class, 'teammate_id');
-    // }
 }

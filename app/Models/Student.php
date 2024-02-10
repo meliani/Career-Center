@@ -11,6 +11,7 @@ class Student extends BackendBaseModel
 {
     protected $appends = [
         'full_name',
+        'long_full_name',
     ];
 
     protected $fillable = [
@@ -71,15 +72,12 @@ class Student extends BackendBaseModel
     {
         return $this->belongsTo(InternshipAgreement::class);
     }
-    public function projects()
-    {
-        return $this->belongsToMany(Project::class)->withTimestamps()
-            ->withPivot('id');
+    public function activeInternshipAgreement() {
+        return $this->hasOne(InternshipAgreement::class)->where('active', true);
     }
-    // public function project()
-    // {
-    //     return $this->belongsTo(Project::class);
-    // }
+    public function inactiveInternshipAgreements() {
+        return $this->hasMany(InternshipAgreement::class)->where('active', false);
+    }
     public function getFullNameAttribute()
     {
         return $this->attributes['first_name'].' '.$this->attributes['last_name'];
@@ -88,5 +86,9 @@ class Student extends BackendBaseModel
     public function getLongFullNameAttribute()
     {
         return $this->title->getLabel().' '.$this->attributes['first_name'].' '.$this->attributes['last_name'];
+    }
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
     }
 }
