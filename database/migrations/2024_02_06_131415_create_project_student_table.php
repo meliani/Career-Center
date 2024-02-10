@@ -16,6 +16,8 @@ class CreateProjectStudentTable extends Migration
 
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
             $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
+            $table->unique(['project_id', 'student_id']);
+            $table->unique(['student_id']);
         });
     }
 
