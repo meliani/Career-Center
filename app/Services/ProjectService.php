@@ -120,19 +120,6 @@ class ProjectService
     public static function CreateFromInternshipAgreement(InternshipAgreement $record)
     {
         $project = Project::create([
-        /* Fields
-        'id_pfe',
-        'title',
-        'organization',
-        'description',
-        'start_date',
-        'end_date',
-        'jury_id',
-        'status',
-        'has_teammate',
-        'teammate_status',
-        'teammate_id', 
-        */
         'id_pfe' => $record->id_pfe,
         'title' => $record->title,
         'organization' => $record->organization_name,

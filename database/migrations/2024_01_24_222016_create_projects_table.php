@@ -11,6 +11,9 @@ class CreateProjectsTable extends Migration
      */
     public function up(): void
     {
+        if (Schema::hasTable('projects')) {
+            return;
+        }
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
             $table->integer('id_pfe')->nullable();

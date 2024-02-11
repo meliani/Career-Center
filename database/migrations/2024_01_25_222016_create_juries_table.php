@@ -14,9 +14,11 @@ class CreateJuriesTable extends Migration
     {
         Schema::create('juries', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('project_id');
-            $table->foreignId('timetable_id')->nullable();
+            $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
+            $table->foreign('timetable_id')->references('id')->on('timetables')->onDelete('cascade');
             $table->unique(['project_id', 'timetable_id']);
+            $table->unique(['project_id']);
+            $table->unique(['timetable_id']);
             $table->timestamps();
         });
     }

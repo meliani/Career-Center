@@ -49,4 +49,7 @@ class Project extends Core\BackendBaseModel
     public function jury() {
         return $this->hasOne(Jury::class);
     }
+    public function professors() {
+        return $this->belongsToMany(Professor::class, 'professor_project')->withPivot('role');
+    }
 }

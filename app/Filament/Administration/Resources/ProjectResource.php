@@ -13,7 +13,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Parallax\FilamentComments\Actions\CommentsAction;
 use Filament\Tables\Actions\AssociateAction;
- 
+use App\Enums;
 class ProjectResource extends Resource
 {
     protected static ?string $model = Project::class;
@@ -31,6 +31,8 @@ class ProjectResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\Section::make('Project informations')
+                ->schema([
                 Forms\Components\TextInput::make('id_pfe')
                     ->numeric(),
                 Forms\Components\Textarea::make('title')
@@ -44,6 +46,8 @@ class ProjectResource extends Resource
                     ->columnSpanFull(),
                 Forms\Components\DatePicker::make('start_date'),
                 Forms\Components\DatePicker::make('end_date'),
+                ])
+                ->collapsible(),
                 // Forms\Components\TextInput::make('jury_id')->numeric(),
             ]);
     }
@@ -86,10 +90,10 @@ class ProjectResource extends Resource
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make(),
                 \Parallax\FilamentComments\Tables\Actions\CommentsAction::make()
-                ->label('Comments')
-                // ->action('comments')
-                ->visible(fn () => true)
-                ->badge(fn ($record) => $record->filamentComments()?->count()),
+                    ->label('Comments')
+                    // ->action('comments')
+                    ->visible(fn () => true)
+                    ->badge(fn ($record) => $record->filamentComments()?->count()),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -101,9 +105,9 @@ class ProjectResource extends Resource
     public static function getRelations(): array
     {
         return [
-            // RelationManagers\ProfessorsRelationManager::class,
+            RelationManagers\ProfessorsRelationManager::class,
             // RelationManagers\TeammateRelationManager::class,
-            // RelationManagers\StudentsRelationManager::class,
+            RelationManagers\StudentsRelationManager::class,
             // RelationManagers\InternshipAgreementsRelationManager::class,
         ];
     }
