@@ -14,6 +14,7 @@ use Filament\Tables\Table;
 use Parallax\FilamentComments\Actions\CommentsAction;
 use Filament\Tables\Actions\AssociateAction;
 use App\Enums;
+
 class ProjectResource extends Resource
 {
     protected static ?string $model = Project::class;
@@ -32,33 +33,38 @@ class ProjectResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Section::make('Project informations')
-                ->schema([
-                Forms\Components\TextInput::make('id_pfe')
-                    ->numeric(),
-                Forms\Components\Textarea::make('title')
-                    ->required()
-                    ->maxLength(65535)
-                    ->columnSpanFull(),
-                Forms\Components\TextInput::make('organization')
-                    ->maxLength(255),
-                Forms\Components\Textarea::make('description')
-                    ->maxLength(65535)
-                    ->columnSpanFull(),
-                Forms\Components\DatePicker::make('start_date'),
-                Forms\Components\DatePicker::make('end_date'),
-                ])
-                ->collapsible(),
+                    ->schema([
+                        Forms\Components\TextInput::make('id_pfe')
+                            ->numeric(),
+                        Forms\Components\Textarea::make('title')
+                            ->required()
+                            ->maxLength(65535)
+                            ->columnSpanFull(),
+                        Forms\Components\TextInput::make('organization')
+                            ->maxLength(255),
+                        Forms\Components\Textarea::make('description')
+                            ->maxLength(65535)
+                            ->columnSpanFull(),
+                        Forms\Components\DatePicker::make('start_date'),
+                        Forms\Components\DatePicker::make('end_date'),
+                    ])
+                    ->collapsible(),
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
+            ->headerActions([
+                Tables\Actions\ActionGroup::make([
+                \App\Filament\Actions\ImportProfessorsFromInternshipAgreements::make('Import Professors From Internship Agreements'),
+                ]),
+            ])
             ->columns([
                 Tables\Columns\TextColumn::make('id_pfe')
                     ->numeric()
                     ->sortable(),
-                    Tables\Columns\TextColumn::make('students.full_name')
+                Tables\Columns\TextColumn::make('students.full_name')
                     ->label(__('Student name'))
                     ->searchable()
                     ->sortable(),
@@ -82,9 +88,6 @@ class ProjectResource extends Resource
             ])
             ->filters([
                 //
-            ])
-            ->headerActions([
-                Tables\Actions\AssociateAction::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

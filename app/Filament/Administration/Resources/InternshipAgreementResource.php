@@ -74,11 +74,11 @@ class InternshipAgreementResource extends BaseResource
 
         return $table
             ->headerActions([
-                // ActionGroup::make([
+                ActionGroup::make([
                 \App\Filament\Actions\AssignInternshipsToProjects::make('Assign Internships To Projects'),
                 ImportAction::make()
                     ->importer(InternshipAgreementImporter::class),
-                // ]),
+                ]),
             ])
             ->defaultSort('announced_at', 'asc')
             ->groups([

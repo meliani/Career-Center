@@ -20,6 +20,8 @@ class ProjectService extends Facade
     private static int $createdProjects;
     public static int $overwrittenProjects;
     private static int $duplicateProjects;
+    private static $affectedProffessors;
+    private static $existingProfessors;
 
     public function __construct()
     {
@@ -27,6 +29,8 @@ class ProjectService extends Facade
         self::$createdProjects = 0;
         self::$overwrittenProjects = 0;
         self::$duplicateProjects = 0;
+        self::$affectedProffessors = 0;
+        self::$existingProfessors = 0;
     }
     public static function setForceOverwrite($value)
     {
@@ -158,6 +162,32 @@ class ProjectService extends Facade
         return $project;
     }
 
+    public static function ImportProfessorsFromInternshipAgreements()
+    {
+        $internshipAgreements = InternshipAgreement::signed()->get();
+        $internshipAgreements->each(function ($internshipAgreement) {
+            if ($internshipAgreement->int_adviser_name != null && $internshipAgreement->int_adviser_name != 'NA') {
+                $professor = Professor::where('name', 'like', '%' . $internshipAgreement->int_adviser_name . '%')->first();
+                if ($professor != null) {
+                    $project = Project::where('id', $internshipAgreement->project_id)->first();
+                    if ($project->professors->contains($professor)) {
+                        // $professor->projects()->sync([$internshipAgreement->project_id => ['role' => 'Supervisor']]);
+                        $professor->projects()->detach($internshipAgreement->project_id);
+                        $professor->projects()->attach([$internshipAgreement->project_id => ['role' => 'Supervisor']]);
+                        self::$existingProfessors++;
+                    } else {
+                        $professor->projects()->attach([$internshipAgreement->project_id => ['role' => 'Supervisor']]);
+                        self::$affectedProffessors++;
+                    }
+                }
+            }
+        });
+        Notification::make()
+            ->title(self::$affectedProffessors . ' Professors imported from internship agreements and '
+                . self::$existingProfessors . ' Professors already assigned to the projects.')
+            ->success()
+            ->send();
+    }
     public static function GenerateProjectsJury($record)
     {
         $supervisors = collect();

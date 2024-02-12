@@ -112,6 +112,7 @@ class InternshipAgreement extends Core\BackendBaseModel
             }
 
             $this->validated_at = now();
+            $this->status = Enums\Status::Validated;
             // $this->department =$department;
             $this->save();
             Notification::make()
@@ -136,6 +137,7 @@ class InternshipAgreement extends Core\BackendBaseModel
                 throw new AuthorizationException();
             }
             $this->signed_at = now();
+            $this->status = Enums\Status::Signed;
             $this->save();
             Notification::make()
                 ->title('Signed successfully')
@@ -159,6 +161,7 @@ class InternshipAgreement extends Core\BackendBaseModel
                 throw new AuthorizationException();
             }
             $this->received_at = now();
+            $this->status = Enums\Status::Completed;
             $this->save();
             Notification::make()
                 ->title('Achieved successfully')
