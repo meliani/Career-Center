@@ -6,6 +6,15 @@ use App\Enums;
 
 class Professor extends User
 {
+    public static function boot(){
+        parent::boot();
+        static::addGlobalScope(function ($query) {
+            $query
+            //  where role is in this array Enums\Role::getProfessorRoles()
+            
+                ->whereIn('role' ,Enums\Role::getProfessorRoles());
+        });
+    }
     protected $table = 'users';
     protected $fillable = [
         'name',
