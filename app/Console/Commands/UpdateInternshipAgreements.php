@@ -27,7 +27,7 @@ class UpdateInternshipAgreements extends Command
     public function handle()
     {
         //  get csv file from app\developer_docs\csv\internships.csv
-        $file = 'app/developer_docs/csv/internships.csv';
+        $file = 'app/developer_docs/csv/internships_import_data.csv';
 
         //  open the file
         $handle = fopen($file, 'r');

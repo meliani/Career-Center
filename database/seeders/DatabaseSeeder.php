@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
         // $this->call('UserTableSeeder');
         // $this->command->info('User table seeded!');
 
-        $path = 'app/developer_docs/sql/users.sql';
+        /* $path = 'app/developer_docs/sql/users.sql';
         DB::unprepared(file_get_contents($path));
         $this->command->info('Users table seeded!');
         DB::unprepared(file_get_contents('app/developer_docs/sql/years.sql'));
@@ -32,9 +32,13 @@ class DatabaseSeeder extends Seeder
         // DB::unprepared(file_get_contents('app/developer_docs/sql/internship_offers.sql'));
         // $this->command->info('Internship offers table seeded!');
         DB::unprepared(file_get_contents('app/developer_docs/sql/students.sql'));
-        $this->command->info('Students table seeded!');
+        $this->command->info('Students table seeded!'); */
+
+        DB::unprepared(file_get_contents('app/developer_docs/sql/careers_backend_data.sql'));
+        $this->command->info('Backend data seeded!');
 
 
+        $this->call(ScheduleSettingsSeeder::class);
 
         // User::factory()->root()->create();
         // User::factory()->issati()->create();
@@ -42,7 +46,6 @@ class DatabaseSeeder extends Seeder
         // User::factory()->samira()->create();
         // User::factory()->nisrine()->create();
         // User::factory()->kensi()->create();
-        $this->call(ScheduleSettingsSeeder::class);
         // User::factory(10)->create();
         // User::factory()->create([
         //     'name' => 'Test User',

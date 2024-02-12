@@ -108,7 +108,7 @@ class User extends Authenticatable implements FilamentUser, HasName
             return $this->haAnyRole($this->powerProfessors);
         } */
         if ($panel->getId() === 'Administration') {
-            return $this->hasAnyRole(Enums\Role::toArray());
+            return $this->hasAnyRole(Enums\Role::all());
         }
 
         // return str_ends_with($this->email, '@inpt.ac.ma') && $this->hasVerifiedEmail();

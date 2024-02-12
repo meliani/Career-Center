@@ -54,8 +54,7 @@ enum Role: string implements HasLabel
             Role::SuperAdministrator,
         ];
     }
-
-    public static function toArray(): array
+    public static function all(): array
     {
         return [
             Role::ProgramCoordinator,
@@ -68,17 +67,32 @@ enum Role: string implements HasLabel
             Role::Direction,
         ];
     }
+    
+    public static function toArray(): array
+    {
+        return [
+            Role::ProgramCoordinator->value,
+            Role::Professor->value,
+            Role::InternshipSupervisor->value,
+            Role::DepartmentHead->value,
+            Role::Administrator->value,
+            Role::SuperAdministrator->value,
+            Role::AdministrativeSupervisor->value,
+            Role::Direction->value,
+
+        ];
+    }
     public function getLabel(): ?string
     {
         return match ($this) {
-            Role::ProgramCoordinator => 'Program Coordinator',
-            Role::Professor => 'Professor',
-            Role::InternshipSupervisor => 'Internship Supervisor',
-            Role::DepartmentHead => 'Head of Department',
-            Role::Administrator => 'Administrator',
-            Role::SuperAdministrator => 'Super Administrator',
-            Role::AdministrativeSupervisor => 'Administrative Supervisor',
-            Role::Direction => 'Direction',
+            Role::ProgramCoordinator => __('Program Coordinator'),
+            Role::Professor => __('Professor'),
+            Role::InternshipSupervisor => __('Internship Supervisor'),
+            Role::DepartmentHead => __('Head of Department'),
+            Role::Administrator => __('Administrator'),
+            Role::SuperAdministrator => __('Super Administrator'),
+            Role::AdministrativeSupervisor => __('Administrative Supervisor'),
+            Role::Direction => __('Direction'),
         };
     }
 }
