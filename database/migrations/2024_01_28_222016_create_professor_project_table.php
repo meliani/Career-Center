@@ -17,7 +17,7 @@ class CreateProfessorProjectTable extends Migration
             // professor id and jury id are the primarykey
             $table->foreignId('professor_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('project_id')->constrained('projects')->onDelete('cascade');
-            $table->enum('role', Enums\Role::toArray());
+            $table->enum('role', Enums\JuryRole::getArray());
             $table->boolean('is_president')->default(false);
             $table->timestamps();
             $table->primary(['professor_id', 'project_id']);

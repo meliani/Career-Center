@@ -14,7 +14,13 @@ enum JuryRole: string implements HasColor, HasLabel
     {
         return __($this->name);
     }
-
+    public static function getArray(): array
+    {
+        return [
+            JuryRole::Supervisor->value,
+            JuryRole::Reviewer->value,
+        ];
+    }
     public function getColor(): ?string
     {
         return match ($this) {
