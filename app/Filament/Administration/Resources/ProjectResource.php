@@ -123,4 +123,8 @@ class ProjectResource extends Resource
             'edit' => Pages\EditProject::route('/{record}/edit'),
         ];
     }
+    public static function canCreate(): bool
+    {
+        return false;
+    }
 }

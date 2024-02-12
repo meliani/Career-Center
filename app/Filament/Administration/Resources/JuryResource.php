@@ -97,4 +97,8 @@ class JuryResource extends Resource
     {
         return false;
     }
+    public static function viewAny(): bool
+    {
+        return true;
+    }
 }

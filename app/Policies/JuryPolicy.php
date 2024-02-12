@@ -11,5 +11,11 @@ use Illuminate\Support\Facades\Gate;
 
 class JuryPolicy extends CorePolicy
 {
+    use HandlesAuthorization;
+
+    public function viewAny(User $user): bool
+    {
+        return false;
+    }
 
 }
