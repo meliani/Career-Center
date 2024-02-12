@@ -240,4 +240,8 @@ class InternshipAgreement extends Core\BackendBaseModel
     {
         return $this->ending_at->diffInMonths($this->starting_at).' mois';
     }
+    public function scopeSigned($query)
+    {
+        return $query->whereNotNull('signed_at');
+    }
 }

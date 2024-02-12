@@ -12,51 +12,63 @@ use App\Models\Professor;
 use App\Models\Jury;
 use Illuminate\Support\Facades\Log;
 use Filament\Forms\Components\Actions\Action;
+use Illuminate\Support\Facades\Facade;
 
-class ProjectService
+class ProjectService extends Facade
 {
-    protected $forceOverwrite = true;
+    protected static bool $forceOverwrite;
+    private static int $createdProjects;
+    public static int $overwrittenProjects;
+    private static int $duplicateProjects;
 
+    public function __construct()
+    {
+        self::$forceOverwrite = false;
+        self::$createdProjects = 0;
+        self::$overwrittenProjects = 0;
+        self::$duplicateProjects = 0;
+    }
     public static function setForceOverwrite($value)
     {
         self::$forceOverwrite = $value;
     }
 
-    public static function AssignInternshipsToProjects($record)
+    public static function setCreatedProjects($value)
     {
-        $assignedInternships = 0;
-        $forceOverwrite = true;
+        self::$createdProjects = $value;
+    }
+    public static function setOverwrittenProjects($value)
+    {
+        self::$overwrittenProjects = $value;
+    }
+    public static function setDuplicateProjects($value)
+    {
+        self::$duplicateProjects = $value;
+    }
+    public static function AssignInternshipsToProjects()
+    {
+        self::setForceOverwrite(false);
+        self::setOverwrittenProjects(0);
+        self::setCreatedProjects(0);
+        self::setDuplicateProjects(0);
         try {
-            if (Gate::denies('batch-assign-internships-to-projects', )) {
+            if (Gate::denies('batch-assign-internships-to-projects',)) {
                 throw new AuthorizationException();
             }
-            $signedInternships = InternshipAgreement::where('status', '=', 'Signed')->get();
+            $signedInternships = InternshipAgreement::signed()->get();
 
             foreach ($signedInternships as $signedInternship) {
                 try {
-                    $project = Project::create([
-                        'id' => $signedInternship->id,
-                        'id_pfe' => $signedInternship->id_pfe,
-                        'title' => $signedInternship->title,
-                        'description' => $signedInternship->description,
-                        'organization' => $signedInternship->organization_name,
-                        'start_date' => $signedInternship->starting_at,
-                        'end_date' => $signedInternship->ending_at,
-                    ]);
-                    $signedInternship->project_id = $project->id;
-                    $signedInternship->save();
+                    // Try Create a project from the internship agreement
+                    $project = ProjectService::CreateFromInternshipAgreement($signedInternship);
+                    ProjectService::SyncStudentToProjectFromInternshipAgreement($signedInternship, $project);
                 } catch (\Exception $e) {
+                    // catch duplicate project exception
                     if ($e->getCode() == 23000) {
-                        // duplicate entry
-                        if ($forceOverwrite) {
-                            $project = Project::find($signedInternship->id);
-                            $project->id_pfe = $signedInternship->id_pfe;
-                            $project->title = $signedInternship->title;
-                            $project->description = $signedInternship->description;
-                            $project->organization = $signedInternship->organization;
-                            $project->start_date = $signedInternship->starting_at;
-                            $project->end_date = $signedInternship->ending_at;
-                            $project->save();
+                        // If the project already exists, we can overwrite it
+                        if (self::$forceOverwrite) {
+                            $project = ProjectService::OverwriteFromInternshipAgreement($signedInternship);
+                            ProjectService::SyncStudentToProjectFromInternshipAgreement($signedInternship, $project);
                         } else {
                             continue;
                         }
@@ -65,17 +77,6 @@ class ProjectService
                         throw new \Exception('There was an error creating the project. Please try again.');
                     }
                 }
-                // $signedInternship->attach($project);
-
-                // $project->students()->attach($student);
-                $project = New Project();
-                $project->attach($signedInternship);
-                $project->save();
-                $signedInternship->save();
-                $assignedInternships++;
-                // if ($assignedInternships == 5) {
-                //     break;
-                // }
             }
         } catch (AuthorizationException $e) {
             Notification::make()
@@ -84,11 +85,79 @@ class ProjectService
                 ->send();
             return response()->json(['error' => 'This action is unauthorized.'], 403);
         }
+
         Notification::make()
-            ->title($assignedInternships . ' internships assigned to projects')
+            ->title(
+                'Projects created: ' . self::$createdProjects .
+                    ' Projects overwritten: ' . self::$overwrittenProjects .
+                    ' Duplicate projects Found : ' . self::$duplicateProjects
+            )
             ->success()
             ->send();
     }
+    private static function SyncStudentToProjectFromInternshipAgreement(InternshipAgreement $internshipAgreement, Project $project)
+    {
+        $project->students()->sync($internshipAgreement->student);
+        $project->save();
+    }
+
+    private static function CreateFromInternshipAgreement(InternshipAgreement $internshipAgreement): Project
+    {
+        //  check if the project already exists from the internshipAgreements() relationship
+        if ($internshipAgreement->project_id != null) {
+            $project = Project::find($internshipAgreement->project_id);
+            if ($project != null) {
+                $project->id_pfe = $internshipAgreement->id_pfe;
+                $project->title = $internshipAgreement->title;
+                $project->description = $internshipAgreement->description;
+                $project->organization = $internshipAgreement->organization_name;
+                $project->start_date = $internshipAgreement->starting_at;
+                $project->end_date = $internshipAgreement->ending_at;
+                $project->save();
+                // increment overwrittenProjects global variable
+                self::$overwrittenProjects++;
+                return $project;
+            }
+        }
+        $project = Project::create([
+            'id_pfe' => $internshipAgreement->id_pfe,
+            'title' => $internshipAgreement->title,
+            'description' => $internshipAgreement->description,
+            'organization' => $internshipAgreement->organization_name,
+            'start_date' => $internshipAgreement->starting_at,
+            'end_date' => $internshipAgreement->ending_at,
+        ]);
+
+        $project->save();
+        $internshipAgreement->project_id = $project->id;
+        $internshipAgreement->save();
+        self::$createdProjects++;
+
+        return $project;
+    }
+    private static function OverwriteFromInternshipAgreement(InternshipAgreement $internshipAgreement): Project
+    {
+        if ($internshipAgreement->project_id != null) {
+            $project = Project::find($internshipAgreement->project_id);
+            if ($project != null) {
+                $project->id_pfe = $internshipAgreement->id_pfe;
+                $project->title = $internshipAgreement->title;
+                $project->description = $internshipAgreement->description;
+                $project->organization = $internshipAgreement->organization;
+                $project->start_date = $internshipAgreement->starting_at;
+                $project->end_date = $internshipAgreement->ending_at;
+                $project->save();
+                self::$duplicateProjects++;
+                return $project;
+            }
+        }
+        $project = Project::find($internshipAgreement->project_id);
+        $internshipAgreement->project_id = $project->id;
+        $internshipAgreement->save();
+
+        return $project;
+    }
+
     public static function GenerateProjectsJury($record)
     {
         $supervisors = collect();
@@ -97,7 +166,7 @@ class ProjectService
             if ($project->internship->int_adviser_name != null && $project->internship->int_adviser_name != 'NA') {
                 $supervisorName = $project->internship->int_adviser_name;
                 $supervisors = $supervisors->push($supervisorName);
-                $professor = Professor::where('name', 'like', '%'.$supervisorName.'%')->first();
+                $professor = Professor::where('name', 'like', '%' . $supervisorName . '%')->first();
                 $professors[] = $professor;
                 if ($professor != null) {
                     if ($project->id_pfe == null) {
@@ -107,36 +176,12 @@ class ProjectService
                         'project_id' => $project->id,
                     ]);
                     $professor->juries()->attach($jury, ['role' => 'supervisor']);
-                    
                 }
-
             }
         });
         Notification::make()
-        ->title($supervisors . ' internships assigned to projects')
-        ->success()
-        ->send();
-    }
-    public static function CreateFromInternshipAgreement(InternshipAgreement $record)
-    {
-        $project = Project::create([
-        'id_pfe' => $record->id_pfe,
-        'title' => $record->title,
-        'organization' => $record->organization_name,
-        'description' => $record->description,
-        'start_date' => $record->starting_at,
-        'end_date' => $record->ending_at,
-        // 'has_teammate' => false,
-        // 'teammate_status' => null,
-        // 'teammate_id' => null,
-
-        ]);
-        // dd($record->student->projects);
-        $project->students()->attach($record->student);
-        $project->save();
-        Notification::make()
-        ->title('Project created successfully')
-        ->success()
-        ->send();
+            ->title($supervisors . ' internships assigned to projects')
+            ->success()
+            ->send();
     }
 }

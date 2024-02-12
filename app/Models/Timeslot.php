@@ -25,7 +25,6 @@ class Timeslot extends Core\BackendBaseModel
         'end_time',
         'is_enabled',
         'is_taken',
-        'remaining_slots',
     ];
     protected $casts = [
         'start_time' => 'datetime',

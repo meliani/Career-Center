@@ -1,18 +1,15 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+namespace App\Models;
 
-return new class extends Migration
+use App\Enums\Room as RoomEnum;
+
+class Timetable extends Core\BackendBaseModel
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
-    {
-        Schema::create('timetables', function (Blueprint $table) {
+    /* Database Fields 
+            Schema::create('timetables', function (Blueprint $table) {
             $table->id();
+            $table->date('date');
             $table->foreignId('timeslot_id')->constrained();
             $table->foreignId('room_id')->constrained();
             $table->foreignId('project_id')->constrained();
@@ -35,16 +32,7 @@ return new class extends Migration
             $table->foreignId('updated_by')->constrained('users');
             $table->timestamps();
             // timeslot_id and date should be unique
-            $table->unique(['timeslot_id', 'room_id', 'project_id']);
-            $table->unique('project_id');
-        });
-    }
-
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::dropIfExists('timetables');
-    }
-};
+            $table->unique(['timeslot_id', 'date', 'room_id', 'project_id']);
+    
+    */
+}

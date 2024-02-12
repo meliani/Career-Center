@@ -20,9 +20,9 @@ enum StudentLevel: string implements HasLabel
     public static function getArray(): array
     {
         return [
-            'FirstYear' => 'First Year',
-            'SecondYear' => 'Second Year',
-            'ThirdYear' => 'Third Year',
+            StudentLevel::FirstYear->value,
+            StudentLevel::SecondYear->value,
+            StudentLevel::ThirdYear->value,
         ];
     }
 

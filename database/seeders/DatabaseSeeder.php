@@ -25,6 +25,16 @@ class DatabaseSeeder extends Seeder
         $path = 'app/developer_docs/sql/users.sql';
         DB::unprepared(file_get_contents($path));
         $this->command->info('Users table seeded!');
+        DB::unprepared(file_get_contents('app/developer_docs/sql/years.sql'));
+        $this->command->info('Years table seeded!');
+        DB::unprepared(file_get_contents('app/developer_docs/sql/internships.sql'));
+        $this->command->info('Internships table seeded!');
+        // DB::unprepared(file_get_contents('app/developer_docs/sql/internship_offers.sql'));
+        // $this->command->info('Internship offers table seeded!');
+        DB::unprepared(file_get_contents('app/developer_docs/sql/students.sql'));
+        $this->command->info('Students table seeded!');
+
+
 
         // User::factory()->root()->create();
         // User::factory()->issati()->create();

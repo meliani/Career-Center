@@ -16,7 +16,6 @@ use Filament\Forms\Components\Actions\Action;
 // use Filament\Actions\Action;
 use App\Filament\Actions\AssignDepartmentAction;
 use App\Filament\Actions\ScheduleHeadOfJury;
-use App\Filament\Actions\AssignInternshipsToProjects;
 use App\Filament\Actions\GenerateTimeslotsAction;
 use App\Filament\Actions\GenerateProjectsJuryAction;
 
@@ -73,7 +72,6 @@ class ScheduleParametersResource extends Resource
 
                 \Filament\Forms\Components\Actions::make([
                     // \Filament\Forms\Components\Actions\Action::make('ScheduleDepartmentHead')
-                    AssignInternshipsToProjects::make('Assign Internships To Projects'),
 
                     // ScheduleHeadOfJury::make('Schedule Head of Department'),
                     GenerateTimeslotsAction::make('Generate Timeslots'),

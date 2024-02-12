@@ -25,7 +25,6 @@ class Project extends Core\BackendBaseModel
         'description',
         'start_date',
         'end_date',
-        'jury_id',
         'status',
         'has_teammate',
         'teammate_status',
@@ -45,11 +44,10 @@ class Project extends Core\BackendBaseModel
     public function internshipAgreements() {
         return $this->hasMany(InternshipAgreement::class);
     }
-
-    public function jury() {
-        return $this->hasOne(Jury::class);
-    }
     public function professors() {
         return $this->belongsToMany(Professor::class, 'professor_project')->withPivot('role');
+    }
+    public function timeslots() {
+        return $this->belongsTo(Timeslot::class);
     }
 }

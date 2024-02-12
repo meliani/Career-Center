@@ -12,7 +12,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (Schema::hasTable('students')) {
+        if (Schema::hasTable('internships')) {
             return;
         }
         Schema::create('internships', function (Blueprint $table) {
@@ -50,7 +50,7 @@ return new class extends Migration
             $table->string('status', 255)->nullable();
             $table->dateTime('announced_at')->nullable();
             $table->dateTime('validated_at')->nullable();
-            $table->enum('assigned_department', Enums\Department::getArray())->nullable();
+            $table->enum('assigned_department', Enums\Department::toArray())->nullable();
             $table->dateTime('received_at')->nullable();
             $table->dateTime('signed_at')->nullable();
             $table->text('observations')->nullable();

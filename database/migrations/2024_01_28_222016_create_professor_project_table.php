@@ -15,8 +15,8 @@ class CreateProfessorProjectTable extends Migration
         Schema::create('professor_project', function (Blueprint $table) {
             // $table->id();
             // professor id and jury id are the primarykey
-            $table->foreignId('professor_id')->constrained('users');
-            $table->foreignId('project_id')->constrained();
+            $table->foreignId('professor_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('project_id')->constrained('projects')->onDelete('cascade');
             $table->string('role');
             $table->boolean('is_president')->default(false);
             $table->timestamps();
@@ -32,6 +32,6 @@ class CreateProfessorProjectTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('professor_jury');
+        Schema::dropIfExists('professor_project');
     }
 }

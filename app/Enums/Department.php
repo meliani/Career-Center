@@ -16,14 +16,15 @@ enum Department: string implements HasLabel
     case SC = 'SC';
     case NULL = '';
 
-    public static function getArray(): array
+    public static function toArray(): array
     {
         return [
-            'EMO' => 'Électronique, Micro-ondes et Optique',
-            'MIR' => 'Systèmes de Communications',
-            'GLC' => 'Gestion, Langues et Communications',
-            'SC' => 'Mathématiques, Informatique et Réseaux',
-            '' => 'Non défini',
+            Department::EMO->value,
+            Department::MIR->value,
+            Department::GLC->value,
+            Department::SC->value,
+            Department::NULL->value,
+            
         ];
     }
 

@@ -21,6 +21,7 @@ use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Enums\ActionsPosition;
 use Illuminate\Support\Facades\Mail;
 use App\Filament\Administration\Resources\InternshipAgreementResource\RelationManagers;
+use Filament\Forms\Components\Group as ComponentsGroup;
 
 class InternshipAgreementResource extends BaseResource
 {
@@ -73,8 +74,11 @@ class InternshipAgreementResource extends BaseResource
 
         return $table
             ->headerActions([
+                // ActionGroup::make([
+                \App\Filament\Actions\AssignInternshipsToProjects::make('Assign Internships To Projects'),
                 ImportAction::make()
                     ->importer(InternshipAgreementImporter::class),
+                // ]),
             ])
             ->defaultSort('announced_at', 'asc')
             ->groups([
