@@ -2,7 +2,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
+use App\Enums;
 class CreateProfessorProjectTable extends Migration
 {
     /**
@@ -17,7 +17,7 @@ class CreateProfessorProjectTable extends Migration
             // professor id and jury id are the primarykey
             $table->foreignId('professor_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('project_id')->constrained('projects')->onDelete('cascade');
-            $table->string('role');
+            $table->enum('role', Enums\Role::toArray());
             $table->boolean('is_president')->default(false);
             $table->timestamps();
             $table->primary(['professor_id', 'project_id']);
