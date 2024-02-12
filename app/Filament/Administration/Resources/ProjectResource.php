@@ -48,7 +48,6 @@ class ProjectResource extends Resource
                 Forms\Components\DatePicker::make('end_date'),
                 ])
                 ->collapsible(),
-                // Forms\Components\TextInput::make('jury_id')->numeric(),
             ]);
     }
 
@@ -59,6 +58,10 @@ class ProjectResource extends Resource
                 Tables\Columns\TextColumn::make('id_pfe')
                     ->numeric()
                     ->sortable(),
+                    Tables\Columns\TextColumn::make('students.full_name')
+                    ->label(__('Student name'))
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('organization')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('title'),
@@ -67,9 +70,6 @@ class ProjectResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('end_date')
                     ->date()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('jury_id')
-                    ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
