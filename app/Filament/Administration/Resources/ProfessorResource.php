@@ -7,10 +7,10 @@ use App\Enums\Program;
 use App\Enums\Role;
 use App\Enums\Title;
 use App\Filament\Administration\Resources\ProfessorResource\Pages;
+use App\Filament\Core\BaseResource as Resource;
 use App\Models\Professor;
 use Filament\Forms;
 use Filament\Forms\Form;
-use App\Filament\Core\BaseResource as Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
@@ -30,6 +30,7 @@ class ProfessorResource extends Resource
                     ->options(Title::class)
                     ->required(),
                 Forms\Components\TextInput::make('name')
+                    ->label(__('Username'))
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('first_name')
@@ -49,9 +50,10 @@ class ProfessorResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Select::make('program_coordinator')
-                    ->options(Program::class)
-                    ->required(),
+                    ->label(__('Program Coordinator'))
+                    ->options(Program::class),
                 Forms\Components\Toggle::make('is_enabled')
+                    ->label(__('Account enabled'))
                     ->required(),
                 // Forms\Components\DateTimePicker::make('email_verified_at'),
                 // Forms\Components\TextInput::make('password')
@@ -86,8 +88,9 @@ class ProfessorResource extends Resource
                 Tables\Columns\TextColumn::make('department')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('projects_count')
-                ->label(__('Number of Projects Participations'))
-                    ->searchable()->counts('projects')
+                    ->searchable(false)
+                    ->label(__('Number of Projects Participations'))
+                    ->counts('projects')
                     ->sortable(),
 
                 // Tables\Columns\TextColumn::make('role')

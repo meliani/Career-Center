@@ -34,7 +34,7 @@
     "Approved": "Approuvé",
     "Approved at": "Approuvé le",
     "Signed at": "Signé le",
-    "Program Coordinator": "Coordonnateur de filière",
+    "Program Coordinator": "Coordonnateur de la filière",
     "Professor": "Professeur",
     "Internship Supervisor": "Superviseur de stage",
     "Head of Department": "Chef de département",
@@ -90,5 +90,10 @@
     "Mr.": "Monsieur.",
     "Mrs.": "Madame.",
     "internship agreements": "Conventions de Stage",
-    "Number of Projects Participations": "Nombre de partcipations aux projets"
+    "Number of Projects Participations": "Nombre de partcipations aux projets",
+    "Username": "Nom d'utilisateur / Pseudo",
+    "Department": "Département",
+    "Departments": "Départements",
+    "First name": "Prénom",
+    "Last name": "Nom"
 }
