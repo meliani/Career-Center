@@ -86,6 +86,7 @@ class ProfessorResource extends Resource
                 Tables\Columns\TextColumn::make('department')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('projects_count')
+                ->label(__('Number of Projects Participations'))
                     ->searchable()->counts('projects')
                     ->sortable(),
 
@@ -128,7 +129,8 @@ class ProfessorResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->defaultSort('projects_count', 'desc');
     }
 
     public static function getRelations(): array

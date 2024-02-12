@@ -36,7 +36,7 @@ class InternshipAgreementResource extends BaseResource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $recordTitleAttribute = 'title';
+    protected static ?string $recordTitleAttribute = 'organization_name';
 
     protected static ?string $navigationBadgeTooltip = 'Announced internships';
 
