@@ -27,7 +27,7 @@ class JoinPlatformInvitation extends Mailable
     public function build()
     {
         // dd($this->emailSubject);
-        return $this->markdown('emails.join_platfor_invitation')
+        return $this->markdown('emails.join_platform_invitation')
             ->with('user', $this->user);
     }
 

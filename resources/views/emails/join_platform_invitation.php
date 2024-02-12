@@ -2,7 +2,7 @@
 <x-slot:emailSubject>
 {{ $emailSubject }}
 </x-slot::emailSubject>
-## Cher(e) {{ $user->full_name }},
+## Cher(e) {{ $name }},
 
 Nous espérons que ce message vous trouve en bonne santé.
 
