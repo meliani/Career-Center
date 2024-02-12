@@ -9,6 +9,7 @@ use BezhanSalleh\PanelSwitch\PanelSwitch;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\StringType;
 use Doctrine\DBAL\Types\Type;
+use Filament\Facades\Filament;
 use Filament\Forms\Components\Field;
 use Filament\Forms\Components\Placeholder;
 use Filament\Infolists\Components\Entry;
@@ -102,15 +103,10 @@ class AppServiceProvider extends ServiceProvider
         // NavigationGroup::configureUsing(function (NavigationGroup $group): void {
         //     $group->translateLabel();
         // });
-    }
+        NavigationGroup::configureUsing(function (NavigationGroup $group): void {
+            // $group->label(fn () => __($group->label));
 
-    private function translateLabels(array $components = [])
-    {
-        foreach ($components as $component) {
-            $component::configureUsing(function ($c): void {
-                $c->translateLabel();
-            });
-        }
+        });
     }
 
     public function turnOnSslIfProduction(UrlGenerator $url): void
@@ -139,6 +135,22 @@ class AppServiceProvider extends ServiceProvider
                 ->toggleable()
                 ->searchable()
                 ->translateLabel();
+        });
+
+        Filament::serving(function () {
+            Filament::registerNavigationGroups([
+
+                NavigationGroup::make()
+                    ->label('Internships'),
+                NavigationGroup::make()
+                    ->label('Planning'),
+                NavigationGroup::make()
+                    ->label('Juries and professors'),
+                NavigationGroup::make()
+                    ->label('System'),
+                NavigationGroup::make()
+                    ->label(fn () => __('Settings')),
+            ]);
         });
     }
 }
