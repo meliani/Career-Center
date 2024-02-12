@@ -85,7 +85,6 @@ class StudentResource extends Resource
                 Forms\Components\TextInput::make('abroad_school')
                     ->maxLength(191),
                 Forms\Components\Toggle::make('is_active'),
-                Forms\Components\Toggle::make('model_status_id'),
                 Forms\Components\DatePicker::make('graduated_at'),
             ]);
     }
