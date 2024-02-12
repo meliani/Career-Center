@@ -39,7 +39,6 @@ class UpdateInternshipAgreements extends Command
         while ($data = fgetcsv($handle)) {
             //  disable model scope
             $importedData = array_combine($header, $data);
-// dd($internship);
             //  find the internship by the id
             $internship = InternshipAgreement::withoutGlobalScopes()->find($importedData['id']);
 
