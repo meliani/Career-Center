@@ -57,8 +57,7 @@ class ProfessorResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Select::make('department')
-                    ->options(Department::class)
-                    ->required(),
+                    ->options(Department::class),
                 Forms\Components\Select::make('role')
                     ->options(Role::class)
                     ->required(),
