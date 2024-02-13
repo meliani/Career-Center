@@ -17,9 +17,9 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 // here we register routes for filament panels
-Route::get('/', function () {
-    return redirect('/Administration');
-});
+// Route::get('/', function () {
+//     return redirect('/Administration');
+// });
 // Route::get('/programCoordinator', function () {
 //     return redirect('/programCoordinator/login');
 // });
