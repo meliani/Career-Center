@@ -13,4 +13,10 @@ class Calendar extends Page
     protected static ?string $navigationGroup = 'Internships';
 
     protected static ?string $title = 'Calendrier des sorties en stage';
+
+    public static function canView(): bool
+    {
+        return false;
+    }
+    
 }
