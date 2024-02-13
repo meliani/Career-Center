@@ -18,7 +18,6 @@
         "cmixin/enhanced-period": "^1.2",
         "croustibat/filament-jobs-monitor": "^2.1",
         "doctrine/dbal": "^3.8",
-        "eightynine/filament-approvals": "^3.0",
         "filament/filament": "^3.1",
         "filament/forms": "^3.1",
         "filament/notifications": "^3.1",
