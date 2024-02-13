@@ -96,5 +96,22 @@
     "Departments": "Départements",
     "First name": "Prénom",
     "Last name": "Nom",
-    "System": "Système"
+    "System": "Système",
+    "Supervisor": "Encadrant",
+    "Supervisors": "Encadrants",
+    "Supervisor name": "Nom de l'encadrant",
+    "Supervisor email": "Email de l'encadrant",
+    "Supervisor phone": "Téléphone de l'encadrant",
+    "Reviewer": "Examinateur",
+    "Reviewers": "Examinateurs",
+    "Reviewer name": "Nom de l'examinateur",
+    "Reviewer email": "Email de l'examinateur",
+    "Reviewer phone": "Téléphone de l'examinateur",
+    "Internship agreements": "Conventions de stage",
+    "Manage internship offers": "Gérer les offres de stage",
+    "Manage professors": "Gérer les professeurs",
+    "Manage final projects": "Gérer les projets de fin d'études",
+    "Schedules parameters": "Paramètres des plannings",
+    "Manage Students": "Gérer les étudiants",
+    "System users and access control": "Utilisateurs du système et contrôle d'accès"
 }

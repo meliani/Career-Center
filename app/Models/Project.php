@@ -17,7 +17,15 @@ use Parallax\FilamentComments\Models\Traits\HasFilamentComments;
 class Project extends Core\BackendBaseModel
 {
     use HasFilamentComments;
-    
+    protected static function boot()
+    {
+        parent::boot();
+    }
+
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new Scopes\ProjectByProgram());
+    }
     protected $fillable = [
         'id_pfe',
         'title',
@@ -45,7 +53,7 @@ class Project extends Core\BackendBaseModel
         return $this->hasMany(InternshipAgreement::class);
     }
     public function professors() {
-        return $this->belongsToMany(Professor::class, 'professor_project')->withPivot('role');
+        return $this->belongsToMany(Professor::class, 'professor_project')->withPivot('jury_role');
     }
     public function timeslots() {
         return $this->belongsTo(Timeslot::class);

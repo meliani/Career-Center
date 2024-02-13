@@ -17,10 +17,14 @@ use Filament\Tables\Table;
 class ProfessorResource extends Resource
 {
     protected static ?string $model = Professor::class;
-
-    protected static ?string $navigationGroup = 'Juries et Professeurs';
-
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $modelLabel = 'Professor';
+    protected static ?string $pluralModelLabel = 'Professors';
+    protected static ?string $title = 'Manage professors';
+    protected static ?string $recordTitleAttribute = 'name';
+    protected static ?string $navigationGroup = 'Juries';
+    protected static ?string $navigationParentItem = '';
+    protected static ?string $navigationIcon = 'heroicon-o-user-group';
+    protected static ?int $sort = 9;
 
     public static function form(Form $form): Form
     {

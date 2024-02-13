@@ -18,10 +18,14 @@ use App\Enums;
 class ProjectResource extends Resource
 {
     protected static ?string $model = Project::class;
-
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
-    protected static ?string $navigationGroup = 'Juries et Professeurs';
+    protected static ?string $modelLabel = 'Project';
+    protected static ?string $pluralModelLabel = 'Projects';
+    // protected static ?string $title = 'Manage final projects';
+    // protected static ?string $recordTitleAttribute = 'organization';
+    protected static ?string $navigationGroup = 'Students and projects';
+    // protected static ?string $navigationParentItem = '';
+    protected static ?string $navigationIcon = 'heroicon-o-command-line';
+    protected static ?int $sort = 4;
 
     public static function getNavigationBadge(): ?string
     {
@@ -57,7 +61,7 @@ class ProjectResource extends Resource
         return $table
             ->headerActions([
                 Tables\Actions\ActionGroup::make([
-                \App\Filament\Actions\ImportProfessorsFromInternshipAgreements::make('Import Professors From Internship Agreements'),
+                    \App\Filament\Actions\ImportProfessorsFromInternshipAgreements::make('Import Professors From Internship Agreements'),
                 ]),
             ])
             ->columns([
@@ -69,13 +73,17 @@ class ProjectResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('organization')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('title'),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('start_date')
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('end_date')
                     ->date()
+                    ->sortable(),
+                    Tables\Columns\TextColumn::make('title')
+                    ->limit(90)
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

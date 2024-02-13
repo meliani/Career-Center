@@ -33,15 +33,6 @@ class Professor extends User
     ];
     public function projects()
     {
-        return $this->belongsToMany(Project::class)->withPivot('role');
-    }
-    // public function juries()
-    // {
-    //     return $this->belongsToMany(Jury::class, 'jury_professor')
-    //         ->withTimestamps();
-    // }
-    public function juries()
-    {
-        return $this->belongsToMany(Jury::class, 'professor_jury')->withPivot('role');
+        return $this->belongsToMany(Project::class)->withPivot('jury_role');
     }
 }

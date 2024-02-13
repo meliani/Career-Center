@@ -21,6 +21,19 @@ use App\Filament\Actions\GenerateProjectsJuryAction;
 
 class ScheduleParametersResource extends Resource
 {
+
+
+    protected static ?string $model = ScheduleParameters::class;
+    protected static ?string $modelLabel = 'Schedule parameters';
+    protected static ?string $pluralModelLabel = 'Schedules parameters';
+    protected static ?string $title = 'Schedules parameters';
+    // protected static ?string $recordTitleAttribute = 'schedule_starting_at';
+    protected static ?string $navigationGroup = 'Planning';
+    protected static ?string $navigationParentItem = '';
+    protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
+    protected static ?int $sort = 8;
+    
+
     public $starting_from;
     public $ending_at;
     public $working_from;
@@ -29,17 +42,6 @@ class ScheduleParametersResource extends Resource
     public $max_defenses_per_professor;
     public $max_rooms;
     public $minutes_per_slot;
-
-    // protected static ?string $navigationParentItem = 'Notifications';
-
-    // protected static ?string $navigationGroup = 'Settings';
-
-
-    protected static ?string $model = ScheduleParameters::class;
-
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
-
 
     public static function form(Form $form): Form
     {

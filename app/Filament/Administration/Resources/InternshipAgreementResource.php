@@ -25,19 +25,17 @@ use Filament\Forms\Components\Group as ComponentsGroup;
 
 class InternshipAgreementResource extends BaseResource
 {
-    protected static ?string $modelLabel = 'internship agreement';
-
-    // protected static ?string $pluralModelLabel = 'internship agreements';
-    // protected static ?string $navigationParentItem = '';
-
-    protected static ?string $navigationGroup = 'Internships';
 
     protected static ?string $model = InternshipAgreement::class;
-
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
+    protected static ?string $modelLabel = 'Internship agreement';
+    protected static ?string $pluralModelLabel = 'Internship agreements';
+    protected static ?string $title = 'Internship agreements';
     protected static ?string $recordTitleAttribute = 'organization_name';
-
+    protected static ?string $navigationGroup = 'Internships';
+    protected static ?string $navigationParentItem = 'Students and projects';
+    protected static ?string $navigationIcon = 'heroicon-o-megaphone';
+    protected static ?int $sort = 1;
+    
     protected static ?string $navigationBadgeTooltip = 'Announced internships';
 
     public static function getModelLabel(): string
@@ -65,7 +63,6 @@ class InternshipAgreementResource extends BaseResource
                 \App\Services\Filament\InternshipAgreementForm::get(),
                 \App\Filament\Actions\CreateProjectFromInternshipAgreement::make('Create Project From Internship Agreement'),
             );
-    
     }
 
     public static function table(Table $table): Table
@@ -75,9 +72,9 @@ class InternshipAgreementResource extends BaseResource
         return $table
             ->headerActions([
                 ActionGroup::make([
-                \App\Filament\Actions\AssignInternshipsToProjects::make('Assign Internships To Projects'),
-                ImportAction::make()
-                    ->importer(InternshipAgreementImporter::class),
+                    \App\Filament\Actions\AssignInternshipsToProjects::make('Assign Internships To Projects'),
+                    ImportAction::make()
+                        ->importer(InternshipAgreementImporter::class),
                 ]),
             ])
             ->defaultSort('announced_at', 'asc')

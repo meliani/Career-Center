@@ -14,16 +14,19 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class OfferResource extends Resource
 {
+
     protected static ?string $model = Offer::class;
-
+    protected static ?string $modelLabel = 'Internship offer';
+    protected static ?string $pluralModelLabel = 'Internship offers';
+    protected static ?string $title = 'Manage internship offers';
+    protected static ?string $recordTitleAttribute = 'organization_name';
     protected static ?string $navigationGroup = 'Internships';
+    protected static ?string $navigationParentItem = 'Students and projects';
+    protected static ?string $navigationIcon = 'heroicon-o-briefcase';
+    protected static ?int $sort = 2;
+    
+    protected static ?string $navigationBadgeTooltip = 'Internship offers';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
-    // public static function getNavigationBadge(): ?string
-    // {
-    //     return static::getModel()::count();
-    // }
     public static function getModelLabel(): string
     {
         return __('Internship offer');

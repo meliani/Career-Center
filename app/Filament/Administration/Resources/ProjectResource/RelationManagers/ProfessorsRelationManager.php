@@ -32,6 +32,9 @@ class ProfessorsRelationManager extends RelationManager
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('jury_role'),
+                Tables\Columns\TextColumn::make('role'),
+                
             ])
             ->filters([
                 //
@@ -41,11 +44,11 @@ class ProfessorsRelationManager extends RelationManager
                 Tables\Actions\AttachAction::make()
                 ->form(fn (Tables\Actions\AttachAction $action): array => [
                     $action->getRecordSelect(),
-                    Forms\Components\Select::make('role')->options(Enums\JuryRole::class),
-                    Forms\Components\Select::make('is_president')->options([
-                        '0' => 'No',
-                        '1' => 'Yes',
-                    ]),
+                    Forms\Components\Select::make('jury_role')->options(Enums\JuryRole::class),
+                    // Forms\Components\Select::make('is_president')->options([
+                    //     '0' => 'No',
+                    //     '1' => 'Yes',
+                    // ]),
                 ]),
             ])
             ->actions([

@@ -16,10 +16,14 @@ use Filament\Tables\Table;
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
-
+    protected static ?string $modelLabel = 'User';
+    protected static ?string $pluralModelLabel = 'Users';
+    protected static ?string $title = 'System users and access control';
+    protected static ?string $recordTitleAttribute = 'name';
     protected static ?string $navigationGroup = 'System';
-
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationParentItem = '';
+    protected static ?string $navigationIcon = 'heroicon-o-shield-check';
+    protected static ?int $sort = 10;
 
     public static function form(Form $form): Form
     {

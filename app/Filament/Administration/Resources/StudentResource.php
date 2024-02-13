@@ -16,15 +16,18 @@ use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 
 class StudentResource extends Resource
 {
+
     protected static ?string $model = Student::class;
-
-    protected static ?string $navigationGroup = 'Internships';
-
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $modelLabel = 'Student';
+    protected static ?string $pluralModelLabel = 'Students';
+    protected static ?string $title = 'Manage Students';
+    protected static ?string $recordTitleAttribute = 'long_full_name';
+    protected static ?string $navigationGroup = 'Students and projects';
+    protected static ?string $navigationParentItem = '';
+    protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
+    protected static ?int $sort = 3;
 
     protected static ?string $recordFirstNameAttribute = 'first_name';
-
-    protected static ?string $recordTitleAttribute = 'full_name';
 
     // public static function getGlobalSearchResultTitle(Model $record): string
     // {
@@ -99,12 +102,12 @@ class StudentResource extends Resource
                     ->sortable()
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('first_name')
-                ->label(__('Full name'))
-                ->searchable()
-                ->sortable()
-                ->formatStateUsing(function ($record) {
-                    return $record->long_full_name;
-                }),
+                    ->label(__('Full name'))
+                    ->searchable()
+                    ->sortable()
+                    ->formatStateUsing(function ($record) {
+                        return $record->long_full_name;
+                    }),
                 Tables\Columns\TextColumn::make('email_perso')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phone')

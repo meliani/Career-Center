@@ -12,9 +12,16 @@ use Filament\Tables\Table;
 
 class TimeslotResource extends Resource
 {
-    protected static ?string $model = Timeslot::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $model = Timeslot::class;
+    protected static ?string $modelLabel = 'Timeslot';
+    protected static ?string $pluralModelLabel = 'Timeslots';
+    protected static ?string $title = 'Manage Students';
+    // protected static ?string $recordTitleAttribute = '';
+    protected static ?string $navigationGroup = 'Planning';
+    protected static ?string $navigationParentItem = '';
+    protected static ?string $navigationIcon = 'heroicon-o-clock';
+    protected static ?int $sort = 6;
 
     public static function getNavigationBadge(): ?string
     {
