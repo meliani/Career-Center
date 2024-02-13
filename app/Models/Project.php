@@ -24,7 +24,7 @@ class Project extends Core\BackendBaseModel
 
     protected static function booted(): void
     {
-        static::addGlobalScope(new Scopes\ProjectByProgram());
+        static::addGlobalScope(new Scopes\ProjectScope());
     }
     protected $fillable = [
         'id_pfe',

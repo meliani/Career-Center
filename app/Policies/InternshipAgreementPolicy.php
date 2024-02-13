@@ -7,7 +7,7 @@ use App\Models\InternshipAgreement;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use App\Policies\CorePolicy;
 use Illuminate\Support\Facades\Gate;
-
+use App\Enums;
 
 class InternshipAgreementPolicy extends CorePolicy
 {
@@ -17,7 +17,7 @@ class InternshipAgreementPolicy extends CorePolicy
         // if (! Gate::allows('view-internship', $internship)) {
         //     return true;
         // }
-        if ($user->hasAnyRole($this->administrators)){
+        if ($user->hasAnyRole(Enums\Role::getAll())){
             return true;
         }
         return false;

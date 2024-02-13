@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 
-class DepartmentCoordinator implements Scope
+class InternshipAgreementScope implements Scope
 {
     /**
      * Apply the scope to a given Eloquent query builder.
@@ -26,7 +26,7 @@ class DepartmentCoordinator implements Scope
         elseif (auth()->user()->isDepartmentHead()) {
             $builder
                 ->whereHas('student', function ($q) {
-                    $q->where('department', '=', auth()->user()->department);
+                    $q->where('assigned_department', '=', auth()->user()->department);
                 });
             return;
         }

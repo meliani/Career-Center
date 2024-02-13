@@ -54,7 +54,7 @@ enum Role: string implements HasLabel
             Role::SuperAdministrator,
         ];
     }
-    public static function all(): array
+    public static function getAll(): array
     {
         return [
             Role::ProgramCoordinator,

@@ -21,7 +21,7 @@ class InternshipAgreement extends Core\BackendBaseModel
 
     protected static function booted(): void
     {
-        static::addGlobalScope(new Scopes\DepartmentCoordinator());
+        static::addGlobalScope(new Scopes\InternshipAgreementScope());
     }
 
     public function scopeFilterByProgramHead($query)
