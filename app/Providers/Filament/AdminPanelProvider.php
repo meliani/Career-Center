@@ -105,6 +105,7 @@ class AdminPanelProvider extends PanelProvider
             )
             ->defaultAvatarProvider(
                 \LaraZeus\Boredom\BoringAvatarsProvider::class
-            );
+            )
+            ->sidebarCollapsibleOnDesktop();
     }
 }
