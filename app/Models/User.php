@@ -73,6 +73,9 @@ class User extends Authenticatable implements FilamentUser, HasName
         'program_coordinator' => Enums\Program::class,
         'title' => Enums\Title::class,
     ];
+    protected $appends = [
+        'long_full_name',
+    ];
 
     public function getNameAttribute()
     {
@@ -81,9 +84,12 @@ class User extends Authenticatable implements FilamentUser, HasName
 
     public function getFullNameAttribute()
     {
-        return "{$this->title} {$this->first_name} {$this->last_name}";
+        return "{$this->first_name} {$this->last_name}";
     }
-
+    public function getLongFullNameAttribute()
+    {
+        return "{$this->title->getLabel()} {$this->first_name} {$this->last_name}";
+    }
     public function getFilamentName(): string
     {
         return "{$this->first_name} {$this->last_name}";

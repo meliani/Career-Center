@@ -24,13 +24,6 @@ class JoinPlatformInvitation extends Mailable
         $this->emailSubject = 'Invitation automatique à rejoindre INPT Entreprises';
     }
 
-    public function build()
-    {
-        // dd($this->emailSubject);
-        return $this->markdown('emails.join_platform_invitation')
-            ->with('user', $this->user);
-    }
-
     /**
      * Get the message envelope.
      */
@@ -48,9 +41,11 @@ class JoinPlatformInvitation extends Mailable
     {
         return new Content(
             markdown: 'emails.join_platform_invitation',
+            with: [
+                'user' => $this->user,
+            ],
         );
     }
-
     /**
      * Get the attachments for the message.
      *

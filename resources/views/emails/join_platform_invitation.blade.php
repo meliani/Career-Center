@@ -2,11 +2,14 @@
 <x-slot:emailSubject>
 {{ $emailSubject }}
 </x-slot::emailSubject>
-## Cher(e) {{ $name }},
+
+## Cher(e) {{ $user->long_full_name }},
 
 Nous espérons que ce message vous trouve en bonne santé.
 
 Nous avons le plaisir de vous inviter à rejoindre INPT Entreprises, la plateforme dédiée au suivi de l'évolution des stages des étudiants jusqu'au jour de leur soutenance.
+
+Pour acceder à la plateforme, veuillez cliquer sur le lien suivant : [Accéder à la plateforme](https://carrieres.inpt.ac.ma/backend) et utiliser votre email **{{ $user->email }}** comme identifiant, pour avoir un mot de passe il suffit de cliquer sur "Mot de passe oublié".
 
 En nous rejoignant sur la plateforme, vous contribuez à coordonner efficacement les efforts et à assurer une expérience de stage optimale.
 
