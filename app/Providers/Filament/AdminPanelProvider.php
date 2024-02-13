@@ -39,7 +39,7 @@ class AdminPanelProvider extends PanelProvider
 
         return $panel
             ->passwordReset()
-            ->profile()
+            ->profile(isSimple: false)
             ->spa()
             ->maxContentWidth(MaxWidth::Full)
             ->default()
