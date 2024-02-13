@@ -29,6 +29,8 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\Select::make('title')
+                    ->options(Enums\Title::class),
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
