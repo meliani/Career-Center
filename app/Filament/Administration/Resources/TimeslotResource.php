@@ -19,7 +19,7 @@ class TimeslotResource extends Resource
     protected static ?string $title = 'Manage Students';
     // protected static ?string $recordTitleAttribute = '';
     protected static ?string $navigationGroup = 'Planning';
-    protected static ?string $navigationParentItem = '';
+    // protected static ?string $navigationParentItem = '';
     protected static ?string $navigationIcon = 'heroicon-o-clock';
     protected static ?int $sort = 6;
 

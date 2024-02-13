@@ -22,7 +22,7 @@ class ProfessorResource extends Resource
     protected static ?string $title = 'Manage professors';
     protected static ?string $recordTitleAttribute = 'name';
     protected static ?string $navigationGroup = 'Juries';
-    protected static ?string $navigationParentItem = '';
+    // protected static ?string $navigationParentItem = '';
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
     protected static ?int $sort = 9;
 

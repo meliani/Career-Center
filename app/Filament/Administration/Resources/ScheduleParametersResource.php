@@ -24,12 +24,14 @@ class ScheduleParametersResource extends Resource
 
 
     protected static ?string $model = ScheduleParameters::class;
-    protected static ?string $modelLabel = 'Schedule parameters';
-    protected static ?string $pluralModelLabel = 'Schedules parameters';
+    // protected static ?string $modelLabel = 'Schedule parameters';
+    // protected static ?string $pluralModelLabel = 'Schedules parameters';
+    protected static ?string $modelLabel = 'ScheduleParameters';
+    protected static ?string $pluralModelLabel = 'SchedulesParameters';
     protected static ?string $title = 'Schedules parameters';
     // protected static ?string $recordTitleAttribute = 'schedule_starting_at';
     protected static ?string $navigationGroup = 'Planning';
-    protected static ?string $navigationParentItem = '';
+    // protected static ?string $navigationParentItem = '';
     protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
     protected static ?int $sort = 8;
     

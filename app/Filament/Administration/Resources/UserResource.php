@@ -20,8 +20,8 @@ class UserResource extends Resource
     protected static ?string $pluralModelLabel = 'Users';
     protected static ?string $title = 'System users and access control';
     protected static ?string $recordTitleAttribute = 'name';
-    protected static ?string $navigationGroup = 'System';
-    protected static ?string $navigationParentItem = '';
+    protected static ?string $navigationGroup = 'Settings';
+    // protected static ?string $navigationParentItem = '';
     protected static ?string $navigationIcon = 'heroicon-o-shield-check';
     protected static ?int $sort = 10;
 

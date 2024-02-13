@@ -141,15 +141,15 @@ class AppServiceProvider extends ServiceProvider
             Filament::registerNavigationGroups([
 
                 NavigationGroup::make()
-                    ->label('Internships'),
+                    ->label('Students and projects'),
                 NavigationGroup::make()
                     ->label('Planning'),
                 NavigationGroup::make()
                     ->label('Juries and professors'),
                 NavigationGroup::make()
-                    ->label('System'),
-                NavigationGroup::make()
-                    ->label(fn () => __('Settings')),
+                    ->label('Settings'),
+                // NavigationGroup::make()
+                //     ->label(fn () => __('Settings')),
             ]);
         });
     }

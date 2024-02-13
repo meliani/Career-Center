@@ -23,7 +23,7 @@ class StudentResource extends Resource
     protected static ?string $title = 'Manage Students';
     protected static ?string $recordTitleAttribute = 'long_full_name';
     protected static ?string $navigationGroup = 'Students and projects';
-    protected static ?string $navigationParentItem = '';
+    // protected static ?string $navigationParentItem = '';
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
     protected static ?int $sort = 3;
 

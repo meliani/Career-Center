@@ -27,12 +27,14 @@ class InternshipAgreementResource extends BaseResource
 {
 
     protected static ?string $model = InternshipAgreement::class;
-    protected static ?string $modelLabel = 'Internship agreement';
-    protected static ?string $pluralModelLabel = 'Internship agreements';
+    // protected static ?string $modelLabel = 'Internship agreement';
+    // protected static ?string $pluralModelLabel = 'Internship agreements';
+    protected static ?string $modelLabel = 'agreement';
+    protected static ?string $pluralModelLabel = 'agreements';
     protected static ?string $title = 'Internship agreements';
     protected static ?string $recordTitleAttribute = 'organization_name';
-    protected static ?string $navigationGroup = 'Internships';
-    protected static ?string $navigationParentItem = 'Students and projects';
+    protected static ?string $navigationGroup = 'Students and projects';
+    // protected static ?string $navigationParentItem = 'Students and projects';
     protected static ?string $navigationIcon = 'heroicon-o-megaphone';
     protected static ?int $sort = 1;
     

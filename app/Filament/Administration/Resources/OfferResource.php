@@ -16,12 +16,14 @@ class OfferResource extends Resource
 {
 
     protected static ?string $model = Offer::class;
-    protected static ?string $modelLabel = 'Internship offer';
-    protected static ?string $pluralModelLabel = 'Internship offers';
+    // protected static ?string $modelLabel = 'Internship offer';
+    // protected static ?string $pluralModelLabel = 'Internship offers';
+    protected static ?string $modelLabel = 'offer';
+    protected static ?string $pluralModelLabel = 'offers';
     protected static ?string $title = 'Manage internship offers';
     protected static ?string $recordTitleAttribute = 'organization_name';
-    protected static ?string $navigationGroup = 'Internships';
-    protected static ?string $navigationParentItem = 'Students and projects';
+    protected static ?string $navigationGroup = 'Students and projects';
+    // protected static ?string $navigationParentItem = 'Students and projects';
     protected static ?string $navigationIcon = 'heroicon-o-briefcase';
     protected static ?int $sort = 2;
     

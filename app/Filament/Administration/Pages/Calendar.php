@@ -10,7 +10,7 @@ class Calendar extends Page
 
     protected static string $view = 'filament.pages.calendar';
 
-    protected static ?string $navigationGroup = 'Internships';
+    protected static ?string $navigationGroup = 'Students and projects';
 
     protected static ?string $title = 'Calendrier des sorties en stage';
 

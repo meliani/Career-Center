@@ -14,7 +14,7 @@ class BaseResource extends Resource
 
     public static function getPluralModelLabel(): string
     {
-        return __(static::$pluralModelLabel);
+        return __(static::$pluralModelLabel) ?? '';
     }
     public static function viewAny(): bool
     {

@@ -80,7 +80,7 @@ class AdminPanelProvider extends PanelProvider
 
             ->plugins(
                 [
-                    FilamentRouteStatisticsPlugin::make(),
+                    // FilamentRouteStatisticsPlugin::make(),
                     FilamentFullCalendarPlugin::make(),
                     // ->selectable()
                     // ->editable(),
