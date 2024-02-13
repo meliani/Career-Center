@@ -4,27 +4,30 @@ namespace App\Filament\Administration\Resources;
 
 use App\Filament\Administration\Resources\ProjectResource\Pages;
 use App\Filament\Administration\Resources\ProjectResource\RelationManagers;
+use App\Filament\Core\BaseResource as Resource;
 use App\Models\Project;
 use Filament\Forms;
 use Filament\Forms\Form;
-use App\Filament\Core\BaseResource as Resource;
-use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Parallax\FilamentComments\Actions\CommentsAction;
-use Filament\Tables\Actions\AssociateAction;
-use App\Enums;
 
 class ProjectResource extends Resource
 {
     protected static ?string $model = Project::class;
+
     protected static ?string $modelLabel = 'Project';
+
     protected static ?string $pluralModelLabel = 'Projects';
+
     protected static ?string $title = 'Manage final projects';
+
     protected static ?string $recordTitleAttribute = 'organization';
+
     protected static ?string $navigationGroup = 'Students and projects';
+
     // protected static ?string $navigationParentItem = '';
     protected static ?string $navigationIcon = 'heroicon-o-command-line';
+
     protected static ?int $sort = 4;
 
     public static function getNavigationBadge(): ?string
@@ -69,7 +72,15 @@ class ProjectResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('students.full_name')
-                    ->label(__('Student name'))
+                    ->label('Student name')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('internshipAgreements.assigned_department')
+                    ->label('Assigned department')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('professors.name')
+                    ->label('Supervisor - Reviewer')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('organization')
@@ -81,7 +92,7 @@ class ProjectResource extends Resource
                 Tables\Columns\TextColumn::make('end_date')
                     ->date()
                     ->sortable(),
-                    Tables\Columns\TextColumn::make('title')
+                Tables\Columns\TextColumn::make('title')
                     ->limit(90)
                     ->searchable()
                     ->sortable(),
@@ -94,9 +105,12 @@ class ProjectResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([
-                //
-            ])
+            // ->filters([
+            //     Tables\Filters\SelectFilter::make('internshipAgreements.assigned_department')
+            //         ->multiple()
+            //         ->relationship('internshipAgreements', 'assigned_department')
+            //         ->label('Department'),
+            // ], layout: Tables\Enums\FiltersLayout::AboveContent)
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make(),
@@ -131,6 +145,7 @@ class ProjectResource extends Resource
             'edit' => Pages\EditProject::route('/{record}/edit'),
         ];
     }
+
     public static function canCreate(): bool
     {
         return false;

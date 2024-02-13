@@ -2,25 +2,28 @@
 
 namespace App\Services;
 
-use App\Models\DefenseSchedule;
 use App\Models\InternshipAgreement;
+use App\Models\Jury;
+use App\Models\Professor;
 use App\Models\Project;
 use Filament\Notifications\Notification;
 use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Support\Facades\Gate;
-use App\Models\Professor;
-use App\Models\Jury;
-use Illuminate\Support\Facades\Log;
-use Filament\Forms\Components\Actions\Action;
 use Illuminate\Support\Facades\Facade;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
 
 class ProjectService extends Facade
 {
     protected static bool $forceOverwrite;
+
     private static int $createdProjects;
+
     public static int $overwrittenProjects;
+
     private static int $duplicateProjects;
+
     private static $affectedProffessors;
+
     private static $existingProfessors;
 
     public function __construct()
@@ -32,6 +35,7 @@ class ProjectService extends Facade
         self::$affectedProffessors = 0;
         self::$existingProfessors = 0;
     }
+
     public static function setForceOverwrite($value)
     {
         self::$forceOverwrite = $value;
@@ -41,14 +45,17 @@ class ProjectService extends Facade
     {
         self::$createdProjects = $value;
     }
+
     public static function setOverwrittenProjects($value)
     {
         self::$overwrittenProjects = $value;
     }
+
     public static function setDuplicateProjects($value)
     {
         self::$duplicateProjects = $value;
     }
+
     public static function AssignInternshipsToProjects()
     {
         self::setForceOverwrite(false);
@@ -56,7 +63,7 @@ class ProjectService extends Facade
         self::setCreatedProjects(0);
         self::setDuplicateProjects(0);
         try {
-            if (Gate::denies('batch-assign-internships-to-projects',)) {
+            if (Gate::denies('batch-assign-internships-to-projects')) {
                 throw new AuthorizationException();
             }
             $signedInternships = InternshipAgreement::signed()->get();
@@ -87,18 +94,20 @@ class ProjectService extends Facade
                 ->title('Sorry You must be an Administrator.')
                 ->danger()
                 ->send();
+
             return response()->json(['error' => 'This action is unauthorized.'], 403);
         }
 
         Notification::make()
             ->title(
-                'Projects created: ' . self::$createdProjects .
-                    ' Projects overwritten: ' . self::$overwrittenProjects .
-                    ' Duplicate projects Found : ' . self::$duplicateProjects
+                'Projects created: '.self::$createdProjects.
+                    ' Projects overwritten: '.self::$overwrittenProjects.
+                    ' Duplicate projects Found : '.self::$duplicateProjects
             )
             ->success()
             ->send();
     }
+
     private static function SyncStudentToProjectFromInternshipAgreement(InternshipAgreement $internshipAgreement, Project $project)
     {
         $project->students()->sync($internshipAgreement->student);
@@ -120,6 +129,7 @@ class ProjectService extends Facade
                 $project->save();
                 // increment overwrittenProjects global variable
                 self::$overwrittenProjects++;
+
                 return $project;
             }
         }
@@ -139,6 +149,7 @@ class ProjectService extends Facade
 
         return $project;
     }
+
     private static function OverwriteFromInternshipAgreement(InternshipAgreement $internshipAgreement): Project
     {
         if ($internshipAgreement->project_id != null) {
@@ -152,6 +163,7 @@ class ProjectService extends Facade
                 $project->end_date = $internshipAgreement->ending_at;
                 $project->save();
                 self::$duplicateProjects++;
+
                 return $project;
             }
         }
@@ -167,36 +179,37 @@ class ProjectService extends Facade
         $internshipAgreements = InternshipAgreement::signed()->get();
         $internshipAgreements->each(function ($internshipAgreement) {
             if ($internshipAgreement->int_adviser_name != null && $internshipAgreement->int_adviser_name != 'NA') {
-                $professor = Professor::where('name', 'like', '%' . $internshipAgreement->int_adviser_name . '%')->first();
+                $professor = Professor::where('name', 'like', '%'.$internshipAgreement->int_adviser_name.'%')->first();
                 if ($professor != null) {
                     $project = Project::where('id', $internshipAgreement->project_id)->first();
                     if ($project->professors->contains($professor)) {
                         // $professor->projects()->sync([$internshipAgreement->project_id => ['role' => 'Supervisor']]);
                         $professor->projects()->detach($internshipAgreement->project_id);
-                        $professor->projects()->attach([$internshipAgreement->project_id => ['role' => 'Supervisor']]);
+                        $professor->projects()->attach([$internshipAgreement->project_id => ['jury_role' => 'Supervisor']]);
                         self::$existingProfessors++;
                     } else {
-                        $professor->projects()->attach([$internshipAgreement->project_id => ['role' => 'Supervisor']]);
+                        $professor->projects()->attach([$internshipAgreement->project_id => ['jury_role' => 'Supervisor']]);
                         self::$affectedProffessors++;
                     }
                 }
             }
         });
         Notification::make()
-            ->title(self::$affectedProffessors . ' Professors imported from internship agreements and '
-                . self::$existingProfessors . ' Professors already assigned to the projects.')
+            ->title(self::$affectedProffessors.' Professors imported from internship agreements and '
+                .self::$existingProfessors.' Professors already assigned to the projects.')
             ->success()
             ->send();
     }
+
     public static function GenerateProjectsJury($record)
     {
         $supervisors = collect();
         $projects = Project::all();
-        $projects->each(function ($project) use ($record, $supervisors) {
+        $projects->each(function ($project) use ($supervisors) {
             if ($project->internship->int_adviser_name != null && $project->internship->int_adviser_name != 'NA') {
                 $supervisorName = $project->internship->int_adviser_name;
                 $supervisors = $supervisors->push($supervisorName);
-                $professor = Professor::where('name', 'like', '%' . $supervisorName . '%')->first();
+                $professor = Professor::where('name', 'like', '%'.$supervisorName.'%')->first();
                 $professors[] = $professor;
                 if ($professor != null) {
                     if ($project->id_pfe == null) {
@@ -210,7 +223,7 @@ class ProjectService extends Facade
             }
         });
         Notification::make()
-            ->title($supervisors . ' internships assigned to projects')
+            ->title($supervisors.' internships assigned to projects')
             ->success()
             ->send();
     }

@@ -2,13 +2,14 @@
 
 namespace App\Filament\Administration\Resources;
 
+use App\Enums;
 use App\Filament\Actions\SendBulkEmail;
 use App\Filament\Administration\Resources\StudentResource\Pages;
+use App\Filament\Core\BaseResource as Resource;
 use App\Models\Student;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\GlobalSearch\Actions\Action;
-use App\Filament\Core\BaseResource as Resource;
 use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -16,15 +17,21 @@ use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 
 class StudentResource extends Resource
 {
-
     protected static ?string $model = Student::class;
+
     protected static ?string $modelLabel = 'Student';
+
     protected static ?string $pluralModelLabel = 'Students';
+
     protected static ?string $title = 'Manage Students';
+
     protected static ?string $recordTitleAttribute = 'long_full_name';
+
     protected static ?string $navigationGroup = 'Students and projects';
+
     // protected static ?string $navigationParentItem = '';
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
+
     protected static ?int $sort = 3;
 
     protected static ?string $recordFirstNameAttribute = 'first_name';
@@ -55,10 +62,12 @@ class StudentResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('year_id')
-                    ->numeric(),
-                Forms\Components\TextInput::make('title')
-                    ->maxLength(5),
+                Forms\Components\Select::make('year_id')
+                    ->relationship('year', 'title')
+                    ->required(),
+                Forms\Components\Select::make('title')
+                    ->options(Enums\Title::class)
+                    ->required(),
                 Forms\Components\TextInput::make('pin')
                     ->numeric(),
                 Forms\Components\TextInput::make('full_name')
@@ -80,10 +89,12 @@ class StudentResource extends Resource
                 Forms\Components\TextInput::make('photo')
                     ->maxLength(191),
                 Forms\Components\DatePicker::make('birth_date'),
-                Forms\Components\TextInput::make('level')
-                    ->maxLength(10),
-                Forms\Components\TextInput::make('program')
-                    ->maxLength(10),
+                Forms\Components\Select::make('level')
+                    ->options(Enums\StudentLevel::class)
+                    ->required(),
+                Forms\Components\Select::make('program')
+                    ->options(Enums\Program::class)
+                    ->required(),
                 Forms\Components\Toggle::make('is_mobility'),
                 Forms\Components\TextInput::make('abroad_school')
                     ->maxLength(191),

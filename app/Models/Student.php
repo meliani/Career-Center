@@ -4,10 +4,8 @@ namespace App\Models;
 
 use App\Enums;
 use App\Models\Core\BackendBaseModel;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Student extends BackendBaseModel 
+class Student extends BackendBaseModel
 {
     protected $appends = [
         'full_name',
@@ -46,7 +44,8 @@ class Student extends BackendBaseModel
 
     ];
 
-    public static function boot(){
+    public static function boot()
+    {
         parent::boot();
         static::addGlobalScope(function ($query) {
             $query
@@ -54,36 +53,49 @@ class Student extends BackendBaseModel
         });
     }
 
-    public function setPin(Student $student, $currentPin, $streamOrder){
+    public function setPin(Student $student, $currentPin, $streamOrder)
+    {
         $student->pin = $streamOrder.str_pad($currentPin, 2, '0', STR_PAD_LEFT);
         $student->save();
     }
 
-    public function internship(){
+    public function internship()
+    {
         return $this->belongsTo(InternshipAgreement::class);
     }
 
-    public function projects(){
+    public function projects()
+    {
         return $this->belongsToMany(Project::class);
     }
-    
-    public function activeInternshipAgreement() {
+
+    public function year()
+    {
+        return $this->belongsTo(Year::class);
+    }
+
+    public function activeInternshipAgreement()
+    {
         return $this->hasOne(InternshipAgreement::class)->where('active', true);
     }
 
-    public function inactiveInternshipAgreements() {
+    public function inactiveInternshipAgreements()
+    {
         return $this->hasMany(InternshipAgreement::class)->where('active', false);
     }
 
-    public function getFullNameAttribute(){
+    public function getFullNameAttribute()
+    {
         return $this->attributes['first_name'].' '.$this->attributes['last_name'];
     }
 
-    public function getLongFullNameAttribute(){
+    public function getLongFullNameAttribute()
+    {
         return $this->title->getLabel().' '.$this->attributes['first_name'].' '.$this->attributes['last_name'];
     }
 
-    public function scopeActive($query){
+    public function scopeActive($query)
+    {
         return $query->where('is_active', true);
     }
 }
