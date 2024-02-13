@@ -18,5 +18,13 @@ class Calendar extends Page
     {
         return false;
     }
+    public static function viewAny(): bool
+    {
+        return false;
+    }
+    public static function canAccess(): bool
+    {
+        return false;
+    }
     
 }

@@ -20,8 +20,8 @@ class ProjectResource extends Resource
     protected static ?string $model = Project::class;
     protected static ?string $modelLabel = 'Project';
     protected static ?string $pluralModelLabel = 'Projects';
-    // protected static ?string $title = 'Manage final projects';
-    // protected static ?string $recordTitleAttribute = 'organization';
+    protected static ?string $title = 'Manage final projects';
+    protected static ?string $recordTitleAttribute = 'organization';
     protected static ?string $navigationGroup = 'Students and projects';
     // protected static ?string $navigationParentItem = '';
     protected static ?string $navigationIcon = 'heroicon-o-command-line';
@@ -101,10 +101,10 @@ class ProjectResource extends Resource
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make(),
                 \Parallax\FilamentComments\Tables\Actions\CommentsAction::make()
-                    ->label('Comments')
+                    ->label(__('Comments'))
                     // ->action('comments')
                     ->visible(fn () => true)
-                    ->badge(fn ($record) => $record->filamentComments()?->count()),
+                    ->badge(fn ($record) => $record->filamentComments()->count() ?? ''),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
