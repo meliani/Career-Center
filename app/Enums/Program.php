@@ -29,4 +29,17 @@ enum Program: string implements HasLabel
             default => 'N/A',
         };
     }
+
+    public static function getArray(): array
+    {
+        return [
+            Program::AMOA->value,
+            Program::ASEDS->value,
+            Program::DATA->value,
+            Program::ICCN->value,
+            Program::SESNUM->value,
+            Program::SMARTICT->value,
+            Program::SUD->value,
+        ];
+    }
 }
