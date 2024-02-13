@@ -22,9 +22,9 @@ class Calendar extends Page
     {
         return false;
     }
-    public static function canAccess(): bool
-    {
-        return false;
-    }
+    // public static function canAccess(): bool
+    // {
+    //     return false;
+    // }
     
 }
