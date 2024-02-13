@@ -9,11 +9,9 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "42coders/document-templates": "^5.2",
         "amendozaaguiar/filament-route-statistics": "^2.5",
         "awcodes/light-switch": "^1.0",
         "bezhansalleh/filament-language-switch": "^3.0",
-        "bezhansalleh/filament-panel-switch": "^1.0",
         "bilfeldt/laravel-route-statistics": "^3.1",
         "cmixin/enhanced-period": "^1.2",
         "croustibat/filament-jobs-monitor": "^2.1",

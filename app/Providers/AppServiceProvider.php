@@ -5,7 +5,7 @@ namespace App\Providers;
 use App\Doctrine\DBAL\Types\EnumType;
 use App\Enums\Role;
 use BezhanSalleh\FilamentLanguageSwitch\LanguageSwitch;
-use BezhanSalleh\PanelSwitch\PanelSwitch;
+// use BezhanSalleh\PanelSwitch\PanelSwitch;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\StringType;
 use Doctrine\DBAL\Types\Type;
@@ -123,13 +123,13 @@ class AppServiceProvider extends ServiceProvider
             $switch
                 ->locales(['ar', 'en', 'fr']); // also accepts a closure
         });
-        PanelSwitch::configureUsing(function (PanelSwitch $panelSwitch) {
-            $panelSwitch
-                ->visible(fn (): bool => auth()->user()?->hasAnyRole([
-                    Role::SuperAdministrator,
-                    Role::Administrator,
-                ]));
-        });
+        // PanelSwitch::configureUsing(function (PanelSwitch $panelSwitch) {
+        //     $panelSwitch
+        //         ->visible(fn (): bool => auth()->user()?->hasAnyRole([
+        //             Role::SuperAdministrator,
+        //             Role::Administrator,
+        //         ]));
+        // });
         TextColumn::configureUsing(function (TextColumn $column): void {
             $column
                 ->toggleable()
