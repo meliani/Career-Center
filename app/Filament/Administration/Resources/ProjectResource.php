@@ -64,7 +64,10 @@ class ProjectResource extends Resource
         return $table
             ->headerActions([
                 Tables\Actions\ActionGroup::make([
-                    \App\Filament\Actions\ImportProfessorsFromInternshipAgreements::make('Import Professors From Internship Agreements'),
+                    \App\Filament\Actions\ImportProfessorsFromInternshipAgreements::make('Import Professors From Internship Agreements')
+                        ->hidden(fn () => auth()->user()->isAdministrator() === false),
+                    // ->hidden(fn ($livewire) => $livewire->ownerRecord->...),
+
                 ]),
             ])
             ->columns([
