@@ -5,9 +5,9 @@ namespace App\Filament\Widgets;
 use App\Models\InternshipAgreement;
 use Flowframe\Trend\Trend;
 use Flowframe\Trend\TrendValue;
-use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
+use App\Filament\Core\Widgets\ApexChartsParentWidget;
 
-class InternshipsByEndDateChart extends ApexChartWidget
+class InternshipsByEndDateChart extends ApexChartsParentWidget
 {
     protected static ?int $sort = 2;
 
@@ -19,8 +19,11 @@ class InternshipsByEndDateChart extends ApexChartWidget
     /**
      * Widget Title
      */
-    protected static ?string $heading = 'InternshipsByEndDateChart';
-
+    protected static ?string $heading = 'Internships by end date';
+    public static function canView(): bool
+    {
+        return true;
+    }
     /**
      * Chart options (series, labels, types, size, animations...)
      * https://apexcharts.com/docs/options

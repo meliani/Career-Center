@@ -38,8 +38,8 @@ class InternshipsPerProgramChart extends ApexChartsParentWidget
             ->select(
                 'program',
                 \DB::raw('COUNT(DISTINCT students.id) AS total_students'),
-                \DB::connection('frontend_database')->raw('COUNT(internships.id) AS total_internships'),
-                \DB::connection('frontend_database')->raw('ROUND((COUNT(internships.id) / COUNT(DISTINCT students.id)) * 100, 2) AS percentage')
+                \DB::connection('backend_database')->raw('COUNT(internships.id) AS total_internships'),
+                \DB::connection('backend_database')->raw('ROUND((COUNT(internships.id) / COUNT(DISTINCT students.id)) * 100, 2) AS percentage')
             )
             ->get()
             ->toArray();
