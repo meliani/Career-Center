@@ -28,7 +28,7 @@ class User extends Authenticatable implements FilamentUser, HasName
 
     protected $professors = [Enums\Role::SuperAdministrator, Enums\Role::Administrator, Enums\Role::Professor, Enums\Role::DepartmentHead, Enums\Role::ProgramCoordinator];
 
-    protected $powerProfessors = [Enums\Role::SuperAdministrator, Enums\Role::Administrator, Enums\Role::ProgramCoordinator];
+    protected $powerProfessors = [Enums\Role::SuperAdministrator, Enums\Role::Administrator, Enums\Role::ProgramCoordinator, Enums\Role::DepartmentHead];
 
     protected $fillable = [
         'title',
@@ -137,10 +137,14 @@ class User extends Authenticatable implements FilamentUser, HasName
     }
     public function isProgramCoordinator()
     {
-        return $this->hasAnyRole($this->powerProfessors);
+        return $this->hasRole(Enums\Role::ProgramCoordinator);
     }
     public function isDepartmentHead()
     {
         return $this->hasRole(Enums\Role::DepartmentHead);
+    }
+    public function isPowerProfessor()
+    {
+        return $this->hasAnyRole($this->powerProfessors);
     }
 }

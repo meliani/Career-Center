@@ -76,7 +76,8 @@ class InternshipAgreementResource extends BaseResource
                 ActionGroup::make([
                     \App\Filament\Actions\AssignInternshipsToProjects::make('Assign Internships To Projects'),
                     ImportAction::make()
-                        ->importer(InternshipAgreementImporter::class),
+                        ->importer(InternshipAgreementImporter::class)
+                        ->hidden(fn () => auth()->user()->isAdministrator() === false),
                 ]),
             ])
             ->defaultSort('announced_at', 'asc')
@@ -129,7 +130,8 @@ class InternshipAgreementResource extends BaseResource
                     // ->size(ActionSize::ExtraSmall)
                     ->color('warning')
                     ->outlined()
-                    ->button(),
+                    ->button()
+                    ->hidden(fn () => auth()->user()->isPowerProfessor() === false),
                 ActionGroup::make([
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\ViewAction::make(),
@@ -137,7 +139,7 @@ class InternshipAgreementResource extends BaseResource
                     // ->disabled(! auth()->user()->can('delete', $this->post)),
                     Tables\Actions\ForceDeleteAction::make(),
                     Tables\Actions\RestoreAction::make(),
-                ])
+                ])->hidden(fn () => auth()->user()->isPowerProfessor() === false)
                     ->label(__('Manage'))
                     ->icon('')
                     // ->size(ActionSize::ExtraSmall)

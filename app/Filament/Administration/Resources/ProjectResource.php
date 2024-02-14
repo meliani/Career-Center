@@ -118,13 +118,14 @@ class ProjectResource extends Resource
             //         ->label('Department'),
             // ], layout: Tables\Enums\FiltersLayout::AboveContent)
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\ViewAction::make(),
                 \Parallax\FilamentComments\Tables\Actions\CommentsAction::make()
                     ->label(__('Comments'))
-                    // ->action('comments')
-                    ->visible(fn () => true)
+                    // ->visible(fn () => true)
                     ->badge(fn ($record) => $record->filamentComments()->count() ?? ''),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\ViewAction::make(),
+                ])->hidden(fn () => auth()->user()->isPowerProfessor() === false),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

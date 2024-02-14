@@ -30,6 +30,15 @@ class InternshipAgreementScope implements Scope
                 });
             return;
         }
+
+        elseif (auth()->user()->isProfessor()) {
+            $builder
+                ->whereHas('project', function ($q) {
+                    $q->whereHas('professors', function ($q) {
+                        $q->where('professor_id', '=', auth()->user()->id);
+                    });
+                });
+        }
         else {
             $builder->where('student_id', '=', auth()->user()->id);
         }
