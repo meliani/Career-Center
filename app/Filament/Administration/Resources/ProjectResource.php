@@ -34,7 +34,10 @@ class ProjectResource extends Resource
     {
         return static::getModel()::count();
     }
-
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['title', 'organization', 'students.full_name'];
+    }
     public static function form(Form $form): Form
     {
         return $form
