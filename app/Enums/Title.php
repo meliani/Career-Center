@@ -13,8 +13,8 @@ enum Title: string implements HasColor, HasLabel
     public function getLabel(): ?string
     {
         return match ($this) {
-            self::Mrs => 'Mrs.',
-            self::Mr => 'Mr.',
+            self::Mrs => __('Mrs.'),
+            self::Mr => __('Mr.'),
         };
     }
 
