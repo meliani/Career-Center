@@ -32,6 +32,7 @@ class User extends Authenticatable implements FilamentUser, HasName
 
     protected $fillable = [
         'title',
+        'name',
         'first_name',
         'last_name',
         'department',
@@ -75,6 +76,7 @@ class User extends Authenticatable implements FilamentUser, HasName
     ];
     protected $appends = [
         'long_full_name',
+        'full_name',
     ];
 
     public function getNameAttribute()

@@ -6,13 +6,14 @@ use App\Enums;
 
 class Professor extends User
 {
-    public static function boot(){
+    public static function boot()
+    {
         parent::boot();
         static::addGlobalScope(function ($query) {
             $query
-            //  where role is in this array Enums\Role::getProfessorRoles()
-            
-                ->whereIn('role' ,Enums\Role::getProfessorRoles());
+                //  where role is in this array Enums\Role::getProfessorRoles()
+
+                ->whereIn('role', Enums\Role::getProfessorRoles());
         });
     }
     protected $table = 'users';
@@ -30,9 +31,11 @@ class Professor extends User
         'role' => Enums\Role::class,
         'department' => Enums\Department::class,
         'program_coordinator' => Enums\Program::class,
+        'title' => Enums\Title::class,
     ];
     public function projects()
     {
         return $this->belongsToMany(Project::class)->withPivot('jury_role');
     }
+
 }

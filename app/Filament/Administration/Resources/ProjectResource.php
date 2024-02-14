@@ -71,7 +71,7 @@ class ProjectResource extends Resource
                 Tables\Columns\TextColumn::make('id_pfe')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('students.full_name')
+                Tables\Columns\TextColumn::make('students.long_full_name')
                     ->label('Student name')
                     ->searchable()
                     ->sortable(),
@@ -79,7 +79,7 @@ class ProjectResource extends Resource
                     ->label('Assigned department')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('professors.name')
+                Tables\Columns\TextColumn::make('professors.long_full_name')
                     ->label('Supervisor - Reviewer')
                     ->searchable()
                     ->sortable(),
