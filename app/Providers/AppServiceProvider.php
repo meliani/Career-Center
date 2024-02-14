@@ -148,6 +148,8 @@ class AppServiceProvider extends ServiceProvider
                     ->label('Juries and professors'),
                 NavigationGroup::make()
                     ->label('Settings'),
+                    NavigationGroup::make()
+                    ->label('System')
                 // NavigationGroup::make()
                 //     ->label(fn () => __('Settings')),
             ]);

@@ -33,6 +33,10 @@ class ProfessorResource extends Resource
 
     protected static ?int $sort = 9;
 
+    public static function canAccess(): bool
+    {
+        return auth()->user()->isAdministrator();
+    }
     public static function form(Form $form): Form
     {
         return $form

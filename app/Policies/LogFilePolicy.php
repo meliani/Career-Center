@@ -4,12 +4,20 @@ namespace App\Policies;
 
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Rabol\FilamentLogviewer\Models\LogFile;
+use App\Models\LogFile;
 
 class LogFilePolicy extends CorePolicy
 {
-    // use HandlesAuthorization;
+    use HandlesAuthorization;
 
+    public static function canAccess(): bool
+    {
+        return false;
+    }
+    public static function canViewAny(): bool
+    {
+        return false;
+    }    
     public static function canView(): bool
     {
         return false;

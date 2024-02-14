@@ -86,8 +86,7 @@ class AdminPanelProvider extends PanelProvider
                     // ->editable(),
                     FilamentApexChartsPlugin::make(),
                     new \RickDBCN\FilamentEmail\FilamentEmail(),
-                    // \EightyNine\Approvals\ApprovalPlugin::make(),
-                    \Rabol\FilamentLogviewer\FilamentLogviewerPlugin::make(),
+                    // \Rabol\FilamentLogviewer\FilamentLogviewerPlugin::make(),
                     TableLayoutTogglePlugin::make()
                         ->persistLayoutInLocalStorage(true) // allow user to keep his layout preference in his local storage
                         ->shareLayoutBetweenPages(true) // allow all tables to share the layout option (requires persistLayoutInLocalStorage to be true)
