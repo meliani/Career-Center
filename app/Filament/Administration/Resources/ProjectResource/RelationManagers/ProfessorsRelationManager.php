@@ -32,7 +32,8 @@ class ProfessorsRelationManager extends RelationManager
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('jury_role'),
+                Tables\Columns\SelectColumn::make('jury_role')
+                    ->options(Enums\JuryRole::class),
                 Tables\Columns\TextColumn::make('role'),
                 
             ])
