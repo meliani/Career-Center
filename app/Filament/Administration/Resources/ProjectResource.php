@@ -36,12 +36,13 @@ class ProjectResource extends Resource
     }
     public static function getGloballySearchableAttributes(): array
     {
-        return ['title', 'organization', 'students.full_name'];
+        return ['title', 'organization', 'students.full_name', 'id_pfe', 'professors.name'];
     }
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
+                
                 Forms\Components\Section::make('Project informations')
                     ->schema([
                         Forms\Components\TextInput::make('id_pfe')
@@ -76,9 +77,9 @@ class ProjectResource extends Resource
             ])
             ->columns([
                 Tables\Columns\TextColumn::make('id_pfe')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('students.long_full_name')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('students.full_name')
                     ->label('Student name')
                     ->searchable()
                     ->sortable(),
@@ -86,7 +87,7 @@ class ProjectResource extends Resource
                     ->label('Assigned department')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('professors.long_full_name')
+                Tables\Columns\TextColumn::make('professors.name')
                     ->label('Supervisor - Reviewer')
                     ->searchable()
                     ->sortable(),

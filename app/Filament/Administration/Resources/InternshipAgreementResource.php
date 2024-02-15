@@ -51,7 +51,7 @@ class InternshipAgreementResource extends BaseResource
     }
     public static function getGloballySearchableAttributes(): array
     {
-        return ['title', 'organization_name', 'student.full_name'];
+        return ['title', 'organization_name', 'student.full_name', 'id_pfe'];
     }
 
     public static function getNavigationBadge(): ?string
