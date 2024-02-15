@@ -35,6 +35,7 @@
         "parallax/filament-comments": "^1.0",
         "pxlrbt/filament-excel": "^2.3",
         "rabol/filament-logviewer": "^0.20.0",
+        "rap2hpoutre/similar-text-finder": "^0.2.0",
         "rickdbcn/filament-email": "^1.0",
         "ryangjchandler/filament-progress-column": "^0.4.1",
         "saade/filament-fullcalendar": "^3.1",
