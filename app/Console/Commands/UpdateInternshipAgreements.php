@@ -12,7 +12,7 @@ class UpdateInternshipAgreements extends Command
      *
      * @var string
      */
-    protected $signature = 'app:update-internship-agreements';
+    protected $signature = 'carrieres:import-internships-data';
 
     /**
      * The console command description.
@@ -26,8 +26,11 @@ class UpdateInternshipAgreements extends Command
      */
     public function handle()
     {
+        $updatedLines = 0;
+        $this->info('Updating internship agreements');
+        $totalLines = 0;
         //  get csv file from app\developer_docs\csv\internships.csv
-        $file = 'app/developer_docs/csv/internships_import_data.csv';
+        $file = 'app/developer_docs/csv/internships_import_data_15fev.csv';
 
         //  open the file
         $handle = fopen($file, 'r');
@@ -37,6 +40,7 @@ class UpdateInternshipAgreements extends Command
 
         // Update internship agreements with the data from the csv file
         while ($data = fgetcsv($handle)) {
+            $totalLines++;
             //  disable model scope
             $importedData = array_combine($header, $data);
             //  find the internship by the id
@@ -48,8 +52,14 @@ class UpdateInternshipAgreements extends Command
             if ($internship) {
                 // $internship->hydrate($importedData);
                 $internship->update(array_filter($importedData));
-
+                $this->info('Updated internship agreement with id '.$importedData['id']);
+                $updatedLines++;
             }
+            else {
+                $this->error('Internship agreement with id '.$importedData['id'].' not found');
+            }
+
         }
+        $this->info('Updated '.$updatedLines.' internship agreements out of '.$totalLines);
     }
 }

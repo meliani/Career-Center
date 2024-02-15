@@ -22,7 +22,7 @@ class ProjectService extends Facade
 
     private static int $duplicateProjects;
 
-    private static $affectedProffessors;
+    private static $assignedProfessors;
 
     private static $existingProfessors;
 
@@ -32,7 +32,7 @@ class ProjectService extends Facade
         self::$createdProjects = 0;
         self::$overwrittenProjects = 0;
         self::$duplicateProjects = 0;
-        self::$affectedProffessors = 0;
+        self::$assignedProfessors = 0;
         self::$existingProfessors = 0;
     }
 
@@ -189,13 +189,13 @@ class ProjectService extends Facade
                         self::$existingProfessors++;
                     } else {
                         $professor->projects()->attach([$internshipAgreement->project_id => ['jury_role' => 'Supervisor']]);
-                        self::$affectedProffessors++;
+                        self::$assignedProfessors++;
                     }
                 }
             }
         });
         Notification::make()
-            ->title(self::$affectedProffessors.' Professors imported from internship agreements and '
+            ->title(self::$assignedProfessors.' Professors imported from internship agreements and '
                 .self::$existingProfessors.' Professors already assigned to the projects.')
             ->success()
             ->send();
