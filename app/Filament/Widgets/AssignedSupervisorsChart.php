@@ -8,7 +8,7 @@ use App\Models\User;
 use App\Enums;
 
 
-class DepartmentProjectsPerformanceChart extends ApexChartsParentWidget
+class AssignedSupervisorsChart extends ApexChartsParentWidget
 {
     protected static ?int $sort = 2;
 
@@ -17,12 +17,12 @@ class DepartmentProjectsPerformanceChart extends ApexChartsParentWidget
     /**
      * Chart Id
      */
-    protected static ?string $chartId = 'DepartmentProjectsPerformanceChart';
+    protected static ?string $chartId = 'AssignedSupervisorsChart';
 
     /**
      * Widget Title
      */
-    protected static ?string $heading = 'Departments participation in projects';
+    protected static ?string $heading = 'Assigned supervisors by department';
 
     public static function canView(): bool
     {

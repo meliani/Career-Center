@@ -119,5 +119,8 @@
     "Project": "Projet",
     "Projects": "Projets de Fin d'études",
     "Departments participation in projects": "Participation des départements aux projets",
-    "Internships by end date": "Stages par date de fin"
+    "Internships by end date": "Stages par date de fin",
+    "Internships distribution by assigned department": "Répartition des affectations de sujets de stages par département",
+    "Assigned supervisors by department": "Répartition des encadrement de stages par département",
+    "Not assigned": "Non affecté"
 }
