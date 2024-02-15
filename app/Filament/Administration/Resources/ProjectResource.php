@@ -45,7 +45,7 @@ class ProjectResource extends Resource
                 Forms\Components\Section::make('Project informations')
                     ->schema([
                         Forms\Components\TextInput::make('id_pfe')
-                            ->numeric(),
+                        ->maxLength(10),
                         Forms\Components\Textarea::make('title')
                             ->required()
                             ->maxLength(65535)
@@ -58,7 +58,8 @@ class ProjectResource extends Resource
                         Forms\Components\DatePicker::make('start_date'),
                         Forms\Components\DatePicker::make('end_date'),
                     ])
-                    ->collapsible(),
+                    ->collapsible()
+                    ->columns(2),
             ]);
     }
 

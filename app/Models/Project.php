@@ -26,6 +26,22 @@ class Project extends Core\BackendBaseModel
     {
         static::addGlobalScope(new Scopes\ProjectScope());
     }
+    // rules 
+    public static function rules($id = null)
+    {
+        return [
+            'id_pfe' => 'required|max:10',
+            'title' => 'required|max:255',
+            'organization' => 'required|max:255',
+            'description' => 'required|max:65535',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date',
+            'status' => 'required|in:'.implode(',', Enums\Status::getArray()),
+            'has_teammate' => 'required|boolean',
+            'teammate_status' => 'required|in:'.implode(',', Enums\TeammateStatus::getArray()),
+            'teammate_id' => 'required|exists:students,id',
+        ];
+    }
     protected $fillable = [
         'id_pfe',
         'title',

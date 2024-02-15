@@ -20,7 +20,20 @@ enum Status: string implements  HasLabel, HasColor
     // case Approved = "Approved";
     // case Declined = "Declined";
     // case Started = "Started";
-
+    public static function getArray(): array
+    {
+        return [
+            self::Draft,
+            self::Announced,
+            self::Rejected,
+            self::Validated,
+            self::Completed,
+            self::Signed,
+            // self::Approved,
+            // self::Declined,
+            // self::Started,
+        ];
+    }
     public function getLabel(): ?string
     {
         return __($this->name);
