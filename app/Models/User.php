@@ -15,7 +15,7 @@ use LaraZeus\Boredom\Concerns\HasBoringAvatar;
 
 class User extends Authenticatable implements FilamentUser, HasName
 {
-    use HasApiTokens, HasFactory, Notifiable, HasBoringAvatar;
+    use HasApiTokens, HasBoringAvatar, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -74,6 +74,7 @@ class User extends Authenticatable implements FilamentUser, HasName
         'program_coordinator' => Enums\Program::class,
         'title' => Enums\Title::class,
     ];
+
     protected $appends = [
         'long_full_name',
         'full_name',
@@ -88,10 +89,12 @@ class User extends Authenticatable implements FilamentUser, HasName
     {
         return "{$this->first_name} {$this->last_name}";
     }
+
     public function getLongFullNameAttribute()
     {
         return "{$this->title?->getLabel()} {$this->first_name} {$this->last_name}";
     }
+
     public function getFilamentName(): string
     {
         return "{$this->first_name} {$this->last_name}";
@@ -122,6 +125,7 @@ class User extends Authenticatable implements FilamentUser, HasName
         // return str_ends_with($this->email, '@inpt.ac.ma') && $this->hasVerifiedEmail();
         return true;
     }
+
     public function isSuperAdministrator()
     {
         return $this->hasRole(Enums\Role::SuperAdministrator);
@@ -131,20 +135,29 @@ class User extends Authenticatable implements FilamentUser, HasName
     {
         return $this->hasAnyRole($this->administrators);
     }
+
     public function isProfessor()
     {
         return $this->hasAnyRole($this->professors);
     }
+
     public function isProgramCoordinator()
     {
         return $this->hasRole(Enums\Role::ProgramCoordinator);
     }
+
     public function isDepartmentHead()
     {
         return $this->hasRole(Enums\Role::DepartmentHead);
     }
+
     public function isPowerProfessor()
     {
         return $this->hasAnyRole($this->powerProfessors);
+    }
+
+    public function isDirection()
+    {
+        return $this->hasRole(Enums\Role::Direction);
     }
 }

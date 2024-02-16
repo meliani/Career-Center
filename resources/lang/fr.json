@@ -122,5 +122,9 @@
     "Internships by end date": "Stages par date de fin",
     "Internships distribution by assigned department": "Répartition des affectations de sujets de stages par département",
     "Assigned supervisors by department": "Répartition des encadrement de stages par département",
-    "Not assigned": "Non affecté"
+    "Not assigned": "Non affecté",
+    "Assigned": "Affecté",
+    "Assigned supervisors": "Encadrement affecté",
+    "Direction dashboard": "Tableau de bord direction",
+    "Administration dashboard": "Tableau de bord administration"
 }

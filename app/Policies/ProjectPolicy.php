@@ -2,12 +2,10 @@
 
 namespace App\Policies;
 
-use App\Models\User;
-use App\Models\Project;
-use Illuminate\Auth\Access\HandlesAuthorization;
-use App\Policies\CorePolicy;
-use Illuminate\Support\Facades\Gate;
 use App\Enums;
+use App\Models\Project;
+use App\Models\User;
+use Illuminate\Support\Facades\Gate;
 
 class ProjectPolicy extends CorePolicy
 {
@@ -17,18 +15,20 @@ class ProjectPolicy extends CorePolicy
         // if (! Gate::allows('view-internship', $project)) {
         //     return true;
         // }
-        if ($user->hasAnyRole(Enums\Role::getAll())){
+        if ($user->hasAnyRole(Enums\Role::getAll())) {
             return true;
         }
+
         return false;
     }
 
-    public function view(User $user, Project $project)
+    public function view(User $user, Project $project): bool
     {
         if ($user->hasAnyRole($this->professors)) {
             return true;
         }
     }
+
     public function update(User $user, Project $project)
     {
         return $user->hasAnyRole($this->powerProfessors);
@@ -41,8 +41,7 @@ class ProjectPolicy extends CorePolicy
 
     public function viewSome(User $user, Project $project)
     {
-        if ($user->hasAnyRole($this->professors) && $project->student->program === $user->program_coordinator)
-        {
+        if ($user->hasAnyRole($this->professors) && $project->student->program === $user->program_coordinator) {
             return true;
         }
     }
