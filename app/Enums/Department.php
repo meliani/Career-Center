@@ -24,7 +24,7 @@ enum Department: string implements HasLabel
             Department::GLC->value,
             Department::SC->value,
             Department::NULL->value,
-            
+
         ];
     }
 
@@ -32,9 +32,9 @@ enum Department: string implements HasLabel
     {
         return match ($this) {
             self::EMO => 'Électronique, Micro-ondes et Optique',
-            self::MIR => 'Systèmes de Communications',
+            self::MIR => 'Mathématiques, Informatique et Réseaux',
             self::GLC => 'Gestion, Langues et Communications',
-            self::SC => 'Mathématiques, Informatique et Réseaux',
+            self::SC => 'Systèmes de Communications',
             self::NULL => 'Non défini',
         };
     }
