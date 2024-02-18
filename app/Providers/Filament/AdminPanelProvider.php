@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use Amendozaaguiar\FilamentRouteStatistics\FilamentRouteStatisticsPlugin;
 use Awcodes\LightSwitch\Enums\Alignment;
 use Awcodes\LightSwitch\LightSwitchPlugin;
 use Croustibat\FilamentJobsMonitor\FilamentJobsMonitorPlugin;
@@ -22,10 +23,9 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use LaraZeus\Boredom\Enums\Variants;
 use Leandrocfe\FilamentApexCharts\FilamentApexChartsPlugin;
 use Saade\FilamentFullCalendar\FilamentFullCalendarPlugin;
-use Amendozaaguiar\FilamentRouteStatistics\FilamentRouteStatisticsPlugin;
-use LaraZeus\Boredom\Enums\Variants;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -53,7 +53,7 @@ class AdminPanelProvider extends PanelProvider
             ->discoverResources(in: app_path('Filament/Administration/Resources'), for: 'App\\Filament\\Administration\\Resources')
             ->discoverPages(in: app_path('Filament/Administration/Pages'), for: 'App\\Filament\\Administration\\Pages')
             ->pages([
-                Pages\Dashboard::class,
+                // Pages\Dashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
@@ -88,6 +88,7 @@ class AdminPanelProvider extends PanelProvider
                     new \RickDBCN\FilamentEmail\FilamentEmail(),
                     // \Rabol\FilamentLogviewer\FilamentLogviewerPlugin::make(),
                     TableLayoutTogglePlugin::make()
+                        ->setDefaultLayout('grid') // default layout to be displayed
                         ->persistLayoutInLocalStorage(true) // allow user to keep his layout preference in his local storage
                         ->shareLayoutBetweenPages(true) // allow all tables to share the layout option (requires persistLayoutInLocalStorage to be true)
                         ->displayToggleAction() // used to display the toogle button automatically, on the desired filament hook (defaults to table bar)
@@ -99,7 +100,7 @@ class AdminPanelProvider extends PanelProvider
                         ->variant(Variants::BEAM)
                         ->size(60)
                         ->square()
-                        ->colors(['0A0310', '49007E', 'FF005B', 'FF7D10', 'FFB238'])
+                        ->colors(['0A0310', '49007E', 'FF005B', 'FF7D10', 'FFB238']),
                 ]
             )
             ->defaultAvatarProvider(

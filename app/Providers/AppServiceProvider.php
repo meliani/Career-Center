@@ -10,8 +10,14 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\StringType;
 use Doctrine\DBAL\Types\Type;
 use Filament\Facades\Filament;
+use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Field;
+use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\ToggleButtons;
 use Filament\Infolists\Components\Entry;
 use Filament\Navigation\NavigationGroup;
 use Filament\Tables\Columns\Column;
@@ -100,6 +106,32 @@ class AppServiceProvider extends ServiceProvider
         Placeholder::configureUsing(function (Placeholder $placeholder): void {
             $placeholder->translateLabel();
         });
+        Section::configureUsing(function (Section $section): void {
+            $section->translateLabel();
+        });
+        Field::configureUsing(function (Field $field): void {
+            $field->translateLabel();
+        });
+        Fieldset::configureUsing(function (Fieldset $fieldset): void {
+            $fieldset->translateLabel();
+        });
+        DateTimePicker::configureUsing(function (DateTimePicker $dateTimePicker): void {
+            $dateTimePicker->translateLabel();
+        });
+        Textarea::configureUsing(function (Textarea $textarea): void {
+            $textarea->translateLabel();
+        });
+        Select::configureUsing(function (Select $select): void {
+            $select->translateLabel();
+        });
+        ToggleButtons::configureUsing(function (ToggleButtons $toggleButtons): void {
+            $toggleButtons->translateLabel();
+        });
+
+        Section::configureUsing(function (Section $section): void {
+            $section->translateLabel();
+        });
+
         // NavigationGroup::configureUsing(function (NavigationGroup $group): void {
         //     $group->translateLabel();
         // });
@@ -141,15 +173,15 @@ class AppServiceProvider extends ServiceProvider
             Filament::registerNavigationGroups([
 
                 NavigationGroup::make()
-                    ->label('Students and projects'),
+                    ->label(__('Students and projects')),
                 NavigationGroup::make()
                     ->label('Planning'),
                 NavigationGroup::make()
                     ->label('Juries and professors'),
                 NavigationGroup::make()
                     ->label('Settings'),
-                    NavigationGroup::make()
-                    ->label('System')
+                NavigationGroup::make()
+                    ->label('System'),
                 // NavigationGroup::make()
                 //     ->label(fn () => __('Settings')),
             ]);

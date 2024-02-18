@@ -4,17 +4,15 @@ namespace App\Policies;
 
 use App\Models\Student;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
-use App\Enums\Role;
 
-class StudentPolicy
+class StudentPolicy extends CorePolicy
 {
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(Role::SuperAdministrator);
+        return $user->hasAnyRole([$this->administrators, $this->direction, $this->professors]);
     }
 
     /**
@@ -22,7 +20,7 @@ class StudentPolicy
      */
     public function view(User $user, Student $student): bool
     {
-        return $user->hasRole(Role::SuperAdministrator);
+        return $user->hasAnyRole([$this->administrators, $this->direction, $this->professors]);
     }
 
     /**
@@ -30,7 +28,7 @@ class StudentPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole(Role::SuperAdministrator);
+        return $user->hasAnyRole($this->administrators);
     }
 
     /**
@@ -38,7 +36,7 @@ class StudentPolicy
      */
     public function update(User $user, Student $student): bool
     {
-        return $user->hasRole(Role::SuperAdministrator);
+        return $user->hasAnyRole($this->administrators);
     }
 
     /**
@@ -46,7 +44,7 @@ class StudentPolicy
      */
     public function delete(User $user, Student $student): bool
     {
-        return $user->hasRole(Role::SuperAdministrator);
+        return $user->hasAnyRole($this->administrators);
     }
 
     /**
@@ -54,7 +52,7 @@ class StudentPolicy
      */
     public function restore(User $user, Student $student): bool
     {
-        return $user->hasRole(Role::SuperAdministrator);
+        return $user->hasAnyRole($this->administrators);
     }
 
     /**
@@ -62,6 +60,6 @@ class StudentPolicy
      */
     public function forceDelete(User $user, Student $student): bool
     {
-        //
+        return $user->hasAnyRole($this->administrators);
     }
 }

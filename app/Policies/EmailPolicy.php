@@ -8,7 +8,7 @@ use App\Enums\Role;
 use App\Models\Email;
 
 
-class EmailPolicy
+class EmailPolicy extends CorePolicy
 {
     use HandlesAuthorization;
 

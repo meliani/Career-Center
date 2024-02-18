@@ -2,43 +2,41 @@
 
 namespace App\Filament\Administration\Resources;
 
-use App\Filament\Imports\InternshipAgreementImporter;
-use App\Models\InternshipAgreement;
-use Filament\Forms\Form;
+use App\Enums;
+use App\Filament\Administration\Resources\InternshipAgreementResource\Pages;
+use App\Filament\Administration\Resources\InternshipAgreementResource\RelationManagers;
 use App\Filament\Core\BaseResource;
+use App\Filament\Imports\InternshipAgreementImporter;
+use App\Mail\GenericEmail;
+use App\Models\InternshipAgreement;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Form;
 use Filament\Tables;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Actions\ImportAction;
+use Filament\Tables\Enums\ActionsPosition;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
-
-use App\Enums;
-use App\Filament\Administration\Resources\InternshipAgreementResource\Pages;
-use App\Mail\GenericEmail;
-use Filament\Forms\Components\RichEditor;
-use Filament\Forms\Components\TextInput;
-use Filament\Tables\Actions\ActionGroup;
-use Filament\Tables\Enums\ActionsPosition;
 use Illuminate\Support\Facades\Mail;
-use App\Filament\Administration\Resources\InternshipAgreementResource\RelationManagers;
-use Filament\Forms\Components\Group as ComponentsGroup;
 
 class InternshipAgreementResource extends BaseResource
 {
-
     protected static ?string $model = InternshipAgreement::class;
-    // protected static ?string $modelLabel = 'Internship agreement';
-    // protected static ?string $pluralModelLabel = 'Internship agreements';
-    protected static ?string $modelLabel = 'agreement';
-    protected static ?string $pluralModelLabel = 'agreements';
-    protected static ?string $title = 'Internship agreements';
+
     protected static ?string $recordTitleAttribute = 'organization_name';
-    protected static ?string $navigationGroup = 'Students and projects';
-    // protected static ?string $navigationParentItem = 'Students and projects';
+
     protected static ?string $navigationIcon = 'heroicon-o-megaphone';
+
     protected static ?int $sort = 1;
-    
+
     protected static ?string $navigationBadgeTooltip = 'Announced internships';
+
+    public static function getnavigationGroup(): string
+    {
+        return __('Students and projects');
+    }
 
     public static function getModelLabel(): string
     {
@@ -49,6 +47,7 @@ class InternshipAgreementResource extends BaseResource
     {
         return __('Internship Agreements');
     }
+
     public static function getGloballySearchableAttributes(): array
     {
         return ['title', 'organization_name', 'student.full_name', 'id_pfe'];
@@ -58,6 +57,7 @@ class InternshipAgreementResource extends BaseResource
     {
         return static::getModel()::count('id');
     }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -89,7 +89,7 @@ class InternshipAgreementResource extends BaseResource
                     ->label(__('Program'))
                     ->collapsible(),
             ])
-            ->emptyStateDescription('Once students starts announcing internships, it will appear here.')
+            ->emptyStateDescription(__('Once students starts announcing internships, it will appear here.'))
             ->columns(
                 $livewire->isGridLayout()
                     ? \App\Services\Filament\InternshipAgreementGrid::get()
@@ -99,8 +99,8 @@ class InternshipAgreementResource extends BaseResource
                 fn () => $livewire->isGridLayout()
                     ? [
                         'md' => 2,
-                        'lg' => 3,
-                        'xl' => 4,
+                        'lg' => 2,
+                        'xl' => 2,
                     ] : null
             )
             ->filters([

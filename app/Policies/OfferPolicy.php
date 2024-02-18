@@ -2,12 +2,11 @@
 
 namespace App\Policies;
 
+use App\Enums\Role;
 use App\Models\Offer;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
-use App\Enums\Role;
 
-class OfferPolicy
+class OfferPolicy extends CorePolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -55,8 +54,9 @@ class OfferPolicy
     public function restore(User $user, Offer $offer): bool
     {
         return $user->hasRole(Role::SuperAdministrator);
-    
+
     }
+
     /**
      * Determine whether the user can permanently delete the model.
      */

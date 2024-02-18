@@ -13,33 +13,30 @@ class InternshipAgreementScope implements Scope
      */
     public function apply(Builder $builder, Model $model): void
     {
-        if (auth()->user()->isSuperAdministrator() || auth()->user()->isAdministrator()) {
+        if (auth()->user()->isSuperAdministrator() || auth()->user()->isAdministrator() || auth()->user()->isDirection()) {
             return;
-        }
-        elseif (auth()->user()->isProgramCoordinator()) {
+        } elseif (auth()->user()->isProgramCoordinator()) {
             $builder
                 ->whereHas('student', function ($q) {
                     $q->where('program', '=', auth()->user()->program_coordinator);
                 });
+
             return;
-        }
-        elseif (auth()->user()->isDepartmentHead()) {
+        } elseif (auth()->user()->isDepartmentHead()) {
             $builder
                 ->whereHas('student', function ($q) {
                     $q->where('assigned_department', '=', auth()->user()->department);
                 });
-            return;
-        }
 
-        elseif (auth()->user()->isProfessor()) {
+            return;
+        } elseif (auth()->user()->isProfessor()) {
             $builder
                 ->whereHas('project', function ($q) {
                     $q->whereHas('professors', function ($q) {
                         $q->where('professor_id', '=', auth()->user()->id);
                     });
                 });
-        }
-        else {
+        } else {
             $builder->where('student_id', '=', auth()->user()->id);
         }
 
