@@ -3,10 +3,10 @@
 namespace App\Filament\Administration\Resources;
 
 use App\Filament\Administration\Resources\OfferResource\Pages;
+use App\Filament\Core\BaseResource as Resource;
 use App\Models\Offer;
 use Filament\Forms;
 use Filament\Forms\Form;
-use App\Filament\Core\BaseResource as Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -14,19 +14,24 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class OfferResource extends Resource
 {
-
     protected static ?string $model = Offer::class;
+
     // protected static ?string $modelLabel = 'Internship offer';
     // protected static ?string $pluralModelLabel = 'Internship offers';
     protected static ?string $modelLabel = 'offer';
+
     protected static ?string $pluralModelLabel = 'offers';
+
     protected static ?string $title = 'Manage internship offers';
+
     protected static ?string $recordTitleAttribute = 'organization_name';
-    protected static ?string $navigationGroup = 'Students and projects';
-    // protected static ?string $navigationParentItem = 'Students and projects';
+
+    protected static ?string $navigationGroup = 'Entreprises';
+
     protected static ?string $navigationIcon = 'heroicon-o-briefcase';
+
     protected static ?int $sort = 2;
-    
+
     protected static ?string $navigationBadgeTooltip = 'Internship offers';
 
     public static function getModelLabel(): string
@@ -38,6 +43,7 @@ class OfferResource extends Resource
     {
         return __('Internship offers');
     }
+
     public static function form(Form $form): Form
     {
         return $form

@@ -25,6 +25,11 @@ class DirectionDashboard extends \Filament\Pages\Dashboard
         'xl' => 2,
     ];
 
+    public static function canAccess(): bool
+    {
+        return auth()->user()->isDirection();
+    }
+
     public function getColumns(): int|string|array
     {
         return 1;
@@ -33,18 +38,13 @@ class DirectionDashboard extends \Filament\Pages\Dashboard
     protected function getHeaderActions(): array
     {
         return [
-            FilterAction::make()
-                ->form([
-                    DatePicker::make('startDate'),
-                    DatePicker::make('endDate'),
-                    // ...
-                ]),
+            // FilterAction::make()
+            //     ->form([
+            //         DatePicker::make('startDate'),
+            //         DatePicker::make('endDate'),
+            //         // ...
+            //     ]),
         ];
-    }
-
-    public static function canAccess(): bool
-    {
-        return auth()->user()->isDirection();
     }
 
     public static function getNavigationLabel(): string

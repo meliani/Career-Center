@@ -23,30 +23,34 @@ class ProjectResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'organization';
 
-    protected static ?string $navigationGroup = 'Students and projects';
-
-    // protected static ?string $navigationParentItem = '';
     protected static ?string $navigationIcon = 'heroicon-o-command-line';
 
     protected static ?int $sort = 4;
+
+    public static function getnavigationGroup(): string
+    {
+        return __('Students and projects');
+    }
 
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
     }
+
     public static function getGloballySearchableAttributes(): array
     {
         return ['title', 'organization', 'students.full_name', 'id_pfe', 'professors.name'];
     }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                
+
                 Forms\Components\Section::make('Project informations')
                     ->schema([
                         Forms\Components\TextInput::make('id_pfe')
-                        ->maxLength(10),
+                            ->maxLength(10),
                         Forms\Components\Textarea::make('title')
                             ->required()
                             ->maxLength(65535)

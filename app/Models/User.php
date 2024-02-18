@@ -26,9 +26,9 @@ class User extends Authenticatable implements FilamentUser, HasName
 
     protected $administrators = [Enums\Role::SuperAdministrator, Enums\Role::Administrator];
 
-    protected $professors = [Enums\Role::SuperAdministrator, Enums\Role::Administrator, Enums\Role::Professor, Enums\Role::DepartmentHead, Enums\Role::ProgramCoordinator];
+    protected $professors = [Enums\Role::Professor, Enums\Role::DepartmentHead, Enums\Role::ProgramCoordinator];
 
-    protected $powerProfessors = [Enums\Role::SuperAdministrator, Enums\Role::Administrator, Enums\Role::ProgramCoordinator, Enums\Role::DepartmentHead];
+    protected $powerProfessors = [Enums\Role::ProgramCoordinator, Enums\Role::DepartmentHead];
 
     protected $fillable = [
         'title',
@@ -123,7 +123,7 @@ class User extends Authenticatable implements FilamentUser, HasName
         }
 
         // return str_ends_with($this->email, '@inpt.ac.ma') && $this->hasVerifiedEmail();
-        return true;
+        return false;
     }
 
     public function isSuperAdministrator()

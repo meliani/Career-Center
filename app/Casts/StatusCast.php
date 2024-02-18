@@ -1,5 +1,5 @@
 <?php
-namespace App\Casts;
+/* namespace App\Casts;
 
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use App\Enums\Status;
@@ -16,5 +16,5 @@ class StatusCast implements CastsAttributes
     {
         return $value->value;
     }
-}
+} */
 ?>

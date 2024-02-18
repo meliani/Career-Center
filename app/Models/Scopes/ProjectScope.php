@@ -13,31 +13,29 @@ class ProjectScope implements Scope
      */
     public function apply(Builder $builder, Model $model): void
     {
-        if (auth()->user()->isSuperAdministrator() || auth()->user()->isAdministrator()) {
+        if (auth()->user()->isSuperAdministrator() || auth()->user()->isAdministrator() || auth()->user()->isDirection()) {
             return;
-        }
-        elseif (auth()->user()->isProgramCoordinator()) {
+        } elseif (auth()->user()->isProgramCoordinator()) {
             $builder
                 ->whereHas('students', function ($q) {
                     $q->where('program', '=', auth()->user()->program_coordinator);
                 });
+
             return;
-        }
-        elseif (auth()->user()->isDepartmentHead()) {
+        } elseif (auth()->user()->isDepartmentHead()) {
             $builder
                 ->whereHas('InternshipAgreements', function ($q) {
                     $q->where('assigned_department', '=', auth()->user()->department);
                 });
+
             return;
-        }
-        elseif (auth()->user()->isProfessor()) {
+        } elseif (auth()->user()->isProfessor()) {
             $builder
                 ->whereHas('professors', function ($q) {
                     $q->where('professor_id', '=', auth()->user()->id);
                 });
-            }
-        else {
-            $builder->where('student_id', '=', auth()->user()->id);
+        } else {
+            abort(403, 'You are not authorized to view this page');
         }
 
     }

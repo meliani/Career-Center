@@ -1,5 +1,5 @@
 <?php
-namespace App\Casts;
+/* namespace App\Casts;
 
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use App\Enums\Title;
@@ -15,5 +15,5 @@ class TitleCast implements CastsAttributes
     {
         return $value->value;
     }
-}
+} */
 ?>

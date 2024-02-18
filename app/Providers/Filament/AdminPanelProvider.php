@@ -88,6 +88,7 @@ class AdminPanelProvider extends PanelProvider
                     new \RickDBCN\FilamentEmail\FilamentEmail(),
                     // \Rabol\FilamentLogviewer\FilamentLogviewerPlugin::make(),
                     TableLayoutTogglePlugin::make()
+                        ->setDefaultLayout('grid') // default layout to be displayed
                         ->persistLayoutInLocalStorage(true) // allow user to keep his layout preference in his local storage
                         ->shareLayoutBetweenPages(true) // allow all tables to share the layout option (requires persistLayoutInLocalStorage to be true)
                         ->displayToggleAction() // used to display the toogle button automatically, on the desired filament hook (defaults to table bar)

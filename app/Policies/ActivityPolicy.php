@@ -7,7 +7,7 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 use App\Enums\Role;
 
 
-class ActivityPolicy
+class ActivityPolicy extends CorePolicy
 {
     use HandlesAuthorization;
 

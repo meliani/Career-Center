@@ -27,9 +27,6 @@ class StudentResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'long_full_name';
 
-    protected static ?string $navigationGroup = 'Students and projects';
-
-    // protected static ?string $navigationParentItem = '';
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
 
     protected static ?int $sort = 3;
@@ -48,6 +45,12 @@ class StudentResource extends Resource
     //             ->url(static::getUrl('edit', ['record' => $record])),
     //     ];
     // }
+
+    public static function getnavigationGroup(): string
+    {
+        return __('Students and projects');
+    }
+
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
