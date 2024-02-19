@@ -19,10 +19,6 @@ class StudentResource extends Resource
 {
     protected static ?string $model = Student::class;
 
-    protected static ?string $modelLabel = 'Student';
-
-    protected static ?string $pluralModelLabel = 'Students';
-
     protected static ?string $title = 'Manage Students';
 
     protected static ?string $recordTitleAttribute = 'long_full_name';

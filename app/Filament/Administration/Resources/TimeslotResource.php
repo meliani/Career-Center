@@ -3,24 +3,29 @@
 namespace App\Filament\Administration\Resources;
 
 use App\Filament\Administration\Resources\TimeslotResource\Pages;
+use App\Filament\Core\BaseResource as Resource;
 use App\Models\Timeslot;
 use Filament\Forms;
 use Filament\Forms\Form;
-use App\Filament\Core\BaseResource as Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
 class TimeslotResource extends Resource
 {
-
     protected static ?string $model = Timeslot::class;
+
     protected static ?string $modelLabel = 'Timeslot';
+
     protected static ?string $pluralModelLabel = 'Timeslots';
+
     protected static ?string $title = 'Manage Students';
+
     // protected static ?string $recordTitleAttribute = '';
     protected static ?string $navigationGroup = 'Planning';
+
     // protected static ?string $navigationParentItem = '';
     protected static ?string $navigationIcon = 'heroicon-o-clock';
+
     protected static ?int $sort = 6;
 
     public static function getNavigationBadge(): ?string
@@ -39,9 +44,9 @@ class TimeslotResource extends Resource
             ->schema([
                 Forms\Components\DateTimePicker::make('start_time'),
                 Forms\Components\DateTimePicker::make('end_time'),
-                Forms\Components\TextInput::make('is_enabled')
-                    ->maxLength(1),
-                Forms\Components\TextInput::make('is_taken')
+                Forms\Components\Toggle::make('is_enabled'),
+                // Forms\Components\Toggle::make('is_taken'),
+                Forms\Components\TextInput::make('remaining_slots')
                     ->maxLength(1),
             ]);
     }
@@ -56,8 +61,14 @@ class TimeslotResource extends Resource
                 Tables\Columns\TextColumn::make('end_time')
                     ->dateTime()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('is_enabled'),
-                Tables\Columns\TextColumn::make('is_taken'),
+                Tables\Columns\ToggleColumn::make('is_enabled')
+                    ->label('Enabled')
+                    ->sortable(),
+                // Tables\Columns\ToggleColumn::make('is_taken')
+                //     ->label('Taken')
+                //     ->sortable(),
+                Tables\Columns\TextColumn::make('remaining_slots')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

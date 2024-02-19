@@ -2,48 +2,52 @@
 
 namespace App\Filament\Administration\Resources;
 
+use App\Filament\Actions;
 use App\Filament\Administration\Resources\ScheduleParametersResource\Pages;
-use App\Filament\Administration\Resources\ScheduleParametersResource\RelationManagers;
+use App\Filament\Core\BaseResource as Resource;
 use App\Models\ScheduleParameters;
 use Filament\Forms;
-use Filament\Forms\Form;
-use App\Filament\Core\BaseResource as Resource;
-use Filament\Tables;
-use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\Actions\Action;
 // use Filament\Actions\Action;
-use App\Filament\Actions\AssignDepartmentAction;
-use App\Filament\Actions\ScheduleHeadOfJury;
-use App\Filament\Actions\GenerateTimeslotsAction;
-use App\Filament\Actions\GenerateProjectsJuryAction;
+use Filament\Forms\Form;
+use Filament\Tables;
+use Filament\Tables\Table;
 
 class ScheduleParametersResource extends Resource
 {
-
-
     protected static ?string $model = ScheduleParameters::class;
-    // protected static ?string $modelLabel = 'Schedule parameters';
-    // protected static ?string $pluralModelLabel = 'Schedules parameters';
-    protected static ?string $modelLabel = 'ScheduleParameters';
-    protected static ?string $pluralModelLabel = 'SchedulesParameters';
+
     protected static ?string $title = 'Schedules parameters';
+
+    protected static ?string $modelLabel = 'Schedule parameters';
+
+    protected static ?string $pluralModelLabel = 'Schedules parameters';
+
     // protected static ?string $recordTitleAttribute = 'schedule_starting_at';
-    protected static ?string $navigationGroup = 'Planning';
-    // protected static ?string $navigationParentItem = '';
     protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
+
     protected static ?int $sort = 8;
-    
 
     public $starting_from;
+
     public $ending_at;
+
     public $working_from;
+
     public $working_to;
+
     public $number_of_rooms;
+
     public $max_defenses_per_professor;
+
     public $max_rooms;
+
     public $minutes_per_slot;
+
+    public static function getnavigationGroup(): string
+    {
+        return __('Planning');
+    }
 
     public static function form(Form $form): Form
     {
@@ -78,15 +82,16 @@ class ScheduleParametersResource extends Resource
                     // \Filament\Forms\Components\Actions\Action::make('ScheduleDepartmentHead')
 
                     // ScheduleHeadOfJury::make('Schedule Head of Department'),
-                    GenerateTimeslotsAction::make('Generate Timeslots'),
-                    GenerateProjectsJuryAction::make('Generate Projects Jury')
+                    Actions\GenerateTimeslotsAction::make('Generate Timeslots'),
+                    Actions\GenerateTimetableAction::make('Generate Timetable'),
+                    Actions\GenerateProjectsJuryAction::make('Generate Projects Jury'),
 
                     // ->requiresConfirmation(),
                     // ->action(function (ScheduleDepartmentHead $ScheduleDepartmentHead) {
                     //     dd('action called')
                     //     // $scheduleDepartmentHead = new ScheduleDepartmentHead('Schedule Head of Department');
                     // })
-                ])
+                ]),
             ]);
     }
 
@@ -135,15 +140,12 @@ class ScheduleParametersResource extends Resource
                 ]),
             ]);
     }
+
     public static function getRelations(): array
     {
         return [
             //
         ];
-    }
-    public static function getnavigationGroup(): string
-    {
-        return __('Planning');
     }
 
     public static function getPages(): array

@@ -2,25 +2,19 @@
 
 namespace App\Services;
 
-use App\Models\DefenseSchedule;
-use App\Models\InternshipAgreement;
-use App\Models\Project;
+use App\Models\Room;
 // use Spatie\Period\Period;
 // use Spatie\Period\Precision;
-use App\Services\SlotSplitter;
-use Carbon\Carbon;
-use Carbon\CarbonPeriod;
-// use Spatie\Period\PeriodCollection;
 use App\Models\ScheduleParameters;
+// use Spatie\Period\PeriodCollection;
 use App\Models\Timeslot;
-use Illuminate\Console\Scheduling\Schedule;
-use Illuminate\Support\Facades\DB;
+use App\Models\Timetable;
+use Carbon\CarbonPeriod;
 use Exception;
+use Illuminate\Console\Scheduling\Schedule;
 
 class TimeslotService
 {
-
-
     /*  parameters table
     'schedule_starting_at',
     'schedule_ending_at',
@@ -31,28 +25,44 @@ class TimeslotService
     'max_rooms',
     'minutes_per_slot', */
 
-
     protected $number_of_rooms;
+
     protected $max_defenses_per_professor;
+
     protected $max_rooms;
+
     protected $minutes_per_slot;
+
     protected $period;
+
     protected $timeslot;
+
     protected $day;
+
     protected $room;
+
     protected $rooms;
+
     // protected PeriodCollection $all_timeslots;
     // protected PeriodCollection $day_timeslots;
     // protected PeriodCollection $periods;
     // protected PeriodCollection $timeslots;
     protected $scheduleParameters;
+
     protected $schedule_starting_at;
+
     protected $schedule_ending_at;
+
     protected $day_starting_at;
+
     protected $day_ending_at;
+
     protected $all_timeslots;
+
     protected $day_timeslots;
+
     protected $periods;
+
     protected $timeslots;
 
     public function __construct(?ScheduleParameters $scheduleParameters = null)
@@ -81,10 +91,11 @@ class TimeslotService
         // $this->room = [];
         // $this->rooms = [];
     }
+
     public function generateDayTimeslots($day)
     // : PeriodCollection
     {
-        // // using slotslitter service 
+        // // using slotslitter service
         // $period = Period::make($this->scheduleParameters->day_starting_at, $this->scheduleParameters->day_ending_at, Precision::Minute());
         // // dd($period);
         // // $periods->excludeEndDate();
@@ -95,14 +106,16 @@ class TimeslotService
         $endPeriod = $this->scheduleParameters->day_ending_at;
 
         $period = CarbonPeriod::create($startPeriod, '90 minutes', $endPeriod);
-        $day_timeslots  = [];
+        $day_timeslots = [];
 
         foreach ($period as $date) {
             $day_timeslots[] = $date->format('H:i');
         }
+
         return $day_timeslots;
         // dd($period);
     }
+
     public function generateAllTimeslots()
     {
         $this->generateDayTimeslots();
@@ -124,10 +137,11 @@ class TimeslotService
 
         return $this->all_timeslots;
     }
+
     public function saveTimeslots($timeslots): void
     {
         // Check if $timeslots is a PeriodCollection and contains Period objects
-        if ($timeslots instanceof PeriodCollection && !$timeslots->isEmpty()) {
+        if ($timeslots instanceof PeriodCollection && ! $timeslots->isEmpty()) {
             // Save PeriodCollection to database
             foreach ($timeslots as $timeslot) {
                 Timeslot::create([
@@ -139,5 +153,15 @@ class TimeslotService
             // Handle the case where $timeslots is not a PeriodCollection or is empty
             throw new Exception('Timeslots must be a non-empty PeriodCollection');
         }
+    }
+
+    public static function checkTimeslotAvailability(Timeslot $timeslot, Room $room)
+    {
+        // Check if the timeslot is available in the room
+        $timetable = Timetable::where('timeslot_id', $timeslot->id)
+            ->where('room_id', $room->id)
+            ->first();
+
+        return $timetable === null;
     }
 }

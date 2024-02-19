@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
-use App\Enums\Room as RoomEnum;
-
 class Timeslot extends Core\BackendBaseModel
 {
     protected $remaining_slots;
+
     protected $scheduleParameters;
 
     // public function __construct(array $attributes = [], ScheduleParameters $scheduleParameters = null)
@@ -25,15 +24,17 @@ class Timeslot extends Core\BackendBaseModel
         'end_time',
         'is_enabled',
         'is_taken',
+        'remaining_slots',
     ];
+
     protected $casts = [
         'start_time' => 'datetime',
         'end_time' => 'datetime',
         'is_enabled' => 'boolean',
         'is_taken' => 'boolean',
     ];
-//     protected $attributes = [
-//         'is_enabled' => true,
-//         'is_taken' => false,
-//     ];
+    //     protected $attributes = [
+    //         'is_enabled' => true,
+    //         'is_taken' => false,
+    //     ];
 }

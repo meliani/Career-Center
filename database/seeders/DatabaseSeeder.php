@@ -4,10 +4,9 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-
-use Illuminate\Database\Seeder;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model as Eloquent;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
@@ -34,11 +33,11 @@ class DatabaseSeeder extends Seeder
         DB::unprepared(file_get_contents('app/developer_docs/sql/students.sql'));
         $this->command->info('Students table seeded!'); */
 
-        DB::unprepared(file_get_contents('app/developer_docs/sql/careers_backend_data.sql'));
-        $this->command->info('Backend data seeded!');
-
+        // DB::unprepared(file_get_contents('app/developer_docs/sql/careers_backend_data.sql'));
+        // $this->command->info('Backend data seeded!');
 
         $this->call(ScheduleSettingsSeeder::class);
+        $this->call(RoomsSeeder::class);
 
         // User::factory()->root()->create();
         // User::factory()->issati()->create();

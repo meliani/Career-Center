@@ -75,8 +75,6 @@ class ProjectResource extends Resource
                 Tables\Actions\ActionGroup::make([
                     \App\Filament\Actions\ImportProfessorsFromInternshipAgreements::make('Import Professors From Internship Agreements')
                         ->hidden(fn () => auth()->user()->isAdministrator() === false),
-                    // ->hidden(fn ($livewire) => $livewire->ownerRecord->...),
-
                 ]),
             ])
             ->columns([
@@ -95,6 +93,15 @@ class ProjectResource extends Resource
                     ->label('Supervisor - Reviewer')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('timetable.timeslot.start_time')
+                    ->label('Defense start Time')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('timetable.timeslot.end_time')
+                    ->label('Defense end Time')
+                    ->searchable()
+                    ->sortable(),
+
                 Tables\Columns\TextColumn::make('organization')
                     ->searchable()
                     ->sortable(),
