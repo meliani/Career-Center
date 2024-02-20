@@ -8,7 +8,7 @@ class AdministrationDashboard extends \Filament\Pages\Dashboard
 
     protected static ?string $title = 'Administration dashboard';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 1;
 
     public static function canAccess(): bool
     {
