@@ -22,14 +22,15 @@
 
 <body class="antialiased">
 
-    @livewire('database-notifications')
 
     {{ $slot }}
 
-    @livewire('notifications')
 
     @filamentScripts
     @vite('resources/js/app.js')
+
+    {{-- @livewire('notifications') --}}
+    @livewire('database-notifications')
 </body>
 
 </html>

@@ -12,6 +12,6 @@ class AdministrationDashboard extends \Filament\Pages\Dashboard
 
     public static function canAccess(): bool
     {
-        return auth()->user()->isSuperAdministrator();
+        return auth()->user()->isSuperAdministrator() || auth()->user()->isProfessor() || auth()->user()->isDepartmentHead() || auth()->user()->isProgramCoordinator();
     }
 }

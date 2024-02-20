@@ -6,14 +6,17 @@ use App\Enums;
 use App\Filament\Administration\Resources\InternshipAgreementResource\Pages;
 use App\Filament\Administration\Resources\InternshipAgreementResource\RelationManagers;
 use App\Filament\Core\BaseResource;
+use App\Filament\Exports\InternshipAgreementExporter;
 use App\Filament\Imports\InternshipAgreementImporter;
 use App\Mail\GenericEmail;
 use App\Models\InternshipAgreement;
+use Filament\Actions\Exports\Enums\ExportFormat;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Tables;
 use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Actions\ExportAction;
 use Filament\Tables\Actions\ImportAction;
 use Filament\Tables\Enums\ActionsPosition;
 use Filament\Tables\Filters\SelectFilter;
@@ -79,6 +82,13 @@ class InternshipAgreementResource extends BaseResource
                         ->importer(InternshipAgreementImporter::class)
                         ->hidden(fn () => auth()->user()->isAdministrator() === false),
                 ]),
+                ExportAction::make()
+                    ->exporter(InternshipAgreementExporter::class)
+                    ->formats([
+                        ExportFormat::Xlsx,
+                        ExportFormat::Csv,
+                    ]),
+
             ])
             ->defaultSort('announced_at', 'asc')
             ->groups([

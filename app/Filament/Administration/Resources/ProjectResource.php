@@ -5,10 +5,12 @@ namespace App\Filament\Administration\Resources;
 use App\Filament\Administration\Resources\ProjectResource\Pages;
 use App\Filament\Administration\Resources\ProjectResource\RelationManagers;
 use App\Filament\Core\BaseResource as Resource;
+use App\Filament\Exports\ProjectExporter;
 use App\Models\Project;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Tables;
+use Filament\Tables\Actions\ExportAction;
 use Filament\Tables\Table;
 
 class ProjectResource extends Resource
@@ -76,6 +78,8 @@ class ProjectResource extends Resource
                     \App\Filament\Actions\ImportProfessorsFromInternshipAgreements::make('Import Professors From Internship Agreements')
                         ->hidden(fn () => auth()->user()->isAdministrator() === false),
                 ]),
+                ExportAction::make()
+                    ->exporter(ProjectExporter::class),
             ])
             ->columns([
                 Tables\Columns\TextColumn::make('id_pfe')

@@ -100,9 +100,9 @@ class ProjectService extends Facade
 
         Notification::make()
             ->title(
-                'Projects created: '.self::$createdProjects.
-                    ' Projects overwritten: '.self::$overwrittenProjects.
-                    ' Duplicate projects Found : '.self::$duplicateProjects
+                self::$createdProjects.' projects created, '.
+                self::$overwrittenProjects.' projects overwritten, and '.
+                self::$duplicateProjects.' duplicate projects Found.'
             )
             ->success()
             ->send();

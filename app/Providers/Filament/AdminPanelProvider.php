@@ -47,6 +47,8 @@ class AdminPanelProvider extends PanelProvider
             ->path('')
             ->brandName('INPT Entreprises')
             ->login()
+            ->databaseNotifications()
+            ->databaseNotificationsPolling('3s')
             ->colors([
                 'primary' => Color::Amber,
             ])
