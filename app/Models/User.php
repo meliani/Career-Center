@@ -38,7 +38,7 @@ class User extends Authenticatable implements FilamentUser, HasName
         'department',
         'role',
         'email',
-        'program_coordinator',
+        'assigned_program',
         'is_enabled',
         'email_verified_at',
         'password',
@@ -71,7 +71,7 @@ class User extends Authenticatable implements FilamentUser, HasName
         'password' => 'hashed',
         'role' => Enums\Role::class,
         'department' => Enums\Department::class,
-        'program_coordinator' => Enums\Program::class,
+        'assigned_program' => Enums\Program::class,
         'title' => Enums\Title::class,
     ];
 

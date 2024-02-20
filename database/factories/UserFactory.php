@@ -2,10 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Enums\Role;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use App\Enums\Role;
+
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
  */
@@ -34,10 +35,9 @@ class UserFactory extends Factory
             'role' => 'Professor',
         ];
     }
+
     /**
      * Indicate that the model's state should be root.
-     *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
     public function root(): Factory
     {
@@ -51,6 +51,7 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
         ]);
     }
+
     public function kensi(): Factory
     {
         return $this->state([
@@ -63,6 +64,7 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
         ]);
     }
+
     public function samira(): Factory
     {
         return $this->state([
@@ -75,6 +77,7 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
         ]);
     }
+
     public function nisrine(): Factory
     {
         return $this->state([
@@ -97,11 +100,12 @@ class UserFactory extends Factory
             'email' => 'issati@inpt.ac.ma',
             'role' => Role::ProgramCoordinator,
             'department' => 'SC',
-            'program_coordinator' => 'SESNUM',
+            'assigned_program' => 'SESNUM',
             'password' => bcrypt('professor_password'), // replace 'professor_password' with the actual password
             'remember_token' => Str::random(10),
         ]);
     }
+
     public function ennouaary(): Factory
     {
         return $this->state([
@@ -111,7 +115,7 @@ class UserFactory extends Factory
             'email' => 'ennouaary@inpt.ac.ma',
             'role' => Role::ProgramCoordinator,
             'department' => 'RIM',
-            'program_coordinator' => 'SUD',
+            'assigned_program' => 'SUD',
             'password' => bcrypt('professor_password'), // replace 'professor_password' with the actual password
             'remember_token' => Str::random(10),
         ]);

@@ -28,7 +28,7 @@ class ProjectPolicy extends CorePolicy
             return true;
         } elseif ($user->isProfessor() && $project->professors === $user->id) {
             return true;
-        } elseif ($user->isProgramCoordinator() && $project->students->each(fn ($student, $key) => $student->program === $user->program_coordinator)) {
+        } elseif ($user->isProgramCoordinator() && $project->students->each(fn ($student, $key) => $student->program === $user->assigned_program)) {
             return true;
         } elseif ($user->isDirection()) {
             return true;
@@ -43,7 +43,7 @@ class ProjectPolicy extends CorePolicy
             return true;
         } elseif ($user->isProfessor() && $project->professors === $user->id) {
             return true;
-        } elseif ($user->isProgramCoordinator() && $project->students->each(fn ($student, $key) => $student->program === $user->program_coordinator)) {
+        } elseif ($user->isProgramCoordinator() && $project->students->each(fn ($student, $key) => $student->program === $user->assigned_program)) {
             return true;
         }
 
@@ -57,20 +57,20 @@ class ProjectPolicy extends CorePolicy
 
     // public function viewSome(User $user, Project $project)
     // {
-    //     if ($user->hasAnyRole($this->professors) && $project->student->program === $user->program_coordinator) {
+    //     if ($user->hasAnyRole($this->professors) && $project->student->program === $user->assigned_program) {
     //         return true;
     //     }
     // }
 
     // public function viewRelated(User $user, Project $project)
     // {
-    //     if ($user->hasAnyRole($this->professors) && $project->student->program === $user->program_coordinator) {
+    //     if ($user->hasAnyRole($this->professors) && $project->student->program === $user->assigned_program) {
     //         return true;
     //     }
     // }
 
     // public function updateCertain(User $user, Project $project)
     // {
-    //     return $user->hasAnyRole($this->powerProfessors) && $user->program_coordinator === $project->student->program;
+    //     return $user->hasAnyRole($this->powerProfessors) && $user->assigned_program === $project->student->program;
     // }
 }

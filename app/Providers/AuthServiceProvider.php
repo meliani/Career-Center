@@ -3,15 +3,15 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
+use App\Enums\Role;
 use App\Models\InternshipAgreement;
 use App\Models\User;
 use App\Policies\ActivityPolicy;
-use App\Policies\InternshipAgreementPolicy;
 // use Illuminate\Auth\Access\Response;
+use App\Policies\InternshipAgreementPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Spatie\Activitylog\Models\Activity;
-use App\Enums\Role;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -38,15 +38,17 @@ class AuthServiceProvider extends ServiceProvider
             if ($user->hasAnyRole($this->administrators)) {
                 return true;
             }
-            return $internship->student->program === $user->program_coordinator;
+
+            return $internship->student->program === $user->assigned_program;
         });
         Gate::define('batch-assign-internships-to-projects', function (User $user) {
             if ($user->hasAnyRole($this->administrators)) {
                 return true;
             }
+
             return false;
 
-            // return $internship->student->program === $user->program_coordinator;
+            // return $internship->student->program === $user->assigned_program;
         });
         Gate::define('validate-internship', [InternshipAgreementPolicy::class, 'update']);
         Gate::define('sign-internship', [InternshipAgreementPolicy::class, 'update']);
@@ -62,7 +64,7 @@ class AuthServiceProvider extends ServiceProvider
         //     }
 
         //     // Check if the user is a professor and the internship's student's program matches the user's program
-        //     if ($user->hasAnyRole($this->professors) && $internship->student->program == $user->program_coordinator) {
+        //     if ($user->hasAnyRole($this->professors) && $internship->student->program == $user->assigned_program) {
         //         return true;
         //     }
 

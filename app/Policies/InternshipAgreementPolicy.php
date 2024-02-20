@@ -23,7 +23,7 @@ class InternshipAgreementPolicy extends CorePolicy
             return true;
         } elseif ($user->isProfessor() && $internship->project->professors === $user->id) {
             return true;
-        } elseif ($user->isProgramCoordinator() && $internship->project->students->each(fn ($student, $key) => $student->program === $user->program_coordinator)) {
+        } elseif ($user->isProgramCoordinator() && $internship->project->students->each(fn ($student, $key) => $student->program === $user->assigned_program)) {
             return true;
         } elseif ($user->isDirection()) {
             return true;
@@ -38,7 +38,7 @@ class InternshipAgreementPolicy extends CorePolicy
             return true;
         } elseif ($user->isProfessor() && $internship->project->professors === $user->id) {
             return true;
-        } elseif ($user->isProgramCoordinator() && $internship->project->students->each(fn ($student, $key) => $student->program === $user->program_coordinator)) {
+        } elseif ($user->isProgramCoordinator() && $internship->project->students->each(fn ($student, $key) => $student->program === $user->assigned_program)) {
             return true;
         }
 

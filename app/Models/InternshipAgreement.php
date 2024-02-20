@@ -27,7 +27,7 @@ class InternshipAgreement extends Core\BackendBaseModel
     public function scopeFilterByProgramHead($query)
     {
         return $query->whereHas('student', function ($q) {
-            $q->where('program', auth()->user()->program_coordinator);
+            $q->where('program', auth()->user()->assigned_program);
         });
     }
 
@@ -95,14 +95,16 @@ class InternshipAgreement extends Core\BackendBaseModel
         // 'assigned_department' => 'string',
         // 'teammate_status' => 'string',
     ];
-    public function student() {
+
+    public function student()
+    {
         return $this->belongsTo(Student::class);
     }
-    
-    public function project() {
+
+    public function project()
+    {
         return $this->belongsTo(Project::class);
     }
-
 
     public function validate(?string $department = null)
     {
@@ -243,6 +245,7 @@ class InternshipAgreement extends Core\BackendBaseModel
     {
         return $this->ending_at->diffInMonths($this->starting_at).' mois';
     }
+
     public function scopeSigned($query)
     {
         return $query->whereNotNull('signed_at');

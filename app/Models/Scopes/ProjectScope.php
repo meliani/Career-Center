@@ -18,7 +18,7 @@ class ProjectScope implements Scope
         } elseif (auth()->user()->isProgramCoordinator()) {
             $builder
                 ->whereHas('students', function ($q) {
-                    $q->where('program', '=', auth()->user()->program_coordinator);
+                    $q->where('program', '=', auth()->user()->assigned_program);
                 });
 
             return;

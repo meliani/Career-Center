@@ -16,26 +16,29 @@ class Professor extends User
                 ->whereIn('role', Enums\Role::getProfessorRoles());
         });
     }
+
     protected $table = 'users';
+
     protected $fillable = [
         'name',
         'email',
         'password',
         'role',
         'department',
-        'program_coordinator',
+        'assigned_program',
     ];
+
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
         'role' => Enums\Role::class,
         'department' => Enums\Department::class,
-        'program_coordinator' => Enums\Program::class,
+        'assigned_program' => Enums\Program::class,
         'title' => Enums\Title::class,
     ];
+
     public function projects()
     {
         return $this->belongsToMany(Project::class)->withPivot('jury_role');
     }
-
 }

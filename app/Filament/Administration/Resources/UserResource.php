@@ -6,23 +6,30 @@ use App\Enums;
 use App\Filament\Actions\SendBulkInvitationEmail;
 use App\Filament\Actions\SendUsersBulkEmail;
 use App\Filament\Administration\Resources\UserResource\Pages;
+use App\Filament\Core\BaseResource as Resource;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
-use App\Filament\Core\BaseResource as Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
+
     protected static ?string $modelLabel = 'User';
+
     protected static ?string $pluralModelLabel = 'Users';
+
     protected static ?string $title = 'System users and access control';
+
     protected static ?string $recordTitleAttribute = 'name';
+
     protected static ?string $navigationGroup = 'Settings';
+
     // protected static ?string $navigationParentItem = '';
     protected static ?string $navigationIcon = 'heroicon-o-shield-check';
+
     protected static ?int $sort = 10;
 
     public static function form(Form $form): Form
@@ -49,7 +56,7 @@ class UserResource extends Resource
                     ->maxLength(255),
                 Forms\Components\Select::make('department')
                     ->options(Enums\Department::class),
-                Forms\Components\Select::make('program_coordinator')
+                Forms\Components\Select::make('assigned_program')
                     ->options(Enums\Program::class),
                 Forms\Components\DateTimePicker::make('email_verified_at'),
                 Forms\Components\TextInput::make('password')
@@ -84,7 +91,7 @@ class UserResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('department')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('program_coordinator')
+                Tables\Columns\TextColumn::make('assigned_program')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email_verified_at')
                     ->dateTime()
@@ -113,7 +120,7 @@ class UserResource extends Resource
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
-                \STS\FilamentImpersonate\Tables\Actions\Impersonate::make()
+                \STS\FilamentImpersonate\Tables\Actions\Impersonate::make(),
             ])
             ->bulkActions([
                 SendUsersBulkEmail::make('send_emails'),

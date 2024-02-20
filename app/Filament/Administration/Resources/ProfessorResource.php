@@ -37,6 +37,7 @@ class ProfessorResource extends Resource
     {
         return auth()->user()->isAdministrator();
     }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -69,7 +70,7 @@ class ProfessorResource extends Resource
                     ->email()
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Select::make('program_coordinator')
+                Forms\Components\Select::make('assigned_program')
                     ->label(__('Program Coordinator'))
                     ->options(Program::class),
                 Forms\Components\Toggle::make('is_enabled')
@@ -117,7 +118,7 @@ class ProfessorResource extends Resource
                 //     ->searchable(),
                 // Tables\Columns\TextColumn::make('email')
                 //     ->searchable(),
-                // Tables\Columns\TextColumn::make('program_coordinator')
+                // Tables\Columns\TextColumn::make('assigned_program')
                 //     ->searchable(),
                 // Tables\Columns\TextColumn::make('is_enabled')
                 //     ->numeric()
