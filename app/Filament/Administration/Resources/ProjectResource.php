@@ -80,6 +80,14 @@ class ProjectResource extends Resource
                 ]),
                 ExportAction::make()
                     ->exporter(ProjectExporter::class),
+                \pxlrbt\FilamentExcel\Actions\Tables\ExportAction::make(),
+                // ->exports([
+                //     \pxlrbt\FilamentExcel\Exports\ExcelExport::make()->withColumns([
+                //         \pxlrbt\FilamentExcel\Columns\Column::make('professors')
+                //         // i want to get professor with
+                //             ->formatStateUsing(fn ($record) => $record->professors->map(fn ($professor) => __($professor->pivot->jury_role).' : '.$professor->name)->join(', ')),
+                //     ]),
+                // ]),
             ])
             ->columns([
                 Tables\Columns\TextColumn::make('id_pfe')
@@ -93,9 +101,18 @@ class ProjectResource extends Resource
                     ->label('Assigned department')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('professors.name')
+                Tables\Columns\TextColumn::make('professors')
                     ->label('Supervisor - Reviewer')
+                    ->formatStateUsing(
+                        fn ($record) => $record->professors->map(
+                            fn ($professor) => $professor->pivot->jury_role->getLabel().': '.$professor->name)->join(', ')
+                    )
                     ->searchable()
+                    // ->formatStateUsing(function ($state, Project $project) {
+                    //     return $project->professors->map(function ($professor) {
+                    //         return $professor->name;
+                    //     })->join(', ');
+                    // })
                     ->sortable(),
                 Tables\Columns\TextColumn::make('timetable.timeslot.start_time')
                     ->label('Defense start Time')

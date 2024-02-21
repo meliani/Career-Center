@@ -14,7 +14,7 @@ class InternshipAgreementTable
                 ->label(__('ID'))
                 ->searchable()
                 ->sortable(),
-            Tables\Columns\TextColumn::make('student.first_name')
+            Tables\Columns\TextColumn::make('student.full_name')
                 ->label(__('Student name'))
                 ->searchable()
                 ->sortable()

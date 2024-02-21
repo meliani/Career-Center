@@ -140,5 +140,10 @@
     "Other Internship details": "Autres détails du stage",
     "Organization contacts details and external supervisor.": "Détails des contacts de l'organisation et de l'encadrant externe.",
     "Student name": "Nom de l'étudiant",
-    "Organization": "Organisation"
+    "Organization": "Organisation",
+    "supervisor": "encadrant",
+    "reviewer": "examinateur",
+    "Defense start Time": "Date et heure de début de la soutenance",
+    "Defense end Time": "Date et heure de fin de la soutenance",
+    "Title": "Titre"
 }

@@ -50,8 +50,8 @@ class Project extends Core\BackendBaseModel
     ];
 
     protected $casts = [
-        'start_date' => 'datetime',
-        'end_date' => 'datetime',
+        'start_date' => 'date',
+        'end_date' => 'date',
         'teammate_status' => Enums\TeammateStatus::class,
         'status' => Enums\Status::class,
     ];
@@ -70,7 +70,10 @@ class Project extends Core\BackendBaseModel
 
     public function professors()
     {
-        return $this->belongsToMany(Professor::class, 'professor_project')->withPivot('jury_role');
+        return $this->belongsToMany(Professor::class, 'professor_project')
+            ->withPivot('jury_role')
+            ->using(ProfessorProject::class);
+
     }
 
     public function timetable()
