@@ -145,5 +145,6 @@
     "reviewer": "examinateur",
     "Defense start Time": "Date et heure de début de la soutenance",
     "Defense end Time": "Date et heure de fin de la soutenance",
-    "Title": "Titre"
+    "Title": "Titre",
+    "Supervisor - Reviewer": "Encadrant - Examinateur"
 }

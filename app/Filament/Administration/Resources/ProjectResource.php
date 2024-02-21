@@ -5,7 +5,7 @@ namespace App\Filament\Administration\Resources;
 use App\Filament\Administration\Resources\ProjectResource\Pages;
 use App\Filament\Administration\Resources\ProjectResource\RelationManagers;
 use App\Filament\Core\BaseResource as Resource;
-use App\Filament\Exports\ProjectExporter;
+// use App\Filament\Exports\ProjectExporter;
 use App\Models\Project;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -78,8 +78,8 @@ class ProjectResource extends Resource
                     \App\Filament\Actions\ImportProfessorsFromInternshipAgreements::make('Import Professors From Internship Agreements')
                         ->hidden(fn () => auth()->user()->isAdministrator() === false),
                 ]),
-                ExportAction::make()
-                    ->exporter(ProjectExporter::class),
+                // ExportAction::make()
+                //     ->exporter(ProjectExporter::class),
                 \pxlrbt\FilamentExcel\Actions\Tables\ExportAction::make(),
                 // ->exports([
                 //     \pxlrbt\FilamentExcel\Exports\ExcelExport::make()->withColumns([
