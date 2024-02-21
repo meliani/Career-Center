@@ -7,18 +7,17 @@ use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class StudentsRelationManager extends RelationManager
 {
     protected static string $relationship = 'students';
+
     // protected static ?string $inverseRelationship = 'projects';
     public function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('long_full_name')
+                Forms\Components\TextInput::make('full_name')
                     ->required()
                     ->maxLength(255),
             ]);
@@ -34,10 +33,10 @@ class StudentsRelationManager extends RelationManager
             ->filters([
                 //
             ])
-            ->headerActions([
-                // Tables\Actions\CreateAction::make(),
-                Tables\Actions\AttachAction::make(),
-            ])
+            // ->headerActions([
+            //     // Tables\Actions\CreateAction::make(),
+            //     Tables\Actions\AttachAction::make(),
+            // ])
             ->actions([
                 Tables\Actions\DetachAction::make(),
                 // Tables\Actions\EditAction::make(),

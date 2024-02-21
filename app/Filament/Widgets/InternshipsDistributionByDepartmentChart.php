@@ -3,9 +3,6 @@
 namespace App\Filament\Widgets;
 
 use App\Filament\Core\Widgets\ApexChartsParentWidget;
-use App\Models\Project;
-use App\Models\User;
-use App\Enums;
 use App\Models\InternshipAgreement;
 
 class InternshipsDistributionByDepartmentChart extends ApexChartsParentWidget
@@ -36,10 +33,11 @@ class InternshipsDistributionByDepartmentChart extends ApexChartsParentWidget
     protected function getOptions(): array
     {
         $internships = InternshipAgreement::selectRaw('count(*) as count, assigned_department')
+            ->where('status', 'Signed')
             ->groupBy('assigned_department')
             ->get()
             ->toArray();
-        // dd($internships);  
+        // dd($internships);
         foreach ($internships as $key => $value) {
             // dd($value['count']);
             if (empty($value['assigned_department'])) {

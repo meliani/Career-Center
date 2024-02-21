@@ -5,11 +5,12 @@ namespace App\Filament\Administration\Resources;
 use App\Enums;
 use App\Filament\Actions\SendBulkEmail;
 use App\Filament\Administration\Resources\StudentResource\Pages;
-use App\Filament\Core\BaseResource as Resource;
+// use App\Filament\Core\BaseResource as Resource;
 use App\Models\Student;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\GlobalSearch\Actions\Action;
+use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -29,6 +30,10 @@ class StudentResource extends Resource
 
     protected static ?string $recordFirstNameAttribute = 'first_name';
 
+    public static function canAccess(): bool
+    {
+        return auth()->user()->isAdministrator();
+    }
     // public static function getGlobalSearchResultTitle(Model $record): string
     // {
     //     return $record->name;
