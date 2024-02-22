@@ -1,4 +1,10 @@
-# Todo backend : In progress
+# Careers management system: Backend
+
+# What is that ?
+A platform
+
+# Features in progress
+
 ## department assignments
 - [x] Add status update on announced, signed, received, validated
 - [x] Disable action on non null
