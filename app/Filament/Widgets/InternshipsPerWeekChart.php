@@ -31,7 +31,7 @@ class InternshipsPerWeekChart extends ChartWidget
         $data = Trend::model(InternshipAgreement::class)
             ->between(
                 // start: now()->startOfYear(),
-                start: now()->subWeeks(1)->startOfWeek(),
+                start: now()->subMonths(5)->startOfWeek(),
                 end: now()->endOfWeek(),
                 // end: now()->endOfYear(), ===
             )
