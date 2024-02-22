@@ -6,8 +6,6 @@ use App\Models\InternshipAgreement;
 use App\Models\Professor;
 use App\Models\Project;
 use Illuminate\Console\Command;
-use SimilarText\Finder;
-
 
 class ImportSupervisors extends Command
 {
@@ -16,7 +14,7 @@ class ImportSupervisors extends Command
      *
      * @var string
      */
-    protected $signature = 'carrieres:import-supervisors';
+    protected $signature = 'carrieres:import-supervisors {filename}';
 
     /**
      * The console command description.
@@ -31,7 +29,7 @@ class ImportSupervisors extends Command
     public function handle()
     {
         //  get csv file from app\developer_docs\csv\internships.csv
-        $file = 'app/developer_docs/csv/SC_supervisors.csv';
+        $file = 'app/developer_docs/csv/'.$this->argument('filename');
 
         //  open the file
         $handle = fopen($file, 'r');
@@ -45,8 +43,9 @@ class ImportSupervisors extends Command
             $importedData = array_combine($header, $data);
             //  find the internship by the id
             $internshipAgreement = InternshipAgreement::withoutGlobalScopes()->where('id_pfe', '=', $importedData['id_pfe'])->first();
-            if($internshipAgreement == null) {
+            if ($internshipAgreement == null) {
                 $this->error('Internship agreement with id_pfe '.$importedData['id_pfe'].' not found');
+
                 continue;
             }
             $this->ImportProfessorFromInternshipAgreement($internshipAgreement, $importedData['professor_name']);
@@ -60,20 +59,20 @@ class ImportSupervisors extends Command
         $professor = Professor::where('name', 'like', '%'.$professor_name.'%')->first();
         if ($professor == null) {
             $professor = Professor::whereFuzzy('first_name', $professor_name)
-            ->whereFuzzy('last_name', $professor_name)
-            ->whereFuzzy('name', $professor_name)
-            ->withMinimumRelevance(40)
-            ->first();
+                ->orWhereFuzzy('last_name', $professor_name)
+                ->orWhereFuzzy('name', $professor_name)
+                ->withMinimumRelevance(40)
+                ->first();
 
-            if ($professor != null)
-            $this->info('Professor '.$professor_name.' is similar to '.$professor->name);
-            else {
+            if ($professor != null) {
+                $this->info('Professor '.$professor_name.' is similar to '.$professor->name);
+            } else {
                 $this->error('Professor '.$professor_name.' not found');
+
                 return;
             }
-            
-        }
-        elseif ($professor != null) {
+
+        } elseif ($professor != null) {
             $this->info('Professor '.$professor_name.' found as '.$professor->name);
             $project = Project::withoutGlobalScopes()->where('id', $internshipAgreement->project_id)->first();
             if ($project->professors->contains($professor)) {
