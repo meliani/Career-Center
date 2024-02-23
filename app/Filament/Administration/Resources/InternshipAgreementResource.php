@@ -141,7 +141,8 @@ class InternshipAgreementResource extends BaseResource
                     ->color('warning')
                     ->outlined()
                     ->button()
-                    ->hidden(fn () => auth()->user()->isPowerProfessor() === false),
+                    // ->hidden(fn () => auth()->user()->isPowerProfessor() === false ),
+                    ->hidden(fn () => (auth()->user()->isSuperAdministrator() || auth()->user()->isPowerProfessor()) === false),
                 ActionGroup::make([
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\ViewAction::make(),
@@ -149,7 +150,8 @@ class InternshipAgreementResource extends BaseResource
                     // ->disabled(! auth()->user()->can('delete', $this->post)),
                     Tables\Actions\ForceDeleteAction::make(),
                     Tables\Actions\RestoreAction::make(),
-                ])->hidden(fn () => auth()->user()->isPowerProfessor() === false)
+                ])
+                    ->hidden((auth()->user()->isSuperAdministrator() || auth()->user()->isPowerProfessor()) === false)
                     ->label(__('Manage'))
                     ->icon('')
                     // ->size(ActionSize::ExtraSmall)

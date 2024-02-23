@@ -73,6 +73,15 @@ class InternshipAgreementTable
                 ->label(__('Status'))
                 ->searchable()
                 ->sortable(),
+            Tables\Columns\TextColumn::make('project.professors.name')
+                ->label(__('Supervisor - Reviewer'))
+                ->searchable()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('assigned_department')
+                ->label(__('Assigned department'))
+                ->searchable()
+                ->sortable(),
+
             Tables\Columns\TextColumn::make('announced_at')
                 ->toggleable(isToggledHiddenByDefault: true)
                 ->label(__('Announced'))
@@ -96,9 +105,7 @@ class InternshipAgreementTable
                 ->label(__('Received'))
                 ->searchable()
                 ->sortable()
-                ->date(
-                    'Y-m-d'
-                ),
+                ->date(),
             Tables\Columns\TextColumn::make('starting_at')
                 ->label(__('Start'))
                 ->searchable()
