@@ -3,6 +3,14 @@
 # What is that ?
 A platform
 
+In active development for a first release
+
+# Code quality
+
+# testing
+
+# Features
+
 # Features in progress
 
 ## department assignments
@@ -63,8 +71,16 @@ Finish pxlrbt/filament-activity-log configuration
 - [ ] Filter graphs by only signed projects
 ## UX
 - [ ] Add tick box to assign interns to projects
-- [ ]  Add export projects
-- [ ] Internship agreements page
-    - [x] Add name search
-    - [x] Add department and supervisors
-    - [x] Add sorting everywhere
+- [ ] Add export projects
+- [ ] Interns agreements table
+    - [ ] Add name search
+    - [ ] Add department and supervisors
+
+# How to contribute
+
+
+
+# License
+Free for non commercial use.
+Authorization required for any use out of promoting jobs and internships for free for your community.
+
