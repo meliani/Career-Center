@@ -5,12 +5,12 @@ namespace App\Filament\Administration\Resources;
 use App\Enums;
 use App\Filament\Actions\SendBulkEmail;
 use App\Filament\Administration\Resources\StudentResource\Pages;
-// use App\Filament\Core\BaseResource as Resource;
+use App\Filament\Core\BaseResource as Resource;
 use App\Models\Student;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\GlobalSearch\Actions\Action;
-use Filament\Resources\Resource;
+// use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -59,7 +59,7 @@ class StudentResource extends Resource
 
     public static function getGloballySearchableAttributes(): array
     {
-        return ['full_name'];
+        return ['full_name', 'program'.'internship.id_pfe'];
     }
 
     public static function form(Form $form): Form

@@ -58,9 +58,7 @@ class Project extends Core\BackendBaseModel
 
     public function students()
     {
-        return $this->belongsToMany(Student::class,
-            'project_student'
-        );
+        return $this->belongsToMany(Student::class);
     }
 
     public function internshipAgreements()
