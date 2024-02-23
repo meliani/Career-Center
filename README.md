@@ -4,6 +4,23 @@
 
 A platform
 
+In active development for a first release
+
+# Code quality
+
+# testing
+
+# Features
+## Students features
+- [x] Announce internship
+- [x] View announced internship
+- [x] Wait for confirmation
+- [x] Generate agreement
+- [x] Add teammate -> notify
+- [x] Accept teammate -> notify
+- [ ] Exchange with supervisors
+- [ ] Add changeStatus to internship model to send notifications for all actions.
+
 # Features in progress
 
 ## department assignments
@@ -93,3 +110,23 @@ Finish pxlrbt/filament-activity-log configuration
     -   [x] Add name search
     -   [x] Add department and supervisors
     -   [x] Add sorting everywhere
+- [ ] Add tick box to assign interns to projects
+- [ ] Add export projects
+- [ ] Interns agreements table
+    - [ ] Add name search
+    - [ ] Add department and supervisors
+
+- [ ] Possibility for student to choose professor, up to 10 teachers per student
+- [ ] Student choose supervisor
+- [ ] Supervisor receive email for approval
+- [ ] Supervisor can approve by email or by clicking on magic link and reply
+- [ ] Supervisor receive in the email the magic link to access personal space
+
+
+# How to contribute
+
+
+
+# License
+Free for non commercial use.
+Authorization required for any use out of promoting jobs and internships for free for your community.
