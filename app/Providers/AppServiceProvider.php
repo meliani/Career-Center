@@ -92,7 +92,9 @@ class AppServiceProvider extends ServiceProvider
     private function autoTranslateLabels()
     {
         Column::configureUsing(function (Column $column): void {
-            $column->translateLabel();
+            $column->translateLabel()
+                ->toggleable()
+                ->sortable();
         });
         Filter::configureUsing(function (Filter $filter): void {
             $filter->translateLabel();

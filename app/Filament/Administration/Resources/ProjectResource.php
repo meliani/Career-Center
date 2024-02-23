@@ -107,6 +107,8 @@ class ProjectResource extends Resource
                         fn ($record) => $record->professors->map(
                             fn ($professor) => $professor->pivot->jury_role->getLabel().': '.$professor->name)->join(', ')
                     )
+                    // ->listWithLineBreaks()
+                    // ->bulleted()
                     ->searchable()
                     // ->formatStateUsing(function ($state, Project $project) {
                     //     return $project->professors->map(function ($professor) {
@@ -117,11 +119,19 @@ class ProjectResource extends Resource
                 Tables\Columns\TextColumn::make('timetable.timeslot.start_time')
                     ->label('Defense start Time')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->formatStateUsing(
+                        fn ($state, $record) => $record->timetable->timeslot->start_time->format('Y-m-d H:i:s')
+                    )
+                    ->dateTime(),
                 Tables\Columns\TextColumn::make('timetable.timeslot.end_time')
                     ->label('Defense end Time')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->formatStateUsing(
+                        fn ($state) => date('Y-m-d H:i:s', strtotime($state))
+                    )
+                    ->dateTime(),
 
                 Tables\Columns\TextColumn::make('organization')
                     ->searchable()
