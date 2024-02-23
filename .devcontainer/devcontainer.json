@@ -2,7 +2,7 @@
 {
 	"name": "Careers Center Backend",
 	"dockerComposeFile": [
-		"../docker-compose.yaml"
+		"../docker-compose.yml"
 	],
 	"service": "laravel.test",
 	"workspaceFolder": "/var/www/html",
