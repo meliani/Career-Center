@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "44486161c1c8e4ffd18e86ade60a4a72",
+    "content-hash": "2c330ee5fa5a422fc27a7c5738723506",
     "packages": [
         {
             "name": "amendozaaguiar/filament-route-statistics",
@@ -133,6 +133,64 @@
                 "source": "https://github.com/AnourValar/eloquent-serialize/tree/1.2.17"
             },
             "time": "2023-12-06T15:54:01+00:00"
+        },
+        {
+            "name": "archtechx/laravel-seo",
+            "version": "v0.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/archtechx/laravel-seo.git",
+                "reference": "3a17c8ee117cfa2655dded5e997dfaf75e4ec1eb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/archtechx/laravel-seo/zipball/3a17c8ee117cfa2655dded5e997dfaf75e4ec1eb",
+                "reference": "3a17c8ee117cfa2655dded5e997dfaf75e4ec1eb",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^8.24|^9.0|^10.0",
+                "illuminate/view": "^8.24|^9.0|^10.0",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "intervention/image": "^2.7",
+                "nunomaduro/larastan": "^1.0|^2.4",
+                "orchestra/testbench": "^6.23|^7.0|^8.0",
+                "pestphp/pest": "^1.2|^2.0",
+                "pestphp/pest-plugin-laravel": "^1.0|^2.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "ArchTech\\SEO\\SEOServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "ArchTech\\SEO\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Samuel Štancl",
+                    "email": "samuel@archte.ch"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/archtechx/laravel-seo/issues",
+                "source": "https://github.com/archtechx/laravel-seo/tree/v0.7.0"
+            },
+            "time": "2023-03-03T13:19:18+00:00"
         },
         {
             "name": "awcodes/light-switch",
@@ -934,6 +992,149 @@
                 }
             ],
             "time": "2023-06-12T16:44:36+00:00"
+        },
+        {
+            "name": "codeat3/blade-clarity-icons",
+            "version": "1.8.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/codeat3/blade-clarity-icons.git",
+                "reference": "8921831b8629d035bd340815b6ecb9a522cb523c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/codeat3/blade-clarity-icons/zipball/8921831b8629d035bd340815b6ecb9a522cb523c",
+                "reference": "8921831b8629d035bd340815b6ecb9a522cb523c",
+                "shasum": ""
+            },
+            "require": {
+                "blade-ui-kit/blade-icons": "^1.1",
+                "illuminate/support": "^8.0|^9.0|^10.0",
+                "php": "^7.4|^8.0"
+            },
+            "require-dev": {
+                "codeat3/blade-icon-generation-helpers": "^0.3",
+                "codeat3/phpcs-styles": "^1.0",
+                "orchestra/testbench": "^6.0|^7.0|^8.0",
+                "phpunit/phpunit": "^9.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Codeat3\\BladeClarityIcons\\BladeClarityIconsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Codeat3\\BladeClarityIcons\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Swapnil Sarwe",
+                    "homepage": "https://swapnilsarwe.com"
+                },
+                {
+                    "name": "Dries Vints",
+                    "homepage": "https://driesvints.com"
+                }
+            ],
+            "description": "A package to easily make use of Clarity Icons in your Laravel Blade views.",
+            "homepage": "https://github.com/codeat3/blade-clarity-icons",
+            "keywords": [
+                "blade",
+                "clarity",
+                "icons",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/codeat3/blade-clarity-icons/issues",
+                "source": "https://github.com/codeat3/blade-clarity-icons/tree/1.8.1"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/swapnilsarwe",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-03-10T12:20:30+00:00"
+        },
+        {
+            "name": "codeat3/blade-iconpark",
+            "version": "1.5.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/codeat3/blade-iconpark.git",
+                "reference": "68b3f5dfc0fae2e78a78c8b91bd192e3c78f0cdb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/codeat3/blade-iconpark/zipball/68b3f5dfc0fae2e78a78c8b91bd192e3c78f0cdb",
+                "reference": "68b3f5dfc0fae2e78a78c8b91bd192e3c78f0cdb",
+                "shasum": ""
+            },
+            "require": {
+                "blade-ui-kit/blade-icons": "^1.1",
+                "illuminate/support": "^8.0|^9.0|^10.0",
+                "php": "^7.4|^8.0"
+            },
+            "require-dev": {
+                "codeat3/blade-icon-generation-helpers": "^0.3",
+                "codeat3/phpcs-styles": "^1.0",
+                "orchestra/testbench": "^6.0|^7.0|^8.0",
+                "phpunit/phpunit": "^9.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Codeat3\\BladeIconpark\\BladeIconparkServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Codeat3\\BladeIconpark\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Swapnil Sarwe",
+                    "homepage": "https://swapnilsarwe.com"
+                },
+                {
+                    "name": "Dries Vints",
+                    "homepage": "https://driesvints.com"
+                }
+            ],
+            "description": "A package to easily make use of \"Icon Park Icons\" in your Laravel Blade views. ",
+            "homepage": "https://github.com/codeat3/blade-iconpark",
+            "keywords": [
+                "blade",
+                "iconpark",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/codeat3/blade-iconpark/issues",
+                "source": "https://github.com/codeat3/blade-iconpark/tree/1.5.1"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/swapnilsarwe",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-02-18T14:07:58+00:00"
         },
         {
             "name": "composer/semver",
@@ -2329,6 +2530,51 @@
             "time": "2024-01-29T13:20:09+00:00"
         },
         {
+            "name": "filament/spatie-laravel-translatable-plugin",
+            "version": "v3.2.35",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/filamentphp/spatie-laravel-translatable-plugin.git",
+                "reference": "696a4a7d08bf7753f14b745948d806b3e8c79f73"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/filamentphp/spatie-laravel-translatable-plugin/zipball/696a4a7d08bf7753f14b745948d806b3e8c79f73",
+                "reference": "696a4a7d08bf7753f14b745948d806b3e8c79f73",
+                "shasum": ""
+            },
+            "require": {
+                "filament/support": "self.version",
+                "illuminate/support": "^10.0",
+                "php": "^8.1",
+                "spatie/laravel-translatable": "^6.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Filament\\SpatieLaravelTranslatablePluginServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Filament\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Filament support for `spatie/laravel-translatable`.",
+            "homepage": "https://github.com/filamentphp/filament",
+            "support": {
+                "issues": "https://github.com/filamentphp/filament/issues",
+                "source": "https://github.com/filamentphp/filament"
+            },
+            "time": "2024-02-20T10:36:42+00:00"
+        },
+        {
             "name": "filament/support",
             "version": "v3.2.35",
             "source": {
@@ -2688,6 +2934,64 @@
                 }
             ],
             "time": "2023-11-12T22:16:48+00:00"
+        },
+        {
+            "name": "guava/filament-icon-picker",
+            "version": "2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lukas-frey/filament-icon-picker.git",
+                "reference": "db899b45137c936f5c064f9f130c7026e9bcf83a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lukas-frey/filament-icon-picker/zipball/db899b45137c936f5c064f9f130c7026e9bcf83a",
+                "reference": "db899b45137c936f5c064f9f130c7026e9bcf83a",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.0@stable",
+                "illuminate/contracts": "^9.0|^10.0",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^7.0|^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Guava\\FilamentIconPicker\\FilamentIconPickerServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Guava\\FilamentIconPicker\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Lukas Frey",
+                    "email": "mail@lukasfrey.cz"
+                }
+            ],
+            "description": "A filament plugin that adds an icon picker field.",
+            "support": {
+                "issues": "https://github.com/lukas-frey/filament-icon-picker/issues",
+                "source": "https://github.com/lukas-frey/filament-icon-picker/tree/2.1.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/LukasFreyCZ",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-02-16T19:06:03+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -3376,6 +3680,184 @@
             "time": "2023-01-25T16:56:05+00:00"
         },
         {
+            "name": "lara-zeus/accordion",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lara-zeus/accordion.git",
+                "reference": "85550d7cae84f37cae5a11022a429e00ae4b3581"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lara-zeus/accordion/zipball/85550d7cae84f37cae5a11022a429e00ae4b3581",
+                "reference": "85550d7cae84f37cae5a11022a429e00ae4b3581",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.0",
+                "php": "^8.1",
+                "spatie/laravel-package-tools": "^1.16"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.0",
+                "nunomaduro/collision": "^7.0",
+                "nunomaduro/larastan": "^2.0.1",
+                "nunomaduro/phpinsights": "^2.8",
+                "orchestra/testbench": "^8.0",
+                "phpstan/extension-installer": "^1.1"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "LaraZeus\\Accordion\\AccordionServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "LaraZeus\\Accordion\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "php coder",
+                    "email": "info@larazeus.com",
+                    "role": "Owner"
+                }
+            ],
+            "description": "Zeus Accordion is filamentphp layout component to group components",
+            "homepage": "https://larazeus.com/accordion",
+            "keywords": [
+                "accordion",
+                "code",
+                "coulmn",
+                "design",
+                "field",
+                "filamentphp",
+                "generator",
+                "input",
+                "lara-zeus",
+                "laravel",
+                "tippy",
+                "tooltip",
+                "ui"
+            ],
+            "support": {
+                "issues": "https://github.com/lara-zeus/accordion/issues",
+                "source": "https://github.com/lara-zeus/accordion"
+            },
+            "funding": [
+                {
+                    "url": "https://www.buymeacoffee.com/larazeus",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/atmonshi",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-01-30T18:43:05+00:00"
+        },
+        {
+            "name": "lara-zeus/bolt",
+            "version": "v3.0.23",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lara-zeus/bolt.git",
+                "reference": "1818bbd842aadd0b11ade4b326d3b147111f5002"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lara-zeus/bolt/zipball/1818bbd842aadd0b11ade4b326d3b147111f5002",
+                "reference": "1818bbd842aadd0b11ade4b326d3b147111f5002",
+                "shasum": ""
+            },
+            "require": {
+                "codeat3/blade-clarity-icons": "^1.7",
+                "flowframe/laravel-trend": "^0.1.5",
+                "guava/filament-icon-picker": "^2.0",
+                "lara-zeus/accordion": "^1.0",
+                "lara-zeus/core": "^3.1",
+                "lara-zeus/list-group": "^1.0",
+                "php": "^8.1",
+                "ryangjchandler/blade-tabler-icons": "^2.2"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.0",
+                "nunomaduro/collision": "^7.0",
+                "nunomaduro/larastan": "^2.0.1",
+                "nunomaduro/phpinsights": "^2.8",
+                "orchestra/testbench": "^8.0",
+                "pestphp/pest": "^2.0",
+                "pestphp/pest-plugin-arch": "^2.0",
+                "pestphp/pest-plugin-laravel": "^2.0",
+                "pestphp/pest-plugin-livewire": "^2.1",
+                "phpstan/extension-installer": "^1.1"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "LaraZeus\\Bolt\\BoltServiceProvider"
+                    ],
+                    "aliases": {
+                        "Bolt": "LaraZeus\\Bolt\\Facades\\Bolt"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "LaraZeus\\Bolt\\": "src",
+                    "LaraZeus\\Bolt\\Database\\Factories\\": "database/factories/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "php coder",
+                    "email": "info@larazeus.com",
+                    "role": "Owner"
+                }
+            ],
+            "description": "Zeus Bolt is form builder for your users, with so many use cases",
+            "homepage": "https://larazeus.com/bolt",
+            "keywords": [
+                "Forms",
+                "bolt",
+                "builder",
+                "filamentphp",
+                "form",
+                "generator",
+                "lara-zeus",
+                "laravel",
+                "maker",
+                "self hosted"
+            ],
+            "support": {
+                "issues": "https://github.com/lara-zeus/bolt/issues",
+                "source": "https://github.com/lara-zeus/bolt"
+            },
+            "funding": [
+                {
+                    "url": "https://www.buymeacoffee.com/larazeus",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/atmonshi",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-02-16T17:38:19+00:00"
+        },
+        {
             "name": "lara-zeus/boredom",
             "version": "1.0.1",
             "source": {
@@ -3455,6 +3937,180 @@
                 }
             ],
             "time": "2024-01-23T14:28:42+00:00"
+        },
+        {
+            "name": "lara-zeus/core",
+            "version": "v3.1.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lara-zeus/core.git",
+                "reference": "b3b9e9bc02d1b7c7fc50c084c17db1f6cfab5ad6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lara-zeus/core/zipball/b3b9e9bc02d1b7c7fc50c084c17db1f6cfab5ad6",
+                "reference": "b3b9e9bc02d1b7c7fc50c084c17db1f6cfab5ad6",
+                "shasum": ""
+            },
+            "require": {
+                "archtechx/laravel-seo": "^0.7",
+                "calebporzio/sushi": "^2.4",
+                "codeat3/blade-iconpark": "^1.5",
+                "ext-json": "*",
+                "ext-pdo_sqlite": "*",
+                "ext-sqlite3": "*",
+                "filament/filament": "^3.1",
+                "filament/spatie-laravel-translatable-plugin": "^3.1",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "larastan/larastan": "^2.2",
+                "laravel/pint": "^1.0",
+                "nunomaduro/collision": "^7.0",
+                "orchestra/testbench": "^8.0",
+                "pestphp/pest": "^2.0",
+                "pestphp/pest-plugin-laravel": "^2.0",
+                "pestphp/pest-plugin-livewire": "2.x-dev",
+                "phpstan/extension-installer": "^1.1",
+                "phpstan/phpstan": "^1.10",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-phpunit": "^1.0",
+                "phpunit/phpunit": "^10.1"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "LaraZeus\\Core\\CoreServiceProvider"
+                    ],
+                    "aliases": {
+                        "Core": "LaraZeus\\Core\\CoreFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "LaraZeus\\Core\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "php coder",
+                    "email": "info@larazeus.com",
+                    "role": "Owner"
+                }
+            ],
+            "description": "the core for zeus packages",
+            "homepage": "https://larazeus.com",
+            "keywords": [
+                "contact",
+                "core",
+                "form",
+                "lara-zeus",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/lara-zeus/core/issues",
+                "source": "https://github.com/lara-zeus/core"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/atmonshi",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-02-10T09:07:04+00:00"
+        },
+        {
+            "name": "lara-zeus/list-group",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lara-zeus/list-group.git",
+                "reference": "0832212eb3207866bf1e8a1b879513753c2422ab"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lara-zeus/list-group/zipball/0832212eb3207866bf1e8a1b879513753c2422ab",
+                "reference": "0832212eb3207866bf1e8a1b879513753c2422ab",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.0",
+                "php": "^8.1",
+                "spatie/laravel-package-tools": "^1.16"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.0",
+                "nunomaduro/collision": "^7.0",
+                "nunomaduro/larastan": "^2.0.1",
+                "nunomaduro/phpinsights": "^2.8",
+                "orchestra/testbench": "^8.0",
+                "phpstan/extension-installer": "^1.1"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "LaraZeus\\ListGroup\\ListGroupServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "LaraZeus\\ListGroup\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "php coder",
+                    "email": "info@larazeus.com",
+                    "role": "Owner"
+                }
+            ],
+            "description": "Zeus List is a filamentphp infolist layout component to group items with links, icons and badges",
+            "homepage": "https://larazeus.com/list-group",
+            "keywords": [
+                "code",
+                "coulmn",
+                "design",
+                "field",
+                "filamentphp",
+                "generator",
+                "infolist",
+                "input",
+                "lara-zeus",
+                "laravel",
+                "list",
+                "list group",
+                "list layout",
+                "tippy",
+                "tooltip",
+                "ui"
+            ],
+            "support": {
+                "issues": "https://github.com/lara-zeus/list-group/issues",
+                "source": "https://github.com/lara-zeus/list-group"
+            },
+            "funding": [
+                {
+                    "url": "https://www.buymeacoffee.com/larazeus",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/atmonshi",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-02-12T23:03:41+00:00"
         },
         {
             "name": "laravel/framework",
@@ -7407,6 +8063,68 @@
                 }
             ],
             "time": "2023-02-14T16:54:54+00:00"
+        },
+        {
+            "name": "ryangjchandler/blade-tabler-icons",
+            "version": "v2.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ryangjchandler/blade-tabler-icons.git",
+                "reference": "0bb9dfff74ff38a1374b2d4f0ce1cb0585ea96ee"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ryangjchandler/blade-tabler-icons/zipball/0bb9dfff74ff38a1374b2d4f0ce1cb0585ea96ee",
+                "reference": "0bb9dfff74ff38a1374b2d4f0ce1cb0585ea96ee",
+                "shasum": ""
+            },
+            "require": {
+                "blade-ui-kit/blade-icons": "^1.5",
+                "illuminate/support": "^10.0",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.14",
+                "orchestra/testbench": "^8.0",
+                "phpunit/phpunit": "^9.5.10"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "RyanChandler\\TablerIcons\\BladeTablerIconsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "RyanChandler\\TablerIcons\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ryan Chandler",
+                    "email": "support@ryangjchandler.co.uk",
+                    "homepage": "https://ryangjchandler.co.uk",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A package to easily make use of Tabler icons in your Laravel Blade views.",
+            "homepage": "https://github.com/ryangjchandler/blade-tabler-icons",
+            "keywords": [
+                "blade",
+                "laravel",
+                "tabler"
+            ],
+            "support": {
+                "issues": "https://github.com/ryangjchandler/blade-tabler-icons/issues",
+                "source": "https://github.com/ryangjchandler/blade-tabler-icons/tree/v2.2.0"
+            },
+            "time": "2024-01-07T23:33:22+00:00"
         },
         {
             "name": "ryangjchandler/filament-progress-column",

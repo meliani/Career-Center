@@ -12,6 +12,7 @@ use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
+use Filament\SpatieLaravelTranslatablePlugin;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\MaxWidth;
 use Filament\Widgets;
@@ -23,6 +24,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use LaraZeus\Bolt\BoltPlugin;
 use LaraZeus\Boredom\Enums\Variants;
 use Leandrocfe\FilamentApexCharts\FilamentApexChartsPlugin;
 use Saade\FilamentFullCalendar\FilamentFullCalendarPlugin;
@@ -103,6 +105,8 @@ class AdminPanelProvider extends PanelProvider
                         ->size(60)
                         ->square()
                         ->colors(['0A0310', '49007E', 'FF005B', 'FF7D10', 'FFB238']),
+                    SpatieLaravelTranslatablePlugin::make()->defaultLocales([config('app.locale')]),
+                    // BoltPlugin::make(),
                 ]
             )
             ->defaultAvatarProvider(
