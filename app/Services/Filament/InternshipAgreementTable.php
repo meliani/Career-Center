@@ -20,13 +20,14 @@ class InternshipAgreementTable
                 ->searchable()
                 ->sortable(),
 
-            Tables\Columns\TextColumn::make('student.full_name')
+            Tables\Columns\TextColumn::make('student')
                 ->label(__('Student name'))
                 ->searchable()
                 ->sortable()
                 ->formatStateUsing(function ($state, InternshipAgreement $internship) {
-                    return $internship->student->title->getLabel().' '.$internship->student->first_name.' '.$internship->student->last_name;
+                    return $internship->student->title->getLabel() . ' ' . $internship->student->first_name . ' ' . $internship->student->last_name;
                 }),
+
             Tables\Columns\TextColumn::make('organization_name')
                 ->label(__('Organization'))
                 ->searchable()
@@ -38,9 +39,7 @@ class InternshipAgreementTable
                 ->wrap()
                 ->lineClamp(2)
                 ->tooltip(
-
                     fn (InternshipAgreement $internship) => $internship->title,
-
                 ),
             Tables\Columns\TextColumn::make('description')
                 ->label(__('Description'))
@@ -49,15 +48,13 @@ class InternshipAgreementTable
                 ->wrap()
                 ->lineClamp(2)
                 ->tooltip(
-
                     fn (InternshipAgreement $internship) => $internship->description,
-
                 ),
             Tables\Columns\TextColumn::make('parrain_nom')
                 ->toggleable(isToggledHiddenByDefault: true)
                 ->label(__('Parrain'))
                 ->formatStateUsing(function ($state, InternshipAgreement $internship) {
-                    return $internship->parrain_titre->getLabel().' '.$internship->parrain_nom.' '.$internship->parrain_prenom;
+                    return $internship->parrain_titre->getLabel() . ' ' . $internship->parrain_nom . ' ' . $internship->parrain_prenom;
                 })
                 ->searchable()
                 ->sortable(),
@@ -65,7 +62,7 @@ class InternshipAgreementTable
                 ->toggleable(isToggledHiddenByDefault: true)
                 ->label(__('Encadrant'))
                 ->formatStateUsing(function ($state, InternshipAgreement $internship) {
-                    return $internship->encadrant_ext_titre->getLabel().' '.$internship->encadrant_ext_nom.' '.$internship->encadrant_ext_prenom;
+                    return $internship->encadrant_ext_titre->getLabel() . ' ' . $internship->encadrant_ext_nom . ' ' . $internship->encadrant_ext_prenom;
                 })
                 ->searchable()
                 ->sortable(),
