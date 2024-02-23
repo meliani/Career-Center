@@ -2,7 +2,7 @@
 	"name": "Careers Center Backend",
 	"dockerComposeFile": "docker-compose.yaml",
 	"service": "dev",
-	"workspaceFolder": "/workspaces/carrieres",
+	"workspaceFolder": "/workspaces/careers_backend",
 	"shutdownAction": "stopCompose",
 	"customizations": {
 		"vscode": {
