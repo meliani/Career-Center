@@ -101,7 +101,7 @@ class ProjectResource extends Resource
                     ->label('Assigned department')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('professors')
+                Tables\Columns\TextColumn::make('professors.name')
                     ->label('Supervisor - Reviewer')
                     ->formatStateUsing(
                         fn ($record) => $record->professors->map(
