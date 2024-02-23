@@ -47,7 +47,6 @@
 		"ghcr.io/devcontainers-contrib/features/vtop:2": {}
 	},
 
-
 	"customizations": {
 		"vscode": {
 			"extensions": [
@@ -69,7 +68,7 @@
 			],
 			"settings": {}
 		}
-
+	}
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// "postCreateCommand": "sudo chmod a+x \"$(pwd)\" && sudo rm -rf /var/www/html && sudo ln -s \"$(pwd)\" /var/www/html"
 
