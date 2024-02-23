@@ -10,6 +10,15 @@ In active development for a first release
 # testing
 
 # Features
+## Students features
+- [x] Announce internship
+- [x] View announced internship
+- [x] Wait for confirmation
+- [x] Generate agreement
+- [x] Add teammate -> notify
+- [x] Accept teammate -> notify
+- [ ] Exchange with supervisors
+- [ ] Add changeStatus to internship model to send notifications for all actions.
 
 # Features in progress
 
