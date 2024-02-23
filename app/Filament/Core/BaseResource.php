@@ -6,7 +6,6 @@ use Filament\Resources\Resource;
 
 class BaseResource extends Resource
 {
-
     public static function getModelLabel(): string
     {
         return __(self::$modelLabel) ?? '';
@@ -16,20 +15,24 @@ class BaseResource extends Resource
     {
         return __(static::$pluralModelLabel) ?? '';
     }
+
     public static function viewAny(): bool
     {
-        return false;
+        return true;
     }
+
     public static function view(): bool
     {
-        return false;
+        return true;
     }
+
     public static function create(): bool
     {
-        return false;
+        return true;
     }
+
     public static function update(): bool
     {
-        return false;
+        return true;
     }
 }

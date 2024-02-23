@@ -169,7 +169,8 @@ class ProjectResource extends Resource
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\ViewAction::make(),
-                ])->hidden(fn () => auth()->user()->isPowerProfessor() === false),
+                ]),
+                // ->hidden(true),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

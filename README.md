@@ -1,70 +1,95 @@
 # Careers management system: Backend
 
 # What is that ?
+
 A platform
 
 # Features in progress
 
 ## department assignments
-- [x] Add status update on announced, signed, received, validated
-- [x] Disable action on non null
-- [x] Add badge for status
-- [ ] Add badge to signed at, validated at, received at, signed at and status
-- [x] Use enums instead of strings for status, 
-- [x] Use enums assigned_department, current_year, department, program, role
-- [x] Add grouped action buttons : Internship, Manage, Defense
+
+-   [x] Add status update on announced, signed, received, validated
+-   [x] Disable action on non null
+-   [x] Add badge for status
+-   [ ] Add badge to signed at, validated at, received at, signed at and status
+-   [x] Use enums instead of strings for status,
+-   [x] Use enums assigned_department, current_year, department, program, role
+-   [x] Add grouped action buttons : Internship, Manage, Defense
+
 ## Calendar
-- [ ] Add bulk action to assign a day for defense, add hour, add jury member
-- [x] Add jury member is a form with Member role and name
-- [ ] Add same bulks to individual actions
-- [x] Group actions by type
+
+-   [ ] Add bulk action to assign a day for defense, add hour, add jury member
+-   [x] Add jury member is a form with Member role and name
+-   [ ] Add same bulks to individual actions
+-   [x] Group actions by type
+
 ## Emails
-- [x] Add bulk emails to users, internships
-- [ ] Add send email to external supervisors
-- [x] Add send email to Internal supervisors 
-- [ ] Add send email to jury
-- [ ] Add send defense email : to students and jury and referents
-- [ ] Add email notifications for internship validation, signature and announcement.
+
+-   [x] Add bulk emails to users, internships
+-   [ ] Add send email to external supervisors
+-   [x] Add send email to Internal supervisors
+-   [ ] Add send email to jury
+-   [ ] Add send defense email : to students and jury and referents
+-   [ ] Add email notifications for internship validation, signature and announcement.
+
 ## Forms
-- [ ] Add defense authorization form
-- [ ] Generate defense document
-- [ ] Add action to send defense document to referent
+
+-   [ ] Add defense authorization form
+-   [ ] Generate defense document
+-   [ ] Add action to send defense document to referent
+
 ## Internship management
-- [ ] Add internship started badge if started at is superior to today
-- [ ] Add notes field to form and table
-- [x] Unify internship resource 
+
+-   [ ] Add internship started badge if started at is superior to today
+-   [ ] Add notes field to form and table
+-   [x] Unify internship resource
+
 ## policies for Internship model:
-- [x] Only department coordinator role can view records and use review function
-- [x] Only admins and coordinators can edit and delete records
-- [x] Professors can view assigned records and proprieties from internship model
-- [x] head of department can see related records from its assigned internships
-- [x] policies must check if a giver user can update Internship with a certain given program from students table.
-- [ ] Consider binomes in assignment to projects
-- [ ] Add a tick box to enable overriding 
+
+-   [x] Only department coordinator role can view records and use review function
+-   [x] Only admins and coordinators can edit and delete records
+-   [x] Professors can view assigned records and proprieties from internship model
+-   [x] head of department can see related records from its assigned internships
+-   [x] policies must check if a giver user can update Internship with a certain given program from students table.
+-   [ ] Consider binomes in assignment to projects
+-   [ ] Add a tick box to enable overriding
+
 ## logs
+
 Finish pxlrbt/filament-activity-log configuration
+
 ## enums
-- [x] Translate enums
-- [ ] List status of all status badges in the same column: Example of signature is null we gonna see (Announced, Validated, Pending Signature)
-- [x] Ignore is valid for internships and count on Announced status.
+
+-   [x] Translate enums
+-   [ ] List status of all status badges in the same column: Example of signature is null we gonna see (Announced, Validated, Pending Signature)
+-   [x] Ignore is valid for internships and count on Announced status.
+
 ## frontend
-- [ ] Update QR code to an easy readable one
-- [ ] Add status on QR verification page
+
+-   [ ] Update QR code to an easy readable one
+-   [ ] Add status on QR verification page
+
 ## Data
-- [ ] Parse keywords and put them into tags.
+
+-   [ ] Parse keywords and put them into tags.
+
 ## project
-- [ ] Show only project with internship->status signed and teammate_status Null && !
-- [ ] Adjust date format exports
-- [ ] Add internship process clear checklist
+
+-   [ ] Show only project with internship->status signed and teammate_status Null && !
+-   [x] Adjust date format exports
+-   [ ] Add internship process clear checklist
 
 ## Charts
-- [ ] Add supervisors count vs projects vs departments to dashboard
-- [x] Projects participation by department
-- [ ] Filter graphs by only signed projects
+
+-   [ ] Add supervisors count vs projects vs departments to dashboard
+-   [x] Projects participation by department
+-   [x] Filter graphs by only signed projects
+
 ## UX
-- [ ] Add tick box to assign interns to projects
-- [ ]  Add export projects
-- [ ] Internship agreements page
-    - [x] Add name search
-    - [x] Add department and supervisors
-    - [x] Add sorting everywhere
+
+-   [ ] Add tick box to assign interns to projects
+-   [ ] Add export projects
+-   [x] Internship agreements page
+    -   [x] Add name search
+    -   [x] Add department and supervisors
+    -   [x] Add sorting everywhere
