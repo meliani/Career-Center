@@ -55,13 +55,13 @@ class Student extends BackendBaseModel
 
     public function setPin(Student $student, $currentPin, $streamOrder)
     {
-        $student->pin = $streamOrder.str_pad($currentPin, 2, '0', STR_PAD_LEFT);
+        $student->pin = $streamOrder . str_pad($currentPin, 2, '0', STR_PAD_LEFT);
         $student->save();
     }
 
     public function internship()
     {
-        return $this->belongsTo(InternshipAgreement::class);
+        return $this->hasOne(InternshipAgreement::class);
     }
 
     public function projects()
@@ -86,12 +86,12 @@ class Student extends BackendBaseModel
 
     public function getFullNameAttribute()
     {
-        return $this->attributes['first_name'].' '.$this->attributes['last_name'];
+        return $this->attributes['first_name'] . ' ' . $this->attributes['last_name'];
     }
 
     public function getLongFullNameAttribute()
     {
-        return $this->title->getLabel().' '.$this->attributes['first_name'].' '.$this->attributes['last_name'];
+        return $this->title->getLabel() . ' ' . $this->attributes['first_name'] . ' ' . $this->attributes['last_name'];
     }
 
     public function scopeActive($query)
