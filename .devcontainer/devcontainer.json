@@ -45,7 +45,7 @@
 	"features": {
 		"ghcr.io/devcontainers-contrib/features/mysql-homebrew:1": {},
 		"ghcr.io/devcontainers-contrib/features/vtop:2": {}
-	}
+	},
 
 
 	"customizations": {
