@@ -24,12 +24,12 @@ class InternshipAgreement extends Core\BackendBaseModel
         static::addGlobalScope(new Scopes\InternshipAgreementScope());
     }
 
-    public function scopeFilterByProgramHead($query)
-    {
-        return $query->whereHas('student', function ($q) {
-            $q->where('program', auth()->user()->assigned_program);
-        });
-    }
+    // public function scopeFilterByProgramHead($query)
+    // {
+    //     return $query->whereHas('student', function ($q) {
+    //         $q->where('program', auth()->user()->assigned_program);
+    //     });
+    // }
 
     public $fillable = [
         'id_pfe',
@@ -228,22 +228,22 @@ class InternshipAgreement extends Core\BackendBaseModel
 
     public function getParrainNameAttribute()
     {
-        return $this->getTitle($this->parrain_titre).' '.$this->parrain_nom.' '.$this->parrain_prenom;
+        return $this->getTitle($this->parrain_titre) . ' ' . $this->parrain_nom . ' ' . $this->parrain_prenom;
     }
 
     public function getEncadrantExtNameAttribute()
     {
-        return $this->getTitle($this->encadrant_ext_titre).' '.$this->encadrant_ext_nom.' '.$this->encadrant_ext_prenom;
+        return $this->getTitle($this->encadrant_ext_titre) . ' ' . $this->encadrant_ext_nom . ' ' . $this->encadrant_ext_prenom;
     }
 
     public function getDureeAttribute()
     {
-        return $this->ending_at->diffInWeeks($this->starting_at).' semaines';
+        return $this->ending_at->diffInWeeks($this->starting_at) . ' semaines';
     }
 
     public function getDurationInMonthsAttribute()
     {
-        return $this->ending_at->diffInMonths($this->starting_at).' mois';
+        return $this->ending_at->diffInMonths($this->starting_at) . ' mois';
     }
 
     public function scopeSigned($query)

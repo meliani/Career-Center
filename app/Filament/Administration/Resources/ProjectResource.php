@@ -2,10 +2,11 @@
 
 namespace App\Filament\Administration\Resources;
 
+use App\Filament\Actions\Email;
 use App\Filament\Administration\Resources\ProjectResource\Pages;
+// use App\Filament\Exports\ProjectExporter;
 use App\Filament\Administration\Resources\ProjectResource\RelationManagers;
 use App\Filament\Core\BaseResource as Resource;
-// use App\Filament\Exports\ProjectExporter;
 use App\Models\Project;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -105,7 +106,8 @@ class ProjectResource extends Resource
                     ->label('Supervisor - Reviewer')
                     ->formatStateUsing(
                         fn ($record) => $record->professors->map(
-                            fn ($professor) => $professor->pivot->jury_role->getLabel().': '.$professor->name)->join(', ')
+                            fn ($professor) => $professor->pivot->jury_role->getLabel() . ': ' . $professor->name
+                        )->join(', ')
                     )
                     // ->listWithLineBreaks()
                     // ->bulleted()
@@ -169,9 +171,13 @@ class ProjectResource extends Resource
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\ViewAction::make(),
-                ])->hidden(fn () => auth()->user()->isPowerProfessor() === false),
+                ]),
+                // ->hidden(true),
             ])
             ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Email\SendInternshipKickoffEmail::make('Send Internship Kickoff Email'),
+                ]),
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
