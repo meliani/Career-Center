@@ -85,6 +85,14 @@ Finish pxlrbt/filament-activity-log configuration
     - [ ] Add name search
     - [ ] Add department and supervisors
 
+- [ ] Possibility for student to choose professor, up to 10 teachers per student
+- [ ] Student choose supervisor
+- [ ] Supervisor receive email for approval
+- [ ] Supervisor can approve by email or by clicking on magic link and reply
+- [ ] Supervisor receive in the email the magic link to access personal space
+
+
+
 # How to contribute
 
 
