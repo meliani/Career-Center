@@ -1,16 +1,36 @@
+// https://aka.ms/devcontainer.json
 {
-    "name": "Careers Center Backend",
-    "dockerComposeFile": "docker-compose.yaml",
-    "service": "dev",
-    "workspaceFolder": "/workspaces/careers_backend",
-    "shutdownAction": "stopCompose",
-    "customizations": {
-        "vscode": {
-            "extensions": [
-                "EditorConfig.EditorConfig",
-                "bmewburn.vscode-intelephense-client",
-                "xdebug.php-debug"
-            ]
-        }
-    }
+	"name": "Careers Center Backend",
+	"dockerComposeFile": [
+		"../docker-compose.yml"
+	],
+	"service": "laravel.test",
+	"workspaceFolder": "/var/www/html",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"mikestead.dotenv",
+				"amiralizadeh9480.laravel-extra-intellisense",
+				"ryannaddy.laravel-artisan",
+				"onecentlin.laravel5-snippets",
+				"onecentlin.laravel-blade"
+                // "editorconfig.editorconfig",
+                // "ryannaddy.laravel-artisan",
+                // "amiralizadeh9480.laravel-extra-intellisense",
+                // "stef-k.laravel-goto-controller",
+                // "codingyu.laravel-goto-view",
+                // "mikestead.dotenv",
+                // "eg2.tslint",
+                // "christian-kohler.path-intellisense",
+                // "esbenp.prettier-vscode",
+                // "CoenraadS.bracket-pair-colorizer"
+			],
+			"settings": {}
+		}
+	},
+	"remoteUser": "sail",
+	"postCreateCommand": "chown -R 1000:1000 /var/www/html 2>/dev/null || true"
+	// "forwardPorts": [],
+	// "runServices": [],
+	// "shutdownAction": "none",
 }
