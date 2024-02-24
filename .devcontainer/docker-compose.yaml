@@ -13,10 +13,10 @@ services:
   mariadb:
     image: mariadb:10.11
     environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=root_pass
-      - MYSQL_USER=developer
-      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=root_pass
+      - MYSQL_DATABASE=careers_backend
+      - MYSQL_USER=careers
+      - MYSQL_PASSWORD=careers_pass
     volumes:
       - mariadb:/var/lib/mysql
     ports:
