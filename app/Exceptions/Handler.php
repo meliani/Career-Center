@@ -40,7 +40,8 @@ class Handler extends ExceptionHandler
         $this->renderable(function (QueryException $e, Request $request) {
             $this->handleDuplicateEntryException($e);
 
-            return $request->response();
+            //  continu browsing normally and return http response
+            // return $request;
         });
 
     }
@@ -53,7 +54,7 @@ class Handler extends ExceptionHandler
             ->danger()
             ->send();
 
-        return response();
+        // return response();
         // return response()->json([
         //     'message' => 'Duplicate entry',
         //     'errors' => [
