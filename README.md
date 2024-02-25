@@ -95,6 +95,7 @@ Finish pxlrbt/filament-activity-log configuration
 -   [ ] Show only project with internship->status signed and teammate_status Null && !
 -   [x] Adjust date format exports
 -   [ ] Add internship process clear checklist
+-   [x] Add internship agreements tab
 
 ## Charts
 

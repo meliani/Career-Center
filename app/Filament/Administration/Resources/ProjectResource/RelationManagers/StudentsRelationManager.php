@@ -7,12 +7,19 @@ use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 class StudentsRelationManager extends RelationManager
 {
     protected static string $relationship = 'students';
 
     // protected static ?string $inverseRelationship = 'projects';
+    protected static ?string $title = 'Students';
+
+    public static function getTitle(Model $ownerRecord, string $pageClass): string
+    {
+        return __(self::$title);
+    }
 
     public function form(Form $form): Form
     {
@@ -38,6 +45,16 @@ class StudentsRelationManager extends RelationManager
             ->headerActions([
                 // Tables\Actions\CreateAction::make(),
                 Tables\Actions\AttachAction::make(),
+                // dettach student from existing project et detach his agreement from any project
+                // ->before(function (Model $ownerRecord) {
+                //     $ownerRecord->projects()->detach();
+                //     $ownerRecord->internship()->detach();
+                // })
+                // // we'll attach current project to student and his internship to current project
+                // ->after(function (Model $ownerRecord) {
+                //     $ownerRecord->projects()->attach(request('record'));
+                //     $ownerRecord->internship()->attach(request('record'));
+                // }),
             ])
             ->actions([
                 Tables\Actions\DetachAction::make(),

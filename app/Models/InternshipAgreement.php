@@ -106,6 +106,11 @@ class InternshipAgreement extends Core\BackendBaseModel
         return $this->belongsTo(Project::class);
     }
 
+    public function projects()
+    {
+        return $this->belongsTo(Project::class);
+    }
+
     public function validate(?string $department = null)
     {
         try {

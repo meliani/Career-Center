@@ -62,6 +62,7 @@ class ProjectService extends Facade
         self::setOverwrittenProjects(0);
         self::setCreatedProjects(0);
         self::setDuplicateProjects(0);
+
         try {
             if (Gate::denies('batch-assign-internships-to-projects')) {
                 throw new AuthorizationException();
@@ -69,25 +70,7 @@ class ProjectService extends Facade
             $signedInternships = InternshipAgreement::signed()->get();
 
             foreach ($signedInternships as $signedInternship) {
-                try {
-                    // Try Create a project from the internship agreement
-                    $project = ProjectService::CreateFromInternshipAgreement($signedInternship);
-                    ProjectService::SyncStudentToProjectFromInternshipAgreement($signedInternship, $project);
-                } catch (\Exception $e) {
-                    // catch duplicate project exception
-                    if ($e->getCode() == 23000) {
-                        // If the project already exists, we can overwrite it
-                        if (self::$forceOverwrite) {
-                            $project = ProjectService::OverwriteFromInternshipAgreement($signedInternship);
-                            ProjectService::SyncStudentToProjectFromInternshipAgreement($signedInternship, $project);
-                        } else {
-                            continue;
-                        }
-                    } else {
-                        Log::error($e->getMessage());
-                        throw new \Exception('There was an error creating the project. Please try again.');
-                    }
-                }
+                ProjectService::SyncAgreementWithProjects($signedInternship);
             }
         } catch (AuthorizationException $e) {
             Notification::make()
@@ -100,12 +83,52 @@ class ProjectService extends Facade
 
         Notification::make()
             ->title(
-                self::$createdProjects.' projects created, '.
-                self::$overwrittenProjects.' projects overwritten, and '.
-                self::$duplicateProjects.' duplicate projects Found.'
+                self::$createdProjects . ' projects created, ' .
+                self::$overwrittenProjects . ' projects overwritten, and ' .
+                self::$duplicateProjects . ' duplicate projects Found.'
             )
             ->success()
             ->send();
+    }
+
+    private static function SyncAgreementWithProjects(InternshipAgreement $internshipAgreement)
+    {
+        // $project = Project::where('id_pfe', $internshipAgreement->id_pfe)->first();
+        // if ($project != null) {
+        //     if (self::$forceOverwrite) {
+        //         self::OverwriteFromInternshipAgreement($internshipAgreement);
+        //     } else {
+        //         self::SyncStudentToProjectFromInternshipAgreement($internshipAgreement, $project);
+        //     }
+        // } else {
+        //     self::CreateFromInternshipAgreement($internshipAgreement);
+        // }
+
+        $project = ProjectService::CreateFromInternshipAgreement($internshipAgreement);
+        ProjectService::SyncStudentToProjectFromInternshipAgreement($internshipAgreement, $project);
+
+        // try {
+        //     // Try Create a project from the internship agreement
+        //     $project = ProjectService::CreateFromInternshipAgreement($signedInternship);
+        //     ProjectService::SyncStudentToProjectFromInternshipAgreement($signedInternship, $project);
+
+        // } catch (\Exception $e) {
+        //     // catch duplicate project exception
+        //     if ($e->getCode() == 23000) {
+        //         // If the project already exists, we can overwrite it
+        //         dd($e->getMessage());
+        //         if (self::$forceOverwrite) {
+        //             $project = ProjectService::OverwriteFromInternshipAgreement($signedInternship);
+        //             ProjectService::SyncStudentToProjectFromInternshipAgreement($signedInternship, $project);
+        //         } else {
+        //             continue;
+        //         }
+        //     } else {
+        //         Log::error($e->getMessage());
+
+        //         throw new \Exception('There was an error creating the project. Please try again.');
+        //     }
+        // }
     }
 
     private static function SyncStudentToProjectFromInternshipAgreement(InternshipAgreement $internshipAgreement, Project $project)
@@ -118,8 +141,13 @@ class ProjectService extends Facade
     {
         //  check if the project already exists from the internshipAgreements() relationship
         if ($internshipAgreement->project_id != null) {
-            $project = Project::find($internshipAgreement->project_id);
+            $project = $internshipAgreement->project;
+            // $project = Project::find($internshipAgreement->project_id);
             if ($project != null) {
+                //  well check if project has more than one student
+                if ($project->students->count() > 1) {
+                    return $project;
+                }
                 $project->id_pfe = $internshipAgreement->id_pfe;
                 $project->title = $internshipAgreement->title;
                 $project->description = $internshipAgreement->description;
@@ -131,6 +159,13 @@ class ProjectService extends Facade
                 self::$overwrittenProjects++;
 
                 return $project;
+            } else {
+                Notification::make()
+                    ->title('error project not found')
+                    ->danger()
+                    ->send();
+
+                // throw new \Exception('The project could not be found. Please try again.');
             }
         }
         $project = Project::create([
@@ -179,7 +214,7 @@ class ProjectService extends Facade
         $internshipAgreements = InternshipAgreement::signed()->get();
         $internshipAgreements->each(function ($internshipAgreement) {
             if ($internshipAgreement->int_adviser_name != null && $internshipAgreement->int_adviser_name != 'NA') {
-                $professor = Professor::where('name', 'like', '%'.$internshipAgreement->int_adviser_name.'%')->first();
+                $professor = Professor::where('name', 'like', '%' . $internshipAgreement->int_adviser_name . '%')->first();
                 if ($professor != null) {
                     $project = Project::where('id', $internshipAgreement->project_id)->first();
                     if ($project->professors->contains($professor)) {
@@ -195,8 +230,8 @@ class ProjectService extends Facade
             }
         });
         Notification::make()
-            ->title(self::$assignedProfessors.' Professors imported from internship agreements and '
-                .self::$existingProfessors.' Professors already assigned to the projects.')
+            ->title(self::$assignedProfessors . ' Professors imported from internship agreements and '
+                . self::$existingProfessors . ' Professors already assigned to the projects.')
             ->success()
             ->send();
     }
@@ -209,7 +244,7 @@ class ProjectService extends Facade
             if ($project->internship->int_adviser_name != null && $project->internship->int_adviser_name != 'NA') {
                 $supervisorName = $project->internship->int_adviser_name;
                 $supervisors = $supervisors->push($supervisorName);
-                $professor = Professor::where('name', 'like', '%'.$supervisorName.'%')->first();
+                $professor = Professor::where('name', 'like', '%' . $supervisorName . '%')->first();
                 $professors[] = $professor;
                 if ($professor != null) {
                     if ($project->id_pfe == null) {
@@ -223,7 +258,7 @@ class ProjectService extends Facade
             }
         });
         Notification::make()
-            ->title($supervisors.' internships assigned to projects')
+            ->title($supervisors . ' internships assigned to projects')
             ->success()
             ->send();
     }

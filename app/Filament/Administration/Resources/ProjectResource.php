@@ -75,6 +75,8 @@ class ProjectResource extends Resource
     {
         return $table
             ->headerActions([
+                // Tables\Actions\AttachAction::make(),
+
                 Tables\Actions\ActionGroup::make([
                     \App\Filament\Actions\ImportProfessorsFromInternshipAgreements::make('Import Professors From Internship Agreements')
                         ->hidden(fn () => auth()->user()->isAdministrator() === false),
@@ -190,6 +192,7 @@ class ProjectResource extends Resource
             RelationManagers\ProfessorsRelationManager::class,
             // RelationManagers\TeammateRelationManager::class,
             RelationManagers\StudentsRelationManager::class,
+            RelationManagers\InternshipAgreementsRelationManager::class,
             // RelationManagers\InternshipAgreementsRelationManager::class,
         ];
     }

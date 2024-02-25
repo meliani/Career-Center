@@ -22,7 +22,7 @@ class StudentResource extends Resource
 
     protected static ?string $title = 'Manage Students';
 
-    protected static ?string $recordTitleAttribute = 'long_full_name';
+    protected static ?string $recordTitleAttribute = 'full_name';
 
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
 
@@ -59,7 +59,7 @@ class StudentResource extends Resource
 
     public static function getGloballySearchableAttributes(): array
     {
-        return ['full_name', 'program'.'internship.id_pfe'];
+        return ['full_name', 'program', 'internship.id_pfe'];
     }
 
     public static function form(Form $form): Form

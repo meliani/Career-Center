@@ -2,17 +2,24 @@
 
 namespace App\Filament\Administration\Resources\ProjectResource\RelationManagers;
 
+use App\Enums;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Enums;
+use Illuminate\Database\Eloquent\Model;
+
 class ProfessorsRelationManager extends RelationManager
 {
     protected static string $relationship = 'professors';
+
+    protected static ?string $title = 'Supervisor - Reviewer';
+
+    public static function getTitle(Model $ownerRecord, string $pageClass): string
+    {
+        return __(self::$title);
+    }
 
     public function form(Form $form): Form
     {
@@ -21,8 +28,8 @@ class ProfessorsRelationManager extends RelationManager
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                    Forms\Components\Select::make('role')
-                    ->options(Enums\JuryRole::class)
+                Forms\Components\Select::make('role')
+                    ->options(Enums\JuryRole::class),
             ]);
     }
 
@@ -35,7 +42,7 @@ class ProfessorsRelationManager extends RelationManager
                 Tables\Columns\SelectColumn::make('jury_role')
                     ->options(Enums\JuryRole::class),
                 Tables\Columns\TextColumn::make('role'),
-                
+
             ])
             ->filters([
                 //
@@ -43,14 +50,14 @@ class ProfessorsRelationManager extends RelationManager
             ->headerActions([
                 // Tables\Actions\CreateAction::make(),
                 Tables\Actions\AttachAction::make()
-                ->form(fn (Tables\Actions\AttachAction $action): array => [
-                    $action->getRecordSelect(),
-                    Forms\Components\Select::make('jury_role')->options(Enums\JuryRole::class),
-                    // Forms\Components\Select::make('is_president')->options([
-                    //     '0' => 'No',
-                    //     '1' => 'Yes',
-                    // ]),
-                ]),
+                    ->form(fn (Tables\Actions\AttachAction $action): array => [
+                        $action->getRecordSelect(),
+                        Forms\Components\Select::make('jury_role')->options(Enums\JuryRole::class),
+                        // Forms\Components\Select::make('is_president')->options([
+                        //     '0' => 'No',
+                        //     '1' => 'Yes',
+                        // ]),
+                    ]),
             ])
             ->actions([
                 // Tables\Actions\EditAction::make(),

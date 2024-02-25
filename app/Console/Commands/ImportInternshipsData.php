@@ -5,21 +5,21 @@ namespace App\Console\Commands;
 use App\Models\InternshipAgreement;
 use Illuminate\Console\Command;
 
-class UpdateInternshipAgreements extends Command
+class ImportInternshipsData extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'carrieres:import-internships-data';
+    protected $signature = 'carrieres:import-internships-data {filename}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Import internship control data from a csv file';
 
     /**
      * Execute the console command.
@@ -30,7 +30,7 @@ class UpdateInternshipAgreements extends Command
         $this->info('Updating internship agreements');
         $totalLines = 0;
         //  get csv file from app\developer_docs\csv\internships.csv
-        $file = 'app/developer_docs/csv/internships_import_data_15fev.csv';
+        $file = 'app/developer_docs/csv/' . $this->argument('filename');
 
         //  open the file
         $handle = fopen($file, 'r');
@@ -52,14 +52,13 @@ class UpdateInternshipAgreements extends Command
             if ($internship) {
                 // $internship->hydrate($importedData);
                 $internship->update(array_filter($importedData));
-                $this->info('Updated internship agreement with id '.$importedData['id']);
+                $this->info('Updated internship agreement with id ' . $importedData['id']);
                 $updatedLines++;
-            }
-            else {
-                $this->error('Internship agreement with id '.$importedData['id'].' not found');
+            } else {
+                $this->error('Internship agreement with id ' . $importedData['id'] . ' not found');
             }
 
         }
-        $this->info('Updated '.$updatedLines.' internship agreements out of '.$totalLines);
+        $this->info('Updated ' . $updatedLines . ' internship agreements out of ' . $totalLines);
     }
 }
