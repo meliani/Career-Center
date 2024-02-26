@@ -83,7 +83,7 @@ class ProjectService extends Facade
         Notification::make()
             ->title(
                 self::$createdProjects . ' projects created, ' .
-                self::$overwrittenProjects . ' projects overwritten, and ' .
+                // self::$overwrittenProjects . ' projects skipped, and ' .
                 self::$duplicateProjects . ' duplicate projects Found.'
             )
             ->success()
@@ -94,7 +94,6 @@ class ProjectService extends Facade
     {
 
         $project = ProjectService::CreateFromInternshipAgreement($internshipAgreement);
-        ProjectService::SyncStudentToProjectFromInternshipAgreement($internshipAgreement, $project);
 
     }
 
@@ -126,31 +125,30 @@ class ProjectService extends Facade
                 $project->end_date = $internshipAgreement->ending_at;
                 $project->save();
                 // increment overwrittenProjects global variable
-                self::$overwrittenProjects++;
+                // self::$overwrittenProjects++;
+                self::$duplicateProjects++;
 
                 return $project;
             }
         } else {
-            Notification::make()
-                ->title('error project not found')
-                ->danger()
-                ->send();
+            $project = Project::create([
+                'id_pfe' => $internshipAgreement->id_pfe,
+                'title' => $internshipAgreement->title,
+                'description' => $internshipAgreement->description,
+                'organization' => $internshipAgreement->organization_name,
+                'start_date' => $internshipAgreement->starting_at,
+                'end_date' => $internshipAgreement->ending_at,
+            ]);
+
+            $project->save();
+            $internshipAgreement->project_id = $project->id;
+            $internshipAgreement->save();
+            self::SyncStudentToProjectFromInternshipAgreement($internshipAgreement, $project);
+            self::$createdProjects++;
+
+            return $project;
         }
-        $project = Project::create([
-            'id_pfe' => $internshipAgreement->id_pfe,
-            'title' => $internshipAgreement->title,
-            'description' => $internshipAgreement->description,
-            'organization' => $internshipAgreement->organization_name,
-            'start_date' => $internshipAgreement->starting_at,
-            'end_date' => $internshipAgreement->ending_at,
-        ]);
 
-        $project->save();
-        $internshipAgreement->project_id = $project->id;
-        $internshipAgreement->save();
-        self::$createdProjects++;
-
-        return $project;
     }
 
     public static function ImportProfessorsFromInternshipAgreements()
