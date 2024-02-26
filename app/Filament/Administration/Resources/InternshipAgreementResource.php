@@ -18,7 +18,6 @@ use Filament\Support\Enums\ActionSize;
 use Filament\Tables;
 use Filament\Tables\Actions\ExportAction;
 use Filament\Tables\Actions\ImportAction;
-use Filament\Tables\Enums\ActionsPosition;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Mail;
@@ -86,13 +85,19 @@ class InternshipAgreementResource extends BaseResource
             ])
             ->emptyStateDescription(__('Once students starts announcing internships, it will appear here.'))
             ->headerActions([
-                \pxlrbt\FilamentExcel\Actions\Tables\ExportAction::make(),
+                \pxlrbt\FilamentExcel\Actions\Tables\ExportAction::make()
+                    ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isDepartmentHead() || auth()->user()->isProgramCoordinator()) === false)
+                    ->outlined(),
+                \App\Filament\Actions\AssignInternshipsToProjects::make('Assign Internships To Projects')
+                    ->hidden(fn () => auth()->user()->isAdministrator() === false)
+                    ->outlined(),
+
                 Tables\Actions\ActionGroup::make([
 
-                    \App\Filament\Actions\AssignInternshipsToProjects::make('Assign Internships To Projects'),
                     ImportAction::make()
                         ->importer(InternshipAgreementImporter::class)
-                        ->hidden(fn () => auth()->user()->isAdministrator() === false),
+                        ->hidden(fn () => auth()->user()->isAdministrator() === false)
+                        ->hidden(fn () => app()->environment('production')),
                 ]),
                 // ExportAction::make()
                 //     ->exporter(InternshipAgreementExporter::class)
@@ -180,7 +185,7 @@ class InternshipAgreementResource extends BaseResource
                     ->icon('heroicon-o-envelope')
                     ->size(ActionSize::ExtraLarge)
                     ->tooltip(__('Send an email to the student')),
-            ], position: ActionsPosition::BeforeColumns)
+            ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),

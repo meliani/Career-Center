@@ -12,7 +12,6 @@ use Filament\Forms\Form;
 use Filament\GlobalSearch\Actions\Action;
 // use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 
@@ -125,8 +124,7 @@ class StudentResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->label('ID')
                     ->numeric()
-                    ->sortable()
-                    ->toggleable(),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('first_name')
                     ->label(__('Full name'))
                     ->searchable()
@@ -161,12 +159,12 @@ class StudentResource extends Resource
                     ->searchable(),
                 // Tables\Columns\IconColumn::make('is_mobility')
                 //     ->boolean(),
-                Tables\Columns\TextColumn::make('abroad_school')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\IconColumn::make('is_active')
-                    ->boolean()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                // Tables\Columns\TextColumn::make('abroad_school')
+                //     ->searchable()
+                //     ->toggleable(isToggledHiddenByDefault: true),
+                // Tables\Columns\IconColumn::make('is_active')
+                //     ->boolean()
+                //     ->toggleable(isToggledHiddenByDefault: true),
                 // Tables\Columns\TextColumn::make('graduated_at')
                 //     ->date()
                 //     ->sortable(),
@@ -180,19 +178,15 @@ class StudentResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                SelectFilter::make('is_active')
-                    ->multiple()
-                    ->options([
-                        '0' => __('Inactive'),
-                        '1' => __('Active'),
-                    ])->placeholder(__('Filter by status')),
             ])
 
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-            ])
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ])->hidden(fn () => auth()->user()->isAdministrator() === false),
+            ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
                 ExportBulkAction::make(),
                 SendBulkEmail::make('send_emails'),
