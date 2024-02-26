@@ -15,7 +15,7 @@ class InternshipAgreementsRelationManager extends RelationManager
 
     protected static ?string $inverseRelationship = 'project';
 
-    protected static ?string $title = 'Internhip agreements';
+    protected static ?string $title = 'Internship agreements';
 
     public static function getTitle(Model $ownerRecord, string $pageClass): string
     {

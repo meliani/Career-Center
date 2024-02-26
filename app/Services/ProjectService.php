@@ -10,7 +10,6 @@ use Filament\Notifications\Notification;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Log;
 
 class ProjectService extends Facade
 {
@@ -93,42 +92,10 @@ class ProjectService extends Facade
 
     private static function SyncAgreementWithProjects(InternshipAgreement $internshipAgreement)
     {
-        // $project = Project::where('id_pfe', $internshipAgreement->id_pfe)->first();
-        // if ($project != null) {
-        //     if (self::$forceOverwrite) {
-        //         self::OverwriteFromInternshipAgreement($internshipAgreement);
-        //     } else {
-        //         self::SyncStudentToProjectFromInternshipAgreement($internshipAgreement, $project);
-        //     }
-        // } else {
-        //     self::CreateFromInternshipAgreement($internshipAgreement);
-        // }
 
         $project = ProjectService::CreateFromInternshipAgreement($internshipAgreement);
         ProjectService::SyncStudentToProjectFromInternshipAgreement($internshipAgreement, $project);
 
-        // try {
-        //     // Try Create a project from the internship agreement
-        //     $project = ProjectService::CreateFromInternshipAgreement($signedInternship);
-        //     ProjectService::SyncStudentToProjectFromInternshipAgreement($signedInternship, $project);
-
-        // } catch (\Exception $e) {
-        //     // catch duplicate project exception
-        //     if ($e->getCode() == 23000) {
-        //         // If the project already exists, we can overwrite it
-        //         dd($e->getMessage());
-        //         if (self::$forceOverwrite) {
-        //             $project = ProjectService::OverwriteFromInternshipAgreement($signedInternship);
-        //             ProjectService::SyncStudentToProjectFromInternshipAgreement($signedInternship, $project);
-        //         } else {
-        //             continue;
-        //         }
-        //     } else {
-        //         Log::error($e->getMessage());
-
-        //         throw new \Exception('There was an error creating the project. Please try again.');
-        //     }
-        // }
     }
 
     private static function SyncStudentToProjectFromInternshipAgreement(InternshipAgreement $internshipAgreement, Project $project)
@@ -140,15 +107,18 @@ class ProjectService extends Facade
     private static function CreateFromInternshipAgreement(InternshipAgreement $internshipAgreement): Project
     {
         //  check if the project already exists from the internshipAgreements() relationship
-        if ($internshipAgreement->project_id != null) {
+        if ($internshipAgreement->project) {
+
             $project = $internshipAgreement->project;
-            // $project = Project::find($internshipAgreement->project_id);
-            if ($project != null) {
-                //  well check if project has more than one student
-                if ($project->students->count() > 1) {
-                    return $project;
+
+            //  we'll check if project has more than one student
+
+            if ($project->students->count() > 1) {
+                return $project;
+            } else {
+                if (! $project->id_pfe) {
+                    $project->id_pfe = $internshipAgreement->id_pfe;
                 }
-                $project->id_pfe = $internshipAgreement->id_pfe;
                 $project->title = $internshipAgreement->title;
                 $project->description = $internshipAgreement->description;
                 $project->organization = $internshipAgreement->organization_name;
@@ -159,14 +129,12 @@ class ProjectService extends Facade
                 self::$overwrittenProjects++;
 
                 return $project;
-            } else {
-                Notification::make()
-                    ->title('error project not found')
-                    ->danger()
-                    ->send();
-
-                // throw new \Exception('The project could not be found. Please try again.');
             }
+        } else {
+            Notification::make()
+                ->title('error project not found')
+                ->danger()
+                ->send();
         }
         $project = Project::create([
             'id_pfe' => $internshipAgreement->id_pfe,
@@ -181,30 +149,6 @@ class ProjectService extends Facade
         $internshipAgreement->project_id = $project->id;
         $internshipAgreement->save();
         self::$createdProjects++;
-
-        return $project;
-    }
-
-    private static function OverwriteFromInternshipAgreement(InternshipAgreement $internshipAgreement): Project
-    {
-        if ($internshipAgreement->project_id != null) {
-            $project = Project::find($internshipAgreement->project_id);
-            if ($project != null) {
-                $project->id_pfe = $internshipAgreement->id_pfe;
-                $project->title = $internshipAgreement->title;
-                $project->description = $internshipAgreement->description;
-                $project->organization = $internshipAgreement->organization;
-                $project->start_date = $internshipAgreement->starting_at;
-                $project->end_date = $internshipAgreement->ending_at;
-                $project->save();
-                self::$duplicateProjects++;
-
-                return $project;
-            }
-        }
-        $project = Project::find($internshipAgreement->project_id);
-        $internshipAgreement->project_id = $project->id;
-        $internshipAgreement->save();
 
         return $project;
     }

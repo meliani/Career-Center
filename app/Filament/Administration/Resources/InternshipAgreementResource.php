@@ -14,6 +14,7 @@ use Filament\Actions\Exports\Enums\ExportFormat;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Support\Enums\ActionSize;
 use Filament\Tables;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Actions\ExportAction;
@@ -137,12 +138,13 @@ class InternshipAgreementResource extends BaseResource
                             ->disabled(fn ($record): bool => $record['assigned_department'] !== null),
                     ])->dropdown(false),
                 ])
-                    ->label(__('Validation'))
-                    ->icon('')
-                    // ->size(ActionSize::ExtraSmall)
+                    ->label('')
+                    ->icon('heroicon-o-arrow-up-on-square')
+                    ->size(ActionSize::ExtraLarge)
+                    ->tooltip(__('Validate, sign, or assign department'))
                     ->color('warning')
-                    ->outlined()
-                    ->button()
+                    // ->outlined()
+                    // ->button()
                     // ->hidden(fn () => auth()->user()->isPowerProfessor() === false ),
                     ->hidden(fn () => (auth()->user()->isSuperAdministrator() || auth()->user()->isPowerProfessor()) === false),
                 ActionGroup::make([
@@ -154,12 +156,14 @@ class InternshipAgreementResource extends BaseResource
                     Tables\Actions\RestoreAction::make(),
                 ])
                     ->hidden((auth()->user()->isSuperAdministrator() || auth()->user()->isPowerProfessor()) === false)
-                    ->label(__('Manage'))
-                    ->icon('')
-                    // ->size(ActionSize::ExtraSmall)
-                    ->outlined()
-                    ->color('warning')
-                    ->button(),
+                    ->label('')
+                    ->icon('heroicon-o-ellipsis-vertical')
+                    ->size(ActionSize::ExtraLarge)
+                    ->tooltip(__('View, edit, or delete this internship agreement')),
+                // ->size(ActionSize::ExtraSmall)
+                // ->outlined()
+                // ->color('warning')
+                // ->button(),
                 Tables\Actions\Action::make('sendEmail')
                     ->form([
                         TextInput::make('subject')->required(),
@@ -172,7 +176,11 @@ class InternshipAgreementResource extends BaseResource
                                 $data['subject'],
                                 $data['body'],
                             ))
-                    )->label(__('Send email')),
+                    )
+                    ->label('')
+                    ->icon('heroicon-o-envelope')
+                    ->size(ActionSize::ExtraLarge)
+                    ->tooltip(__('Send an email to the student')),
             ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
