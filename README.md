@@ -96,6 +96,10 @@ Finish pxlrbt/filament-activity-log configuration
 -   [x] Adjust date format exports
 -   [ ] Add internship process clear checklist
 -   [x] Add internship agreements tab
+- Add group action with different email templates :
+    - Supervisors email
+    - Students email
+    - external supervisors email
 
 ## Charts
 
