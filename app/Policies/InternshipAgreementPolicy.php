@@ -37,9 +37,9 @@ class InternshipAgreementPolicy extends CorePolicy
     {
         if ($user->isAdministrator()) {
             return true;
-        } elseif ($user->isProfessor() && $internship->project->professors === $user->id) {
+        } elseif ($user->isProfessor() && $internship->project?->professors === $user->id) {
             return true;
-        } elseif ($user->isProgramCoordinator() && $internship->project->students->each(fn ($student, $key) => $student->program === $user->assigned_program)) {
+        } elseif ($user->isProgramCoordinator() && $internship?->project->students->each(fn ($student, $key) => $student->program === $user->assigned_program)) {
             return true;
         }
 
