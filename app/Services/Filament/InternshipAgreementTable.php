@@ -32,6 +32,15 @@ class InternshipAgreementTable
                 ->label(__('Organization'))
                 ->searchable()
                 ->sortable(),
+            Tables\Columns\TextColumn::make('city')
+                ->label(__('City'))
+                ->searchable()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('country')
+                ->label(__('Country'))
+                ->searchable()
+                ->sortable(),
+
             Tables\Columns\TextColumn::make('title')
                 ->label(__('Title'))
                 ->searchable()
