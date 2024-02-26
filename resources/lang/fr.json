@@ -150,5 +150,6 @@
     "Defense start time": "Date et heure de début de la soutenance",
     "Defense end time": "Date et heure de fin de la soutenance",
     "Project start date": "Date de début du projet",
-    "Project end date": "Date de fin du projet"
+    "Project end date": "Date de fin du projet",
+    "Level": "Niveau"
 }

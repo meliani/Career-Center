@@ -110,6 +110,16 @@ class StudentResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultGroup('program')
+            ->groups([
+                Tables\Grouping\Group::make('Level')
+                    ->label(__('Level'))
+                    ->collapsible()
+                    ->titlePrefixedWithLabel(false),
+                Tables\Grouping\Group::make('program')
+                    ->label(__('Program'))
+                    ->collapsible(),
+            ])
             ->columns([
                 Tables\Columns\TextColumn::make('id')
                     ->toggleable(isToggledHiddenByDefault: true)
@@ -145,6 +155,9 @@ class StudentResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('program')
+                    ->formatStateUsing(function ($record) {
+                        return $record->program->value;
+                    })
                     ->searchable(),
                 // Tables\Columns\IconColumn::make('is_mobility')
                 //     ->boolean(),
