@@ -31,11 +31,22 @@ enum Department: string implements HasLabel
     public function getLabel(): ?string
     {
         return match ($this) {
+            self::EMO => 'EMO',
+            self::MIR => 'MIR',
+            self::GLC => 'GLC',
+            self::SC => 'SC',
+            self::NULL => __('Undefined'),
+        };
+    }
+
+    public function getDescription(): ?string
+    {
+        return match ($this) {
             self::EMO => 'Électronique, Micro-ondes et Optique',
             self::MIR => 'Mathématiques, Informatique et Réseaux',
             self::GLC => 'Gestion, Langues et Communications',
             self::SC => 'Systèmes de Communications',
-            self::NULL => 'Non défini',
+            self::NULL => __('Undefined'),
         };
     }
 }

@@ -102,6 +102,9 @@ class ProjectResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('internshipAgreements.assigned_department')
                     ->label('Assigned department')
+                    ->tooltip(fn ($state) => implode(', ', array_map(function ($s) {
+                        return $s->getDescription();
+                    }, $state)))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('professors.name')
@@ -163,12 +166,6 @@ class ProjectResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            // ->filters([
-            //     Tables\Filters\SelectFilter::make('internshipAgreements.assigned_department')
-            //         ->multiple()
-            //         ->relationship('internshipAgreements', 'assigned_department')
-            //         ->label('Department'),
-            // ], layout: Tables\Enums\FiltersLayout::AboveContent)
             ->actions([
                 \Parallax\FilamentComments\Tables\Actions\CommentsAction::make()
                     ->label(__('Comments'))
@@ -194,10 +191,8 @@ class ProjectResource extends Resource
     {
         return [
             RelationManagers\ProfessorsRelationManager::class,
-            // RelationManagers\TeammateRelationManager::class,
             RelationManagers\StudentsRelationManager::class,
             RelationManagers\InternshipAgreementsRelationManager::class,
-            // RelationManagers\InternshipAgreementsRelationManager::class,
         ];
     }
 
