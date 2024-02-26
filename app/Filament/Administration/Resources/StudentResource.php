@@ -112,6 +112,7 @@ class StudentResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->label('ID')
                     ->numeric()
                     ->sortable()
@@ -127,16 +128,21 @@ class StudentResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phone')
                     ->searchable(),
-                // Tables\Columns\TextColumn::make('cv')
-                //     ->searchable(),
-                // Tables\Columns\TextColumn::make('lm')
-                //     ->searchable(),
-                // Tables\Columns\TextColumn::make('photo')
-                //     ->searchable(),
-                // Tables\Columns\TextColumn::make('birth_date')
-                //     ->date()
-                //     ->sortable(),
+                Tables\Columns\TextColumn::make('cv')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('lm')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('photo')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('birth_date')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->date()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('level')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('program')
                     ->searchable(),

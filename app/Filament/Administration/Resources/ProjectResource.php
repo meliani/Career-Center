@@ -121,7 +121,8 @@ class ProjectResource extends Resource
                     // })
                     ->sortable(),
                 Tables\Columns\TextColumn::make('timetable.timeslot.start_time')
-                    ->label('Defense start Time')
+                    ->label('Defense start time')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable()
                     ->sortable()
                     ->formatStateUsing(
@@ -129,7 +130,8 @@ class ProjectResource extends Resource
                     )
                     ->dateTime(),
                 Tables\Columns\TextColumn::make('timetable.timeslot.end_time')
-                    ->label('Defense end Time')
+                    ->label('Defense end time')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable()
                     ->sortable()
                     ->formatStateUsing(
@@ -141,9 +143,11 @@ class ProjectResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('start_date')
+                    ->label('Project start date')
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('end_date')
+                    ->label('Project end date')
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('title')
