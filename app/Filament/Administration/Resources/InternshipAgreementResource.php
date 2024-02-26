@@ -76,18 +76,20 @@ class InternshipAgreementResource extends BaseResource
 
         return $table
             ->headerActions([
+                \pxlrbt\FilamentExcel\Actions\Tables\ExportAction::make(),
                 ActionGroup::make([
+
                     \App\Filament\Actions\AssignInternshipsToProjects::make('Assign Internships To Projects'),
                     ImportAction::make()
                         ->importer(InternshipAgreementImporter::class)
                         ->hidden(fn () => auth()->user()->isAdministrator() === false),
                 ]),
-                ExportAction::make()
-                    ->exporter(InternshipAgreementExporter::class)
-                    ->formats([
-                        ExportFormat::Xlsx,
-                        ExportFormat::Csv,
-                    ]),
+                // ExportAction::make()
+                //     ->exporter(InternshipAgreementExporter::class)
+                //     ->formats([
+                //         ExportFormat::Xlsx,
+                //         ExportFormat::Csv,
+                //     ]),
 
             ])
             ->defaultSort('announced_at', 'asc')
@@ -173,7 +175,6 @@ class InternshipAgreementResource extends BaseResource
                     )->label(__('Send email')),
             ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
-                \pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction::make(),
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
