@@ -19,12 +19,12 @@ In active development for a first release
 - [x] Add teammate -> notify
 - [x] Accept teammate -> notify
 - [ ] Exchange with supervisors
-- [ ] Add changeStatus to internship model to send notifications for all actions.
+- [ ] Add changeStatus observer to internship model to send notifications on all changes.
 
 # Features in progress
 
 ## department assignments
-
+- database notification for new 
 -   [x] Add status update on announced, signed, received, validated
 -   [x] Disable action on non null
 -   [x] Add badge for status
@@ -68,7 +68,7 @@ In active development for a first release
 -   [x] Professors can view assigned records and proprieties from internship model
 -   [x] head of department can see related records from its assigned internships
 -   [x] policies must check if a giver user can update Internship with a certain given program from students table.
--   [ ] Consider binomes in assignment to projects
+-   [x] Consider binomes in assignment to projects
 -   [ ] Add a tick box to enable overriding
 
 ## logs
@@ -91,8 +91,6 @@ Finish pxlrbt/filament-activity-log configuration
 -   [ ] Parse keywords and put them into tags.
 
 ## project
-
--   [ ] Show only project with internship->status signed and teammate_status Null && !
 -   [x] Adjust date format exports
 -   [ ] Add internship process clear checklist
 -   [x] Add internship agreements tab
@@ -100,7 +98,7 @@ Finish pxlrbt/filament-activity-log configuration
     - Supervisors email
     - Students email
     - external supervisors email
-
+- Add database notification to professors when assigned to a project with observer.
 ## Charts
 
 -   [ ] Add supervisors count vs projects vs departments to dashboard
@@ -110,16 +108,16 @@ Finish pxlrbt/filament-activity-log configuration
 ## UX
 
 -   [ ] Add tick box to assign interns to projects
--   [ ] Add export projects
+-   [x] Add export projects
 -   [x] Internship agreements page
     -   [x] Add name search
     -   [x] Add department and supervisors
     -   [x] Add sorting everywhere
 - [ ] Add tick box to assign interns to projects
-- [ ] Add export projects
-- [ ] Interns agreements table
-    - [ ] Add name search
-    - [ ] Add department and supervisors
+- [x] Add export projects
+- [x] Interns agreements table
+    - [x] Add name search
+    - [x] Add department and supervisors
 
 - [ ] Possibility for student to choose professor, up to 10 teachers per student
 - [ ] Student choose supervisor
