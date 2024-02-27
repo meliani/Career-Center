@@ -1,3 +1,10 @@
+# Urgent
+
+    # continue implementing the following packages
+
+    -   [ ] pxlrbt/filament-activity-log
+    -   [ ] composer require jdavidbakr/mail-tracker
+
 # Database / Models
 
 -   [ ] add columns to projects table / model
@@ -8,11 +15,6 @@
 
     -   [ ] Overview email sent at
     -   [ ] Overview email viewed
-
-    # continue implementing the following packages
-
-    -   [ ] pxlrbt/filament-activity-log
-    -   [ ] composer require jdavidbakr/mail-tracker
 
 # Internship agreement resource
 
