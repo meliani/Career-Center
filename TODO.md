@@ -6,4 +6,4 @@
 - [ ] Add columns to project professor pivot
     - [ ] Overview email sent at
     - [ ] Overview email viewed at
-- [ ] 
+- [ ] Add bulk assign to department and bulk signing.
