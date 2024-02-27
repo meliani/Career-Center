@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Actions\BlukAction\Email;
+namespace App\Filament\Actions\BulkAction\Email;
 
 use App\Mail\GenericEmail;
 use Filament\Forms\Components\RichEditor;
