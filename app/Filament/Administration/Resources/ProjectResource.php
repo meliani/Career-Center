@@ -81,6 +81,10 @@ class ProjectResource extends Resource
                     \App\Filament\Actions\ImportProfessorsFromInternshipAgreements::make('Import Professors From Internship Agreements')
                         ->hidden(fn () => auth()->user()->isAdministrator() === false),
                 ]),
+                Email\SendConnectingSupervisorsEmail::make('Send Connecting Supervisors Email')
+                    ->label(__('Send Connecting Supervisors Email'))
+                    ->hidden(fn () => auth()->user()->isAdministrator() === false)
+                    ->outlined(),
                 // ExportAction::make()
                 //     ->exporter(ProjectExporter::class),
                 \pxlrbt\FilamentExcel\Actions\Tables\ExportAction::make(),
