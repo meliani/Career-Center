@@ -3,17 +3,14 @@
 namespace App\Filament\Administration\Resources;
 
 use App\Enums;
-use App\Filament\Actions\SendBulkEmail;
+use App\Filament\Actions\BulkAction;
 use App\Filament\Administration\Resources\StudentResource\Pages;
 use App\Filament\Core\BaseResource as Resource;
 use App\Models\Student;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\GlobalSearch\Actions\Action;
-// use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 
 class StudentResource extends Resource
 {
@@ -41,7 +38,7 @@ class StudentResource extends Resource
     // public static function getGlobalSearchResultActions(Model $record): array
     // {
     //     return [
-    //         Action::make('edit')
+    //         Filament\GlobalSearch\Actions\Action::make('edit')
     //             ->url(static::getUrl('edit', ['record' => $record])),
     //     ];
     // }
@@ -188,11 +185,15 @@ class StudentResource extends Resource
                 ])->hidden(fn () => auth()->user()->isAdministrator() === false),
             ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
-                ExportBulkAction::make(),
-                SendBulkEmail::make('send_emails'),
                 Tables\Actions\BulkActionGroup::make([
+                    BulkAction\Email\SendGenericEmail::make('Send Generic Email'),
+                ])
+                    ->label(__('Send email')),
+                Tables\Actions\BulkActionGroup::make([
+                    \pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction::make(),
                     Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                ])
+                    ->label(__('actions')),
             ]);
     }
 

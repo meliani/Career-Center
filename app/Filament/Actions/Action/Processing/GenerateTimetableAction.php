@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Actions;
+namespace App\Filament\Actions\Action\Processing;
 
 use App\Services;
 use Filament\Forms\Components\Actions\Action;
@@ -18,7 +18,7 @@ class GenerateTimetableAction extends Action
             $numberOfAssignedProjects = Services\TimetableService::generateTimetable();
 
             Notification::make()
-                ->title($numberOfAssignedProjects.' Projects Timetable has been generated successfully')
+                ->title($numberOfAssignedProjects . ' Projects Timetable has been generated successfully')
                 ->success()
                 ->send();
         });

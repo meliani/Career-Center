@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Filament\Actions;
+namespace App\Filament\Actions\Action;
 
 use App\Models\InternshipAgreement;
 use Filament\Tables\Actions\Action;
-use Illuminate\Support\Carbon;
 
 class SignAction extends Action
 {
@@ -26,13 +25,13 @@ class SignAction extends Action
         $static->configure()->action(function (array $data, InternshipAgreement $record): void {
             $record->withoutTimestamps(fn () => $record->sign());
         })
-        ->requiresConfirmation(fn () => "Are you sure you want to mark this internship as Signed?")
-        ->modalIconColor('success')
-        ->modalIcon('heroicon-o-check')
-        ->modalHeading('Sign internship agreement')
-        ->modalDescription(__('Are you sure you want to mark this internship as Signed?'))
-        ->modalSubmitActionLabel(__('Mark as signed'))
-        ->color('success');
+            ->requiresConfirmation(fn () => 'Are you sure you want to mark this internship as Signed?')
+            ->modalIconColor('success')
+            ->modalIcon('heroicon-o-check')
+            ->modalHeading('Sign internship agreement')
+            ->modalDescription(__('Are you sure you want to mark this internship as Signed?'))
+            ->modalSubmitActionLabel(__('Mark as signed'))
+            ->color('success');
 
         return $static;
     }

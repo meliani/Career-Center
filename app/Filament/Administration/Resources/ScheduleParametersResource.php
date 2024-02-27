@@ -7,7 +7,6 @@ use App\Filament\Administration\Resources\ScheduleParametersResource\Pages;
 use App\Filament\Core\BaseResource as Resource;
 use App\Models\ScheduleParameters;
 use Filament\Forms;
-use Filament\Forms\Components\Actions\Action;
 // use Filament\Actions\Action;
 use Filament\Forms\Form;
 use Filament\Tables;
@@ -79,18 +78,12 @@ class ScheduleParametersResource extends Resource
                     ->numeric(),
 
                 \Filament\Forms\Components\Actions::make([
-                    // \Filament\Forms\Components\Actions\Action::make('ScheduleDepartmentHead')
-
-                    // ScheduleHeadOfJury::make('Schedule Head of Department'),
-                    Actions\GenerateTimeslotsAction::make('Generate Timeslots'),
-                    Actions\GenerateTimetableAction::make('Generate Timetable'),
-                    Actions\GenerateProjectsJuryAction::make('Generate Projects Jury'),
-
-                    // ->requiresConfirmation(),
-                    // ->action(function (ScheduleDepartmentHead $ScheduleDepartmentHead) {
-                    //     dd('action called')
-                    //     // $scheduleDepartmentHead = new ScheduleDepartmentHead('Schedule Head of Department');
-                    // })
+                    Actions\Action\Processing\GenerateTimeslotsAction::make('Generate Timeslots')
+                        ->label(__('Generate Timeslots'))
+                        ->requiresConfirmation(),
+                    Actions\Action\Processing\GenerateTimetableAction::make('Generate Timetable')
+                        ->label(__('Generate Defenses Timetable'))
+                        ->requiresConfirmation(),
                 ]),
             ]);
     }

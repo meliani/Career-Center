@@ -3,8 +3,8 @@
 namespace App\Filament\Administration\Resources;
 
 use App\Enums;
-use App\Filament\Actions\SendBulkInvitationEmail;
-use App\Filament\Actions\SendUsersBulkEmail;
+use App\Filament\Actions\BulkAction\Email\SendBulkInvitationEmail;
+use App\Filament\Actions\BulkAction\Email\SendUsersBulkEmail;
 use App\Filament\Administration\Resources\UserResource\Pages;
 use App\Filament\Core\BaseResource as Resource;
 use App\Models\User;
@@ -121,10 +121,12 @@ class UserResource extends Resource
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
                 \STS\FilamentImpersonate\Tables\Actions\Impersonate::make(),
-            ])
+            ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
-                SendUsersBulkEmail::make('send_emails'),
-                SendBulkInvitationEmail::make('send_invitations'),
+                Tables\Actions\BulkActionGroup::make([
+                    SendUsersBulkEmail::make('send_emails'),
+                    SendBulkInvitationEmail::make('send_invitations'),
+                ]),
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),

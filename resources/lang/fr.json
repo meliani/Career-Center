@@ -154,5 +154,7 @@
     "Level": "Niveau",
     "Undefined": "Non défini",
     "Assign Internships To Projects": "Affecter les stages aux projets",
-    "Send Connecting Supervisors Email": "Connecter les Etudiants aux Encadrants"
+    "Send Connecting Supervisors Email": "Connecter les Etudiants aux Encadrants",
+    "Generate Timeslots": "Générer les créneaux horaires",
+    "Generate Defenses Timetable": "Générer le planning des soutenances"
 }

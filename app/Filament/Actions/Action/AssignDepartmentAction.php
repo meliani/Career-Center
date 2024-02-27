@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Filament\Actions;
+namespace App\Filament\Actions\Action;
 
 use App\Models\InternshipAgreement;
 use Filament\Tables\Actions\Action;
-use Illuminate\Support\Carbon;
 
 class AssignDepartmentAction extends Action
 {
@@ -19,7 +18,7 @@ class AssignDepartmentAction extends Action
 
     public static function make(?string $name = null): static
     {
-            // dd('action called');
+        // dd('action called');
 
         $static = app(static::class, [
             'name' => $name ?? static::getDefaultName(),
@@ -30,7 +29,7 @@ class AssignDepartmentAction extends Action
             $record->withoutTimestamps(fn () => $record->assignDepartment($data['assigned_department']));
 
         })
-        ->form([\Filament\Forms\Components\Select::make('assigned_department')
+            ->form([\Filament\Forms\Components\Select::make('assigned_department')
                 ->options([
                     'SC' => 'SC',
                     'MIR' => 'MIR',

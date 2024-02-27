@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Filament\Actions;
+namespace App\Filament\Actions\BulkAction\Email;
 
 use App\Mail\JoinPlatformInvitation;
 use Filament\Tables\Actions\BulkAction;
 use Illuminate\Support\Facades\Mail;
 
-class SendBulkInvitationEmail extends BulkAction
+class SendInternshipKickoffEmail extends BulkAction
 {
     public static function make(?string $name = null): static
     {

@@ -1,21 +1,19 @@
 <?php
 
-namespace App\Filament\Actions;
+namespace App\Filament\Actions\Action\Processing;
 
-use App\Models\InternshipAgreement;
-use Filament\Forms\Components\Actions\Action;
-use Illuminate\Support\Carbon;
 use App\Models\ScheduleParameters;
-// use App\Services\TimeslotService;
-use Filament\Notifications\Notification;
 use App\Models\Timeslot;
 use App\Services\AutoScheduleService;
-use Carbon\CarbonPeriod;
+// use App\Services\TimeslotService;
+use Filament\Forms\Components\Actions\Action;
+use Filament\Notifications\Notification;
+use Illuminate\Support\Carbon;
 
 class GenerateTimeslotsAction extends Action
 {
     public $scheduleParameters;
-       
+
     public static function make(?string $name = null): static
     {
         $static = app(static::class, [
@@ -30,7 +28,7 @@ class GenerateTimeslotsAction extends Action
             $workingDaysList = collect($AutoScheduleService->generateTimeslots($record));
 
             $workingDaysList->each(function ($day) use ($record) {
-                    // dd($record);
+                // dd($record);
 
                 $day = collect($day);
                 $day->each(function ($timeslot) use ($record) {
@@ -50,6 +48,7 @@ class GenerateTimeslotsAction extends Action
             });
             new Notification('Timeslots generated successfully');
         });
+
         return $static;
     }
 }

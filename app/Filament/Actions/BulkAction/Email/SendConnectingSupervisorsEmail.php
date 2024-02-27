@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Actions\Email;
+namespace App\Filament\Actions\BulkAction\Email;
 
 use App\Mail\ConnectingStudentsWithSupervisors;
 use Filament\Tables\Actions\BulkAction;

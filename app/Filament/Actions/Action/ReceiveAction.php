@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Filament\Actions;
+namespace App\Filament\Actions\Action;
 
 use App\Models\InternshipAgreement;
 use Filament\Tables\Actions\Action;
-use Illuminate\Support\Carbon;
 
 class ReceiveAction extends Action
 {

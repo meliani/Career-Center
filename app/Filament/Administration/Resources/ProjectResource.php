@@ -2,16 +2,15 @@
 
 namespace App\Filament\Administration\Resources;
 
-use App\Filament\Actions\Email;
+use App\Filament\Actions\BulkAction;
 use App\Filament\Administration\Resources\ProjectResource\Pages;
-// use App\Filament\Exports\ProjectExporter;
 use App\Filament\Administration\Resources\ProjectResource\RelationManagers;
 use App\Filament\Core\BaseResource as Resource;
 use App\Models\Project;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Support\Enums as FilamentEnums;
 use Filament\Tables;
-use Filament\Tables\Actions\ExportAction;
 use Filament\Tables\Table;
 
 class ProjectResource extends Resource
@@ -75,26 +74,12 @@ class ProjectResource extends Resource
     {
         return $table
             ->headerActions([
-                // Tables\Actions\AttachAction::make(),
-
                 Tables\Actions\ActionGroup::make([
-                    \App\Filament\Actions\ImportProfessorsFromInternshipAgreements::make('Import Professors From Internship Agreements')
+                    \App\Filament\Actions\Action\Processing\ImportProfessorsFromInternshipAgreements::make('Import Professors From Internship Agreements')
                         ->hidden(fn () => auth()->user()->isAdministrator() === false),
                 ]),
-                Email\SendConnectingSupervisorsEmail::make('Send Connecting Supervisors Email')
-                    ->label(__('Send Connecting Supervisors Email'))
-                    ->hidden(fn () => auth()->user()->isAdministrator() === false)
-                    ->outlined(),
-                // ExportAction::make()
-                //     ->exporter(ProjectExporter::class),
+
                 \pxlrbt\FilamentExcel\Actions\Tables\ExportAction::make(),
-                // ->exports([
-                //     \pxlrbt\FilamentExcel\Exports\ExcelExport::make()->withColumns([
-                //         \pxlrbt\FilamentExcel\Columns\Column::make('professors')
-                //         // i want to get professor with
-                //             ->formatStateUsing(fn ($record) => $record->professors->map(fn ($professor) => __($professor->pivot->jury_role).' : '.$professor->name)->join(', ')),
-                //     ]),
-                // ]),
             ])
             ->columns([
                 Tables\Columns\TextColumn::make('id_pfe')
@@ -172,23 +157,35 @@ class ProjectResource extends Resource
             ])
             ->actions([
                 \Parallax\FilamentComments\Tables\Actions\CommentsAction::make()
-                    ->label(__('Comments'))
+                    ->label('')
                     // ->visible(fn () => true)
-                    ->badge(fn ($record) => $record->filamentComments()->count() ?? ''),
+                    ->badge(fn ($record) => $record->filamentComments()->count() ? $record->filamentComments()->count() : null),
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\ViewAction::make(),
                 ]),
                 // ->hidden(true),
-            ])
+            ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Email\SendInternshipKickoffEmail::make('Send Internship Kickoff Email'),
-                ]),
+                    BulkAction\Email\SendInternshipKickoffEmail::make('Send Internship Kickoff Email'),
+                    BulkAction\Email\SendConnectingSupervisorsEmail::make('Send Connecting Supervisors Email')
+                        ->label(__('Send Connecting Supervisors Email'))
+                        ->hidden(fn () => auth()->user()->isAdministrator() === false)
+                        ->outlined(),
+                ])
+                    ->label(__('Send email'))
+                    ->dropdownWidth(FilamentEnums\MaxWidth::Small)
+                    ->hidden(fn () => auth()->user()->isAdministrator() === false),
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                ])
+                    ->label(__('actions'))
+                    ->hidden(fn () => auth()->user()->isAdministrator() === false),
+
             ]);
+        // ;
+
     }
 
     public static function getRelations(): array
@@ -204,7 +201,7 @@ class ProjectResource extends Resource
     {
         return [
             'index' => Pages\ListProjects::route('/'),
-            'create' => Pages\CreateProject::route('/create'),
+            // 'create' => Pages\CreateProject::route('/create'),
             'edit' => Pages\EditProject::route('/{record}/edit'),
         ];
     }

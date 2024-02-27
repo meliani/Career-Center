@@ -59,7 +59,6 @@ class InternshipAgreementResource extends BaseResource
         return $form
             ->schema(
                 \App\Services\Filament\InternshipAgreementForm::get(),
-                \App\Filament\Actions\CreateProjectFromInternshipAgreement::make('Create Project From Internship Agreement'),
             );
     }
 
@@ -86,7 +85,7 @@ class InternshipAgreementResource extends BaseResource
                 \pxlrbt\FilamentExcel\Actions\Tables\ExportAction::make()
                     ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isDepartmentHead() || auth()->user()->isProgramCoordinator()) === false)
                     ->outlined(),
-                \App\Filament\Actions\AssignInternshipsToProjects::make('Assign Internships To Projects')
+                \App\Filament\Actions\Action\AssignInternshipsToProjects::make('Assign Internships To Projects')
                     ->label(__('Assign Internships To Projects'))
                     ->hidden(fn () => auth()->user()->isAdministrator() === false)
                     ->outlined(),
@@ -123,14 +122,14 @@ class InternshipAgreementResource extends BaseResource
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
-                    \App\Filament\Actions\SignAction::make()
+                    \App\Filament\Actions\Action\SignAction::make()
                         ->disabled(fn ($record): bool => $record['signed_at'] !== null),
-                    \App\Filament\Actions\ReceiveAction::make()
+                    \App\Filament\Actions\Action\ReceiveAction::make()
                         ->disabled(fn ($record): bool => $record['received_at'] !== null),
                     Tables\Actions\ActionGroup::make([
-                        \App\Filament\Actions\ValidateAction::make()
+                        \App\Filament\Actions\Action\ValidateAction::make()
                             ->disabled(fn ($record): bool => $record['validated_at'] !== null),
-                        \App\Filament\Actions\AssignDepartmentAction::make()
+                        \App\Filament\Actions\Action\AssignDepartmentAction::make()
                             ->disabled(fn ($record): bool => $record['assigned_department'] !== null),
                     ])->dropdown(false),
                 ])

@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Filament\Actions;
+namespace App\Filament\Actions\Action;
 
-use Filament\Tables\Actions\Action;
-use Illuminate\Support\Carbon;
-use App\Models\InternshipAgreement;
 use App\Services\ProjectService;
+use Filament\Tables\Actions\Action;
 
-class ImportProfessorsFromInternshipAgreements extends Action
+class AssignInternshipsToProjects extends Action
 {
     public static function make(?string $name = null): static
     {
@@ -15,8 +13,9 @@ class ImportProfessorsFromInternshipAgreements extends Action
             'name' => $name ?? static::getDefaultName(),
         ]);
         $static->configure()->action(function (): void {
-            ProjectService::ImportProfessorsFromInternshipAgreements();
+            ProjectService::AssignInternshipsToProjects();
         });
+
         return $static;
     }
 }
