@@ -5,5 +5,6 @@
     - [ ] Connection email viewed at
 - [ ] Add columns to project professor pivot
     - [ ] Overview email sent at
-    - [ ] Overview email viewed at
+    - [ ] Overview email viewed
+# Internship agreement resource
 - [ ] Add bulk assign to department and bulk signing.
