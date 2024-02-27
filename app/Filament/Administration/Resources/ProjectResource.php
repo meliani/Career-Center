@@ -73,14 +73,6 @@ class ProjectResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->headerActions([
-                Tables\Actions\ActionGroup::make([
-                    \App\Filament\Actions\Action\Processing\ImportProfessorsFromInternshipAgreements::make('Import Professors From Internship Agreements')
-                        ->hidden(fn () => auth()->user()->isAdministrator() === false),
-                ]),
-
-                \pxlrbt\FilamentExcel\Actions\Tables\ExportAction::make(),
-            ])
             ->columns([
                 Tables\Columns\TextColumn::make('id_pfe')
                     ->sortable()
@@ -154,6 +146,14 @@ class ProjectResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+            ])
+            ->headerActions([
+                Tables\Actions\ActionGroup::make([
+                    \App\Filament\Actions\Action\Processing\ImportProfessorsFromInternshipAgreements::make('Import Professors From Internship Agreements')
+                        ->hidden(fn () => auth()->user()->isAdministrator() === false),
+                ]),
+
+                \pxlrbt\FilamentExcel\Actions\Tables\ExportAction::make(),
             ])
             ->actions([
                 \Parallax\FilamentComments\Tables\Actions\CommentsAction::make()
