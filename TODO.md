@@ -1,26 +1,37 @@
 # Database / Models
-- [ ] add columns to projects table / model
-    - [ ] Connection email sent
-    - [ ] Connection email sent at
-    - [ ] Connection email viewed at
-- [ ] Add columns to project professor pivot
-    - [ ] Overview email sent at
-    - [ ] Overview email viewed
+
+-   [ ] add columns to projects table / model
+    -   [ ] Connection email sent
+    -   [ ] Connection email sent at
+    -   [ ] Connection email viewed at
+-   [ ] Add columns to project professor pivot
+
+    -   [ ] Overview email sent at
+    -   [ ] Overview email viewed
+
+    # continue implementing the following packages
+
+    -   [ ] pxlrbt/filament-activity-log
+    -   [ ] composer require jdavidbakr/mail-tracker
+
 # Internship agreement resource
-- [ ] Add bulk assign to department and bulk signing.
+
+-   [ ] Add bulk assign to department and bulk signing.
 
 ## Students features
-- [x] Announce internship
-- [x] View announced internship
-- [x] Wait for confirmation
-- [x] Generate agreement
-- [x] Add teammate -> notify
-- [x] Accept teammate -> notify
-- [ ] Exchange with supervisors
-- [ ] Add changeStatus observer to internship model to send notifications on all changes.
+
+-   [x] Announce internship
+-   [x] View announced internship
+-   [x] Wait for confirmation
+-   [x] Generate agreement
+-   [x] Add teammate -> notify
+-   [x] Accept teammate -> notify
+-   [ ] Exchange with supervisors
+-   [ ] Add changeStatus observer to internship model to send notifications on all changes.
 
 ## department assignments
-- database notification for new 
+
+-   database notification for new
 -   [x] Add status update on announced, signed, received, validated
 -   [x] Disable action on non null
 -   [x] Add badge for status
@@ -67,10 +78,6 @@
 -   [x] Consider binomes in assignment to projects
 -   [ ] Add a tick box to enable overriding
 
-## logs
-
-Finish pxlrbt/filament-activity-log configuration
-
 ## enums
 
 -   [x] Translate enums
@@ -87,14 +94,16 @@ Finish pxlrbt/filament-activity-log configuration
 -   [ ] Parse keywords and put them into tags.
 
 ## project
+
 -   [x] Adjust date format exports
 -   [ ] Add internship process clear checklist
 -   [x] Add internship agreements tab
-- Add group action with different email templates :
-    - Supervisors email
-    - Students email
-    - external supervisors email
-- Add database notification to professors when assigned to a project with observer.
+-   Add group action with different email templates :
+    -   Supervisors email
+    -   Students email
+    -   external supervisors email
+-   Add database notification to professors when assigned to a project with observer.
+
 ## Charts
 
 -   [ ] Add supervisors count vs projects vs departments to dashboard
@@ -109,14 +118,15 @@ Finish pxlrbt/filament-activity-log configuration
     -   [x] Add name search
     -   [x] Add department and supervisors
     -   [x] Add sorting everywhere
-- [ ] Add tick box to assign interns to projects
-- [x] Add export projects
-- [x] Interns agreements table
-    - [x] Add name search
-    - [x] Add department and supervisors
+-   [ ] Add tick box to assign interns to projects
+-   [x] Add export projects
+-   [x] Interns agreements table
 
-- [ ] Possibility for student to choose professor, up to 10 teachers per student
-- [ ] Student choose supervisor
-- [ ] Supervisor receive email for approval
-- [ ] Supervisor can approve by email or by clicking on magic link and reply
-- [ ] Supervisor receive in the email the magic link to access personal space
+    -   [x] Add name search
+    -   [x] Add department and supervisors
+
+-   [ ] Possibility for student to choose professor, up to 10 teachers per student
+-   [ ] Student choose supervisor
+-   [ ] Supervisor receive email for approval
+-   [ ] Supervisor can approve by email or by clicking on magic link and reply
+-   [ ] Supervisor receive in the email the magic link to access personal space
