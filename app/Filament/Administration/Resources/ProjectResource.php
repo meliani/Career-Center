@@ -104,7 +104,7 @@ class ProjectResource extends Resource
                     ->label('Assigned department')
                     ->tooltip(fn ($state) => implode(', ', array_map(function ($s) {
                         return $s->getDescription();
-                    }, $state)))
+                    }, $state ?: [])))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('professors.name')

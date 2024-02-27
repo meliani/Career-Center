@@ -125,7 +125,7 @@ class StudentResource extends Resource
                     ->label('ID')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('first_name')
+                Tables\Columns\TextColumn::make('full_name')
                     ->label(__('Full name'))
                     ->searchable()
                     ->sortable()

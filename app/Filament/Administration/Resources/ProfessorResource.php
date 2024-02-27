@@ -81,12 +81,10 @@ class ProfessorResource extends Resource
                 //     ->password()
                 //     ->required()
                 //     ->maxLength(255),
-                // Forms\Components\Toggle::make('active_status')
-                //     ->required(),
-                // Forms\Components\TextInput::make('avatar')
-                //     ->required()
-                //     ->maxLength(255)
-                //     ->default('avatar.png'),
+                Forms\Components\Toggle::make('active_status')
+                    ->required(),
+                Forms\Components\FileUpload::make('avatar')
+                    ->default('avatar.png'),
                 // Forms\Components\Toggle::make('dark_mode')
                 //     ->required(),
                 // Forms\Components\TextInput::make('messenger_color')
@@ -98,14 +96,17 @@ class ProfessorResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('title')
-                    ->searchable(),
-                // Tables\Columns\TextColumn::make('name')
+                // Tables\Columns\TextColumn::make('title')
                 //     ->searchable(),
-                Tables\Columns\TextColumn::make('first_name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('last_name')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('name')
+                    ->searchable()
+                    ->formatStateUsing(function ($record) {
+                        return $record->long_full_name;
+                    }),
+                // Tables\Columns\TextColumn::make('first_name')
+                //     ->searchable(),
+                // Tables\Columns\TextColumn::make('last_name')
+                //     ->searchable(),
                 Tables\Columns\TextColumn::make('department')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('projects_count')
@@ -116,13 +117,13 @@ class ProfessorResource extends Resource
 
                 // Tables\Columns\TextColumn::make('role')
                 //     ->searchable(),
-                // Tables\Columns\TextColumn::make('email')
-                //     ->searchable(),
-                // Tables\Columns\TextColumn::make('assigned_program')
-                //     ->searchable(),
-                // Tables\Columns\TextColumn::make('is_enabled')
-                //     ->numeric()
-                //     ->sortable(),
+                Tables\Columns\TextColumn::make('email')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('assigned_program')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('is_enabled')
+                    ->numeric()
+                    ->sortable(),
                 // Tables\Columns\TextColumn::make('email_verified_at')
                 //     ->dateTime()
                 //     ->sortable(),
@@ -136,8 +137,8 @@ class ProfessorResource extends Resource
                 //     ->toggleable(isToggledHiddenByDefault: true),
                 // Tables\Columns\IconColumn::make('active_status')
                 //     ->boolean(),
-                // Tables\Columns\TextColumn::make('avatar')
-                //     ->searchable(),
+                Tables\Columns\TextColumn::make('avatar')
+                    ->searchable(),
                 // Tables\Columns\IconColumn::make('dark_mode')
                 //     ->boolean(),
                 // Tables\Columns\TextColumn::make('messenger_color')
