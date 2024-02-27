@@ -18,6 +18,21 @@ enum Program: string implements HasLabel
     public function getLabel(): ?string
     {
         return match ($this) {
+            self::AMOA => 'AMOA',
+            self::ASEDS => 'ASEDS',
+            self::DATA => 'DATA',
+            self::ICCN => 'ICCN',
+            self::SESNUM => 'SESNUM',
+            self::SMARTICT => 'SMART-ICT',
+            self::SUD => 'SUD',
+            self::NULL => __('Undefined'),
+            default => 'Undefined',
+        };
+    }
+
+    public function getDescription(): ?string
+    {
+        return match ($this) {
             self::AMOA => 'Innovation et AMOA',
             self::ASEDS => 'Advanced Software Engineering for Digital Services',
             self::DATA => 'Sciences de Données',
@@ -25,8 +40,8 @@ enum Program: string implements HasLabel
             self::SESNUM => 'Systèmes Embraqués et Services Numériques',
             self::SMARTICT => 'Smart Information & Communication Technology Engineering',
             self::SUD => 'Systèmes Ubiquitaires et Distribués',
-            self::NULL => 'N/A',
-            default => 'N/A',
+            self::NULL => __('Undefined'),
+            default => 'Undefined',
         };
     }
 
