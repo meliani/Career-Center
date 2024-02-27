@@ -152,5 +152,7 @@
     "Project start date": "Date de début du projet",
     "Project end date": "Date de fin du projet",
     "Level": "Niveau",
-    "Undefined": "Non défini"
+    "Undefined": "Non défini",
+    "Assign Internships To Projects": "Affecter les stages aux projets",
+    "Send Connecting Supervisors Email": "Connecter les Etudiants aux Encadrants"
 }

@@ -89,6 +89,7 @@ class InternshipAgreementResource extends BaseResource
                     ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isDepartmentHead() || auth()->user()->isProgramCoordinator()) === false)
                     ->outlined(),
                 \App\Filament\Actions\AssignInternshipsToProjects::make('Assign Internships To Projects')
+                    ->label(__('Assign Internships To Projects'))
                     ->hidden(fn () => auth()->user()->isAdministrator() === false)
                     ->outlined(),
 
