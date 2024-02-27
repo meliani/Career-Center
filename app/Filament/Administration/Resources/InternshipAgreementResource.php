@@ -4,21 +4,16 @@ namespace App\Filament\Administration\Resources;
 
 use App\Enums;
 use App\Filament\Administration\Resources\InternshipAgreementResource\Pages;
-use App\Filament\Administration\Resources\InternshipAgreementResource\RelationManagers;
 use App\Filament\Core\BaseResource;
-use App\Filament\Exports\InternshipAgreementExporter;
 use App\Filament\Imports\InternshipAgreementImporter;
 use App\Mail\GenericEmail;
 use App\Models\InternshipAgreement;
-use Filament\Actions\Exports\Enums\ExportFormat;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Support\Enums\ActionSize;
 use Filament\Tables;
-use Filament\Tables\Actions\ExportAction;
 use Filament\Tables\Actions\ImportAction;
-use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Mail;
 
@@ -75,6 +70,9 @@ class InternshipAgreementResource extends BaseResource
         return $table
             ->defaultSort('announced_at', 'asc')
             ->groups([
+                Tables\Grouping\Group::make('assigned_department')
+                    ->label(__('Assigned department'))
+                    ->collapsible(),
                 Tables\Grouping\Group::make('status')
                     ->label(__('Status'))
                     ->collapsible()
@@ -94,18 +92,11 @@ class InternshipAgreementResource extends BaseResource
                     ->outlined(),
 
                 Tables\Actions\ActionGroup::make([
-
                     ImportAction::make()
                         ->importer(InternshipAgreementImporter::class)
                         ->hidden(fn () => auth()->user()->isAdministrator() === false)
                         ->hidden(fn () => app()->environment('production')),
                 ]),
-                // ExportAction::make()
-                //     ->exporter(InternshipAgreementExporter::class)
-                //     ->formats([
-                //         ExportFormat::Xlsx,
-                //         ExportFormat::Csv,
-                //     ]),
             ])
 
             ->columns(
@@ -123,12 +114,12 @@ class InternshipAgreementResource extends BaseResource
             )
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
-                SelectFilter::make('status')
+                Tables\Filters\SelectFilter::make('status')
                     ->multiple()
                     ->options(Enums\Status::class),
-            ])
-            ->filters([
-                //
+                Tables\Filters\SelectFilter::make('assigned_department')
+                    ->multiple()
+                    ->options(Enums\Department::class),
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
@@ -148,10 +139,7 @@ class InternshipAgreementResource extends BaseResource
                     ->size(ActionSize::ExtraLarge)
                     ->tooltip(__('Validate, sign, or assign department'))
                     ->color('warning')
-                    // ->outlined()
-                    // ->button()
-                    // ->hidden(fn () => auth()->user()->isPowerProfessor() === false ),
-                    ->hidden(fn () => (auth()->user()->isSuperAdministrator() || auth()->user()->isPowerProfessor()) === false),
+                    ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isPowerProfessor()) === false),
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\ViewAction::make(),
@@ -165,10 +153,6 @@ class InternshipAgreementResource extends BaseResource
                     ->icon('heroicon-o-ellipsis-vertical')
                     ->size(ActionSize::ExtraLarge)
                     ->tooltip(__('View, edit, or delete this internship agreement')),
-                // ->size(ActionSize::ExtraSmall)
-                // ->outlined()
-                // ->color('warning')
-                // ->button(),
                 Tables\Actions\Action::make('sendEmail')
                     ->form([
                         TextInput::make('subject')->required(),
@@ -197,8 +181,6 @@ class InternshipAgreementResource extends BaseResource
     public static function getRelations(): array
     {
         return [
-            // RelationManagers\ProjectRelationManager::class,
-            // RelationManagers\StudentRelationManager::class,
         ];
     }
 
@@ -206,7 +188,7 @@ class InternshipAgreementResource extends BaseResource
     {
         return [
             'index' => Pages\ListInternshipAgreements::route('/'),
-            'create' => Pages\CreateInternshipAgreement::route('/create'),
+            // 'create' => Pages\CreateInternshipAgreement::route('/create'),
             'edit' => Pages\EditInternshipAgreement::route('/{record}/edit'),
         ];
     }
