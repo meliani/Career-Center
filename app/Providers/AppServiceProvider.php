@@ -49,7 +49,7 @@ class AppServiceProvider extends ServiceProvider
         $this->turnOnSslIfProduction($url);
         $this->configureFilament();
         // $this->addEnumTypeToDoctrine();
-        $this->configureDoctrine();
+        // $this->configureDoctrine();
         $this->configureRateLimiter();
         $this->autoTranslateLabels();
 

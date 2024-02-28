@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-// use Illuminate\Support\Facades\Gate;
 use App\Enums\Role;
 use App\Models\InternshipAgreement;
 use App\Models\User;
@@ -33,8 +32,20 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Gate::define('see-sent-emails', function (User $user) {
+            if ($user->hasAnyRole($this->administrators)) {
+                return true;
+            }
+        });
+        $this->registerInternshipAgreementPolicies();
+        // $this->registerPulsesPolicy();
+        $this->registerPolicies();
+    }
+
+    private function registerInternshipAgreementPolicies()
+    {
+
         Gate::define('view-internship', function (User $user, InternshipAgreement $internship) {
-            // Check if the user is an administrator
             if ($user->hasAnyRole($this->administrators)) {
                 return true;
             }
@@ -47,29 +58,15 @@ class AuthServiceProvider extends ServiceProvider
             }
 
             return false;
-
-            // return $internship->student->program === $user->assigned_program;
         });
         Gate::define('validate-internship', [InternshipAgreementPolicy::class, 'update']);
         Gate::define('sign-internship', [InternshipAgreementPolicy::class, 'update']);
+    }
 
-        /* Gate::define('viewPulse', function (User $user) {
+    private function registerPulsesPolicy()
+    {
+        Gate::define('viewPulse', function (User $user) {
             return $user->role === Role::SuperAdministrator;
-        }); */
-
-        // Gate::define('viewAny-internship', function ($user, $internship) {
-        //     // Check if the user is an administrator
-        //     if ($user->hasAnyRole($this->administrators)) {
-        //         return true;
-        //     }
-
-        //     // Check if the user is a professor and the internship's student's program matches the user's program
-        //     if ($user->hasAnyRole($this->professors) && $internship->student->program == $user->assigned_program) {
-        //         return true;
-        //     }
-
-        //     return false;
-        // });
-        $this->registerPolicies();
+        });
     }
 }
