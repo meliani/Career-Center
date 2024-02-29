@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums;
+use App\Notifications\InternshipAgreementStatusChanged;
 use Filament\Notifications\Notification;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -22,14 +23,15 @@ class InternshipAgreement extends Core\BackendBaseModel
     protected static function booted(): void
     {
         static::addGlobalScope(new Scopes\InternshipAgreementScope());
+        if (env('EMAIL_NOTIFICATIONS', false)) {
+            static::updated(function ($agreement) {
+                if ($agreement->wasChanged('status')) {
+                    // dd($agreement->wasChanged('status'));
+                    $agreement->student->notify(new InternshipAgreementStatusChanged());
+                }
+            });
+        }
     }
-
-    // public function scopeFilterByProgramHead($query)
-    // {
-    //     return $query->whereHas('student', function ($q) {
-    //         $q->where('program', auth()->user()->assigned_program);
-    //     });
-    // }
 
     public $fillable = [
         'id_pfe',

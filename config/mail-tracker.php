@@ -37,7 +37,7 @@ return [
         'prefix' => 'email-manager',
         'middleware' => [
             'web',
-            'can:see-sent-emails'
+            'can:see-sent-emails',
         ],
     ],
 

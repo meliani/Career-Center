@@ -4,9 +4,13 @@ namespace App\Models;
 
 use App\Enums;
 use App\Models\Core\BackendBaseModel;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Notifications\Notification;
 
 class Student extends BackendBaseModel
 {
+    use Notifiable;
+
     protected $appends = [
         'full_name',
         'long_full_name',
@@ -51,6 +55,15 @@ class Student extends BackendBaseModel
             $query
                 ->where('year_id', 7);
         });
+    }
+
+    public function routeNotificationForMail(Notification $notification): array | string
+    {
+        // Return email address only...
+        return $this->email_perso;
+
+        // Return email address and name...
+        // return [$this->email_address => $this->full_name];
     }
 
     public function setPin(Student $student, $currentPin, $streamOrder)
