@@ -133,9 +133,10 @@
 -   [ ] Supervisor can approve by email or by clicking on magic link and reply
 -   [ ] Supervisor receive in the email the magic link to access personal space
 
-# Email Notifications
+# Email and database Notifications
 
 -   [ ] Send email notifications to student for internship validation, signature and announcement.
 -   [ ] Send email notifications to student for defense validation.
 -   [ ] Send email notifications to professor, student for being added of removed from jury.
 -   [ ] Send email notifications to professor, student if related project or internship agreement is deleted.
+-   [ ] Send email notifications to administrators for internship agreement creation: InternshipAgreementAnnounced

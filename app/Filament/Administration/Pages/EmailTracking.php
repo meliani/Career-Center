@@ -9,4 +9,9 @@ class EmailTracking extends Page
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     protected static string $view = 'filament.administration.pages.email-tracking';
+
+    public static function viewAny(): bool
+    {
+        return false;
+    }
 }

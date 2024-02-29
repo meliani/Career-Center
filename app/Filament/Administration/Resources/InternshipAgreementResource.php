@@ -11,6 +11,8 @@ use App\Models\InternshipAgreement;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Infolists;
+use Filament\Infolists\Infolist;
 use Filament\Support\Enums\ActionSize;
 use Filament\Tables;
 use Filament\Tables\Actions\ImportAction;
@@ -189,6 +191,35 @@ class InternshipAgreementResource extends BaseResource
             'index' => Pages\ListInternshipAgreements::route('/'),
             // 'create' => Pages\CreateInternshipAgreement::route('/create'),
             'edit' => Pages\EditInternshipAgreement::route('/{record}/edit'),
+            'view' => Pages\ViewInternshipAgreement::route('/{record}/view'),
         ];
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+
+                Infolists\Components\TextEntry::make('title')
+                    ->label(__('Title'))
+                    ->columnSpanFull(),
+                Infolists\Components\TextEntry::make('organization_name')
+                    ->label(__('Organization name')),
+                Infolists\Components\TextEntry::make('student.full_name')
+                    ->label(__('Student')),
+                Infolists\Components\TextEntry::make('id_pfe')
+                    ->label(__('ID PFE')),
+                Infolists\Components\TextEntry::make('status')
+                    ->label(__('Status')),
+                Infolists\Components\TextEntry::make('assigned_department')
+                    ->label(__('Assigned department')),
+                Infolists\Components\TextEntry::make('signed_at')
+                    ->label(__('Signed at')),
+                Infolists\Components\TextEntry::make('validated_at')
+                    ->label(__('Validated at')),
+                Infolists\Components\TextEntry::make('received_at')
+                    ->label(__('Received at')),
+
+            ]);
     }
 }

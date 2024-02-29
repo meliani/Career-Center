@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use App\Enums;
-use App\Notifications\InternshipAgreementStatusChanged;
-use Filament\Notifications\Notification;
+use App\Filament\Administration\Resources;
+use Filament;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Gate;
@@ -26,9 +26,52 @@ class InternshipAgreement extends Core\BackendBaseModel
         if (env('EMAIL_NOTIFICATIONS', false)) {
             static::updated(function ($agreement) {
                 if ($agreement->wasChanged('status')) {
-                    // dd($agreement->wasChanged('status'));
-                    $agreement->student->notify(new InternshipAgreementStatusChanged());
+                    Filament\Notifications\Notification::make()
+                        ->title(__('The status of your Internship Agreement has changed.'))
+                        ->success()
+                        ->icon('heroicon-s-check-circle')
+                        ->body('body')
+                        ->actions([
+                            Filament\Notifications\Actions\Action::make(__('Edit'))
+                                ->button()
+                                ->size('xs')
+                                ->color('success')
+                                // ->markAsRead()
+                                ->url(Resources\InternshipAgreementResource::getUrl('edit', [$agreement->id])),
+                            Filament\Notifications\Actions\Action::make(__('View'))
+                                ->button()
+                                ->url(Resources\InternshipAgreementResource::getUrl('view', [$agreement->id]))
+                                ->size('xs')
+                                ->color('danger'),
+                            // ->markAsUnread(),
+                        ])
+                        ->sendToDatabase(User::find(1));
+                    $agreement->student->notify(new \App\Notifications\InternshipAgreementStatusChanged());
                 }
+            });
+
+            static::created(function ($agreement) {
+                // notify all administrators from $user->administrators var
+                // Notification::send($agreement->student->administrators, new \App\Notifications\InternshipAgreementAnnounced());
+                Filament\Notifications\Notification::make()
+                    ->title(__('A new Internship Agreement has been created.'))
+                    ->success()
+                    ->icon('heroicon-s-check-circle')
+                    ->body('body')
+                    ->actions([
+                        Filament\Notifications\Actions\Action::make(__('View'))
+                            ->button()
+                            ->size('xs')
+                            ->color('success')
+                            ->markAsRead()
+                            ->url('url'),
+                        Filament\Notifications\Actions\Action::make(__('Mark As Unread'))
+                            ->button()
+                            ->size('xs')
+                            ->color('danger')
+                            ->markAsUnread(),
+                    ])
+                    ->sendToDatabase(User::get(1));
             });
         }
     }
