@@ -37,9 +37,11 @@ class InternshipAgreementStatusChanged extends Notification implements ShouldQue
         // dd($notifiable);
 
         return (new MailMessage)
-            ->line('The status of your Internship Agreement has changed.')
+            ->line(__('The status of the internship agreement has been changed'))
             ->action('View Agreement', url('/'))
-            ->line('Thank you for using our application!');
+            ->line('---')
+            ->line(__('DASRE'))
+            ->line(__('INPT Careers Platform'));
     }
 
     /**
