@@ -5,7 +5,6 @@ namespace App\Filament\Administration\Resources;
 use App\Enums;
 use App\Filament\Administration\Resources\InternshipAgreementResource\Pages;
 use App\Filament\Core\BaseResource;
-use App\Filament\Imports\InternshipAgreementImporter;
 use App\Mail\GenericEmail;
 use App\Models\InternshipAgreement;
 use Filament\Forms\Components\RichEditor;
@@ -92,12 +91,12 @@ class InternshipAgreementResource extends BaseResource
                     ->hidden(fn () => auth()->user()->isAdministrator() === false)
                     ->outlined(),
 
-                Tables\Actions\ActionGroup::make([
-                    ImportAction::make()
-                        ->importer(InternshipAgreementImporter::class)
-                        ->hidden(fn () => auth()->user()->isAdministrator() === false)
-                        ->hidden(fn () => app()->environment('production')),
-                ]),
+                // Tables\Actions\ActionGroup::make([
+                //     ImportAction::make()
+                //         ->importer(App\Filament\Imports\InternshipAgreementImporter::class)
+                //         ->hidden(fn () => auth()->user()->isAdministrator() === false)
+                //         ->hidden(fn () => app()->environment('production')),
+                // ]),
             ])
 
             ->columns(

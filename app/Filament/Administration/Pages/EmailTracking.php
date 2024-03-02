@@ -10,8 +10,8 @@ class EmailTracking extends Page
 
     protected static string $view = 'filament.administration.pages.email-tracking';
 
-    public static function viewAny(): bool
+    public static function canAccess(): bool
     {
-        return false;
+        return auth()->user()->isAdministrator();
     }
 }
