@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
@@ -10,7 +11,8 @@ use Illuminate\Queue\SerializesModels;
 
 class JoinPlatformInvitation extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     public $user;
 
@@ -18,7 +20,7 @@ class JoinPlatformInvitation extends Mailable
 
     public $emailBody;
 
-    public function __construct($user)
+    public function __construct(User $user)
     {
         $this->user = $user;
         $this->emailSubject = 'Invitation automatique à rejoindre INPT Entreprises';
@@ -46,6 +48,7 @@ class JoinPlatformInvitation extends Mailable
             ],
         );
     }
+
     /**
      * Get the attachments for the message.
      *

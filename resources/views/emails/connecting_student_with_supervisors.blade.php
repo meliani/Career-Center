@@ -3,11 +3,7 @@
         {{ $emailSubject }}
         </x-slot::emailSubject>
 
-        ## Cher(e) {{ $user->long_full_name }},
-
-        Cher(e) étudiant (e),
-
-
+        ## Cher(e) {{ $project->student->first_name }},
 
         Nous vous informons que votre encadrant pour votre stage de Projet de Fin d'Études est Mme/M [nom de
         l'encadrant] .

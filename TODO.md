@@ -139,4 +139,5 @@
 -   [ ] Send email notifications to student for defense validation.
 -   [ ] Send email notifications to professor, student for being added of removed from jury.
 -   [ ] Send email notifications to professor, student if related project or internship agreement is deleted.
--   [ ] Send email notifications to administrators for internship agreement creation: InternshipAgreementAnnounced
+-   [x] Send email notifications to administrators for internship agreement creation: InternshipAgreementAnnounced
+-  [ ] Send bulk email to students for supervisor connection.

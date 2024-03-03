@@ -13,6 +13,11 @@ class ProjectScope implements Scope
      */
     public function apply(Builder $builder, Model $model): void
     {
+        if ($model instanceof \App\Models\Project) {
+            $builder->with('students');
+
+            return;
+        }
         if (auth()->user()->isSuperAdministrator() || auth()->user()->isAdministrator() || auth()->user()->isDirection()) {
             return;
         } elseif (auth()->user()->isProgramCoordinator()) {

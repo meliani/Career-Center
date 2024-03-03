@@ -2,27 +2,32 @@
 
 namespace App\Mail;
 
+use App\Models\Project;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Notifications\Notification;
 use Illuminate\Queue\SerializesModels;
 
-class ConnectingStudentsWithSupervisors extends Mailable
+class ConnectingStudentsWithSupervisors extends Mailable implements ShouldQueue
+    // Notification
 {
     use Queueable;
     use SerializesModels;
 
-    public $user;
+    public $project;
 
     public $emailSubject;
 
     public $emailBody;
 
-    public function __construct($user)
+    public function __construct(Project $project)
     {
-        $this->user = $user;
-        $this->emailSubject = 'Invitation automatique à rejoindre INPT Entreprises';
+        // dd($project);
+        $this->project = $project;
+        $this->emailSubject = 'Encadrant pour votre stage de Projet de Fin d\'Études';
     }
 
     /**
@@ -43,7 +48,7 @@ class ConnectingStudentsWithSupervisors extends Mailable
         return new Content(
             markdown: 'emails.connecting_student_with_supervisors',
             with: [
-                'user' => $this->user,
+                'user' => $this->project,
             ],
         );
     }

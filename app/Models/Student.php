@@ -82,6 +82,25 @@ class Student extends BackendBaseModel
         return $this->belongsToMany(Project::class);
     }
 
+    public function project()
+    {
+        return Project::whereHas('students', function ($query) {
+            $query->where('students.id', $this->id);
+        })->first();
+    }
+
+    public function teammate()
+    {
+        if (! $this->project()->hasTeammate()) {
+            return null;
+        }
+
+        return Student::whereHas('projects', function ($query) {
+            $query->where('projects.id', $this->project()->id)
+                ->where('student_id', '!=', $this->id);
+        })->first();
+    }
+
     public function year()
     {
         return $this->belongsTo(Year::class);

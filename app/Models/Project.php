@@ -74,6 +74,22 @@ class Project extends Core\BackendBaseModel
 
     }
 
+    public function hasTeammate()
+    {
+        return $this->students()->count() > 1;
+    }
+
+    public function supervisor()
+    {
+        if (! $this->professors()->exists()) {
+            return null;
+        }
+
+        return $this->professors()
+            ->wherePivot('jury_role', Enums\JuryRole::Supervisor)
+            ->first();
+    }
+
     public function timetable()
     {
         return $this->hasOne(Timetable::class);
