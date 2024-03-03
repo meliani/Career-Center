@@ -62,8 +62,7 @@ class ProjectSupervisorAdded extends Notification implements ShouldQueue
             // ->line("Date de fin : {$this->project->end_date}")
             ->lineIf($this->project->hasTeammate(), "Vous êtes en binôme pour ce projet, votre binôme est : **{$this->student->teammate()?->long_full_name}**")
             ->line('---')
-            ->line('Cordialement,')
-            ->salutation('La DASRE');
+            ->salutation("Cordialement,\n\n **La DASRE**");
     }
 
     /**
