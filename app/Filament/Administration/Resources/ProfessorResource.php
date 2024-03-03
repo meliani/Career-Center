@@ -35,7 +35,7 @@ class ProfessorResource extends Resource
 
     public static function canAccess(): bool
     {
-        return auth()->user()->isAdministrator();
+        return auth()->user()->isAdministrator() || auth()->user()->isDirection();
     }
 
     public static function form(Form $form): Form
