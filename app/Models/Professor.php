@@ -11,8 +11,6 @@ class Professor extends User
         parent::boot();
         static::addGlobalScope(function ($query) {
             $query
-                //  where role is in this array Enums\Role::getProfessorRoles()
-
                 ->whereIn('role', Enums\Role::getProfessorRoles());
         });
     }

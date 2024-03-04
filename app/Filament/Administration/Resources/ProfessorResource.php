@@ -6,11 +6,13 @@ use App\Enums\Department;
 use App\Enums\Program;
 use App\Enums\Role;
 use App\Enums\Title;
+use App\Filament\Actions\BulkAction;
 use App\Filament\Administration\Resources\ProfessorResource\Pages;
 use App\Filament\Core\BaseResource as Resource;
 use App\Models\Professor;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Support\Enums as FilamentEnums;
 use Filament\Tables;
 use Filament\Tables\Table;
 
@@ -152,8 +154,20 @@ class ProfessorResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+                    BulkAction\Email\SendProfessorsProjectsOverview::make('Send Professors Projects Overview')
+                        ->label(__('Send Professors Projects Overview'))
+                        ->hidden(fn () => auth()->user()->isAdministrator() === false)
+                        ->outlined(),
+                ])
+                    ->label(__('Send email'))
+                    ->dropdownWidth(FilamentEnums\MaxWidth::Small)
+                    ->hidden(fn () => auth()->user()->isAdministrator() === false),
+                Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                ])
+                    ->label(__('actions'))
+                    ->hidden(fn () => auth()->user()->isAdministrator() === false),
+
             ])
             ->defaultSort('projects_count', 'desc');
     }
