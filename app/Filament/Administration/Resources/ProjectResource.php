@@ -81,6 +81,10 @@ class ProjectResource extends Resource
                     ->label('Student name')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('students.program')
+                    ->label('Program')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('internshipAgreements.assigned_department')
                     ->label('Assigned department')
                     ->tooltip(fn ($state) => implode(', ', array_map(function ($s) {
