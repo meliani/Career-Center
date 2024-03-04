@@ -29,7 +29,7 @@ class ImportSupervisors extends Command
     public function handle()
     {
         //  get csv file from app\developer_docs\csv\internships.csv
-        $file = 'app/developer_docs/csv/'.$this->argument('filename');
+        $file = 'app/developer_docs/csv/' . $this->argument('filename');
 
         //  open the file
         $handle = fopen($file, 'r');
@@ -42,21 +42,27 @@ class ImportSupervisors extends Command
             //  disable model scope
             $importedData = array_combine($header, $data);
             //  find the internship by the id
-            $internshipAgreement = InternshipAgreement::withoutGlobalScopes()->where('id_pfe', '=', $importedData['id_pfe'])->first();
-            if ($internshipAgreement == null) {
-                $this->error('Internship agreement with id_pfe '.$importedData['id_pfe'].' not found');
+            // $internshipAgreement = InternshipAgreement::withoutGlobalScopes()->where('id_pfe', '=', $importedData['id_pfe'])->first();
+            $project = Project::withoutGlobalScopes()->where('id_pfe', '=', $importedData['id_pfe'])->first();
+            if ($project == null) {
+                $project = Project::withoutGlobalScopes()->where('id_pfe', 'like', "%{$importedData['id_pfe']}%")->first();
+                if ($project == null) {
+                    $this->error('Project with id_pfe ' . $importedData['id_pfe'] . ' not found');
+                } else {
+                    $this->error('Project with id_pfe ' . $importedData['id_pfe'] . ' not found, but maybe here is a binome ' . $project->id_pfe);
+                }
 
                 continue;
             }
-            $this->ImportProfessorFromInternshipAgreement($internshipAgreement, $importedData['professor_name']);
+            $this->ImportProfessorFromInternshipAgreement($project, $importedData['professor_name']);
             $importedLines++;
         }
-        $this->info('Imported '.$importedLines.' supervisors');
+        $this->info('Imported ' . $importedLines . ' supervisors');
     }
 
-    public function ImportProfessorFromInternshipAgreement(InternshipAgreement $internshipAgreement, $professor_name)
+    public function ImportProfessorFromInternshipAgreement(Project $project, $professor_name)
     {
-        $professor = Professor::where('name', 'like', '%'.$professor_name.'%')->first();
+        $professor = Professor::where('name', 'like', '%' . $professor_name . '%')->first();
         if ($professor == null) {
             $professor = Professor::whereFuzzy('first_name', $professor_name)
                 ->orWhereFuzzy('last_name', $professor_name)
@@ -65,21 +71,21 @@ class ImportSupervisors extends Command
                 ->first();
 
             if ($professor != null) {
-                $this->info('Professor '.$professor_name.' is similar to '.$professor->name);
+                $this->info('Professor ' . $professor_name . ' is similar to ' . $professor->name);
             } else {
-                $this->error('Professor '.$professor_name.' not found');
+                $this->error('Professor ' . $professor_name . ' not found');
 
                 return;
             }
 
         } elseif ($professor != null) {
-            $this->info('Professor '.$professor_name.' found as '.$professor->name);
-            $project = Project::withoutGlobalScopes()->where('id', $internshipAgreement->project_id)->first();
+            $this->info('Professor ' . $professor_name . ' found as ' . $professor->name);
+            $project = Project::withoutGlobalScopes()->where('id', $project->id)->first();
             if ($project->professors->contains($professor)) {
-                $professor->projects()->detach($internshipAgreement->project_id);
-                $professor->projects()->attach([$internshipAgreement->project_id => ['jury_role' => 'Supervisor']]);
+                $professor->projects()->detach($project->id);
+                $professor->projects()->attach([$project->id => ['jury_role' => 'Supervisor']]);
             } else {
-                $professor->projects()->attach([$internshipAgreement->project_id => ['jury_role' => 'Supervisor']]);
+                $professor->projects()->attach([$project->id => ['jury_role' => 'Supervisor']]);
             }
         }
     }
