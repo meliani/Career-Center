@@ -61,12 +61,7 @@ class Project extends Core\BackendBaseModel
         return $this->belongsToMany(Student::class);
     }
 
-    public function internshipAgreements()
-    {
-        return $this->hasMany(InternshipAgreement::class);
-    }
-
-    public function internships()
+    public function internship_agreements()
     {
         return $this->hasMany(InternshipAgreement::class);
     }

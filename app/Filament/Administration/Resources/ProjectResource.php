@@ -85,7 +85,7 @@ class ProjectResource extends Resource
                     ->label('Program')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('internships.assigned_department')
+                Tables\Columns\TextColumn::make('internship_agreements.assigned_department')
                     ->label('Assigned department')
                     ->sortable(query: function (\Illuminate\Database\Eloquent\Builder $query, string $direction, $column): \Illuminate\Database\Eloquent\Builder {
                         [$table, $field] = explode('.', $column->getName());
@@ -157,9 +157,8 @@ class ProjectResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                // Tables\Filters\SelectFilter::make('internshipAgreements')
-                //     ->relationship('internshipAgreements', 'assigned_department')
-                //     ->nullable(),
+                // Tables\Filters\SelectFilter::make('internship_agreements')
+                //     ->relationship('internship_agreements', 'assigned_department'),
             ])
             ->headerActions([
                 Tables\Actions\ActionGroup::make([

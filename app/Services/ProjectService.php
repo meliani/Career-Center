@@ -105,12 +105,9 @@ class ProjectService extends Facade
 
     private static function CreateFromInternshipAgreement(InternshipAgreement $internshipAgreement): Project
     {
-        //  check if the project already exists from the internshipAgreements() relationship
         if ($internshipAgreement->project) {
 
             $project = $internshipAgreement->project;
-
-            //  we'll check if project has more than one student
 
             if ($project->students->count() > 1) {
                 return $project;

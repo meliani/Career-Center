@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class InternshipAgreementsRelationManager extends RelationManager
 {
-    protected static string $relationship = 'internshipAgreements';
+    protected static string $relationship = 'internship_agreements';
 
     protected static ?string $inverseRelationship = 'project';
 
