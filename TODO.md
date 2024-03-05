@@ -111,6 +111,7 @@
 -   [ ] Add supervisors count vs projects vs departments to dashboard
 -   [x] Projects participation by department
 -   [x] Filter graphs by only signed projects
+-   [ ] Add labels to Anounced Internships per Program Chart (total students, total internships, realization rate)
 
 ## UX
 
