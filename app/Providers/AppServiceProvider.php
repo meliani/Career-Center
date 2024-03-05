@@ -188,5 +188,13 @@ class AppServiceProvider extends ServiceProvider
                 //     ->label(fn () => __('Settings')),
             ]);
         });
+        Column::macro('sortableMany', function () {
+            return $this->sortable(query: function (\Illuminate\Database\Eloquent\Builder $query, string $direction, $column): \Illuminate\Database\Eloquent\Builder {
+                [$table, $field] = explode('.', $column->getName());
+
+                return $query->withAggregate($table, $field)
+                    ->orderBy(implode('_', [$table, $field]), $direction);
+            });
+        });
     }
 }

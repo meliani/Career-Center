@@ -80,22 +80,14 @@ class ProjectResource extends Resource
                 Tables\Columns\TextColumn::make('students.full_name')
                     ->label('Student name')
                     ->searchable()
-                    ->sortable(),
+                    ->sortableMany(),
                 Tables\Columns\TextColumn::make('students.program')
                     ->label('Program')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('internship_agreements.assigned_department')
                     ->label('Assigned department')
-                    ->sortable(query: function (\Illuminate\Database\Eloquent\Builder $query, string $direction, $column): \Illuminate\Database\Eloquent\Builder {
-                        [$table, $field] = explode('.', $column->getName());
-
-                        return $query->withAggregate($table, $field)
-                            ->orderBy(implode('_', [$table, $field]), $direction);
-                    })
-                    ->tooltip(fn ($state) => implode(', ', array_map(function ($s) {
-                        return $s->getDescription();
-                    }, $state ?: [])))
+                    ->sortableMany()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('professors.name')
                     ->label('Supervisor - Reviewer')
@@ -112,7 +104,7 @@ class ProjectResource extends Resource
                     //         return $professor->name;
                     //     })->join(', ');
                     // })
-                    ->sortable(),
+                    ->sortableMany(),
                 Tables\Columns\TextColumn::make('timetable.timeslot.start_time')
                     ->label('Defense start time')
                     ->toggleable(isToggledHiddenByDefault: true)
