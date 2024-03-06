@@ -18,9 +18,20 @@ class RoomResource extends Resource
 
     protected static ?int $navigationSort = 9;
 
+    protected static string $title = 'Rooms';
+
+    protected static ?string $navigationGroup = 'Planning';
+
+    protected static ?string $navigationLabel = 'Rooms';
+
+    public static function getNavigationLabel(): string
+    {
+        return __(self::$navigationLabel);
+    }
+
     public static function getnavigationGroup(): string
     {
-        return __('Planning');
+        return __(self::$navigationGroup);
     }
 
     public static function form(Form $form): Form

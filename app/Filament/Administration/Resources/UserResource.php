@@ -32,6 +32,11 @@ class UserResource extends Resource
 
     protected static ?int $sort = 10;
 
+    public static function getnavigationGroup(): string
+    {
+        return __(self::$navigationGroup);
+    }
+
     public static function form(Form $form): Form
     {
         return $form

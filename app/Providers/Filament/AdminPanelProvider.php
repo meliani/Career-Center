@@ -112,6 +112,18 @@ class AdminPanelProvider extends PanelProvider
             ->defaultAvatarProvider(
                 \LaraZeus\Boredom\BoringAvatarsProvider::class
             )
-            ->sidebarCollapsibleOnDesktop();
+            ->sidebarCollapsibleOnDesktop()
+            ->navigationGroups([
+                'Students and projects',
+                'Étudiants et projets',
+                'Juries',
+                'Plannings',
+                'Entreprises',
+                'Planification',
+                'Settings',
+                'Paramètres',
+                'System',
+                'Système',
+            ]);
     }
 }

@@ -15,7 +15,10 @@ use LaraZeus\Boredom\Concerns\HasBoringAvatar;
 
 class User extends Authenticatable implements FilamentUser, HasName
 {
-    use HasApiTokens, HasBoringAvatar, HasFactory, Notifiable;
+    use HasApiTokens;
+    use HasBoringAvatar;
+    use HasFactory;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -79,6 +82,12 @@ class User extends Authenticatable implements FilamentUser, HasName
         'long_full_name',
         'full_name',
     ];
+
+    // add scoop for administrators role
+    public function scopeAdministrators($query)
+    {
+        return $query->whereIn('role', $this->administrators)->get();
+    }
 
     public function getNameAttribute()
     {

@@ -18,9 +18,18 @@ class TimetableResource extends Resource
 
     protected static ?int $navigationSort = 10;
 
+    protected static ?string $navigationGroup = 'Planning';
+
+    protected static ?string $navigationLabel = 'Timetables';
+
+    public static function getNavigationLabel(): string
+    {
+        return __(self::$navigationLabel);
+    }
+
     public static function getnavigationGroup(): string
     {
-        return __('Planning');
+        return __(self::$navigationGroup);
     }
 
     public static function form(Form $form): Form

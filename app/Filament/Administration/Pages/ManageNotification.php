@@ -15,6 +15,13 @@ class ManageNotification extends SettingsPage
 
     protected static ?string $title = 'Notification Settings';
 
+    protected static ?string $navigationGroup = 'Settings';
+
+    public static function getnavigationGroup(): string
+    {
+        return __(self::$navigationGroup);
+    }
+
     public function getTitle(): string
     {
         return __(self::$title);
@@ -22,7 +29,7 @@ class ManageNotification extends SettingsPage
 
     public static function canAccess(): bool
     {
-        return auth()->check();
+        return auth()->user()->isAdministrator();
     }
 
     public function form(Form $form): Form

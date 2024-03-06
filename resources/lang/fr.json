@@ -162,5 +162,17 @@
     "INPT Careers Platform": "Plateforme Carrières de l'INPT",
     "The status of the internship agreement has been changed": "Le statut de la convention de stage a été modifié",
     "Internship with the id {id} has been modified": "Le stage avec l'identifiant {id} a été modifié",
-    "Send Professors Projects Overview": "Envoyer un aperçu des projets aux professeurs"
+    "Send Professors Projects Overview": "Envoyer un aperçu des projets aux professeurs",
+    "Professors": "Professeurs",
+    "Timeslots": "Créneaux horaires",
+    "Timeslot": "Créneau horaire",
+    "Rooms": "Salles",
+    "Room": "Salle",
+    "Defense": "Soutenance",
+    "Defenses": "Soutenances",
+    "Timetables": "Plannings",
+    "Edit": "Modifier",
+    "Email log": "Journal des emails",
+    "Email Tracking": "Suivi des emails",
+    "The status of an Internship Agreement has changed.": "Le statut d'une convention de stage a changé."
 }

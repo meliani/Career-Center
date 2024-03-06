@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Models\InternshipAgreement;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -11,12 +12,14 @@ class InternshipAgreementStatusChanged extends Notification implements ShouldQue
 {
     use Queueable;
 
+    public $internshipAgreement = null;
+
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    public function __construct(InternshipAgreement $internshipAgreement)
     {
-        //
+        $this->internshipAgreement = $internshipAgreement;
     }
 
     /**
@@ -32,16 +35,20 @@ class InternshipAgreementStatusChanged extends Notification implements ShouldQue
     /**
      * Get the mail representation of the notification.
      */
-    public function toMail($notifiable)
+    public function toMail($notifiable): MailMessage
     {
         // dd($notifiable);
 
         return (new MailMessage)
-            ->line(__('The status of the internship agreement has been changed'))
-            ->action('View Agreement', url('/'))
+            ->subject('Changement de statut de la convention de stage')
+            ->greeting("Bonjour {$notifiable->first_name},")
+            ->line(__('Le statut de la convention de stage a changé.'))
+            ->line("La convention portant le titre : **{$this->internshipAgreement->title}** a changé de statut.")
+            ->line("Le nouveau statut de la convention est : **{$this->internshipAgreement->status->getLabel()}**")
+            ->line("Pour plus d'informations, veuillez consulter la convention en cliquant sur le lien ci-dessous.")
+            ->action('Consulter la convention', \App\Filament\Administration\Resources\InternshipAgreementResource::getUrl('edit', [$this->internshipAgreement->id]))
             ->line('---')
-            ->line(__('DASRE'))
-            ->line(__('INPT Careers Platform'));
+            ->salutation("Cordialement,\n\n **La DASRE**");
     }
 
     /**

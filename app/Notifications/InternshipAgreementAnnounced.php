@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Models\InternshipAgreement;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -10,12 +11,14 @@ class InternshipAgreementAnnounced extends Notification
 {
     use Queueable;
 
+    public $internshipAgreement = null;
+
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    public function __construct(InternshipAgreement $internshipAgreement)
     {
-        //
+        $this->internshipAgreement = $internshipAgreement;
     }
 
     /**

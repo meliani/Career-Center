@@ -23,36 +23,37 @@ class InternshipAgreement extends Core\BackendBaseModel
     protected static function booted(): void
     {
         static::addGlobalScope(new Scopes\InternshipAgreementScope());
-        if (env('EMAIL_NOTIFICATIONS', false)) {
+
+        // if (env('EMAIL_NOTIFICATIONS', false)) {
+        if (app(\App\Settings\NotificationSettings::class)->in_app) {
             static::updated(function ($agreement) {
                 if ($agreement->wasChanged('status')) {
                     Filament\Notifications\Notification::make()
-                        ->title(__('The status of your Internship Agreement has changed.'))
+                        ->title(__('The status of an Internship Agreement has changed.'))
                         ->success()
                         ->icon('heroicon-s-check-circle')
                         ->body('body')
                         ->actions([
-                            Filament\Notifications\Actions\Action::make(__('Edit'))
-                                ->button()
-                                ->size('xs')
-                                ->color('success')
-                                // ->markAsRead()
-                                ->url(Resources\InternshipAgreementResource::getUrl('edit', [$agreement->id])),
                             Filament\Notifications\Actions\Action::make(__('View'))
                                 ->button()
                                 ->url(Resources\InternshipAgreementResource::getUrl('view', [$agreement->id]))
                                 ->size('xs')
-                                ->color('danger'),
-                            // ->markAsUnread(),
+                                ->outlined()
+                                ->color('success'),
+                            Filament\Notifications\Actions\Action::make(__('Edit'))
+                                ->button()
+                                ->size('xs')
+                                ->color('primary')
+                                ->outlined()
+                                ->url(Resources\InternshipAgreementResource::getUrl('edit', [$agreement->id])),
+
                         ])
-                        ->sendToDatabase(User::find(1));
-                    $agreement->student->notify(new \App\Notifications\InternshipAgreementStatusChanged());
+                        ->sendToDatabase(User::Administrators());
                 }
             });
 
             static::created(function ($agreement) {
                 // notify all administrators from $user->administrators var
-                // Notification::send($agreement->student->administrators, new \App\Notifications\InternshipAgreementAnnounced());
                 Filament\Notifications\Notification::make()
                     ->title(__('A new Internship Agreement has been created.'))
                     ->success()
@@ -73,6 +74,21 @@ class InternshipAgreement extends Core\BackendBaseModel
                     ])
                     ->sendToDatabase(User::get(1));
             });
+        }
+        if (app(\App\Settings\NotificationSettings::class)->by_email) {
+            static::updated(
+                function ($agreement) {
+                    if ($agreement->wasChanged('status')) {
+                        $agreement->student->notify(new \App\Notifications\InternshipAgreementStatusChanged($agreement));
+                    }
+                }
+            );
+            static::created(function ($agreement) {
+                $agreement->student->notify(new \App\Notifications\InternshipAgreementAnnounced($agreement));
+                // Notification::send($agreement->student->administrators, new \App\Notifications\InternshipAgreementAnnounced());
+
+            });
+
         }
     }
 
