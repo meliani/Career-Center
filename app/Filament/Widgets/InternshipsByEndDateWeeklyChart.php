@@ -45,10 +45,10 @@ class InternshipsByEndDateWeeklyChart extends ApexChartsParentWidget
 
             DatePicker::make('date_end')
                 ->default('2024-07-20')
-                ->live()
-                ->afterStateUpdated(function () {
-                    $this->updateChartOptions();
-                }),
+                ->live(),
+            // ->afterStateUpdated(function () {
+            //     $this->updateChartOptions();
+            // }),
 
         ];
     }
