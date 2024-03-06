@@ -50,7 +50,7 @@ class ProjectSupervisorAdded extends Notification implements ShouldQueue
         return (new MailMessage)
             ->subject("L'encadrant de votre stage de Projet de Fin d'Études")
             ->greeting("Bonjour {$this->student->long_full_name},")
-            ->lineIf($this->project->supervisor(), "Nous vous informons que votre encadrant pour votre stage de Projet de Fin d'Études est **Pr. {$this->project->supervisor()?->full_name}**")
+            ->lineIf($this->project->supervisor(), "Nous vous informons que votre encadrant de stage PFE est **Pr. {$this->project->supervisor()?->full_name}**")
             // ->action(__('Voir le projet'), url('/'))
             ->lineIf($this->project->supervisor(), "N'hésitez pas à contacter votre encadrant pour convenir d'un premier rendez-vous et établir ensemble
             les modalités de travail.")
