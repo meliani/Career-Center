@@ -17,6 +17,8 @@ class InternshipAgreementsRelationManager extends RelationManager
 
     protected static ?string $title = 'Internship agreements';
 
+    protected static bool $isLazy = false;
+
     public static function getTitle(Model $ownerRecord, string $pageClass): string
     {
         return __(self::$title);

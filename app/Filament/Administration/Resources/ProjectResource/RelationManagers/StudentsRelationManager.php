@@ -13,6 +13,8 @@ class StudentsRelationManager extends RelationManager
 {
     protected static string $relationship = 'students';
 
+    protected static bool $isLazy = false;
+
     // protected static ?string $inverseRelationship = 'projects';
     protected static ?string $title = 'Students';
 

@@ -16,6 +16,8 @@ class ProfessorsRelationManager extends RelationManager
 
     protected static ?string $title = 'Supervisor - Reviewer';
 
+    protected static bool $isLazy = false;
+
     public static function getTitle(Model $ownerRecord, string $pageClass): string
     {
         return __(self::$title);
