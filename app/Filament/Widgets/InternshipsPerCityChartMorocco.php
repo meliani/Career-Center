@@ -5,19 +5,21 @@ namespace App\Filament\Widgets;
 use App\Filament\Core\Widgets\ApexChartsParentWidget;
 use App\Models\InternshipAgreement;
 
-class InternshipsPerCityChart extends ApexChartsParentWidget
+class InternshipsPerCityChartMorocco extends ApexChartsParentWidget
 {
     protected static ?int $sort = 3;
 
     /**
      * Chart Id
      */
-    protected static ?string $chartId = 'internshipsPerCityChart';
+    protected static ?string $chartId = 'internshipsPerCityChartMorocco';
 
     /**
      * Widget Title
      */
-    protected static ?string $heading = 'Announced Internships per City';
+    protected static ?string $heading = 'Announced Internships per City (Morocco)';
+
+    protected static ?int $contentHeight = 300; //px
 
     public static function canView(): bool
     {
@@ -30,7 +32,11 @@ class InternshipsPerCityChart extends ApexChartsParentWidget
      */
     protected function getOptions(): array
     {
-        $internshipData = InternshipAgreement::select('city', \DB::raw('count(*) as count'))
+        $internshipData = InternshipAgreement::select(
+            'city',
+            \DB::raw('count(*) as count')
+        )
+            ->where('country', 'Morocco')
             ->groupBy('city')
             ->get()
             ->toArray();
