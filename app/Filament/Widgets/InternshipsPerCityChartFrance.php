@@ -43,7 +43,7 @@ class InternshipsPerCityChartFrance extends ApexChartsParentWidget
 
         return [
             'chart' => [
-                'type' => 'pie',
+                'type' => 'donut',
                 'height' => 300,
             ],
             'series' => array_column($internshipData, 'count'),
