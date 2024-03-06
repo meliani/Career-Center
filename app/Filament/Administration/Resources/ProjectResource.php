@@ -2,6 +2,7 @@
 
 namespace App\Filament\Administration\Resources;
 
+use App\Enums;
 use App\Filament\Actions\BulkAction;
 use App\Filament\Administration\Resources\ProjectResource\Pages;
 use App\Filament\Administration\Resources\ProjectResource\RelationManagers;
@@ -12,6 +13,7 @@ use Filament\Forms\Form;
 use Filament\Support\Enums as FilamentEnums;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Database\Query\Builder;
 
 class ProjectResource extends Resource
 {
@@ -149,8 +151,24 @@ class ProjectResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                // Tables\Filters\SelectFilter::make('internship_agreements')
-                //     ->relationship('internship_agreements', 'assigned_department'),
+                // Tables\Filters\SelectFilter::make('internship_agreements.assigned_department')
+                //     // ->relationship('internship_agreements', 'assigned_department')
+                //     ->options([
+                //         'MIR' => 'MIR',
+                //     ]),
+
+                // Tables\Filters\SelectFilter::make('internship_agreements.assigned_department')
+                //     ->label('Assigned Department')
+                //     ->options(Enums\Department::class),
+
+                Tables\Filters\SelectFilter::make('type')
+                    ->options(Enums\Department::class)
+                    ->query(
+                        fn (Builder $query, array $data) => $query->when(
+                            $data['value'],
+                            fn (Builder $query, $type): Builder => $query->whereRelation('internship_agreements', 'assigned_department', $type)
+                        ),
+                    ),
             ])
             ->headerActions([
                 Tables\Actions\ActionGroup::make([
@@ -215,4 +233,10 @@ class ProjectResource extends Resource
     {
         return false;
     }
+
+    // public static function getEloquentQuery(): Builder
+    // {
+    //     return parent::getEloquentQuery()
+    //         ->with('internship_agreements');
+    // }
 }
