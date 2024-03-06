@@ -94,7 +94,9 @@ class AppServiceProvider extends ServiceProvider
         Column::configureUsing(function (Column $column): void {
             $column->translateLabel()
                 ->toggleable()
-                ->sortable();
+                ->searchable()
+                ->sortable()
+                ->wrapHeader();
         });
         Filter::configureUsing(function (Filter $filter): void {
             $filter->translateLabel();
@@ -164,12 +166,13 @@ class AppServiceProvider extends ServiceProvider
         //             Role::Administrator,
         //         ]));
         // });
-        TextColumn::configureUsing(function (TextColumn $column): void {
-            $column
-                ->toggleable()
-                ->searchable()
-                ->translateLabel();
-        });
+        // TextColumn::configureUsing(function (TextColumn $column): void {
+        //     $column
+        //         ->toggleable()
+        //         ->searchable()
+        //         ->translateLabel()
+        //         ->sortable();
+        // });
 
         Filament::serving(function () {
             Filament::registerNavigationGroups([

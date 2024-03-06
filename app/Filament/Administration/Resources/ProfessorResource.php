@@ -12,9 +12,12 @@ use App\Filament\Core\BaseResource as Resource;
 use App\Models\Professor;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Support\Enums\Alignment;
 use Filament\Support\Enums as FilamentEnums;
 use Filament\Tables;
+use Filament\Tables\Columns\Summarizers;
 use Filament\Tables\Table;
+use Illuminate\Support\HtmlString;
 
 class ProfessorResource extends Resource
 {
@@ -97,6 +100,8 @@ class ProfessorResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultPaginationPageOption(20)
+            ->striped()
             ->columns([
                 // Tables\Columns\TextColumn::make('title')
                 //     ->searchable(),
@@ -112,19 +117,36 @@ class ProfessorResource extends Resource
                 Tables\Columns\TextColumn::make('department')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('projects_count')
+                    ->alignment(Alignment::Center)
                     ->searchable(false)
-                    ->label(__('Number of Projects Participations'))
-                    ->counts('projects')
-                    ->sortable(),
 
-                // Tables\Columns\TextColumn::make('role')
-                //     ->searchable(),
+                    ->summarize([
+                        Summarizers\Average::make()->numeric(
+                            decimalPlaces: 0,
+                        ),
+                        Summarizers\Range::make(),
+                        Summarizers\Sum::make(),
+                    ])
+                    ->label(__('Number of Projects Participations'))
+                    // ->label(new HtmlString(__('Number of <br /> Projects Participations')))
+                    // ->label(new HtmlString(nl2br("Home \n number")))
+                    ->translateLabel(false)
+                    ->alignCenter()
+                    ->sortable()
+                    ->counts('projects'),
+                Tables\Columns\TextColumn::make('projects.id_pfe')
+                    ->label(__('Projects'))
+                    ->action(fn ($record) => Pages\EditProfessor::route('/{record}/edit')),
+                Tables\Columns\TextColumn::make('role')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('assigned_program')
+                    ->label(__('Program Coordinator Program'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('is_enabled')
                     ->numeric()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 // Tables\Columns\TextColumn::make('email_verified_at')
                 //     ->dateTime()
@@ -139,8 +161,9 @@ class ProfessorResource extends Resource
                 //     ->toggleable(isToggledHiddenByDefault: true),
                 // Tables\Columns\IconColumn::make('active_status')
                 //     ->boolean(),
-                Tables\Columns\TextColumn::make('avatar')
-                    ->searchable(),
+                // Tables\Columns\TextColumn::make('avatar')
+                //     ->toggleable(isToggledHiddenByDefault: true)
+                //     ->searchable(),
                 // Tables\Columns\IconColumn::make('dark_mode')
                 //     ->boolean(),
                 // Tables\Columns\TextColumn::make('messenger_color')

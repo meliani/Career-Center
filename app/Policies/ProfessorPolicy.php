@@ -2,17 +2,33 @@
 
 namespace App\Policies;
 
+use App\Models\Professor;
 use App\Models\User;
-use App\Models\InternshipAgreement;
-use Illuminate\Auth\Access\HandlesAuthorization;
-use App\Policies\CorePolicy;
-use Illuminate\Support\Facades\Gate;
-
 
 class ProfessorPolicy extends CorePolicy
 {
     public function viewAny(User $user): bool
     {
-        return $user->hasAnyRole($this->powerProfessors);
+        return $user->isAdministrator() || $user->isProgramCoordinator() || $user->isDepartmentHead() || $user->isDirection();
+    }
+
+    public function view(User $user, Professor $professor)
+    {
+        return $user->isAdministrator() || $user->isProgramCoordinator() || $user->isDepartmentHead() || $user->isDirection();
+    }
+
+    public function update(User $user, Professor $professor)
+    {
+        return $user->isAdministrator();
+    }
+
+    public function delete(User $user, Professor $professor)
+    {
+        return $user->isAdministrator();
+    }
+
+    public function forceDelete(User $user, Professor $professor)
+    {
+        return $user->isAdministrator();
     }
 }
