@@ -12,7 +12,7 @@ class EmailLogResource extends EmailResource
 
     protected static ?string $title = 'Email Logs';
 
-    protected static ?string $navigationGroup = 'System';
+    protected static ?string $navigationGroup = 'Emails';
 
     public static function getnavigationGroup(): string
     {

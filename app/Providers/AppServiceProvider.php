@@ -184,6 +184,8 @@ class AppServiceProvider extends ServiceProvider
                 NavigationGroup::make()
                     ->label('Juries and professors'),
                 NavigationGroup::make()
+                    ->label('Emails'),
+                NavigationGroup::make()
                     ->label('Settings'),
                 NavigationGroup::make()
                     ->label('System'),

@@ -120,6 +120,7 @@ class AdminPanelProvider extends PanelProvider
                 'Plannings',
                 'Entreprises',
                 'Planification',
+                'Emails',
                 'Settings',
                 'Paramètres',
                 'System',
