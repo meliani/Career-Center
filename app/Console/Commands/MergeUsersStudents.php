@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class MergeUsersStudents extends Command
 {
@@ -11,7 +12,7 @@ class MergeUsersStudents extends Command
      *
      * @var string
      */
-    protected $signature = 'app:merge-users-students';
+    protected $signature = 'carrieres:merge-users-students';
 
     /**
      * The console command description.
@@ -25,6 +26,24 @@ class MergeUsersStudents extends Command
      */
     public function handle()
     {
-        //
+        // Retrieve users from the users table
+        $users = DB::connection('frontend_database')->table('users')->get();
+
+        foreach ($users as $user) {
+            // Assuming 'id' is the common field between users and students
+            $student = DB::table('students')->where('id', $user->id)->first();
+
+            if ($student) {
+                // Copy email and password fields
+                DB::table('students')
+                    ->where('id', $user->id)
+                    ->update([
+                        'email' => $user->email,
+                        'password' => $user->password,
+                    ]);
+            }
+        }
+
+        $this->info('User credentials copied successfully!');
     }
 }

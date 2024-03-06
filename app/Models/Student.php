@@ -16,9 +16,15 @@ class Student extends BackendBaseModel
         'long_full_name',
     ];
 
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
     protected $fillable = [
         'title',
         'pin',
+        'email',
         'first_name',
         'last_name',
         'email_perso',
@@ -60,7 +66,7 @@ class Student extends BackendBaseModel
     public function routeNotificationForMail(Notification $notification): array | string
     {
         // Return email address only...
-        return $this->email_perso;
+        return [$this->email, $this->email_perso];
 
         // Return email address and name...
         // return [$this->email_address => $this->full_name];
