@@ -1,0 +1,39 @@
+<div x-data="{ isLoading: true }" x-show="isLoading"
+    class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+    <svg class="w-16 h-16 m-auto" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs id="defs6">
+            <clipPath clipPathUnits="userSpaceOnUse" id="clipPath570">
+                <path d="M 0,244.235 H 496.713 V 0 H 0 Z" id="path568" />
+            </clipPath>
+        </defs>
+        <g id="g10" transform="matrix(1.3333333,0,0,-1.3333333,-8.3773334,324.79093)">
+            <path d="M 6.283,243.59311 H 17.236302 V 180.97029 H 6.283 Z"
+                style="fill:#007ac1;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.455306" id="path558" />
+            <g id="g560" transform="matrix(0.45530624,0,0,0.45530624,22.074842,180.97038)">
+                <path d="M 0,0 V 137.54 H 23.334 L 72.93,44.896 V 137.54 H 95.205 V 0 H 71.117 L 22.265,90.736 V 0 Z"
+                    style="fill:#007ac1;fill-opacity:1;fill-rule:nonzero;stroke:none" id="path562" />
+            </g>
+            <g id="g564" transform="matrix(0.45530624,0,0,0.45530624,3.4223109,132.68369)">
+                <g id="g566" clip-path="url(#clipPath570)">
+                    <g id="g572" transform="translate(173.2038,220.401)">
+                        <path
+                            d="m 0,0 v -39.311 h 13.263 c 9.552,0 15.95,0.713 19.157,2.17 3.228,1.446 5.732,3.699 7.577,6.801 1.834,3.092 2.746,6.687 2.746,10.774 0,5.04 -1.289,9.212 -3.847,12.492 -2.583,3.27 -5.816,5.313 -9.735,6.141 C 26.257,-0.304 20.441,0 11.701,0 Z m -24.041,-114.348 v 137.54 h 38.739 c 14.683,0 24.256,-0.692 28.715,-2.064 6.865,-2.065 12.602,-6.55 17.225,-13.467 4.605,-6.917 6.927,-15.857 6.927,-26.797 0,-8.447 -1.342,-15.553 -3.998,-21.317 -2.683,-5.754 -6.058,-10.281 -10.171,-13.561 -4.119,-3.281 -8.295,-5.46 -12.55,-6.519 -5.775,-1.32 -14.138,-1.98 -25.079,-1.98 H 0 v -51.835 z"
+                            style="fill:#007ac1;fill-opacity:1;fill-rule:nonzero;stroke:none" id="path574" />
+                    </g>
+                    <g id="g576" transform="translate(274.9334,106.0532)">
+                        <path
+                            d="m 0,0 v 114.348 h -33.268 c 0,0 -4.289,18.546 -19.737,23.192 H 61.651 L 88.042,114.348 H 24.057 V 0 Z"
+                            style="fill:#007ac1;fill-opacity:1;fill-rule:nonzero;stroke:none" id="path578" />
+                    </g>
+                </g>
+            </g><text xml:space="preserve"
+                style="font-size:63.5989px;font-family:Comfortaa;-inkscape-font-specification:Comfortaa;letter-spacing:-7.92519px;fill:#0e1730;stroke-width:2.38495"
+                x="136.53008" y="-183.39256" id="text3193" transform="scale(1,-1)">
+                <tspan id="tspan3191" x="136.53008" y="-183.39256"
+                    style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans Bold';stroke-width:2.38495"
+                    dx="0">ENTREPRISES</tspan>
+            </text>
+        </g>
+    </svg>
+    <div class="mt-4 text-gray-600">Loading...</div>
+</div>

@@ -2,8 +2,8 @@
 
 namespace App\Filament\Core\Widgets;
 
-use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 use Illuminate\Contracts\View\View;
+use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
 class ApexChartsParentWidget extends ApexChartWidget
 {
@@ -11,6 +11,12 @@ class ApexChartsParentWidget extends ApexChartWidget
     {
         return __(static::$heading);
     }
+
+    protected function getLoadingIndicator(): null | string | View
+    {
+        return view('components.loading-indicator');
+    }
+
     // protected function getFooter(): string|View
     // {
     //     return __(static::$footer);
