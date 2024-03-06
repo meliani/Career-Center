@@ -123,7 +123,7 @@ class Student extends BackendBaseModel
 
     public function getLongFullNameAttribute()
     {
-        return $this->title->getLabel() . ' ' . $this->attributes['first_name'] . ' ' . $this->attributes['last_name'];
+        return $this->title->getLabel() . '. ' . $this->attributes['first_name'] . ' ' . $this->attributes['last_name'];
     }
 
     public function scopeActive($query)

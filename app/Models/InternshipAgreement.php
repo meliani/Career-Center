@@ -7,6 +7,7 @@ use App\Filament\Administration\Resources;
 use Filament;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Gate;
 
 class InternshipAgreement extends Core\BackendBaseModel
@@ -53,7 +54,6 @@ class InternshipAgreement extends Core\BackendBaseModel
             });
 
             static::created(function ($agreement) {
-                // notify all administrators from $user->administrators var
                 Filament\Notifications\Notification::make()
                     ->title(__('A new Internship Agreement has been created.'))
                     ->success()
@@ -72,21 +72,29 @@ class InternshipAgreement extends Core\BackendBaseModel
                             ->color('danger')
                             ->markAsUnread(),
                     ])
-                    ->sendToDatabase(User::get(1));
+                    ->sendToDatabase(User::Administrators());
             });
         }
         if (app(\App\Settings\NotificationSettings::class)->by_email) {
             static::updated(
                 function ($agreement) {
                     if ($agreement->wasChanged('status')) {
+                        User::Administrators()->each(
+                            function ($admin) use ($agreement) {
+                                $admin->notify(new \App\Notifications\InternshipAgreementStatusChanged($agreement));
+                            }
+                        );
                         $agreement->student->notify(new \App\Notifications\InternshipAgreementStatusChanged($agreement));
                     }
                 }
             );
             static::created(function ($agreement) {
                 $agreement->student->notify(new \App\Notifications\InternshipAgreementAnnounced($agreement));
-                // Notification::send($agreement->student->administrators, new \App\Notifications\InternshipAgreementAnnounced());
-
+                User::Administrators()->each(
+                    function ($admin) use ($agreement) {
+                        $admin->notify(new \App\Notifications\InternshipAgreementAnnounced($agreement));
+                    }
+                );
             });
 
         }

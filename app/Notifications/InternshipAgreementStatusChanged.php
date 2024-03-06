@@ -48,7 +48,7 @@ class InternshipAgreementStatusChanged extends Notification implements ShouldQue
             ->line("Pour plus d'informations, veuillez consulter la convention en cliquant sur le lien ci-dessous.")
             ->action('Consulter la convention', \App\Filament\Administration\Resources\InternshipAgreementResource::getUrl('edit', [$this->internshipAgreement->id]))
             ->line('---')
-            ->salutation("Cordialement,\n\n **La DASRE**");
+            ->salutation("Cordialement,\n\n **Plateforme Carrières**");
     }
 
     /**
