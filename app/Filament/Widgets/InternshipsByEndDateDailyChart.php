@@ -10,19 +10,19 @@ use Flowframe\Trend\Trend;
 use Flowframe\Trend\TrendValue;
 use Illuminate\Support\Carbon;
 
-class InternshipsByEndDateWeeklyChart extends ApexChartsParentWidget
+class InternshipsByEndDateDailyChart extends ApexChartsParentWidget
 {
     protected static ?int $sort = 2;
 
     /**
      * Chart Id
      */
-    protected static ?string $chartId = 'InternshipsByEndDateWeeklyChart';
+    protected static ?string $chartId = 'InternshipsByEndDateDailyChart';
 
     /**
      * Widget Title
      */
-    protected static ?string $heading = 'Internships by end date (weekly)';
+    protected static ?string $heading = 'Internships by end date (Daily)';
 
     public static function canView(): bool
     {
