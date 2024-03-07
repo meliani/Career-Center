@@ -8,8 +8,11 @@ use App\Filament\Administration\Resources\ProjectResource\Pages;
 use App\Filament\Administration\Resources\ProjectResource\RelationManagers;
 use App\Filament\Core\BaseResource as Resource;
 use App\Models\Project;
+use Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Infolists;
+use Filament\Infolists\Infolist;
 use Filament\Support\Enums as FilamentEnums;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -44,6 +47,11 @@ class ProjectResource extends Resource
     public static function getGloballySearchableAttributes(): array
     {
         return ['title', 'organization', 'students.full_name', 'id_pfe', 'professors.name'];
+    }
+
+    public static function canCreate(): bool
+    {
+        return false;
     }
 
     public static function form(Form $form): Form
@@ -228,17 +236,53 @@ class ProjectResource extends Resource
             'index' => Pages\ListProjects::route('/'),
             // 'create' => Pages\CreateProject::route('/create'),
             'edit' => Pages\EditProject::route('/{record}/edit'),
+            'view' => Pages\ViewProject::route('/{record}/view'),
+
         ];
     }
 
-    public static function canCreate(): bool
+    public static function infolist(Infolist $infolist): Infolist
     {
-        return false;
-    }
+        return $infolist
+            ->schema([
+                Infolists\Components\Section::make(__('Internship agreement and validation process'))
+                    ->headerActions([
+                        Infolists\Components\Actions\Action::make('edit page', 'edit')
+                            ->label('Edit')
+                            ->icon('heroicon-o-pencil')
+                            ->size(Filament\Support\Enums\ActionSize::Small)
+                            ->tooltip('Edit this internship agreement')
+                            ->url(fn ($record) => \App\Filament\Administration\Resources\ProjectResource::getUrl('edit', [$record->id])),
 
-    // public static function getEloquentQuery(): Builder
-    // {
-    //     return parent::getEloquentQuery()
-    //         ->with('internship_agreements');
-    // }
+                    ])
+                    ->schema([
+
+                        Infolists\Components\Fieldset::make('Internship agreement')
+                            ->schema([
+                                Infolists\Components\TextEntry::make('title')
+                                    ->label('Project title'),
+                                Infolists\Components\TextEntry::make('organization')
+                                    ->label('Organization'),
+                                Infolists\Components\TextEntry::make('id_pfe')
+                                    ->label('PFE ID'),
+                                Infolists\Components\TextEntry::make('students.full_name')
+                                    ->label('Student'),
+                                Infolists\Components\TextEntry::make('professors.name')
+                                    ->label('Supervisor - Reviewer')
+                                    ->formatStateUsing(
+                                        fn ($record) => $record->professors->map(
+                                            fn ($professor) => $professor->pivot->jury_role->getLabel() . ': ' . $professor->name
+                                        )->join(', ')
+                                    ),
+                                Infolists\Components\TextEntry::make('start_date')
+                                    ->label('Project start date')
+                                    ->date(),
+                                Infolists\Components\TextEntry::make('end_date')
+
+                                    ->label('Project end date')
+                                    ->date(),
+                            ]),
+                    ]),
+            ]);
+    }
 }

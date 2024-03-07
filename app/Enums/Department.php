@@ -49,4 +49,15 @@ enum Department: string implements HasLabel
             self::NULL => __('Undefined'),
         };
     }
+
+    public function getColor(): ?string
+    {
+        return match ($this) {
+            self::EMO => 'info',
+            self::MIR => 'success',
+            self::GLC => 'warning',
+            self::SC => 'danger',
+            self::NULL => 'secondary',
+        };
+    }
 }

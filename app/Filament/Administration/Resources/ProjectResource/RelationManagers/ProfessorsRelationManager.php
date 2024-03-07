@@ -14,7 +14,7 @@ class ProfessorsRelationManager extends RelationManager
 {
     protected static string $relationship = 'professors';
 
-    protected static ?string $title = 'Supervisor - Reviewer';
+    protected static ?string $title = 'Jury';
 
     protected static bool $isLazy = false;
 
@@ -31,6 +31,7 @@ class ProfessorsRelationManager extends RelationManager
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Select::make('role')
+                    ->label('Professor role in school')
                     ->options(Enums\JuryRole::class),
             ]);
     }
@@ -40,10 +41,13 @@ class ProfessorsRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('name')
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('long_full_name')
+                    ->label('Full Name'),
                 Tables\Columns\SelectColumn::make('jury_role')
+                    ->label('Role dans le jury')
                     ->options(Enums\JuryRole::class),
-                Tables\Columns\TextColumn::make('role'),
+                Tables\Columns\TextColumn::make('role')
+                    ->label('Professor role in school'),
 
             ])
             ->filters([

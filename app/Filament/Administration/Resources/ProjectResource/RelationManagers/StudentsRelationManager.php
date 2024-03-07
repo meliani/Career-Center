@@ -40,7 +40,11 @@ class StudentsRelationManager extends RelationManager
             ->recordTitleAttribute('full_name')
             ->columns([
                 Tables\Columns\TextColumn::make('full_name'),
+                Tables\Columns\TextColumn::make('program'),
+                Tables\Columns\TextColumn::make('email'),
+                Tables\Columns\TextColumn::make('phone'),
             ])
+
             ->filters([
                 //
             ])

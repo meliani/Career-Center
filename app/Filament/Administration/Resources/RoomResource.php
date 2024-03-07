@@ -2,6 +2,7 @@
 
 namespace App\Filament\Administration\Resources;
 
+use App\Enums;
 use App\Filament\Administration\Resources\RoomResource\Pages;
 use App\Models\Room;
 use Filament\Forms;
@@ -44,6 +45,8 @@ class RoomResource extends Resource
                 Forms\Components\Textarea::make('description')
                     ->maxLength(65535)
                     ->columnSpanFull(),
+                Forms\Components\Select::make('status')
+                    ->options(Enums\RoomStatus::class),
                 Forms\Components\TextInput::make('created_by')
                     ->required()
                     ->numeric(),
@@ -58,11 +61,16 @@ class RoomResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
+                Tables\Columns\SelectColumn::make('status')
+                    ->options(Enums\RoomStatus::class)
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_by')
                     ->numeric()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('updated_by')
                     ->numeric()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

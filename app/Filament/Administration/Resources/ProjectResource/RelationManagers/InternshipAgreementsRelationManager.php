@@ -30,8 +30,9 @@ class InternshipAgreementsRelationManager extends RelationManager
             ->schema([
                 Forms\Components\TextInput::make('title')
                     // ->relationship('student', 'full_name')
-                    ->required()
-                    ->maxLength(255),
+                    ->required(),
+                Forms\Components\TextInput::make('student.full_name')
+                    ->required(),
             ]);
     }
 
@@ -41,6 +42,7 @@ class InternshipAgreementsRelationManager extends RelationManager
             ->recordTitleAttribute('title')
             ->columns([
                 Tables\Columns\TextColumn::make('title'),
+                Tables\Columns\TextColumn::make('student.full_name'),
             ])
             ->filters([
                 //

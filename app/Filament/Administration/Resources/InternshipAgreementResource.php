@@ -7,12 +7,13 @@ use App\Filament\Administration\Resources\InternshipAgreementResource\Pages;
 use App\Filament\Core\BaseResource;
 use App\Mail\GenericEmail;
 use App\Models\InternshipAgreement;
+use Filament;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Infolists;
+use Filament\Infolists\Components\Fieldset;
 use Filament\Infolists\Infolist;
-use Filament\Support\Enums\ActionSize;
 use Filament\Tables;
 use Filament\Tables\Actions\ImportAction;
 use Filament\Tables\Table;
@@ -136,7 +137,7 @@ class InternshipAgreementResource extends BaseResource
                 ])
                     ->label('')
                     ->icon('heroicon-o-arrow-up-on-square')
-                    ->size(ActionSize::ExtraLarge)
+                    ->size(Filament\Support\Enums\ActionSize::ExtraLarge)
                     ->tooltip(__('Validate, sign, or assign department'))
                     ->color('warning')
                     ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isPowerProfessor()) === false),
@@ -151,7 +152,7 @@ class InternshipAgreementResource extends BaseResource
                     ->hidden((auth()->user()->isSuperAdministrator() || auth()->user()->isPowerProfessor()) === false)
                     ->label('')
                     ->icon('heroicon-o-ellipsis-vertical')
-                    ->size(ActionSize::ExtraLarge)
+                    ->size(Filament\Support\Enums\ActionSize::ExtraLarge)
                     ->tooltip(__('View, edit, or delete this internship agreement')),
                 Tables\Actions\Action::make('sendEmail')
                     ->form([
@@ -168,7 +169,7 @@ class InternshipAgreementResource extends BaseResource
                     )
                     ->label('')
                     ->icon('heroicon-o-envelope')
-                    ->size(ActionSize::ExtraLarge)
+                    ->size(Filament\Support\Enums\ActionSize::ExtraLarge)
                     ->tooltip(__('Send an email to the student')),
             ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
@@ -198,27 +199,53 @@ class InternshipAgreementResource extends BaseResource
     {
         return $infolist
             ->schema([
+                Infolists\Components\Section::make(__('Internship agreement and validation process'))
+                    ->headerActions([
+                        Infolists\Components\Actions\Action::make('edit page', 'edit')
+                            ->label('Edit')
+                            ->icon('heroicon-o-pencil')
+                            ->size(Filament\Support\Enums\ActionSize::ExtraLarge)
+                            ->tooltip('Edit this internship agreement')
+                            ->url(fn ($record) => \App\Filament\Administration\Resources\InternshipAgreementResource::getUrl('edit', [$record->id])),
 
-                Infolists\Components\TextEntry::make('title')
-                    ->label(__('Title'))
-                    ->columnSpanFull(),
-                Infolists\Components\TextEntry::make('organization_name')
-                    ->label(__('Organization name')),
-                Infolists\Components\TextEntry::make('student.full_name')
-                    ->label(__('Student')),
-                Infolists\Components\TextEntry::make('id_pfe')
-                    ->label(__('ID PFE')),
-                Infolists\Components\TextEntry::make('status')
-                    ->label(__('Status')),
-                Infolists\Components\TextEntry::make('assigned_department')
-                    ->label(__('Assigned department')),
-                Infolists\Components\TextEntry::make('signed_at')
-                    ->label(__('Signed at')),
-                Infolists\Components\TextEntry::make('validated_at')
-                    ->label(__('Validated at')),
-                Infolists\Components\TextEntry::make('received_at')
-                    ->label(__('Received at')),
+                    ])
+                    ->schema([
 
+                        Fieldset::make('Internship agreement')
+                            ->schema([
+                                Infolists\Components\TextEntry::make('student.full_name')
+                                    ->label('Student'),
+                                Infolists\Components\TextEntry::make('title')
+                                    ->label('Title'),
+                                Infolists\Components\TextEntry::make('description')
+                                    ->columnSpanFull(),
+                                Infolists\Components\TextEntry::make('organization_name')
+                                    ->label('Organization name'),
+                                Infolists\Components\TextEntry::make('id_pfe')
+                                    ->label('ID PFE'),
+                                Infolists\Components\TextEntry::make('status')
+                                    ->label('Status'),
+                                Infolists\Components\TextEntry::make('assigned_department')
+                                    ->label('Assigned department'),
+                            ]),
+                        Fieldset::make('Administative dates')
+                            ->schema([
+                                Infolists\Components\TextEntry::make('announced_at')
+                                    ->date()
+                                    ->label('Announced at'),
+                                Infolists\Components\TextEntry::make('validated_at')
+                                    ->date()
+                                    ->label('Validated at'),
+                                Infolists\Components\TextEntry::make('received_at')
+                                    ->date()
+                                    ->label('Received at'),
+                                Infolists\Components\TextEntry::make('signed_at')
+                                    ->date()
+                                    ->label('Signed at'),
+                            ])
+                            ->columns(4),
+
+                    ]),
             ]);
     }
 }

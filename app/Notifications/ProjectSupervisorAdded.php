@@ -44,9 +44,6 @@ class ProjectSupervisorAdded extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        // dd($this->project);
-        //
-
         return (new MailMessage)
             ->subject("L'encadrant de votre stage de Projet de Fin d'Études")
             ->greeting("Bonjour {$this->student->long_full_name},")

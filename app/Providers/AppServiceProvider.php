@@ -10,6 +10,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\StringType;
 use Doctrine\DBAL\Types\Type;
 use Filament\Facades\Filament;
+use Filament\Forms;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Field;
 use Filament\Forms\Components\Fieldset;
@@ -18,6 +19,7 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\ToggleButtons;
+use Filament\Infolists;
 use Filament\Infolists\Components\Entry;
 use Filament\Navigation\NavigationGroup;
 use Filament\Tables\Columns\Column;
@@ -134,6 +136,12 @@ class AppServiceProvider extends ServiceProvider
 
         Section::configureUsing(function (Section $section): void {
             $section->translateLabel();
+        });
+        Infolists\Components\Fieldset::configureUsing(function (Infolists\Components\Fieldset $fieldset): void {
+            $fieldset->translateLabel();
+            Forms\Components\Select::configureUsing(function (Forms\Components\Select $select): void {
+                $select->translateLabel();
+            });
         });
 
         // NavigationGroup::configureUsing(function (NavigationGroup $group): void {
