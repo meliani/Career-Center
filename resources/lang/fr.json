@@ -156,7 +156,6 @@
     "Level": "Niveau",
     "Undefined": "Non défini",
     "Assign Internships To Projects": "Affecter les stages aux projets",
-    "Send Connecting Supervisors Email": "Connecter les Etudiants aux Encadrants",
     "Generate Timeslots": "Générer les créneaux horaires",
     "Generate Defenses Timetable": "Générer le planning des soutenances",
     "A new internship agreement has been announced": "Une nouvelle convention de stage a été déclarée",
@@ -176,6 +175,9 @@
     "Edit": "Modifier",
     "Email log": "Journal des emails",
     "Email Tracking": "Suivi des emails",
+    "Achieved": "Achevé",
+    "Start": "Début",
+    "End": "Fin",
     "The status of an Internship Agreement has changed.": "Le statut d'une convention de stage a changé.",
     "Program Coordinator Program": "Filière du coordinateur de filière",
     "Administative dates": "Dates administratives",
@@ -183,5 +185,7 @@
     "Full name": "Nom complet",
     "Professor role in school": "Rôle du professeur dans l'INPT",
     "Internship agreement and validation process": "Convention de stage et processus de validation",
-    "Project title": "Titre du projet"
+    "Project title": "Titre du projet",
+    "Send email to put supervisors in contact with students": "Envoyer l'email pour mettre les encadrants en contact avec les étudiants",
+    "Send an email to student": "Envoyer un email à l'étudiant"
 }

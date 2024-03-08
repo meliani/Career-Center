@@ -20,7 +20,7 @@ class InternshipAgreementTable
                 ->searchable()
                 ->sortable(),
 
-            Tables\Columns\TextColumn::make('student.full_name')
+            Tables\Columns\TextColumn::make('student.long_full_name')
                 ->label(__('Student name'))
                 ->searchable()
                 ->sortable(),
@@ -29,15 +29,15 @@ class InternshipAgreementTable
             // }),
 
             Tables\Columns\TextColumn::make('organization_name')
-                ->label(__('Organization'))
+                ->label('Organization')
                 ->searchable()
                 ->sortable(),
             Tables\Columns\TextColumn::make('city')
-                ->label(__('City'))
+                ->label('City')
                 ->searchable()
                 ->sortable(),
             Tables\Columns\TextColumn::make('country')
-                ->label(__('Country'))
+                ->label('Country')
                 ->searchable()
                 ->sortable(),
 
@@ -69,46 +69,46 @@ class InternshipAgreementTable
                 ->sortable(),
             Tables\Columns\TextColumn::make('encadrant_ext_nom')
                 ->toggleable(isToggledHiddenByDefault: true)
-                ->label(__('Encadrant'))
+                ->label('Encadrant')
                 ->formatStateUsing(function ($state, InternshipAgreement $internship) {
                     return $internship->encadrant_ext_titre->getLabel() . ' ' . $internship->encadrant_ext_nom . ' ' . $internship->encadrant_ext_prenom;
                 })
                 ->searchable()
                 ->sortable(),
             Tables\Columns\TextColumn::make('status')
-                ->label(__('Status'))
+                ->label('Status')
                 ->searchable()
                 ->sortable(),
             Tables\Columns\TextColumn::make('project.professors.name')
-                ->label(__('Supervisor - Reviewer'))
+                ->label('Supervisor - Reviewer')
                 ->searchable()
                 ->sortable(),
             Tables\Columns\TextColumn::make('assigned_department')
-                ->label(__('Assigned department'))
+                ->label('Assigned department')
                 ->searchable()
                 ->sortable(),
 
             Tables\Columns\TextColumn::make('announced_at')
                 ->toggleable(isToggledHiddenByDefault: true)
-                ->label(__('Announced'))
+                ->label('Announced')
                 ->searchable()
                 ->sortable()
                 ->date(),
             Tables\Columns\TextColumn::make('validated_at')
                 ->toggleable(isToggledHiddenByDefault: true)
-                ->label(__('Validated'))
+                ->label('Validated')
                 ->searchable()
                 ->sortable()
                 ->date(),
             Tables\Columns\TextColumn::make('signed_at')
                 ->toggleable(isToggledHiddenByDefault: true)
-                ->label(__('Signed'))
+                ->label('Signed')
                 ->searchable()
                 ->sortable()
                 ->date(),
             Tables\Columns\TextColumn::make('received_at')
                 ->toggleable(isToggledHiddenByDefault: true)
-                ->label(__('Received'))
+                ->label('Achieved')
                 ->searchable()
                 ->sortable()
                 ->date(),

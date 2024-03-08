@@ -5,11 +5,15 @@ namespace App\Models;
 use App\Enums;
 use App\Models\Core\BackendBaseModel;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Notifications\Notification;
 
 class Student extends BackendBaseModel
 {
     use Notifiable;
+
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new Scopes\StudentScope());
+    }
 
     protected $appends = [
         'full_name',
@@ -63,7 +67,7 @@ class Student extends BackendBaseModel
         });
     }
 
-    public function routeNotificationForMail(Notification $notification): array | string
+    public function routeNotificationForMail(): array | string
     {
         // Return email address only...
         return [$this->email, $this->email_perso];
@@ -114,7 +118,7 @@ class Student extends BackendBaseModel
 
     public function activeInternshipAgreement()
     {
-        return $this->hasOne(InternshipAgreement::class)->where('active', true);
+        return $this->hasOne(InternshipAgreement::class);
     }
 
     public function inactiveInternshipAgreements()

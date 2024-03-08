@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums;
 use App\Models\Student;
 use App\Models\User;
 
@@ -12,7 +13,12 @@ class StudentPolicy extends CorePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasAnyRole($this->administrators);
+        if ($user->hasAnyRole(Enums\Role::getAll())) {
+            return true;
+        }
+
+        return false;
+
     }
 
     /**
@@ -21,7 +27,18 @@ class StudentPolicy extends CorePolicy
     public function view(User $user, Student $student): bool
     {
 
-        return $user->isAdministrator() || $user->isProfessor() || $user->isProgramCoordinator() || $user->isDirection();
+        if ($user->isAdministrator() || $user->isDirection()) {
+            return true;
+        } elseif (($user->isProfessor() && $student->projects->each(fn ($project, $key) => $project->professors->each(fn ($professor, $key) => $professor->id === $user->id)))) {
+            return true;
+        } elseif ($user->isProgramCoordinator() && $student->program === $user->assigned_program) {
+            return true;
+
+        } elseif ($user->isDepartmentHead() && $student->internship->assigned_department === $user->assigned_department) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

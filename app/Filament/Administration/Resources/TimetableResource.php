@@ -116,56 +116,71 @@ class TimetableResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('confirmed_by')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('cancelled_by')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('rescheduled_by')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('deleted_by')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_by')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('updated_by')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\IconColumn::make('is_enabled')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->boolean(),
                 Tables\Columns\IconColumn::make('is_taken')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->boolean(),
                 Tables\Columns\IconColumn::make('is_confirmed')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->boolean(),
                 Tables\Columns\IconColumn::make('is_cancelled')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->boolean(),
                 Tables\Columns\IconColumn::make('is_rescheduled')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->boolean(),
                 Tables\Columns\IconColumn::make('is_deleted')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->boolean(),
                 Tables\Columns\TextColumn::make('confirmed_at')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('cancelled_at')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('rescheduled_at')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('deleted_at')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->sortable(),
             ])
             ->filters([
                 //

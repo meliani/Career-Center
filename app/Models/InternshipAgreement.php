@@ -139,6 +139,7 @@ class InternshipAgreement extends Core\BackendBaseModel
         'signed_at',
         'project_id',
         'observations',
+        'active',
     ];
 
     protected $casts = [
@@ -157,6 +158,7 @@ class InternshipAgreement extends Core\BackendBaseModel
         'encadrant_ext_titre' => Enums\Title::class,
         'assigned_department' => Enums\Department::class,
         'teammate_status' => Enums\TeammateStatus::class,
+        'active' => 'boolean',
 
         // 'status' => 'string',
         // 'parrain_titre' => 'string',

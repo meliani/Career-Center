@@ -3,20 +3,29 @@
 namespace App\Filament\Administration\Resources;
 
 use App\Filament\Administration\Resources\SentEmailUrlClickedResource\Pages;
+use App\Filament\Core;
 use App\Models\SentEmailUrlClicked;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class SentEmailUrlClickedResource extends Resource
+class SentEmailUrlClickedResource extends Core\BaseResource
 {
     protected static ?string $model = SentEmailUrlClicked::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationGroup = 'Emails';
+
+    protected static ?string $modelLabel = 'Sent Email URL Clicked';
+
+    protected static ?string $pluralModelLabel = 'Sent Emails URLs Clicked';
+
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->isAdministrator();
+    }
 
     public static function getnavigationGroup(): string
     {

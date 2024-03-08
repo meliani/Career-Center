@@ -24,6 +24,11 @@ class QueueMonitorResource extends QueueMonitorResourceParent
 
     protected static ?string $navigationLabel = 'Database Jobs';
 
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->isAdministrator();
+    }
+
     public static function getNavigationLabel(): string
     {
         return __(self::$navigationLabel);

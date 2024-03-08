@@ -32,12 +32,9 @@ class ProjectResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-command-line';
 
-    protected static ?int $sort = 4;
+    protected static ?string $navigationGroup = 'Students and projects';
 
-    public static function getnavigationGroup(): string
-    {
-        return __('Students and projects');
-    }
+    protected static ?int $sort = 4;
 
     public static function getNavigationBadge(): ?string
     {
@@ -46,7 +43,12 @@ class ProjectResource extends Resource
 
     public static function getGloballySearchableAttributes(): array
     {
-        return ['title', 'organization', 'students.full_name', 'id_pfe', 'professors.name'];
+        return [
+            'title', 'organization',
+            'students.first_name',
+            'students.last_name',
+            'id_pfe', 'professors.name',
+        ];
     }
 
     public static function canCreate(): bool
@@ -89,7 +91,7 @@ class ProjectResource extends Resource
                 Tables\Columns\TextColumn::make('id_pfe')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('students.full_name')
+                Tables\Columns\TextColumn::make('students.long_full_name')
                     ->label('Student name')
                     ->searchable()
                     ->sortableMany(),
@@ -201,14 +203,14 @@ class ProjectResource extends Resource
             ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    BulkAction\Email\SendInternshipKickoffEmail::make('Send Internship Kickoff Email'),
-                    BulkAction\Email\SendConnectingSupervisorsEmail::make('Send Connecting Supervisors Email')
-                        ->label(__('Send Connecting Supervisors Email'))
+                    BulkAction\Email\SendConnectingSupervisorsEmail::make('SendConnectingSupervisorsEmail')
+                        ->label(__('Send email to put supervisors in contact with students'))
                         ->hidden(fn () => auth()->user()->isAdministrator() === false)
+                        ->requiresConfirmation()
                         ->outlined(),
                 ])
                     ->label(__('Send email'))
-                    ->dropdownWidth(FilamentEnums\MaxWidth::Small)
+                    ->dropdownWidth(FilamentEnums\MaxWidth::Large)
                     ->hidden(fn () => auth()->user()->isAdministrator() === false),
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
@@ -265,7 +267,7 @@ class ProjectResource extends Resource
                                     ->label('Organization'),
                                 Infolists\Components\TextEntry::make('id_pfe')
                                     ->label('PFE ID'),
-                                Infolists\Components\TextEntry::make('students.full_name')
+                                Infolists\Components\TextEntry::make('students.long_full_name')
                                     ->label('Student'),
                                 Infolists\Components\TextEntry::make('professors.name')
                                     ->label('Supervisor - Reviewer')

@@ -19,14 +19,12 @@ class InternshipAgreementPolicy extends CorePolicy
 
     public function view(User $user, InternshipAgreement $internship)
     {
-        if ($user->isAdministrator()) {
+        if ($user->isAdministrator() || $user->isDirection()) {
             return true;
-            // } elseif ($user->isProfessor() && $internship->project->professors->each(fn ($professor, $key) => $professor->id === $user->id)) {
         } elseif ($user->isProfessor() && $internship->project?->professors === $user->id) {
             return true;
-        } elseif ($user->isProgramCoordinator() && $internship->project?->students->each(fn ($student, $key) => $student->program === $user->assigned_program)) {
-            return true;
-        } elseif ($user->isDirection()) {
+        } elseif ($user->isProgramCoordinator() && $internship->project?->students
+            ->each(fn ($student, $key) => $student->program === $user->assigned_program)) {
             return true;
         }
 
@@ -39,7 +37,8 @@ class InternshipAgreementPolicy extends CorePolicy
             return true;
         } elseif ($user->isProfessor() && $internship->project?->professors === $user->id) {
             return true;
-        } elseif ($user->isProgramCoordinator() && $internship->project?->students->each(fn ($student, $key) => $student->program === $user->assigned_program)) {
+        } elseif ($user->isProgramCoordinator() && $internship->project?->students
+            ->each(fn ($student, $key) => $student->program === $user->assigned_program)) {
             return true;
         }
 

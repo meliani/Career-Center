@@ -3,20 +3,29 @@
 namespace App\Filament\Administration\Resources;
 
 use App\Filament\Administration\Resources\SentEmailResource\Pages;
+use App\Filament\Core;
 use App\Models\SentEmail;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class SentEmailResource extends Resource
+class SentEmailResource extends Core\BaseResource
 {
     protected static ?string $model = SentEmail::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationGroup = 'Emails';
+
+    protected static ?string $modelLabel = 'Opened Email';
+
+    protected static ?string $pluralModelLabel = 'Opened Emails';
+
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->isAdministrator();
+    }
 
     public static function getnavigationGroup(): string
     {

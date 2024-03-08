@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 
-class ProjectScope implements Scope
+class StudentScope implements Scope
 {
     /**
      * Apply the scope to a given Eloquent query builder.
@@ -21,10 +21,7 @@ class ProjectScope implements Scope
         if (auth()->user()->isSuperAdministrator() || auth()->user()->isAdministrator() || auth()->user()->isDirection()) {
             return;
         } elseif (auth()->user()->isProgramCoordinator()) {
-            $builder
-                ->whereHas('students', function ($q) {
-                    $q->where('program', '=', auth()->user()->assigned_program);
-                });
+            $builder->where('program', '=', auth()->user()->assigned_program);
 
             return;
         } elseif (auth()->user()->isDepartmentHead()) {

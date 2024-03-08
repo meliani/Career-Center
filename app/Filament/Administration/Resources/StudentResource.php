@@ -5,20 +5,24 @@ namespace App\Filament\Administration\Resources;
 use App\Enums;
 use App\Filament\Actions\BulkAction;
 use App\Filament\Administration\Resources\StudentResource\Pages;
-use App\Filament\Core\BaseResource as Resource;
+use App\Filament\Core\BaseResource;
 use App\Models\Student;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class StudentResource extends Resource
+class StudentResource extends BaseResource
 {
+    protected static ?string $modelLabel = 'Student';
+
+    protected static ?string $pluralModelLabel = 'Students';
+
     protected static ?string $model = Student::class;
 
     protected static ?string $title = 'Manage Students';
 
-    protected static ?string $recordTitleAttribute = 'full_name';
+    protected static ?string $recordTitleAttribute = 'long_full_name';
 
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
 
@@ -26,59 +30,47 @@ class StudentResource extends Resource
 
     protected static ?string $recordFirstNameAttribute = 'first_name';
 
-    public static function canAccess(): bool
-    {
-        return auth()->user()->isAdministrator();
-    }
-    // public static function getGlobalSearchResultTitle(Model $record): string
-    // {
-    //     return $record->name;
-    // }
-
-    // public static function getGlobalSearchResultActions(Model $record): array
-    // {
-    //     return [
-    //         Filament\GlobalSearch\Actions\Action::make('edit')
-    //             ->url(static::getUrl('edit', ['record' => $record])),
-    //     ];
-    // }
-
-    public static function getnavigationGroup(): string
-    {
-        return __('Students and projects');
-    }
+    protected static ?string $navigationGroup = 'Students and projects';
 
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
     }
 
+    public static function getnavigationGroup(): string
+    {
+        return __(self::$navigationGroup);
+    }
+
     public static function getGloballySearchableAttributes(): array
     {
-        return ['full_name', 'program', 'internship.id_pfe'];
+        return [
+            'first_name',
+            'last_name',
+            'program',
+            'activeInternshipAgreement.id_pfe',
+        ];
     }
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('year_id')
-                    ->relationship('year', 'title')
-                    ->required(),
-                Forms\Components\Select::make('title')
-                    ->options(Enums\Title::class)
-                    ->required(),
-                Forms\Components\TextInput::make('pin')
-                    ->numeric(),
-                Forms\Components\TextInput::make('full_name')
-                    ->maxLength(191),
+                Forms\Components\TextInput::make('title')
+                    ->maxLength(5),
                 Forms\Components\TextInput::make('first_name')
                     ->maxLength(191),
                 Forms\Components\TextInput::make('last_name')
                     ->maxLength(191),
+                Forms\Components\TextInput::make('email')
+                    ->email()
+                    ->maxLength(255),
                 Forms\Components\TextInput::make('email_perso')
                     ->email()
                     ->maxLength(191),
+                Forms\Components\TextInput::make('password')
+                    ->password()
+                    ->maxLength(255),
                 Forms\Components\TextInput::make('phone')
                     ->tel()
                     ->maxLength(191),
@@ -98,6 +90,12 @@ class StudentResource extends Resource
                 Forms\Components\Toggle::make('is_mobility'),
                 Forms\Components\TextInput::make('abroad_school')
                     ->maxLength(191),
+                Forms\Components\TextInput::make('pin')
+                    ->numeric(),
+                Forms\Components\Select::make('year_id')
+                    ->label('Academic year')
+                    ->relationship('year', 'title')
+                    ->required(),
                 Forms\Components\Toggle::make('is_active'),
                 Forms\Components\DatePicker::make('graduated_at'),
             ]);
@@ -106,65 +104,48 @@ class StudentResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->defaultGroup('program')
-            ->groups([
-                Tables\Grouping\Group::make('Level')
-                    ->label(__('Level'))
-                    ->collapsible()
-                    ->titlePrefixedWithLabel(false),
-                Tables\Grouping\Group::make('program')
-                    ->label(__('Program'))
-                    ->collapsible(),
-            ])
             ->columns([
-                Tables\Columns\TextColumn::make('id')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->label('ID')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('full_name')
-                    ->label(__('Full name'))
-                    ->searchable()
-                    ->sortable()
+                // Tables\Columns\TextColumn::make('title')
+                //     ->searchable(),
+                // Tables\Columns\TextColumn::make('pin')
+                //     ->numeric()
+                //     ->sortable(),
+                Tables\Columns\TextColumn::make('first_name')
                     ->formatStateUsing(function ($record) {
                         return $record->long_full_name;
-                    }),
+                    })
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('email')
+                    ->searchable(),
+
                 Tables\Columns\TextColumn::make('email_perso')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phone')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('cv')
-                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('lm')
-                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('photo')
-                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('birth_date')
-                    ->toggleable(isToggledHiddenByDefault: true)
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('level')
-                    ->toggleable(isToggledHiddenByDefault: true)
+                Tables\Columns\TextColumn::make('level'),
+                Tables\Columns\SelectColumn::make('program')
+                    ->options(Enums\Program::class)
                     ->searchable(),
-                Tables\Columns\TextColumn::make('program')
-                    ->formatStateUsing(function ($record) {
-                        return $record->program->value;
-                    })
+                Tables\Columns\ToggleColumn::make('is_mobility')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('abroad_school')
                     ->searchable(),
-                // Tables\Columns\IconColumn::make('is_mobility')
-                //     ->boolean(),
-                // Tables\Columns\TextColumn::make('abroad_school')
-                //     ->searchable()
-                //     ->toggleable(isToggledHiddenByDefault: true),
-                // Tables\Columns\IconColumn::make('is_active')
-                //     ->boolean()
-                //     ->toggleable(isToggledHiddenByDefault: true),
-                // Tables\Columns\TextColumn::make('graduated_at')
-                //     ->date()
-                //     ->sortable(),
+                Tables\Columns\TextColumn::make('year.title')
+                    ->searchable(),
+                Tables\Columns\ToggleColumn::make('is_active')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('graduated_at')
+                    ->date()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -175,8 +156,8 @@ class StudentResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                //
             ])
-
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
@@ -197,20 +178,20 @@ class StudentResource extends Resource
             ]);
     }
 
-    public static function getPages(): array
+    public static function getRelations(): array
     {
         return [
-            'index' => Pages\ManageStudents::route('/'),
+            //
         ];
     }
 
-    public static function getModelLabel(): string
+    public static function getPages(): array
     {
-        return __('Student');
-    }
-
-    public static function getPluralModelLabel(): string
-    {
-        return __('Students');
+        return [
+            'index' => Pages\ListStudents::route('/'),
+            'create' => Pages\CreateStudent::route('/create'),
+            'view' => Pages\ViewStudent::route('/{record}'),
+            'edit' => Pages\EditStudent::route('/{record}/edit'),
+        ];
     }
 }

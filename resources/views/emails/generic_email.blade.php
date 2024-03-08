@@ -3,7 +3,7 @@
     <x-slot:emailSubject>
         {{ $emailSubject }}
         </x-slot::emailSubject>
-        # Bonjour {{ $user->full_name }},
+        {{-- # Bonjour {{ $user->full_name }}, --}}
 
         {!! $emailBody !!}
 

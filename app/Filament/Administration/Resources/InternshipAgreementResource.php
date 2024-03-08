@@ -4,7 +4,7 @@ namespace App\Filament\Administration\Resources;
 
 use App\Enums;
 use App\Filament\Administration\Resources\InternshipAgreementResource\Pages;
-use App\Filament\Core\BaseResource;
+use App\Filament\Core;
 use App\Mail\GenericEmail;
 use App\Models\InternshipAgreement;
 use Filament;
@@ -19,7 +19,7 @@ use Filament\Tables\Actions\ImportAction;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Mail;
 
-class InternshipAgreementResource extends BaseResource
+class InternshipAgreementResource extends Core\BaseResource
 {
     protected static ?string $model = InternshipAgreement::class;
 
@@ -31,10 +31,7 @@ class InternshipAgreementResource extends BaseResource
 
     protected static ?string $navigationBadgeTooltip = 'Announced internships';
 
-    public static function getnavigationGroup(): string
-    {
-        return __('Students and projects');
-    }
+    protected static ?string $navigationGroup = 'Students and projects';
 
     public static function getModelLabel(): string
     {
@@ -48,7 +45,12 @@ class InternshipAgreementResource extends BaseResource
 
     public static function getGloballySearchableAttributes(): array
     {
-        return ['title', 'organization_name', 'student.full_name', 'id_pfe'];
+        return [
+            'title',
+            'organization_name',
+            'student.first_name',
+            'id_pfe',
+        ];
     }
 
     public static function getNavigationBadge(): ?string
@@ -90,6 +92,7 @@ class InternshipAgreementResource extends BaseResource
                 \App\Filament\Actions\Action\AssignInternshipsToProjects::make('Assign Internships To Projects')
                     ->label(__('Assign Internships To Projects'))
                     ->hidden(fn () => auth()->user()->isAdministrator() === false)
+                    ->requiresConfirmation()
                     ->outlined(),
 
                 // Tables\Actions\ActionGroup::make([
@@ -124,6 +127,19 @@ class InternshipAgreementResource extends BaseResource
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                    // ->disabled(! auth()->user()->can('delete', $this->post)),
+                    Tables\Actions\ForceDeleteAction::make(),
+                    Tables\Actions\RestoreAction::make(),
+                ])
+                    ->hidden((auth()->user()->isSuperAdministrator() || auth()->user()->isPowerProfessor()) === false)
+                    ->label('')
+                    ->icon('heroicon-o-ellipsis-vertical')
+                    ->size(Filament\Support\Enums\ActionSize::ExtraLarge)
+                    ->tooltip(__('View, edit, or delete this internship agreement')),
+                Tables\Actions\ActionGroup::make([
                     \App\Filament\Actions\Action\SignAction::make()
                         ->disabled(fn ($record): bool => $record['signed_at'] !== null),
                     \App\Filament\Actions\Action\ReceiveAction::make()
@@ -141,19 +157,7 @@ class InternshipAgreementResource extends BaseResource
                     ->tooltip(__('Validate, sign, or assign department'))
                     ->color('warning')
                     ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isPowerProfessor()) === false),
-                Tables\Actions\ActionGroup::make([
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\ViewAction::make(),
-                    Tables\Actions\DeleteAction::make(),
-                    // ->disabled(! auth()->user()->can('delete', $this->post)),
-                    Tables\Actions\ForceDeleteAction::make(),
-                    Tables\Actions\RestoreAction::make(),
-                ])
-                    ->hidden((auth()->user()->isSuperAdministrator() || auth()->user()->isPowerProfessor()) === false)
-                    ->label('')
-                    ->icon('heroicon-o-ellipsis-vertical')
-                    ->size(Filament\Support\Enums\ActionSize::ExtraLarge)
-                    ->tooltip(__('View, edit, or delete this internship agreement')),
+
                 Tables\Actions\Action::make('sendEmail')
                     ->form([
                         TextInput::make('subject')->required(),
@@ -170,7 +174,7 @@ class InternshipAgreementResource extends BaseResource
                     ->label('')
                     ->icon('heroicon-o-envelope')
                     ->size(Filament\Support\Enums\ActionSize::ExtraLarge)
-                    ->tooltip(__('Send an email to the student')),
+                    ->tooltip(__('Send an email to student')),
             ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -213,7 +217,7 @@ class InternshipAgreementResource extends BaseResource
 
                         Fieldset::make('Internship agreement')
                             ->schema([
-                                Infolists\Components\TextEntry::make('student.full_name')
+                                Infolists\Components\TextEntry::make('student.long_full_name')
                                     ->label('Student'),
                                 Infolists\Components\TextEntry::make('title')
                                     ->label('Title'),
