@@ -94,8 +94,7 @@ class InternshipAgreementResource extends Core\BaseResource
                 // Tables\Actions\ActionGroup::make([
                 //     ImportAction::make()
                 //         ->importer(App\Filament\Imports\InternshipAgreementImporter::class)
-                //         ->hidden(fn () => auth()->user()->isAdministrator() === false)
-                //         ->hidden(fn () => app()->environment('production')),
+                //         ->hidden(fn () => auth()->user()->isAdministrator() === false),
                 // ]),
             ])
 
