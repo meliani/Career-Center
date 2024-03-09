@@ -6,11 +6,15 @@ use App\Enums;
 use App\Filament\Actions\BulkAction;
 use App\Filament\Administration\Resources\StudentResource\Pages;
 use App\Filament\Core\BaseResource;
+use App\Mail;
+use App\Models\InternshipAgreement;
 use App\Models\Student;
+use Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades;
 
 class StudentResource extends BaseResource
 {
@@ -114,36 +118,55 @@ class StudentResource extends BaseResource
                     ->formatStateUsing(function ($record) {
                         return $record->long_full_name;
                     })
+                    ->wrap()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
+                    ->formatStateUsing(function ($record) {
+                        return "{$record->email}, {$record->email_perso}";
+                    })
+                    ->wrap()
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('email_perso')
-                    ->searchable(),
+                // Tables\Columns\TextColumn::make('email_perso')
+                //     ->searchable(),
                 Tables\Columns\TextColumn::make('phone')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('cv')
+                    ->label('Curriculum vitae')
+                    ->limit(20)
+                    ->url(fn (Student $record): ?string => $record?->cv)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('lm')
+                    ->label('Cover letter')
+                    ->url(fn (Student $record): ?string => $record?->lm)
+                    ->limit(20)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('photo')
+                    ->url(fn (Student $record): ?string => $record?->photo)
+                    ->limit(20)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('birth_date')
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('level'),
+                Tables\Columns\TextColumn::make('level')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\SelectColumn::make('program')
                     ->options(Enums\Program::class)
                     ->searchable(),
                 Tables\Columns\ToggleColumn::make('is_mobility')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('abroad_school')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('year.title')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\ToggleColumn::make('is_active')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('graduated_at')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -159,6 +182,24 @@ class StudentResource extends BaseResource
                 //
             ])
             ->actions([
+                Tables\Actions\Action::make('sendEmail')
+                    ->form([
+                        Forms\Components\TextInput::make('subject')->required(),
+                        Forms\Components\RichEditor::make('body')->required(),
+                    ])
+                    ->action(
+                        fn (array $data, InternshipAgreement $internship) => Facades\Mail::to($internship->student->email_perso)
+                            ->send(new Mail\GenericEmail(
+                                $internship->student,
+                                $data['subject'],
+                                $data['body'],
+                            ))
+                    )
+                    ->label('')
+                    ->icon('heroicon-o-envelope')
+                    ->size(Filament\Support\Enums\ActionSize::ExtraLarge)
+                    ->tooltip(__('Send an email to student')),
+
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),

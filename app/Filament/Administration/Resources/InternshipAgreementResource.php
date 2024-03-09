@@ -5,11 +5,8 @@ namespace App\Filament\Administration\Resources;
 use App\Enums;
 use App\Filament\Administration\Resources\InternshipAgreementResource\Pages;
 use App\Filament\Core;
-use App\Mail\GenericEmail;
 use App\Models\InternshipAgreement;
 use Filament;
-use Filament\Forms\Components\RichEditor;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Infolists;
 use Filament\Infolists\Components\Fieldset;
@@ -17,7 +14,6 @@ use Filament\Infolists\Infolist;
 use Filament\Tables;
 use Filament\Tables\Actions\ImportAction;
 use Filament\Tables\Table;
-use Illuminate\Support\Facades\Mail;
 
 class InternshipAgreementResource extends Core\BaseResource
 {
@@ -157,24 +153,6 @@ class InternshipAgreementResource extends Core\BaseResource
                     ->tooltip(__('Validate, sign, or assign department'))
                     ->color('warning')
                     ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isPowerProfessor()) === false),
-
-                Tables\Actions\Action::make('sendEmail')
-                    ->form([
-                        TextInput::make('subject')->required(),
-                        RichEditor::make('body')->required(),
-                    ])
-                    ->action(
-                        fn (array $data, InternshipAgreement $internship) => Mail::to($internship->student->email_perso)
-                            ->send(new GenericEmail(
-                                $internship->student,
-                                $data['subject'],
-                                $data['body'],
-                            ))
-                    )
-                    ->label('')
-                    ->icon('heroicon-o-envelope')
-                    ->size(Filament\Support\Enums\ActionSize::ExtraLarge)
-                    ->tooltip(__('Send an email to student')),
             ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
