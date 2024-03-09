@@ -48,7 +48,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(UrlGenerator $url): void
     {
-        $this->turnOnSslIfProduction($url);
+        // $this->turnOnSslIfProduction($url);
         $this->configureFilament();
         // $this->addEnumTypeToDoctrine();
         // $this->configureDoctrine();
@@ -155,9 +155,9 @@ class AppServiceProvider extends ServiceProvider
 
     public function turnOnSslIfProduction(UrlGenerator $url): void
     {
-        // if (App::environment('production')) {
-        //     $url->forceScheme('https');
-        // }
+        if (App::environment('production')) {
+            $url->forceScheme('https');
+        }
     }
 
     public function configureFilament(): void

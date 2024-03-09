@@ -31,11 +31,6 @@ use Saade\FilamentFullCalendar\FilamentFullCalendarPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
-    // public static ?string $label = 'Program Coordinator Panel';
-
-    // protected static string $routePath = 'backend/admin';
-
-    // // protected static ?string $title = 'Program coordinator dashboard';
     public function panel(Panel $panel): Panel
     {
 

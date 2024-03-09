@@ -1,5 +1,5 @@
 {
-	"name": "Careers Center Backend",
+	"name": "Career Center Backend",
 	"dockerComposeFile": "docker-compose.yaml",
 	"service": "dev",
 	"workspaceFolder": "/workspaces/careers_backend",

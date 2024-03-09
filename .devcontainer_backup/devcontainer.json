@@ -37,7 +37,7 @@
 
 
 {
-	"name": "Careers Center Backend",
+	"name": "Career Center Backend",
 	"image": "mcr.microsoft.com/devcontainers/php:1-8.2-bullseye",
 	"forwardPorts": [
 		8080
