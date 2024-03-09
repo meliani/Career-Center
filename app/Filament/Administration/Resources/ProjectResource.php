@@ -173,14 +173,31 @@ class ProjectResource extends Resource
                 //     ->label('Assigned Department')
                 //     ->options(Enums\Department::class),
 
-                Tables\Filters\SelectFilter::make('type')
+                Tables\Filters\SelectFilter::make('department')
                     ->options(Enums\Department::class)
                     ->query(
                         fn (Builder $query, array $data) => $query->when(
                             $data['value'],
-                            fn (Builder $query, $type): Builder => $query->whereRelation('internship_agreements', 'assigned_department', $type)
+                            fn (Builder $query, $department): Builder => $query->whereRelation('internship_agreements', 'assigned_department', $department)
                         ),
                     ),
+
+                Tables\Filters\SelectFilter::make('hasTeammate')
+                    ->label('Has teammate')
+                    ->options([
+                        'yes' => 'Yes',
+                        'no' => 'No',
+                    ])
+                    ->query(
+                        fn (Builder $query, array $data) => $query->when(
+                            $data['value'] === 'yes',
+                            fn (Builder $query) => $query->whereHas('students', fn ($query) => $query->having('aggregate', '>', 1))
+                        )->when(
+                            $data['value'] === 'no',
+                            fn (Builder $query) => $query->whereDoesntHave('students', fn ($query) => $query->having('aggregate', '>', 1))
+                        ),
+                    ),
+
             ])
             ->headerActions([
                 Tables\Actions\ActionGroup::make([
@@ -193,12 +210,17 @@ class ProjectResource extends Resource
             ->actions([
                 \Parallax\FilamentComments\Tables\Actions\CommentsAction::make()
                     ->label('')
+                    ->tooltip(
+                        fn ($record) => "{$record->filamentComments()->count()} " . __('Comments')
+                    )
+
                     // ->visible(fn () => true)
                     ->badge(fn ($record) => $record->filamentComments()->count() ? $record->filamentComments()->count() : null),
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\ViewAction::make(),
-                ]),
+                ])
+                    ->tooltip(__('Edit or view this project')),
                 // ->hidden(true),
             ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
