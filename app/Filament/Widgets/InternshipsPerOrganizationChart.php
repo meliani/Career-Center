@@ -21,7 +21,7 @@ class InternshipsPerOrganizationChart extends ApexChartsParentWidget
 
     protected function getContentHeight(): ?int
     {
-        return 600;
+        return 300;
     }
 
     public static function canView(): bool
@@ -50,7 +50,7 @@ class InternshipsPerOrganizationChart extends ApexChartsParentWidget
         return [
             'chart' => [
                 'type' => 'pie',
-                'height' => 600,
+                'height' => 300,
             ],
             'series' => array_column($internshipData, 'count'),
             'labels' => array_column($internshipData, 'organization_name'),

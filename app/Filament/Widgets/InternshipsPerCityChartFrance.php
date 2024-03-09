@@ -23,7 +23,7 @@ class InternshipsPerCityChartFrance extends ApexChartsParentWidget
 
     public static function canView(): bool
     {
-        return true;
+        return auth()->user()->isSuperAdministrator() || auth()->user()->isAdministrator() || auth()->user()->isDirection() || auth()->user()->isProgramCoordinator() || auth()->user()->isDepartmentHead();
     }
 
     /**

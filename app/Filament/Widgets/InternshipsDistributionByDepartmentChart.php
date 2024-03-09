@@ -32,7 +32,8 @@ class InternshipsDistributionByDepartmentChart extends ApexChartsParentWidget
      */
     protected function getOptions(): array
     {
-        $internships = InternshipAgreement::where('status', '=', 'Signed')
+        $internships = InternshipAgreement::withoutGlobalScopes()
+            ->where('status', '=', 'Signed')
             // whereRaw('status = "Draft" ')
             ->selectRaw('count(*) as count, assigned_department')
             ->groupBy('assigned_department')
