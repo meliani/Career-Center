@@ -32,9 +32,11 @@ class StudentScope implements Scope
 
             return;
         } elseif (auth()->user()->isProfessor()) {
-            $builder->projects()
-                ->whereHas('professors', function ($q) {
-                    $q->where('professor_id', '=', auth()->user()->id);
+            $builder
+                ->whereHas('projects', function ($q) {
+                    $q->whereHas('professors', function ($q) {
+                        $q->where('professor_id', '=', auth()->user()->id);
+                    });
                 });
         } else {
             abort(403, 'You are not authorized to view this page');
