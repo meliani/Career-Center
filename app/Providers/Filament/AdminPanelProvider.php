@@ -41,7 +41,7 @@ class AdminPanelProvider extends PanelProvider
             ->maxContentWidth(MaxWidth::Full)
             ->default()
             ->id('Administration')
-            ->path('/')
+            ->path('')
             ->brandName('INPT Entreprises')
             ->login()
             ->databaseNotifications()

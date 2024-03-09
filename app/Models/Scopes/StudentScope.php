@@ -32,7 +32,7 @@ class StudentScope implements Scope
 
             return;
         } elseif (auth()->user()->isProfessor()) {
-            $builder
+            $builder->projects()
                 ->whereHas('professors', function ($q) {
                     $q->where('professor_id', '=', auth()->user()->id);
                 });
