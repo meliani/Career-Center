@@ -7,7 +7,7 @@ use App\Models\InternshipAgreement;
 
 class InternshipsPerCityChartFrance extends ApexChartsParentWidget
 {
-    protected static ?int $sort = 3;
+    protected static ?int $sort = 8;
 
     /**
      * Chart Id

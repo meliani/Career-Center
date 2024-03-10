@@ -9,7 +9,7 @@ use Flowframe\Trend\TrendValue;
 
 class InternshipsPerMonthChart extends ChartWidget
 {
-    protected static ?int $sort = 10;
+    protected static ?int $sort = 13;
 
     protected static ?string $heading = 'Announced Internships per month';
 
@@ -23,6 +23,11 @@ class InternshipsPerMonthChart extends ChartWidget
     public function getDescription(): ?string
     {
         return __('Number of Internships per Month during the academic year');
+    }
+
+    protected function getContentHeight(): ?int
+    {
+        return 300;
     }
 
     protected function getData(): array

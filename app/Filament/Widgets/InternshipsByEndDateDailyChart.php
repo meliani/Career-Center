@@ -12,7 +12,7 @@ use Illuminate\Support\Carbon;
 
 class InternshipsByEndDateDailyChart extends ApexChartsParentWidget
 {
-    protected static ?int $sort = 2;
+    protected static ?int $sort = 6;
 
     /**
      * Chart Id

@@ -19,6 +19,8 @@ class InternshipsPerOrganizationChart extends ApexChartsParentWidget
      */
     protected static ?string $heading = 'Announced Internships per Organization';
 
+    protected int | string | array $columnSpan = 'full';
+
     protected function getContentHeight(): ?int
     {
         return 300;
@@ -49,14 +51,15 @@ class InternshipsPerOrganizationChart extends ApexChartsParentWidget
         // dd(array_column($internshipData, 'organization_name'));
         return [
             'chart' => [
-                'type' => 'pie',
+                'type' => 'donut',
                 'height' => 300,
+                'with: 100%',
             ],
             'series' => array_column($internshipData, 'count'),
             'labels' => array_column($internshipData, 'organization_name'),
             // display legend on the bottom
             'legend' => [
-                'position' => 'bottom',
+                'position' => 'right',
                 'labels' => [
                     'fontFamily' => 'inherit',
                 ],
