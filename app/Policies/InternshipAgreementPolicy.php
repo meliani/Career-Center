@@ -21,7 +21,7 @@ class InternshipAgreementPolicy extends CorePolicy
     {
         if ($user->isAdministrator() || $user->isDirection()) {
             return true;
-        } elseif ($user->isProfessor() && $internship->project?->professors === $user->id) {
+        } elseif ($user->isProfessor() && $internship->project?->professors->each(fn ($professor, $key) => $professor->id === $user->id)) {
             return true;
         } elseif ($user->isProgramCoordinator() && $internship->project?->students
             ->each(fn ($student, $key) => $student->program === $user->assigned_program)) {
@@ -35,7 +35,7 @@ class InternshipAgreementPolicy extends CorePolicy
     {
         if ($user->isAdministrator()) {
             return true;
-        } elseif ($user->isProfessor() && $internship->project?->professors === $user->id) {
+        } elseif ($user->isProfessor() && $internship->project?->professors->each(fn ($professor, $key) => $professor->id === $user->id)) {
             return true;
         } elseif ($user->isProgramCoordinator() && $internship->project?->students
             ->each(fn ($student, $key) => $student->program === $user->assigned_program)) {
@@ -47,11 +47,11 @@ class InternshipAgreementPolicy extends CorePolicy
 
     public function delete(User $user, InternshipAgreement $internship)
     {
-        return $user->hasAnyRole($this->administrators);
+        return $user->isAdministrator();
     }
 
     public function forceDelete(User $user, InternshipAgreement $internship)
     {
-        return $user->hasAnyRole($this->administrators);
+        return $user->isAdministrator();
     }
 }

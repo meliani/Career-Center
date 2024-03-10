@@ -31,12 +31,29 @@ class SendGenericEmail extends BulkAction
         ])
             ->action(function (array $data, $records): void {
                 foreach ($records as $record) {
-                    if ($record->email_perso) {
-                        dispatch(function () use ($record, $data) {
-                            Mail::to($record->email_perso)
-                                ->send(new GenericEmail($record, $data['emailSubject'], $data['emailBody']));
-                        });
-
+                    if (method_exists($record, 'students')) {
+                        foreach ($record->students as $student) {
+                            if ($student->email_perso) {
+                                dispatch(function () use ($student, $data) {
+                                    Mail::to($student->email_perso)
+                                        ->send(new GenericEmail($student, $data['emailSubject'], $data['emailBody']));
+                                });
+                            }
+                        }
+                    } elseif (method_exists($record, 'student')) {
+                        if ($record->student->email_perso) {
+                            dispatch(function () use ($record, $data) {
+                                Mail::to($record->student->email_perso)
+                                    ->send(new GenericEmail($record->student, $data['emailSubject'], $data['emailBody']));
+                            });
+                        }
+                    } elseif (class_basename($record) === 'Student') {
+                        if ($record->email_perso) {
+                            dispatch(function () use ($record, $data) {
+                                Mail::to($record->email_perso)
+                                    ->send(new GenericEmail($record, $data['emailSubject'], $data['emailBody']));
+                            });
+                        }
                     }
                 }
             });

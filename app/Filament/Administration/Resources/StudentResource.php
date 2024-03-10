@@ -203,18 +203,18 @@ class StudentResource extends BaseResource
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\DeleteAction::make()->hidden(fn () => auth()->user()->isAdministrator() === false),
                 ])->hidden(fn () => auth()->user()->isAdministrator() === false),
             ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    BulkAction\Email\SendGenericEmail::make('Send Generic Email'),
-                ])
+
+                BulkAction\Email\SendGenericEmail::make('Send Email')
+                    ->outlined()
                     ->label(__('Send email')),
                 Tables\Actions\BulkActionGroup::make([
                     \pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction::make(),
                     Tables\Actions\DeleteBulkAction::make(),
-                ])
+                ])->hidden(fn () => auth()->user()->isAdministrator() === false)
                     ->label(__('actions')),
             ]);
     }

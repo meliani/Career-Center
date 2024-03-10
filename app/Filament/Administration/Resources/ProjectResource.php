@@ -6,7 +6,7 @@ use App\Enums;
 use App\Filament\Actions\BulkAction;
 use App\Filament\Administration\Resources\ProjectResource\Pages;
 use App\Filament\Administration\Resources\ProjectResource\RelationManagers;
-use App\Filament\Core\BaseResource as Resource;
+use App\Filament\Core;
 use App\Models\Project;
 use Filament;
 use Filament\Forms;
@@ -17,8 +17,9 @@ use Filament\Support\Enums as FilamentEnums;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Contracts\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Model;
 
-class ProjectResource extends Resource
+class ProjectResource extends Core\BaseResource
 {
     protected static ?string $model = Project::class;
 
@@ -51,9 +52,9 @@ class ProjectResource extends Resource
         ];
     }
 
-    public static function canCreate(): bool
+    public static function canView(Model $record): bool
     {
-        return false;
+        return true;
     }
 
     public static function form(Form $form): Form
@@ -191,10 +192,10 @@ class ProjectResource extends Resource
                     ->query(
                         fn (Builder $query, array $data) => $query->when(
                             $data['value'] === 'yes',
-                            fn (Builder $query) => $query->whereHas('students', fn ($query) => $query->having('aggregate', '>', 1))
+                            fn (Builder $query) => $query->whereHas('students', fn ($query) => $query->select('project_id')->groupBy('project_id')->havingRaw('COUNT(*) > 1'))
                         )->when(
                             $data['value'] === 'no',
-                            fn (Builder $query) => $query->whereDoesntHave('students', fn ($query) => $query->having('aggregate', '>', 1))
+                            fn (Builder $query) => $query->whereDoesntHave('students', fn ($query) => $query->select('project_id')->groupBy('project_id')->havingRaw('COUNT(*) <= 1'))
                         ),
                     ),
 
@@ -239,6 +240,8 @@ class ProjectResource extends Resource
                 ])
                     ->label(__('actions'))
                     ->hidden(fn () => auth()->user()->isAdministrator() === false),
+                BulkAction\Email\SendGenericEmail::make('Send Email')
+                    ->outlined(),
 
             ]);
         // ;

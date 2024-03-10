@@ -3,6 +3,7 @@
 namespace App\Filament\Administration\Resources;
 
 use App\Enums;
+use App\Filament\Actions\BulkAction;
 use App\Filament\Administration\Resources\InternshipAgreementResource\Pages;
 use App\Filament\Core;
 use App\Models\InternshipAgreement;
@@ -124,12 +125,12 @@ class InternshipAgreementResource extends Core\BaseResource
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\ViewAction::make(),
-                    Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\DeleteAction::make()->hidden(fn () => auth()->user()->isAdministrator() === false),
                     // ->disabled(! auth()->user()->can('delete', $this->post)),
                     Tables\Actions\ForceDeleteAction::make(),
                     Tables\Actions\RestoreAction::make(),
                 ])
-                    ->hidden((auth()->user()->isSuperAdministrator() || auth()->user()->isPowerProfessor()) === false)
+                    ->hidden((auth()->user()->isAdministrator() || auth()->user()->isPowerProfessor()) === false)
                     ->label('')
                     ->icon('heroicon-o-ellipsis-vertical')
                     ->size(Filament\Support\Enums\ActionSize::ExtraLarge)
@@ -156,8 +157,10 @@ class InternshipAgreementResource extends Core\BaseResource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                ])->hidden(fn () => auth()->user()->isAdministrator() === false),
+                BulkAction\Email\SendGenericEmail::make('Send Email'),
             ]);
+
     }
 
     public static function getRelations(): array

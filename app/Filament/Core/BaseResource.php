@@ -15,48 +15,57 @@ class BaseResource extends Resource
     //     return static::getModel()::count();
     // }
 
-    public static function getModelLabel(): string
-    {
-        return __(static::$modelLabel);
-    }
+    // public static function getModelLabel(): string
+    // {
+    //     return __(static::$modelLabel);
+    // }
 
-    public static function getPluralModelLabel(): string
-    {
-        return __(static::$pluralModelLabel);
-    }
+    // public static function getPluralModelLabel(): string
+    // {
+    //     return __(static::$pluralModelLabel);
+    // }
 
     // public static function canViewAny(): bool
     // {
     //     return false;
     // }
 
-    public static function canView(Model $record): bool
-    {
-        return false;
-    }
-
-    // public static function getGlobalSearchResultTitle(Model $record): string
+    // public static function canView(Model $record): bool
     // {
-    //     return $record->name;
+    //     return false;
     // }
 
-    public static function viewAny(): bool
-    {
-        return false;
-    }
+    // public static function canCreate(): bool
+    // {
+    //     return false;
+    // }
+    // // public static function getGlobalSearchResultTitle(Model $record): string
+    // // {
+    // //     return $record->name;
+    // // }
 
-    public static function view(): bool
-    {
-        return false;
-    }
+    // public static function viewAny(): bool
+    // {
+    //     return false;
+    // }
 
-    public static function create(): bool
-    {
-        return false;
-    }
+    // public static function view(): bool
+    // {
+    //     return false;
+    // }
 
-    public static function update(): bool
-    {
-        return false;
-    }
+    // public static function create(): bool
+    // {
+    //     return false;
+    // }
+
+    // public static function update(): bool
+    // {
+    //     return false;
+    // }
+
+    // public static function delete(): bool
+    // {
+    //     return false;
+    // }
 }
