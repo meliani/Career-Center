@@ -8,5 +8,5 @@
         {!! $emailBody !!}
 
         ---
-        Email sent From INPT-Entreprises platform.
+        {{__('Email sent From INPT-Entreprises platform.')}}
 </x-mail::message>
