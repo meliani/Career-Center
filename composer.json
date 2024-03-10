@@ -34,6 +34,8 @@
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "leandrocfe/filament-apex-charts": "^3.0",
+        "munafio/chatify": "^1.6",
+        "nativephp/electron": "^0.4.0",
         "parallax/filament-comments": "^1.0",
         "pxlrbt/filament-excel": "^2.3",
         "rabol/filament-logviewer": "^0.20.0",
