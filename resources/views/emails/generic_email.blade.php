@@ -1,12 +1,13 @@
 <x-mail::message>
-    {{-- email header will be emailSubject --}}
     <x-slot:emailSubject>
         {{ $emailSubject }}
         </x-slot::emailSubject>
-        {{-- # Bonjour {{ $user->full_name }}, --}}
 
         {!! $emailBody !!}
 
-        ---
-        {{__('Email sent From INPT-Entreprises platform.')}}
+        <x-slot:footer>
+            {{__('Email sent from')}} **{{ config('app.name') }}** {{__('by')}} **{{ $sender->long_full_name }}**
+            {{__('at')}}
+            {{now()->format('Y-m-d H:i:s')}}
+        </x-slot:footer>
 </x-mail::message>

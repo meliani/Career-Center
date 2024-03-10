@@ -97,6 +97,13 @@ class SendGenericEmail extends BulkAction
                         self::setSuccess(false);
                     }
                 }
+                if (self::getSuccess()) {
+                    $user = auth()->user();
+                    dispatch(function () use ($data, $user) {
+                        Mail::to([$user->email])
+                            ->send(new GenericEmail($user, __('Copy of email sent to your students') . ' : ' . $data['emailSubject'], $data['emailBody']));
+                    });
+                }
                 Notification::make()
                     ->title(self::getSuccess() ? self::getEmailCount() . ' ' . __('Emails sent successfully') : __('Emails not sent, there was an error'))
                     ->send();

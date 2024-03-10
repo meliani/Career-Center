@@ -196,6 +196,10 @@
     "No comments yet.": "Aucun commentaire pour le moment.",
     "Email sent From INPT-Entreprises platform.": "Email envoyé depuis la plateforme INPT-Entreprises.",
     "Emails sent successfully": "Emails envoyés avec succès",
-    "Emails not sent, there was an error": "Emails non envoyés, une erreur est survenue"
+    "Emails not sent, there was an error": "Emails non envoyés, une erreur est survenue",
+    "Copy of email sent to your students": "Copie de l'email envoyé à vos étudiants",
+    "by": "par",
+    "at": "à",
+    "Email sent from": "Email envoyé depuis"
 
 }

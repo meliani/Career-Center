@@ -7,7 +7,6 @@ use App\Filament\Actions\BulkAction;
 use App\Filament\Administration\Resources\StudentResource\Pages;
 use App\Filament\Core\BaseResource;
 use App\Mail;
-use App\Models\InternshipAgreement;
 use App\Models\Student;
 use Filament;
 use Filament\Forms;
@@ -188,9 +187,9 @@ class StudentResource extends BaseResource
                         Forms\Components\RichEditor::make('body')->required(),
                     ])
                     ->action(
-                        fn (array $data, InternshipAgreement $internship) => Facades\Mail::to($internship->student->email_perso)
+                        fn (array $data, Student $student) => Facades\Mail::to([$student?->email_perso, $student?->email])
                             ->send(new Mail\GenericEmail(
-                                $internship->student,
+                                $student,
                                 $data['subject'],
                                 $data['body'],
                             ))

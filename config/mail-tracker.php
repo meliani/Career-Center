@@ -87,7 +87,7 @@ return [
     /**
      * What filesystem we use for storing content html files
      */
-    'tracker-filesystem' => null,
+    'tracker-filesystem' => 'vendor',
     'tracker-filesystem-folder' => 'mail-tracker',
 
     /**

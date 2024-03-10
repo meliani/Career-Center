@@ -3,35 +3,36 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use App\Models\Student;
 
 class GenericEmail extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
-    public $student;
+    public $sender;
+
     public $emailSubject;
+
     public $emailBody;
 
-    public function __construct($person, string $emailSubject, string $emailBody)
+    public function __construct($sender, string $emailSubject, string $emailBody)
     {
         // dd($emailSubject);
-        $this->student = $person;
+        $this->sender = $sender;
         $this->emailSubject = $emailSubject;
         $this->emailBody = $emailBody;
     }
 
-    public function build()
-    {
-        // dd($this->emailSubject);
-        return $this->markdown('emails.generic_email')
-            ->with('student', $this->student);
-    }
+    // public function build()
+    // {
+    //     // dd($this->emailSubject);
+    //     return $this->markdown('emails.generic_email')
+    //         ->with('sender', $this->sender);
+    // }
 
     /**
      * Get the message envelope.
@@ -50,6 +51,9 @@ class GenericEmail extends Mailable
     {
         return new Content(
             markdown: 'emails.generic_email',
+            with: [
+                'sender' => $this->sender,
+            ],
         );
     }
 
