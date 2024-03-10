@@ -5,6 +5,7 @@ namespace App\Filament\Actions\BulkAction\Email;
 use App\Mail\GenericEmail;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Tables\Actions\BulkAction;
 use Illuminate\Support\Facades\Mail;
 
@@ -13,6 +14,24 @@ class SendGenericEmail extends BulkAction
     public $emailSubject;
 
     public $emailBody;
+
+    public static bool $success = false;
+
+    // public function __construct(?string $name)
+    // {
+    //     parent::__construct($name);
+    //     $this->success = true;
+    // }
+
+    private static function getSuccess(): bool
+    {
+        return self::$success;
+    }
+
+    private static function setSuccess(bool $success): void
+    {
+        self::$success = $success;
+    }
 
     public static function make(?string $name = null, string $emailSubject = '', string $emailBody = ''): static
     {
@@ -35,9 +54,10 @@ class SendGenericEmail extends BulkAction
                         foreach ($record->students as $student) {
                             if ($student->email_perso) {
                                 dispatch(function () use ($student, $data) {
-                                    Mail::to([$student->student->email_perso, $student->student->email])
+                                    Mail::to([$student->email_perso, $student->email])
                                         ->send(new GenericEmail($student, $data['emailSubject'], $data['emailBody']));
                                 });
+                                self::setSuccess(true);
                             }
                         }
                     } elseif (method_exists($record, 'student')) {
@@ -46,6 +66,7 @@ class SendGenericEmail extends BulkAction
                                 Mail::to([$record->student->email_perso, $record->student->email])
                                     ->send(new GenericEmail($record->student, $data['emailSubject'], $data['emailBody']));
                             });
+                            self::setSuccess(true);
                         }
                     } elseif (class_basename($record) === 'Student') {
                         // $classname = get_class($record);
@@ -55,9 +76,16 @@ class SendGenericEmail extends BulkAction
                                 Mail::to([$record->student->email_perso, $record->student->email])
                                     ->send(new GenericEmail($record, $data['emailSubject'], $data['emailBody']));
                             });
+                            self::setSuccess(true);
                         }
+                    } else {
+                        self::setSuccess(false);
                     }
                 }
+                Notification::make()
+                    ->title(self::getSuccess() ? 'Emails sent successfully' : 'Emails not sent, there was an error')
+                    ->send();
+                // dd($data, $records, self::getSuccess());
             });
 
         return $static;

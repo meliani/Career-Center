@@ -50,7 +50,7 @@ class Handler extends ExceptionHandler
     {
         // report($e);
         Notification::make()
-            ->title('Error : ' . $e->getMessage())
+            ->title('Error : ')// . $e->getMessage())
             ->danger()
             ->send();
 
