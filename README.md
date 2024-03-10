@@ -36,6 +36,10 @@ A chart that shows the number of assigned supervisors per department
 
 
 ## Emails
+Send generic email (one by one or bulk) to students from students page
+Send generic email from projects page
+Send generic emails from internships page
+
 ## Forms
 ## policies
 Strict policies for All model depending on the user role and professor role
@@ -46,7 +50,9 @@ Strict policies for All model depending on the user role and professor role
 
 
 # How to contribute
+Clone -> Create Feature Branche -> Change -> Commit -> Open pull request
 
+Open Issue -> explain your idea or join a gist for example.
 
 
 # License
