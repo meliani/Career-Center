@@ -113,7 +113,7 @@ class InternshipAgreementResource extends Core\BaseResource
                     ] : null
             )
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
+                // Tables\Filters\TrashedFilter::make(),
                 Tables\Filters\SelectFilter::make('status')
                     ->multiple()
                     ->options(Enums\Status::class),

@@ -8,7 +8,7 @@ use App\Enums\Role;
 use App\Enums\Title;
 use App\Filament\Actions\BulkAction;
 use App\Filament\Administration\Resources\ProfessorResource\Pages;
-use App\Filament\Core\BaseResource as Resource;
+use App\Filament\Core;
 use App\Models\Professor;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -19,7 +19,7 @@ use Filament\Tables\Columns\Summarizers;
 use Filament\Tables\Table;
 use Illuminate\Support\HtmlString;
 
-class ProfessorResource extends Resource
+class ProfessorResource extends Core\BaseResource
 {
     protected static ?string $model = Professor::class;
 
