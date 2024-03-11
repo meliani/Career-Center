@@ -108,17 +108,20 @@ class ProjectResource extends Core\BaseResource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('professors.name')
                     ->label('Supervisor - Reviewer')
-                    ->formatStateUsing(
-                        fn ($record) => $record->professors->map(
-                            fn ($professor) =>
-                            // $professor->pivot->jury_role->getLabel() . ': '
-                            // .
-                            $professor->name
-                        )->join(', ')
-                    )
+                    // ->formatStateUsing(
+                    //     fn ($record) => $record->professors->map(
+                    //         fn ($professor) =>
+                    //         // $professor->pivot->jury_role->getLabel() . ': '
+                    //         // .
+                    //         $professor->name
+                    //     )->join(', ')
+                    // )
+
                     // ->listWithLineBreaks()
                     // ->bulleted()
-                    ->searchable()
+                    ->searchable(
+                        ['first_name', 'last_name']
+                    )
                     // ->formatStateUsing(function ($state, Project $project) {
                     //     return $project->professors->map(function ($professor) {
                     //         return $professor->name;
