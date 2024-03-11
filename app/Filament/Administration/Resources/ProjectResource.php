@@ -92,7 +92,12 @@ class ProjectResource extends Core\BaseResource
                 Tables\Columns\TextColumn::make('id_pfe')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('students.long_full_name')
+                Tables\Columns\TextColumn::make('students.first_name')
+                    ->formatStateUsing(function ($record) {
+                        return $record->students->map(function ($student) {
+                            return $student->first_name . ' ' . $student->last_name;
+                        })->join(', ');
+                    })
                     ->label('Student name')
                     ->searchable()
                     ->sortableMany(),
@@ -108,7 +113,10 @@ class ProjectResource extends Core\BaseResource
                     ->label('Supervisor - Reviewer')
                     ->formatStateUsing(
                         fn ($record) => $record->professors->map(
-                            fn ($professor) => $professor->pivot->jury_role->getLabel() . ': ' . $professor->name
+                            fn ($professor) =>
+                            // $professor->pivot->jury_role->getLabel() . ': '
+                            // .
+                            $professor->name
                         )->join(', ')
                     )
                     // ->listWithLineBreaks()
