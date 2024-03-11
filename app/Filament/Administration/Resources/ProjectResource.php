@@ -89,7 +89,7 @@ class ProjectResource extends Core\BaseResource
             ->defaultPaginationPageOption(20)
             ->striped()
             ->columns([
-                Tables\Columns\TextColumn::make('id_pfe')
+                Tables\Columns\TextColumn::make('internship_agreements.id_pfe')
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('students.full_name')
