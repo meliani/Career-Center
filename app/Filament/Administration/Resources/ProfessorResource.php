@@ -132,7 +132,7 @@ class ProfessorResource extends Core\BaseResource
                     ->label(__('Number of Projects Participations'))
                     // ->label(new HtmlString(__('Number of <br /> Projects Participations')))
                     // ->label(new HtmlString(nl2br("Home \n number")))
-                    ->translateLabel(false)
+                    // ->translateLabel(false)
                     ->alignCenter()
                     ->sortable()
                     ->counts('projects'),
