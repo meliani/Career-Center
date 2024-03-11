@@ -92,14 +92,11 @@ class ProjectResource extends Core\BaseResource
                 Tables\Columns\TextColumn::make('id_pfe')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('students.first_name')
-                    ->formatStateUsing(function ($record) {
-                        return $record->students->map(function ($student) {
-                            return $student->first_name . ' ' . $student->last_name;
-                        })->join(', ');
-                    })
+                Tables\Columns\TextColumn::make('students.full_name')
                     ->label('Student name')
-                    ->searchable()
+                    ->searchable(
+                        ['first_name', 'last_name']
+                    )
                     ->sortableMany(),
                 Tables\Columns\TextColumn::make('students.program')
                     ->label('Program')
