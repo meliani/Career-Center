@@ -37,7 +37,6 @@ class Project extends Core\BackendBaseModel
     }
 
     protected $fillable = [
-        'id_pfe',
         'title',
         'organization',
         'description',
@@ -49,12 +48,27 @@ class Project extends Core\BackendBaseModel
         'teammate_id',
     ];
 
+    protected $appends = [
+        'id_pfe',
+    ];
+
     protected $casts = [
         'start_date' => 'date',
         'end_date' => 'date',
         'teammate_status' => Enums\TeammateStatus::class,
         'status' => Enums\Status::class,
     ];
+
+    public function getidPfeAttribute()
+    {
+        if ($this->hasTeammate()) {
+            // dd($this->internship_agreements()->first()->id_pfe, $this->internship_agreements()->latest()->first()->id_pfe);
+
+            return $this->internship_agreements()->first()->id_pfe . ' ' . __('&') . ' ' . $this->internship_agreements()->latest()->first()->id_pfe;
+        } else {
+            return $this->internship_agreements()->first()->id_pfe;
+        }
+    }
 
     public function students()
     {
