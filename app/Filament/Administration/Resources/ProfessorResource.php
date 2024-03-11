@@ -192,7 +192,10 @@ class ProfessorResource extends Core\BaseResource
                     ->hidden(fn () => auth()->user()->isAdministrator() === false),
 
             ])
-            ->defaultSort('projects_count', 'desc');
+            ->defaultSort('projects_count', 'desc')
+            ->headerActions([
+                \pxlrbt\FilamentExcel\Actions\Tables\ExportAction::make(),
+            ]);
     }
 
     public static function getRelations(): array
