@@ -20,7 +20,7 @@ class InternshipAgreementTable
                 ->searchable()
                 ->sortable(),
 
-            Tables\Columns\TextColumn::make('student.long_full_name')
+            Tables\Columns\TextColumn::make('student.full_name')
                 ->label(__('Student name'))
                 ->searchable()
                 ->sortable(),
