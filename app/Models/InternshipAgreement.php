@@ -16,9 +16,16 @@ class InternshipAgreement extends Core\BackendBaseModel
 
     protected $table = 'internships';
 
+    protected static $settings;
+
     protected static function boot()
     {
         parent::boot();
+    }
+
+    public function __construct(?\App\Settings\NotificationSettings $settings = null)
+    {
+        self::$settings = $settings;
     }
 
     protected static function booted(): void
@@ -26,7 +33,7 @@ class InternshipAgreement extends Core\BackendBaseModel
         static::addGlobalScope(new Scopes\InternshipAgreementScope());
 
         // if (env('EMAIL_NOTIFICATIONS', false)) {
-        if (app(\App\Settings\NotificationSettings::class)->in_app) {
+        if (self::$settings->in_app) {
             static::updated(function ($agreement) {
                 if ($agreement->wasChanged('status')) {
                     Filament\Notifications\Notification::make()
@@ -75,7 +82,7 @@ class InternshipAgreement extends Core\BackendBaseModel
                     ->sendToDatabase(User::Administrators());
             });
         }
-        if (app(\App\Settings\NotificationSettings::class)->by_email) {
+        if (self::$settings->by_email) {
             static::updated(
                 function ($agreement) {
                     if ($agreement->wasChanged('status')) {
