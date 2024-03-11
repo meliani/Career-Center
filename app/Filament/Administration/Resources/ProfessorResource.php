@@ -106,7 +106,9 @@ class ProfessorResource extends Core\BaseResource
                 // Tables\Columns\TextColumn::make('title')
                 //     ->searchable(),
                 Tables\Columns\TextColumn::make('name')
-                    ->searchable()
+                    ->searchable(
+                        ['first_name', 'last_name']
+                    )
                     ->formatStateUsing(function ($record) {
                         return $record->long_full_name;
                     }),
@@ -135,8 +137,13 @@ class ProfessorResource extends Core\BaseResource
                     ->sortable()
                     ->counts('projects'),
                 Tables\Columns\TextColumn::make('projects.id_pfe')
-                    ->label(__('Projects'))
-                    ->action(fn ($record) => Pages\EditProfessor::route('/{record}/edit')),
+                    // ->formatStateUsing(function ($record) {
+                    //     return $record->projects->pluck('internship_agreements')->flatten()->pluck('id_pfe')->implode(', ');
+                    // })
+                    // ->listWithLineBreaks()
+                    ->bulleted()
+                    // ->action(fn ($record) => Pages\EditProfessor::route('/{record}/edit'))
+                    ->label(__('Projects')),
                 Tables\Columns\TextColumn::make('role')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
