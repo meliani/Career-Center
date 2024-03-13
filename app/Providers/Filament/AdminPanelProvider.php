@@ -36,12 +36,12 @@ class AdminPanelProvider extends PanelProvider
 
         return $panel
             ->passwordReset()
-            ->profile(isSimple: false)
+            ->profile(isSimple: true)
             ->spa()
             ->maxContentWidth(MaxWidth::Full)
             ->default()
             ->id('Administration')
-            ->path('')
+            ->path('backend')
             ->brandName('INPT Entreprises')
             ->login()
             ->databaseNotifications()
