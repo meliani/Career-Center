@@ -15,11 +15,11 @@ use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
 //     return view('welcome');
-// });
-// here we register routes for filament panels
-// Route::get('/', function () {
-//     return redirect('/Administration');
-// });
+// })->name('home');
+
+Route::get('/', function () {
+    return redirect('/backend');
+});
 // Route::get('/programCoordinator', function () {
 //     return redirect('/programCoordinator/login');
 // });

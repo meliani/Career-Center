@@ -42,12 +42,20 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('Administration')
             ->path('backend')
-            ->brandName('INPT Entreprises')
+            // ->brandName('INPT Entreprises')
             ->login()
             ->databaseNotifications()
             ->databaseNotificationsPolling('3s')
+            ->brandLogo(asset('/svg/logo_entreprises.svg'))
+            ->favicon(asset('/svg/logo_entreprises_round.svg'))
+            ->darkModeBrandLogo(asset('/svg/logo_entreprises_white.svg'))
             ->colors([
-                'primary' => Color::Amber,
+                'danger' => Color::Rose,
+                'gray' => Color::Gray,
+                'info' => Color::Blue,
+                'primary' => Color::Indigo,
+                'success' => Color::Emerald,
+                'warning' => Color::Orange,
             ])
             ->discoverResources(in: app_path('Filament/Administration/Resources'), for: 'App\\Filament\\Administration\\Resources')
             ->discoverPages(in: app_path('Filament/Administration/Pages'), for: 'App\\Filament\\Administration\\Pages')
