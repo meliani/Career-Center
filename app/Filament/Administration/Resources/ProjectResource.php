@@ -90,6 +90,7 @@ class ProjectResource extends Core\BaseResource
             ->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('internship_agreements.id_pfe')
+                    ->label('ID PFE')
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('students.full_name')
@@ -107,7 +108,7 @@ class ProjectResource extends Core\BaseResource
                     ->sortableMany()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('professors.name')
-                    ->label('Supervisor - Reviewer')
+                    ->label('Supervisor')
                     // ->formatStateUsing(
                     //     fn ($record) => $record->professors->map(
                     //         fn ($professor) =>
