@@ -59,8 +59,9 @@ class StudentResource extends BaseResource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('title')
-                    ->maxLength(5),
+                Forms\Components\Select::make('title')
+                    ->options(Enums\Title::class)
+                    ->required(),
                 Forms\Components\TextInput::make('first_name')
                     ->maxLength(191),
                 Forms\Components\TextInput::make('last_name')
