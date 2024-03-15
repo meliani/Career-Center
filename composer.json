@@ -43,6 +43,7 @@
         "ryangjchandler/filament-progress-column": "^0.4.1",
         "saade/filament-fullcalendar": "^3.1",
         "spatie/laravel-data": "^4.2",
+        "spatie/laravel-pdf": "^1.4",
         "spatie/period": "^2.4",
         "stechstudio/filament-impersonate": "^3.5",
         "z3d0x/filament-logger": "^0.6.2"
