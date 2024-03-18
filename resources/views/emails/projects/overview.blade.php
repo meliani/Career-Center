@@ -6,8 +6,8 @@
         {{ $emailSubject }}
         </x-slot::emailSubject>
         <x-mail::table>
-            | Id PFE | Titre du PFE | Attribution |
-            |:---------:|:-------------:|:----------:|
+            | Id PFE | Titre du PFE | Rôle |
+            |:---------:|:-------------:|:--------:|
             @foreach ($projects as $project)
             | {{ $project->id_pfe }} | {{ $project->title }} | {{ $project->pivot->jury_role->getLabel() }} |
             @endforeach
