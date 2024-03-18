@@ -35,6 +35,10 @@ class AdminPanelProvider extends PanelProvider
     {
 
         return $panel
+            // ->topbar(false)
+            // ->topNavigation()
+            // ->sidebarFullyCollapsibleOnDesktop()
+            ->sidebarCollapsibleOnDesktop()
             ->passwordReset()
             ->profile(isSimple: true)
             ->spa()
@@ -115,7 +119,6 @@ class AdminPanelProvider extends PanelProvider
             ->defaultAvatarProvider(
                 \LaraZeus\Boredom\BoringAvatarsProvider::class
             )
-            ->sidebarCollapsibleOnDesktop()
             ->navigationGroups([
                 'Students and projects',
                 'Étudiants et projets',

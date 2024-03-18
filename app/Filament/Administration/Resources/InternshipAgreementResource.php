@@ -15,6 +15,9 @@ use Filament\Infolists\Infolist;
 use Filament\Tables;
 use Filament\Tables\Actions\ImportAction;
 use Filament\Tables\Table;
+use Spatie\LaravelPdf\Facades\Pdf;
+
+use function Spatie\LaravelPdf\Support\pdf;
 
 class InternshipAgreementResource extends Core\BaseResource
 {
@@ -123,12 +126,40 @@ class InternshipAgreementResource extends Core\BaseResource
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
+                    Tables\Actions\Action::make('Pdf from view')
+                        ->link()
+                        ->action(
+                            fn ($record) => pdf()
+                                ->view('pdf.base', ['internship' => $record])
+                                ->name('Internship Agreement.pdf')
+                                ->save('pdf from view.pdf')
+                        ),
+                    Tables\Actions\Action::make('Pdf Html')
+                        // ->color('danger')
+                        ->label('')
+                        ->iconButton()
+                        ->action(
+                            fn () => Pdf::html('<h1>Hello world!!</h1>')->save('pdf from html.pdf')
+                        )
+                        ->icon('heroicon-o-document-text')
+                        ->tooltip(__('Download internship agreement as a PDF')),
+                    Tables\Actions\Action::make('Pdf from agreement')
+                        ->link()
+                        ->action(
+                            fn ($record) => pdf()
+                                ->view('pdf.templates.table-grid', ['internship' => $record])
+                                ->name('Internship Agreement.pdf')
+                                ->save('pdf from agreement.pdf')
+                        ),
+                ])->hidden(fn () => env('APP_ENV') === 'production'),
+                Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\DeleteAction::make()->hidden(fn () => auth()->user()->isAdministrator() === false),
                     // ->disabled(! auth()->user()->can('delete', $this->post)),
                     Tables\Actions\ForceDeleteAction::make(),
                     Tables\Actions\RestoreAction::make(),
+
                 ])
                     ->hidden((auth()->user()->isAdministrator() || auth()->user()->isPowerProfessor()) === false)
                     ->label('')
@@ -148,11 +179,11 @@ class InternshipAgreementResource extends Core\BaseResource
                     ])->dropdown(false),
                 ])
                     ->label('')
-                    ->icon('heroicon-o-arrow-up-on-square')
+                    ->icon('heroicon-o-squares-plus')
                     ->size(Filament\Support\Enums\ActionSize::ExtraLarge)
                     ->tooltip(__('Validate, sign, or assign department'))
-                    ->color('warning')
                     ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isPowerProfessor()) === false),
+
             ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

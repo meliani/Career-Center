@@ -18,6 +18,9 @@ use Filament\Tables;
 use Filament\Tables\Columns\Summarizers;
 use Filament\Tables\Table;
 use Illuminate\Support\HtmlString;
+use Illuminate\Support\Str;
+
+use function Spatie\LaravelPdf\Support\pdf;
 
 class ProfessorResource extends Core\BaseResource
 {
@@ -181,7 +184,22 @@ class ProfessorResource extends Core\BaseResource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-            ])
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\Action::make('Projects Participation')
+                    // ->link()
+                        ->action(
+                            fn ($record) => pdf()
+                                ->view('pdf.templates.professor_projects_participation', ['professor' => $record])
+                                ->name('Professor Participation.pdf')
+                                ->save(
+                                    // storage_path(
+                                    'storage/pdf/' .
+                                    Str::slug($record->name) . '-Projects-participation-' . time() . '.pdf'
+                                    // )
+                                )
+                        ),
+                ])->hidden(fn () => env('APP_ENV') === 'production'),
+            ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     BulkAction\Email\SendProfessorsProjectsOverview::make('Send Professors Projects Overview')

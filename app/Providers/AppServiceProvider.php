@@ -32,6 +32,9 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
+use Spatie\LaravelPdf\Enums\Format;
+use Spatie\LaravelPdf\Enums\Unit;
+use Spatie\LaravelPdf\Facades\Pdf;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -54,7 +57,22 @@ class AppServiceProvider extends ServiceProvider
         // $this->configureDoctrine();
         $this->configureRateLimiter();
         $this->autoTranslateLabels();
+        $this->configurePdf();
 
+    }
+
+    private function configurePdf()
+    {
+        $top = 20;
+        $right = 20;
+        $bottom = 20;
+        $left = 20;
+
+        Pdf::default()
+            ->format(Format::A4)
+            ->margins($top, $right, $bottom, $left, Unit::Pixel)
+            ->headerView('pdf.layout.header')
+            ->footerView('pdf.layout.footer');
     }
 
     private function configureRateLimiter()
