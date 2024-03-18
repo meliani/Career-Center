@@ -9,21 +9,24 @@ class BaseResource extends Resource
 {
     protected static ?string $modelLabel = 'INPT';
 
-    protected static ?string $pluralModelLabel = 'INPT !';
+    protected static ?string $pluralModelLabel = 'INPT';
+
+    protected static ?string $navigationGroup = 'INPT';
+
     // public static function getNavigationBadge(): ?string
     // {
     //     return static::getModel()::count();
     // }
 
-    // public static function getModelLabel(): string
-    // {
-    //     return __(static::$modelLabel);
-    // }
+    public static function getModelLabel(): string
+    {
+        return __(static::$modelLabel);
+    }
 
-    // public static function getPluralModelLabel(): string
-    // {
-    //     return __(static::$pluralModelLabel);
-    // }
+    public static function getPluralModelLabel(): string
+    {
+        return __(static::$pluralModelLabel);
+    }
 
     // public static function canViewAny(): bool
     // {

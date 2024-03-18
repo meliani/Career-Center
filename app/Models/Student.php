@@ -119,14 +119,14 @@ class Student extends BackendBaseModel
 
     public function active_internship_agreement()
     {
-        // return $this->hasOne(InternshipAgreement::class);
+        return $this->hasOne(InternshipAgreement::class);
 
-        return $this->hasOne(InternshipAgreement::class)->ofMany([
-            'published_at' => 'max',
-            'id' => 'max',
-        ], function (Builder $query) {
-            $query->where('active', '=', true);
-        });
+        // return $this->hasOne(InternshipAgreement::class)->ofMany([
+        //     'published_at' => 'max',
+        //     'id' => 'max',
+        // ], function (Builder $query) {
+        //     $query->where('active', '=', true);
+        // });
     }
 
     public function inactiveInternshipAgreements()

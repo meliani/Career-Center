@@ -24,10 +24,7 @@ class InternshipAgreementScope implements Scope
 
                 return;
             } elseif (auth()->user()->isDepartmentHead()) {
-                $builder
-                    ->whereHas('student', function ($q) {
-                        $q->where('assigned_department', '=', auth()->user()->department);
-                    });
+                $builder->where('assigned_department', '=', auth()->user()->department);
 
                 return;
             } elseif (auth()->user()->isProfessor()) {
@@ -37,11 +34,15 @@ class InternshipAgreementScope implements Scope
                             $q->where('professor_id', '=', auth()->user()->id);
                         });
                     });
+
+                return;
             } else {
-                $builder->where('student_id', '=', auth()->user()->id);
+                // $builder->where('student_id', '=', auth()->user()->id);
+                return;
             }
         } else {
-            $builder->where('id', '=', $model->id);
+            // $builder->where('id', '=', $model->id);
+            return;
         }
 
     }

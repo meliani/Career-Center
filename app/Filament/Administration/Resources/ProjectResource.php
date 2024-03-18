@@ -42,6 +42,11 @@ class ProjectResource extends Core\BaseResource
         return static::getModel()::count();
     }
 
+    public static function getnavigationGroup(): string
+    {
+        return __(self::$navigationGroup);
+    }
+
     public static function getGloballySearchableAttributes(): array
     {
         return [
@@ -281,14 +286,15 @@ class ProjectResource extends Core\BaseResource
     {
         return $infolist
             ->schema([
-                Infolists\Components\Section::make(__('Internship agreement and validation process'))
+                Infolists\Components\Section::make(__('Project informations'))
                     ->headerActions([
                         Infolists\Components\Actions\Action::make('edit page', 'edit')
                             ->label('Edit')
                             ->icon('heroicon-o-pencil')
                             ->size(Filament\Support\Enums\ActionSize::Small)
                             ->tooltip('Edit this internship agreement')
-                            ->url(fn ($record) => \App\Filament\Administration\Resources\ProjectResource::getUrl('edit', [$record->id])),
+                            ->url(fn ($record) => \App\Filament\Administration\Resources\ProjectResource::getUrl('edit', [$record->id]))
+                            ->hidden(fn () => ! auth()->user()->isAdministrator()),
 
                     ])
                     ->schema([
@@ -304,7 +310,7 @@ class ProjectResource extends Core\BaseResource
                                 Infolists\Components\TextEntry::make('students.long_full_name')
                                     ->label('Student'),
                                 Infolists\Components\TextEntry::make('professors.name')
-                                    ->label('Supervisor - Reviewer')
+                                    ->label('Jury')
                                     ->formatStateUsing(
                                         fn ($record) => $record->professors->map(
                                             fn ($professor) => $professor->pivot->jury_role->getLabel() . ': ' . $professor->name
@@ -314,11 +320,25 @@ class ProjectResource extends Core\BaseResource
                                     ->label('Project start date')
                                     ->date(),
                                 Infolists\Components\TextEntry::make('end_date')
-
                                     ->label('Project end date')
                                     ->date(),
                             ]),
                     ]),
+                Infolists\Components\Section::make(__('Internship agreement and entreprise contacts'))
+                    ->schema([
+                        Infolists\Components\Fieldset::make('Entreprise supervisor')
+                            ->schema([
+                                Infolists\Components\TextEntry::make('internship_agreements.encadrant_ext_nom')
+                                    ->label(''),
+                                Infolists\Components\TextEntry::make('internship_agreements.encadrant_ext_prenom')
+                                    ->label(''),
+                                Infolists\Components\TextEntry::make('internship_agreements.encadrant_ext_mail')
+                                    ->label(''),
+                                Infolists\Components\TextEntry::make('internship_agreements.encadrant_ext_tel')
+                                    ->label(''),
+                            ]),
+                    ]),
             ]);
+
     }
 }

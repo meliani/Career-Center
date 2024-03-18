@@ -43,6 +43,11 @@ class InternshipAgreementResource extends Core\BaseResource
         return __('Internship Agreements');
     }
 
+    public static function getnavigationGroup(): string
+    {
+        return __(self::$navigationGroup);
+    }
+
     public static function getGloballySearchableAttributes(): array
     {
         return [

@@ -2,7 +2,6 @@
 
 namespace App\Policies;
 
-use App\Enums;
 use App\Models\InternshipAgreement;
 use App\Models\User;
 
@@ -10,7 +9,7 @@ class InternshipAgreementPolicy extends CorePolicy
 {
     public function viewAny(User $user): bool
     {
-        if ($user->hasAnyRole(Enums\Role::getAll())) {
+        if ($user->isAdministrator() || $user->isDirection()) {
             return true;
         }
 

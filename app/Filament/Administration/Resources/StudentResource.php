@@ -51,7 +51,7 @@ class StudentResource extends BaseResource
             'first_name',
             'last_name',
             'program',
-            'activeInternshipAgreement.id_pfe',
+            'active_internship_agreement.id_pfe',
         ];
     }
 
@@ -114,7 +114,7 @@ class StudentResource extends BaseResource
                 // Tables\Columns\TextColumn::make('pin')
                 //     ->numeric()
                 //     ->sortable(),
-                Tables\Columns\TextColumn::make('first_name')
+                Tables\Columns\TextColumn::make('Full name')
                     ->formatStateUsing(function ($record) {
                         return $record->long_full_name;
                     })
@@ -150,8 +150,7 @@ class StudentResource extends BaseResource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('level')
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\SelectColumn::make('program')
-                    ->options(Enums\Program::class)
+                Tables\Columns\TextColumn::make('program')
                     ->searchable(),
                 Tables\Columns\ToggleColumn::make('is_mobility')
                     ->toggleable(isToggledHiddenByDefault: true)
