@@ -7,7 +7,7 @@
         </x-slot::emailSubject>
         <x-mail::table>
             | Id PFE | Titre du PFE | Attribution |
-            | ------------- |:-------------:| --------:|
+            |:---------:|:-------------:|:----------:|
             @foreach ($projects as $project)
             | {{ $project->id_pfe }} | {{ $project->title }} | {{ $project->pivot->jury_role->getLabel() }} |
             @endforeach
@@ -19,5 +19,9 @@
         Cordialement,<br>
         La DASRE
 
-
+        <x-slot:footer>
+            {{__('Email sent from')}} **{{ __(config('app.name')) }}**
+            {{__('at')}}
+            {{now()->format('Y-m-d H:i:s')}}
+        </x-slot:footer>
 </x-mail::message>

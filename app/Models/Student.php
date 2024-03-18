@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums;
 use App\Models\Core\BackendBaseModel;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Notifications\Notifiable;
 
 class Student extends BackendBaseModel
@@ -116,9 +117,16 @@ class Student extends BackendBaseModel
         return $this->belongsTo(Year::class);
     }
 
-    public function activeInternshipAgreement()
+    public function active_internship_agreement()
     {
-        return $this->hasOne(InternshipAgreement::class);
+        // return $this->hasOne(InternshipAgreement::class);
+
+        return $this->hasOne(InternshipAgreement::class)->ofMany([
+            'published_at' => 'max',
+            'id' => 'max',
+        ], function (Builder $query) {
+            $query->where('active', '=', true);
+        });
     }
 
     public function inactiveInternshipAgreements()

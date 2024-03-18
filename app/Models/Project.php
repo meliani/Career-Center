@@ -59,7 +59,7 @@ class Project extends Core\BackendBaseModel
         'status' => Enums\Status::class,
     ];
 
-    public function getidPfeAttribute()
+    public function getIdPfeAttribute()
     {
         if ($this->hasTeammate()) {
             // dd($this->internship_agreements()->first()->id_pfe, $this->internship_agreements()->latest()->first()->id_pfe);

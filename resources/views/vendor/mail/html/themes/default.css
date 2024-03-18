@@ -188,20 +188,22 @@ img {
     -premailer-width: 100%;
     margin: 30px auto;
     width: 100%;
+    border-collapse: collapse;
 }
 
 .table th {
-    border-bottom: 1px solid #edeff2;
-    margin: 0;
+    /* border-bottom: 1px solid #edeff2; */
+    font-size: small;
+    border: 0.5px solid #32548d;
     padding-bottom: 8px;
 }
 
 .table td {
     color: #74787e;
-    font-size: 15px;
-    line-height: 18px;
-    margin: 0;
-    padding: 10px 0;
+    /* text-align: left; */
+    font-size: x-small;
+    line-height: 15px;
+    border: 0.5px solid #32548d;
 }
 
 .content-cell {
