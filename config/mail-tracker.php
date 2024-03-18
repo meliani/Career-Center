@@ -82,7 +82,7 @@ return [
      * Determines whether the body should be stored in a file instead of database
      * Can be either 'database' or 'filesystem'
      */
-    'log-content-strategy' => 'database',
+    'log-content-strategy' => 'filesystem',
 
     /**
      * What filesystem we use for storing content html files

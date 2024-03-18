@@ -236,7 +236,7 @@ class ProjectResource extends Core\BaseResource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     BulkAction\Email\SendConnectingSupervisorsEmail::make('SendConnectingSupervisorsEmail')
-                        ->label(__('Send email to put supervisors in contact with students'))
+                        ->label(__('Connection email : Supervisors / Students'))
                         ->hidden(fn () => auth()->user()->isAdministrator() === false)
                         ->requiresConfirmation()
                         ->outlined(),
