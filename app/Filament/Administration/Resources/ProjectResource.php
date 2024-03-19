@@ -53,7 +53,8 @@ class ProjectResource extends Core\BaseResource
             'title', 'organization',
             'students.first_name',
             'students.last_name',
-            'id_pfe', 'professors.name',
+            'internship_agreements.id_pfe',
+            'professors.name',
         ];
     }
 
@@ -69,8 +70,6 @@ class ProjectResource extends Core\BaseResource
 
                 Forms\Components\Section::make('Project informations')
                     ->schema([
-                        Forms\Components\TextInput::make('id_pfe')
-                            ->maxLength(10),
                         Forms\Components\Textarea::make('title')
                             ->required()
                             ->maxLength(65535)

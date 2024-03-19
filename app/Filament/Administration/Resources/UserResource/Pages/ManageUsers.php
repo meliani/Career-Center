@@ -23,18 +23,19 @@ class ManageUsers extends ManageRecords
     public function getTabs(): array
     {
         return [
-            'all' => Tab::make(),
-            'administrators' => Tab::make('Administrators')
+            'all' => Tab::make('all')
+                ->label(__('All')),
+            'administrators' => Tab::make(__('Administrators'))
                 ->modifyQueryUsing(fn (Builder $query) => $query->whereIn('role', Enums\Role::getAdministratorRoles())),
-            'professors' => Tab::make('Professors')
+            'professors' => Tab::make(__('Professors'))
                 ->modifyQueryUsing(fn (Builder $query) => $query->whereIn('role', Enums\Role::getProfessorRoles())),
-            'assigned_programs' => Tab::make('Program Coordinators')
+            'assigned_programs' => Tab::make(__('Program Coordinators'))
                 ->modifyQueryUsing(fn (Builder $query) => $query->whereIn('role', Enums\Role::getProgramCoordinatorRoles())),
-            'department_heads' => Tab::make('Department Heads')
+            'department_heads' => Tab::make(__('Department Heads'))
                 ->modifyQueryUsing(fn (Builder $query) => $query->whereIn('role', Enums\Role::getDepartmentHeadRoles())),
-            'administrative_supervisors' => Tab::make('Administrative Supervisors')
+            'administrative_supervisors' => Tab::make(__('Administrative Supervisors'))
                 ->modifyQueryUsing(fn (Builder $query) => $query->whereIn('role', Enums\Role::getAdministrativeSupervisorRoles())),
-            'direction' => Tab::make('Direction')
+            'direction' => Tab::make(__('Direction'))
                 ->modifyQueryUsing(fn (Builder $query) => $query->whereIn('role', Enums\Role::getDirectionRoles())),
         ];
 

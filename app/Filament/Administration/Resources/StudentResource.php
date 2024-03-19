@@ -5,17 +5,20 @@ namespace App\Filament\Administration\Resources;
 use App\Enums;
 use App\Filament\Actions\BulkAction;
 use App\Filament\Administration\Resources\StudentResource\Pages;
-use App\Filament\Core\BaseResource;
+use App\Filament\Core;
 use App\Mail;
 use App\Models\Student;
 use Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Infolists;
+use Filament\Infolists\Infolist;
+use Filament\Notifications\Notification;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades;
 
-class StudentResource extends BaseResource
+class StudentResource extends Core\BaseResource
 {
     protected static ?string $modelLabel = 'Student';
 
@@ -134,15 +137,15 @@ class StudentResource extends BaseResource
                 Tables\Columns\TextColumn::make('cv')
                     ->label('Curriculum vitae')
                     ->limit(20)
-                    ->url(fn (Student $record): ?string => $record?->cv)
+                    ->url(fn (Student $record): ?string => $record?->cv, true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('lm')
                     ->label('Cover letter')
-                    ->url(fn (Student $record): ?string => $record?->lm)
+                    ->url(fn (Student $record): ?string => $record?->lm, true)
                     ->limit(20)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('photo')
-                    ->url(fn (Student $record): ?string => $record?->photo)
+                    ->url(fn (Student $record): ?string => $record?->photo, true)
                     ->limit(20)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('birth_date')
@@ -188,11 +191,17 @@ class StudentResource extends BaseResource
                     ])
                     ->action(
                         fn (array $data, Student $student) => Facades\Mail::to([$student?->email_perso, $student?->email])
-                            ->send(new Mail\GenericEmail(
-                                $student,
-                                $data['subject'],
-                                $data['body'],
-                            ))
+                            ->send(
+                                new Mail\GenericEmail(
+                                    $student,
+                                    $data['subject'],
+                                    $data['body'],
+                                ),
+                                Notification::make()
+                                    ->title(__('Email sent to :email and :email_perso', ['email' => $student?->email, 'email_perso' => $student?->email_perso]))
+                                    ->send()
+                            )
+                        // ->notification(__('Email sent to :email', ['email' => $student?->email_perso]))
                     )
                     ->label('')
                     ->icon('heroicon-o-envelope')
@@ -233,5 +242,39 @@ class StudentResource extends BaseResource
             'view' => Pages\ViewStudent::route('/{record}'),
             'edit' => Pages\EditStudent::route('/{record}/edit'),
         ];
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                Infolists\Components\Section::make(__('Student informations'))
+                    ->schema([
+                        Infolists\Components\Fieldset::make(__('Internship agreement'))
+                            ->schema([
+                                Infolists\Components\TextEntry::make('long_full_name')
+                                    ->label('Full name'),
+                                Infolists\Components\TextEntry::make('email')
+                                    ->label('Email'),
+                                Infolists\Components\TextEntry::make('phone')
+                                    ->label('Phone'),
+                                Infolists\Components\TextEntry::make('program')
+                                    ->label('Program'),
+                            ]),
+                        Infolists\Components\Fieldset::make(__('Student documents'))
+                            ->schema([
+                                Infolists\Components\TextEntry::make('cv')
+                                    ->url(fn (Student $record): ?string => $record?->cv, true)
+                                    ->label('Curriculum vitae'),
+                                Infolists\Components\TextEntry::make('lm')
+                                    ->url(fn (Student $record): ?string => $record?->lm, true)
+                                    ->label('Cover letter'),
+                                Infolists\Components\TextEntry::make('photo')
+                                    ->url(fn (Student $record): ?string => $record?->photo, true)
+                                    ->label('Photo'),
+                            ]),
+                    ]),
+            ]);
+
     }
 }

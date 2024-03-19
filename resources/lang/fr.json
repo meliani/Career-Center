@@ -205,6 +205,18 @@
     "Role": "Rôle",
     "Entreprise supervisor": "Encadrant externe",
     "Internship agreement and entreprise contacts": "Convention de stage et contacts de l'entreprise",
-    "Project informations": "Informations du projet"
-
+    "Project informations": "Informations du projet",
+    "Email sent to :email and :email_perso": "Email envoyé à :email et :email_perso",
+    "Birth date": "Date de naissance",
+    "User": "Utilisateur",
+    "Avatar url": "URL de l'avatar",
+    "Email": "Email",
+    "Assigned program": "Filière affectée",
+    "All": "Tous",
+    "Administrators": "Administrateurs",
+    "Program Coordinators": "Coordinateurs de filières",
+    "Department Heads": "Chefs de département",
+    "Administrative Supervisors": "Référents administratifs",
+    "Direction": "Direction",
+    "Internships by end date (Daily)": "Stages par date de fin (Quotidien)"
 }

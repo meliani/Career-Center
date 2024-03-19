@@ -10,6 +10,11 @@ class AdministrationDashboard extends \Filament\Pages\Dashboard
 
     protected static ?int $navigationSort = 1;
 
+    public function getTitle(): string
+    {
+        return __(static::$title);
+    }
+
     public static function canAccess(): bool
     {
         return auth()->user()->isSuperAdministrator() || auth()->user()->isProfessor() || auth()->user()->isDepartmentHead() || auth()->user()->isProgramCoordinator();
