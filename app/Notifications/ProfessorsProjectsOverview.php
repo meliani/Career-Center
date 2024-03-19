@@ -18,7 +18,7 @@ class ProfessorsProjectsOverview extends Notification
     public function __construct()
     {
 
-        $this->emailSubject = "Vos encadrement de stages de Projet de Fin d'Études";
+        $this->emailSubject = 'Encadrement PFEs 2023-2024';
     }
 
     /**
