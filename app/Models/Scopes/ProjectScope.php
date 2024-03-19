@@ -31,7 +31,7 @@ class ProjectScope implements Scope
                 return;
             } elseif (auth()->user()->isDepartmentHead()) {
                 $builder
-                    ->whereHas('InternshipAgreements', function ($q) {
+                    ->whereHas('internship_agreements', function ($q) {
                         $q->where('assigned_department', '=', auth()->user()->department);
                     });
 
