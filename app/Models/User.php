@@ -16,7 +16,8 @@ use LaraZeus\Boredom\Concerns\HasBoringAvatar;
 class User extends Authenticatable implements FilamentUser, HasName
 {
     use HasApiTokens;
-    use HasBoringAvatar;
+
+    // use HasBoringAvatar;
     use HasFactory;
     use Notifiable;
 

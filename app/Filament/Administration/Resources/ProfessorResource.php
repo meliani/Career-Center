@@ -17,6 +17,7 @@ use Filament\Support\Enums as FilamentEnums;
 use Filament\Tables;
 use Filament\Tables\Columns\Summarizers;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
@@ -180,7 +181,24 @@ class ProfessorResource extends Core\BaseResource
                 //     ->searchable(),
             ])
             ->filters([
-                //
+                // filter by professors->hasProjects() : participating in projects
+                Tables\Filters\SelectFilter::make('has_projects')
+                    ->options([
+                        'yes' => 'Yes',
+                        'no' => 'No',
+                    ])
+                    ->label(__('Participating in projects'))
+                    ->placeholder(__('All'))
+                    ->query(
+                        fn (Builder $query, array $data) => $query->when(
+                            $data['value'] === 'yes',
+                            fn (Builder $query) => $query->whereHas('projects')
+                        )->when(
+                            $data['value'] === 'no',
+                            fn (Builder $query) => $query->whereDoesntHave('projects')
+                        ),
+                    ),
+
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

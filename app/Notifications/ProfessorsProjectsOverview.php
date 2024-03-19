@@ -3,12 +3,19 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
-class ProfessorsProjectsOverview extends Notification
+class ProfessorsProjectsOverview extends Notification implements ShouldQueue
 {
+    use Dispatchable;
+    use InteractsWithQueue;
     use Queueable;
+    use SerializesModels;
 
     public $emailSubject = '';
 
@@ -41,7 +48,7 @@ class ProfessorsProjectsOverview extends Notification
             [
                 'emailSubject' => $this->emailSubject,
                 'professor' => $notifiable,
-                'projects' => $notifiable->projects,
+                'projects' => collect($notifiable?->projects),
             ]
         )
             ->subject($this->emailSubject);

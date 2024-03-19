@@ -3,8 +3,9 @@
 // config for RickDBCN/FilamentEmail
 // use RickDBCN\FilamentEmail\Filament\Resources\EmailResource;
 // use RickDBCN\FilamentEmail\Models\Email;
-use App\Models\Email;
 use App\Filament\Administration\Resources\EmailLogResource as EmailResource;
+use App\Models\Email;
+
 return [
 
     'resource' => [

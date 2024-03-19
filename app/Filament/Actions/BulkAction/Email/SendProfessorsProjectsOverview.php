@@ -16,6 +16,14 @@ class SendProfessorsProjectsOverview extends BulkAction
             foreach ($records as $professor) {
                 $professor->notify(new \App\Notifications\ProfessorsProjectsOverview());
             }
+
+            // send copy to administrators as well
+            $admin = \App\Models\User::administrators();
+            foreach ($admin as $administrator) {
+
+                $administrator->notify(new \App\Notifications\ProfessorsProjectsOverview());
+            }
+
         });
 
         return $static;

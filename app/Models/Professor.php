@@ -40,4 +40,9 @@ class Professor extends User
         return $this->belongsToMany(Project::class)->withPivot('jury_role')
             ->using(ProfessorProject::class);
     }
+
+    public function hasProjects()
+    {
+        return $this->projects()->exists();
+    }
 }

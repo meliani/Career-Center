@@ -13,7 +13,7 @@ body {
     background-color: #ffffff;
     color: #718096;
     height: 100%;
-    line-height: 1.4;
+    /* line-height: 1.4; */
     margin: 0;
     padding: 0;
     width: 100% !important;
@@ -23,7 +23,7 @@ p,
 ul,
 ol,
 blockquote {
-    line-height: 1.4;
+    /* line-height: 1.4; */
     text-align: left;
 }
 
@@ -39,35 +39,35 @@ a img {
 
 h1 {
     color: #3d4852;
-    font-size: 18px;
-    font-weight: bold;
-    margin-top: 0;
-    text-align: left;
-}
-
-h2 {
-    font-size: 16px;
-    font-weight: bold;
-    margin-top: 0;
-    text-align: left;
-}
-
-h3 {
     font-size: 14px;
     font-weight: bold;
     margin-top: 0;
     text-align: left;
 }
 
+h2 {
+    font-size: 13px;
+    font-weight: bold;
+    margin-top: 0;
+    text-align: left;
+}
+
+h3 {
+    font-size: 12px;
+    font-weight: bold;
+    margin-top: 0;
+    text-align: left;
+}
+
 p {
-    font-size: 16px;
+    font-size: 11px;
     line-height: 1.5em;
     margin-top: 0;
     text-align: left;
 }
 
 p.sub {
-    font-size: 12px;
+    font-size: 11px;
 }
 
 img {
@@ -104,7 +104,7 @@ img {
 
 .header a {
     color: #3d4852;
-    font-size: 19px;
+    font-size: 14px;
     font-weight: bold;
     text-decoration: none;
 }
@@ -129,6 +129,7 @@ img {
     margin: 0;
     padding: 0;
     width: 100%;
+    font-size: 11px;
 }
 
 .inner-body {
@@ -154,7 +155,7 @@ img {
 }
 
 .subcopy p {
-    font-size: 14px;
+    font-size: 11px;
 }
 
 /* Footer */
@@ -171,7 +172,7 @@ img {
 
 .footer p {
     color: #b0adc5;
-    font-size: 12px;
+    font-size: 10px;
     text-align: center;
 }
 
@@ -193,7 +194,7 @@ img {
 
 .table th {
     /* border-bottom: 1px solid #edeff2; */
-    font-size: small;
+    
     border: 0.5px solid #32548d;
     padding-bottom: 8px;
 }
@@ -201,7 +202,6 @@ img {
 .table td {
     color: #74787e;
     /* text-align: left; */
-    font-size: x-small;
     line-height: 15px;
     border: 0.5px solid #32548d;
 }
