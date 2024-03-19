@@ -107,18 +107,18 @@ class AdminPanelProvider extends PanelProvider
                         ->gridLayoutButtonIcon('heroicon-o-squares-2x2'),
                     FilamentJobsMonitorPlugin::make(),
                     LightSwitchPlugin::make()->position(Alignment::BottomCenter),
-                    \LaraZeus\Boredom\BoringAvatarPlugin::make()
-                        ->variant(Variants::BEAM)
-                        ->size(60)
-                        ->square()
-                        ->colors(['0A0310', '49007E', 'FF005B', 'FF7D10', 'FFB238']),
+                    // \LaraZeus\Boredom\BoringAvatarPlugin::make()
+                    //     ->variant(Variants::BEAM)
+                    //     ->size(60)
+                    //     ->square()
+                    //     ->colors(['0A0310', '49007E', 'FF005B', 'FF7D10', 'FFB238']),
                     SpatieLaravelTranslatablePlugin::make()->defaultLocales([config('app.locale')]),
                     // BoltPlugin::make(),
                 ]
             )
-            ->defaultAvatarProvider(
-                \LaraZeus\Boredom\BoringAvatarsProvider::class
-            )
+            // ->defaultAvatarProvider(
+            //     // \LaraZeus\Boredom\BoringAvatarsProvider::class
+            // )
             ->navigationGroups([
                 'Students and projects',
                 'Étudiants et projets',
