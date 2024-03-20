@@ -19,7 +19,7 @@ class ViewProject extends ViewRecord
     {
         return [
             Filament\Actions\Action::make('edit page', 'edit')
-                ->label('Switch to edit mode')
+                ->label(__('Switch to edit mode'))
                 ->icon('heroicon-o-pencil')
                 ->size(Filament\Support\Enums\ActionSize::Small)
                 ->tooltip('Edit project details and jury members')
