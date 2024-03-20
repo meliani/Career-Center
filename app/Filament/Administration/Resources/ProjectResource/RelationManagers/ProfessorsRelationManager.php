@@ -30,9 +30,10 @@ class ProfessorsRelationManager extends RelationManager
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Select::make('role')
-                    ->label('Professor role in school')
-                    ->options(Enums\JuryRole::class),
+                Forms\Components\Select::make('jury_role')
+                    ->required()
+                    ->options(Enums\JuryRole::class)
+                    ->default(Enums\JuryRole::Reviewer),
             ]);
     }
 
@@ -60,18 +61,14 @@ class ProfessorsRelationManager extends RelationManager
             ->headerActions([
                 // Tables\Actions\CreateAction::make(),
                 Tables\Actions\AttachAction::make()
-                    ->fillForm([
-                        'created_by' => auth()->user()->id,
-                    ])
-                    // ->fillForm([
-                    //     'owner_record_id' => $this->ownerRecord->id,
-                    //     'owner_record_field' => $this->ownerRecord->name
-                    // ])
                     ->preloadRecordSelect()
                     ->label(__('Add Jury Member'))
                     ->form(fn (Tables\Actions\AttachAction $action): array => [
                         $action->getRecordSelect(),
-                        Forms\Components\Select::make('jury_role')->options(Enums\JuryRole::class),
+                        Forms\Components\Select::make('jury_role')->options(Enums\JuryRole::class)
+                            ->required()
+                            ->default(Enums\JuryRole::Reviewer),
+
                         // Forms\Components\Hidden::make('created_by')
                         //     ->default(auth()->user()->id),
 
