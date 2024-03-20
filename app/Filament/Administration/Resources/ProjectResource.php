@@ -8,10 +8,10 @@ use App\Filament\Administration\Resources\ProjectResource\Pages;
 use App\Filament\Administration\Resources\ProjectResource\RelationManagers;
 use App\Filament\Core;
 use App\Models\Project;
-use Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists;
+use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Infolist;
 use Filament\Support\Enums as FilamentEnums;
 use Filament\Tables;
@@ -54,7 +54,8 @@ class ProjectResource extends Core\BaseResource
             'students.first_name',
             'students.last_name',
             'internship_agreements.id_pfe',
-            'professors.name',
+            'professors.first_name',
+            'professors.last_name',
         ];
     }
 
@@ -72,13 +73,14 @@ class ProjectResource extends Core\BaseResource
                     ->schema([
                         Forms\Components\Textarea::make('title')
                             ->required()
-                            ->maxLength(65535)
-                            ->columnSpanFull(),
-                        Forms\Components\TextInput::make('organization')
                             ->maxLength(255),
                         Forms\Components\Textarea::make('description')
                             ->maxLength(65535)
                             ->columnSpanFull(),
+
+                        Forms\Components\TextInput::make('organization')
+                            ->maxLength(255),
+
                         Forms\Components\DatePicker::make('start_date'),
                         Forms\Components\DatePicker::make('end_date'),
                     ])
@@ -90,7 +92,7 @@ class ProjectResource extends Core\BaseResource
     public static function table(Table $table): Table
     {
         return $table
-            ->defaultPaginationPageOption(20)
+            ->defaultPaginationPageOption(10)
             ->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('internship_agreements.id_pfe')
@@ -187,7 +189,7 @@ class ProjectResource extends Core\BaseResource
                 //     ->label('Assigned Department')
                 //     ->options(Enums\Department::class),
 
-                Tables\Filters\SelectFilter::make('department')
+                Tables\Filters\SelectFilter::make('Assigned department')
                     ->options(Enums\Department::class)
                     ->query(
                         fn (Builder $query, array $data) => $query->when(
@@ -199,8 +201,8 @@ class ProjectResource extends Core\BaseResource
                 Tables\Filters\SelectFilter::make('hasTeammate')
                     ->label('Has teammate')
                     ->options([
-                        'yes' => 'Yes',
-                        'no' => 'No',
+                        'yes' => __('With teammate'),
+                        'no' => __('Without teammate'),
                     ])
                     ->query(
                         fn (Builder $query, array $data) => $query->when(
@@ -245,13 +247,13 @@ class ProjectResource extends Core\BaseResource
                         ->requiresConfirmation()
                         ->outlined(),
                 ])
-                    ->label(__('Send email'))
+                    ->label(__('Send Email'))
                     ->dropdownWidth(FilamentEnums\MaxWidth::Large)
                     ->hidden(fn () => auth()->user()->isAdministrator() === false),
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ])
-                    ->label(__('actions'))
+                    ->label(__('edition'))
                     ->hidden(fn () => auth()->user()->isAdministrator() === false),
                 BulkAction\Email\SendGenericEmail::make('Send Email')
                     ->outlined(),
@@ -286,57 +288,72 @@ class ProjectResource extends Core\BaseResource
         return $infolist
             ->schema([
                 Infolists\Components\Section::make(__('Project informations'))
-                    ->headerActions([
-                        Infolists\Components\Actions\Action::make('edit page', 'edit')
-                            ->label('Edit')
-                            ->icon('heroicon-o-pencil')
-                            ->size(Filament\Support\Enums\ActionSize::Small)
-                            ->tooltip('Edit this internship agreement')
-                            ->url(fn ($record) => \App\Filament\Administration\Resources\ProjectResource::getUrl('edit', [$record->id]))
-                            ->hidden(fn () => ! auth()->user()->isAdministrator()),
-
-                    ])
+                    ->columns(3)
                     ->schema([
 
-                        Infolists\Components\Fieldset::make('Internship agreement')
+                        Infolists\Components\Fieldset::make('Project informations')
                             ->schema([
-                                Infolists\Components\TextEntry::make('title')
-                                    ->label('Project title'),
-                                Infolists\Components\TextEntry::make('organization')
-                                    ->label('Organization'),
                                 Infolists\Components\TextEntry::make('id_pfe')
                                     ->label('PFE ID'),
                                 Infolists\Components\TextEntry::make('students.long_full_name')
                                     ->label('Student'),
-                                Infolists\Components\TextEntry::make('professors.name')
-                                    ->label('Jury')
+                                Infolists\Components\TextEntry::make('students.program')
+                                    ->label('Program'),
+                                Infolists\Components\TextEntry::make('organization')
+                                    ->label('Organization'),
+
+                                Infolists\Components\TextEntry::make('title')
+                                    ->label('Project title'),
+
+                                Infolists\Components\TextEntry::make('description')
+                                    ->label('Project description')
                                     ->formatStateUsing(
-                                        fn ($record) => $record->professors->map(
-                                            fn ($professor) => $professor->pivot->jury_role->getLabel() . ': ' . $professor->name
-                                        )->join(', ')
-                                    ),
-                                Infolists\Components\TextEntry::make('start_date')
-                                    ->label('Project start date')
-                                    ->date(),
-                                Infolists\Components\TextEntry::make('end_date')
-                                    ->label('Project end date')
-                                    ->date(),
+                                        fn ($record) => "{$record->description}"
+                                    )
+                                    ->html()
+                                    ->columnSpanFull(),
+                                Infolists\Components\Fieldset::make('Dates')
+                                    ->schema([
+                                        Infolists\Components\TextEntry::make('start_date')
+                                            ->label('Project start date')
+                                            ->date(),
+                                        Infolists\Components\TextEntry::make('end_date')
+                                            ->label('Project end date')
+                                            ->date(),
+                                    ]),
+
+                                Infolists\Components\Fieldset::make('Jury informations')
+                                    ->schema([
+                                        RepeatableEntry::make('professors')
+                                            ->label('')
+                                            ->schema([
+                                                Infolists\Components\TextEntry::make('name')
+                                                    ->label(__('Supervisor')),
+                                            ])
+                                            ->contained(false),
+                                        // Infolists\Components\TextEntry::make('professors.name')
+                                        //     ->label('')
+                                        //     ->formatStateUsing(
+                                        //         fn ($record) => $record->professors->map(
+                                        //             fn ($professor) => $professor->pivot->jury_role->getLabel() . ': ' . $professor->name
+                                        //         )->join(', ')
+                                        //     ),
+                                    ]),
+
                             ]),
-                    ]),
-                Infolists\Components\Section::make(__('Internship agreement and entreprise contacts'))
-                    ->schema([
                         Infolists\Components\Fieldset::make('Entreprise supervisor')
                             ->schema([
                                 Infolists\Components\TextEntry::make('internship_agreements.encadrant_ext_nom')
-                                    ->label(''),
-                                Infolists\Components\TextEntry::make('internship_agreements.encadrant_ext_prenom')
-                                    ->label(''),
-                                Infolists\Components\TextEntry::make('internship_agreements.encadrant_ext_mail')
-                                    ->label(''),
-                                Infolists\Components\TextEntry::make('internship_agreements.encadrant_ext_tel')
-                                    ->label(''),
+                                    ->label('')
+                                    ->formatStateUsing(
+                                        fn ($record) => $record->internship_agreements->map(
+                                            fn ($internship_agreement) => "**{$internship_agreement->encadrant_ext_name}**" . PHP_EOL . $internship_agreement->encadrant_ext_mail . PHP_EOL . $internship_agreement->encadrant_ext_tel
+                                        )->join(', ')
+                                    )
+                                    ->markdown(),
                             ]),
                     ]),
+
             ]);
 
     }

@@ -50,7 +50,8 @@ class StudentsRelationManager extends RelationManager
             ])
             ->headerActions([
                 // Tables\Actions\CreateAction::make(),
-                Tables\Actions\AttachAction::make(),
+                Tables\Actions\AttachAction::make()
+                    ->hidden(fn () => auth()->user()->isAdministrator() === false),
                 // dettach student from existing project et detach his agreement from any project
                 // ->before(function (Model $ownerRecord) {
                 //     $ownerRecord->projects()->detach();
@@ -63,13 +64,15 @@ class StudentsRelationManager extends RelationManager
                 // }),
             ])
             ->actions([
-                Tables\Actions\DetachAction::make(),
+                Tables\Actions\DetachAction::make()
+                    ->hidden(fn () => auth()->user()->isAdministrator() === false),
                 // Tables\Actions\EditAction::make(),
                 // Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DetachBulkAction::make(),
+                    Tables\Actions\DetachBulkAction::make()
+                        ->hidden(fn () => auth()->user()->isAdministrator() === false),
                     // Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);

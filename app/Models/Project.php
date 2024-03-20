@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Enums;
+use App\Notifications;
+use Illuminate\Support\Facades\Notification;
 use Parallax\FilamentComments\Models\Traits\HasFilamentComments;
 
 class Project extends Core\BackendBaseModel
@@ -17,13 +19,18 @@ class Project extends Core\BackendBaseModel
     protected static function booted(): void
     {
         static::addGlobalScope(new Scopes\ProjectScope());
+
+        static::updated(function ($project) {
+            $admins = \App\Models\User::administrators();
+            Notification::send($admins, new Notifications\ProjectUpdated($project));
+        });
+
     }
 
     // rules
     public static function rules($id = null)
     {
         return [
-            'id_pfe' => 'required|max:10',
             'title' => 'required|max:255',
             'organization' => 'required|max:255',
             'description' => 'required|max:65535',
@@ -83,7 +90,7 @@ class Project extends Core\BackendBaseModel
     public function professors()
     {
         return $this->belongsToMany(Professor::class, 'professor_project')
-            ->withPivot('jury_role')
+            ->withPivot('jury_role', 'created_by', 'updated_by')->withTimestamps()
             ->using(ProfessorProject::class);
 
     }

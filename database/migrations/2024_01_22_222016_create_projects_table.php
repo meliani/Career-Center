@@ -16,7 +16,6 @@ class CreateProjectsTable extends Migration
         }
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
-            $table->integer('id_pfe')->nullable();
             $table->text('title');
             $table->string('organization')->nullable();
             $table->text('description')->nullable();
