@@ -230,6 +230,7 @@
     "Add Jury Member": "Ajouter un membre du jury",
     "Switch to edit mode": "Passer en mode édition",
     "Edit project details and jury members": "Modifier les détails du projet et les membres du jury",
-    "Assigned by": "Affecté par"
+    "Assigned by": "Affecté par",
+    ":x projects created, and :y projects were ignored." : ":x projets créés, et :y projets ont été ignorés."
 
 }

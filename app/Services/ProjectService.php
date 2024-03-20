@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\InternshipAgreement;
-use App\Models\Jury;
 use App\Models\Professor;
 use App\Models\Project;
 use Filament\Notifications\Notification;
@@ -82,9 +81,13 @@ class ProjectService extends Facade
 
         Notification::make()
             ->title(
-                self::$createdProjects . ' projects created, ' .
-                // self::$overwrittenProjects . ' projects skipped, and ' .
-                self::$duplicateProjects . ' duplicate projects Found.'
+                __(
+                    ':x projects created, and :y projects were ignored.',
+                    [
+                        'x' => self::$createdProjects,
+                        'y' => self::$duplicateProjects,
+                    ]
+                )
             )
             ->success()
             ->send();
@@ -112,15 +115,15 @@ class ProjectService extends Facade
             if ($project->students->count() > 1) {
                 return $project;
             } else {
-                if (! $project->id_pfe) {
-                    $project->id_pfe = $internshipAgreement->id_pfe;
-                }
-                $project->title = $internshipAgreement->title;
-                $project->description = $internshipAgreement->description;
-                $project->organization = $internshipAgreement->organization_name;
-                $project->start_date = $internshipAgreement->starting_at;
-                $project->end_date = $internshipAgreement->ending_at;
-                $project->save();
+                // if (! $project->id_pfe) {
+                //     $project->id_pfe = $internshipAgreement->id_pfe;
+                // }
+                // $project->title = $internshipAgreement->title;
+                // $project->description = $internshipAgreement->description;
+                // $project->organization = $internshipAgreement->organization_name;
+                // $project->start_date = $internshipAgreement->starting_at;
+                // $project->end_date = $internshipAgreement->ending_at;
+                // $project->save();
                 // increment overwrittenProjects global variable
                 // self::$overwrittenProjects++;
                 self::$duplicateProjects++;
@@ -129,7 +132,7 @@ class ProjectService extends Facade
             }
         } else {
             $project = Project::create([
-                'id_pfe' => $internshipAgreement->id_pfe,
+                // 'id_pfe' => $internshipAgreement->id_pfe,
                 'title' => $internshipAgreement->title,
                 'description' => $internshipAgreement->description,
                 'organization' => $internshipAgreement->organization_name,
@@ -171,33 +174,6 @@ class ProjectService extends Facade
         Notification::make()
             ->title(self::$assignedProfessors . ' Professors imported from internship agreements and '
                 . self::$existingProfessors . ' Professors already assigned to the projects.')
-            ->success()
-            ->send();
-    }
-
-    public static function GenerateProjectsJury($record)
-    {
-        $supervisors = collect();
-        $projects = Project::all();
-        $projects->each(function ($project) use ($supervisors) {
-            if ($project->internship->int_adviser_name != null && $project->internship->int_adviser_name != 'NA') {
-                $supervisorName = $project->internship->int_adviser_name;
-                $supervisors = $supervisors->push($supervisorName);
-                $professor = Professor::where('name', 'like', '%' . $supervisorName . '%')->first();
-                $professors[] = $professor;
-                if ($professor != null) {
-                    if ($project->id_pfe == null) {
-                        $project->id_pfe = $project->id;
-                    }
-                    $jury = Jury::create([
-                        'project_id' => $project->id,
-                    ]);
-                    $professor->juries()->attach($jury, ['role' => 'supervisor']);
-                }
-            }
-        });
-        Notification::make()
-            ->title($supervisors . ' internships assigned to projects')
             ->success()
             ->send();
     }
