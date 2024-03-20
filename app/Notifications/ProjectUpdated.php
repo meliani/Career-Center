@@ -42,7 +42,7 @@ class ProjectUpdated extends Notification implements ShouldQueue
         return (new MailMessage)
             ->subject('Project modifié')
             ->greeting("Bonjour {$notifiable->first_name},")
-            ->line("Le projet portant le titre : **{$this->project->title}** a été modifié.")
+            ->line("Le projet (**{$this->project->id_pfe}**) portant le titre : **{$this->project->title}** a été modifié.")
             ->line("Pour plus d'informations, veuillez consulter le projet en cliquant sur le lien ci-dessous.")
             ->action('Consulter le projet', \App\Filament\Administration\Resources\ProjectResource::getUrl('edit', [$this->project->id]))
             ->line('---')
