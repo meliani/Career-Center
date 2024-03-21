@@ -48,12 +48,18 @@ class ProfessorsRelationManager extends RelationManager
                     ->label('Jury role')
                     ->disabled(fn () => auth()->user()->isAdministrator() === false)
                     ->options(Enums\JuryRole::class),
-                Tables\Columns\TextColumn::make('pivot.assigned_by.full_name')
+                Tables\Columns\TextColumn::make('pivot.CreatedBy.full_name')
+                    ->badge()
                     ->label('Assigned by'),
-
                 Tables\Columns\TextColumn::make('role')
                     ->label('Professor role in school')
                     ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isDirection()) === false),
+
+                Tables\Columns\TextColumn::make('pivot.ApprovedBy.full_name')
+                    ->label('Approved by the Administration')
+                    ->badge()
+                    ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isDirection()) === false),
+
             ])
             ->filters([
                 //
@@ -68,7 +74,6 @@ class ProfessorsRelationManager extends RelationManager
                         Forms\Components\Select::make('jury_role')->options(Enums\JuryRole::class)
                             ->required()
                             ->default(Enums\JuryRole::Reviewer),
-
                         // Forms\Components\Hidden::make('created_by')
                         //     ->default(auth()->user()->id),
 
@@ -78,6 +83,11 @@ class ProfessorsRelationManager extends RelationManager
                     ]),
             ])
             ->actions([
+                Tables\Actions\Action::make('approve')
+                    ->label(__('Approve'))
+                    ->requiresConfirmation()
+                    ->action(fn ($record) => $record->pivot->update(['created_by' => auth()->user()->id]))
+                    ->visible(fn () => auth()->user()->isAdministrator() || auth()->user()->isDirection()),
                 // Tables\Actions\EditAction::make(),
                 Tables\Actions\DetachAction::make()
                     ->disabled(fn () => auth()->user()->isAdministrator() === false),

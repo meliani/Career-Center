@@ -92,8 +92,8 @@ class ProfessorResource extends Core\BaseResource
                 //     ->maxLength(255),
                 Forms\Components\Toggle::make('active_status')
                     ->required(),
-                Forms\Components\FileUpload::make('avatar')
-                    ->default('avatar.png'),
+                // Forms\Components\FileUpload::make('avatar')
+                //     ->default('avatar.png'),
                 // Forms\Components\Toggle::make('dark_mode')
                 //     ->required(),
                 // Forms\Components\TextInput::make('messenger_color')
@@ -104,7 +104,7 @@ class ProfessorResource extends Core\BaseResource
     public static function table(Table $table): Table
     {
         return $table
-            ->defaultPaginationPageOption(20)
+            // ->defaultPaginationPageOption(20)
             ->striped()
             ->columns([
                 // Tables\Columns\TextColumn::make('title')
@@ -155,8 +155,7 @@ class ProfessorResource extends Core\BaseResource
                 Tables\Columns\TextColumn::make('assigned_program')
                     ->label(__('Program Coordinator Program'))
                     ->searchable(),
-                Tables\Columns\TextColumn::make('is_enabled')
-                    ->numeric()
+                Tables\Columns\ToggleColumn::make('is_enabled')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 // Tables\Columns\TextColumn::make('email_verified_at')
@@ -181,7 +180,6 @@ class ProfessorResource extends Core\BaseResource
                 //     ->searchable(),
             ])
             ->filters([
-                // filter by professors->hasProjects() : participating in projects
                 Tables\Filters\SelectFilter::make('has_projects')
                     ->options([
                         'yes' => 'Yes',

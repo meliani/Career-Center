@@ -50,7 +50,8 @@ class ProjectResource extends Core\BaseResource
     public static function getGloballySearchableAttributes(): array
     {
         return [
-            'title', 'organization',
+            'title',
+            'internship_agreements.organization_name',
             'students.first_name',
             'students.last_name',
             'internship_agreements.id_pfe',
@@ -74,12 +75,6 @@ class ProjectResource extends Core\BaseResource
                         Forms\Components\Textarea::make('title')
                             ->required()
                             ->maxLength(255),
-                        Forms\Components\Textarea::make('description')
-                            ->maxLength(65535)
-                            ->columnSpanFull(),
-
-                        Forms\Components\TextInput::make('organization')
-                            ->maxLength(255),
 
                         Forms\Components\DatePicker::make('start_date'),
                         Forms\Components\DatePicker::make('end_date'),
@@ -98,6 +93,7 @@ class ProjectResource extends Core\BaseResource
                 Tables\Columns\TextColumn::make('internship_agreements.id_pfe')
                     ->label('ID PFE')
                     ->sortable()
+                    ->sortableMany()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('students.full_name')
                     ->label('Student name')
@@ -107,10 +103,10 @@ class ProjectResource extends Core\BaseResource
                     ->sortableMany(),
                 Tables\Columns\TextColumn::make('students.program')
                     ->label('Program')
-                    ->searchable()
-                    ->sortable(),
+                    ->searchable()->sortableMany(),
                 Tables\Columns\TextColumn::make('internship_agreements.assigned_department')
                     ->label('Assigned department')
+                    // ->sortable(false)
                     ->sortableMany()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('professors.name')
@@ -154,9 +150,10 @@ class ProjectResource extends Core\BaseResource
                     )
                     ->dateTime(),
 
-                Tables\Columns\TextColumn::make('organization')
+                Tables\Columns\TextColumn::make('internship_agreements.organization_name')
+                    ->label('Organization')
                     ->searchable()
-                    ->sortable(),
+                    ->sortableMany(),
                 Tables\Columns\TextColumn::make('start_date')
                     ->label('Project start date')
                     ->date()

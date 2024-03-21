@@ -52,7 +52,12 @@ class ProfessorProject extends Pivot
 
     }
 
-    public function assigned_by()
+    public function ApprovedBy()
+    {
+        return $this->belongsTo(User::class, 'approved_by');
+    }
+
+    public function CreatedBy()
     {
         return $this->belongsTo(User::class, 'created_by');
     }

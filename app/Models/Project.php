@@ -32,14 +32,8 @@ class Project extends Core\BackendBaseModel
     {
         return [
             'title' => 'required|max:255',
-            'organization' => 'required|max:255',
-            'description' => 'required|max:65535',
             'start_date' => 'required|date',
             'end_date' => 'required|date',
-            'status' => 'required|in:' . implode(',', Enums\Status::getArray()),
-            'has_teammate' => 'required|boolean',
-            'teammate_status' => 'required|in:' . implode(',', Enums\TeammateStatus::getArray()),
-            'teammate_id' => 'required|exists:students,id',
         ];
     }
 
@@ -47,23 +41,18 @@ class Project extends Core\BackendBaseModel
         'title',
         'start_date',
         'end_date',
-        'status',
-        'has_teammate',
-        'teammate_status',
-        'teammate_id',
     ];
 
     protected $appends = [
         'id_pfe',
         'organization',
         'description',
+        'assigned_department',
     ];
 
     protected $casts = [
         'start_date' => 'date',
         'end_date' => 'date',
-        'teammate_status' => Enums\TeammateStatus::class,
-        'status' => Enums\Status::class,
     ];
 
     public function getIdPfeAttribute()
@@ -88,6 +77,17 @@ class Project extends Core\BackendBaseModel
         return $this->internship_agreements()->first()->description;
     }
 
+    public function getAssignedDepartmentAttribute()
+    {
+
+        if ($this->hasTeammate()) {
+
+            return $this->internship_agreements()->first()?->assigned_department . ' ' . __('&') . ' ' . $this->internship_agreements()->latest()->first()?->assigned_department;
+        } else {
+            return $this->internship_agreements()->first()->assigned_department;
+        }
+    }
+
     public function students()
     {
         return $this->belongsToMany(Student::class);
@@ -101,7 +101,7 @@ class Project extends Core\BackendBaseModel
     public function professors()
     {
         return $this->belongsToMany(Professor::class, 'professor_project')
-            ->withPivot('jury_role', 'created_by', 'updated_by')->withTimestamps()
+            ->withPivot('jury_role', 'created_by', 'updated_by', 'approved_by', 'is_president', 'votes')->withTimestamps()
             ->using(ProfessorProject::class);
 
     }
