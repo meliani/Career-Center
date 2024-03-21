@@ -134,8 +134,8 @@ class ProjectService extends Facade
             $project = Project::create([
                 // 'id_pfe' => $internshipAgreement->id_pfe,
                 'title' => $internshipAgreement->title,
-                'description' => $internshipAgreement->description,
-                'organization' => $internshipAgreement->organization_name,
+                // 'description' => $internshipAgreement->description,
+                // 'organization' => $internshipAgreement->organization_name,
                 'start_date' => $internshipAgreement->starting_at,
                 'end_date' => $internshipAgreement->ending_at,
             ]);
