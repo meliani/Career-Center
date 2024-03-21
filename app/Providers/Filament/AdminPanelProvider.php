@@ -49,7 +49,7 @@ class AdminPanelProvider extends PanelProvider
             // ->brandName('INPT Entreprises')
             ->login()
             ->databaseNotifications()
-            ->databaseNotificationsPolling('3s')
+            ->databaseNotificationsPolling('30s')
             ->brandLogo(asset('/svg/logo_entreprises.svg'))
             ->favicon(asset('/svg/logo_entreprises_round.svg'))
             ->darkModeBrandLogo(asset('/svg/logo_entreprises_white.svg'))
