@@ -81,6 +81,7 @@ class Project extends Core\BackendBaseModel
     {
 
         if ($this->hasTeammate()) {
+            return $this->internship_agreements()->first()->assigned_department;
 
             return $this->internship_agreements()->first()?->assigned_department . ' ' . __('&') . ' ' . $this->internship_agreements()->latest()->first()?->assigned_department;
         } else {
