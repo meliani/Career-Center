@@ -233,6 +233,9 @@
     "Assigned by": "Affecté par",
     ":x projects created, and :y projects were ignored." : ":x projets créés, et :y projets ont été ignorés.",
     "Approval done by": "Approbation effectuée par",
-    "Approve": "Approuver"
+    "Approve": "Approuver",
+    "Mass Notification Emails": "Emails de notification en masse",
+    "Write mass emails to students": "Ecrire emails en masse aux étudiants",
+    "Send customized generic mass emails to students": "Envoyer des emails génériques personnalisés en masse aux étudiants"
 
 }

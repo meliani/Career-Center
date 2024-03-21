@@ -246,7 +246,7 @@ class ProjectResource extends Core\BaseResource
                         ->requiresConfirmation()
                         ->outlined(),
                 ])
-                    ->label(__('Send Email'))
+                    ->label(__('Mass Notification Emails'))
                     ->dropdownWidth(FilamentEnums\MaxWidth::Large)
                     ->hidden(fn () => auth()->user()->isAdministrator() === false),
                 Tables\Actions\BulkActionGroup::make([
@@ -254,7 +254,9 @@ class ProjectResource extends Core\BaseResource
                 ])
                     ->label(__('edition'))
                     ->hidden(fn () => auth()->user()->isAdministrator() === false),
-                BulkAction\Email\SendGenericEmail::make('Send Email')
+                BulkAction\Email\SendGenericEmail::make('Send mass emails to students')
+                    ->tooltip(__('Send customized generic mass emails to students'))
+                    ->label(__('Write mass emails to students'))
                     ->outlined(),
 
             ]);

@@ -43,21 +43,22 @@ class ProfessorsRelationManager extends RelationManager
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('long_full_name')
+                    // ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
                     ->label('Full Name'),
-                Tables\Columns\SelectColumn::make('jury_role')
+                Tables\Columns\TextColumn::make('jury_role')
                     ->label('Jury role')
-                    ->disabled(fn () => auth()->user()->isAdministrator() === false)
-                    ->options(Enums\JuryRole::class),
+                    ->badge(),
                 Tables\Columns\TextColumn::make('pivot.CreatedBy.full_name')
-                    ->badge()
+                    // ->badge()
                     ->label('Assigned by'),
                 Tables\Columns\TextColumn::make('role')
                     ->label('Professor role in school')
+                    // ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
                     ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isDirection()) === false),
 
                 Tables\Columns\TextColumn::make('pivot.ApprovedBy.full_name')
                     ->label('Approval done by')
-                    ->badge()
+                    // ->badge()
                     ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isDirection()) === false),
 
             ])
