@@ -56,7 +56,7 @@ class ProfessorsRelationManager extends RelationManager
                     ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isDirection()) === false),
 
                 Tables\Columns\TextColumn::make('pivot.ApprovedBy.full_name')
-                    ->label('Approved by the Administration')
+                    ->label('Approval done by')
                     ->badge()
                     ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isDirection()) === false),
 
@@ -69,24 +69,19 @@ class ProfessorsRelationManager extends RelationManager
                 Tables\Actions\AttachAction::make()
                     ->preloadRecordSelect()
                     ->label(__('Add Jury Member'))
+                    ->color('primary')
                     ->form(fn (Tables\Actions\AttachAction $action): array => [
                         $action->getRecordSelect(),
                         Forms\Components\Select::make('jury_role')->options(Enums\JuryRole::class)
                             ->required()
                             ->default(Enums\JuryRole::Reviewer),
-                        // Forms\Components\Hidden::make('created_by')
-                        //     ->default(auth()->user()->id),
-
-                        // Forms\Components\TextInput::make('created_by')
-                        //     ->default(auth()->user()->id),
-
                     ]),
             ])
             ->actions([
                 Tables\Actions\Action::make('approve')
                     ->label(__('Approve'))
                     ->requiresConfirmation()
-                    ->action(fn ($record) => $record->pivot->update(['created_by' => auth()->user()->id]))
+                    ->action(fn ($record) => $record->pivot->update(['approved_by' => auth()->user()->id]))
                     ->visible(fn () => auth()->user()->isAdministrator() || auth()->user()->isDirection()),
                 // Tables\Actions\EditAction::make(),
                 Tables\Actions\DetachAction::make()

@@ -18,6 +18,8 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Parallax\FilamentComments\Actions\CommentsAction;
+use Parallax\FilamentComments\Infolists\Components\CommentsEntry;
 
 class ProjectResource extends Core\BaseResource
 {
@@ -285,9 +287,12 @@ class ProjectResource extends Core\BaseResource
         return $infolist
             ->schema([
                 Infolists\Components\Section::make(__('Project informations'))
+                    ->headerActions([
+                        // CommentsAction::make(),
+                    ])
+
                     ->columns(3)
                     ->schema([
-
                         Infolists\Components\Fieldset::make('Project informations')
                             ->schema([
                                 Infolists\Components\TextEntry::make('id_pfe')
@@ -338,6 +343,7 @@ class ProjectResource extends Core\BaseResource
                                     ]),
 
                             ]),
+
                         Infolists\Components\Fieldset::make('Entreprise supervisor')
                             ->schema([
                                 Infolists\Components\TextEntry::make('internship_agreements.encadrant_ext_nom')
@@ -348,7 +354,10 @@ class ProjectResource extends Core\BaseResource
                                         )->join(', ')
                                     )
                                     ->markdown(),
+
                             ]),
+                        CommentsEntry::make('Comments')
+                            ->columnSpanFull(),
                     ]),
 
             ]);
