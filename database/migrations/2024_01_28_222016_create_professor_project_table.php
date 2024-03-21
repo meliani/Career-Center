@@ -20,9 +20,10 @@ class CreateProfessorProjectTable extends Migration
             $table->foreignId('professor_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('project_id')->constrained('projects')->onDelete('cascade');
             $table->enum('jury_role', Enums\JuryRole::getArray());
-            $table->boolean('is_president')->default(false);
-            $table->boolean('created_by')->default(false);
-            $table->boolean('updated_by')->default(false);
+            $table->boolean('is_president')->constrained('users')->onDelete('cascade');
+            $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
+            $table->foreignId('updated_by')->constrained('users')->onDelete('cascade');
+            $table->foreignId('approved_by')->constrained('users')->onDelete('cascade');
             $table->timestamps();
             $table->primary(['professor_id', 'project_id']);
 

@@ -45,8 +45,6 @@ class Project extends Core\BackendBaseModel
 
     protected $fillable = [
         'title',
-        'organization',
-        'description',
         'start_date',
         'end_date',
         'status',
@@ -57,6 +55,8 @@ class Project extends Core\BackendBaseModel
 
     protected $appends = [
         'id_pfe',
+        'organization',
+        'description',
     ];
 
     protected $casts = [
@@ -75,6 +75,17 @@ class Project extends Core\BackendBaseModel
         } else {
             return $this->internship_agreements()->first()->id_pfe;
         }
+    }
+
+    public function getOrganizationAttribute()
+    {
+        return $this->internship_agreements()->first()->organization_name;
+
+    }
+
+    public function getDescriptionAttribute()
+    {
+        return $this->internship_agreements()->first()->description;
     }
 
     public function students()

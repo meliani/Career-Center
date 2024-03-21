@@ -23,9 +23,11 @@ class ProfessorProject extends Pivot
 
     protected $fillable = [
         'jury_role',
+        'votes',
         'is_president',
         'created_by',
         'updated_by',
+        'approved_by',
     ];
 
     protected static function booted(): void
