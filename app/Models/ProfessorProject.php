@@ -6,12 +6,9 @@ use App\Enums;
 use App\Notifications;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Facades\Notification;
-use Parallax\FilamentComments\Models\Traits\HasFilamentComments;
 
 class ProfessorProject extends Pivot
 {
-    use HasFilamentComments;
-
     protected static $settings = true;
 
     // public function __construct(?\App\Settings\NotificationSettings $settings = null)

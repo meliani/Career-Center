@@ -66,6 +66,7 @@ class ProfessorsRelationManager extends RelationManager
             ])
             ->headerActions([
                 // Tables\Actions\CreateAction::make(),
+
                 Tables\Actions\AttachAction::make()
                     ->preloadRecordSelect()
                     ->label(__('Add Jury Member'))
