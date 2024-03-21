@@ -3,6 +3,7 @@
 namespace App\Filament\Administration\Resources\ProjectResource\RelationManagers;
 
 use Filament\Forms;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
@@ -39,8 +40,10 @@ class InternshipAgreementsRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('title')
+            ->paginated(false)
+            ->recordTitleAttribute('title', 'student.full_name')
             ->columns([
+                Tables\Columns\TextColumn::make('id_pfe'),
                 Tables\Columns\TextColumn::make('title'),
                 Tables\Columns\TextColumn::make('student.full_name'),
             ])
@@ -48,7 +51,12 @@ class InternshipAgreementsRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\AssociateAction::make(),
+                Tables\Actions\AssociateAction::make()
+                    ->preloadRecordSelect()
+                    ->recordSelectSearchColumns(['title', 'id_pfe'])
+                    ->recordSelect(
+                        fn (Select $select) => $select->placeholder(__('Search by title or id_pfe...')),
+                    ),
             ])
             ->actions([
                 Tables\Actions\DissociateAction::make(),

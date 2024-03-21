@@ -13,6 +13,7 @@ use Filament\Forms\Form;
 use Filament\Infolists;
 use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Infolist;
+use Filament\Resources\RelationManagers\RelationGroup;
 use Filament\Support\Enums as FilamentEnums;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -268,8 +269,10 @@ class ProjectResource extends Core\BaseResource
     {
         return [
             RelationManagers\ProfessorsRelationManager::class,
-            RelationManagers\StudentsRelationManager::class,
-            RelationManagers\InternshipAgreementsRelationManager::class,
+            RelationGroup::make(__('Students and Internship Agreements'), [
+                RelationManagers\StudentsRelationManager::class,
+                RelationManagers\InternshipAgreementsRelationManager::class,
+            ]),
         ];
     }
 

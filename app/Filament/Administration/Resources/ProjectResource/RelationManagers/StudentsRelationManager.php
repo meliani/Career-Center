@@ -38,6 +38,7 @@ class StudentsRelationManager extends RelationManager
     {
         return $table
             ->recordTitleAttribute('full_name')
+            ->paginated(false)
             ->columns([
                 Tables\Columns\TextColumn::make('full_name'),
                 Tables\Columns\TextColumn::make('program'),
@@ -51,6 +52,7 @@ class StudentsRelationManager extends RelationManager
             ->headerActions([
                 // Tables\Actions\CreateAction::make(),
                 Tables\Actions\AttachAction::make()
+                    ->preloadRecordSelect()
                     ->hidden(fn () => auth()->user()->isAdministrator() === false),
                 // dettach student from existing project et detach his agreement from any project
                 // ->before(function (Model $ownerRecord) {

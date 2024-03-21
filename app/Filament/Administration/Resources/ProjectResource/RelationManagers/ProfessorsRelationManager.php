@@ -4,6 +4,7 @@ namespace App\Filament\Administration\Resources\ProjectResource\RelationManagers
 
 use App\Enums;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
@@ -40,7 +41,9 @@ class ProfessorsRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
+            ->heading(__('Jury Members'))
             ->recordTitleAttribute('name')
+            ->paginated(false)
             ->columns([
                 Tables\Columns\TextColumn::make('long_full_name')
                     // ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
@@ -49,7 +52,7 @@ class ProfessorsRelationManager extends RelationManager
                     ->label('Jury role')
                     ->badge(),
                 Tables\Columns\TextColumn::make('pivot.CreatedBy.full_name')
-                    // ->badge()
+                    ->badge()
                     ->label('Assigned by'),
                 Tables\Columns\TextColumn::make('role')
                     ->label('Professor role in school')
@@ -58,7 +61,9 @@ class ProfessorsRelationManager extends RelationManager
 
                 Tables\Columns\TextColumn::make('pivot.ApprovedBy.full_name')
                     ->label('Approval done by')
-                    // ->badge()
+                    ->placeholder(__('Not approved yet.'))
+                    // ->default(__('Not approved yet.'))
+                    ->badge()
                     ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isDirection()) === false),
 
             ])
@@ -70,6 +75,10 @@ class ProfessorsRelationManager extends RelationManager
 
                 Tables\Actions\AttachAction::make()
                     ->preloadRecordSelect()
+                    ->recordSelectSearchColumns(['name', 'department'])
+                    ->recordSelect(
+                        fn (Select $select) => $select->placeholder(__('Search by name or department...')),
+                    )
                     ->label(__('Add Jury Member'))
                     ->color('primary')
                     ->form(fn (Tables\Actions\AttachAction $action): array => [
