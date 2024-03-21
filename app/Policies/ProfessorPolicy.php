@@ -9,12 +9,12 @@ class ProfessorPolicy extends CorePolicy
 {
     public function viewAny(User $user): bool
     {
-        return $user->isAdministrator() || $user->isProgramCoordinator() || $user->isDepartmentHead() || $user->isDirection();
+        return $user->isAdministrator() || $user->isProgramCoordinator() || $user->isDepartmentHead() || $user->isDirection() || $user->isProfessor();
     }
 
     public function view(User $user, Professor $professor)
     {
-        return $user->isAdministrator() || $user->isProgramCoordinator() || $user->isDepartmentHead() || $user->isDirection();
+        return $user->isAdministrator() || $user->isProgramCoordinator() || $user->isDepartmentHead() || $user->isDirection() || $user->isProfessor();
     }
 
     public function update(User $user, Professor $professor)
