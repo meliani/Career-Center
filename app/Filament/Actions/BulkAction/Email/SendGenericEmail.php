@@ -61,13 +61,14 @@ class SendGenericEmail extends BulkAction
             RichEditor::make('emailBody'),
         ])
             ->action(function (array $data, $records): void {
+                $user = auth()->user();
                 foreach ($records as $record) {
                     if (method_exists($record, 'students')) {
                         foreach ($record->students as $student) {
                             if ($student->email_perso || $student->email) {
-                                dispatch(function () use ($student, $data) {
+                                dispatch(function () use ($student, $data, $user) {
                                     Mail::to([$student?->email_perso, $student?->email])
-                                        ->send(new GenericEmail($student, $data['emailSubject'], $data['emailBody']));
+                                        ->send(new GenericEmail($user, $data['emailSubject'], $data['emailBody']));
                                 });
                                 self::setSuccess(true);
                                 self::setEmailCount(self::getEmailCount() + 1);
@@ -75,9 +76,9 @@ class SendGenericEmail extends BulkAction
                         }
                     } elseif (method_exists($record, 'student')) {
                         if ($record->student->email_perso || $record->student->email) {
-                            dispatch(function () use ($record, $data) {
+                            dispatch(function () use ($record, $data, $user) {
                                 Mail::to([$record->student?->email_perso, $record->student?->email])
-                                    ->send(new GenericEmail($record->student, $data['emailSubject'], $data['emailBody']));
+                                    ->send(new GenericEmail($user, $data['emailSubject'], $data['emailBody']));
                             });
                             self::setSuccess(true);
                             self::setEmailCount(self::getEmailCount() + 1);
@@ -86,9 +87,9 @@ class SendGenericEmail extends BulkAction
                         // $classname = get_class($record);
                         // dd($classname, class_basename($record));
                         if ($record->email_perso || $record->email) {
-                            dispatch(function () use ($record, $data) {
+                            dispatch(function () use ($record, $data, $user) {
                                 Mail::to([$record?->email_perso, $record?->email])
-                                    ->send(new GenericEmail($record, $data['emailSubject'], $data['emailBody']));
+                                    ->send(new GenericEmail($user, $data['emailSubject'], $data['emailBody']));
                             });
                             self::setSuccess(true);
                             self::setEmailCount(self::getEmailCount() + 1);
@@ -98,7 +99,7 @@ class SendGenericEmail extends BulkAction
                     }
                 }
                 if (self::getSuccess()) {
-                    $user = auth()->user();
+
                     dispatch(function () use ($data, $user) {
                         Mail::to([$user->email])
                             ->send(new GenericEmail($user, __('Copy of email sent to your students') . ' : ' . $data['emailSubject'], $data['emailBody']));
