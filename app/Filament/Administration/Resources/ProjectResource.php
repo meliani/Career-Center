@@ -356,8 +356,8 @@ class ProjectResource extends Core\BaseResource
                                     ->markdown(),
 
                             ]),
-                        CommentsEntry::make('Comments')
-                            ->columnSpanFull(),
+                        // CommentsEntry::make('Comments')
+                        //     ->columnSpanFull(),
                     ]),
 
             ]);
