@@ -36,6 +36,7 @@
         "leandrocfe/filament-apex-charts": "^3.0",
         "nativephp/electron": "^0.4.0",
         "parallax/filament-comments": "^1.0",
+        "pxlrbt/filament-environment-indicator": "^2.0",
         "pxlrbt/filament-excel": "^2.3",
         "rabol/filament-logviewer": "^0.20.0",
         "rap2hpoutre/similar-text-finder": "^0.2.0",
@@ -49,6 +50,7 @@
         "z3d0x/filament-logger": "^0.6.2"
     },
     "require-dev": {
+        "andyabih/laravel-to-uml": "^1.0",
         "barryvdh/laravel-debugbar": "^3.12",
         "fakerphp/faker": "^1.9.1",
         "larastan/larastan": "^2.0",

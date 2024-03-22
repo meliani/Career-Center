@@ -41,6 +41,7 @@ class InternshipAgreementsRelationManager extends RelationManager
     {
         return $table
             ->paginated(false)
+            ->searchable(false)
             ->recordTitleAttribute('title', 'student.full_name')
             ->columns([
                 Tables\Columns\TextColumn::make('id_pfe'),

@@ -27,6 +27,7 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use LaraZeus\Bolt\BoltPlugin;
 use LaraZeus\Boredom\Enums\Variants;
 use Leandrocfe\FilamentApexCharts\FilamentApexChartsPlugin;
+use pxlrbt\FilamentEnvironmentIndicator\EnvironmentIndicatorPlugin;
 use Saade\FilamentFullCalendar\FilamentFullCalendarPlugin;
 
 class AdminPanelProvider extends PanelProvider
@@ -107,13 +108,15 @@ class AdminPanelProvider extends PanelProvider
                         ->gridLayoutButtonIcon('heroicon-o-squares-2x2'),
                     FilamentJobsMonitorPlugin::make(),
                     LightSwitchPlugin::make()->position(Alignment::BottomCenter),
+                    EnvironmentIndicatorPlugin::make()
+                        ->visible(fn () => auth()->user()->isAdministrator()),
                     // \LaraZeus\Boredom\BoringAvatarPlugin::make()
                     //     ->variant(Variants::BEAM)
                     //     ->size(60)
                     //     ->square()
                     //     ->colors(['0A0310', '49007E', 'FF005B', 'FF7D10', 'FFB238']),
                     SpatieLaravelTranslatablePlugin::make()->defaultLocales([config('app.locale')]),
-                    // BoltPlugin::make(),
+                    BoltPlugin::make(),
                 ]
             )
             // ->defaultAvatarProvider(

@@ -38,6 +38,7 @@ class StudentsRelationManager extends RelationManager
     {
         return $table
             ->recordTitleAttribute('full_name')
+            ->searchable(false)
             ->paginated(false)
             ->columns([
                 Tables\Columns\TextColumn::make('full_name'),

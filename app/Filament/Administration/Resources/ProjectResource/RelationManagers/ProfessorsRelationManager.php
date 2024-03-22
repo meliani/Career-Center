@@ -44,6 +44,7 @@ class ProfessorsRelationManager extends RelationManager
             ->heading(__('Jury Members'))
             ->recordTitleAttribute('name')
             ->paginated(false)
+            ->searchable(false)
             ->columns([
                 Tables\Columns\TextColumn::make('long_full_name')
                     // ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
