@@ -14,11 +14,11 @@ class Project extends Core\BackendBaseModel
     protected static function boot()
     {
         parent::boot();
+        static::addGlobalScope(new Scopes\ProjectScope());
     }
 
     protected static function booted(): void
     {
-        static::addGlobalScope(new Scopes\ProjectScope());
 
         static::updated(function ($project) {
             $admins = \App\Models\User::administrators();

@@ -15,6 +15,7 @@ use Filament\Infolists\Infolist;
 use Filament\Tables;
 use Filament\Tables\Actions\ImportAction;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 use Spatie\LaravelPdf\Facades\Pdf;
 
 use function Spatie\LaravelPdf\Support\pdf;
@@ -23,7 +24,7 @@ class InternshipAgreementResource extends Core\BaseResource
 {
     protected static ?string $model = InternshipAgreement::class;
 
-    protected static ?string $recordTitleAttribute = 'organization_name';
+    protected static ?string $recordTitleAttribute = 'title';
 
     protected static ?string $navigationIcon = 'heroicon-o-megaphone';
 
@@ -32,6 +33,11 @@ class InternshipAgreementResource extends Core\BaseResource
     protected static ?string $navigationBadgeTooltip = 'Announced internships';
 
     protected static ?string $navigationGroup = 'Students and projects';
+
+    public static function canView(Model $record): bool
+    {
+        return true;
+    }
 
     public static function getModelLabel(): string
     {
@@ -54,6 +60,7 @@ class InternshipAgreementResource extends Core\BaseResource
             'title',
             'organization_name',
             'student.first_name',
+            'student.last_name',
             'id_pfe',
         ];
     }

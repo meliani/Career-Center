@@ -128,9 +128,10 @@ class ProfessorResource extends Core\BaseResource
 
                     ->summarize([
                         Summarizers\Average::make()->numeric(
-                            decimalPlaces: 0,
+                            decimalPlaces: 1,
                         ),
-                        Summarizers\Range::make(),
+                        Summarizers\Range::make()
+                            ->label(__('Range')),
                         Summarizers\Sum::make(),
                     ])
                     ->label(__('Number of Projects Participations'))
