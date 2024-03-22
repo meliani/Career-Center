@@ -3,6 +3,7 @@
 namespace App\Filament\Administration\Resources\ProjectResource\RelationManagers;
 
 use App\Enums;
+use Filament;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
@@ -92,21 +93,27 @@ class ProfessorsRelationManager extends RelationManager
             ->actions([
                 Tables\Actions\Action::make('approve')
                     ->label(__('Approve'))
+                    ->tooltip(__('Approve this jury member (only for administrators and direction)'))
                     ->requiresConfirmation()
                     ->action(fn ($record) => $record->pivot->update(['approved_by' => auth()->user()->id]))
                     ->visible(fn () => auth()->user()->isAdministrator() || auth()->user()->isDirection()),
                 // Tables\Actions\EditAction::make(),
                 Tables\Actions\DetachAction::make()
+                    ->label('')
+                    ->icon('heroicon-o-trash')
+                    ->tooltip(__('Remove Jury Member'))
                     ->disabled(fn () => auth()->user()->isAdministrator() === false),
                 // Tables\Actions\DeleteAction::make(),
-            ])
+            ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DetachBulkAction::make()
+                        ->label(__('Remove Jury Members'))
                         ->hidden(fn () => auth()->user()->isAdministrator() === false),
 
                     // Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                ])
+                    ->dropdownWidth(Filament\Support\Enums\MaxWidth::ExtraSmall),
             ]);
     }
 }

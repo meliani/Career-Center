@@ -234,12 +234,20 @@
     ":x projects created, and :y projects were ignored." : ":x projets créés, et :y projets ont été ignorés.",
     "Approval done by": "Approbation effectuée par",
     "Approve": "Approuver",
+    "Approve this jury member (only for administrators and direction)": "Approuver ce membre du jury (uniquement pour les administrateurs et la direction)",
     "Mass Notification Emails": "Emails de notification en masse",
     "Write mass emails to students": "Ecrire emails en masse aux étudiants",
     "Send customized generic mass emails to students": "Envoyer des emails génériques personnalisés en masse aux étudiants",
     "Students and Internship Agreements": "Étudiants et Conventions de Stage",
     "Search by title or id_pfe...": "Rechercher par titre ou id_pfe...",
     "Not approved yet.": "Pas encore approuvé.",
-    "Jury Members": "Membres du jury"
+    "Jury Members": "Membres du jury",
+    "Jury member": "Membre du jury",
+    "Remove Jury Member": "Supprimer le membre du jury",
+    "Remove Jury Members": "Supprimer les membres du jury",
+    "Remove teammate": "Supprimer le binôme",
+    "Add Project Teammate": "Ajouter un binôme au projet"
+
+
 
 }

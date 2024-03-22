@@ -121,63 +121,53 @@ class StudentResource extends Core\BaseResource
                     ->formatStateUsing(function ($record) {
                         return $record->long_full_name;
                     })
-                    ->wrap()
-                    ->searchable(),
+                    ->wrap(),
                 Tables\Columns\TextColumn::make('email')
                     ->formatStateUsing(function ($record) {
                         return "{$record->email}, {$record->email_perso}";
                     })
-                    ->wrap()
-                    ->searchable(),
-
+                    ->wrap(),
+                Tables\Columns\TextColumn::make('program')
+                    // ->formatStateUsing(fn ($record) => $record->level->getLabel() . ',' . $record->program->getLabel())
+                    ->tooltip(fn ($record) => $record->level->getLabel() . ',' . $record->program->getDescription())
+                    ->badge(),
+                Tables\Columns\TextColumn::make('level')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->badge(),
                 // Tables\Columns\TextColumn::make('email_perso')
                 //     ->searchable(),
-                Tables\Columns\TextColumn::make('phone')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('phone'),
                 Tables\Columns\TextColumn::make('cv')
                     ->label('Curriculum vitae')
                     ->limit(20)
-                    ->url(fn (Student $record): ?string => $record?->cv, true)
-                    ->searchable(),
+                    ->url(fn (Student $record): ?string => $record?->cv, true),
                 Tables\Columns\TextColumn::make('lm')
                     ->label('Cover letter')
                     ->url(fn (Student $record): ?string => $record?->lm, true)
-                    ->limit(20)
-                    ->searchable(),
+                    ->limit(20),
                 Tables\Columns\TextColumn::make('photo')
                     ->url(fn (Student $record): ?string => $record?->photo, true)
-                    ->limit(20)
-                    ->searchable(),
+                    ->limit(20),
                 Tables\Columns\TextColumn::make('birth_date')
-                    ->date()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('level')
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('program')
-                    ->searchable(),
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->date(),
+
                 Tables\Columns\ToggleColumn::make('is_mobility')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->sortable(),
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('abroad_school')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->searchable(),
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('year.title')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->searchable(),
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\ToggleColumn::make('is_active')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->sortable(),
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('graduated_at')
                     ->toggleable(isToggledHiddenByDefault: true)
-                    ->date()
-                    ->sortable(),
+                    ->date(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
-                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
-                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([

@@ -195,7 +195,8 @@ class InternshipAgreementResource extends Core\BaseResource
                     Tables\Actions\DeleteBulkAction::make(),
                 ])->hidden(fn () => auth()->user()->isAdministrator() === false),
                 BulkAction\Email\SendGenericEmail::make('Send Email'),
-            ]);
+            ])
+            ->dropdownWidth(Filament\Support\Enums\MaxWidth::ExtraSmall);
 
     }
 

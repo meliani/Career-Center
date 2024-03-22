@@ -2,6 +2,7 @@
 
 namespace App\Filament\Administration\Resources\ProjectResource\RelationManagers;
 
+use Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -42,7 +43,9 @@ class StudentsRelationManager extends RelationManager
             ->paginated(false)
             ->columns([
                 Tables\Columns\TextColumn::make('full_name'),
-                Tables\Columns\TextColumn::make('program'),
+                Tables\Columns\TextColumn::make('program')
+                    ->tooltip(fn ($record) => $record->program->getDescription())
+                    ->badge(),
                 Tables\Columns\TextColumn::make('email'),
                 Tables\Columns\TextColumn::make('phone'),
             ])
@@ -54,6 +57,8 @@ class StudentsRelationManager extends RelationManager
                 // Tables\Actions\CreateAction::make(),
                 Tables\Actions\AttachAction::make()
                     ->preloadRecordSelect()
+                    ->label(__('Add Project Teammate'))
+                    ->color('primary')
                     ->hidden(fn () => auth()->user()->isAdministrator() === false),
                 // dettach student from existing project et detach his agreement from any project
                 // ->before(function (Model $ownerRecord) {
@@ -68,16 +73,20 @@ class StudentsRelationManager extends RelationManager
             ])
             ->actions([
                 Tables\Actions\DetachAction::make()
+                    ->label('')
+                    ->icon('heroicon-o-trash')
+                    ->tooltip(__('Remove teammate'))
                     ->hidden(fn () => auth()->user()->isAdministrator() === false),
                 // Tables\Actions\EditAction::make(),
                 // Tables\Actions\DeleteAction::make(),
-            ])
+            ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DetachBulkAction::make()
                         ->hidden(fn () => auth()->user()->isAdministrator() === false),
                     // Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                ])
+                    ->dropdownWidth(Filament\Support\Enums\MaxWidth::ExtraSmall),
             ]);
     }
 }
