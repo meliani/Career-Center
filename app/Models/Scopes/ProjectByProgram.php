@@ -13,24 +13,26 @@ class ProjectByProgram implements Scope
      */
     public function apply(Builder $builder, Model $model): void
     {
-        if (auth()->user()->isSuperAdministrator() || auth()->user()->isAdministrator()) {
-            return;
-        } elseif (auth()->user()->isProgramCoordinator()) {
-            $builder
-                ->whereHas('students', function ($q) {
-                    $q->where('program', '=', auth()->user()->assigned_program);
-                });
+        if (auth()->check()) {
+            if (auth()->user()->isSuperAdministrator() || auth()->user()->isAdministrator()) {
+                return;
+            } elseif (auth()->user()->isProgramCoordinator()) {
+                $builder
+                    ->whereHas('students', function ($q) {
+                        $q->where('program', '=', auth()->user()->assigned_program);
+                    });
 
-            return;
-        } elseif (auth()->user()->isDepartmentHead()) {
-            $builder
-                ->whereHas('students', function ($q) {
-                    $q->where('department', '=', auth()->user()->department);
-                });
+                return;
+            } elseif (auth()->user()->isDepartmentHead()) {
+                $builder
+                    ->whereHas('students', function ($q) {
+                        $q->where('department', '=', auth()->user()->department);
+                    });
 
-            return;
-        } else {
-            $builder->where('student_id', '=', auth()->user()->id);
+                return;
+            } else {
+                $builder->where('student_id', '=', auth()->user()->id);
+            }
         }
     }
 }
