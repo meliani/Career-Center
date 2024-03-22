@@ -116,7 +116,7 @@ class AdminPanelProvider extends PanelProvider
                     //     ->square()
                     //     ->colors(['0A0310', '49007E', 'FF005B', 'FF7D10', 'FFB238']),
                     SpatieLaravelTranslatablePlugin::make()->defaultLocales([config('app.locale')]),
-                    BoltPlugin::make(),
+                    // BoltPlugin::make(),
                 ]
             )
             // ->defaultAvatarProvider(
