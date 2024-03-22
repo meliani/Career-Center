@@ -82,7 +82,7 @@ class InternshipAgreementResource extends Core\BaseResource
                     ->label(__('Assigned department'))
                     ->collapsible(),
                 Tables\Grouping\Group::make('status')
-                    ->label(__('Status'))
+                    ->label(__('Internship Agreement Status'))
                     ->collapsible()
                     ->titlePrefixedWithLabel(false),
                 Tables\Grouping\Group::make('student.program')
@@ -156,7 +156,8 @@ class InternshipAgreementResource extends Core\BaseResource
                                 ->name('Internship Agreement.pdf')
                                 ->save('pdf from agreement.pdf')
                         ),
-                ])->hidden(fn () => env('APP_ENV') === 'production'),
+                ])->hidden(fn () => env('APP_ENV') === 'production')
+                    ->icon('heroicon-o-printer'),
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\ViewAction::make(),
@@ -181,8 +182,10 @@ class InternshipAgreementResource extends Core\BaseResource
                             ->disabled(fn ($record): bool => $record['validated_at'] !== null),
                         \App\Filament\Actions\Action\AssignDepartmentAction::make()
                             ->disabled(fn ($record): bool => $record['assigned_department'] !== null),
-                    ])->dropdown(false),
+                    ])
+                        ->dropdown(false),
                 ])
+                    ->dropdownWidth(Filament\Support\Enums\MaxWidth::ExtraSmall)
                     ->label('')
                     ->icon('heroicon-o-squares-plus')
                     ->size(Filament\Support\Enums\ActionSize::ExtraLarge)

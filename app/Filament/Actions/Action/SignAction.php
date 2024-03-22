@@ -25,7 +25,7 @@ class SignAction extends Action
         $static->configure()->action(function (array $data, InternshipAgreement $record): void {
             $record->withoutTimestamps(fn () => $record->sign());
         })
-            ->requiresConfirmation(fn () => 'Are you sure you want to mark this internship as Signed?')
+            ->requiresConfirmation(fn () => __('Are you sure you want to mark this internship as Signed?'))
             ->modalIconColor('success')
             ->modalIcon('heroicon-o-check')
             ->modalHeading('Sign internship agreement')
