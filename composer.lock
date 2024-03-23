@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "41a36f27fa93d591db5e6f6754bcb45e",
+    "content-hash": "effed3ed8816318e81317acaf141abbe",
     "packages": [
         {
             "name": "amendozaaguiar/filament-route-statistics",
@@ -4725,6 +4725,83 @@
                 "source": "https://github.com/jdavidbakr/mail-tracker/tree/7.15"
             },
             "time": "2024-02-27T21:11:45+00:00"
+        },
+        {
+            "name": "jibaymcs/filament-tour",
+            "version": "v3.1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/JibayMcs/filament-tour.git",
+                "reference": "3dc57d09f6844408aa4079deb91e2faac5ebbd1e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/JibayMcs/filament-tour/zipball/3dc57d09f6844408aa4079deb91e2faac5ebbd1e",
+                "reference": "3dc57d09f6844408aa4079deb91e2faac5ebbd1e",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.0",
+                "illuminate/contracts": "^10.0",
+                "php": "^8.1",
+                "spatie/laravel-package-tools": "^1.15.0"
+            },
+            "require-dev": {
+                "nunomaduro/collision": "^7.9",
+                "nunomaduro/larastan": "^2.0.1",
+                "orchestra/testbench": "^8.0",
+                "pestphp/pest": "^2.0",
+                "pestphp/pest-plugin-arch": "^2.0",
+                "pestphp/pest-plugin-laravel": "^2.0",
+                "phpstan/extension-installer": "^1.1",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-phpunit": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "JibayMcs\\FilamentTour\\FilamentTourServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "JibayMcs\\FilamentTour\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "JibayMcs",
+                    "email": "jb@ss2i-services.fr",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Bring the power of DriverJs to your Filament panels and start a tour !",
+            "homepage": "https://github.com/jibaymcs/filament-tour",
+            "keywords": [
+                "JibayMcs",
+                "driverjs",
+                "filament",
+                "filament-tour",
+                "filamentphp",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/jibaymcs/filament-tour/issues",
+                "source": "https://github.com/jibaymcs/filament-tour"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/JibayMcs",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-09-20T07:30:26+00:00"
         },
         {
             "name": "kelunik/certificate",
