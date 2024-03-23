@@ -2,6 +2,7 @@
 
 namespace App\Filament\Administration\Resources;
 
+use App\Enums;
 use App\Filament\Administration\Resources\TicketResource\Pages;
 use App\Models\Ticket;
 use Filament\Forms;
@@ -36,7 +37,9 @@ class TicketResource extends Resource
                     ]),
                 Forms\Components\Section::make('Ticket handling')
                     ->columns(2)
+                    ->visible(fn () => auth()->user()->role == Enums\Role::SuperAdministrator)
                     ->schema([
+                        Forms\Components\TextInput::make('user.name'),
                         Forms\Components\Select::make('status')
                             ->options([
                                 'Open' => 'Open',
@@ -68,8 +71,7 @@ class TicketResource extends Resource
                         Forms\Components\Textarea::make('response')
                             ->columnSpanFull(),
                         Forms\Components\TextInput::make('status'),
-                        Forms\Components\TextInput::make('user_id')
-                            ->numeric(),
+
                     ]),
 
             ]);
@@ -83,17 +85,24 @@ class TicketResource extends Resource
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('description'),
-                Tables\Columns\TextColumn::make('status'),
-                Tables\Columns\TextColumn::make('user_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('status')
+                    ->badge()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('assigned_to')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('closed_at')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('closed_reason'),
+                Tables\Columns\TextColumn::make('response'),
+                Tables\Columns\ColumnGroup::make('Ticket handling', [
+                    Tables\Columns\TextColumn::make('user.name')
+                        ->badge()
+                        ->sortable(),
+                    Tables\Columns\TextColumn::make('assignedTo.name')
+                        ->badge()
+                        ->sortable(),
+                    Tables\Columns\TextColumn::make('closed_at')
+                        ->dateTime()
+                        ->sortable(),
+                    Tables\Columns\TextColumn::make('closed_reason')
+                        ->badge()
+                        ->sortable(),
+                ]),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -117,7 +126,7 @@ class TicketResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
+                    // Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ]);

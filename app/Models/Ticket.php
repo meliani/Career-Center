@@ -22,6 +22,7 @@ class Ticket extends Model
     }
 
     protected $fillable = [
+        'user_id',
         'title',
         'description',
         'status',
@@ -29,7 +30,6 @@ class Ticket extends Model
         'assigned_to',
         'closed_at',
         'response',
-        'user_id',
     ];
 
     protected $casts = [
