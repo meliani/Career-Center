@@ -25,11 +25,16 @@ class Ticket extends Model
         'title',
         'description',
         'status',
-        // 'user_id',
+        'closed_reason',
+        'assigned_to',
+        'closed_at',
+        'response',
+        'user_id',
     ];
 
     protected $casts = [
         'status' => Enums\TicketStatus::class,
+        'closed_reason' => Enums\TicketClosedReason::class,
     ];
 
     public function user()
