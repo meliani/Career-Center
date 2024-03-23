@@ -1,0 +1,24 @@
+            - name: ssh-job
+  # You may pin to the exact commit or the version.
+  # uses: nekiro/ssh-job@e0d177751aced5bcaf110ce4d782a681e5e12856
+  uses: nekiro/ssh-job@v1.0.5
+  with:
+    # Target machine hostname or ip
+    host: carrieres.inpt.ac.ma
+    # Port to use while connecting
+    port: # default is 22
+    # Ssh private key used to connect to target machine
+    key: # optional
+    # Ssh user
+    user: # optional
+    # Ssh password
+    password: # optional
+    # Environment variables passed to the shell script
+    envs: # optional
+    # Environment variables that are ommited from passing to the shell
+    ignoredEnvs: # optional
+    # Bash commands ran on target machine
+    command: 
+    # Export all action options to shell script
+    exportActionOptions: # optional
+          
