@@ -2,9 +2,13 @@
 
 # What is that ?
 
-A platform
+A platform that helps students to find internships and jobs, and helps professors to manage their students and internships.
 
-In active development for a first release
+# How to install
+
+```bash
+git clone git@github.com:meliani/Career-Center.git
+```
 
 # Code quality
 
