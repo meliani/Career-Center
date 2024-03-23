@@ -33,6 +33,8 @@ class TicketResource extends Resource
                         Forms\Components\Textarea::make('description')
                             ->required()
                             ->columnSpanFull(),
+                        Forms\Components\SpatieTagsInput::make('tags')
+                            ->type('ticket-tags'),
 
                     ]),
                 Forms\Components\Section::make('Response')
@@ -87,6 +89,8 @@ class TicketResource extends Resource
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
                     ->sortable(),
+                Tables\Columns\SpatieTagsColumn::make('tags')
+                    ->searchable(false),
                 Tables\Columns\TextColumn::make('response'),
                 Tables\Columns\ColumnGroup::make('Ticket handling', [
                     Tables\Columns\TextColumn::make('user.name')

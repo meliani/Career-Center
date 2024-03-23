@@ -11,6 +11,7 @@ class Ticket extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    use \Spatie\Tags\HasTags;
 
     protected static function booted(): void
     {
@@ -36,6 +37,12 @@ class Ticket extends Model
         'status' => Enums\TicketStatus::class,
         'closed_reason' => Enums\TicketClosedReason::class,
     ];
+
+    public function closeTicket()
+    {
+        $this->status = 'Closed';
+        $this->closed_at = now();
+    }
 
     public function user()
     {
