@@ -35,43 +35,42 @@ class TicketResource extends Resource
                             ->columnSpanFull(),
 
                     ]),
-                Forms\Components\Section::make('Ticket handling')
-                    ->columns(2)
-                    ->visible(fn () => auth()->user()->role == Enums\Role::SuperAdministrator)
+                Forms\Components\Section::make('Response')
                     ->schema([
-                        Forms\Components\TextInput::make('user.name'),
-                        Forms\Components\Select::make('status')
+                        Forms\Components\ToggleButtons::make('status')
+                            ->inline()
+                            ->disabled()
                             ->options([
                                 'Open' => 'Open',
                                 'Closed' => 'Closed',
                                 'Pending' => 'Pending',
-                                'Resolved' => 'Resolved',
-                                'Unresolved' => 'Unresolved',
-                                '' => 'Undefined',
-                            ])
-                            ->required(),
-                        Forms\Components\Select::make('closed_reason')
+                            ]),
+                        Forms\Components\ToggleButtons::make('closed_reason')
+                            ->inline()
                             ->options([
                                 'Resolved' => 'Resolved',
                                 'Duplicate' => 'Duplicate',
                                 'Invalid' => 'Invalid',
                                 'Unrelated' => 'Unrelated',
                                 'unresolved' => 'Unresolved',
-                                '' => 'Undefined',
                             ]),
+                        Forms\Components\Textarea::make('response')
+                            ->columnSpanFull(),
+
+                    ]),
+                Forms\Components\Section::make('Ticket handling')
+                    ->columns(2)
+                    ->visible(fn () => auth()->user()->role == Enums\Role::SuperAdministrator)
+                    ->schema([
+                        Forms\Components\Select::make('user_id')
+                            ->relationship('user', 'name')
+                            ->disabled(),
+
                         Forms\Components\Select::make('assigned_to')
                             ->relationship('assignedTo', 'name')
                             ->nullable(),
                         Forms\Components\DateTimePicker::make('closed_at')
                             ->nullable(),
-                    ]),
-                Forms\Components\Section::make('Response')
-                    ->schema([
-
-                        Forms\Components\Textarea::make('response')
-                            ->columnSpanFull(),
-                        Forms\Components\TextInput::make('status'),
-
                     ]),
 
             ]);
