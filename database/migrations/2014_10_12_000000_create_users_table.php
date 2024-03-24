@@ -28,6 +28,7 @@ return new class extends Migration
             $table->integer('is_enabled')->default('0');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('avatar_url')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

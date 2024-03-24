@@ -25,6 +25,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Jeffgreco13\FilamentBreezy\BreezyCore;
 use JibayMcs\FilamentTour\FilamentTourPlugin;
 use LaraZeus\Bolt\BoltPlugin;
 use LaraZeus\Boredom\Enums\Variants;
@@ -45,13 +46,13 @@ class AdminPanelProvider extends PanelProvider
             // ->sidebarFullyCollapsibleOnDesktop()
             ->sidebarCollapsibleOnDesktop()
             ->passwordReset()
-            ->profile(isSimple: true)
+            ->profile() //isSimple: true)
             ->spa()
             ->maxContentWidth(MaxWidth::Full)
             ->default()
             ->id('Administration')
             ->path('backend')
-            // ->brandName('INPT Entreprises')
+            ->brandName(__('Career Center'))
             ->login()
             ->databaseNotifications()
             ->databaseNotificationsPolling('30s')
@@ -89,6 +90,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+                // 'auth:sanctum',
             ])
             ->resources([
                 config('filament-logger.activity_resource'),
@@ -126,6 +128,19 @@ class AdminPanelProvider extends PanelProvider
                     SpotlightPlugin::make(),
                     FilamentErrorMailerPlugin::make(),
                     FilamentPeekPlugin::make(),
+                    BreezyCore::make()
+                        ->myProfile(
+                            shouldRegisterUserMenu: true, // Sets the 'account' link in the panel User Menu (default = true)
+                            shouldRegisterNavigation: false, // Adds a main navigation item for the My Profile page (default = false)
+                            navigationGroup: 'Settings', // Sets the navigation group for the My Profile page (default = null)
+                            hasAvatars: true, // Enables the avatar upload form component (default = false)
+                            slug: 'my-profile' // Sets the slug for the profile page (default = 'my-profile')
+                        )
+                        ->enableTwoFactorAuthentication()
+                        ->avatarUploadComponent(fn ($fileUpload) => $fileUpload->disableLabel())
+                        ->enableSanctumTokens(
+                            permissions: ['view'] // optional, customize the permissions (default = ["create", "view", "update", "delete"])
+                        ),
 
                 ]
             )

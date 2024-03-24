@@ -5,21 +5,22 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Enums;
 use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasAvatar;
 use Filament\Models\Contracts\HasName;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
+use Jeffgreco13\FilamentBreezy\Traits\TwoFactorAuthenticatable;
 use Laravel\Sanctum\HasApiTokens;
-use LaraZeus\Boredom\Concerns\HasBoringAvatar;
 
-class User extends Authenticatable implements FilamentUser, HasName
+class User extends Authenticatable implements FilamentUser, HasAvatar, HasName
 {
     use HasApiTokens;
-
-    // use HasBoringAvatar;
     use HasFactory;
     use Notifiable;
+    use TwoFactorAuthenticatable;
 
     /**
      * The attributes that are mass assignable.
@@ -48,6 +49,7 @@ class User extends Authenticatable implements FilamentUser, HasName
         'password',
         'remember_token',
         'active_status',
+        'avatar_url',
         'avatar',
         'dark_mode',
         'messenger_color',
@@ -83,6 +85,11 @@ class User extends Authenticatable implements FilamentUser, HasName
         'long_full_name',
         'full_name',
     ];
+
+    public function getFilamentAvatarUrl(): ?string
+    {
+        return $this->avatar_url ? Storage::url($this->avatar_url) : null;
+    }
 
     // add scoop for administrators role
     public function scopeAdministrators($query)
