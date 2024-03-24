@@ -16,6 +16,7 @@ use Filament\SpatieLaravelTranslatablePlugin;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\MaxWidth;
 use Filament\Widgets;
+use Hugomyb\FilamentErrorMailer\FilamentErrorMailerPlugin;
 use Hydrat\TableLayoutToggle\TableLayoutTogglePlugin;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -28,7 +29,9 @@ use JibayMcs\FilamentTour\FilamentTourPlugin;
 use LaraZeus\Bolt\BoltPlugin;
 use LaraZeus\Boredom\Enums\Variants;
 use Leandrocfe\FilamentApexCharts\FilamentApexChartsPlugin;
+use Pboivin\FilamentPeek\FilamentPeekPlugin;
 use pxlrbt\FilamentEnvironmentIndicator\EnvironmentIndicatorPlugin;
+use pxlrbt\FilamentSpotlight\SpotlightPlugin;
 use Saade\FilamentFullCalendar\FilamentFullCalendarPlugin;
 
 class AdminPanelProvider extends PanelProvider
@@ -120,6 +123,10 @@ class AdminPanelProvider extends PanelProvider
                     // BoltPlugin::make(),
                     // FilamentTourPlugin::make()
                     //     ->onlyVisibleOnce(true),
+                    SpotlightPlugin::make(),
+                    FilamentErrorMailerPlugin::make(),
+                    FilamentPeekPlugin::make(),
+
                 ]
             )
             // ->defaultAvatarProvider(
@@ -132,6 +139,7 @@ class AdminPanelProvider extends PanelProvider
                 'Plannings',
                 'Entreprises',
                 'Planification',
+                'Support',
                 'Emails',
                 'Settings',
                 'Paramètres',

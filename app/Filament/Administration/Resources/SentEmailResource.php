@@ -24,7 +24,11 @@ class SentEmailResource extends Core\BaseResource
 
     public static function canViewAny(): bool
     {
-        return auth()->user()->isAdministrator();
+        if (auth()->check()) {
+            return auth()->user()->isAdministrator();
+        }
+
+        return false;
     }
 
     public static function getnavigationGroup(): string

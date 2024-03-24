@@ -4,20 +4,40 @@ namespace App\Filament\Administration\Resources;
 
 use App\Enums;
 use App\Filament\Administration\Resources\TicketResource\Pages;
+use App\Filament\Core;
 use App\Models\Ticket;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class TicketResource extends Resource
+class TicketResource extends Core\BaseResource
 {
     protected static ?string $model = Ticket::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $modelLabel = 'Support Ticket';
+
+    protected static ?string $pluralModelLabel = 'Support Tickets';
+
+    protected static ?string $navigationIcon = 'heroicon-o-lifebuoy';
+
+    protected static ?string $title = 'Support Tickets';
+
+    protected static ?string $navigationGroup = 'Support';
+
+    protected static ?int $sort = 9;
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
+    public static function getnavigationGroup(): string
+    {
+        return __(self::$navigationGroup);
+    }
 
     public static function form(Form $form): Form
     {
@@ -81,7 +101,7 @@ class TicketResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->description(__('Created tickets will be considered as a knowledge base for the future, And will be readable by all collegues'))
+            ->description(__('Created tickets will be considered as a knowledge base in the future, And will be readable by all collegues.'))
             ->columns([
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),

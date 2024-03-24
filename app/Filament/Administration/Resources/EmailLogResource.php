@@ -26,11 +26,15 @@ class EmailLogResource extends EmailResource
 
     public static function canAccess(): bool
     {
-        return auth()->user()->isAdministrator();
+        if (auth()->check()) {
+            return auth()->user()->isAdministrator();
+        }
+
+        return false;
     }
 
     public static function canViewAny(): bool
     {
-        return auth()->user()->isAdministrator();
+        return self::canAccess();
     }
 }

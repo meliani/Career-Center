@@ -14,7 +14,7 @@ class SentEmailUrlClickedResource extends Core\BaseResource
 {
     protected static ?string $model = SentEmailUrlClicked::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-envelope-open';
 
     protected static ?string $navigationGroup = 'Emails';
 
@@ -24,7 +24,11 @@ class SentEmailUrlClickedResource extends Core\BaseResource
 
     public static function canViewAny(): bool
     {
-        return auth()->user()->isAdministrator();
+        if (auth()->check()) {
+            return auth()->user()->isAdministrator();
+        }
+
+        return false;
     }
 
     public static function getnavigationGroup(): string

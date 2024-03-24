@@ -10,6 +10,7 @@
     "require": {
         "php": "^8.2",
         "amendozaaguiar/filament-route-statistics": "^2.5",
+        "awcodes/filament-quick-create": "^3.3",
         "awcodes/light-switch": "^1.0",
         "bezhansalleh/filament-language-switch": "^3.0",
         "bilfeldt/laravel-route-statistics": "^3.1",
@@ -26,6 +27,7 @@
         "filament/widgets": "^3.1",
         "flowframe/laravel-trend": "^0.1.5",
         "guzzlehttp/guzzle": "^7.2",
+        "hugomyb/filament-error-mailer": "^3.1",
         "hydrat/filament-table-layout-toggle": "^1.0",
         "jdavidbakr/mail-tracker": "^7.14",
         "jibaymcs/filament-tour": "^3.1",
@@ -37,8 +39,10 @@
         "leandrocfe/filament-apex-charts": "^3.0",
         "nativephp/electron": "^0.4.0",
         "parallax/filament-comments": "^1.0",
+        "pboivin/filament-peek": "^2.2",
         "pxlrbt/filament-environment-indicator": "^2.0",
         "pxlrbt/filament-excel": "^2.3",
+        "pxlrbt/filament-spotlight": "^1.2",
         "rabol/filament-logviewer": "^0.20.0",
         "rap2hpoutre/similar-text-finder": "^0.2.0",
         "rickdbcn/filament-email": "^1.0",
@@ -48,6 +52,7 @@
         "spatie/laravel-pdf": "^1.4",
         "spatie/period": "^2.4",
         "stechstudio/filament-impersonate": "^3.5",
+        "swisnl/filament-backgrounds": "^1.1",
         "z3d0x/filament-logger": "^0.6.2"
     },
     "require-dev": {
