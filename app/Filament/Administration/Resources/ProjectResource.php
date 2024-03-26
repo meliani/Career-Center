@@ -169,6 +169,59 @@ class ProjectResource extends Core\BaseResource
                     ->limit(90)
                     ->searchable()
                     ->sortable(),
+                /* parrain_fonction
+                    parrain_tel
+                    parrain_mail
+                    encadrant_ext_fonction
+                    encadrant_ext_tel
+                    encadrant_ext_mail */
+                // group of columns
+
+                Tables\Columns\ColumnGroup::make(__('Entreprise Contacts'))
+                    ->columns([
+                        Tables\Columns\TextColumn::make('internship_agreements.parrain_nom')
+                            ->label('Nom Parrain')
+                            ->searchable()
+                            ->sortable(),
+                        Tables\Columns\TextColumn::make('internship_agreements.parrain_prenom')
+                            ->label('Prenom Parrain')
+                            ->searchable()
+                            ->sortable(),
+
+                        Tables\Columns\TextColumn::make('internship_agreements.parrain_fonction')
+                            ->label('Fonction Parrain')
+                            ->searchable()
+                            ->sortable(),
+                        Tables\Columns\TextColumn::make('internship_agreements.parrain_tel')
+                            ->label('Tel Parrain')
+                            ->searchable()
+                            ->sortable(),
+                        Tables\Columns\TextColumn::make('internship_agreements.parrain_mail')
+                            ->label('Mail Parrain')
+                            ->searchable()
+                            ->sortable(),
+                        Tables\Columns\TextColumn::make('internship_agreements.encadrant_ext_nom')
+                            ->label('Nom Encadrant Externe')
+                            ->searchable()
+                            ->sortable(),
+                        Tables\Columns\TextColumn::make('internship_agreements.encadrant_ext_prenom')
+                            ->label('Prenom Encadrant Externe')
+                            ->searchable()
+                            ->sortable(),
+                        Tables\Columns\TextColumn::make('internship_agreements.encadrant_ext_fonction')
+                            ->label('Fonction Encadrant Externe')
+                            ->searchable()
+                            ->sortable(),
+                        Tables\Columns\TextColumn::make('internship_agreements.encadrant_ext_tel')
+                            ->label('Tel Encadrant Externe')
+                            ->searchable()
+                            ->sortable(),
+                        Tables\Columns\TextColumn::make('internship_agreements.encadrant_ext_mail')
+                            ->label('Mail Encadrant Externe')
+                            ->searchable()
+                            ->sortable(),
+                    ]),
+
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
