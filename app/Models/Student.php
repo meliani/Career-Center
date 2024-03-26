@@ -71,7 +71,8 @@ class Student extends BackendBaseModel
     public function routeNotificationForMail(): array | string
     {
         // Return email address only...
-        return [$this->email, $this->email_perso];
+        return $this->email;
+        // return [$this->email, $this->email_perso];
 
         // Return email address and name...
         // return [$this->email_address => $this->full_name];
