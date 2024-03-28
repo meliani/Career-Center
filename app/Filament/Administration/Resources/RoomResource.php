@@ -21,7 +21,7 @@ class RoomResource extends Resource
 
     protected static string $title = 'Rooms';
 
-    protected static ?string $navigationGroup = 'Planning';
+    protected static ?string $navigationGroup = 'Settings';
 
     protected static ?string $navigationLabel = 'Rooms';
 
