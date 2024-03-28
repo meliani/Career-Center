@@ -60,32 +60,32 @@ class Project extends Core\BackendBaseModel
         if ($this->hasTeammate()) {
             // dd($this->internship_agreements()->first()->id_pfe, $this->internship_agreements()->latest()->first()->id_pfe);
 
-            return $this->internship_agreements()->first()->id_pfe . ' ' . __('&') . ' ' . $this->internship_agreements()->latest()->first()->id_pfe;
+            return ($this->internship_agreements()->first() ? $this->internship_agreements()->first()->id_pfe : 'Undefined ID') . ' ' . __('&') . ' ' . ($this->internship_agreements()->latest()->first() ? $this->internship_agreements()->latest()->first()->id_pfe : 'Undefined ID');
         } else {
-            return $this->internship_agreements()->first()->id_pfe;
+            return $this->internship_agreements()->first() ? $this->internship_agreements()->first()->id_pfe : 'Undefined ID';
         }
     }
 
     public function getOrganizationAttribute()
     {
-        return $this->internship_agreements()->first()->organization_name;
+        return $this->internship_agreements()->first() ? $this->internship_agreements()->first()->organization_name : 'Undefined Organization';
 
     }
 
     public function getDescriptionAttribute()
     {
-        return $this->internship_agreements()->first()->description;
+        return $this->internship_agreements()->first() ? $this->internship_agreements()->first()->description : 'Undefined Internship';
     }
 
     public function getAssignedDepartmentAttribute()
     {
 
         if ($this->hasTeammate()) {
-            return $this->internship_agreements()->first()->assigned_department;
+            return $this->internship_agreements()->first()?->assigned_department;
 
             return $this->internship_agreements()->first()?->assigned_department . ' ' . __('&') . ' ' . $this->internship_agreements()->latest()->first()?->assigned_department;
         } else {
-            return $this->internship_agreements()->first()->assigned_department;
+            return $this->internship_agreements()->first()?->assigned_department;
         }
     }
 
