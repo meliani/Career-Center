@@ -16,6 +16,10 @@ class TimetableResource extends Resource
 
     protected static ?string $title = 'Defense Timetable';
 
+    protected static ?string $modelLabel = 'Defense Timetable';
+
+    protected static ?string $pluralModelLabel = 'Defense Timetables';
+
     protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
 
     protected static ?int $navigationSort = 10;
