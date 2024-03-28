@@ -7,7 +7,6 @@ use App\Filament\Administration\Resources;
 use Filament;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Gate;
 
 class InternshipAgreement extends Core\BackendBaseModel
@@ -200,13 +199,13 @@ class InternshipAgreement extends Core\BackendBaseModel
             $this->status = Enums\Status::Validated;
             // $this->department =$department;
             $this->save();
-            Notification::make()
+            Filament\Notifications\Notification::make()
                 ->title('Saved successfully')
                 ->success()
                 ->send();
         } catch (AuthorizationException $e) {
 
-            Notification::make()
+            Filament\Notifications\Notification::make()
                 ->title('Sorry You must be a Program Coordinator.')
                 ->danger()
                 ->send();
@@ -224,13 +223,13 @@ class InternshipAgreement extends Core\BackendBaseModel
             $this->signed_at = now();
             $this->status = Enums\Status::Signed;
             $this->save();
-            Notification::make()
+            Filament\Notifications\Notification::make()
                 ->title('Signed successfully')
                 ->success()
                 ->send();
         } catch (AuthorizationException $e) {
 
-            Notification::make()
+            Filament\Notifications\Notification::make()
                 ->title('Sorry You must be an Administrator.')
                 ->danger()
                 ->send();
@@ -248,13 +247,13 @@ class InternshipAgreement extends Core\BackendBaseModel
             $this->received_at = now();
             $this->status = Enums\Status::Completed;
             $this->save();
-            Notification::make()
+            Filament\Notifications\Notification::make()
                 ->title('Achieved successfully')
                 ->success()
                 ->send();
         } catch (AuthorizationException $e) {
 
-            Notification::make()
+            Filament\Notifications\Notification::make()
                 ->title('Sorry You must be an Administrator.')
                 ->danger()
                 ->send();
@@ -271,13 +270,13 @@ class InternshipAgreement extends Core\BackendBaseModel
             }
             $this->assigned_department = $department;
             $this->save();
-            Notification::make()
+            Filament\Notifications\Notification::make()
                 ->title('Assigned successfully')
                 ->success()
                 ->send();
         } catch (AuthorizationException $e) {
 
-            Notification::make()
+            Filament\Notifications\Notification::make()
                 ->title('Sorry You must be a Program Coordinator.')
                 ->danger()
                 ->send();
@@ -294,13 +293,13 @@ class InternshipAgreement extends Core\BackendBaseModel
             }
             $this->status = $status;
             $this->save();
-            Notification::make()
+            Filament\Notifications\Notification::make()
                 ->title('Status changed successfully')
                 ->success()
                 ->send();
         } catch (AuthorizationException $e) {
 
-            Notification::make()
+            Filament\Notifications\Notification::make()
                 ->title('Sorry You must be a Program Coordinator.')
                 ->danger()
                 ->send();
