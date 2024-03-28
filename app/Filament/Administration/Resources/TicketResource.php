@@ -105,13 +105,15 @@ class TicketResource extends Core\BaseResource
             ->columns([
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('description'),
+                Tables\Columns\TextColumn::make('description')
+                    ->html(),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
                     ->sortable(),
                 Tables\Columns\SpatieTagsColumn::make('tags')
                     ->searchable(false),
-                Tables\Columns\TextColumn::make('response'),
+                Tables\Columns\TextColumn::make('response')
+                    ->html(),
                 Tables\Columns\ColumnGroup::make('Ticket handling', [
                     Tables\Columns\TextColumn::make('user.name')
                         ->badge()
