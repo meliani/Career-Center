@@ -14,7 +14,7 @@ class SentEmailUrlClickedResource extends Core\BaseResource
 {
     protected static ?string $model = SentEmailUrlClicked::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-envelope-open';
+    protected static ?string $navigationIcon = 'heroicon-o-cursor-arrow-ripple';
 
     protected static ?string $navigationGroup = 'Emails';
 

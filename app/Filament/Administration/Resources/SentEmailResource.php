@@ -14,7 +14,7 @@ class SentEmailResource extends Core\BaseResource
 {
     protected static ?string $model = SentEmail::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-envelope-open';
 
     protected static ?string $navigationGroup = 'Emails';
 
