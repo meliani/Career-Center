@@ -50,7 +50,7 @@ class TicketResource extends Core\BaseResource
                         Forms\Components\TextInput::make('title')
                             ->required()
                             ->maxLength(255),
-                        Forms\Components\Textarea::make('description')
+                        Forms\Components\RichEditor::make('description')
                             ->required()
                             ->columnSpanFull(),
                         Forms\Components\SpatieTagsInput::make('tags')
@@ -76,7 +76,7 @@ class TicketResource extends Core\BaseResource
                                 'Unrelated' => 'Unrelated',
                                 'unresolved' => 'Unresolved',
                             ]),
-                        Forms\Components\Textarea::make('response')
+                        Forms\Components\RichEditor::make('response')
                             ->columnSpanFull(),
 
                     ]),
