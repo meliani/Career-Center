@@ -3,14 +3,14 @@
 namespace App\Filament\Administration\Resources;
 
 use App\Filament\Administration\Resources\TimetableResource\Pages;
+use App\Filament\Core;
 use App\Models\Timetable;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class TimetableResource extends Resource
+class TimetableResource extends Core\BaseResource
 {
     protected static ?string $model = Timetable::class;
 
@@ -212,8 +212,8 @@ class TimetableResource extends Resource
     {
         return [
             'index' => Pages\ListTimetables::route('/'),
-            'create' => Pages\CreateTimetable::route('/create'),
-            'edit' => Pages\EditTimetable::route('/{record}/edit'),
+            // 'create' => Pages\CreateTimetable::route('/create'),
+            // 'edit' => Pages\EditTimetable::route('/{record}/edit'),
         ];
     }
 }
