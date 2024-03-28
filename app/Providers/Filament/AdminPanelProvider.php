@@ -112,7 +112,7 @@ class AdminPanelProvider extends PanelProvider
                         ->displayToggleAction() // used to display the toogle button automatically, on the desired filament hook (defaults to table bar)
                         ->listLayoutButtonIcon('heroicon-o-list-bullet')
                         ->gridLayoutButtonIcon('heroicon-o-squares-2x2'),
-                    FilamentJobsMonitorPlugin::make(),
+                    // FilamentJobsMonitorPlugin::make(),
                     LightSwitchPlugin::make()->position(Alignment::BottomCenter),
                     EnvironmentIndicatorPlugin::make()
                         ->visible(fn () => auth()->user()?->isAdministrator()),
