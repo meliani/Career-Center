@@ -20,7 +20,7 @@ class TimetableResource extends Resource
 
     protected static ?string $navigationGroup = 'Planning';
 
-    protected static ?string $navigationLabel = 'Timetables';
+    protected static ?string $navigationLabel = 'Defense Timetable';
 
     public static function getNavigationLabel(): string
     {
