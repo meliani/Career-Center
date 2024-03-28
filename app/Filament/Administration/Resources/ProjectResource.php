@@ -76,11 +76,13 @@ class ProjectResource extends Core\BaseResource
                 Forms\Components\Section::make('Project informations')
                     ->schema([
                         Forms\Components\Textarea::make('title')
+                            ->disabled(fn () => auth()->user()->isAdministrator() === false)
                             ->required()
                             ->maxLength(255),
-
-                        Forms\Components\DatePicker::make('start_date'),
-                        Forms\Components\DatePicker::make('end_date'),
+                        Forms\Components\DatePicker::make('start_date')
+                            ->disabled(fn () => auth()->user()->isAdministrator() === false),
+                        Forms\Components\DatePicker::make('end_date')
+                            ->disabled(fn () => auth()->user()->isAdministrator() === false),
                     ])
                     ->collapsible()
                     ->columns(2),
