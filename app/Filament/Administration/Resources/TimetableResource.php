@@ -14,7 +14,7 @@ class TimetableResource extends Resource
 {
     protected static ?string $model = Timetable::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
 
     protected static ?int $navigationSort = 10;
 

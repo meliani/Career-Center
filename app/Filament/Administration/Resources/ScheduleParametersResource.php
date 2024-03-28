@@ -23,7 +23,7 @@ class ScheduleParametersResource extends Resource
     protected static ?string $pluralModelLabel = 'Schedules parameters';
 
     // protected static ?string $recordTitleAttribute = 'schedule_starting_at';
-    protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
+    protected static ?string $navigationIcon = 'heroicon-o-calendar';
 
     protected static ?int $sort = 8;
 
@@ -45,7 +45,7 @@ class ScheduleParametersResource extends Resource
 
     public static function getnavigationGroup(): string
     {
-        return __('Planning');
+        return __('Settings');
     }
 
     public static function form(Form $form): Form
