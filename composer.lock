@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "701b6c3665a91f27185d1787d8770cfe",
+    "content-hash": "2f313ace918056496e096fc76ca3ea83",
     "packages": [
         {
             "name": "amendozaaguiar/filament-route-statistics",
@@ -4683,79 +4683,6 @@
                 }
             ],
             "time": "2023-12-03T19:50:20+00:00"
-        },
-        {
-            "name": "hugomyb/filament-error-mailer",
-            "version": "v3.1.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/hugomayo7/filament-error-mailer.git",
-                "reference": "595a3236d9f6279abb333f127e51dbbf1d53b03c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/hugomayo7/filament-error-mailer/zipball/595a3236d9f6279abb333f127e51dbbf1d53b03c",
-                "reference": "595a3236d9f6279abb333f127e51dbbf1d53b03c",
-                "shasum": ""
-            },
-            "require": {
-                "filament/filament": "^3.0",
-                "php": "^8.1",
-                "spatie/laravel-package-tools": "^1.15.0"
-            },
-            "require-dev": {
-                "nunomaduro/collision": "^7.9",
-                "orchestra/testbench": "^8.0",
-                "pestphp/pest": "^2.1",
-                "pestphp/pest-plugin-arch": "^2.0",
-                "pestphp/pest-plugin-laravel": "^2.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Hugomyb\\FilamentErrorMailer\\FilamentErrorMailerServiceProvider"
-                    ],
-                    "aliases": {
-                        "FilamentErrorMailer": "Hugomyb\\FilamentErrorMailer\\Facades\\FilamentErrorMailer"
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Hugomyb\\FilamentErrorMailer\\": "src/",
-                    "Hugomyb\\FilamentErrorMailer\\Database\\Factories\\": "database/factories/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Mayonobe Hugo",
-                    "email": "hugomayonobe@gmail.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Filament plugin for instant e-mail alerts on web errors, simplifying monitoring and application stability.",
-            "homepage": "https://github.com/hugomyb/filament-error-mailer",
-            "keywords": [
-                "filament-error-mailer",
-                "hugomyb",
-                "laravel"
-            ],
-            "support": {
-                "issues": "https://github.com/hugomyb/filament-error-mailer/issues",
-                "source": "https://github.com/hugomyb/filament-error-mailer"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/hugomyb",
-                    "type": "github"
-                }
-            ],
-            "time": "2024-03-17T19:10:36+00:00"
         },
         {
             "name": "hydrat/filament-table-layout-toggle",

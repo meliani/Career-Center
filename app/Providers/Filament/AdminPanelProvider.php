@@ -126,7 +126,7 @@ class AdminPanelProvider extends PanelProvider
                     // FilamentTourPlugin::make()
                     //     ->onlyVisibleOnce(true),
                     SpotlightPlugin::make(),
-                    FilamentErrorMailerPlugin::make(),
+                    // FilamentErrorMailerPlugin::make(),
                     FilamentPeekPlugin::make(),
                     BreezyCore::make()
                         ->myProfile(

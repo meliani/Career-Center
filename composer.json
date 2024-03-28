@@ -27,7 +27,6 @@
         "filament/widgets": "^3.1",
         "flowframe/laravel-trend": "^0.1.5",
         "guzzlehttp/guzzle": "^7.2",
-        "hugomyb/filament-error-mailer": "^3.1",
         "hydrat/filament-table-layout-toggle": "^1.0",
         "jdavidbakr/mail-tracker": "^7.14",
         "jeffgreco13/filament-breezy": "^2.3",
