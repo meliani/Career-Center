@@ -32,6 +32,8 @@ class ProjectPolicy extends CorePolicy
             return true;
         } elseif ($user->isDirection()) {
             return true;
+        } elseif ($user->isDepartmentHead() && $project->students->each(fn ($student, $key) => $student->department === $user->department)) {
+            return true;
         }
 
         return false;
@@ -44,6 +46,8 @@ class ProjectPolicy extends CorePolicy
         } elseif ($user->isProfessor() && $project->professors === $user->id) {
             return true;
         } elseif ($user->isProgramCoordinator() && $project->students->each(fn ($student, $key) => $student->program === $user->assigned_program)) {
+            return true;
+        } elseif ($user->isDepartmentHead() && $project->students->each(fn ($student, $key) => $student->department === $user->department)) {
             return true;
         }
 
