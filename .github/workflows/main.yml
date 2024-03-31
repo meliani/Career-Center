@@ -1,4 +1,4 @@
-            - name: ssh-job
+- name: ssh-job
   # You may pin to the exact commit or the version.
   # uses: nekiro/ssh-job@e0d177751aced5bcaf110ce4d782a681e5e12856
   uses: nekiro/ssh-job@v1.0.5
