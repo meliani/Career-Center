@@ -41,6 +41,7 @@ class GenericEmail extends Mailable
     {
         return new Envelope(
             subject: $this->emailSubject,
+            from: $this->sender->email,
         );
     }
 

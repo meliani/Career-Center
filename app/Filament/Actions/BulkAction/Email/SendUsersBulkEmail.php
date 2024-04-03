@@ -14,8 +14,12 @@ class SendUsersBulkEmail extends BulkAction
 
     public $emailBody;
 
+    public static $User;
+
     public static function make(?string $name = null, string $emailSubject = '', string $emailBody = ''): static
     {
+        self::$User = auth()->user();
+
         $static = app(static::class, [
             'name' => $name ?? static::getDefaultName(),
             'emailSubject' => $emailSubject ?? '',
@@ -35,7 +39,7 @@ class SendUsersBulkEmail extends BulkAction
                     // if ($record->email) {
                     dispatch(function () use ($record, $data) {
                         Mail::to($record->email)
-                            ->send(new GenericEmail($record, $data['emailSubject'], $data['emailBody']));
+                            ->send(new GenericEmail(self::$User, $data['emailSubject'], $data['emailBody']));
                     });
                     // }
                 }

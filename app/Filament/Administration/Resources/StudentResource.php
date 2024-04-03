@@ -38,6 +38,8 @@ class StudentResource extends Core\BaseResource
 
     protected static ?string $navigationGroup = 'Students and projects';
 
+    public static $User;
+
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
@@ -110,6 +112,8 @@ class StudentResource extends Core\BaseResource
 
     public static function table(Table $table): Table
     {
+        self::$User = auth()->user();
+
         return $table
             ->columns([
                 // Tables\Columns\TextColumn::make('title')
@@ -183,7 +187,7 @@ class StudentResource extends Core\BaseResource
                         fn (array $data, Student $student) => Facades\Mail::to([$student?->email_perso, $student?->email])
                             ->send(
                                 new Mail\GenericEmail(
-                                    $student,
+                                    self::$User,
                                     $data['subject'],
                                     $data['body'],
                                 ),
