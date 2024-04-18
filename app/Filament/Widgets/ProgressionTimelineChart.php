@@ -41,15 +41,6 @@ class ProgressionTimelineChart extends ApexChartWidget
                 'height' => 300,
             ],
             // TimelineRangeBarsChart display count of each status, ordred by alphabetically
-            /*     case Draft = "Draft";
-    case Announced = "Announced";
-    case Rejected = "Rejected";
-    case Validated = "Validated";
-    case Approved = "Approved";
-    case Declined = "Declined";
-    case Signed = "Signed";
-    case Started = "Started";
-    case Completed = "Completed"; */
             'series' => [
                 [
                     'name' => 'Draft',

@@ -8,7 +8,7 @@ class InternshipsPerProgramChart extends ApexChartsParentWidget
 {
     protected static ?int $sort = 1;
 
-    protected int|string|array $columnSpan = 'full';
+    protected int | string | array $columnSpan = 'full';
 
     /**
      * Chart Id
@@ -52,15 +52,15 @@ class InternshipsPerProgramChart extends ApexChartsParentWidget
             ],
             'series' => [
                 [
-                    'name' => 'Total Students',
+                    'name' => __('Total Students'),
                     'data' => array_column($internshipData, 'total_students'),
                 ],
                 [
-                    'name' => 'Total Internships',
+                    'name' => __('Total Announced Internships'),
                     'data' => array_column($internshipData, 'total_internships'),
                 ],
                 [
-                    'name' => 'Percentage',
+                    'name' => __('Percentage'),
                     'data' => array_column($internshipData, 'percentage'),
                 ],
             ],
