@@ -22,7 +22,7 @@ class InternshipsPerMonthChart extends ChartWidget
 
     public function getDescription(): ?string
     {
-        return __('Number of Internships per Month during the academic year');
+        return __('An overview of the announced internships per month.');
     }
 
     protected function getData(): array

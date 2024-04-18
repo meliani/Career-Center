@@ -3,10 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Filament\Core\Widgets\ApexChartsParentWidget;
-use App\Models\Project;
 use App\Models\User;
-use App\Enums;
-
 
 class AssignedSupervisorsChart extends ApexChartsParentWidget
 {
@@ -47,9 +44,10 @@ class AssignedSupervisorsChart extends ApexChartsParentWidget
 
         foreach ($projects as $key => $value) {
             if (empty($value['department'])) {
-                $projects[$key]['department'] = 'Unknown';
+                $projects[$key]['department'] = __('Unknown');
             }
         }
+
         return [
             'chart' => [
                 'type' => 'bar',
@@ -60,7 +58,7 @@ class AssignedSupervisorsChart extends ApexChartsParentWidget
                 [
                     'name' => 'Total Participations',
                     'data' => array_column($projects, 'count'),
-                ]
+                ],
             ],
             'labels' => array_column($projects, 'department'),
             'legend' => [
@@ -68,6 +66,13 @@ class AssignedSupervisorsChart extends ApexChartsParentWidget
                     'fontFamily' => 'inherit',
                     'color' => '#ffffff',
                     'fontColor' => '#ffffff',
+                ],
+            ],
+            'plotOptions' => [
+                'bar' => [
+                    'horizontal' => true,
+                    'endingShape' => 'rounded',
+                    'borderRadius' => 3,
                 ],
             ],
         ];

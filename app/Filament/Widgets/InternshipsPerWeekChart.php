@@ -23,7 +23,7 @@ class InternshipsPerWeekChart extends ChartWidget
 
     public function getDescription(): ?string
     {
-        return __('Daily number of announced Internships');
+        return __('An overview of the daily announced internships.');
     }
 
     protected function getData(): array

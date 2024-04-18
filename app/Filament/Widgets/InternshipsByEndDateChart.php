@@ -19,7 +19,7 @@ class InternshipsByEndDateChart extends ApexChartsParentWidget
     /**
      * Widget Title
      */
-    protected static ?string $heading = 'Internships by end date';
+    protected static ?string $heading = 'Internships by end date count (monthly)';
 
     public static function canView(): bool
     {
@@ -90,7 +90,7 @@ class InternshipsByEndDateChart extends ApexChartsParentWidget
             ],
             'series' => [
                 [
-                    'name' => 'Internships per month',
+                    'name' => __('Count of internships'),
                     'data' => $data->map(fn (TrendValue $value) => $value->aggregate),
                 ],
             ],

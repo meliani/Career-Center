@@ -25,6 +25,11 @@ class InternshipsPerProgramChart extends ApexChartsParentWidget
         return true;
     }
 
+    public function getDescription(): ?string
+    {
+        return __('An overview of the announced internships distribution per program.');
+    }
+
     /**
      * Chart options (series, labels, types, size, animations...)
      * https://apexcharts.com/docs/options
@@ -61,10 +66,6 @@ class InternshipsPerProgramChart extends ApexChartsParentWidget
                     'name' => __('Total Announced Internships'),
                     'data' => array_column($internshipData, 'total_internships'),
                 ],
-                // [
-                //     'name' => __('Total Projects'),
-                //     'data' => array_column($internshipData, 'total_projects'),
-                // ],
                 [
                     'name' => __('Percentage'),
                     'data' => array_column($internshipData, 'percentage'),
@@ -76,6 +77,23 @@ class InternshipsPerProgramChart extends ApexChartsParentWidget
                     'fontFamily' => 'inherit',
                     'color' => '#ffffff',
                     'fontColor' => '#ffffff',
+                ],
+            ],
+            'xaxis' => [
+                'categories' => array_column($internshipData, 'program'),
+                'labels' => [
+                    'style' => [
+                        'colors' => '#9ca3af',
+                        'fontWeight' => 600,
+                    ],
+                ],
+            ],
+            'yaxis' => [
+                'labels' => [
+                    'style' => [
+                        'colors' => '#9ca3af',
+                        'fontWeight' => 600,
+                    ],
                 ],
             ],
             'plotOptions' => [

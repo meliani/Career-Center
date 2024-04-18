@@ -22,7 +22,7 @@ class InternshipsByEndDateDailyChart extends ApexChartsParentWidget
     /**
      * Widget Title
      */
-    protected static ?string $heading = 'Internships by end date (Daily)';
+    protected static ?string $heading = 'Internships by end date count (daily)';
 
     public static function canView(): bool
     {
@@ -87,7 +87,7 @@ class InternshipsByEndDateDailyChart extends ApexChartsParentWidget
             ],
             'series' => [
                 [
-                    'name' => _('Count of internships'),
+                    'name' => __('Count of internships'),
                     'data' => $data->map(fn (TrendValue $value) => $value->aggregate),
                 ],
             ],

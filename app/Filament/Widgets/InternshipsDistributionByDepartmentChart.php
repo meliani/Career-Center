@@ -26,6 +26,11 @@ class InternshipsDistributionByDepartmentChart extends ApexChartsParentWidget
         return true;
     }
 
+    public function getDescription(): ?string
+    {
+        return __('An overview of the internships distribution by assigned department.');
+    }
+
     /**
      * Chart options (series, labels, types, size, animations...)
      * https://apexcharts.com/docs/options
@@ -53,7 +58,7 @@ class InternshipsDistributionByDepartmentChart extends ApexChartsParentWidget
             ],
             'series' => [
                 [
-                    'name' => 'Internships',
+                    'name' => __('Total assigned internships'),
                     'data' => array_column($internships, 'count'),
                 ],
             ],
@@ -64,10 +69,11 @@ class InternshipsDistributionByDepartmentChart extends ApexChartsParentWidget
                 'bar' => [
                     'horizontal' => false,
                     'endingShape' => 'rounded',
+                    'borderRadius' => 3,
                 ],
             ],
             'dataLabels' => [
-                'enabled' => false,
+                'enabled' => true,
             ],
             // 'fill' => [
             //     'type' => 'gradient',
