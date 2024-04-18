@@ -142,6 +142,7 @@ class ProfessorResource extends Core\BaseResource
                     ->sortable()
                     ->counts('projects'),
                 Tables\Columns\TextColumn::make('projects.id_pfe')
+                    ->searchable(false)
                     // ->formatStateUsing(function ($record) {
                     //     return $record->projects->pluck('internship_agreements')->flatten()->pluck('id_pfe')->implode(', ');
                     // })
