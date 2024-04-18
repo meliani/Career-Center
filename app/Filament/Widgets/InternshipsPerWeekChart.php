@@ -41,7 +41,7 @@ class InternshipsPerWeekChart extends ChartWidget
         return [
             'datasets' => [
                 [
-                    'label' => 'Internships per day',
+                    'label' => __('Internships announced count'),
                     'data' => $data->map(fn (TrendValue $value) => $value->aggregate),
                 ],
             ],

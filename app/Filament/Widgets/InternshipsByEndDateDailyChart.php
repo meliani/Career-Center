@@ -59,7 +59,6 @@ class InternshipsByEndDateDailyChart extends ApexChartsParentWidget
      */
     protected function getOptions(): array
     {
-
         return $this->getData();
     }
 
@@ -79,7 +78,6 @@ class InternshipsByEndDateDailyChart extends ApexChartsParentWidget
             ->dateColumn('ending_at')
             // ->count();
             ->aggregate('ending_at', 'count');
-        // dd($data);
 
         return
         [
@@ -89,7 +87,7 @@ class InternshipsByEndDateDailyChart extends ApexChartsParentWidget
             ],
             'series' => [
                 [
-                    'name' => 'Internships per month',
+                    'name' => _('Count of internships'),
                     'data' => $data->map(fn (TrendValue $value) => $value->aggregate),
                 ],
             ],

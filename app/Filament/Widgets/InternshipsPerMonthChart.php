@@ -25,11 +25,6 @@ class InternshipsPerMonthChart extends ChartWidget
         return __('Number of Internships per Month during the academic year');
     }
 
-    protected function getContentHeight(): ?int
-    {
-        return 300;
-    }
-
     protected function getData(): array
     {
         $data = Trend::query(InternshipAgreement::query())/* ->groupBy('country') */
@@ -43,7 +38,7 @@ class InternshipsPerMonthChart extends ChartWidget
         return [
             'datasets' => [
                 [
-                    'label' => 'Internships per month',
+                    'label' => __('Internships announced count'),
                     'data' => $data->map(fn (TrendValue $value) => $value->aggregate),
                 ],
             ],

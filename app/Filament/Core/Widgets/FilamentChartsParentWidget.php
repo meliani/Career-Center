@@ -6,6 +6,8 @@ use Filament\Widgets\ChartWidget;
 
 class FilamentChartsParentWidget extends ChartWidget
 {
+    protected static ?string $maxHeight = '400px';
+
     // protected function getHeading(): ?string
     // {
     //     return __(static::$heading);
@@ -23,11 +25,12 @@ class FilamentChartsParentWidget extends ChartWidget
     {
         return __(static::$description);
     }
+
     protected function getType(): string
     {
         return static::$type;
     }
-    
+
     public function getHeading(): string
     {
         return __(static::$heading);
