@@ -18,7 +18,7 @@ class InternshipsPerProgramChart extends ApexChartsParentWidget
     /**
      * Widget Title
      */
-    protected static ?string $heading = 'Anounced Internships per Program';
+    protected static ?string $heading = 'Anounced Internships distribution per Program';
 
     public static function canView(): bool
     {
@@ -33,12 +33,14 @@ class InternshipsPerProgramChart extends ApexChartsParentWidget
     {
         $internshipData = \DB::table('students')
             ->leftJoin('internships', 'students.id', '=', 'internships.student_id')
+            // ->leftJoin('projects', 'projects.id', '=', 'internships.project_id')
             ->where('students.year_id', 7)
             ->groupBy('program')
             ->select(
                 'program',
                 \DB::raw('COUNT(DISTINCT students.id) AS total_students'),
                 \DB::connection('backend_database')->raw('COUNT(internships.id) AS total_internships'),
+                // \DB::connection('backend_database')->raw('COUNT(projects.id) AS total_projects'),
                 \DB::connection('backend_database')->raw('ROUND((COUNT(internships.id) / COUNT(DISTINCT students.id)) * 100, 2) AS percentage')
             )
             ->get()
@@ -59,6 +61,10 @@ class InternshipsPerProgramChart extends ApexChartsParentWidget
                     'name' => __('Total Announced Internships'),
                     'data' => array_column($internshipData, 'total_internships'),
                 ],
+                // [
+                //     'name' => __('Total Projects'),
+                //     'data' => array_column($internshipData, 'total_projects'),
+                // ],
                 [
                     'name' => __('Percentage'),
                     'data' => array_column($internshipData, 'percentage'),
@@ -70,6 +76,11 @@ class InternshipsPerProgramChart extends ApexChartsParentWidget
                     'fontFamily' => 'inherit',
                     'color' => '#ffffff',
                     'fontColor' => '#ffffff',
+                ],
+            ],
+            'plotOptions' => [
+                'bar' => [
+                    'borderRadius' => 3,
                 ],
             ],
         ];
