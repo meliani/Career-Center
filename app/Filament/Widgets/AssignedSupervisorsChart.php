@@ -56,7 +56,7 @@ class AssignedSupervisorsChart extends ApexChartsParentWidget
             ],
             'series' => [
                 [
-                    'name' => 'Total Participations',
+                    'name' => __('Assigned supervisors'),
                     'data' => array_column($projects, 'count'),
                 ],
             ],
