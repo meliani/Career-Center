@@ -216,6 +216,8 @@ class ProjectResource extends Core\BaseResource
                             ->label('Mail Encadrant Externe')
                             ->searchable()
                             ->sortable(),
+                        Tables\Columns\TextColumn::make('internship_agreements.keywords')
+                            ->searchable(),
                     ]),
 
                 Tables\Columns\TextColumn::make('created_at')
