@@ -21,6 +21,7 @@ use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Parallax\FilamentComments\Actions\CommentsAction;
 use Parallax\FilamentComments\Infolists\Components\CommentsEntry;
+use pxlrbt\FilamentExcel;
 
 class ProjectResource extends Core\BaseResource
 {
@@ -259,7 +260,27 @@ class ProjectResource extends Core\BaseResource
                         ->hidden(fn () => auth()->user()->isAdministrator() === false),
                 ]),
 
-                \pxlrbt\FilamentExcel\Actions\Tables\ExportAction::make(),
+                FilamentExcel\Actions\Tables\ExportAction::make()
+                    ->exports([
+                        FilamentExcel\Exports\ExcelExport::make()
+                            ->askForFilename()
+                            ->askForWriterType()
+                            ->withFilename(fn ($filename) => 'carrieres-' . $filename)
+                            ->fromTable()
+                            ->ignoreFormatting([
+                                'created_at',
+                                'updated_at',
+                                'timetable.timeslot.start_time',
+                                'timetable.timeslot.end_time',
+                                'start_date',
+                                'end_date',
+                            ])
+                            ->withColumns([
+                                FilamentExcel\Columns\Column::make('title')->width(10),
+                                FilamentExcel\Columns\Column::make('description')->width(10),
+                                FilamentExcel\Columns\Column::make('organization')->width(10),
+                            ]),
+                    ]),
             ])
             ->actions([
                 \Parallax\FilamentComments\Tables\Actions\CommentsAction::make()
