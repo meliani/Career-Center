@@ -171,13 +171,6 @@ class ProjectResource extends Core\BaseResource
                     ->limit(90)
                     ->searchable()
                     ->sortable(),
-                /* parrain_fonction
-                    parrain_tel
-                    parrain_mail
-                    encadrant_ext_fonction
-                    encadrant_ext_tel
-                    encadrant_ext_mail */
-                // group of columns
 
                 Tables\Columns\ColumnGroup::make(__('Entreprise Contacts'))
                     ->columns([
@@ -234,20 +227,13 @@ class ProjectResource extends Core\BaseResource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                // Tables\Filters\SelectFilter::make('internship_agreements.assigned_department')
-                //     // ->relationship('internship_agreements', 'assigned_department')
-                //     ->options([
-                //         'MIR' => 'MIR',
-                //     ]),
-
-                // Tables\Filters\SelectFilter::make('internship_agreements.assigned_department')
-                //     ->label('Assigned Department')
-                //     ->options(Enums\Department::class),
-
                 Tables\Filters\SelectFilter::make('Assigned department')
                     ->options(Enums\Department::class)
                     ->query(
-                        fn (Builder $query, array $data) => $query->whereHas('internship_agreements', fn ($query) => $query->where('assigned_department', $data['value']))
+                        fn (Builder $query, array $data) => $query->when(
+                            $data['value'],
+                            fn (Builder $query, $department): Builder => $query->whereRelation('internship_agreements', 'assigned_department', $department)
+                        ),
                     ),
 
                 Tables\Filters\SelectFilter::make('hasTeammate')
