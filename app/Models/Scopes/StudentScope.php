@@ -21,6 +21,8 @@ class StudentScope implements Scope
         // }
         if (auth()->check()) {
             if (auth()->user()->isSuperAdministrator() || auth()->user()->isAdministrator() || auth()->user()->isDirection()) {
+                $builder->where('level', '=', 'thirdYear');
+
                 return;
             } elseif (auth()->user()->isProgramCoordinator()) {
                 $builder->where('program', '=', auth()->user()->assigned_program);
