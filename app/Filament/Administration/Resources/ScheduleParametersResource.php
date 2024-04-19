@@ -64,13 +64,7 @@ class ScheduleParametersResource extends Resource
                     ->required(),
                 Forms\Components\TextInput::make('lunch_ending_at')
                     ->required(),
-                Forms\Components\TextInput::make('number_of_rooms')
-                    ->required()
-                    ->numeric(),
                 Forms\Components\TextInput::make('max_defenses_per_professor')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('max_rooms')
                     ->required()
                     ->numeric(),
                 Forms\Components\TextInput::make('minutes_per_slot')
@@ -100,13 +94,7 @@ class ScheduleParametersResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('day_starting_at'),
                 Tables\Columns\TextColumn::make('day_ending_at'),
-                Tables\Columns\TextColumn::make('number_of_rooms')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('max_defenses_per_professor')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('max_rooms')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('minutes_per_slot')
