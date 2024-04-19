@@ -34,17 +34,19 @@ class AssignedSupervisorsChart extends ApexChartsParentWidget
     {
         // count of projects per department
         $projects = User::select(
-            'users.department',
+            'internships.assigned_department',
             \DB::raw('count(*) as count')
         )->join('professor_project', 'users.id', '=', 'professor_project.professor_id')
+            ->join('projects', 'professor_project.project_id', '=', 'projects.id')
+            ->join('internships', 'projects.id', '=', 'internships.project_id')
             // ->where('users.department', '!=', '')
-            ->groupBy('department')
+            ->groupBy('internships.assigned_department')
             ->get()
             ->toArray();
 
         foreach ($projects as $key => $value) {
-            if (empty($value['department'])) {
-                $projects[$key]['department'] = __('Unknown');
+            if (empty($value['assigned_department'])) {
+                $projects[$key]['assigned_department'] = __('Not assigned');
             }
         }
 
@@ -60,7 +62,7 @@ class AssignedSupervisorsChart extends ApexChartsParentWidget
                     'data' => array_column($projects, 'count'),
                 ],
             ],
-            'labels' => array_column($projects, 'department'),
+            'labels' => array_column($projects, 'assigned_department'),
             'legend' => [
                 'labels' => [
                     'fontFamily' => 'inherit',
