@@ -1,0 +1,6 @@
+php artisan icons:clear &&
+php artisan view:clear &&
+php artisan route:clear &&
+php artisan config:clear &&
+php artisan filament:clear-cached-components &&
+composer dump-autoload -o
