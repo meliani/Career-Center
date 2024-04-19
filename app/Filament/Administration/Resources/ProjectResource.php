@@ -115,27 +115,29 @@ class ProjectResource extends Core\BaseResource
                     // ->sortable(false)
                     ->sortableMany()
                     ->searchable(),
+                Tables\Columns\TextColumn::make('professors.department')
+                    ->label('department'),
                 Tables\Columns\TextColumn::make('professors.name')
                     ->label('Supervisor')
-                    // ->formatStateUsing(
-                    //     fn ($record) => $record->professors->map(
-                    //         fn ($professor) =>
-                    //         // $professor->pivot->jury_role->getLabel() . ': '
-                    //         // .
-                    //         $professor->name
-                    //     )->join(', ')
-                    // )
+                // ->formatStateUsing(
+                //     fn ($record) => $record->professors->map(
+                //         fn ($professor) =>
+                //         // $professor->pivot->jury_role->getLabel() . ': '
+                //         // .
+                //         $professor->name
+                //     )->join(', ')
+                // )
 
-                    // ->listWithLineBreaks()
-                    // ->bulleted()
+                // ->listWithLineBreaks()
+                // ->bulleted()
                     ->searchable(
                         ['first_name', 'last_name']
                     )
-                    // ->formatStateUsing(function ($state, Project $project) {
-                    //     return $project->professors->map(function ($professor) {
-                    //         return $professor->name;
-                    //     })->join(', ');
-                    // })
+                // ->formatStateUsing(function ($state, Project $project) {
+                //     return $project->professors->map(function ($professor) {
+                //         return $professor->name;
+                //     })->join(', ');
+                // })
                     ->sortableMany(),
                 Tables\Columns\TextColumn::make('timetable.timeslot.start_time')
                     ->label('Defense start time')
@@ -158,6 +160,14 @@ class ProjectResource extends Core\BaseResource
 
                 Tables\Columns\TextColumn::make('internship_agreements.organization_name')
                     ->label('Organization')
+                    ->searchable()
+                    ->sortableMany(),
+                Tables\Columns\TextColumn::make('internship_agreements.city')
+                    ->label('City')
+                    ->searchable()
+                    ->sortableMany(),
+                Tables\Columns\TextColumn::make('internship_agreements.country')
+                    ->label('country')
                     ->searchable()
                     ->sortableMany(),
                 Tables\Columns\TextColumn::make('start_date')
