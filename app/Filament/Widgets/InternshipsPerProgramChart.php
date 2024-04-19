@@ -67,7 +67,7 @@ class InternshipsPerProgramChart extends ApexChartsParentWidget
                     'data' => array_column($internshipData, 'total_internships'),
                 ],
                 [
-                    'name' => __('Percentage'),
+                    'name' => __('Ratio (%)'),
                     'data' => array_column($internshipData, 'percentage'),
                 ],
             ],
@@ -88,17 +88,31 @@ class InternshipsPerProgramChart extends ApexChartsParentWidget
                     ],
                 ],
             ],
-            'yaxis' => [
-                'labels' => [
-                    'style' => [
-                        'colors' => '#9ca3af',
-                        'fontWeight' => 600,
-                    ],
-                ],
-            ],
             'plotOptions' => [
                 'bar' => [
                     'borderRadius' => 3,
+                    'horizontal' => false,
+                    'dataLabels' => [
+                        'position' => 'top',
+                    ],
+                ],
+            ],
+            'dataLabels' => [
+                'enabled' => true,
+                'position' => 'top',
+                'style' => [
+                    'colors' => ['#fff'],
+                ],
+            ],
+            'yaxis' => [
+                'labels' => [
+                    'show' => false,
+                    'style' => [
+                        'colors' => '#9ca3af',
+                        'fontSize' => '12px',
+                        'fontFamily' => 'Helvetica, Arial, sans-serif',
+                        'cssClass' => 'apexcharts-xaxis-label',
+                    ],
                 ],
             ],
         ];

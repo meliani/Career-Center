@@ -247,10 +247,7 @@ class ProjectResource extends Core\BaseResource
                 Tables\Filters\SelectFilter::make('Assigned department')
                     ->options(Enums\Department::class)
                     ->query(
-                        fn (Builder $query, array $data) => $query->when(
-                            $data['value'],
-                            fn (Builder $query, $department): Builder => $query->whereRelation('internship_agreements', 'assigned_department', $department)
-                        ),
+                        fn (Builder $query, array $data) => $query->whereHas('internship_agreements', fn ($query) => $query->where('assigned_department', $data['value']))
                     ),
 
                 Tables\Filters\SelectFilter::make('hasTeammate')
