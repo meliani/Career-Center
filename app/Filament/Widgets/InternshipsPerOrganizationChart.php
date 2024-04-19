@@ -43,8 +43,9 @@ class InternshipsPerOrganizationChart extends ApexChartsParentWidget
         //     ->groupBy('organization_name')
         //     ->get();
         //  return apex chart data
-        $internshipData = InternshipAgreement::select('organization_name', \DB::raw('count(*) as count'))
-            ->groupBy('organization_name')
+        $internshipData = InternshipAgreement::select('central_organization', \DB::raw('count(*) as count'))
+            ->groupBy('central_organization')
+            ->take(15)
             ->get()
             ->toArray();
 
@@ -56,7 +57,7 @@ class InternshipsPerOrganizationChart extends ApexChartsParentWidget
                 'with: 100%',
             ],
             'series' => array_column($internshipData, 'count'),
-            'labels' => array_column($internshipData, 'organization_name'),
+            'labels' => array_column($internshipData, 'central_organization'),
             // display legend on the bottom
             'legend' => [
                 'position' => 'right',
