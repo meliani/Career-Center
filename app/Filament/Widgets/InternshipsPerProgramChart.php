@@ -40,7 +40,7 @@ class InternshipsPerProgramChart extends ApexChartsParentWidget
             ->leftJoin('internships', 'students.id', '=', 'internships.student_id')
             // ->leftJoin('projects', 'projects.id', '=', 'internships.project_id')
             ->where('students.year_id', 7)
-            ->where('students.level', 'ThirYear')
+            ->where('students.level', 'ThirdYear')
             ->groupBy('program')
             ->select(
                 'program',
