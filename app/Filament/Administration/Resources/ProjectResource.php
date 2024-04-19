@@ -217,6 +217,7 @@ class ProjectResource extends Core\BaseResource
                             ->searchable()
                             ->sortable(),
                         Tables\Columns\TextColumn::make('internship_agreements.keywords')
+                            ->label('Keywords')
                             ->searchable(),
                     ]),
 
