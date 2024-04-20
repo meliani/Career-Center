@@ -67,6 +67,9 @@ class InternshipAgreementForm
                     Forms\Components\TextInput::make('organization_name')
                         ->required()
                         ->maxLength(191),
+                    Forms\Components\TextInput::make('central_organization')
+                        ->maxLength(191),
+
                     Forms\Components\Textarea::make('title')
                         ->required()
                         ->maxLength(65535)

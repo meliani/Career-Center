@@ -27,6 +27,10 @@ class InternshipAgreementTable
             // ->formatStateUsing(function ($state, InternshipAgreement $internship) {
             //     return $internship->student->title->getLabel() . ' ' . $internship->student->first_name . ' ' . $internship->student->last_name;
             // }),
+            Tables\Columns\TextColumn::make('central_organization')
+                ->label('Central organization')
+                ->searchable()
+                ->sortable(),
 
             Tables\Columns\TextColumn::make('organization_name')
                 ->label('Organization')
