@@ -72,22 +72,22 @@ class InternshipsPerProgramChart extends ApexChartsParentWidget
                     'data' => array_column($internshipData, 'percentage'),
                 ],
             ],
-            'labels' => array_column($internshipData, 'program'),
-            'legend' => [
-                'labels' => [
-                    'fontFamily' => 'inherit',
-                    'color' => '#ffffff',
-                    'fontColor' => '#ffffff',
-                ],
-            ],
+            // 'labels' => array_column($internshipData, 'program'),
+            // 'legend' => [
+            //     'labels' => [
+            //         'fontFamily' => 'inherit',
+            //         'color' => '#ffffff',
+            //         'fontColor' => '#ffffff',
+            //     ],
+            // ],
             'xaxis' => [
                 'categories' => array_column($internshipData, 'program'),
-                'labels' => [
-                    'style' => [
-                        'colors' => '#9ca3af',
-                        'fontWeight' => 600,
-                    ],
-                ],
+                // 'labels' => [
+                //     'style' => [
+                //         'colors' => '#9ca3af',
+                //         'fontWeight' => 600,
+                //     ],
+                // ],
             ],
             'plotOptions' => [
                 'bar' => [
@@ -98,24 +98,24 @@ class InternshipsPerProgramChart extends ApexChartsParentWidget
                     ],
                 ],
             ],
-            'dataLabels' => [
-                'enabled' => true,
-                'position' => 'top',
-                'style' => [
-                    'colors' => ['#fff'],
-                ],
-            ],
-            'yaxis' => [
-                'labels' => [
-                    'show' => false,
-                    'style' => [
-                        'colors' => '#9ca3af',
-                        'fontSize' => '12px',
-                        'fontFamily' => 'Helvetica, Arial, sans-serif',
-                        'cssClass' => 'apexcharts-xaxis-label',
-                    ],
-                ],
-            ],
+            // 'dataLabels' => [
+            //     'enabled' => true,
+            //     'position' => 'top',
+            //     'style' => [
+            //         'colors' => ['#fff'],
+            //     ],
+            // ],
+            // 'yaxis' => [
+            //     'labels' => [
+            //         'show' => false,
+            //         'style' => [
+            //             'colors' => '#9ca3af',
+            //             'fontSize' => '12px',
+            //             'fontFamily' => 'Helvetica, Arial, sans-serif',
+            //             'cssClass' => 'apexcharts-xaxis-label',
+            //         ],
+            //     ],
+            // ],
         ];
     }
 }

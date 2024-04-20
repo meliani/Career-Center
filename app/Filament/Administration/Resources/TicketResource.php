@@ -29,6 +29,20 @@ class TicketResource extends Core\BaseResource
 
     protected static ?int $sort = 9;
 
+    public static function canAccess(): bool
+    {
+        if (auth()->check()) {
+            return auth()->user()->isAdministrator() || auth()->user()->isSuperAdministrator() || auth()->user()->isProgramCoordinator() || auth()->user()->isDepartmentHead() || auth()->user()->isProfessor();
+        }
+
+        return false;
+    }
+
+    public static function canViewAny(): bool
+    {
+        return self::canAccess();
+    }
+
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
