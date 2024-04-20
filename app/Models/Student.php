@@ -64,7 +64,8 @@ class Student extends BackendBaseModel
         parent::boot();
         static::addGlobalScope(function ($query) {
             $query
-                ->where('year_id', 7);
+                ->where('year_id', 7)
+                ->where('level', 'ThirdYear');
         });
     }
 

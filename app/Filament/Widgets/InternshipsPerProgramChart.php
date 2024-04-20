@@ -89,15 +89,15 @@ class InternshipsPerProgramChart extends ApexChartsParentWidget
                 //     ],
                 // ],
             ],
-            'plotOptions' => [
-                'bar' => [
-                    'borderRadius' => 3,
-                    'horizontal' => false,
-                    'dataLabels' => [
-                        'position' => 'top',
-                    ],
-                ],
-            ],
+            // 'plotOptions' => [
+            //     'bar' => [
+            //         'borderRadius' => 3,
+            //         'horizontal' => false,
+            //         'dataLabels' => [
+            //             'position' => 'top',
+            //         ],
+            //     ],
+            // ],
             // 'dataLabels' => [
             //     'enabled' => true,
             //     'position' => 'top',
