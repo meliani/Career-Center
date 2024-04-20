@@ -19,7 +19,7 @@ class InternshipsDistributionByDepartmentChart extends ApexChartsParentWidget
     /**
      * Widget Title
      */
-    protected static ?string $heading = 'Internships distribution by assigned department';
+    protected static ?string $heading = 'Internship agreements distribution by assigned department';
 
     public static function canView(): bool
     {
