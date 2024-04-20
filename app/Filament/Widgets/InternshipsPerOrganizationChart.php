@@ -45,6 +45,7 @@ class InternshipsPerOrganizationChart extends ApexChartsParentWidget
         //  return apex chart data
         $internshipData = InternshipAgreement::select('central_organization', \DB::raw('count(*) as count'))
             ->groupBy('central_organization')
+            ->orderBy('count', 'desc')
             ->get()
             // ->take(15)
 
