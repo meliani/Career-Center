@@ -21,7 +21,6 @@ class ProfessorService
         self::$timeslot = $timeslot;
         self::$room = $room;
         self::$project = $project;
-        // dd($timeslot, $room, $project);
 
         $jury = $project->professors;
         // we will check every professor in this jury if he is available in this timeslot
@@ -44,6 +43,8 @@ class ProfessorService
         $timetables = Timetable::where('timeslot_id', $timeslot->id)
             ->whereIn('project_id', $projects->pluck('id'))
             ->get();
+
+        return $timetables->count() === 0;
     }
 
     public static function checkJuryConditions(Timeslot $timeslot, Room $room, Project $project)

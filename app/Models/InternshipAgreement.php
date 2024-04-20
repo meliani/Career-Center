@@ -109,6 +109,7 @@ class InternshipAgreement extends Core\BackendBaseModel
     public $fillable = [
         'id_pfe',
         'organization_name',
+        'central_organization',
         'adresse',
         'city',
         'country',

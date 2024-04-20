@@ -28,10 +28,15 @@ class Timeslot extends Core\BackendBaseModel
     ];
 
     protected $casts = [
-        'start_time' => 'datetime',
-        'end_time' => 'datetime',
+        // 'start_time' => 'datetime',
+        // 'end_time' => 'datetime',
         'is_enabled' => 'boolean',
         'is_taken' => 'boolean',
+    ];
+
+    protected $dates = [
+        'start_time',
+        'end_time',
     ];
     //     protected $attributes = [
     //         'is_enabled' => true,

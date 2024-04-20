@@ -22,27 +22,26 @@ class GenerateTimeslotsAction extends Action
         $static->configure()->action(function (array $data, ScheduleParameters $record): void {
             $scheduleParameters = $record;
             $AutoScheduleService = new AutoScheduleService($record);
-            // dd($AutoScheduleService);
 
             // $workingDaysList = $AutoScheduleService->generateTimeslots($record);
             $workingDaysList = collect($AutoScheduleService->generateTimeslots($record));
 
-            $workingDaysList->each(function ($day) use ($record) {
+            $workingDaysList->each(function ($day) {
                 // dd($record);
 
                 $day = collect($day);
-                $day->each(function ($timeslot) use ($record) {
+                $day->each(function ($timeslot) {
 
                     $timeslot = Carbon::parse($timeslot);
+                    // dd($timeslot);
                     $timeslotPeriod = new Timeslot();
                     // $timeslotPeriod->start_time = $timeslot->start();
                     // $timeslotPeriod->end_time = $timeslot->end();
                     $timeslotPeriod->start_time = $timeslot;
                     $timeslotPeriod->end_time = $timeslot->addMinutes(90);
                     $timeslotPeriod->is_enabled = 1;
-                    $timeslotPeriod->is_taken = 0;
-                    // dd($record);
-                    $timeslotPeriod->remaining_slots = $record->number_of_rooms;
+                    // $timeslotPeriod->is_taken = 0;
+                    // $timeslotPeriod->remaining_slots = $record->number_of_rooms;
                     $timeslotPeriod->save();
                 });
             });
