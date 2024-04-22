@@ -12,7 +12,6 @@ use App\Models\Timetable;
 use Carbon\CarbonPeriod;
 use Exception;
 use Illuminate\Console\Scheduling\Schedule;
-use Illuminate\Support\Facades\Log;
 
 class TimeslotService
 {
@@ -162,8 +161,6 @@ class TimeslotService
         $timetable = Timetable::where('timeslot_id', $timeslot->id)
             ->where('room_id', $room->id)
             ->first();
-        info('Timeslot: ' . $timeslot->start_time . ' in Room: ' . $room->name . ' is already assigned');
-        Log::channel('stderr')->info('Something happened!');
 
         return $timetable === null;
     }

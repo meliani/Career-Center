@@ -16,7 +16,7 @@ class GeneratePlanning extends Command
      *
      * @var string
      */
-    protected $signature = 'app:generate-planning {user=1}';
+    protected $signature = 'app:generate-planning {--force=false} {--user=1}';
 
     /**
      * The console command description.
@@ -25,14 +25,26 @@ class GeneratePlanning extends Command
      */
     protected $description = 'Generate the planning for projects';
 
-    public $userId = null;
+    public $userId;
+
+    protected bool $force;
+
+    protected $rooms;
+
+    protected $timeslots;
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        $this->userId = $this->argument('user');
+        $this->rooms = Room::where('status', 'Available')->get();
+
+        $this->timeslots = Timeslot::where('is_enabled', true)->get();
+
+        // $this->userId = $this->argument('user');
+        $this->userId = $this->option('user');
+        $this->force = $this->option('force');
         $this->info('Generating the planning for projects');
         $this->generateTimetable();
         $this->info('Planning generated successfully');
@@ -43,65 +55,75 @@ class GeneratePlanning extends Command
     public function generateTimetable()
     {
         $projects = Project::whereDoesntHave('timetable')->orderBy('end_date', 'asc')->get();
-        $timeslots = Timeslot::get();
-        $rooms = Room::get();
+
         foreach ($projects as $project) {
-            $isProjectAssigned = false;
-            foreach ($timeslots as $timeslot) {
-                $isTimeslotAssigned = false;
-                foreach ($rooms as $room) {
-                    $isProjectAssigned = Timetable::where('project_id', $project->id)
-                        ->exists();
+            if ($this->force) {
+                $this->timeslots = $this->timeslots->sortByDesc('start_time');
+            }
+            [$bestTimeslot, $room] = $this->getBestTimeslot($project, $this->timeslots);
+            if ($bestTimeslot && $room) {
+                $this->assignProjectToTimeslot($project, $bestTimeslot, $room, $this->force);
+            }
+        }
+    }
 
-                    if ($isProjectAssigned) {
-                        $this->info('Project: ' . $project->title . ' is already assigned');
+    public function getBestTimeslot($project, $timeslots)
+    {
+        $projectEndDate = $project->end_date; // Assuming 'end_date' is the field name for the project's end date
+        $bestTimeslot = null;
+        $bestDifference = PHP_INT_MAX;
+        $bestRoom = null;
 
-                        continue;
+        foreach ($timeslots as $timeslot) {
+            foreach ($this->rooms as $room) {
+                if ($this->isRoomAvailable($timeslot, $room) && Services\ProfessorService::checkJuryAvailability($timeslot, $room, $project)) {
+                    $difference = abs($projectEndDate->diffInDays($timeslot->start_time));
+
+                    if ($difference < $bestDifference) {
+                        $bestDifference = $difference;
+                        $bestTimeslot = $timeslot;
+                        $bestRoom = $room;
                     }
-                    // Check if the timeslot and room are already assigned in the timetable
-                    $isTimeslotAssigned = Timetable::where('timeslot_id', $timeslot->id)
-                        ->where('room_id', $room->id)
-                        ->exists();
-                    if ($isTimeslotAssigned || $isProjectAssigned) {
-                        $this->info('Timeslot: ' . $timeslot->start_time . ' in Room: ' . $room->name . ' is already assigned');
-
-                        continue;
-                    }
-
-                    // check if the given timeslot is superior than end_date of the project
-                    if ($project->end_date->lessThan($timeslot->end_time)) {
-                        // $this->info($project->end_date->lessThan($timeslot->end_time));
-                        $this->info('Project: ' . $project->id . ' with end date: ' . $project->end_date . ' is inferior to ' . $timeslot->start_time . ' in Room: ' . $room->name);
-                        if (
-                            Services\ProfessorService::checkJuryAvailability($timeslot, $room, $project)
-                            && Services\RoomService::checkRoomAvailability($timeslot, $room)
-                            && Services\TimeslotService::checkTimeslotAvailability($timeslot, $room)
-                        ) {
-                            $this->info('Project: ' . $project->id . ' assigned to Timeslot: ' . $timeslot->start_time . ' - ' . $timeslot->end_time . ' in Room: ' . $room->name);
-                            // Assign the project to the timeslot and room in the timetable
-                            Timetable::create([
-                                'timeslot_id' => $timeslot->id,
-                                'room_id' => $room->id,
-                                'user_id' => $this->userId,
-                                'project_id' => $project->id,
-                                'created_by' => $this->userId,
-                                'updated_by' => $this->userId,
-                            ]);
-
-                            // Decrement the remaining slots for the timeslot
-                            $timeslot->decrement('remaining_slots');
-
-                            self::$assignedProjects++;
-                        }
-
-                        continue;
-                    }
-                    // Check if the timeslot, room, and project meet the necessary conditions
-
                 }
             }
         }
 
-        return self::$assignedProjects;
+        return [$bestTimeslot, $bestRoom];
+    }
+
+    public function isRoomAvailable($timeslot, $room)
+    {
+        $timetable = Timetable::where('timeslot_id', $timeslot->id)->where('room_id', $room->id)->first();
+
+        return ! $timetable;
+    }
+
+    public function assignProjectToTimeslot($project, $timeslot, $room, $force = false)
+    {
+        if ($force || $project->end_date < $timeslot->start_time) {
+            $this->createTimetable($project, $timeslot, $room);
+            $this->info('Project: ' . $project->title . ' assigned to timeslot: ' . $timeslot->start_time . ' in room: ' . $room->name);
+        }
+    }
+
+    public function createTimetable($project, $timeslot, $room)
+    {
+        $timetable = new Timetable();
+        $timetable->project_id = $project->id;
+        $timetable->timeslot_id = $timeslot->id;
+        $timetable->room_id = $room->id;
+        $timetable->user_id = $this->userId;
+        $timetable->created_by = $this->userId;
+        $timetable->updated_by = $this->userId;
+        $timetable->save();
+
+        $this->removeTimeslot($timeslot);
+    }
+
+    public function removeTimeslot($timeslot)
+    {
+        $this->timeslots = $this->timeslots->reject(function ($value) use ($timeslot) {
+            return $value->id == $timeslot->id;
+        });
     }
 }

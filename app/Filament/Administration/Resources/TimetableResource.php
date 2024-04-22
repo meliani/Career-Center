@@ -8,6 +8,7 @@ use App\Models\Timetable;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Tables;
+use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 
 class TimetableResource extends Core\BaseResource
@@ -89,7 +90,16 @@ class TimetableResource extends Core\BaseResource
     public static function table(Table $table): Table
     {
         return $table
+            ->groups([
+                Group::make('timeslot.start_time')
+                    ->date(),
+            ])
             ->columns([
+
+                Tables\Columns\TextColumn::make('project.end_date')
+                    ->label('End Date')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('timeslot.start_time')
                     ->label('Start Time')
                     ->searchable()
