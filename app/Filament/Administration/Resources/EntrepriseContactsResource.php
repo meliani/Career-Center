@@ -21,7 +21,7 @@ class EntrepriseContactsResource extends Resource
     public static function canAccess(): bool
     {
         if (auth()->check()) {
-            return auth()->user()->isAdministrator();
+            return false;
         }
 
         return false;
