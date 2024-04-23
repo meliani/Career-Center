@@ -83,7 +83,9 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('avatar_url'),
+                Tables\Columns\ImageColumn::make('avatar_url')
+                    ->label('Avatar')
+                    ->circular(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('first_name')
@@ -125,7 +127,8 @@ class UserResource extends Resource
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
-                \STS\FilamentImpersonate\Tables\Actions\Impersonate::make(),
+                \STS\FilamentImpersonate\Tables\Actions\Impersonate::make()
+                    ->hidden(fn ($record) => ! $record->canBeImpersonated()),
             ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

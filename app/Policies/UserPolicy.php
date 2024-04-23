@@ -2,11 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\User;
-use Illuminate\Auth\Access\Response;
 use App\Enums\Role;
-use App\Policies\CorePolicy;
-
+use App\Models\User;
 
 class UserPolicy extends CorePolicy
 {
@@ -15,7 +12,7 @@ class UserPolicy extends CorePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(Role::SuperAdministrator);
+        return $user->isAdministrator() || $user->isSuperAdministrator();
     }
 
     /**
@@ -23,7 +20,7 @@ class UserPolicy extends CorePolicy
      */
     public function view(User $user, User $model): bool
     {
-        return $user->hasRole(Role::SuperAdministrator);
+        return $user->isSuperAdministrator();
     }
 
     /**
@@ -47,7 +44,7 @@ class UserPolicy extends CorePolicy
      */
     public function delete(User $user, User $model): bool
     {
-        
+
         return $user->hasRole(Role::SuperAdministrator);
     }
 

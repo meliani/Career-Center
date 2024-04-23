@@ -86,6 +86,18 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName
         'full_name',
     ];
 
+    public function canImpersonate()
+    {
+        return $this->isSuperAdministrator() || $this->isAdministrator();
+    }
+
+    public function canBeImpersonated()
+    {
+        // Let's prevent impersonating other users at our own company
+        // return !Str::endsWith($this->email, '@mycorp.com');
+        return ! $this->isSuperAdministrator();
+    }
+
     public function getFilamentAvatarUrl(): ?string
     {
         return $this->avatar_url ? Storage::url($this->avatar_url) : null;
