@@ -7,6 +7,12 @@
         "framework"
     ],
     "license": "MIT",
+    "repositories": [ 
+        {
+        "type": "path",
+        "url": "./packages/filament-country-region-fields"
+        }
+    ],
     "require": {
         "php": "^8.2",
         "awcodes/light-switch": "^1.0",
@@ -33,6 +39,7 @@
         "laravel/tinker": "^2.8",
         "leandrocfe/filament-apex-charts": "^3.0",
         "parallax/filament-comments": "^1.0",
+        "parfaitementweb/filament-country-field": "dev-dev",
         "pboivin/filament-peek": "^2.2",
         "pxlrbt/filament-environment-indicator": "^2.0",
         "pxlrbt/filament-excel": "^2.3",
@@ -63,7 +70,8 @@
     },
     "autoload": {
         "exclude-from-classmap": [
-            "app/developer_docs"
+            "developer_docs",
+            "team_docs"
         ],
         "psr-4": {
             "App\\": "app/",
@@ -107,6 +115,6 @@
             "php-http/discovery": true
         }
     },
-    "minimum-stability": "alpha",
+    "minimum-stability": "dev",
     "prefer-stable": true
 }

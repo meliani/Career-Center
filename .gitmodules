@@ -1,0 +1,3 @@
+[submodule "packages/filament-country-region-fields"]
+	path = packages/filament-country-region-fields
+	url = git@github.com:meliani/filament-country-region-fields.git
