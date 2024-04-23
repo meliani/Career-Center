@@ -14,15 +14,16 @@ use Saade\FilamentFullCalendar\Widgets\FullCalendarWidget;
 
 class AnouncementsCalendarWidget extends FullCalendarWidget
 {
-    protected static ?int $sort = 10;
+    protected static ?int $sort = 1;
 
-    public Model|string|null $model = InternshipAgreement::class;
+    public Model | string | null $model = InternshipAgreement::class;
 
     // protected static string $view = 'filament.widgets.calendar-widget';
 
     public static function canView(): bool
     {
-        return false;
+        return auth()->user()->isSuperAdministrator();
+        // return false;
     }
 
     /**

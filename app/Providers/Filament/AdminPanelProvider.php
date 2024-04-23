@@ -99,7 +99,28 @@ class AdminPanelProvider extends PanelProvider
             ->plugins(
                 [
                     // FilamentRouteStatisticsPlugin::make(),
-                    FilamentFullCalendarPlugin::make(),
+                    FilamentFullCalendarPlugin::make()
+                        ->schedulerLicenseKey('GPL-My-Project-Is-Open-Source')
+                        ->selectable(true)
+                        ->editable(true)
+                        ->timezone('UTC')
+                        ->plugins([
+                            // 'dayGrid',
+                            'scrollGrid',
+                            // 'list',
+                            // 'interaction',
+                            // 'dayGridPlugin',
+                            // 'timeGridPlugin',
+                            // 'listPlugin',
+                            // 'interactionPlugin',
+                        ])
+                        ->config([
+                            'initialView' => 'dayGridWeek', // show week by week
+                            'firstDay' => 1, // start the week on a Monday
+                            'eventDisplay' => 'block', // render a solid rectangle
+                        ])
+                        ->locale('fr'),
+
                     // ->selectable()
                     // ->editable(),
                     FilamentApexChartsPlugin::make(),
