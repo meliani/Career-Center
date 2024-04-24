@@ -21,6 +21,7 @@ class CreateOrganizationsTable extends Migration
                 ->on('organizations')
                 ->onDelete('set null');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

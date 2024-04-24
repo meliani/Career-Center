@@ -25,6 +25,7 @@ return new class extends Migration
             $table->integer('number_of_bounces');
             $table->boolean('is_account_disabled');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -22,6 +22,7 @@ class CreateApprenticeshipAgreementContactsTable extends Migration
             $table->foreignId('organization_id')->constrained()->onDelete('restrict');
             $table->foreignId('apprenticeship_id')->constrained()->onDelete('restrict');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
