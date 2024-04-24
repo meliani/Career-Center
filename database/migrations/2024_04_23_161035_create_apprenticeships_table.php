@@ -32,7 +32,7 @@ class CreateApprenticeshipsTable extends Migration
             $table->integer('workload')->nullable();
             $table->foreignId('parrain_id');
             $table->foreignId('supervisor_id');
-            $table->foreignId('tutor_id');
+            $table->foreignId('tutor_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

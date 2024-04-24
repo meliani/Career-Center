@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
 class Year extends Core\BackendBaseModel
 {
     /**
@@ -12,9 +10,8 @@ class Year extends Core\BackendBaseModel
      * @var array
      */
     protected $fillable = [
-        'id', 'title'
+        'id', 'title',
     ];
-
 
     /**
      * The attributes that should be hidden for arrays.
@@ -26,13 +23,19 @@ class Year extends Core\BackendBaseModel
     ];
 
     protected $casts = [
-        'created_at'=> 'datetime',
-        'updated_at'=> 'datetime',
-        'date'=> 'datetime',    
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'date' => 'datetime',
     ];
+
     public function actual()
     {
         return 7;
+    }
+
+    public static function current()
+    {
+        return Year::latest()->first();
     }
 
     /**
@@ -42,5 +45,4 @@ class Year extends Core\BackendBaseModel
     {
         return $this->belongsToMany(InternshipAgreement::class);
     }
-
 }

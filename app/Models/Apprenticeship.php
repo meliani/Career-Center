@@ -26,11 +26,39 @@ class Apprenticeship extends Model
         'signed_at',
         'observations',
         'organization_id',
+        'title',
+        'description',
+        'keywords',
+        'starting_at',
+        'ending_at',
+        'remuneration',
+        'currency',
+        'workload',
+        'parrain_id',
+        'supervisor_id',
+        'tutor_id',
+
     ];
 
     protected $casts = [
         'assigned_department' => Enums\Department::class,
+        'starting_at' => 'datetime',
+        'ending_at' => 'datetime',
+        'remuneration' => 'decimal:2',
+        'keywords' => 'array',
+
     ];
+
+    protected static function booted(): void
+    {
+
+        static::creating(function (Apprenticeship $apprenticeship) {
+            $apprenticeship->student_id = auth()->id();
+            $apprenticeship->year_id = Year::current()->id;
+
+        });
+
+    }
 
     public function student()
     {
