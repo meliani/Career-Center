@@ -21,10 +21,7 @@ class CreateApprenticeshipsTable extends Migration
             $table->dateTime('received_at')->nullable();
             $table->dateTime('signed_at')->nullable();
             $table->text('observations')->nullable();
-            $table->foreign('organization_id')
-                ->references('id')
-                ->on('organizations')
-                ->onDelete('cascade');
+            $table->foreignId('organization_id');
             $table->timestamps();
             $table->softDeletes();
         });
