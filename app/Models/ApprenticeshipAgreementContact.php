@@ -30,6 +30,10 @@ class ApprenticeshipAgreementContact extends Model
         'role' => Enums\OrganizationContactRole::class,
     ];
 
+    protected $appends = [
+        'full_name',
+    ];
+
     public function organization()
     {
         return $this->belongsTo(Organization::class);
@@ -38,5 +42,10 @@ class ApprenticeshipAgreementContact extends Model
     public function apprenticeship()
     {
         return $this->belongsTo(Apprenticeship::class);
+    }
+
+    public function getFullNameAttribute()
+    {
+        return "{$this->first_name} {$this->last_name}";
     }
 }

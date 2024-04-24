@@ -178,6 +178,9 @@ class StudentResource extends Core\BaseResource
                 //
             ])
             ->actions([
+                \STS\FilamentImpersonate\Tables\Actions\Impersonate::make()
+                    ->hidden(fn ($record) => ! $record->canBeImpersonated())
+                    ->guard('students'),
                 Tables\Actions\Action::make('sendEmail')
                     ->form([
                         Forms\Components\TextInput::make('subject')->required(),

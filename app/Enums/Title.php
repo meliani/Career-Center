@@ -10,6 +10,14 @@ enum Title: string implements HasColor, HasLabel
     case Mrs = 'Mrs';
     case Mr = 'Mr';
 
+    public static function getArray(): array
+    {
+        return [
+            Title::Mrs->value,
+            Title::Mr->value,
+        ];
+    }
+
     public function getLabel(): ?string
     {
         return match ($this) {

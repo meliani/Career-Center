@@ -23,11 +23,27 @@ class AppPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
+            // ->topbar(false)
+            ->topNavigation()
+            ->authGuard('students')
             ->id('app')
             ->path('app')
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::Sky,
             ])
+
+            ->passwordReset()
+            ->profile() //isSimple: true)
+            ->spa()
+            // ->default()
+            // ->brandName(__('Engineer portal'))
+            ->login()
+            ->databaseNotifications()
+            // ->databaseNotificationsPolling('30s')
+            ->brandLogo(asset('/svg/logo_entreprises.svg'))
+            ->favicon(asset('/svg/logo_entreprises_round.svg'))
+            ->darkModeBrandLogo(asset('/svg/logo_entreprises_white.svg'))
+
             ->discoverResources(in: app_path('Filament/App/Resources'), for: 'App\\Filament\\App\\Resources')
             ->discoverPages(in: app_path('Filament/App/Pages'), for: 'App\\Filament\\App\\Pages')
             ->pages([

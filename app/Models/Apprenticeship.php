@@ -56,4 +56,14 @@ class Apprenticeship extends Model
     {
         return $this->hasMany(ApprenticeshipAgreementContact::class);
     }
+
+    public function parrain()
+    {
+        return $this->belongsTo(ApprenticeshipAgreementContact::class);
+    }
+
+    public function supervisor()
+    {
+        return $this->belongsTo(ApprenticeshipAgreementContact::class);
+    }
 }

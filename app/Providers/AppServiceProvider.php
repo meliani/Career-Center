@@ -4,8 +4,9 @@ namespace App\Providers;
 
 use App\Doctrine\DBAL\Types\EnumType;
 use App\Enums\Role;
-use BezhanSalleh\FilamentLanguageSwitch\LanguageSwitch;
+use BezhanSalleh\FilamentLanguageSwitch\Enums\Placement;
 // use BezhanSalleh\PanelSwitch\PanelSwitch;
+use BezhanSalleh\FilamentLanguageSwitch\LanguageSwitch;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\StringType;
 use Doctrine\DBAL\Types\Type;
@@ -183,7 +184,12 @@ class AppServiceProvider extends ServiceProvider
         Model::unguard();
         LanguageSwitch::configureUsing(function (LanguageSwitch $switch) {
             $switch
-                ->locales(['ar', 'en', 'fr']); // also accepts a closure
+                ->visible(outsidePanels: true)
+                ->locales(['ar', 'en', 'fr']) // also accepts a closure
+                ->displayLocale('fr')
+                ->outsidePanelRoutes([
+                    'home',                ])
+                ->outsidePanelPlacement(Placement::TopRight);
         });
         // PanelSwitch::configureUsing(function (PanelSwitch $panelSwitch) {
         //     $panelSwitch

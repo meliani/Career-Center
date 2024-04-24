@@ -13,13 +13,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// })->name('home');
-
 Route::get('/', function () {
-    return redirect('/backend');
-});
+    return view('welcome');
+})->name('home');
+Route::get('lang/{lang}', 'App\Http\Controllers\LanguageController@switchLang');
+
+// Route::get('/', function () {
+//     return redirect('/backend');
+// });
 // Route::get('/programCoordinator', function () {
 //     return redirect('/programCoordinator/login');
 // });

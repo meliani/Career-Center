@@ -21,6 +21,7 @@
 </head>
 
 <body class="antialiased">
+    <x-impersonate::banner style='light' />
 
 
     {{ $slot }}

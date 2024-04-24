@@ -3,17 +3,49 @@
 namespace App\Models;
 
 use App\Enums;
-use App\Models\Core\BackendBaseModel;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasAvatar;
+use Filament\Models\Contracts\HasName;
+use Filament\Panel;
 use Illuminate\Database\Query\Builder;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
+use Jeffgreco13\FilamentBreezy\Traits\TwoFactorAuthenticatable;
 
-class Student extends BackendBaseModel
+class Student extends Authenticatable implements FilamentUser, HasAvatar, HasName
 {
     use Notifiable;
+    use TwoFactorAuthenticatable;
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        if ($panel->getId() === 'app') {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function getFilamentAvatarUrl(): ?string
+    {
+        return $this->avatar_url ? Storage::url($this->avatar_url) : null;
+    }
+
+    public function canBeImpersonated()
+    {
+        return true;
+    }
 
     protected static function booted(): void
     {
         static::addGlobalScope(new Scopes\StudentScope());
+    }
+
+    public function getFilamentName(): string
+    {
+        return "{$this->first_name} {$this->last_name}";
+        // return 'hello';
     }
 
     protected $appends = [
@@ -45,6 +77,7 @@ class Student extends BackendBaseModel
         'year_id',
         'is_active',
         'graduated_at',
+        'avatar_url',
     ];
 
     protected $casts = [

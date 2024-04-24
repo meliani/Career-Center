@@ -11,15 +11,15 @@ class CreateOrganizationsTable extends Migration
         Schema::create('organizations', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->string('address', 255);
-            $table->string('city');
-            $table->string('country');
+            $table->string('address', 255)->nullable();
+            $table->string('city')->nullable();
+            $table->string('country')->nullable();
             $table->string('office_location', 255)->nullable();
             $table->unsignedBigInteger('central_organization')->nullable();
             $table->foreign('central_organization')
                 ->references('id')
                 ->on('organizations')
-                ->onDelete('set null');
+                ->onDelete('set null')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

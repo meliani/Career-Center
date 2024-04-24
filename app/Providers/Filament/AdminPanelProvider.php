@@ -44,6 +44,7 @@ class AdminPanelProvider extends PanelProvider
             // ->topbar(false)
             // ->topNavigation()
             // ->sidebarFullyCollapsibleOnDesktop()
+            ->databaseTransactions()
             ->sidebarCollapsibleOnDesktop()
             ->passwordReset()
             ->profile() //isSimple: true)
