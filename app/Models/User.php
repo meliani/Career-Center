@@ -147,7 +147,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName
         if ($panel->getId() === 'ProgramCoordinator') {
             return $this->haAnyRole($this->powerProfessors);
         } */
-        if ($panel->getId() === 'Administration') {
+        if ($panel->getId() === 'Administration' || $panel->getId() === 'app') {
             return $this->hasAnyRole(Enums\Role::getAll());
         }
 
