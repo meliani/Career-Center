@@ -24,7 +24,10 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
             return true;
         }
 
-        return false;
+        // return false;
+
+        // return str_ends_with($this->email, '@yourdomain.com') && $this->hasVerifiedEmail();
+
     }
 
     public function getFilamentAvatarUrl(): ?string
@@ -40,6 +43,11 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
     protected static function booted(): void
     {
         static::addGlobalScope(new Scopes\StudentScope());
+
+        static::creating(function (Student $student) {
+            $student->year_id = Year::current()->id;
+            $student->name = $student->full_name;
+        });
     }
 
     public function getFilamentName(): string

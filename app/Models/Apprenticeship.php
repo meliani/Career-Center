@@ -64,6 +64,7 @@ class Apprenticeship extends Model
     protected static function booted(): void
     {
 
+        static::addGlobalScope(new Scopes\ApprenticeshipScope());
         static::creating(function (Apprenticeship $apprenticeship) {
             $apprenticeship->student_id = auth()->id();
             $apprenticeship->year_id = Year::current()->id;

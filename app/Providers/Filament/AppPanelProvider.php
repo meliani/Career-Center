@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\App\Pages\RegisterStudent;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -34,11 +35,12 @@ class AppPanelProvider extends PanelProvider
             ])
 
             ->passwordReset()
-            ->profile() //isSimple: true)
+            ->profile(isSimple: false) //isSimple: true)
             ->spa()
             // ->default()
             // ->brandName(__('Engineer portal'))
             ->login()
+            ->registration(RegisterStudent::class)
             ->databaseNotifications()
             // ->databaseNotificationsPolling('30s')
             ->brandLogo(asset('/svg/logo_entreprises.svg'))
