@@ -133,7 +133,7 @@ class StudentResource extends Core\BaseResource
                     ->wrap(),
                 Tables\Columns\TextColumn::make('program')
                     // ->formatStateUsing(fn ($record) => $record->level->getLabel() . ',' . $record->program->getLabel())
-                    ->tooltip(fn ($record) => $record->level->getLabel() . ',' . $record->program->getDescription())
+                    ->tooltip(fn ($record) => $record->level->getLabel() . ',' . $record->program?->getDescription())
                     ->badge(),
                 Tables\Columns\TextColumn::make('level')
                     ->toggleable(isToggledHiddenByDefault: true)
