@@ -162,6 +162,11 @@
                 </div>
                 <div class="col-lg-2 col-md-4 col-6 mb-4">
                     <div class="footer-widget">
+
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6 mb-4">
+                    <div class="footer-widget">
                         <h5 class="mb-4 text-primary font-secondary">{{__('Quick Links')}}</h5>
                         <ul class="list-unstyled">
                             <li class="mb-2"><a href="#!">{{__('Administration space')}}</a>
@@ -171,19 +176,6 @@
                             <li class="mb-2"><a href="#!">{{__('Entreprise space')}}</a>
                             </li>
                             <li class="mb-2"><a href="#!">{{__('Engineer space')}}</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 col-6 mb-4">
-                    <div class="footer-widget">
-                        <h5 class="mb-4 text-primary font-secondary">Other Links</h5>
-                        <ul class="list-unstyled">
-                            <li class="list-inline-item me-4"><a class="text-black" href="privacy-policy.html">Privacy
-                                    Policy</a>
-                            </li>
-                            <li class="list-inline-item me-4"><a class="text-black" href="terms.html">Terms &amp;
-                                    Conditions</a>
                             </li>
                         </ul>
                     </div>
