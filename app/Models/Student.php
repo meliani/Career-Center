@@ -6,27 +6,33 @@ use App\Enums;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasAvatar;
 use Filament\Models\Contracts\HasName;
+use Filament\Notifications\Auth\ResetPassword;
+use Filament\Notifications\Auth\VerifyEmail;
 use Filament\Panel;
+use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 use Jeffgreco13\FilamentBreezy\Traits\TwoFactorAuthenticatable;
 
 class Student extends Authenticatable implements FilamentUser, HasAvatar, HasName
 {
+    use MustVerifyEmail;
     use Notifiable;
     use TwoFactorAuthenticatable;
 
     public function canAccessPanel(Panel $panel): bool
     {
-        if ($panel->getId() === 'app') {
-            return true;
-        }
+        // if ($panel->getId() === 'app') {
+        //     return true;
+        // }
 
         // return false;
 
-        // return str_ends_with($this->email, '@yourdomain.com') && $this->hasVerifiedEmail();
+        return str_ends_with($this->email, '@ine.inpt.ac.ma');
+        // && $this->hasVerifiedEmail();
 
     }
 
@@ -47,6 +53,11 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
         static::creating(function (Student $student) {
             $student->year_id = Year::current()->id;
             $student->name = $student->full_name;
+            $student->is_verified = false;
+        });
+
+        static::created(function (Student $student) {
+            $student->afterCreate();
         });
     }
 
@@ -54,6 +65,31 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
     {
         return "{$this->first_name} {$this->last_name}";
         // return 'hello';
+    }
+
+    protected function afterCreate(): void
+    {
+        /** @var \App\Models\User $user */
+        $student = $this;
+
+        //send veryfication email
+        $notification = new VerifyEmail();
+        $notification->url = URL::temporarySignedRoute(
+            'filament.app.auth.email-verification.verify',
+            now()->addMinutes(config('auth.verification.expire', 60)),
+            [
+                'id' => $student->getKey(),
+                'hash' => sha1($student->getEmailForVerification()),
+            ],
+        );
+        $student->notify($notification);
+
+        //or use reset password
+        // $token = app('auth.password.broker')->createToken($student);
+        // $notification = new ResetPassword($token);
+        //set panel for url
+        // $notification->url = filament()->getPanel('app')->getResetPasswordUrl($token, $student);
+        // $student->notify($notification);
     }
 
     protected $appends = [
@@ -86,6 +122,7 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
         'is_active',
         'graduated_at',
         'avatar_url',
+        'is_verified',
     ];
 
     protected $casts = [
@@ -97,6 +134,7 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
         'is_mobility' => 'boolean',
         'program' => Enums\Program::class,
         'level' => Enums\StudentLevel::class,
+        'is_verified' => 'boolean',
 
     ];
 
@@ -105,7 +143,7 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
         parent::boot();
         static::addGlobalScope(function ($query) {
             $query
-                ->where('year_id', 7);
+                ->where('year_id', Year::current()->id);
         });
     }
 
@@ -183,7 +221,7 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
 
     public function getLongFullNameAttribute()
     {
-        return $this->title->getLabel() . '. ' . $this->attributes['first_name'] . ' ' . $this->attributes['last_name'];
+        return ($this->title?->getLabel() ? $this->title->getLabel() . '. ' : '') . $this->attributes['first_name'] . ' ' . $this->attributes['last_name'];
     }
 
     public function scopeActive($query)

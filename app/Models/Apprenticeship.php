@@ -68,6 +68,7 @@ class Apprenticeship extends Model
         static::creating(function (Apprenticeship $apprenticeship) {
             $apprenticeship->student_id = auth()->id();
             $apprenticeship->year_id = Year::current()->id;
+            $apprenticeship->status = Enums\Status::Announced;
 
         });
 

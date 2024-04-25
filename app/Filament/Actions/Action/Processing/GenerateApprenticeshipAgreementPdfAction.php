@@ -5,6 +5,7 @@ namespace App\Filament\Actions\Action\Processing;
 use App\Models\Apprenticeship;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Notifications\Notification;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Spatie\Browsershot\Browsershot;
 
@@ -20,7 +21,12 @@ class GenerateApprenticeshipAgreementPdfAction extends Action
         $static->configure()->action(function (array $data, Apprenticeship $apprenticeship): void {
             $apprenticeship = $apprenticeship->load('student', 'organization');
             $template_view = 'pdf.templates.' . $apprenticeship->student->level->value . '.apprenticeship_agreement';
-            $pdf_path = 'storage/pdf/' . Str::slug($apprenticeship->student->name) . '-internship-agreement-' . time() . '.pdf';
+            $pdf_path = 'storage/pdf/apprenticeship_agreements/' . $apprenticeship->student->level->value;
+            $pdf_file_name = 'convention de stage' . Str::slug($apprenticeship->student->full_name) . '_' . $apprenticeship->id . '.pdf';
+
+            if (! File::exists($pdf_path)) {
+                File::makeDirectory($pdf_path, 0755, true);
+            }
             pdf()
                 ->view($template_view, ['internship' => $apprenticeship])
                 ->name('InternshipAgreement.pdf')
@@ -34,19 +40,19 @@ class GenerateApprenticeshipAgreementPdfAction extends Action
                 // })
                 ->save(
                     // storage_path(
-                    $pdf_path
+                    $pdf_path . '/' . $pdf_file_name
                     // 'storage/pdf/app.pdf'
                     // )
                 );
 
-            // $apprenticeship->pdf_path = 'pdf/' . Str::slug($apprenticeship->student->name) . '-internship-agreement-' . time() . '.pdf';
+            $apprenticeship->pdf_path = $pdf_path;
+            $apprenticeship->pdf_file_name = $pdf_file_name;
+            $apprenticeship->save();
 
-            // $apprenticeship->save();
-
-            // Notification::make()
-            //     ->title('Internship Agreement has been generated successfully')
-            //     ->success()
-            //     ->send();
+            Notification::make()
+                ->title('Internship Agreement has been generated successfully')
+                ->success()
+                ->send();
 
         });
 

@@ -5,17 +5,17 @@ namespace App\Filament\App\Resources;
 use App\Enums;
 use App\Filament\Actions;
 use App\Filament\App\Resources\ApprenticeshipResource\Pages;
+use App\Filament\Core\StudentBaseResource;
 use App\Models\Apprenticeship;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
-use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class ApprenticeshipResource extends Resource
+class ApprenticeshipResource extends StudentBaseResource
 {
     protected static ?string $model = Apprenticeship::class;
 
@@ -23,9 +23,9 @@ class ApprenticeshipResource extends Resource
 
     protected static bool $softDelete = true;
 
-    protected static ?string $modelLabel = 'Apprenticeship';
+    protected static ?string $modelLabel = 'Apprenticeship agreement';
 
-    protected static ?string $pluralModelLabel = 'Apprenticeships';
+    protected static ?string $pluralModelLabel = 'Apprenticeship agreements';
 
     public static function getModelLabel(): string
     {
@@ -59,7 +59,7 @@ class ApprenticeshipResource extends Resource
                 Forms\Components\RichEditor::make('description')
                     ->columnSpanFull(),
                 Forms\Components\SpatieTagsInput::make('keywords'),
-                Forms\Components\Fieldset::make(__('Internship dates'))
+                Forms\Components\Fieldset::make(__('Organization contacts'))
                     ->columns(4)
                     ->schema([
                         /* parrain_id
@@ -77,29 +77,37 @@ class ApprenticeshipResource extends Resource
                                     ->preload()
                                     ->required()
                                     ->createOptionForm([
-                                        Forms\Components\TextInput::make('name')
+                                        Forms\Components\Fieldset::make(__('Organization'))
+                                            ->columns(3)
+                                            ->schema([
+                                                Forms\Components\TextInput::make('name')
+                                                    ->required(),
+                                                Forms\Components\TextInput::make('city')
+                                                    ->required(),
+                                                Forms\Components\TextInput::make('country')
+                                                    ->required(),
+                                            ]),
+                                    ]),
+                                Forms\Components\Fieldset::make(__('Parrain contact'))
+                                    ->columns(3)
+                                    ->schema([
+                                        Forms\Components\Select::make('title')
+                                            ->options(Enums\Title::class)
                                             ->required(),
-                                        Forms\Components\TextInput::make('city')
+                                        Forms\Components\TextInput::make('first_name')
                                             ->required(),
-                                        Forms\Components\TextInput::make('country')
+                                        Forms\Components\TextInput::make('last_name')
+                                            ->required(),
+                                        Forms\Components\TextInput::make('function')
+                                            ->required(),
+                                        Forms\Components\TextInput::make('phone')
+                                            ->required(),
+                                        Forms\Components\TextInput::make('email')
+                                            ->required(),
+                                        Forms\Components\Select::make('role')
+                                            ->options(Enums\OrganizationContactRole::class)
                                             ->required(),
                                     ]),
-                                Forms\Components\Select::make('title')
-                                    ->options(Enums\Title::class)
-                                    ->required(),
-                                Forms\Components\TextInput::make('first_name')
-                                    ->required(),
-                                Forms\Components\TextInput::make('last_name')
-                                    ->required(),
-                                Forms\Components\TextInput::make('function')
-                                    ->required(),
-                                Forms\Components\TextInput::make('phone')
-                                    ->required(),
-                                Forms\Components\TextInput::make('email')
-                                    ->required(),
-                                Forms\Components\Select::make('role')
-                                    ->options(Enums\OrganizationContactRole::class)
-                                    ->required(),
                             ]),
                         Forms\Components\Select::make('supervisor_id')
                             ->relationship('supervisor', 'first_name')
@@ -107,22 +115,43 @@ class ApprenticeshipResource extends Resource
                             ->preload()
                             ->required()
                             ->createOptionForm([
-                                Forms\Components\Select::make('title')
-                                    ->options(Enums\Title::class)
-                                    ->required(),
-                                Forms\Components\TextInput::make('first_name')
-                                    ->required(),
-                                Forms\Components\TextInput::make('last_name')
-                                    ->required(),
-                                Forms\Components\TextInput::make('function')
-                                    ->required(),
-                                Forms\Components\TextInput::make('phone')
-                                    ->required(),
-                                Forms\Components\TextInput::make('email')
-                                    ->required(),
-                                Forms\Components\Select::make('role')
-                                    ->options(Enums\OrganizationContactRole::class)
-                                    ->required(),
+                                Forms\Components\Select::make('organization_id')
+                                    ->relationship('organization', 'name')
+                                    ->searchable()
+                                    ->preload()
+                                    ->required()
+                                    ->createOptionForm([
+                                        Forms\Components\Fieldset::make(__('Organization'))
+                                            ->columns(3)
+                                            ->schema([
+                                                Forms\Components\TextInput::make('name')
+                                                    ->required(),
+                                                Forms\Components\TextInput::make('city')
+                                                    ->required(),
+                                                Forms\Components\TextInput::make('country')
+                                                    ->required(),
+                                            ]),
+                                    ]),
+                                Forms\Components\Fieldset::make(__('Supervisor contact'))
+                                    ->columns(3)
+                                    ->schema([
+                                        Forms\Components\Select::make('title')
+                                            ->options(Enums\Title::class)
+                                            ->required(),
+                                        Forms\Components\TextInput::make('first_name')
+                                            ->required(),
+                                        Forms\Components\TextInput::make('last_name')
+                                            ->required(),
+                                        Forms\Components\TextInput::make('function')
+                                            ->required(),
+                                        Forms\Components\TextInput::make('phone')
+                                            ->required(),
+                                        Forms\Components\TextInput::make('email')
+                                            ->required(),
+                                        Forms\Components\Select::make('role')
+                                            ->options(Enums\OrganizationContactRole::class)
+                                            ->required(),
+                                    ]),
                             ]),
                     ]),
 
@@ -171,31 +200,32 @@ class ApprenticeshipResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('student_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('year_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('project_id')
-                    ->numeric()
-                    ->sortable(),
+                // Tables\Columns\TextColumn::make('student_id')
+                //     ->numeric()
+                //     ->sortable(),
+                // Tables\Columns\TextColumn::make('year_id')
+                //     ->numeric()
+                //     ->sortable(),
+                // Tables\Columns\TextColumn::make('project_id')
+                //     ->numeric()
+                //     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('announced_at')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('validated_at')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('assigned_department'),
-                Tables\Columns\TextColumn::make('received_at')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('signed_at')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('organization_id')
+                // Tables\Columns\TextColumn::make('announced_at')
+                //     ->dateTime()
+                //     ->sortable(),
+                // Tables\Columns\TextColumn::make('validated_at')
+                //     ->dateTime()
+                //     ->sortable(),
+                // Tables\Columns\TextColumn::make('assigned_department'),
+                // Tables\Columns\TextColumn::make('received_at')
+                //     ->dateTime()
+                //     ->sortable(),
+                // Tables\Columns\TextColumn::make('signed_at')
+                //     ->dateTime()
+                //     ->sortable(),
+                Tables\Columns\TextColumn::make('organization.name')
+                    ->label('Organization')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('title')
@@ -206,14 +236,14 @@ class ApprenticeshipResource extends Resource
                 Tables\Columns\TextColumn::make('ending_at')
                     ->dateTime()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('remuneration')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('currency')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('workload')
-                    ->numeric()
-                    ->sortable(),
+                // Tables\Columns\TextColumn::make('remuneration')
+                //     ->numeric()
+                //     ->sortable(),
+                // Tables\Columns\TextColumn::make('currency')
+                //     ->searchable(),
+                // Tables\Columns\TextColumn::make('workload')
+                //     ->numeric()
+                //     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -232,7 +262,7 @@ class ApprenticeshipResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                // Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

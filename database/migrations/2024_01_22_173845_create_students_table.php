@@ -36,6 +36,7 @@ return new class extends Migration
             $table->foreignId('year_id')->nullable();
             $table->tinyInteger('is_active')->nullable()->default(0);
             $table->date('graduated_at')->nullable();
+            $table->tinyInteger('is_verified')->nullable();
             $table->timestamps();
 
         });

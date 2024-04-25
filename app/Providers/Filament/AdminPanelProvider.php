@@ -137,7 +137,7 @@ class AdminPanelProvider extends PanelProvider
                     // FilamentJobsMonitorPlugin::make(),
                     LightSwitchPlugin::make()->position(Alignment::BottomCenter),
                     EnvironmentIndicatorPlugin::make()
-                        ->visible(fn () => auth()->user()?->isAdministrator()),
+                        ->visible(fn () => auth()->user()?->isSuperAdministrator()),
                     // \LaraZeus\Boredom\BoringAvatarPlugin::make()
                     //     ->variant(Variants::BEAM)
                     //     ->size(60)
