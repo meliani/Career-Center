@@ -14,6 +14,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\URL;
 
 class ApprenticeshipResource extends StudentBaseResource
 {
@@ -192,6 +193,10 @@ class ApprenticeshipResource extends StudentBaseResource
                                 ->label(__('Generate Apprenticeship Agreement PDF'))
                                 ->requiresConfirmation(),
                         ]),
+                        // display generated pdf
+                        // Forms\Components\Actions\Action::make('get pdf')
+                        //     ->url(fn (Apprenticeship $record) => app('url') . $record->pdf_path . '/' . urlencode($record->pdf_name)),
+
                     ]),
             ]);
     }
@@ -211,6 +216,10 @@ class ApprenticeshipResource extends StudentBaseResource
                 //     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('pdf_file_name')
+                    ->label('Agreement PDF')
+                    ->limit(20)
+                    ->url(fn (Apprenticeship $record) => URL::to($record->pdf_path . '/' . $record->pdf_file_name), shouldOpenInNewTab: true),
                 // Tables\Columns\TextColumn::make('announced_at')
                 //     ->dateTime()
                 //     ->sortable(),
