@@ -88,7 +88,8 @@
 </p>
 <p>avec L’Institut National des Postes et Télécommunications (INPT) représenté par Monsieur Ahmed Tamtaoui, Directeur de
     l'Institut National des Postes et Télécommunications,</p>
-<p>Concernant le stage de Fin d’études de <strong>{{$internship->student->long_full_name}}</strong>, élève ingénieur de
+<p>Concernant le stage de Fin d’études de <strong>{{($internship->student->long_full_name)}}</strong>, élève ingénieur
+    de
     la ﬁlière :<strong>
         {{$internship->student->program->getDescription()}}
     </strong></p>

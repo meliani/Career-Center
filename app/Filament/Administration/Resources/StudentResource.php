@@ -121,7 +121,7 @@ class StudentResource extends Core\BaseResource
                 // Tables\Columns\TextColumn::make('pin')
                 //     ->numeric()
                 //     ->sortable(),
-                Tables\Columns\TextColumn::make('Full name')
+                Tables\Columns\TextColumn::make('name')
                     ->formatStateUsing(function ($record) {
                         return $record->long_full_name;
                     })

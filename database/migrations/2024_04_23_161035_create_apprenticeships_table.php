@@ -33,6 +33,7 @@ class CreateApprenticeshipsTable extends Migration
             $table->foreignId('parrain_id');
             $table->foreignId('supervisor_id');
             $table->foreignId('tutor_id')->nullable();
+            $table->string('pdf_path')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

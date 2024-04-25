@@ -3,6 +3,7 @@
 namespace App\Filament\App\Resources;
 
 use App\Enums;
+use App\Filament\Actions;
 use App\Filament\App\Resources\ApprenticeshipResource\Pages;
 use App\Models\Apprenticeship;
 use Filament\Forms;
@@ -57,7 +58,7 @@ class ApprenticeshipResource extends Resource
                     ->columnSpanFull()->required(),
                 Forms\Components\RichEditor::make('description')
                     ->columnSpanFull(),
-                Forms\Components\TagsInput::make('keywords'),
+                Forms\Components\SpatieTagsInput::make('keywords'),
                 Forms\Components\Fieldset::make(__('Internship dates'))
                     ->columns(4)
                     ->schema([
@@ -154,15 +155,15 @@ class ApprenticeshipResource extends Resource
                             ->placeholder('Hours / Week')
                             ->numeric(),
                     ]),
-                Forms\Components\ToggleButtons::make('status')
-                    ->label(__('Status'))
-                    ->options([
-                        Enums\Status::Draft->getLabel(),
-                        Enums\Status::Announced->getLabel(),
-                    ])
-                    ->inline()
-                    ->required()
-                    ->columnSpanFull(),
+                Forms\Components\Fieldset::make(__('Internship documents'))
+                    // ->columns(6)
+                    ->schema([
+                        \Filament\Forms\Components\Actions::make([
+                            Actions\Action\Processing\GenerateApprenticeshipAgreementPdfAction::make('Generate Apprenticeship Agreement PDF')
+                                ->label(__('Generate Apprenticeship Agreement PDF'))
+                                ->requiresConfirmation(),
+                        ]),
+                    ]),
             ]);
     }
 

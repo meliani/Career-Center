@@ -26,6 +26,7 @@ class AppPanelProvider extends PanelProvider
             // ->topbar(false)
             ->topNavigation()
             ->authGuard('students')
+            ->authPasswordBroker('students')
             ->id('app')
             ->path('app')
             ->colors([

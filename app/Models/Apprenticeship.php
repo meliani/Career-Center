@@ -6,10 +6,12 @@ use App\Enums;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Tags\HasTags;
 
 class Apprenticeship extends Model
 {
     use HasFactory;
+    use HasTags;
     use SoftDeletes;
 
     protected $table = 'apprenticeships';
@@ -37,6 +39,7 @@ class Apprenticeship extends Model
         'parrain_id',
         'supervisor_id',
         'tutor_id',
+        'pdf_path',
 
     ];
 

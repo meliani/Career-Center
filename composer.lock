@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a53b476c2d5601a4297eaf69b6f35605",
+    "content-hash": "c19d1b91b019b93f12c112a3e91419c7",
     "packages": [
         {
             "name": "amphp/amp",
@@ -16865,7 +16865,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "parfaitementweb/filament-country-field": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

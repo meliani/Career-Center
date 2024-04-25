@@ -6,6 +6,7 @@ use App\Models\Student;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
+use Illuminate\Support\Facades\Auth;
 
 class StudentScope implements Scope
 {
@@ -20,28 +21,34 @@ class StudentScope implements Scope
         //     return;
         // }
         if (auth()->check()) {
-            if (auth()->user()->isSuperAdministrator() || auth()->user()->isAdministrator() || auth()->user()->isDirection()) {
-                // $builder->where('level', '=', 'thirdYear');
+            if (Auth::guard('students')->check()) {
+                $builder->where('id', '=', auth()->user()->id);
 
                 return;
-            } elseif (auth()->user()->isProgramCoordinator()) {
-                $builder->where('program', '=', auth()->user()->assigned_program);
+            } elseif (Auth::guard('web')->check()) {
+                if (auth()->user()->isSuperAdministrator() || auth()->user()->isAdministrator() || auth()->user()->isDirection()) {
+                    // $builder->where('level', '=', 'thirdYear');
 
-                return;
-            } elseif (auth()->user()->isDepartmentHead()) {
-                $builder
-                    ->whereHas('active_internship_agreement', function ($q) {
-                        $q->where('assigned_department', '=', auth()->user()->department);
-                    });
+                    return;
+                } elseif (auth()->user()->isProgramCoordinator()) {
+                    $builder->where('program', '=', auth()->user()->assigned_program);
 
-                return;
-            } elseif (auth()->user()->isProfessor()) {
-                $builder
-                    ->whereHas('projects', function ($q) {
-                        $q->whereHas('professors', function ($q) {
-                            $q->where('professor_id', '=', auth()->user()->id);
+                    return;
+                } elseif (auth()->user()->isDepartmentHead()) {
+                    $builder
+                        ->whereHas('active_internship_agreement', function ($q) {
+                            $q->where('assigned_department', '=', auth()->user()->department);
                         });
-                    });
+
+                    return;
+                } elseif (auth()->user()->isProfessor()) {
+                    $builder
+                        ->whereHas('projects', function ($q) {
+                            $q->whereHas('professors', function ($q) {
+                                $q->where('professor_id', '=', auth()->user()->id);
+                            });
+                        });
+                }
             } else {
                 abort(403, 'You are not authorized to view this page');
             }
