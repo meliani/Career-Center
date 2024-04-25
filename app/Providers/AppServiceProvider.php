@@ -65,15 +65,15 @@ class AppServiceProvider extends ServiceProvider
     private function configurePdf()
     {
         $top = 20;
-        $right = 20;
+        $right = 45;
         $bottom = 20;
-        $left = 20;
+        $left = 45;
 
         Pdf::default()
             ->format(Format::A4)
-            ->margins($top, $right, $bottom, $left, Unit::Pixel)
-            ->headerView('pdf.layout.header')
-            ->footerView('pdf.layout.footer');
+            ->margins($top, $right, $bottom, $left, Unit::Pixel);
+        // ->headerView('pdf.layout.header')
+        // ->footerView('pdf.layout.footer');
     }
 
     private function configureRateLimiter()

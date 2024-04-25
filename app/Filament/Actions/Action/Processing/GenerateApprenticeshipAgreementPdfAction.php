@@ -21,7 +21,7 @@ class GenerateApprenticeshipAgreementPdfAction extends Action
             $apprenticeship = $apprenticeship->load('student', 'organization');
             $pdf_path = 'storage/pdf/' . Str::slug($apprenticeship->student->name) . '-internship-agreement-' . time() . '.pdf';
             pdf()
-                ->view('pdf.base', ['internship' => $apprenticeship])
+                ->view('pdf.templates.FirstYear.apprenticeship_agreement', ['internship' => $apprenticeship])
                 ->name('InternshipAgreement.pdf')
                 // ->withBrowsershot(function (Browsershot $browsershot) {
                 //     $browsershot
@@ -33,8 +33,8 @@ class GenerateApprenticeshipAgreementPdfAction extends Action
                 // })
                 ->save(
                     // storage_path(
-                    // $pdf_path
-                    'storage/pdf/app.pdf'
+                    $pdf_path
+                    // 'storage/pdf/app.pdf'
                     // )
                 );
 
