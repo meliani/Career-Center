@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums;
+use App\Enums\Role;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasAvatar;
 use Filament\Models\Contracts\HasName;
@@ -227,5 +228,12 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
+    }
+
+    public function getProgramCoordinator()
+    {
+        return User::where('role', Role::ProgramCoordinator)
+            ->where('program', $this->program)
+            ->first();
     }
 }
