@@ -42,7 +42,7 @@ class StudentResource extends Core\BaseResource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::count();
+        return static::getModel()::where('level', 'ThirdYear')->count();
     }
 
     public static function getnavigationGroup(): string
@@ -175,7 +175,15 @@ class StudentResource extends Core\BaseResource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('level')
+                    ->options(Enums\StudentLevel::class)
+                    ->label('Level')
+                    ->default(Enums\StudentLevel::ThirdYear->value)
+                    ->placeholder('All levels'),
+                Tables\Filters\SelectFilter::make('program')
+                    ->options(Enums\Program::class)
+                    ->label('Program')
+                    ->placeholder('All programs'),
             ])
             ->actions([
                 \STS\FilamentImpersonate\Tables\Actions\Impersonate::make()

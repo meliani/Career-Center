@@ -97,8 +97,7 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
         parent::boot();
         static::addGlobalScope(function ($query) {
             $query
-                ->where('year_id', 7)
-                ->where('level', 'ThirdYear');
+                ->where('year_id', 7);
         });
     }
 
