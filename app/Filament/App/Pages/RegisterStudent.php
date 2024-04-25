@@ -4,6 +4,7 @@ namespace App\Filament\App\Pages;
 
 use App\Enums;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\ToggleButtons;
 use Filament\Forms\Form;
@@ -36,6 +37,9 @@ class RegisterStudent extends BaseRegister
                 $this->getPasswordConfirmationFormComponent(),
                 ToggleButtons::make('level')
                     ->options(Enums\StudentLevel::class)
+                    ->required(),
+                Select::make('program')
+                    ->options(Enums\Program::class)
                     ->required(),
                 TextInput::make('email_perso')
                     ->email()
