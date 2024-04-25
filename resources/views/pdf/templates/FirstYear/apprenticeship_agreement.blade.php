@@ -700,31 +700,31 @@
     </h2>
 
 
-    <div class="text-center text-sm font-semibold">
+    <div class="text-sm font-semibold">
         Entre : L’Institut National des Postes et Télécommunications
     </div>
-    <div class="text-center text-xs">
+    <div class="text-xs">
         Situé au Av. Allal El Fassi, Madinat Al Irfane, Rabat - Maroc
     </div>
-    <div class="text-center text-xs">
+    <div class="text-xs">
         Représenté par Monsieur Ahmed Tamtaoui,
         Directeur de
         l'Institut National des Postes et Télécommunications,
     </div>
-    <div class="text-center text-sm font-semibold mt-2">
+    <div class="text-sm font-semibold mt-2">
         Et désigné dans ce qui suit par l’INPT
     </div>
-    <div class="text-center text-sm font-semibold mt-2">
+    <div class="text-sm font-semibold mt-2">
         Et : <strong>{{$internship->organization->name}}</strong>
     </div>
     <div class="text-center text-xs">
         {{$internship->organization->address}}
     </div>
-    <div class="text-center text-xs">
+    <div class="text-xs">
         Représenté par <strong>{{$internship->parrain->full_name}}</strong>,
         <strong>{{$internship->parrain->function}}</strong>
     </div>
-    <div class="text-center text-sm font-semibold mt-2">
+    <div class="text-sm font-semibold mt-2">
         Et désigné dans ce qui suit par l’organisme d’accueil
     </div>
 
@@ -1506,13 +1506,15 @@
     </div>
     <div class="flex flex-row justify-between items-center mt-4 space-x-4 text-xs text-center">
         <div class="border-2 border-gray-300 w-full p-0 flex flex-col items-center min-h-[250px]">
-            <div class="min-h-[100px] pt-2 text-gray-800">Date et Signature du représentant de l’organisme d'accueil
+            <div class="min-h-[100px] pt-2 text-gray-800">Date et Signature du représentant et
+                Cachet de l’organisme d'accueil
             </div>
-            <div class="border-t-2 pt-2 text-gray-400 text-center">Cachet de l’organisme d'accueil</div>
+            {{-- <div class="border-t-2 pt-2 text-gray-400 text-center">Cachet de l’organisme d'accueil</div> --}}
         </div>
         <div class="border-2 border-gray-300 w-full p-0 flex flex-col items-center min-h-[250px]">
-            <div class="min-h-[100px] text-gray-800 pt-2">Date et Signature du stagiaire</div>
-            <div class="border-t-2 pt-2 text-gray-400 text-center">Mention manuscrite « Lu et approuvé »</div>
+            <div class="min-h-[100px] text-gray-800 pt-2">Date et Signature du stagiaire avec Mention manuscrite « Lu et
+                approuvé »</div>
+            {{-- <div class="border-t-2 pt-2 text-gray-400 text-center">Mention manuscrite « Lu et approuvé »</div> --}}
         </div>
         <div class="border-2 border-gray-300 w-full pt-0 flex flex-col justify-between min-h-[250px]">
             <div class="pt-2 text-gray-800 text-center">Le représentant de l’INPT</div>
