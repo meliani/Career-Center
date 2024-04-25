@@ -708,9 +708,8 @@
         Situé au Av. Allal El Fassi, Madinat Al Irfane, Rabat - Maroc
     </div>
     <div class="text-xs">
-        Représenté par Monsieur Ahmed Tamtaoui,
-        Directeur de
-        l'Institut National des Postes et Télécommunications,
+        Représenté par Monsieur Ahmed Kensi,
+        Directeur Adjoint des Stages et Relations avec les Entreprises par intérim,
     </div>
     <div class="text-sm font-semibold mt-2">
         Et désigné dans ce qui suit par l’INPT
