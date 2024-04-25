@@ -26,7 +26,7 @@ class ApprenticeshipAgreementContact extends Model
         'apprenticeship_id',
     ];
 
-    protected $enumCasts = [
+    protected $casts = [
         'role' => Enums\OrganizationContactRole::class,
     ];
 

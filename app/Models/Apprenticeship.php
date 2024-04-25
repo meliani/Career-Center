@@ -45,11 +45,20 @@ class Apprenticeship extends Model
 
     protected $casts = [
         'assigned_department' => Enums\Department::class,
-        'starting_at' => 'datetime',
-        'ending_at' => 'datetime',
+        'starting_at' => 'date:d/m/Y',
+        'ending_at' => 'date:d/m/Y',
         'remuneration' => 'decimal:2',
         'keywords' => 'array',
 
+    ];
+
+    protected $dates = [
+        'announced_at',
+        'validated_at',
+        'received_at',
+        'signed_at',
+        'starting_at',
+        'ending_at',
     ];
 
     protected static function booted(): void
@@ -96,5 +105,10 @@ class Apprenticeship extends Model
     public function supervisor()
     {
         return $this->belongsTo(ApprenticeshipAgreementContact::class);
+    }
+
+    public function getDurationInWeeksAttribute()
+    {
+        return $this->starting_at->diffInWeeks($this->ending_at);
     }
 }

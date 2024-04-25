@@ -693,10 +693,11 @@
         </svg>
     </div>
     <h1 class="text-xl font-bold text-center mb-2 mt-10">
-        CONVENTION DE STAGE "OUVRIER"
+        CONVENTION DE STAGE "TECHNIQUE"
     </h1>
     <h2 class="text-xs text-center mb-10 mx-auto max-w-sm">
-        1ère Année du cycle des Ingénieurs d’État (INE) de l’Institut National des Postes et Télécommunications (INPT)
+        2ème Année du cycle des Ingénieurs d’État (INE)
+        de l’Institut National des Postes et Télécommunications (INPT)
     </h2>
 
 
@@ -734,8 +735,7 @@
             <p>L'INPT forme des ingénieurs en Réseaux de Télécommunications, de l’Informatique et du Multimédia. Ces
                 ingénieurs pourront être
                 de futurs responsables pour des entreprises, dans un monde ouvert aux dynamiques des réseaux et des
-                systèmes
-                d'informations.</p>
+                systèmes d'informations.</p>
             <p>La mise en situation professionnelle est une étape importante dans la formation d’ingénieurs, elle permet
                 aux élèves de se
                 confronter aux réalités techniques, scientifiques, économiques et sociales. C’est dans cette optique que
@@ -743,27 +743,28 @@
                 volonté d’avoir dans ses programmes de formation, des stages de divers types orientés vers des objectifs
                 globaux et spécifiques
                 (Stage Ouvrier, Stage Technique et Stage de Projet de Fin d’Études).</p>
-            <p>Durant le stage ouvrier dont la durée est de 4 semaines ou plus, l’élève ingénieur occupe généralement un
-                poste où il se familiarise
-                avec les conditions de travail et observe le fonctionnement de l’organisme d’accueil.</p>
+            <p>Durant le stage technique dont la durée est de 4 à 8 semaines, l’élève ingénieur effectue une recherche
+                personnelle sur le thème
+                proposé.</p>
         </div>
         <h2 class="text-base font-semibold mb-2">Article 1</h2>
         <div class="text-xs mb-2">
             <p>La présente convention règle les rapports entre l’organisme d’accueil d'une part, l’INPT et le stagiaire
                 d'autre part.</p>
             <p>Cette convention concerne l’élève ingénieur :
-                <strong>{{$internship->student->long_full_name}}</strong>, élève ingénieur de la 1ère année du cycle INE
+                <strong>{{$internship->student->long_full_name}}</strong>, élève ingénieur de la 2ème année du cycle INE
                 de l’INPT.
             </p>
         </div>
         <h2 class="text-base font-semibold mb-2">Article 2</h2>
         <div class="text-xs mb-2">
             <p>L’étudiant(e) sera encadré(e) par un Responsable de stage désigné par l'organisme d'accueil
-                {{$internship->supervisor->full_name}}</p>
+                <strong>{{$internship->supervisor->full_name}}</strong>
+            </p>
             <p>Le thème du stage est établi d'un commun accord entre l’organisme d’accueil et l’élève ingénieur.</p>
             <h2 class="text-base font-semibold mb-2">Article 3</h2>
             <p class="text-xs mb-2">
-            <p>Thème du stage : <strong>{{$internship->title}}</strong></p>
+            <p>Thème du stage : {{$internship->title}}</p>
             <p>
                 La durée du stage est fixée à <strong>{{$internship->duration_in_weeks}} semaines</strong>, du
                 <strong>{{$internship->starting_at->format('d/m/Y')}}</strong> au
@@ -1485,15 +1486,12 @@
         <h2 class="text-base font-semibold mb-2">Article 7</h2>
         <div class="text-xs mb-2">
             <p>A la fin du stage, l'organisme d’accueil est prié d’établir une attestation mentionnant la période du
-                stage.
-                De plus le Responsable du
+                stage. De plus le Responsable du
                 stage communiquera à l’INPT, dès la fin du stage, son appréciation sur le travail et le comportement de
                 l’élève ingénieur stagiaire au
                 moyen d'une fiche d'évaluation élaborée par les soins de l’INPT.</p>
             <p>Cette lettre sera envoyée à l’attention du Directeur Adjoint chargé des Relations avec les Entreprises,
-                par
-                fax au N° 00–212– 537–
-                77–30–44.</p>
+                par fax au N° 00–212–537–77–30–44.</p>
         </div>
         <h2 class="text-base font-semibold mb-2">Article 8</h2>
         <p class="text-xs mb-2">

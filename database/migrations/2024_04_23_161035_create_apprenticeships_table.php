@@ -22,6 +22,7 @@ class CreateApprenticeshipsTable extends Migration
             $table->dateTime('signed_at')->nullable();
             $table->text('observations')->nullable();
             $table->foreignId('organization_id');
+            $table->string('office_location')->nullable();
             $table->string('title')->nullable();
             $table->text('description')->nullable();
             $table->text('keywords')->nullable();
