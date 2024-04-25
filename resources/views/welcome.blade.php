@@ -54,13 +54,12 @@
                         <ul class="navbar-nav">
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button"
-                                    data-bs-toggle="dropdown" aria-expanded="true">
+                                    data-bs-toggle="dropdown" aria-expanded="true" style="padding-right: 1rem;">
                                     {{__('Language')}}
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="languageDropdown">
                                     <li><a class="dropdown-item" href="{{ url('lang/en') }}">{{__('English')}}</a></li>
                                     <li><a class="dropdown-item" href="{{ url('lang/fr') }}">{{__('French')}}</a></li>
-                                    <!-- Add more languages here -->
                                 </ul>
                             </li>
                         </ul>
