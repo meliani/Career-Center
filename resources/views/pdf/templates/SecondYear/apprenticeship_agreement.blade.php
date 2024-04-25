@@ -708,7 +708,9 @@
         Situé au Av. Allal El Fassi, Madinat Al Irfane, Rabat - Maroc
     </div>
     <div class="text-center text-xs">
-        Représenté par M. HILALI Abdelaziz, Directeur Adjoint des Relations Entreprises
+        Représenté par Monsieur Ahmed Tamtaoui,
+        Directeur de
+        l'Institut National des Postes et Télécommunications,
     </div>
     <div class="text-center text-sm font-semibold mt-2">
         Et désigné dans ce qui suit par l’INPT
