@@ -32,7 +32,7 @@
     <header class="navigation bg-tertiary">
         <nav class="navbar navbar-expand-lg navbar-light text-center py-3">
             <div class="container">
-                <a class="navbar-brand" href="index.html">
+                <a class="navbar-brand" href="/">
                     <img loading="preload" decoding="async" class="img-fluid" width="280"
                         src="frontpage/images/logo_entreprises.svg" alt="Wallet">
                 </a>
