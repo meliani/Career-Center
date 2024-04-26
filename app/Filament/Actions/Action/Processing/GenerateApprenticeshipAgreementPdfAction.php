@@ -35,7 +35,7 @@ class GenerateApprenticeshipAgreementPdfAction extends Action
             pdf()
                 ->withBrowsershot(function (Browsershot $browsershot) use ($chromePath) {
                     $browsershot
-                        ->noSandbox()
+                        // ->noSandbox()
                         ->setChromePath($chromePath);
                 })
                 ->view($template_view, ['internship' => $apprenticeship])
