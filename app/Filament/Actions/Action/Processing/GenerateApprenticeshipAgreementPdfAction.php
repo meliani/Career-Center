@@ -16,9 +16,11 @@ class GenerateApprenticeshipAgreementPdfAction extends Action
 {
     public static function make(?string $name = null): static
     {
+
         $static = app(static::class, [
             'name' => $name ?? static::getDefaultName(),
         ]);
+
         $static->configure()->action(function (array $data, Apprenticeship $apprenticeship): void {
             $apprenticeship = $apprenticeship->load('student', 'organization');
             $template_view = 'pdf.templates.' . $apprenticeship->student->level->value . '.apprenticeship_agreement';
@@ -28,17 +30,24 @@ class GenerateApprenticeshipAgreementPdfAction extends Action
             if (! File::exists($pdf_path)) {
                 File::makeDirectory($pdf_path, 0755, true);
             }
+
+            $chromePath = env('BROWSERSHOT_CHROME_PATH');
             pdf()
+                ->withBrowsershot(function (Browsershot $browsershot) use ($chromePath) {
+                    $browsershot
+                        ->noSandbox()
+                        ->setChromePath($chromePath);
+                })
                 ->view($template_view, ['internship' => $apprenticeship])
-                // ->name('InternshipAgreement.pdf')
-                // ->withBrowsershot(function (Browsershot $browsershot) {
-                //     $browsershot
-                //         // ->scale(0.5)
-                //         ->noSandbox()
-                //         ->setNodeBinary('/home/mo/.nvm/versions/node/v20.3.0/bin/node')
-                //         ->setNpmBinary('/home/mo/.nvm/versions/node/v20.3.0/bin/npm');
-                //     // ->setBinPath('/usr/bin/chromium-browser');
-                // })
+                    // ->name('InternshipAgreement.pdf')
+                    // ->withBrowsershot(function (Browsershot $browsershot) {
+                    //     $browsershot
+                    //         // ->scale(0.5)
+                    //         ->noSandbox()
+                    //         ->setNodeBinary('/home/mo/.nvm/versions/node/v20.3.0/bin/node')
+                    //         ->setNpmBinary('/home/mo/.nvm/versions/node/v20.3.0/bin/npm');
+                    //     // ->setBinPath('/usr/bin/chromium-browser');
+                    // })
                 ->save(
                     // storage_path(
                     $pdf_path . '/' . $pdf_file_name
