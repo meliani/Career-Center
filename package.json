@@ -16,5 +16,8 @@
         "tailwindcss": "^3.4.1",
         "tippy.js": "^6.3.7",
         "vite": "^5.0.0"
+    },
+    "dependencies": {
+        "pupeteer": "^0.0.1"
     }
 }
