@@ -4,13 +4,12 @@
 // use RickDBCN\FilamentEmail\Filament\Resources\EmailResource;
 // use RickDBCN\FilamentEmail\Models\Email;
 use App\Filament\Administration\Resources\EmailLogResource as EmailResource;
-use App\Models\Email;
 
 return [
 
     'resource' => [
         'class' => EmailResource::class,
-        'model' => Email::class,
+        'model' => App\Models\FilamentEmailLog::class,
         'group' => 'System',
         'sort' => null,
         'default_sort_column' => 'created_at',

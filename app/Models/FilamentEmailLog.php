@@ -19,8 +19,14 @@ use RickDBCN\FilamentEmail\Models\Email as FilamentEmail;
  * @property string $sent_debug_info
  * @property Carbon|null $created_at
  */
-class Email extends FilamentEmail
+class FilamentEmailLog extends FilamentEmail
 {
+    protected $table = 'filament_email_log';
+
+    protected $guarded = [];
+
+    protected $connection = 'logging_database';
+
     public static function canViewAny(): bool
     {
         return auth()->user()->isAdministrator() || auth()->user()->isSuperAdministrator();
