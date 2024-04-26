@@ -22,6 +22,10 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName
     use Notifiable;
     use TwoFactorAuthenticatable;
 
+    protected $table = 'users';
+
+    protected $connection = 'backend_database';
+
     /**
      * The attributes that are mass assignable.
      *

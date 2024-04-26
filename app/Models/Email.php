@@ -2,11 +2,9 @@
 
 namespace App\Models;
 
-
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use RickDBCN\FilamentEmail\Models\Email as FilamentEmail;
+
 /**
  * Email
  *
@@ -23,17 +21,18 @@ use RickDBCN\FilamentEmail\Models\Email as FilamentEmail;
  */
 class Email extends FilamentEmail
 {
-    public Static function canViewAny(): bool
+    public static function canViewAny(): bool
     {
-        return auth()->user()->isAdministrator();
-    }
-    public Static function canView(): bool
-    {
-        return auth()->user()->isAdministrator();
-    }
-    public Static function canAccess(): bool
-    {
-        return auth()->user()->isAdministrator();
+        return auth()->user()->isAdministrator() || auth()->user()->isSuperAdministrator();
     }
 
+    public static function canView(): bool
+    {
+        return auth()->user()->isAdministrator() || auth()->user()->isSuperAdministrator();
+    }
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()->isAdministrator() || auth()->user()->isSuperAdministrator();
+    }
 }
