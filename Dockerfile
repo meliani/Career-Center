@@ -19,7 +19,7 @@ RUN apt install -y php8.2\
     php8.2-xml\
     php8.2-bcmath\
     php8.2-pdo\
-    php8.0-sqlite
+    php8.2-sqlite
 
 
 # Install php-fpm
