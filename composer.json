@@ -7,17 +7,16 @@
         "framework"
     ],
     "license": "MIT",
-    "repositories": [ 
+    "repositories": [
         {
-        "type": "path",
-        "url": "./packages/filament-country-region-fields"
+            "type": "path",
+            "url": "./packages/filament-country-region-fields"
         }
     ],
     "require": {
         "php": "^8.2",
         "awcodes/light-switch": "^1.0",
         "bezhansalleh/filament-language-switch": "^3.0",
-        "caneara/quest": "^4.0",
         "cmixin/enhanced-period": "^1.2",
         "doctrine/dbal": "^3.8",
         "filament/filament": "^3.1",
@@ -115,6 +114,6 @@
             "php-http/discovery": true
         }
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "beta",
     "prefer-stable": true
 }

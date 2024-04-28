@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c19d1b91b019b93f12c112a3e91419c7",
+    "content-hash": "e71888e921252c0ed12ab7d599d084f0",
     "packages": [
         {
             "name": "amphp/amp",
@@ -1177,16 +1177,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.305.0",
+            "version": "3.305.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "6992342acf7dd4501163c6cddabe76c74f2020ad"
+                "reference": "fc26a2ebf720e0b75a353d7e8fe206796671e00b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/6992342acf7dd4501163c6cddabe76c74f2020ad",
-                "reference": "6992342acf7dd4501163c6cddabe76c74f2020ad",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/fc26a2ebf720e0b75a353d7e8fe206796671e00b",
+                "reference": "fc26a2ebf720e0b75a353d7e8fe206796671e00b",
                 "shasum": ""
             },
             "require": {
@@ -1266,9 +1266,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.305.0"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.305.4"
             },
-            "time": "2024-04-22T18:07:07+00:00"
+            "time": "2024-04-26T18:06:31+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -1606,19 +1606,20 @@
         },
         {
             "name": "calebporzio/sushi",
-            "version": "v2.5.1",
+            "version": "v2.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/calebporzio/sushi.git",
-                "reference": "20aad4e9d9ea74df64a86f6d327e55bdfc92d204"
+                "reference": "01dd34fe3374f5fb7ce63756c0419385e31cd532"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/calebporzio/sushi/zipball/20aad4e9d9ea74df64a86f6d327e55bdfc92d204",
-                "reference": "20aad4e9d9ea74df64a86f6d327e55bdfc92d204",
+                "url": "https://api.github.com/repos/calebporzio/sushi/zipball/01dd34fe3374f5fb7ce63756c0419385e31cd532",
+                "reference": "01dd34fe3374f5fb7ce63756c0419385e31cd532",
                 "shasum": ""
             },
             "require": {
+                "ext-pdo_sqlite": "*",
                 "ext-sqlite3": "*",
                 "illuminate/database": "^5.8 || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0 || ^11.0",
                 "illuminate/support": "^5.8 || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0 || ^11.0",
@@ -1647,7 +1648,7 @@
             ],
             "description": "Eloquent's missing \"array\" driver.",
             "support": {
-                "source": "https://github.com/calebporzio/sushi/tree/v2.5.1"
+                "source": "https://github.com/calebporzio/sushi/tree/v2.5.2"
             },
             "funding": [
                 {
@@ -1655,61 +1656,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-02-05T14:40:50+00:00"
-        },
-        {
-            "name": "caneara/quest",
-            "version": "v4.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/caneara/quest.git",
-                "reference": "3fb5ad3641cc14e1bd35783275cd45b6f7f34354"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/caneara/quest/zipball/3fb5ad3641cc14e1bd35783275cd45b6f7f34354",
-                "reference": "3fb5ad3641cc14e1bd35783275cd45b6f7f34354",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.4|^8.0"
-            },
-            "require-dev": {
-                "orchestra/testbench": "^8.0",
-                "phpunit/phpunit": "^10.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Quest\\ServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Quest\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "A package that provides pseudo fuzzy-searching to Laravel database queries.",
-            "homepage": "https://github.com/caneara/quest",
-            "keywords": [
-                "fuzzy",
-                "laravel",
-                "php",
-                "quest",
-                "search"
-            ],
-            "support": {
-                "issues": "https://github.com/caneara/quest/issues",
-                "source": "https://github.com/caneara/quest/tree/v4.0.0"
-            },
-            "abandoned": true,
-            "time": "2023-09-21T07:24:46+00:00"
+            "time": "2024-04-24T15:23:03+00:00"
         },
         {
             "name": "carbonphp/carbon-doctrine-types",
@@ -2435,16 +2382,16 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "3.8.3",
+            "version": "3.8.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "db922ba9436b7b18a23d1653a0b41ff2369ca41c"
+                "reference": "b05e48a745f722801f55408d0dbd8003b403dbbd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/db922ba9436b7b18a23d1653a0b41ff2369ca41c",
-                "reference": "db922ba9436b7b18a23d1653a0b41ff2369ca41c",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/b05e48a745f722801f55408d0dbd8003b403dbbd",
+                "reference": "b05e48a745f722801f55408d0dbd8003b403dbbd",
                 "shasum": ""
             },
             "require": {
@@ -2528,7 +2475,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/dbal/issues",
-                "source": "https://github.com/doctrine/dbal/tree/3.8.3"
+                "source": "https://github.com/doctrine/dbal/tree/3.8.4"
             },
             "funding": [
                 {
@@ -2544,7 +2491,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-03-03T15:55:06+00:00"
+            "time": "2024-04-25T07:04:44+00:00"
         },
         {
             "name": "doctrine/deprecations",
@@ -6303,16 +6250,16 @@
         },
         {
             "name": "livewire/livewire",
-            "version": "v3.4.10",
+            "version": "v3.4.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/livewire/livewire.git",
-                "reference": "6f90e2d7f8e80a97a7406c22a0fbc61ca1256ed9"
+                "reference": "8a78d0c3ae9b4c96a2d8932ea4ac0dc782325de0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/livewire/livewire/zipball/6f90e2d7f8e80a97a7406c22a0fbc61ca1256ed9",
-                "reference": "6f90e2d7f8e80a97a7406c22a0fbc61ca1256ed9",
+                "url": "https://api.github.com/repos/livewire/livewire/zipball/8a78d0c3ae9b4c96a2d8932ea4ac0dc782325de0",
+                "reference": "8a78d0c3ae9b4c96a2d8932ea4ac0dc782325de0",
                 "shasum": ""
             },
             "require": {
@@ -6367,7 +6314,7 @@
             "description": "A front-end framework for Laravel.",
             "support": {
                 "issues": "https://github.com/livewire/livewire/issues",
-                "source": "https://github.com/livewire/livewire/tree/v3.4.10"
+                "source": "https://github.com/livewire/livewire/tree/v3.4.11"
             },
             "funding": [
                 {
@@ -6375,7 +6322,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-04-02T14:22:50+00:00"
+            "time": "2024-04-24T12:14:15+00:00"
         },
         {
             "name": "maatwebsite/excel",
@@ -7587,16 +7534,16 @@
         },
         {
             "name": "pboivin/filament-peek",
-            "version": "v2.2.5",
+            "version": "v2.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pboivin/filament-peek.git",
-                "reference": "0a7dc00df8417da0e06a29eedb6be99586dd8d14"
+                "reference": "1cc83a504844ae3b109d2a8143a37d2f1ef661ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pboivin/filament-peek/zipball/0a7dc00df8417da0e06a29eedb6be99586dd8d14",
-                "reference": "0a7dc00df8417da0e06a29eedb6be99586dd8d14",
+                "url": "https://api.github.com/repos/pboivin/filament-peek/zipball/1cc83a504844ae3b109d2a8143a37d2f1ef661ce",
+                "reference": "1cc83a504844ae3b109d2a8143a37d2f1ef661ce",
                 "shasum": ""
             },
             "require": {
@@ -7655,9 +7602,9 @@
             ],
             "support": {
                 "issues": "https://github.com/pboivin/filament-peek/issues",
-                "source": "https://github.com/pboivin/filament-peek/tree/v2.2.5"
+                "source": "https://github.com/pboivin/filament-peek/tree/v2.2.6"
             },
-            "time": "2024-03-11T13:33:37+00:00"
+            "time": "2024-04-24T14:30:57+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -9132,16 +9079,16 @@
         },
         {
             "name": "rickdbcn/filament-email",
-            "version": "v1.2.2",
+            "version": "v1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/RickDBCN/filament-email.git",
-                "reference": "6bf9e6693880c0c4dd5af6be3208af38b08c60a0"
+                "reference": "47e3ba04d7540592afac3d055ca1545f60ebe43d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/RickDBCN/filament-email/zipball/6bf9e6693880c0c4dd5af6be3208af38b08c60a0",
-                "reference": "6bf9e6693880c0c4dd5af6be3208af38b08c60a0",
+                "url": "https://api.github.com/repos/RickDBCN/filament-email/zipball/47e3ba04d7540592afac3d055ca1545f60ebe43d",
+                "reference": "47e3ba04d7540592afac3d055ca1545f60ebe43d",
                 "shasum": ""
             },
             "require": {
@@ -9198,9 +9145,9 @@
             ],
             "support": {
                 "issues": "https://github.com/RickDBCN/filament-email/issues",
-                "source": "https://github.com/RickDBCN/filament-email/tree/v1.2.2"
+                "source": "https://github.com/RickDBCN/filament-email/tree/v1.3.0"
             },
-            "time": "2024-04-23T11:57:34+00:00"
+            "time": "2024-04-25T22:15:03+00:00"
         },
         {
             "name": "ryangjchandler/blade-capture-directive",
@@ -14590,26 +14537,26 @@
         },
         {
             "name": "pestphp/pest-plugin-laravel",
-            "version": "v2.3.0",
+            "version": "v2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pestphp/pest-plugin-laravel.git",
-                "reference": "2f6ea6233bb74ec65d969ecdea56bdbd3d1e2f0e"
+                "reference": "53df51169a7f9595e06839cce638c73e59ace5e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pestphp/pest-plugin-laravel/zipball/2f6ea6233bb74ec65d969ecdea56bdbd3d1e2f0e",
-                "reference": "2f6ea6233bb74ec65d969ecdea56bdbd3d1e2f0e",
+                "url": "https://api.github.com/repos/pestphp/pest-plugin-laravel/zipball/53df51169a7f9595e06839cce638c73e59ace5e8",
+                "reference": "53df51169a7f9595e06839cce638c73e59ace5e8",
                 "shasum": ""
             },
             "require": {
-                "laravel/framework": "^10.44.0|^11.0",
-                "pestphp/pest": "^2.33.6",
+                "laravel/framework": "^10.48.9|^11.5.0",
+                "pestphp/pest": "^2.34.7",
                 "php": "^8.1.0"
             },
             "require-dev": {
-                "laravel/dusk": "^7.12.3",
-                "orchestra/testbench": "^8.21.1|^9.0.0",
+                "laravel/dusk": "^7.13.0",
+                "orchestra/testbench": "^8.22.3|^9.0.4",
                 "pestphp/pest-dev-tools": "^2.16.0"
             },
             "type": "library",
@@ -14648,7 +14595,7 @@
                 "unit"
             ],
             "support": {
-                "source": "https://github.com/pestphp/pest-plugin-laravel/tree/v2.3.0"
+                "source": "https://github.com/pestphp/pest-plugin-laravel/tree/v2.4.0"
             },
             "funding": [
                 {
@@ -14660,7 +14607,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-02-17T10:04:08+00:00"
+            "time": "2024-04-27T10:41:54+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -16378,16 +16325,16 @@
         },
         {
             "name": "spatie/backtrace",
-            "version": "1.5.3",
+            "version": "1.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/backtrace.git",
-                "reference": "483f76a82964a0431aa836b6ed0edde0c248e3ab"
+                "reference": "8373b9d51638292e3bfd736a9c19a654111b4a23"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/backtrace/zipball/483f76a82964a0431aa836b6ed0edde0c248e3ab",
-                "reference": "483f76a82964a0431aa836b6ed0edde0c248e3ab",
+                "url": "https://api.github.com/repos/spatie/backtrace/zipball/8373b9d51638292e3bfd736a9c19a654111b4a23",
+                "reference": "8373b9d51638292e3bfd736a9c19a654111b4a23",
                 "shasum": ""
             },
             "require": {
@@ -16395,6 +16342,7 @@
             },
             "require-dev": {
                 "ext-json": "*",
+                "laravel/serializable-closure": "^1.3",
                 "phpunit/phpunit": "^9.3",
                 "spatie/phpunit-snapshot-assertions": "^4.2",
                 "symfony/var-dumper": "^5.1"
@@ -16424,7 +16372,7 @@
                 "spatie"
             ],
             "support": {
-                "source": "https://github.com/spatie/backtrace/tree/1.5.3"
+                "source": "https://github.com/spatie/backtrace/tree/1.6.1"
             },
             "funding": [
                 {
@@ -16436,7 +16384,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2023-06-28T12:59:17+00:00"
+            "time": "2024-04-24T13:22:11+00:00"
         },
         {
             "name": "spatie/flare-client-php",
@@ -16509,16 +16457,16 @@
         },
         {
             "name": "spatie/ignition",
-            "version": "1.13.2",
+            "version": "1.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/ignition.git",
-                "reference": "952798e239d9969e4e694b124c2cc222798dbb28"
+                "reference": "80385994caed328f6f9c9952926932e65b9b774c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/ignition/zipball/952798e239d9969e4e694b124c2cc222798dbb28",
-                "reference": "952798e239d9969e4e694b124c2cc222798dbb28",
+                "url": "https://api.github.com/repos/spatie/ignition/zipball/80385994caed328f6f9c9952926932e65b9b774c",
+                "reference": "80385994caed328f6f9c9952926932e65b9b774c",
                 "shasum": ""
             },
             "require": {
@@ -16588,7 +16536,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-04-16T08:49:17+00:00"
+            "time": "2024-04-26T08:45:51+00:00"
         },
         {
             "name": "spatie/laravel-ignition",
@@ -16864,7 +16812,7 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "dev",
+    "minimum-stability": "beta",
     "stability-flags": {
         "parfaitementweb/filament-country-field": 20
     },
