@@ -1,12 +1,15 @@
 {
-    "name": "laravel/laravel",
-    "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "name": "meliani/career-center",
+    "type": "platform",
+    "description": "Career management platform.",
     "keywords": [
         "laravel",
-        "framework"
+        "filament",
+        "career",
+        "management",
+        "platform"
     ],
-    "license": "MIT",
+    "license": "Custom",
     "repositories": [
         {
             "type": "path",
@@ -97,7 +100,9 @@
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ],
         "post-create-project-cmd": [
-            "@php artisan key:generate --ansi"
+            "@php artisan key:generate --ansi",
+            "composer install",
+            "@php artisan migrate --seed"
         ]
     },
     "extra": {
