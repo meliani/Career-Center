@@ -18,7 +18,9 @@ RUN apt install -y php8.2\
     php8.2-curl\
     php8.2-xml\
     php8.2-bcmath\
-    php8.2-pdo
+    php8.2-pdo\
+    php8.0-sqlite
+
 
 # Install php-fpm
 RUN apt install -y php8.2-fpm php8.2-cli
@@ -78,6 +80,7 @@ WORKDIR /var/www/html
 RUN chown -R www-data:www-data /var/www/html
 
 RUN composer install
+RUN npm install
 
 EXPOSE 80
 
