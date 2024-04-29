@@ -32,7 +32,10 @@ class RegisterStudent extends BaseRegister
                             ->maxLength(255),
                     ]),
                 // $this->getNameFormComponent(),
-                $this->getEmailFormComponent(),
+                $this->getEmailFormComponent()
+                    ->label('Email INPT')
+                    ->Placeholder('ine.inpt.ac.ma')
+                    ->endsWith(['ine.inpt.ac.ma']),
                 $this->getPasswordFormComponent(),
                 $this->getPasswordConfirmationFormComponent(),
                 ToggleButtons::make('level')
