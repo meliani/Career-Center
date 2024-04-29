@@ -122,6 +122,8 @@ class StudentResource extends Core\BaseResource
                 //     ->numeric()
                 //     ->sortable(),
                 Tables\Columns\ToggleColumn::make('is_verified'),
+                Tables\Columns\TextColumn::make('email_verified_at')
+                    ->dateTime(),
                 Tables\Columns\TextColumn::make('name')
                     ->formatStateUsing(function ($record) {
                         return $record->long_full_name;
