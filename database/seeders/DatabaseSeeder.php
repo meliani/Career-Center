@@ -28,27 +28,16 @@ class DatabaseSeeder extends Seeder
         $this->command->info('Years table seeded!');
         DB::unprepared(file_get_contents('app/developer_docs/sql/internships.sql'));
         $this->command->info('Internships table seeded!');
-        // DB::unprepared(file_get_contents('app/developer_docs/sql/internship_offers.sql'));
-        // $this->command->info('Internship offers table seeded!');
+        DB::unprepared(file_get_contents('app/developer_docs/sql/internship_offers.sql'));
+        $this->command->info('Internship offers table seeded!');
         DB::unprepared(file_get_contents('app/developer_docs/sql/students.sql'));
         $this->command->info('Students table seeded!'); */
 
-        // DB::unprepared(file_get_contents('app/developer_docs/sql/careers_backend_data.sql'));
-        // $this->command->info('Backend data seeded!');
+        DB::unprepared(file_get_contents('developer_docs/sql/careers_backend_data.sql'));
+        $this->command->info('Backend data seeded!');
 
-        $this->call(ScheduleSettingsSeeder::class);
-        $this->call(RoomsSeeder::class);
+        // $this->call(ScheduleSettingsSeeder::class);
+        // $this->call(RoomsSeeder::class);
 
-        // User::factory()->root()->create();
-        // User::factory()->issati()->create();
-        // User::factory()->ennouaary()->create();
-        // User::factory()->samira()->create();
-        // User::factory()->nisrine()->create();
-        // User::factory()->kensi()->create();
-        // User::factory(10)->create();
-        // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
     }
 }

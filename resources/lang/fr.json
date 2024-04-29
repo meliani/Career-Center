@@ -294,7 +294,12 @@
     "Administration area": "Espace d'administration",
     "Teacher space": "Espace professeur",
     "Entreprise space": "Espace entreprise",
-    "Engineer space": "Espace ingénieur"
+    "Engineer space": "Espace ingénieur",
+    "Your account pending verification by administration": "Votre compte est en attente de vérification par l'administration",
+    "Right after verification, you will be able to access all features of the application": "Juste après la vérification, vous pourrez accéder à toutes les fonctionnalités de l'application",
+    "Welcome": "Bienvenue",
+    "You should verify your INPT email address": "Vous devriez vérifier votre adresse email INPT",
+    "Please check your email inbox for a verification email": "Veuillez vérifier votre boîte de réception pour un email de vérification"
 
 
 }

@@ -15,6 +15,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\URL;
+use Parfaitementweb\FilamentCountryField\Forms\Components\Country;
 
 class ApprenticeshipResource extends StudentBaseResource
 {
@@ -52,8 +53,9 @@ class ApprenticeshipResource extends StudentBaseResource
                             ->required(),
                         Forms\Components\TextInput::make('city')
                             ->required(),
-                        Forms\Components\TextInput::make('country')
-                            ->required(),
+                        Country::make('country')
+                            ->required()
+                            ->searchable(),
                     ]),
                 Forms\Components\TextInput::make('title')
                     ->columnSpanFull()->required(),
@@ -85,7 +87,7 @@ class ApprenticeshipResource extends StudentBaseResource
                                                     ->required(),
                                                 Forms\Components\TextInput::make('city')
                                                     ->required(),
-                                                Forms\Components\TextInput::make('country')
+                                                Country::make('country')
                                                     ->required(),
                                             ]),
                                     ]),
