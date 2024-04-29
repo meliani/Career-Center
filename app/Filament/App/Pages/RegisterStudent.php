@@ -34,8 +34,8 @@ class RegisterStudent extends BaseRegister
                 // $this->getNameFormComponent(),
                 $this->getEmailFormComponent()
                     ->label('Email INPT')
-                    ->Placeholder('ine.inpt.ac.ma')
-                    ->endsWith(['ine.inpt.ac.ma']),
+                    ->Placeholder('YourName@ine.inpt.ac.ma')
+                    ->endsWith(['@ine.inpt.ac.ma']),
                 $this->getPasswordFormComponent(),
                 $this->getPasswordConfirmationFormComponent(),
                 ToggleButtons::make('level')
