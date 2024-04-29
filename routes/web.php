@@ -1,7 +1,9 @@
 <?php
 
 use App\Filament\App\Pages;
-use App\Http\Controllers\URLController;
+use App\Http\Controllers\UrlDecoder;
+use App\Http\Controllers\UrlEncoder;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,4 +29,5 @@ Route::get('lang/{lang}', 'App\Http\Controllers\LanguageController@switchLang');
 // });
 
 // Route::get('/url/{version}/{cipher}', Pages\QrResponse::class);
-Route::get('/url', URLController::class);
+Route::get('/url', UrlDecoder::class);
+Route::get('/&url', UrlEncoder::class);

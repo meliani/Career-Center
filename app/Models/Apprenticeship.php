@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums;
+use App\Services\UrlService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -117,5 +118,15 @@ class Apprenticeship extends Model
     public function getVerificationStringAttribute()
     {
         return $this->id . '-' . $this->student_id;
+    }
+
+    public function getEncodedUrlAttribute()
+    {
+        return UrlService::encodeUrl($this->verification_string);
+    }
+
+    public function getDecodedUrlAttribute()
+    {
+        return UrlService::decodeUrl($this->encoded_url);
     }
 }
