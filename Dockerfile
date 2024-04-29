@@ -1,6 +1,33 @@
-FROM ubuntu:latest AS base
+FROM ubuntu:jammy-20240416 AS base
 
 ENV DEBIAN_FRONTEND noninteractive
+
+# Install dependencies
+RUN apt-get update && apt-get install -y wget gnupg2 unzip curl
+
+# 
+RUN apt install -y ca-certificates gnupg
+RUN mkdir -p /etc/apt/keyrings
+RUN curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+ENV NODE_MAJOR 20
+RUN echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list
+RUN apt update
+# RUN apt install -y nodejs
+
+
+
+RUN apt-get install -y nodejs gconf-service libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgbm1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget libgbm-dev libxshmfence-dev
+
+
+RUN npm install -g npm@latest
+
+RUN npm cache clean --force
+
+RUN npm install -g puppeteer --unsafe-perm=true
+
+# Set environment variables for Puppeteer
+# ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
+# ENV PUPPETEER_EXECUTABLE_PATH /usr/bin/google-chrome-stable
 
 # Install dependencies
 RUN apt update
@@ -19,8 +46,8 @@ RUN apt install -y php8.2\
     php8.2-xml\
     php8.2-bcmath\
     php8.2-pdo\
-    php8.2-sqlite
-
+    php8.2-intl\
+    php8.2-sqlite3
 
 # Install php-fpm
 RUN apt install -y php8.2-fpm php8.2-cli
@@ -30,13 +57,16 @@ RUN apt install -y curl
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Install nodejs
-RUN apt install -y ca-certificates gnupg
-RUN mkdir -p /etc/apt/keyrings
-RUN curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
-ENV NODE_MAJOR 20
-RUN echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list
-RUN apt update
-RUN apt install -y nodejs
+# RUN apt install -y ca-certificates gnupg
+# RUN mkdir -p /etc/apt/keyrings
+# RUN curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+# ENV NODE_MAJOR 20
+# RUN echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list
+# RUN apt update
+# RUN apt install -y nodejs
+
+
+
 
 # Install nginx
 RUN apt install -y nginx
@@ -77,11 +107,13 @@ RUN echo "\
 COPY . /var/www/html
 WORKDIR /var/www/html
 
+VOLUME /var/www/html/storage/app/public
+
 RUN chown -R www-data:www-data /var/www/html
 
 RUN composer install
+RUN php artisan storage:link
 RUN npm install
-
 EXPOSE 80
 
 CMD ["sh", "/start.sh"]
