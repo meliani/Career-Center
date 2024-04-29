@@ -29,7 +29,11 @@ class ManageNotification extends SettingsPage
 
     public static function canAccess(): bool
     {
-        return auth()->user()->isAdministrator();
+        if (auth()->check()) {
+            return auth()->user()->isSuperAdministrator() || auth()->user()->isAdministrator();
+        } else {
+            return false;
+        }
     }
 
     public function form(Form $form): Form

@@ -20,17 +20,21 @@ class DirectionDashboard extends \Filament\Pages\Dashboard
 
     // protected int|string|array $columnSpan = 'full';
 
-    protected int|string|array $columnSpan = [
+    protected int | string | array $columnSpan = [
         'md' => 2,
         'xl' => 2,
     ];
 
     public static function canAccess(): bool
     {
-        return auth()->user()->isDirection();
+        if (auth()->check()) {
+            return auth()->user()->isDirection();
+        } else {
+            return false;
+        }
     }
 
-    public function getColumns(): int|string|array
+    public function getColumns(): int | string | array
     {
         return 1;
     }

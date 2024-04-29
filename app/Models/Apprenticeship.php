@@ -113,4 +113,9 @@ class Apprenticeship extends Model
     {
         return $this->starting_at->diffInWeeks($this->ending_at);
     }
+
+    public function getVerificationStringAttribute()
+    {
+        return $this->id . '-' . $this->student_id;
+    }
 }

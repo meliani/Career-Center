@@ -1,6 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Filament\App\Pages;
+use App\Http\Controllers\URLController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,3 +25,6 @@ Route::get('lang/{lang}', 'App\Http\Controllers\LanguageController@switchLang');
 // Route::get('/programCoordinator', function () {
 //     return redirect('/programCoordinator/login');
 // });
+
+// Route::get('/url/{version}/{cipher}', Pages\QrResponse::class);
+Route::get('/url', URLController::class);
