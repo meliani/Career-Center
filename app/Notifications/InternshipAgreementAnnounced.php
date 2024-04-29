@@ -41,7 +41,7 @@ class InternshipAgreementAnnounced extends Notification implements ShouldQueue
             ->subject('Déclaration de convention de stage')
             ->greeting("Bonjour {$notifiable->long_full_name},")
             ->line("Une nouvelle convention de stage a été déclarée, portant le titre : **{$this->internshipAgreement->title}**.")
-            ->line("Pour plus d'informations, veuillez consulter la convention en cliquant sur le lien ci-dessous.")
+            ->line("Pour plus d'information, veuillez consulter la convention en cliquant sur le lien ci-dessous.")
             ->action('Consulter la convention', \App\Filament\Administration\Resources\InternshipAgreementResource::getUrl('edit', [$this->internshipAgreement->id]))
             ->line('---')
             ->salutation("Cordialement,\n\n **Plateforme Carrières**");

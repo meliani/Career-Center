@@ -52,7 +52,7 @@ class ProjectSupervisorAdded extends Notification implements ShouldQueue
             ->lineIf($this->project->supervisor(), "N'hésitez pas à contacter votre encadrant par mail ({$this->project->supervisor()?->email}) pour convenir d'un premier rendez-vous et établir ensemble
             les modalités de travail.")
             ->lineIf(! $this->project->supervisor(), "Nous vous informons que votre encadrant pour votre stage de Projet de Fin d'Études n'a pas encore été désigné. Nous vous tiendrons informé dès que cela sera fait.")
-            ->line('Pour rappel, voici les informations relatives à votre stage :')
+            ->line('Pour rappel, voici les information relatives à votre stage :')
             ->line("Organisation : **{$this->project->organization}**")
             ->line("Titre du PFE : **{$this->project->title}**")
             // ->line("Date de début : {$this->project->start_date}")

@@ -733,7 +733,7 @@
             <p>L'INPT forme des ingénieurs en Réseaux de Télécommunications, de l’Informatique et du Multimédia. Ces
                 ingénieurs pourront être
                 de futurs responsables pour des entreprises, dans un monde ouvert aux dynamiques des réseaux et des
-                systèmes d'informations.</p>
+                systèmes d'information.</p>
             <p>La mise en situation professionnelle est une étape importante dans la formation d’ingénieurs, elle permet
                 aux élèves de se
                 confronter aux réalités techniques, scientifiques, économiques et sociales. C’est dans cette optique que

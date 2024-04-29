@@ -256,7 +256,7 @@ class StudentResource extends Core\BaseResource
     {
         return $infolist
             ->schema([
-                Infolists\Components\Section::make(__('Student informations'))
+                Infolists\Components\Section::make(__('Student information'))
                     ->schema([
                         Infolists\Components\Fieldset::make(__('Internship agreement'))
                             ->schema([

@@ -45,7 +45,7 @@ class InternshipAgreementStatusChanged extends Notification implements ShouldQue
             ->line(__('Le statut de la convention de stage a changé.'))
             ->line("La convention portant le titre : **{$this->internshipAgreement->title}** a changé de statut.")
             ->line("Le nouveau statut de la convention est : **{$this->internshipAgreement->status->getLabel()}**")
-            ->line("Pour plus d'informations, veuillez consulter la convention en cliquant sur le lien ci-dessous.")
+            ->line("Pour plus d'information, veuillez consulter la convention en cliquant sur le lien ci-dessous.")
             ->action('Consulter la convention', \App\Filament\Administration\Resources\InternshipAgreementResource::getUrl('edit', [$this->internshipAgreement->id]))
             ->line('---')
             ->salutation("Cordialement,\n\n **Plateforme Carrières**");

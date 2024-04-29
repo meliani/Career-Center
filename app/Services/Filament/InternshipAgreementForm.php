@@ -21,7 +21,7 @@ class InternshipAgreementForm
             //         // ->disabled(fn ($record): bool => !isset($record->student->projects)),
             //     ]),
             // ->disabled(! auth()->user()->can('delete', $this->post)),
-            Section::make(__('Student informations'))
+            Section::make(__('Student information'))
                 ->collapsible()
                 ->schema([
                     Fieldset::make(__('Student'))
@@ -41,7 +41,7 @@ class InternshipAgreementForm
                         ])->columns(3),
                 ]),
             Section::make(__('Reserved for administration'))
-                ->description(__('Validation and signature informations.'))
+                ->description(__('Validation and signature information.'))
                 ->schema([
                     Forms\Components\DateTimePicker::make('validated_at'),
                     Forms\Components\DateTimePicker::make('received_at'),
@@ -59,7 +59,7 @@ class InternshipAgreementForm
                 ])
                 ->collapsible()
                 ->columns(2),
-            Section::make(__('Internship informations'))
+            Section::make(__('Internship information'))
                 ->description(__('Project title, organization details and internship dates.'))
                 // ->compact()
                 ->schema([

@@ -74,7 +74,7 @@ class ProjectResource extends Core\BaseResource
         return $form
             ->schema([
 
-                Forms\Components\Section::make('Project informations')
+                Forms\Components\Section::make('Project information')
                     ->schema([
                         Forms\Components\Textarea::make('title')
                             ->disabled(fn () => auth()->user()->isAdministrator() === false)
@@ -363,14 +363,14 @@ class ProjectResource extends Core\BaseResource
     {
         return $infolist
             ->schema([
-                Infolists\Components\Section::make(__('Project informations'))
+                Infolists\Components\Section::make(__('Project information'))
                     ->headerActions([
                         // CommentsAction::make(),
                     ])
 
                     ->columns(3)
                     ->schema([
-                        Infolists\Components\Fieldset::make('Project informations')
+                        Infolists\Components\Fieldset::make('Project information')
                             ->schema([
                                 Infolists\Components\TextEntry::make('id_pfe')
                                     ->label('PFE ID'),
@@ -401,7 +401,7 @@ class ProjectResource extends Core\BaseResource
                                             ->date(),
                                     ]),
 
-                                Infolists\Components\Fieldset::make('Jury informations')
+                                Infolists\Components\Fieldset::make('Jury information')
                                     ->schema([
                                         RepeatableEntry::make('professors')
                                             ->label('')

@@ -40,7 +40,7 @@ class AdministrationDashboard extends \Filament\Pages\Dashboard
                         ->description('This is your dashboard, you can see all the important information here.'),
                     Step::make('.fi-avatar')
                         ->title('Here is your avatar and your app notification !')
-                        ->description('You can edit your profile informations and check your app notification here.')
+                        ->description('You can edit your profile information and check your app notification here.')
                         ->icon('heroicon-o-user-circle')
                         ->iconColor('primary'),
                 ),

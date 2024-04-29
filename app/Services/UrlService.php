@@ -11,34 +11,15 @@ class UrlService
 
     protected static $separator = '?/$';
 
-    public static function InternalRedirect($url)
-    {
-
-        dd(self::encapsulate(self::encryptv1(self::$verification_string)));
-
-        dd(self::getVersion(self::decapsulate($url)));
-
-        // $userId = self::$decryptv1($url);
-
-        // dd($userId);
-
-        return redirect($url);
-
-    }
-
     private static function getVersion($url)
     {
-        // dd($url);
-
         $parts = explode(self::$separator, $url, 2);
-
-        dd($parts, $url);
 
         if (count($parts) < 3) {
             throw new \Exception('Invalid data');
         }
 
-        [$version, $userId, $url] = $parts;
+        [$version, $url] = $parts;
 
         return $version;
     }
@@ -91,8 +72,6 @@ class UrlService
 
     public static function decodeUrl($url)
     {
-        // dd(self::decapsulate($url));
-
         return self::decryptv1(self::decapsulate($url));
     }
 }

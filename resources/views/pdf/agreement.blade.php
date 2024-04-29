@@ -1600,7 +1600,7 @@
         à l’école une évaluation du
         comportement du stagiaire et de la qualité du travail effectué.</p>
     <p><strong>Art.7</strong> - Les étudiants stagiaires prennent l'engagement de n'utiliser en aucun cas les
-        informations
+        information
         recueillies ou
         obtenues par eux pour en faire l'objet de
         publication, communication à des tiers sans accord préalable de la Direction de l'Entreprise, y compris le
@@ -1613,7 +1613,7 @@
         L’Entreprise peut demander une restriction
         de la diﬀusion du rapport, voire le retrait de certains éléments très conﬁdentiels. Les personnes amenées à en
         connaître sont contraintes par le secret
-        professionnel à n’utiliser ni ne divulguer les informations du rapport.</p>
+        professionnel à n’utiliser ni ne divulguer les information du rapport.</p>
     <p><strong>Art.8</strong> - S’il advenait qu’un contrat de travail prenant effet avant la date de fin du stage soit
         signé avec
         l’Entreprise, la présente convention deviendrait
