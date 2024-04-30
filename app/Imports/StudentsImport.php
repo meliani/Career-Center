@@ -32,8 +32,8 @@ class StudentsImport implements SkipsEmptyRows, ToModel, WithBatchInserts, WithC
         return new Student([
             'id' => $row['id'],
             'title' => $title,
-            'first_name' => $row['nom'],
-            'last_name' => $row['prenom'],
+            'first_name' => $row['prenom'],
+            'last_name' => $row['nom'],
             'level' => $level,
             'program' => $program,
             'email' => $email,
