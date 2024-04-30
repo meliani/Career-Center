@@ -52,7 +52,10 @@ class StudentsImport implements SkipsEmptyRows, ToModel, WithBatchInserts, WithC
 
     public function upsertColumns()
     {
-        return ['program', 'level', 'title', 'first_name', 'last_name', 'year_id', 'is_verified', 'email_verified_at'];
+        return ['program', 'level', 'title', 'first_name', 'last_name', 'year_id', 'is_verified',
+            'email_verified_at',
+            'name',
+        ];
     }
 
     public function chunkSize(): int
