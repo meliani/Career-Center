@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Filament\App\Pages;
+use App\Filament\Org\Pages;
 use App\Services\UrlService;
 use Illuminate\Http\Request;
 
@@ -25,9 +25,9 @@ class QrUrlDecoder extends Controller
         $StudentId = $Apprenticeship['StudentId'];
         $ApprenticeshipId = $Apprenticeship['ApprenticeshipId'];
 
-        dd(Pages\QrResponse::getUrl(panel: 'app'));
+        // dd(Pages\QrResponse::getUrl(panel: 'org', parameters: ['StudentId' => $StudentId, 'ApprenticeshipId' => $ApprenticeshipId]));
 
-        return redirect(Pages\QrResponse::getUrl());
+        return view('filament.org.pages.qr-response', ['StudentId' => $StudentId, 'ApprenticeshipId' => $ApprenticeshipId]);
         // \App\Filament\Administration\Resources\ProjectResource::getUrl('edit', [$record->id])
     }
 }

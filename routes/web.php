@@ -1,6 +1,6 @@
 <?php
 
-use App\Filament\App\Pages;
+use App\Filament\Org\Pages;
 use App\Http\Controllers\QrUrlDecoder;
 use Illuminate\Support\Facades\Route;
 
