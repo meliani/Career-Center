@@ -42,7 +42,7 @@ class StudentsImport implements SkipsEmptyRows, ToModel, WithBatchInserts, WithC
             'is_verified' => 1,
             'email_verified_at' => now(),
             'name' => Str::title($row['prenom']) . ' ' . Str::title($row['nom']),
-            'is_valid' => 1,
+            'is_active' => 1,
         ]);
     }
 
