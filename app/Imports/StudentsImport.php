@@ -37,6 +37,9 @@ class StudentsImport implements SkipsEmptyRows, ToModel, WithBatchInserts, WithC
             'level' => $level,
             'program' => $program,
             'email' => $email,
+            'year_id' => \App\Models\Year::current()->id,
+            'is_verified' => 1,
+            'email_verified_at' => now(),
         ]);
     }
 
@@ -47,7 +50,7 @@ class StudentsImport implements SkipsEmptyRows, ToModel, WithBatchInserts, WithC
 
     public function upsertColumns()
     {
-        return ['program', 'level', 'title', 'first_name', 'last_name'];
+        return ['program', 'level', 'title', 'first_name', 'last_name', 'year_id', 'is_verified', 'email_verified_at'];
     }
 
     public function chunkSize(): int

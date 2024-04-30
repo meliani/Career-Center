@@ -40,7 +40,7 @@ class AppPanelProvider extends PanelProvider
             // ->default()
             // ->brandName(__('Engineer portal'))
             ->login()
-            ->registration(RegisterStudent::class)
+            // ->registration(RegisterStudent::class)
             ->databaseNotifications()
             // ->databaseNotificationsPolling('30s')
             ->brandLogo(asset('/svg/logo_entreprises.svg'))
