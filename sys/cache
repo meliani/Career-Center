@@ -1,2 +1,2 @@
-./clear-caches
-./config-caches
+./sys/clear-caches
+./sys/config-caches
