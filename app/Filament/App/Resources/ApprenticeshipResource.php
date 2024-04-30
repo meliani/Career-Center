@@ -13,6 +13,7 @@ use Filament\Forms\Get;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\URL;
 use Parfaitementweb\FilamentCountryField\Forms\Components\Country;
@@ -69,8 +70,9 @@ class ApprenticeshipResource extends StudentBaseResource
                         supervisor_id
                         tutor_id */
                         Forms\Components\Select::make('parrain_id')
-                            ->relationship('parrain', 'first_name')
-                            ->searchable()
+                            ->relationship('parrain')
+                            ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->first_name} {$record->last_name}")
+                            ->searchable(['first_name', 'last_name'])
                             ->preload()
                             ->required()
                             ->createOptionForm([
@@ -113,8 +115,9 @@ class ApprenticeshipResource extends StudentBaseResource
                                     ]),
                             ]),
                         Forms\Components\Select::make('supervisor_id')
-                            ->relationship('supervisor', 'first_name')
-                            ->searchable()
+                            ->relationship('supervisor')
+                            ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->first_name} {$record->last_name}")
+                            ->searchable(['first_name', 'last_name'])
                             ->preload()
                             ->required()
                             ->createOptionForm([
