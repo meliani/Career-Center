@@ -130,6 +130,7 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
         'graduated_at',
         'avatar_url',
         'is_verified',
+        'email_verified_at',
     ];
 
     protected $casts = [
@@ -142,6 +143,7 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
         'program' => Enums\Program::class,
         'level' => Enums\StudentLevel::class,
         'is_verified' => 'boolean',
+        'email_verified_at' => 'datetime',
 
     ];
 
