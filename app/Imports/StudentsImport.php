@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Models\Student;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
@@ -32,14 +33,15 @@ class StudentsImport implements SkipsEmptyRows, ToModel, WithBatchInserts, WithC
         return new Student([
             'id' => $row['id'],
             'title' => $title,
-            'first_name' => $row['prenom'],
-            'last_name' => $row['nom'],
+            'first_name' => Str::title($row['prenom']),
+            'last_name' => Str::title($row['nom']),
             'level' => $level,
             'program' => $program,
             'email' => $email,
             'year_id' => \App\Models\Year::current()->id,
             'is_verified' => 1,
             'email_verified_at' => now(),
+            'name' => Str::title($row['prenom']) . ' ' . Str::title($row['nom']),
         ]);
     }
 
