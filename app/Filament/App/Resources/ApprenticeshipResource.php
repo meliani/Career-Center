@@ -71,7 +71,7 @@ class ApprenticeshipResource extends StudentBaseResource
                         tutor_id */
                         Forms\Components\Select::make('parrain_id')
                             ->relationship('parrain')
-                            ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->first_name} {$record->last_name}")
+                            ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->first_name} {$record->last_name} - {$record->organization->name} : {$record->function}")
                             ->searchable(['first_name', 'last_name'])
                             ->preload()
                             ->required()
