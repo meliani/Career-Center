@@ -49,6 +49,8 @@ class ApprenticeshipResource extends StudentBaseResource
                     ->searchable()
                     ->preload()
                     ->required()
+                    ->live()
+                    ->id('country_id')
                     ->createOptionForm([
                         Forms\Components\TextInput::make('name')
                             ->required(),
@@ -70,8 +72,13 @@ class ApprenticeshipResource extends StudentBaseResource
                         supervisor_id
                         tutor_id */
                         Forms\Components\Select::make('parrain_id')
-                            ->relationship('parrain')
-                            ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->first_name} {$record->last_name} - {$record->organization->name} : {$record->function}")
+                            ->relationship(
+                                name: 'parrain',
+                                titleAttribute: 'name',
+                                ignoreRecord: true,
+                                modifyQueryUsing: fn (Builder $query, Get $get) => $query->where('organization_id', $get('organization_id'))
+                            )
+                            ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->first_name} {$record->last_name} - {$record->function}") // {$record->organization->name} :
                             ->searchable(['first_name', 'last_name'])
                             ->preload()
                             ->required()
@@ -115,8 +122,13 @@ class ApprenticeshipResource extends StudentBaseResource
                                     ]),
                             ]),
                         Forms\Components\Select::make('supervisor_id')
-                            ->relationship('supervisor')
-                            ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->first_name} {$record->last_name}")
+                            ->relationship(
+                                name: 'supervisor',
+                                titleAttribute: 'name',
+                                ignoreRecord: true,
+                                modifyQueryUsing: fn (Builder $query, Get $get) => $query->where('organization_id', $get('organization_id'))
+                            )
+                            ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->first_name} {$record->last_name} - {$record->function}")
                             ->searchable(['first_name', 'last_name'])
                             ->preload()
                             ->required()
