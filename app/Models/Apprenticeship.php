@@ -46,8 +46,8 @@ class Apprenticeship extends Model
 
     protected $casts = [
         'assigned_department' => Enums\Department::class,
-        'starting_at' => 'date:d/m/Y',
-        'ending_at' => 'date:d/m/Y',
+        'starting_at' => 'date',
+        'ending_at' => 'date',
         'remuneration' => 'decimal:2',
 
     ];
