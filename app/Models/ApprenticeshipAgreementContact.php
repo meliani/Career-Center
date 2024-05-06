@@ -23,7 +23,6 @@ class ApprenticeshipAgreementContact extends Model
         'email',
         'role',
         'organization_id',
-        'apprenticeship_id',
     ];
 
     protected $casts = [
@@ -37,11 +36,6 @@ class ApprenticeshipAgreementContact extends Model
     public function organization()
     {
         return $this->belongsTo(Organization::class);
-    }
-
-    public function apprenticeship()
-    {
-        return $this->belongsTo(Apprenticeship::class);
     }
 
     public function getFullNameAttribute()

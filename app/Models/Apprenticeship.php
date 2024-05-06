@@ -49,7 +49,6 @@ class Apprenticeship extends Model
         'starting_at' => 'date:d/m/Y',
         'ending_at' => 'date:d/m/Y',
         'remuneration' => 'decimal:2',
-        'keywords' => 'array',
 
     ];
 
@@ -95,19 +94,14 @@ class Apprenticeship extends Model
         return $this->belongsTo(Organization::class);
     }
 
-    public function apprenticeshipAgreementContacts()
-    {
-        return $this->hasMany(ApprenticeshipAgreementContact::class);
-    }
-
     public function parrain()
     {
-        return $this->belongsTo(ApprenticeshipAgreementContact::class);
+        return $this->belongsTo(ApprenticeshipAgreementContact::class, 'parrain_id', 'id');
     }
 
     public function supervisor()
     {
-        return $this->belongsTo(ApprenticeshipAgreementContact::class);
+        return $this->belongsTo(ApprenticeshipAgreementContact::class, 'supervisor_id', 'id');
     }
 
     public function getDurationInWeeksAttribute()

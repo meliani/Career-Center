@@ -2,21 +2,16 @@
 
 namespace App\Filament\App\Resources;
 
-use App\Enums;
-use App\Filament\Actions;
 use App\Filament\App\Resources\ApprenticeshipResource\Pages;
 use App\Filament\Core\StudentBaseResource;
 use App\Models\Apprenticeship;
-use Filament\Forms;
+use App\Services\Filament\Forms\ApprenticeshipAgreementForm;
 use Filament\Forms\Form;
-use Filament\Forms\Get;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\URL;
-use Parfaitementweb\FilamentCountryField\Forms\Components\Country;
 
 class ApprenticeshipResource extends StudentBaseResource
 {
@@ -43,179 +38,7 @@ class ApprenticeshipResource extends StudentBaseResource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Forms\Components\Select::make('organization_id')
-                    ->relationship('organization', 'name')
-                    ->searchable()
-                    ->preload()
-                    ->required()
-                    ->live()
-                    ->id('country_id')
-                    ->createOptionForm([
-                        Forms\Components\TextInput::make('name')
-                            ->required(),
-                        Forms\Components\TextInput::make('city')
-                            ->required(),
-                        Country::make('country')
-                            ->required()
-                            ->searchable(),
-                    ]),
-                Forms\Components\TextInput::make('title')
-                    ->columnSpanFull()->required(),
-                Forms\Components\RichEditor::make('description')
-                    ->columnSpanFull(),
-                Forms\Components\SpatieTagsInput::make('keywords'),
-                Forms\Components\Fieldset::make(__('Organization contacts'))
-                    ->columns(4)
-                    ->schema([
-                        /* parrain_id
-                        supervisor_id
-                        tutor_id */
-                        Forms\Components\Select::make('parrain_id')
-                            ->relationship(
-                                name: 'parrain',
-                                titleAttribute: 'name',
-                                ignoreRecord: true,
-                                modifyQueryUsing: fn (Builder $query, Get $get) => $query->where('organization_id', $get('organization_id'))
-                            )
-                            ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->first_name} {$record->last_name} - {$record->function}") // {$record->organization->name} :
-                            ->searchable(['first_name', 'last_name'])
-                            ->preload()
-                            ->required()
-                            ->createOptionForm([
-                                Forms\Components\Select::make('organization_id')
-                                    ->relationship('organization', 'name')
-                                    ->searchable()
-                                    ->preload()
-                                    ->required()
-                                    ->createOptionForm([
-                                        Forms\Components\Fieldset::make(__('Organization'))
-                                            ->columns(3)
-                                            ->schema([
-                                                Forms\Components\TextInput::make('name')
-                                                    ->required(),
-                                                Forms\Components\TextInput::make('city')
-                                                    ->required(),
-                                                Country::make('country')
-                                                    ->required(),
-                                            ]),
-                                    ]),
-                                Forms\Components\Fieldset::make(__('Parrain contact'))
-                                    ->columns(3)
-                                    ->schema([
-                                        Forms\Components\Select::make('title')
-                                            ->options(Enums\Title::class)
-                                            ->required(),
-                                        Forms\Components\TextInput::make('first_name')
-                                            ->required(),
-                                        Forms\Components\TextInput::make('last_name')
-                                            ->required(),
-                                        Forms\Components\TextInput::make('function')
-                                            ->required(),
-                                        Forms\Components\TextInput::make('phone')
-                                            ->required(),
-                                        Forms\Components\TextInput::make('email')
-                                            ->required(),
-                                        Forms\Components\Select::make('role')
-                                            ->options(Enums\OrganizationContactRole::class)
-                                            ->required(),
-                                    ]),
-                            ]),
-                        Forms\Components\Select::make('supervisor_id')
-                            ->relationship(
-                                name: 'supervisor',
-                                titleAttribute: 'name',
-                                ignoreRecord: true,
-                                modifyQueryUsing: fn (Builder $query, Get $get) => $query->where('organization_id', $get('organization_id'))
-                            )
-                            ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->first_name} {$record->last_name} - {$record->function}")
-                            ->searchable(['first_name', 'last_name'])
-                            ->preload()
-                            ->required()
-                            ->createOptionForm([
-                                Forms\Components\Select::make('organization_id')
-                                    ->relationship('organization', 'name')
-                                    ->searchable()
-                                    ->preload()
-                                    ->required()
-                                    ->createOptionForm([
-                                        Forms\Components\Fieldset::make(__('Organization'))
-                                            ->columns(3)
-                                            ->schema([
-                                                Forms\Components\TextInput::make('name')
-                                                    ->required(),
-                                                Forms\Components\TextInput::make('city')
-                                                    ->required(),
-                                                Forms\Components\TextInput::make('country')
-                                                    ->required(),
-                                            ]),
-                                    ]),
-                                Forms\Components\Fieldset::make(__('Supervisor contact'))
-                                    ->columns(3)
-                                    ->schema([
-                                        Forms\Components\Select::make('title')
-                                            ->options(Enums\Title::class)
-                                            ->required(),
-                                        Forms\Components\TextInput::make('first_name')
-                                            ->required(),
-                                        Forms\Components\TextInput::make('last_name')
-                                            ->required(),
-                                        Forms\Components\TextInput::make('function')
-                                            ->required(),
-                                        Forms\Components\TextInput::make('phone')
-                                            ->required(),
-                                        Forms\Components\TextInput::make('email')
-                                            ->required(),
-                                        Forms\Components\Select::make('role')
-                                            ->options(Enums\OrganizationContactRole::class)
-                                            ->required(),
-                                    ]),
-                            ]),
-                    ]),
-
-                Forms\Components\Fieldset::make(__('Internship dates'))
-                    ->columns(4)
-                    ->schema([
-                        Forms\Components\DateTimePicker::make('starting_at'),
-                        Forms\Components\DateTimePicker::make('ending_at'),
-                    ]),
-                Forms\Components\Fieldset::make(__('Remuneration and workload'))
-                    ->columns(8)
-                    ->schema([
-                        Forms\Components\Select::make('currency')
-                            ->default(Enums\Currency::MDH->getSymbol())
-                            ->options([
-                                Enums\Currency::EUR->getSymbol() => Enums\Currency::EUR->getSymbol(),
-                                Enums\Currency::USD->getSymbol() => Enums\Currency::USD->getSymbol(),
-                                Enums\Currency::MDH->getSymbol() => Enums\Currency::MDH->getSymbol(),
-                            ])
-                            ->live()
-                            ->id('currency'),
-                        Forms\Components\TextInput::make('remuneration')
-                            ->numeric()
-                            ->columnSpan(2)
-                            // get prefix from crrency value
-                            ->id('remuneration')
-                            ->prefix(fn (Get $get) => $get('currency')),
-
-                        Forms\Components\TextInput::make('workload')
-                            ->placeholder('Hours / Week')
-                            ->numeric(),
-                    ]),
-                Forms\Components\Fieldset::make(__('Internship documents'))
-                    // ->columns(6)
-                    ->schema([
-                        \Filament\Forms\Components\Actions::make([
-                            Actions\Action\Processing\GenerateApprenticeshipAgreementPdfAction::make('Generate Apprenticeship Agreement PDF')
-                                ->label(__('Generate Apprenticeship Agreement PDF'))
-                                ->requiresConfirmation(),
-                        ]),
-                        // display generated pdf
-                        // Forms\Components\Actions\Action::make('get pdf')
-                        //     ->url(fn (Apprenticeship $record) => app('url') . $record->pdf_path . '/' . urlencode($record->pdf_name)),
-
-                    ]),
-            ]);
+            ->schema(ApprenticeshipAgreementForm::getSchema());
     }
 
     public static function table(Table $table): Table
