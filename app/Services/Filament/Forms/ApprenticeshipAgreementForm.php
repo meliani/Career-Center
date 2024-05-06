@@ -44,12 +44,12 @@ class ApprenticeshipAgreementForm
                                 ->preload()
                                 ->required()
                                 ->createOptionForm([
-                                    // ...AddOrganizationForm::getSchema(),
+                                    ...AddOrganizationForm::getSchema(),
                                 ]),
                             Forms\Components\Fieldset::make(__('Parrain'))
                                 ->columns(3)
                                 ->schema([
-                                    // ...AddOrganizationContactForm::getSchema(),
+                                    ...AddOrganizationContactForm::getSchema(),
                                 ]),
                         ]),
                     Forms\Components\Select::make('supervisor_id')
@@ -70,12 +70,12 @@ class ApprenticeshipAgreementForm
                                 ->preload()
                                 ->required()
                                 ->createOptionForm([
-                                    // ...AddOrganizationForm::getSchema(),
+                                    ...AddOrganizationForm::getSchema(),
                                 ]),
                             Forms\Components\Fieldset::make(__('Supervisor'))
                                 ->columns(3)
                                 ->schema([
-                                    // ...AddOrganizationContactForm::getSchema(),
+                                    ...AddOrganizationContactForm::getSchema(),
                                 ]),
                         ]),
                 ]),
