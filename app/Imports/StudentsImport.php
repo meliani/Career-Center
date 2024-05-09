@@ -21,27 +21,40 @@ class StudentsImport implements SkipsEmptyRows, ToModel, WithBatchInserts, WithC
 
     public function model(array $row)
     {
+        $year_id = \App\Models\Year::current()->id;
 
         $row = array_map('trim', $row);
-        // convert from anything to numberformat, clumn might be formatted as text or having commas
-        $row['id'] = is_numeric($row['id']) ? $row['id'] : (int) str_replace(',', '', $row['id']);
-        $title = $row['title'] == 'M.' ? 'Mr' : ($row['title'] == 'Mme.' ? 'Mrs' : $row['title']);
-        $level = $row['level'] == 'deuxième année' ? 'SecondYear' : ($row['level'] == ('première année' || $row['level'] == 'Première année') ? 'FirstYear' : $row['level']);
-        $program = str_replace(['SUD-CLOUD&IoT', 'SESNum', 'SMART-ICT'], ['SUD', 'SESNUM', 'SMART-ICT'], $row['program']);
-        $email = str_replace(['@ine.inpt.ma', '@inemail.ine.inpt.ma'], ['@ine.inpt.ac.ma', '@ine.inpt.ac.ma'], $row['email']);
+        $row['name'] = trim($row['name'], "'");
+        // Split the name into an array
+        $nameParts = explode(' ', $row['name']);
+
+        // The last name is the first element of the array
+        $last_name = array_shift($nameParts);
+
+        // The first name is the rest of the array
+        $first_name = implode(' ', $nameParts);
+        $title = $row['title'] == 1 ? 'Mr' : 'Mrs';
+
+        // $row['id'] = is_numeric($row['id']) ? $row['id'] : (int) str_replace(',', '', $row['id']);
+        // $title = $row['title'] == 'M.' ? 'Mr' : ($row['title'] == 'Mme.' ? 'Mrs' : $row['title']);
+        $level = $row['level'] == 'INE2' ? 'SecondYear' : ($row['level'] == ('INE1') ? 'FirstYear' : $row['level']);
+        // $program = str_replace(['SUD-CLOUD&IoT', 'SESNum', 'SMART-ICT'], ['SUD', 'SESNUM', 'SMART-ICT'], $row['program']);
+        $program = $row['program'];
+        $email = $row['email'];
+        // $email = str_replace(['@ine.inpt.ma', '@inemail.ine.inpt.ma'], ['@ine.inpt.ac.ma', '@ine.inpt.ac.ma'], $row['email']);
 
         return new Student([
-            'id' => $row['id'],
+            // 'id' => $row['id'],
             'title' => $title,
-            'first_name' => Str::title($row['prenom']),
-            'last_name' => Str::title($row['nom']),
+            'first_name' => Str::title($first_name),
+            'last_name' => Str::title($last_name),
             'level' => $level,
             'program' => $program,
             'email' => $email,
-            'year_id' => \App\Models\Year::current()->id,
+            'year_id' => $year_id,
             'is_verified' => 1,
             'email_verified_at' => now(),
-            'name' => Str::title($row['prenom']) . ' ' . Str::title($row['nom']),
+            'name' => Str::title($row['name']),
             'is_active' => 1,
         ]);
     }
@@ -54,15 +67,15 @@ class StudentsImport implements SkipsEmptyRows, ToModel, WithBatchInserts, WithC
     public function upsertColumns()
     {
         return [
-            // 'program',
-            // 'level',
-            // 'title',
-            // 'first_name',
-            // 'last_name',
+            'program',
+            'level',
+            'title',
+            'first_name',
+            'last_name',
             'year_id',
             'is_verified',
             'email_verified_at',
-            // 'name',
+            'name',
             'is_active',
         ];
     }
