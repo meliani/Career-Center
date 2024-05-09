@@ -144,7 +144,7 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
         'level' => Enums\StudentLevel::class,
         'is_verified' => 'boolean',
         'email_verified_at' => 'datetime',
-
+        'password' => 'hashed',
     ];
 
     public static function boot()
