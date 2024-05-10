@@ -25,28 +25,24 @@ class TimeslotService
     'max_rooms',
     'minutes_per_slot', */
 
-    protected $number_of_rooms;
+    protected int $number_of_rooms;
 
-    protected $max_defenses_per_professor;
+    protected int $max_defenses_per_professor;
 
-    protected $max_rooms;
+    protected int $max_rooms;
 
-    protected $minutes_per_slot;
+    protected int $minutes_per_slot;
 
-    protected $period;
+    protected CarbonPeriod $period;
 
     protected $timeslot;
 
     protected $day;
 
-    protected $room;
+    protected Room $room;
 
-    protected $rooms;
+    protected Room $rooms;
 
-    // protected PeriodCollection $all_timeslots;
-    // protected PeriodCollection $day_timeslots;
-    // protected PeriodCollection $periods;
-    // protected PeriodCollection $timeslots;
     protected $scheduleParameters;
 
     protected $schedule_starting_at;
@@ -61,7 +57,12 @@ class TimeslotService
 
     protected $day_timeslots;
 
-    protected $periods;
+    protected CarbonPeriod $periods;
+
+    // protected PeriodCollection $all_timeslots;
+    // protected PeriodCollection $day_timeslots;
+    // protected PeriodCollection $periods;
+    // protected PeriodCollection $timeslots;
 
     protected $timeslots;
 
