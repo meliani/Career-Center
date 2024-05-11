@@ -43,6 +43,7 @@ php artisan serve
 # testing
 
 # Features
+
 ## Charts
 We use ApexCharts to visualize data
 ### Anounced Internships per Program

@@ -46,9 +46,9 @@
                         <!-- Navigation items go here -->
                     </ul>
                     <div class="d-flex flex-column flex-lg-row">
-                        <a href="/app" class="btn btn-outline-primary mb-2 mb-lg-0 mr-lg-2 me-3">
+                        {{-- <a href="/app" class="btn btn-outline-primary mb-2 mb-lg-0 mr-lg-2 me-3">
                             {{__('Student login')}}
-                        </a>
+                        </a> --}}
                         <a href="/backend" class="btn btn-outline-primary mb-2 mb-lg-0 mr-lg-2 me-3">
                             {{__('Teacher login')}}</a>
                         <ul class="navbar-nav">
