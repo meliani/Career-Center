@@ -45,19 +45,16 @@ A platform that helps students to find internships and jobs, and helps professor
     ```
 
 ## Code quality
-result of the command `php artisan code:analyse`:
 
-```bash
-   1. 1 error
-   2. 0 warnings
-   3. 0 suggestions
-```
+will be displayed soon
 
 ## testing
 
+will be displayed soon
+
 ## Features
 
-## Charts
+### Charts
 
 - *Anounced Internships per Program*
     A chart that shows the number of internships announced per program
@@ -80,25 +77,25 @@ result of the command `php artisan code:analyse`:
 - *Assigned supervisors per department*
     A chart that shows the number of assigned supervisors per department
 
-## Emails
+### Emails
 
 Send generic email (one by one or bulk) to students from students page
 Send generic email from projects page
 Send generic emails from internships page
 
-## Forms
+### Forms
 
-## policies
+### policies
 
 Strict policies for All model depending on the user role and professor role
 
-## Calendar
+### Calendar
 
-## department assignments
+### department assignments
 
-## Students features
+### Students features
 
-## Internship agreement management
+### Internship agreement management
 
 ## contributors
 
