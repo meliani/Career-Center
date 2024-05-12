@@ -2,7 +2,9 @@
 
     Warning
 
-    This repository contains the source code of carrieres.inpt.ac.ma, backed by proprietary code . The license does not permit hosting it yourself. The code is open for the sake of transparency and allowing contributions.
+    This repository contains the source code of carrieres.inpt.ac.ma, backed by proprietary code . 
+    The license does not permit hosting it yourself. 
+    The code is open for the sake of transparency and allowing contributions.
 
 ## What is that ?
 
@@ -10,21 +12,25 @@ A platform that helps students to find internships and jobs, and helps professor
 
 ## How to install
 
-    ```bash
-    git clone git@github.com:meliani/Career-Center.git
-    ```
+1. Clone the repository
 
     ```bash
-    cd Career-Center
+        git clone git@github.com:meliani/Career-Center.git
     ```
 
+2. Install the dependencies
+
     ```bash
-    composer install
+    cd Career-Center && composer install && npm install
     ```
+
+3. Create a database and update the .env file
 
     ```bash
     cp .env.example .env
     ```
+
+4. Generate the application key and run the migrations
 
     ```bash
     php artisan key:generate
@@ -32,10 +38,6 @@ A platform that helps students to find internships and jobs, and helps professor
 
     ```bash
     php artisan migrate --seed
-    ```
-
-    ```bash
-    npm install
     ```
 
     ```bash
