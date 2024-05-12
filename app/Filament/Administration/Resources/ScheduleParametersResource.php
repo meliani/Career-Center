@@ -56,13 +56,13 @@ class ScheduleParametersResource extends Resource
                     ->required(),
                 Forms\Components\DatePicker::make('schedule_ending_at')
                     ->required(),
-                Forms\Components\TextInput::make('day_starting_at')
+                Forms\Components\TimePicker::make('day_starting_at')
                     ->required(),
-                Forms\Components\TextInput::make('day_ending_at')
+                Forms\Components\TimePicker::make('day_ending_at')
                     ->required(),
-                Forms\Components\TextInput::make('lunch_starting_at')
+                Forms\Components\TimePicker::make('lunch_starting_at')
                     ->required(),
-                Forms\Components\TextInput::make('lunch_ending_at')
+                Forms\Components\TimePicker::make('lunch_ending_at')
                     ->required(),
                 Forms\Components\TextInput::make('max_defenses_per_professor')
                     ->required()

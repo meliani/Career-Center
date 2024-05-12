@@ -178,8 +178,8 @@
     "Defense": "Soutenance",
     "Defenses": "Soutenances",
     "Timetables": "Plannings",
-    "Defense Timetables": "Planning des soutenances",
-    "Defense Timetable": "Planning de la soutenance",
+    "Defenses Timetables": "Plannings des soutenances",
+    "Defense Timetable": "Planning des soutenances",
     "Edit": "Modifier",
     "Email log": "Journal des emails",
     "Email Tracking": "Suivi des emails",
@@ -299,7 +299,20 @@
     "Right after verification, you will be able to access all features of the application": "Juste après la vérification, vous pourrez accéder à toutes les fonctionnalités de l'application",
     "Welcome": "Bienvenue",
     "You should verify your INPT email address": "Vous devriez vérifier votre adresse email INPT",
-    "Please check your email inbox for a verification email": "Veuillez vérifier votre boîte de réception pour un email de vérification"
+    "Please check your email inbox for a verification email": "Veuillez vérifier votre boîte de réception pour un email de vérification",
+    "Notification Settings": "Paramètres de notification",
+    "Rooms Management": "Gestion des salles",
+    "Available": "Disponible",
+    "Unavailable": "Indisponible",
+    "Users": "Utilisateurs",
+    "Schedule starting at": "Plannification commence le",
+    "Schedule ending at": "Plannification finit le",
+    "Day starting at": "La journée commence à",
+    "Day ending at": "La journée finit à",
+    "Lunch ending at": "Pause déjeuner finit à",
+    "Lunch starting at": "Pause déjeuner commence à",
+    "Minutes per slot": "Minutes par créneau",
+    "Max defenses per professor": "Max soutenances par professeur a respecter"
 
 
 }

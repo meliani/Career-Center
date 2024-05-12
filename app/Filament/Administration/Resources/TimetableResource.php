@@ -17,9 +17,9 @@ class TimetableResource extends Core\BaseResource
 
     protected static ?string $title = 'Defense Timetable';
 
-    protected static ?string $modelLabel = 'Defense Timetable';
+    protected static ?string $modelLabel = 'Defenses Timetable';
 
-    protected static ?string $pluralModelLabel = 'Defense Timetables';
+    protected static ?string $pluralModelLabel = 'Defenses Timetable';
 
     protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
 

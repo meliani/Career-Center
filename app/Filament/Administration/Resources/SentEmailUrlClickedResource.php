@@ -25,7 +25,7 @@ class SentEmailUrlClickedResource extends Core\BaseResource
     public static function canViewAny(): bool
     {
         if (auth()->check()) {
-            return auth()->user()->isAdministrator();
+            return auth()->user()->isSuperAdministrator();
         }
 
         return false;

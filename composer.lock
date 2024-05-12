@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "amphp/amp",
-            "version": "v3.0.1",
+            "version": "v3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/amphp/amp.git",
-                "reference": "ff63f10210adb6e83335e0e25522bac5cd7dc4e2"
+                "reference": "138801fb68cfc9c329da8a7b39d01ce7291ee4b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amphp/amp/zipball/ff63f10210adb6e83335e0e25522bac5cd7dc4e2",
-                "reference": "ff63f10210adb6e83335e0e25522bac5cd7dc4e2",
+                "url": "https://api.github.com/repos/amphp/amp/zipball/138801fb68cfc9c329da8a7b39d01ce7291ee4b0",
+                "reference": "138801fb68cfc9c329da8a7b39d01ce7291ee4b0",
                 "shasum": ""
             },
             "require": {
@@ -77,7 +77,7 @@
             ],
             "support": {
                 "issues": "https://github.com/amphp/amp/issues",
-                "source": "https://github.com/amphp/amp/tree/v3.0.1"
+                "source": "https://github.com/amphp/amp/tree/v3.0.2"
             },
             "funding": [
                 {
@@ -85,7 +85,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-04-18T15:24:36+00:00"
+            "time": "2024-05-10T21:37:46+00:00"
         },
         {
             "name": "amphp/byte-stream",
@@ -3763,16 +3763,16 @@
         },
         {
             "name": "guava/filament-icon-picker",
-            "version": "2.2.0",
+            "version": "2.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lukas-frey/filament-icon-picker.git",
-                "reference": "a5531dbf5c63f0e3b3f7c9be6c2e56c4575de494"
+                "reference": "e2aa51cbeef5ad7af4e7b4e91ab82600b4deae5a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lukas-frey/filament-icon-picker/zipball/a5531dbf5c63f0e3b3f7c9be6c2e56c4575de494",
-                "reference": "a5531dbf5c63f0e3b3f7c9be6c2e56c4575de494",
+                "url": "https://api.github.com/repos/lukas-frey/filament-icon-picker/zipball/e2aa51cbeef5ad7af4e7b4e91ab82600b4deae5a",
+                "reference": "e2aa51cbeef5ad7af4e7b4e91ab82600b4deae5a",
                 "shasum": ""
             },
             "require": {
@@ -3809,7 +3809,7 @@
             "description": "A filament plugin that adds an icon picker field.",
             "support": {
                 "issues": "https://github.com/lukas-frey/filament-icon-picker/issues",
-                "source": "https://github.com/lukas-frey/filament-icon-picker/tree/2.2.0"
+                "source": "https://github.com/lukas-frey/filament-icon-picker/tree/2.2.1"
             },
             "funding": [
                 {
@@ -3817,7 +3817,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-03-01T14:41:19+00:00"
+            "time": "2024-05-11T16:40:27+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -4311,16 +4311,16 @@
         },
         {
             "name": "jdavidbakr/mail-tracker",
-            "version": "7.15",
+            "version": "7.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jdavidbakr/mail-tracker.git",
-                "reference": "e076da63ac9bb3093671a032ad81c5f6ffe66ee1"
+                "reference": "227b2d24a9d3deffceda11d82fec2581c7aed6f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jdavidbakr/mail-tracker/zipball/e076da63ac9bb3093671a032ad81c5f6ffe66ee1",
-                "reference": "e076da63ac9bb3093671a032ad81c5f6ffe66ee1",
+                "url": "https://api.github.com/repos/jdavidbakr/mail-tracker/zipball/227b2d24a9d3deffceda11d82fec2581c7aed6f5",
+                "reference": "227b2d24a9d3deffceda11d82fec2581c7aed6f5",
                 "shasum": ""
             },
             "require": {
@@ -4371,9 +4371,9 @@
             ],
             "support": {
                 "issues": "https://github.com/jdavidbakr/mail-tracker/issues",
-                "source": "https://github.com/jdavidbakr/mail-tracker/tree/7.15"
+                "source": "https://github.com/jdavidbakr/mail-tracker/tree/7.16"
             },
-            "time": "2024-02-27T21:11:45+00:00"
+            "time": "2024-05-11T12:24:49+00:00"
         },
         {
             "name": "jeffgreco13/filament-breezy",

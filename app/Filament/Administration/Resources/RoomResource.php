@@ -19,11 +19,11 @@ class RoomResource extends Resource
 
     protected static ?int $navigationSort = 9;
 
-    protected static string $title = 'Rooms';
+    protected static string $title = 'Rooms Management';
 
     protected static ?string $navigationGroup = 'Settings';
 
-    protected static ?string $navigationLabel = 'Rooms';
+    protected static ?string $navigationLabel = 'Rooms Management';
 
     public static function getNavigationLabel(): string
     {

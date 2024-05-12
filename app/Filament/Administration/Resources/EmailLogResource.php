@@ -27,7 +27,7 @@ class EmailLogResource extends EmailResource
     public static function canAccess(): bool
     {
         if (auth()->check()) {
-            return auth()->user()->isAdministrator();
+            return auth()->user()->isSuperAdministrator();
         }
 
         return false;

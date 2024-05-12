@@ -29,16 +29,18 @@ class FilamentEmailLog extends FilamentEmail
 
     public static function canViewAny(): bool
     {
-        return auth()->user()->isAdministrator() || auth()->user()->isSuperAdministrator();
+        return auth()->user()->isSuperAdministrator();
+        // return auth()->user()->isAdministrator() || auth()->user()->isSuperAdministrator();
     }
 
     public static function canView(): bool
     {
-        return auth()->user()->isAdministrator() || auth()->user()->isSuperAdministrator();
+        return auth()->user()->isSuperAdministrator();
     }
 
     public static function canAccess(): bool
     {
-        return auth()->user()->isAdministrator() || auth()->user()->isSuperAdministrator();
+        return auth()->user()->isSuperAdministrator();
+        // return auth()->user()->isAdministrator() || auth()->user()->isSuperAdministrator();
     }
 }

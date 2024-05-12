@@ -15,7 +15,14 @@ class ManageNotification extends SettingsPage
 
     protected static ?string $title = 'Notification Settings';
 
+    protected static ?string $navigationLabel = 'Notification Settings';
+
     protected static ?string $navigationGroup = 'Settings';
+
+    public static function getNavigationLabel(): string
+    {
+        return __(self::$navigationLabel);
+    }
 
     public static function getnavigationGroup(): string
     {
