@@ -2,7 +2,7 @@
 
     Warning
 
-    This repository contains the source code of carrieres.inpt.ac.ma, backed by proprietary code . 
+    This repository contains the source code of carrieres.inpt.ac.ma, backed by proprietary code. 
     The license does not permit hosting it yourself. 
     The code is open for the sake of transparency and allowing contributions.
 
@@ -45,6 +45,13 @@ A platform that helps students to find internships and jobs, and helps professor
     ```
 
 ## Code quality
+result of the command `php artisan code:analyse`:
+
+```bash
+   1. 1 error
+   2. 0 warnings
+   3. 0 suggestions
+```
 
 ## testing
 
