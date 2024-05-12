@@ -17,7 +17,7 @@ class TimetableOverviewChart extends ApexChartsParentWidget
     /**
      * Widget Title
      */
-    protected static ?string $heading = 'TimetableOverview';
+    protected static ?string $heading = 'Timetable Overview';
 
     protected int | string | array $columnSpan = 'full';
 

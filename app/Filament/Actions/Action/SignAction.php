@@ -28,7 +28,7 @@ class SignAction extends Action
             ->requiresConfirmation(fn () => __('Are you sure you want to mark this internship as Signed?'))
             ->modalIconColor('success')
             ->modalIcon('heroicon-o-check')
-            ->modalHeading('Sign internship agreement')
+            ->modalHeading(__('Sign internship agreement'))
             ->modalDescription(__('Are you sure you want to mark this internship as Signed?'))
             ->modalSubmitActionLabel(__('Mark as signed'))
             ->color('success');

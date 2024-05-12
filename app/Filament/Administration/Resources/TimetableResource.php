@@ -29,6 +29,11 @@ class TimetableResource extends Core\BaseResource
 
     protected static ?string $navigationLabel = 'Defense Timetable';
 
+    public static function getTitle(): string
+    {
+        return __(self::$title);
+    }
+
     public static function getNavigationLabel(): string
     {
         return __(self::$navigationLabel);

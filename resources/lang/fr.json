@@ -180,6 +180,7 @@
     "Timetables": "Plannings",
     "Defenses Timetables": "Plannings des soutenances",
     "Defense Timetable": "Planning des soutenances",
+    "Defenses Timetable": "Planning des soutenances",
     "Edit": "Modifier",
     "Email log": "Journal des emails",
     "Email Tracking": "Suivi des emails",
@@ -312,7 +313,11 @@
     "Lunch ending at": "Pause déjeuner finit à",
     "Lunch starting at": "Pause déjeuner commence à",
     "Minutes per slot": "Minutes par créneau",
-    "Max defenses per professor": "Max soutenances par professeur a respecter"
+    "Max defenses per professor": "Max soutenances par professeur a respecter",
+    "Defenses Calendar": "Calendrier des soutenances",
+    "Calendars": "Calendriers",
+    "Timetable Overview": "Aperçu du planning",
+    "Sign internship agreement": "Signer la convention de stage"
 
 
 }

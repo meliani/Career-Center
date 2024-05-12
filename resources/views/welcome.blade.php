@@ -160,12 +160,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-2 col-md-4 col-6 mb-4">
+                {{-- <div class="col-lg-2 col-md-4 col-6 mb-4">
                     <div class="footer-widget">
 
                     </div>
-                </div>
-                <div class="col-lg-2 col-md-4 col-6 mb-4">
+                </div> --}}
+                <div class="col-lg-6 col-md-6 col-12 mb-4">
                     <div class="footer-widget">
                         <h5 class="mb-4 text-primary font-secondary">{{__('Quick Links')}}</h5>
                         <ul class="list-unstyled">
