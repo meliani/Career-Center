@@ -125,7 +125,7 @@ class AdminPanelProvider extends PanelProvider
                     // ->selectable()
                     // ->editable(),
                     FilamentApexChartsPlugin::make(),
-                    new \RickDBCN\FilamentEmail\FilamentEmail(),
+                    // new \RickDBCN\FilamentEmail\FilamentEmail(),
                     // \Rabol\FilamentLogviewer\FilamentLogviewerPlugin::make(),
                     TableLayoutTogglePlugin::make()
                         ->setDefaultLayout('grid') // default layout to be displayed
