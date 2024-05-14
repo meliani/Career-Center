@@ -44,14 +44,6 @@ A platform that helps students to find internships and jobs, and helps professor
     php artisan serve
     ```
 
-## Code quality
-
-will be displayed soon
-
-## testing
-
-will be displayed soon
-
 ## Features
 
 ### Quick overview
@@ -104,6 +96,14 @@ github.com/copilot
 Clone -> Create Feature Branche -> Change -> Commit -> Open pull request
 
 Open Issue -> explain your idea or join a gist for example.
+
+## Code quality
+
+will be displayed soon
+
+## testing
+
+will be displayed soon
 
 ## License
 
