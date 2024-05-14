@@ -26,7 +26,7 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
 
     protected $connection = 'backend_database';
 
-    protected $guard = 'student';
+    protected $guard = 'students';
 
     protected $table = 'students';
 
