@@ -24,11 +24,11 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
     use Notifiable;
     use TwoFactorAuthenticatable;
 
+    protected $connection = 'backend_database';
+
     protected $guard = 'student';
 
     protected $table = 'students';
-
-    protected $connection = 'backend_database';
 
     public function canAccessPanel(Panel $panel): bool
     {

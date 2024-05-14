@@ -1,9 +1,14 @@
 <?php
+
+use App\Models\Student;
+use Illuminate\Support\Facades\App;
+
 return [
     'datetime_format' => 'd/m/Y H:i:s',
     'date_format' => 'd/m/Y',
 
-    'activity_resource' => \Z3d0X\FilamentLogger\Resources\ActivityResource::class,
+    // 'activity_resource' => \Z3d0X\FilamentLogger\Resources\ActivityResource::class,
+    'activity_resource' => \App\Filament\Administration\Resources\ActivityResource::class,
 
     'resources' => [
         'enabled' => true,
@@ -11,7 +16,7 @@ return [
         'logger' => \Z3d0X\FilamentLogger\Loggers\ResourceLogger::class,
         'color' => 'success',
         'exclude' => [
-            App\Filament\Administration\Resources\UserResource::class,
+            // \App\Filament\Administration\Resources\UserResource::class,
         ],
     ],
 
@@ -35,7 +40,8 @@ return [
         'color' => 'warning',
         'logger' => \Z3d0X\FilamentLogger\Loggers\ModelLogger::class,
         'register' => [
-            //App\Models\User::class,
+            // App\Models\User::class,
+            Student::class,
         ],
     ],
 
