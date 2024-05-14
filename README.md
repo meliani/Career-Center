@@ -44,6 +44,8 @@ A platform that helps students to find internships and jobs, and helps professor
     php artisan serve
     ```
 
+If you have trouble with the installation, please send an email to m@meliani.xyz or open an issue.
+
 ## Features
 
 ### Quick overview
