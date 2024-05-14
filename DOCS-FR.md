@@ -1,4 +1,6 @@
-# Informations générales
+# Guide d'utilisation de la plateforme carrières
+
+## Informations générales
 
 Le code source de la plateforme carrières est mis à disposition en open source pour tout opération d’audit de sécurité.
 
@@ -20,7 +22,7 @@ Le tableur de bord contient des graphes pour avoir une vue d’ensemble du déro
 
 #### 1 - Lancement d'une campagne pour la recherche des stages (PFE / Technique / Ouvrier)
 
-la DASRE lance une campagne mailing pour la recherche des stages, il peut définir les dates de début et de fin de la campagne, les filières concernées, les types de stages (PFE, Technique, Ouvrier), les villes concernées, les entreprises concernées, les critères de recherche des stages.
+l'école/institut lance une campagne mailing pour la recherche des stages, il peut définir les dates de début et de fin de la campagne, les filières concernées, les types de stages (PFE, Technique, Ouvrier), les villes concernées, les entreprises concernées, les critères de recherche des stages.
 
 la base de donnée des emails est alimentée, purifiée periodiquement graçe a un système automatisé de traitement des retours email (bounce) et des désabonnements.
 
@@ -39,9 +41,9 @@ Une fois c’est fait l’étudiant génère sa convention, le status de sa déc
 
 la validation est faite soit par e-mail ou sur la plateforme ou il a accès aux étudiants relatifs à sa filière.
 
-#### 3 - suivi par la DASRE
+#### 3 - suivi par l'école/institut
 
-la DASRE assure le suivi des convention sur la plateforme en renseignant l’état actuel des conventions sur la plateforme (“achevée”, “signée”)
+l'école/institut assure le suivi des convention sur la plateforme en renseignant l’état actuel des conventions sur la plateforme (“achevée”, “signée”)
 
 #### 4 - conversion des convention de stage signés en projets de fin d’études
 
@@ -49,7 +51,7 @@ le projet peut contenir des binômes ou trinômes donc plusieurs étudiants et p
 
 #### 5 - affectation des encadrants aux projets
 
-l’affectation peux se faire directement par les CF et/ou CD puis validé par l’administration (DASRE) pour un contrôle minutieux sur les encadrements ajoutés par les collègues.
+l’affectation peux se faire directement par les CF et/ou CD puis validé par l’administration de l'école pour un contrôle minutieux sur les encadrements ajoutés par les collègues.
 l’affectation peux aussi se faire en mass en injectant un fichier d’un tableur (excel ou libre office calc).
 
 #### 6 - Notification des étudiants
@@ -68,7 +70,7 @@ la même procédure que l’étape 5, 6 et 7 est répétée pour l’affectation
 
 ##### paramètrage des intervalles des soutenances
 
-la DASRE défini les intervalles quand les soutenances vont se passer date de début et de fin de l'intervalle, heure de début de la journée et heure de fin, durée des pauses, durée des soutenances.
+l'école/institut défini les intervalles quand les soutenances vont se passer date de début et de fin de l'intervalle, heure de début de la journée et heure de fin, durée des pauses, durée des soutenances.
 
 ##### Parametrage des salles
 

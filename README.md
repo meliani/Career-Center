@@ -1,4 +1,4 @@
-# Careers management system: Backend
+# Careers management system
 
     Warning
 
@@ -54,7 +54,19 @@ will be displayed soon
 
 ## Features
 
-### Charts
+### Quick overview
+
+- Send generic email (one by one or bulk) to students from students page
+- Send generic email from projects page
+- Send generic emails from internships page
+- Generate calendars for students, supervisors, examiners, and jury
+- department assignments
+- supervisor assignments
+- Students features
+- Internship agreement management
+For the comlete list look at DOCS-EN.md or DOCS-FR.md
+
+### Available charts
 
 - *Anounced Internships per Program*
     A chart that shows the number of internships announced per program
@@ -76,26 +88,6 @@ will be displayed soon
     A chart that shows the number of internships by end date
 - *Assigned supervisors per department*
     A chart that shows the number of assigned supervisors per department
-
-### Emails
-
-Send generic email (one by one or bulk) to students from students page
-Send generic email from projects page
-Send generic emails from internships page
-
-### Forms
-
-### policies
-
-Strict policies for All model depending on the user role and professor role
-
-### Calendar
-
-### department assignments
-
-### Students features
-
-### Internship agreement management
 
 ## contributors
 
