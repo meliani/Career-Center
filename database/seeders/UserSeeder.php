@@ -9,6 +9,7 @@ use App\Enums\Title;
 use App\Models\User;
 use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class UserSeeder extends Seeder
 {
@@ -23,14 +24,14 @@ class UserSeeder extends Seeder
 
         foreach (range(1, 10) as $index) {
             User::create([
-                'title' => Title::values()[array_rand(Title::values())],
+                'title' => Title::getArray()[array_rand(Title::getArray())],
                 'name' => $faker->name,
                 'first_name' => $faker->firstName,
                 'last_name' => $faker->lastName,
-                'department' => Department::values()[array_rand(Department::values())],
-                'role' => Role::values()[array_rand(Role::values())],
+                'department' => Department::getArray()[array_rand(Department::getArray())],
+                'role' => Role::getArray()[array_rand(Role::getArray())],
                 'email' => $faker->unique()->safeEmail,
-                'assigned_program' => Program::values()[array_rand(Program::values())],
+                'assigned_program' => Program::getArray()[array_rand(Program::getArray())],
                 'is_enabled' => $faker->boolean,
                 'email_verified_at' => now(),
                 'password' => bcrypt('password'), // You may want to change this
