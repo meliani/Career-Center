@@ -24,8 +24,6 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName
 
     protected $table = 'users';
 
-    protected $connection = 'backend_database';
-
     /**
      * The attributes that are mass assignable.
      *
