@@ -6,7 +6,7 @@ use App\Enums;
 
 class Professor extends User
 {
-    public static function boot()
+    public static function boot(): void
     {
         parent::boot();
         static::addGlobalScope(function ($query) {

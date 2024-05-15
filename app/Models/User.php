@@ -57,6 +57,19 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName
         'messenger_color',
     ];
 
+    protected $connection = '';
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+
+        $this->connection = config('database.default');
+    }
+    // protected static function boot(): void
+    // {
+    //     parent::boot();
+    // }
+
     /**
      * The attributes that should be hidden for serialization.
      *
