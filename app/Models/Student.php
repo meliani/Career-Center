@@ -14,6 +14,7 @@ use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Jeffgreco13\FilamentBreezy\Traits\TwoFactorAuthenticatable;
@@ -149,8 +150,17 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
     {
         parent::boot();
         static::addGlobalScope(function ($query) {
-            $query
-                ->where('year_id', Year::current()->id);
+            if (auth()->check()) {
+                if (Auth::gate('students')) {
+                    $query->where('year_id', Year::current()->id)
+                        ->where('is_active', true)
+                        ->where('id', Auth::user()->id);
+                } elseif (Auth::gate('web')) {
+                    $query->where('year_id', Year::current()->id)
+                        ->where('is_active', true);
+                }
+            }
+
         });
     }
 
