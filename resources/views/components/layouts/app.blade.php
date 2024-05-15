@@ -21,7 +21,9 @@
 </head>
 
 <body class="antialiased">
+    @auth
     <x-impersonate::banner style='light' />
+    @endauth
 
 
     {{ $slot }}
