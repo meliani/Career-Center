@@ -11,7 +11,7 @@ class CreateApprenticeshipsTable extends Migration
     {
         Schema::create('apprenticeships', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->foreignId('student_id')->constrained()->onDelete('no action')->onUpdate('update');
+            $table->foreignId('student_id')->constrained()->onDelete('no action')->onUpdate('cascade');
             $table->unsignedInteger('year_id');
             $table->unsignedInteger('project_id')->nullable();
             $table->string('status', 255)->nullable();
