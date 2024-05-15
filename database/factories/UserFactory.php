@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Enums\Role;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -34,100 +33,5 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
             'role' => 'Professor',
         ];
-    }
-
-    /**
-     * Indicate that the model's state should be root.
-     */
-    public function root(): Factory
-    {
-        return $this->state([
-            'name' => 'Meliani',
-            'first_name' => 'Meliani',
-            'last_name' => 'Mohamed',
-            'email' => 'elmeliani@inpt.ac.ma',
-            'role' => Role::SuperAdministrator,
-            'password' => bcrypt('root_password'), // replace 'root_password' with the actual password
-            'remember_token' => Str::random(10),
-        ]);
-    }
-
-    public function kensi(): Factory
-    {
-        return $this->state([
-            'name' => 'Kensi Ahmed',
-            'first_name' => 'Kensi',
-            'last_name' => 'Ahmed',
-            'email' => 'a.kensi@inpt.ac.ma',
-            'role' => Role::Administrator,
-            'password' => bcrypt('root_password'), // replace 'root_password' with the actual password
-            'remember_token' => Str::random(10),
-        ]);
-    }
-
-    public function samira(): Factory
-    {
-        return $this->state([
-            'name' => 'Bellahcen Samira',
-            'first_name' => 'Bellahcen',
-            'last_name' => 'Samira',
-            'email' => 'b.samira@inpt.ac.ma',
-            'role' => Role::Administrator,
-            'password' => bcrypt('root_password'), // replace 'root_password' with the actual password
-            'remember_token' => Str::random(10),
-        ]);
-    }
-
-    public function nisrine(): Factory
-    {
-        return $this->state([
-            'name' => 'Azzi Nisrine',
-            'first_name' => 'Azzi',
-            'last_name' => 'Nisrine',
-            'email' => 'n.azzi@inpt.ac.ma',
-            'role' => Role::Administrator,
-            'password' => bcrypt('root_password'), // replace 'root_password' with the actual password
-            'remember_token' => Str::random(10),
-        ]);
-    }
-
-    public function issati(): Factory
-    {
-        return $this->state([
-            'name' => 'EL ISSATI Oussama',
-            'first_name' => 'Oussama',
-            'last_name' => 'EL ISSATI',
-            'email' => 'issati@inpt.ac.ma',
-            'role' => Role::ProgramCoordinator,
-            'department' => 'SC',
-            'assigned_program' => 'SESNUM',
-            'password' => bcrypt('professor_password'), // replace 'professor_password' with the actual password
-            'remember_token' => Str::random(10),
-        ]);
-    }
-
-    public function ennouaary(): Factory
-    {
-        return $this->state([
-            'name' => 'EN-NOUAARY Abdeslam',
-            'first_name' => 'Abdeslam',
-            'last_name' => 'EN-NOUAARY',
-            'email' => 'ennouaary@inpt.ac.ma',
-            'role' => Role::ProgramCoordinator,
-            'department' => 'RIM',
-            'assigned_program' => 'SUD',
-            'password' => bcrypt('professor_password'), // replace 'professor_password' with the actual password
-            'remember_token' => Str::random(10),
-        ]);
-    }
-
-    /**
-     * Indicate that the model's email address should be unverified.
-     */
-    public function unverified(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'email_verified_at' => null,
-        ]);
     }
 }
