@@ -21,6 +21,8 @@ A platform that helps students to find internships and jobs, and helps professor
 
 1. Clone the repository
 
+Im using a modified version of countries package because the original one doesn't describe our country as it should be.
+
     ```bash
         git clone --recursive git@github.com:meliani/Career-Center.git
     ```
