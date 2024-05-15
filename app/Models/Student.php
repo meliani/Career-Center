@@ -52,10 +52,28 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
         return true;
     }
 
-    protected static function booted(): void
+    public static function boot()
     {
+        parent::boot();
         static::addGlobalScope(new Scopes\StudentScope());
 
+        // static::addGlobalScope(function ($query) {
+        //     if (auth()->check()) {
+        //         if (Auth::gate('students')) {
+        //             $query->where('year_id', Year::current()->id)
+        //                 ->where('is_active', true)
+        //                 ->where('id', Auth::user()->id);
+        //         } elseif (Auth::gate('web')) {
+        //             $query->where('year_id', Year::current()->id)
+        //                 ->where('is_active', true);
+        //         }
+        //     }
+
+        // });
+    }
+
+    protected static function booted(): void
+    {
         static::creating(function (Student $student) {
             $student->year_id = Year::current()->id;
             $student->name = $student->full_name;
@@ -145,24 +163,6 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-
-    public static function boot()
-    {
-        parent::boot();
-        static::addGlobalScope(function ($query) {
-            if (auth()->check()) {
-                if (Auth::gate('students')) {
-                    $query->where('year_id', Year::current()->id)
-                        ->where('is_active', true)
-                        ->where('id', Auth::user()->id);
-                } elseif (Auth::gate('web')) {
-                    $query->where('year_id', Year::current()->id)
-                        ->where('is_active', true);
-                }
-            }
-
-        });
-    }
 
     public function routeNotificationForMail(): array | string
     {
