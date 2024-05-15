@@ -28,6 +28,18 @@ enum Department: string implements HasLabel
         ];
     }
 
+    public static function getArray(): array
+    {
+        return [
+            Department::EMO->value,
+            Department::MIR->value,
+            Department::GLC->value,
+            Department::SC->value,
+            Department::NULL->value,
+
+        ];
+    }
+
     public function getLabel(): ?string
     {
         return match ($this) {
