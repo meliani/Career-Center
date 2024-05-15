@@ -28,4 +28,3 @@ This repository contains the source code of Career-Center, backed by proprietary
    This license automatically terminates if you breach any of its terms and conditions. Upon termination, you must cease all use, reproduction, modification, display, performance, and distribution of the Code.
 
 This license is adapted from the MIT License (https://opensource.org/licenses/MIT).
-
