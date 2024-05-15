@@ -6,6 +6,13 @@
     The license does not permit hosting it yourself. 
     The code is open for the sake of transparency and allowing contributions.
 
+    ⚠️ Annother Warning: This Repository is Under Active Development ⚠️
+
+    Please note that this repository is currently in development. 
+    You may encounter bugs, incomplete features, or other issues. Use at your own risk, and be prepared for frequent updates and changes.
+    Contributions, feedback, and bug reports are welcome. Thank you for your understanding!
+
+
 ## What is that ?
 
 A platform that helps students to find internships and jobs, and helps professors to manage their students and internships.
@@ -15,7 +22,7 @@ A platform that helps students to find internships and jobs, and helps professor
 1. Clone the repository
 
     ```bash
-        git clone git@github.com:meliani/Career-Center.git
+        git clone --recursive git@github.com:meliani/Career-Center.git
     ```
 
 2. Install the dependencies
