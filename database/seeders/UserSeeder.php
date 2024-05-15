@@ -20,6 +20,27 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
+
+        User::create([
+            'title' => Title::getArray()[array_rand(Title::getArray())],
+            'name' => 'Admin',
+            'first_name' => 'Admin',
+            'last_name' => 'Admin',
+            'department' => Department::getArray()[array_rand(Department::getArray())],
+            'role' => Role::SuperAdministrator,
+            'email' => 'admin@example.com',
+            'assigned_program' => Program::getArray()[array_rand(Program::getArray())],
+            'is_enabled' => true,
+            'email_verified_at' => now(),
+            'password' => bcrypt('password'), // You may want to change this
+            'remember_token' => Str::random(10),
+            'active_status' => true,
+            'avatar_url' => 'https://ui-avatars.com/api/?name=Admin',
+            'avatar' => 'https://ui-avatars.com/api/?name=Admin',
+            'dark_mode' => false,
+            'messenger_color' => '#3b5998',
+        ]);
+
         $faker = Faker::create();
 
         foreach (range(1, 10) as $index) {
