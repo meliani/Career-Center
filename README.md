@@ -34,7 +34,7 @@ A platform that helps students to find internships and jobs, and helps professor
 3. Create a database and update the .env file
 
     ```bash
-    cp .env.example .env
+    cp .env.dev .env
     ```
 
 4. Generate the application key and run the migrations
@@ -45,6 +45,12 @@ A platform that helps students to find internships and jobs, and helps professor
 
     ```bash
     php artisan migrate --seed
+    ```
+
+5. Link the storage folder and run the server
+
+    ```bash
+    php artisan storage:link
     ```
 
     ```bash
@@ -97,8 +103,8 @@ For the comlete list look at DOCS-EN.md or DOCS-FR.md
 
 ## contributors
 
-github.com/meliani
-github.com/copilot
+- github.com/meliani
+- github.com/copilot
 
 ## How to contribute
 
