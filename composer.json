@@ -74,7 +74,7 @@
     },
     "autoload": {
         "exclude-from-classmap": [
-            "developer_docs",
+            "dev_docs",
             "team_docs"
         ],
         "psr-4": {
