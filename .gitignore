@@ -17,5 +17,5 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
-/developer_docs
+/dev_docs
 .env.inpt
