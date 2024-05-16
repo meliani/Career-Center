@@ -8,8 +8,9 @@ use App\Models\Timeslot;
 use App\Models\Timetable;
 use App\Services;
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Console\PromptsForMissingInput;
 
-class GeneratePlanning extends Command
+class GeneratePlanning extends Command implements PromptsForMissingInput
 {
     /**
      * The name and signature of the console command.

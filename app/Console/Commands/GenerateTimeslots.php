@@ -5,8 +5,9 @@ namespace App\Console\Commands;
 use App\Models\Timeslot;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Console\PromptsForMissingInput;
 
-class GenerateTimeslots extends Command
+class GenerateTimeslots extends Command implements PromptsForMissingInput
 {
     /**
      * The name and signature of the console command.

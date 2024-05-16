@@ -4,8 +4,9 @@ namespace App\Console\Commands;
 
 use App\Models\InternshipAgreement;
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Console\PromptsForMissingInput;
 
-class ImportInternshipsData extends Command
+class ImportInternshipsData extends Command implements PromptsForMissingInput
 {
     /**
      * The name and signature of the console command.

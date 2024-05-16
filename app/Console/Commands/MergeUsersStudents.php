@@ -3,9 +3,10 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Illuminate\Support\Facades\DB;
 
-class MergeUsersStudents extends Command
+class MergeUsersStudents extends Command implements PromptsForMissingInput
 {
     /**
      * The name and signature of the console command.

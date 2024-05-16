@@ -4,8 +4,9 @@ namespace App\Console\Commands;
 
 use App\Imports\StudentsImport;
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Console\PromptsForMissingInput;
 
-class ImportStudents extends Command
+class ImportStudents extends Command implements PromptsForMissingInput
 {
     /**
      * The name and signature of the console command.

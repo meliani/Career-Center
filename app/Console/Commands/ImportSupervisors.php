@@ -6,8 +6,9 @@ use App\Models\InternshipAgreement;
 use App\Models\Professor;
 use App\Models\Project;
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Console\PromptsForMissingInput;
 
-class ImportSupervisors extends Command
+class ImportSupervisors extends Command implements PromptsForMissingInput
 {
     /**
      * The name and signature of the console command.
