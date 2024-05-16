@@ -78,7 +78,7 @@ If you have trouble with the installation, please send an email to m@meliani.xyz
 - Generate statistics
 - Generate charts
 
-For the comlete list look at DOCS-EN.md or DOCS-FR.md
+For the comlete list look at [English docs](DOCS-EN.md) or [French docs](DOCS-FR.md)
 
 ### Available charts
 
@@ -102,6 +102,10 @@ For the comlete list look at DOCS-EN.md or DOCS-FR.md
   - A chart that shows the number of internships by end date
 - **Assigned supervisors per department**
   - A chart that shows the number of assigned supervisors per department
+
+## Supported browsers, databases, and PHP versions
+
+Check [Support.md](SUPPORT.md)
 
 ## contributors
 
