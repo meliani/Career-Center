@@ -46,12 +46,13 @@ class GeneratePlanning extends Command
         $this->userId = $this->option('user');
         $this->force = $this->option('force');
         $this->info('Generating the planning for projects');
-        $this->generateTimetable();
+        $this->generateTimetable('2024-04-24', '2024-07-31');
         $this->info('Planning generated successfully');
     }
 
     protected static $assignedProjects = 0;
 
+    /*
     public function generateTimetable()
     {
         $projects = Project::whereDoesntHave('timetable')->orderBy('end_date', 'asc')->get();
@@ -66,10 +67,28 @@ class GeneratePlanning extends Command
             }
         }
     }
+  */
+    public function generateTimetable($startDate, $endDate)
+    {
+        $projects = Project::whereDoesntHave('timetable')
+            ->whereBetween('end_date', [$startDate, $endDate])
+            ->orderBy('end_date', 'asc')
+            ->get();
+
+        foreach ($projects as $project) {
+            if ($this->force) {
+                $this->timeslots = $this->timeslots->sortByDesc('start_time');
+            }
+            [$bestTimeslot, $room] = $this->getBestTimeslot($project, $this->timeslots);
+            if ($bestTimeslot && $room) {
+                $this->assignProjectToTimeslot($project, $bestTimeslot, $room, $this->force);
+            }
+        }
+    }
 
     public function getBestTimeslot($project, $timeslots)
     {
-        $projectEndDate = $project->end_date; // Assuming 'end_date' is the field name for the project's end date
+        $projectEndDate = $project->end_date;
         $bestTimeslot = null;
         $bestDifference = PHP_INT_MAX;
         $bestRoom = null;
