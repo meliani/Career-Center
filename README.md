@@ -29,44 +29,45 @@ We are integrating machine learning and smart algorithms to enhance our platform
 
 ### 1. Clone the repository
 
-    ```bash
-    git clone --recursive git@github.com:meliani/Career-Center.git
-    ```
+```bash
+git clone --recursive git@github.com:meliani/Career-Center.git
+```
+
 `--recursive` because I'm using a customized version of [Countries](https://github.com/parfaitementweb/filament-country-field) package to accurately describe our country. It's hosted as submodule in the `packages` folder.
 It's not necessary to use `--recursive` if you don't want to use the customized version of the package. You can just remove the submodule and install the package from the official repository.
 You can also remove call to the local repository in the `composer.json` file.
 
 ### 2. Install the dependencies
 
-    ```bash
-    cd Career-Center && composer install && npm install
-    ```
+```bash
+cd Career-Center && composer install && npm install
+```
 
 ### 3. Create a database and update the .env file
 
-    ```bash
-    cp .env.dev .env
-    ```
+```bash
+cp .env.dev .env
+```
 
 ### 4. Generate the application key and run the migrations
 
-    ```bash
-    php artisan key:generate
-    ```
+```bash
+php artisan key:generate
+```
 
-    ```bash
-    php artisan migrate --seed
-    ```
+```bash
+php artisan migrate --seed
+```
 
 ### 5. Link the storage folder and run the server
 
-    ```bash
-    php artisan storage:link
-    ```
+```bash
+php artisan storage:link
+```
 
-    ```bash
-    php artisan serve
-    ```
+```bash
+php artisan serve
+```
 
 If you have trouble with the installation, please send an email to m@meliani.xyz or open an issue.
 
