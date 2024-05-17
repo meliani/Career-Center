@@ -21,7 +21,7 @@ class GenerateTimeslots extends Command implements PromptsForMissingInput
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Generate timeslots for the given date range';
 
     protected $start_date;
 
@@ -107,6 +107,8 @@ class GenerateTimeslots extends Command implements PromptsForMissingInput
                     $timeslotPeriod = new Timeslot($start_time, $end_time);
                     $timeslotPeriod->is_enabled = 1;
                     $timeslotPeriod->save();
+
+                    $this->info('Timeslot generated: ' . $timeslotPeriod->start_time . ' - ' . $timeslotPeriod->end_time);
                 }
             }
         });
