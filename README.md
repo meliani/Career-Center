@@ -20,11 +20,10 @@ A platform that helps students to find internships and jobs, and helps professor
 
 1.Clone the repository
 
-I'm using a customized version of the [Countries](https://github.com/parfaitementweb/filament-country-field) package to accurately describe our country.
-
     ```bash
     git clone --recursive git@github.com:meliani/Career-Center.git
     ```
+`--recursive` because I'm using a customized version of the [Countries](https://github.com/parfaitementweb/filament-country-field) package to accurately describe our country. It's hosted as submodule in the `packages` folder.
 
 2.Install the dependencies
 
