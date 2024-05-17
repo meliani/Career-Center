@@ -78,6 +78,10 @@ class ScheduleParametersResource extends Resource
                     Actions\Action\Processing\GenerateTimetableAction::make('Generate Timetable')
                         ->label(__('Generate Defenses Timetable'))
                         ->requiresConfirmation(),
+                    Actions\Action\Processing\GenerateTimetableFromArtisanAction::make('Generate Timetable From Artisan')
+                        ->label(__('Generate Defenses Timetable From Artisan'))
+                        ->requiresConfirmation(),
+
                 ]),
             ]);
     }
