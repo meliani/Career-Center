@@ -1,4 +1,4 @@
-# Careers management system
+# Careers Management System for Schools
 
     Warning
 
@@ -9,16 +9,25 @@
     ⚠️ Annother Warning: This Repository is Under Active Development ⚠️
 
     Please note that this repository is currently in development. 
-    You may encounter bugs, incomplete features, or other issues. Use at your own risk, and be prepared for frequent updates and changes.
+    You may encounter bugs, incomplete features, or other issues.
+    Be prepared for frequent updates and changes.
     Contributions, feedback, and bug reports are welcome. Thank you for your understanding!
 
-## What is that ?
+## What is that?
 
-A platform that helps students to find internships and jobs, and helps professors to manage their students and internships.
+A platform that assists students in finding internships and jobs, while also helping professors manage their students and internships.
+
+## Where are we going?
+
+We aim to expand our platform to offer more comprehensive career guidance and resources, fostering stronger connections between students, educators, and employers. Our goal is to become the leading solution for career management in educational institutions, providing seamless support from education to employment.
+
+## What's Next?
+
+We are integrating machine learning and smart algorithms to enhance our platform. These advancements will offer personalized internship and job recommendations, predictive career path analysis, and data-driven insights for professors to better support their students' career development.
 
 ## How to install
 
-1.Clone the repository
+### 1. Clone the repository
 
     ```bash
     git clone --recursive git@github.com:meliani/Career-Center.git
@@ -27,19 +36,19 @@ A platform that helps students to find internships and jobs, and helps professor
 It's not necessary to use `--recursive` if you don't want to use the customized version of the package. You can just remove the submodule and install the package from the official repository.
 You can also remove call to the local repository in the `composer.json` file.
 
-2.Install the dependencies
+### 2. Install the dependencies
 
     ```bash
     cd Career-Center && composer install && npm install
     ```
 
-3.Create a database and update the .env file
+### 3. Create a database and update the .env file
 
     ```bash
     cp .env.dev .env
     ```
 
-4.Generate the application key and run the migrations
+### 4. Generate the application key and run the migrations
 
     ```bash
     php artisan key:generate
@@ -49,7 +58,7 @@ You can also remove call to the local repository in the `composer.json` file.
     php artisan migrate --seed
     ```
 
-5. Link the storage folder and run the server
+### 5. Link the storage folder and run the server
 
     ```bash
     php artisan storage:link
