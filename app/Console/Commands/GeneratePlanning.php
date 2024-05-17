@@ -17,7 +17,39 @@ class GeneratePlanning extends Command implements PromptsForMissingInput
      *
      * @var string
      */
-    protected $signature = 'app:generate-planning {--force=false} {--user=1}';
+    protected $signature = 'app:generate-planning {projects_start_date} {projects_end_date} {--force=false} {--user=1} {--schedule=1}';
+
+    /*
+    Define the project's date range that will be scheduled and planned within the specified schedule window using the following variables:
+    projects_start_date
+    projects_end_date
+
+    We need this parameters specifically for this project because we are generating the planning for projects within a specific date range.
+
+    Generation algorithm:
+    This is a basic algothme that we may optimize and improve based on the requirements and constraints of the project.
+    1. Get all projects that do not have a timetable and are within the specified date range.
+    2. For each project, get the best timeslot and room that are available and have the least difference between the project's end date and the timeslot's start time.
+    3. Assign the project to the timeslot and room.
+    4. Remove the timeslot from the available timeslots.
+    5. Repeat the process until all projects are assigned to a timeslot and room.
+
+    The command will output the project's title, timeslot's start time, and room's name for each project that is successfully assigned to a timeslot and room.
+
+    The command will also accept the following options:
+
+    --force: Assign the project to the timeslot even if the project's end date is greater than the timeslot's start time.
+    --user: The user ID that will be assigned to the timetable.
+    --schedule: The schedule ID that will be used to generate the planning.
+
+    The command will be executed using the following command:
+
+    php artisan app:generate-planning 2024-04-01 2024-04-30 --force=true --user=1 --schedule=1
+
+    */
+
+    // placeholder for date format 2024-04-24
+    protected $dateFormat = 'Y-m-d';
 
     /**
      * The console command description.
@@ -34,6 +66,12 @@ class GeneratePlanning extends Command implements PromptsForMissingInput
 
     protected $timeslots;
 
+    protected $schedule;
+
+    protected $projectsStartDate;
+
+    protected $projectsEndDate;
+
     /**
      * Execute the console command.
      */
@@ -47,7 +85,7 @@ class GeneratePlanning extends Command implements PromptsForMissingInput
         $this->userId = $this->option('user');
         $this->force = $this->option('force');
         $this->info('Generating the planning for projects');
-        $this->generateTimetable('2024-04-24', '2024-07-31');
+        $this->generateTimetable($this->argument('projects_start_date'), $this->argument('projects_end_date'));
         $this->info('Planning generated successfully');
     }
 
