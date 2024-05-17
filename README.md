@@ -12,34 +12,33 @@
     You may encounter bugs, incomplete features, or other issues. Use at your own risk, and be prepared for frequent updates and changes.
     Contributions, feedback, and bug reports are welcome. Thank you for your understanding!
 
-
 ## What is that ?
 
 A platform that helps students to find internships and jobs, and helps professors to manage their students and internships.
 
 ## How to install
 
-1. Clone the repository
+1.Clone the repository
 
-Im using a modified version of countries package because the original one doesn't describe our country as it should be.
+I'm using a customized version of the [Countries](https://github.com/parfaitementweb/filament-country-field) package to accurately describe our country.
 
     ```bash
-        git clone --recursive git@github.com:meliani/Career-Center.git
+    git clone --recursive git@github.com:meliani/Career-Center.git
     ```
 
-2. Install the dependencies
+2.Install the dependencies
 
     ```bash
     cd Career-Center && composer install && npm install
     ```
 
-3. Create a database and update the .env file
+3.Create a database and update the .env file
 
     ```bash
     cp .env.dev .env
     ```
 
-4. Generate the application key and run the migrations
+4.Generate the application key and run the migrations
 
     ```bash
     php artisan key:generate
