@@ -25,6 +25,7 @@ A platform that helps students to find internships and jobs, and helps professor
     ```
 `--recursive` because I'm using a customized version of [Countries](https://github.com/parfaitementweb/filament-country-field) package to accurately describe our country. It's hosted as submodule in the `packages` folder.
 It's not necessary to use `--recursive` if you don't want to use the customized version of the package. You can just remove the submodule and install the package from the official repository.
+You can also remove call to the local repository in the `composer.json` file.
 
 2.Install the dependencies
 
