@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\Room as RoomEnum;
 use App\Enums;
 
 class Room extends Core\BackendBaseModel
