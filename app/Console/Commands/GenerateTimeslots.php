@@ -47,8 +47,8 @@ class GenerateTimeslots extends Command implements PromptsForMissingInput
 
     public function generateWorkingDays()
     {
-        $startDate = $this->start_date ? Carbon::parse($this->start_date) : now()->startOfMonth();
-        $endDate = $this->end_date ? Carbon::parse($this->end_date) : now()->endOfMonth();
+        $startDate = $this->start_date;
+        $endDate = $this->end_date;
         $workingDays = $this->filterWorkingDays($this->generateDates($startDate, $endDate));
 
         return $workingDays;
@@ -57,6 +57,7 @@ class GenerateTimeslots extends Command implements PromptsForMissingInput
     public function generateDates(Carbon $startDate, Carbon $endDate)
     {
         $dates = collect();
+        $endDate->endOfDay();
 
         while ($startDate->lte($endDate)) {
             $dates->push($startDate->copy());
@@ -75,7 +76,6 @@ class GenerateTimeslots extends Command implements PromptsForMissingInput
 
     public function generateTimeslotsForDay($date)
     {
-
         $timeslots = collect();
         $dayStartingAt = Carbon::parse($date->format('Y-m-d') . ' ' . $this->dayStartingAt);
         $dayEndingAt = Carbon::parse($date->format('Y-m-d') . ' ' . $this->dayEndingAt);

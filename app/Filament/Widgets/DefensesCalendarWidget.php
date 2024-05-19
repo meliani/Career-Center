@@ -6,10 +6,7 @@ use App\Filament\Administration\Resources\ProjectResource;
 use App\Models\Project;
 use App\Models\Timetable;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Illuminate\Database\Eloquent\Model;
-use Saade\FilamentFullCalendar\Actions\DeleteAction;
-use Saade\FilamentFullCalendar\Actions\EditAction;
 use Saade\FilamentFullCalendar\Data\EventData;
 use Saade\FilamentFullCalendar\Widgets\FullCalendarWidget;
 
@@ -63,15 +60,18 @@ class DefensesCalendarWidget extends FullCalendarWidget
         //         ];
         //     })
         //     ->toArray();
-        $events = Project::get()
-        ->load('timetable.timeslot', 'timetable.room', 'students')
+        $events = Project::whereHas('timetable')
+            ->get()
             ->map(
                 fn (Project $project) => EventData::make()
                     ->id($project->id)
                     ->title(
-                    $project->internship_agreements->map(fn ($agreement) => $agreement->id_pfe)->join(', ').
+                        $project->internship_agreements->map(fn ($agreement) => $agreement->id_pfe)->join(', ') .
                     ": \n\r"
-                    . $project->students->map(fn ($person) => $person->full_name)->join(', '))
+                    . $project->students->map(fn ($person) => $person->full_name)->join(', ') .
+                    "\n\r" . '(' .
+                    $project->timetable->room->name . ')'
+                    )
                     ->start($project->timetable->timeslot->start_time ?? '')
                     ->end($project->timetable->timeslot->end_time ?? '')
                     ->url(
@@ -87,30 +87,11 @@ class DefensesCalendarWidget extends FullCalendarWidget
                     // ->textColor($project->timetable->room->color)
                     ->resourceId($project->timetable?->room ? $project->timetable->room->id : 'No room assigned')
                     ->allDay(false)
-
             )
             ->toArray();
 
-            // dd($events);
+        // dd($events);
 
         return $events;
-    }
-
-    protected function modalActions(): array
-    {
-        return [
-            EditAction::make()
-                ->mountUsing(
-                    function (Timetable $record, Form $form, array $arguments) {
-                        $form->fill([
-                            'title' => $record->name,
-                            'start' => $record->start,
-                            'end' => $record->end,
-                            'allDay' => $record->allDay,
-                        ]);
-                    }
-                ),
-            DeleteAction::make(),
-        ];
     }
 }
