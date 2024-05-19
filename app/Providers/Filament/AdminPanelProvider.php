@@ -105,16 +105,18 @@ class AdminPanelProvider extends PanelProvider
                         ->selectable(true)
                         ->editable(true)
                         ->timezone('UTC')
-                        ->plugins([
-                            // 'dayGrid',
-                            'scrollGrid',
-                            // 'list',
-                            // 'interaction',
-                            // 'dayGridPlugin',
-                            // 'timeGridPlugin',
-                            // 'listPlugin',
-                            // 'interactionPlugin',
-                        ])
+                        // ->plugins([
+                        //     // 'dayGrid',
+                        //     // 'scrollGrid',
+                        //     // 'list',
+                        //     // 'interaction',
+                        //     // 'dayGridPlugin',
+                        //     // 'timeGridPlugin',
+                        //     // 'listPlugin',
+                        //     // 'interactionPlugin',
+                        //     // 'moment',
+                        //     // 'moment-timezone',
+                        // ])
                         ->config([
                             'initialView' => 'dayGridWeek', // show week by week
                             'firstDay' => 1, // start the week on a Monday

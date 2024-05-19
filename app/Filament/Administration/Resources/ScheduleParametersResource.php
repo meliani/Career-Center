@@ -80,7 +80,12 @@ class ScheduleParametersResource extends Resource
                         ->requiresConfirmation(),
                     Actions\Action\Processing\GenerateTimetableFromArtisanAction::make('Generate Timetable From Artisan')
                         ->label(__('Generate Defenses Timetable From Artisan'))
-                        ->requiresConfirmation(),
+                        ->requiresConfirmation()
+                        // ->form([
+                        //     Forms\Components\DatePicker::make('startDate')->required(),
+                        //     Forms\Components\DatePicker::make('endDate')->required(),
+                        // ])
+                        ->slideOver(),
 
                 ]),
             ]);
