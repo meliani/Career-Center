@@ -75,6 +75,10 @@ class ScheduleParametersResource extends Resource
                     Actions\Action\Processing\GenerateTimeslotsAction::make('Generate Timeslots')
                         ->label(__('Generate Timeslots'))
                         ->requiresConfirmation(),
+                    Actions\Action\Processing\GenerateTimeslotsFromArtisanAction::make('Generate Timeslots From Artisan')
+                        ->label(__('Generate Timeslots From Artisan'))
+                        ->requiresConfirmation()
+                        ->slideOver(),
                     Actions\Action\Processing\GenerateTimetableAction::make('Generate Timetable')
                         ->label(__('Generate Defenses Timetable'))
                         ->requiresConfirmation(),

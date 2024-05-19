@@ -63,22 +63,35 @@ class DefensesCalendarWidget extends FullCalendarWidget
         //         ];
         //     })
         //     ->toArray();
-        $events = Project::with('timetable.timeslot')
-            ->get()
+        $events = Project::get()
+        ->load('timetable.timeslot', 'timetable.room', 'students')
             ->map(
                 fn (Project $project) => EventData::make()
                     ->id($project->id)
-                    ->title($project->internship_agreements->map(fn ($agreement) => $agreement->id_pfe)->join(', ')
-                    . ' - '
+                    ->title(
+                    $project->internship_agreements->map(fn ($agreement) => $agreement->id_pfe)->join(', ').
+                    ": \n\r"
                     . $project->students->map(fn ($person) => $person->full_name)->join(', '))
-                    ->start($project->timetable?->timeslot->start_time ?? '')
-                    ->end($project->timetable?->timeslot->end_time ?? '')
+                    ->start($project->timetable->timeslot->start_time ?? '')
+                    ->end($project->timetable->timeslot->end_time ?? '')
                     ->url(
                         url: ProjectResource::getUrl(name: 'view', parameters: ['record' => $project]),
                         shouldOpenUrlInNewTab: true
                     )
+                    ->extendedProps([
+                        'description' => $project->title,
+                        // 'professors' => $project->timetable->professors->map(fn ($professor) => $professor->full_name)->join(', '),
+                        'room' => $project->timetable?->room->name,
+                    ])
+                    // ->backgroundColor($project->timetable->room->color)
+                    // ->textColor($project->timetable->room->color)
+                    ->resourceId($project->timetable?->room ? $project->timetable->room->id : 'No room assigned')
+                    ->allDay(false)
+
             )
             ->toArray();
+
+            // dd($events);
 
         return $events;
     }

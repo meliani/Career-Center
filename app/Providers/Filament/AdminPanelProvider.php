@@ -101,31 +101,102 @@ class AdminPanelProvider extends PanelProvider
                 [
                     // FilamentRouteStatisticsPlugin::make(),
                     FilamentFullCalendarPlugin::make()
-                        ->schedulerLicenseKey('GPL-My-Project-Is-Open-Source')
-                        ->selectable(true)
-                        ->editable(true)
+                        // ->schedulerLicenseKey('GPL-My-Project-Is-Open-Source')
+                        ->schedulerLicenseKey('CC-Attribution-NonCommercial-NoDerivatives')
+                        ->selectable(false)
+                        ->editable(false)
                         ->timezone('UTC')
-                        // ->plugins([
-                        //     // 'dayGrid',
-                        //     // 'scrollGrid',
-                        //     // 'list',
-                        //     // 'interaction',
-                        //     // 'dayGridPlugin',
-                        //     // 'timeGridPlugin',
-                        //     // 'listPlugin',
-                        //     // 'interactionPlugin',
-                        //     // 'moment',
-                        //     // 'moment-timezone',
-                        // ])
+                        ->plugins([
+                            // these plugins are already included ['dayGrid', 'timeGrid', 'interaction', 'list', 'moment', 'momentTimezone']
+                            'scrollGrid',
+                            'timeline',
+                            'resourceTimeline',
+                            'resourceTimeGrid',
+                        ])
                         ->config([
-                            'initialView' => 'dayGridWeek', // show week by week
+                            'initialView' => 'timeGridWeek', //timeGridWeek, timeGridDay, dayGridMonth, listWeek
                             'firstDay' => 1, // start the week on a Monday
-                            'eventDisplay' => 'block', // render a solid rectangle
+                            'eventDisplay' => 'auto', // block, list-item, auto, background, inverse-background and none
+                            'eventTimeFormat' => [
+                                'hour' => 'numeric',
+                                'minute' => '2-digit',
+                                'hour12' => false,
+                                'meridiem' => 'false',
+                            ],
+                            'displayEventEnd' => true,
+                            'slotDuration' => '00:15:00',
+                            'slotMinTime' => '09:00:00',
+                            'slotMaxTime' => '16:30:00',
+                            'allDaySlot' => false,
+                            'slotLabelFormat' => [
+                                'hour' => 'numeric',
+                                'minute' => '2-digit',
+                                'hour12' => false,
+                                'meridiem' => 'false',
+                            ],
+                            'slotLabelInterval' => '00:90:00',
+                            // 'slotLabelContent' => 'hour',
+                            'expandRows' => true,
+                            'slotEventOverlap' => false,
+                            'nowIndicator' => true,
+                            // 'views' => [
+                            //     'timeGridWeek' => [
+                            //         'titleFormat' => ['year', 'month', 'day'],
+                            //     ],
+                            //     'timeGridDay' => [
+                            //         'titleFormat' => ['year', 'month', 'day'],
+                            //     ],
+                            //     'dayGridMonth' => [
+                            //         'titleFormat' => ['year', 'month'],
+                            //     ],
+                            //     'listWeek' => [
+                            //         'titleFormat' => ['year', 'month', 'day'],
+                            //     ],
+                            // ],
+                            'resources' => [
+                                [
+                                    'id' => '5',
+                                    'title' => 'Salle B10',
+                                ],
+                                [
+                                    'id' => '6',
+                                    'title' => 'Salle B202',
+                                ],
+                                [
+                                    'id' => '7',
+                                    'title' => 'Salle B12',
+                                ],
+                                [
+                                    'id' => '8',
+                                    'title' => 'Salle B119',
+                                ],
+                            ],
+                            'views' => [
+                                'timeGridWeek' => [
+                                    'type' => 'timeGrid',
+                                    // 'duration' => ['days' => 5],
+                                    'hiddenDays' => [0, 6],
+                                ],
+                                'timeGridDay' => [
+                                    'type' => 'timeGrid',
+                                    // 'duration' => ['days' => 1],
+                                    'hiddenDays' => [0, 6],
+                                ],
+                                // 'timelineWeek' => [
+                                //     'type' => 'timeline',
+                                //     'duration' => ['days' => 5],
+                                //     'hiddenDays' => [0, 6],
+                                // ],
+                            ],
+                            'headerToolbar' => [
+                                'start' => 'prev,next',
+                                'center' => 'title',
+                                'end' => 'today timeGridWeek,resourceTimeGridDay',
+                                // 'end' => 'today timeGridWeek,timeGridDay timelineWeek,timelineDay resourceTimelineWeek,resourceTimelineDay',
+                            ],
+
                         ])
                         ->locale('fr'),
-
-                    // ->selectable()
-                    // ->editable(),
                     FilamentApexChartsPlugin::make(),
                     // new \RickDBCN\FilamentEmail\FilamentEmail(),
                     // \Rabol\FilamentLogviewer\FilamentLogviewerPlugin::make(),
