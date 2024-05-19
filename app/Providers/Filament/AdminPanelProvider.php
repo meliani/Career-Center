@@ -194,6 +194,10 @@ class AdminPanelProvider extends PanelProvider
                                 'end' => 'today timeGridWeek,resourceTimeGridDay',
                                 // 'end' => 'today timeGridWeek,timeGridDay timelineWeek,timelineDay resourceTimelineWeek,resourceTimelineDay',
                             ],
+                            'eventContent' => 'function(arg) {
+                                return { html: "<b>" + arg.event.title + "</b><br/>" + arg.event.extendedProps.description };
+                            }',
+                            'initialDate' => '2024-06-24',
 
                         ])
                         ->locale('fr'),

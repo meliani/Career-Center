@@ -66,11 +66,11 @@ class DefensesCalendarWidget extends FullCalendarWidget
                 fn (Project $project) => EventData::make()
                     ->id($project->id)
                     ->title(
-                        $project->internship_agreements->map(fn ($agreement) => $agreement->id_pfe)->join(', ') .
-                    ": \n\r"
-                    . $project->students->map(fn ($person) => $person->full_name)->join(', ') .
+                        $project->students->map(fn ($person) => $person->full_name)->join(', ') .
                     "\n\r" . '(' .
-                    $project->timetable->room->name . ')'
+                    $project->timetable->room->name . ')' .
+                    ' - PFE N° ' .
+                    $project->internship_agreements->map(fn ($agreement) => $agreement->id_pfe)->join(', ')
                     )
                     ->start($project->timetable->timeslot->start_time ?? '')
                     ->end($project->timetable->timeslot->end_time ?? '')
