@@ -6,12 +6,10 @@
     The license does not permit hosting it yourself.
     The code is open for the sake of transparency and allowing contributions.
 
-    If you have contributed to this repository, you can use the platfrom freely.
-
-    These are our policies today and may change in the future.
-    
-    If you are interested in using this platform, please contact the author at m@meliani.xyz.
-
+  ✅ **If you have contributed to this repository, you can use the platfrom freely with no restrictions.** ✅
+  *These are our policies today and may change in the future.*
+  *If you are interested in using this platform for your organization, please contact the author at <m@meliani.xyz>.*
+  
     ⚠️ Annother Warning: This Repository is Under Active Development ⚠️
 
     Please note that this repository is currently in development. 
