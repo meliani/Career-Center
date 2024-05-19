@@ -115,8 +115,8 @@ class ProjectResource extends Core\BaseResource
                     // ->sortable(false)
                     ->sortableMany()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('professors.department')
-                    ->label('department'),
+                // Tables\Columns\TextColumn::make('professors.department')
+                //     ->label('department of supervisor'),
                 Tables\Columns\TextColumn::make('professors.name')
                     ->label('Supervisor')
                 // ->formatStateUsing(
@@ -141,7 +141,7 @@ class ProjectResource extends Core\BaseResource
                     ->sortableMany(),
                 Tables\Columns\TextColumn::make('timetable.timeslot.start_time')
                     ->label('Defense start time')
-                    ->toggleable(isToggledHiddenByDefault: true)
+                    // ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable()
                     ->sortable()
                     ->formatStateUsing(
@@ -150,13 +150,15 @@ class ProjectResource extends Core\BaseResource
                     ->dateTime(),
                 Tables\Columns\TextColumn::make('timetable.timeslot.end_time')
                     ->label('Defense end time')
-                    ->toggleable(isToggledHiddenByDefault: true)
+                    // ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable()
                     ->sortable()
                     ->formatStateUsing(
                         fn ($state) => date('Y-m-d H:i:s', strtotime($state))
                     )
                     ->dateTime(),
+                Tables\Columns\TextColumn::make('timetable.room.name')
+                    ->label('Room'),
 
                 Tables\Columns\TextColumn::make('internship_agreements.organization_name')
                     ->label('Organization')
