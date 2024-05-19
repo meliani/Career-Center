@@ -1,10 +1,16 @@
 # Careers Management System for Schools
 
-    Warning
+    ⚠️ Warning ⚠️
 
     This repository contains the source code of carrieres.inpt.ac.ma, backed by proprietary code. 
-    The license does not permit hosting it yourself. 
+    The license does not permit hosting it yourself.
     The code is open for the sake of transparency and allowing contributions.
+
+    If you have contributed to this repository, you can use the platfrom freely.
+
+    These are our policies today and may change in the future.
+    
+    If you are interested in using this platform, please contact the author at m@meliani.xyz.
 
     ⚠️ Annother Warning: This Repository is Under Active Development ⚠️
 
@@ -69,7 +75,7 @@ php artisan storage:link
 php artisan serve
 ```
 
-If you have trouble with the installation, please send an email to m@meliani.xyz or open an issue.
+If you have trouble with the installation, please send an email to <m@meliani.xyz> or open an issue.
 
 ## Features
 
