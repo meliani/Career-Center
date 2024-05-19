@@ -103,12 +103,12 @@ class AdminPanelProvider extends PanelProvider
                     FilamentFullCalendarPlugin::make()
                         // ->schedulerLicenseKey('GPL-My-Project-Is-Open-Source')
                         ->schedulerLicenseKey('CC-Attribution-NonCommercial-NoDerivatives')
-                        ->selectable(false)
+                        ->selectable(true)
                         ->editable(false)
                         ->timezone('UTC')
                         ->plugins([
                             // these plugins are already included ['dayGrid', 'timeGrid', 'interaction', 'list', 'moment', 'momentTimezone']
-                            'scrollGrid',
+                            // 'scrollGrid',
                             'timeline',
                             'resourceTimeline',
                             'resourceTimeGrid',
@@ -160,11 +160,11 @@ class AdminPanelProvider extends PanelProvider
                                 ],
                                 [
                                     'id' => '6',
-                                    'title' => 'Salle B202',
+                                    'title' => 'Salle B12',
                                 ],
                                 [
                                     'id' => '7',
-                                    'title' => 'Salle B12',
+                                    'title' => 'Salle B202',
                                 ],
                                 [
                                     'id' => '8',
@@ -182,11 +182,11 @@ class AdminPanelProvider extends PanelProvider
                                     // 'duration' => ['days' => 1],
                                     'hiddenDays' => [0, 6],
                                 ],
-                                // 'timelineWeek' => [
-                                //     'type' => 'timeline',
-                                //     'duration' => ['days' => 5],
-                                //     'hiddenDays' => [0, 6],
-                                // ],
+                                'resourceTimeGridDay' => [
+                                    'type' => 'resourceTimeGrid',
+                                    'duration' => ['days' => 1],
+                                    'hiddenDays' => [0, 6],
+                                ],
                             ],
                             'headerToolbar' => [
                                 'start' => 'prev,next',
