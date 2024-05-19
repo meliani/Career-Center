@@ -23,7 +23,7 @@ class TimetableOverviewChart extends ApexChartsParentWidget
 
     public static function canView(): bool
     {
-        return auth()->user()->isSuperAdministrator();
+        return auth()->user()->isAdministrator();
     }
 
     /**
