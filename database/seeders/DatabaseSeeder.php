@@ -17,13 +17,15 @@ class DatabaseSeeder extends Seeder
     {
         Eloquent::unguard();
 
-        $this->call(UserSeeder::class);
-        $this->call(ProfessorSeeder::class);
-        $this->call(YearSeeder::class);
-        $this->call(StudentSeeder::class);
+        // $this->call(UserSeeder::class);
+        // $this->call(ProfessorSeeder::class);
+        // $this->call(YearSeeder::class);
+        // $this->call(StudentSeeder::class);
 
-        $this->call(ScheduleSettingsSeeder::class);
-        $this->call(RoomsSeeder::class);
+        // $this->call(ScheduleSettingsSeeder::class);
+        // $this->call(RoomsSeeder::class);
+
+        $this->call(DocumentTemplateSeeder::class);
 
         /* Uncomment if you want to seed sample data from SQL files */
 
