@@ -4,7 +4,6 @@ namespace App\Filament\Core;
 
 use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
 
 class StudentBaseResource extends Resource
 {
@@ -34,7 +33,6 @@ class StudentBaseResource extends Resource
         if (auth()->check()) {
             return auth()->user()->hasVerifiedEmail() && auth()->user()->is_verified;
         }
-        // dd(Auth::user());
 
         return false;
     }

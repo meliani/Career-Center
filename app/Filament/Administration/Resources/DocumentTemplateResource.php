@@ -2,8 +2,8 @@
 
 namespace App\Filament\Administration\Resources;
 
+use App\Filament\Actions\Action\Processing\GenerateExampleAgreementPdfAction;
 use App\Filament\Administration\Resources\DocumentTemplateResource\Pages;
-use App\Filament\Administration\Resources\DocumentTemplateResource\RelationManagers;
 use App\Models\DocumentTemplate;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -84,6 +84,11 @@ class DocumentTemplateResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                GenerateExampleAgreementPdfAction::make('generate-pdf')
+                    ->label('Generate PDF')
+                    ->icon('heroicon-o-document'),
+                // ->successNotification('The PDF has been generated successfully')
+                // ->errorNotification('An error occurred while generating the PDF')
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
