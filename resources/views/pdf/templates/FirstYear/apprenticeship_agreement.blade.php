@@ -692,39 +692,40 @@
             </g>
         </svg>
     </div>
-    <h1 class="text-xl font-semibold text-center mb-2 mt-10">
-        CONVENTION DE STAGE "OUVRIER"
-    </h1>
-    <h2 class="text-xs text-center mb-10 mx-auto max-w-sm">
-        1<sup>ère</sup> Année du cycle des Ingénieurs d’État (INE) de l’Institut National des Postes et
-        Télécommunications (INPT-Rabat)
-    </h2>
+    <div class="border-2 border-gray-500 p-2 rounded-md mx-auto max-w-sm mt-10 mb-6">
+        <h1 class="text-xl font-semibold text-center mb-2">
+            CONVENTION DE STAGE "OUVRIER"
+        </h1>
+        <h2 class="text-xs text-center mx-auto max-w-sm">
+            1<sup>ère</sup> Année du cycle Ingénieur (INE) de l’Institut National des Postes et
+            Télécommunications (INPT-Rabat)
+        </h2>
+    </div>
 
-
-    <div class="text-sm font-semibold">
+    <div class="text-xs font-semibold">
         Entre : L’Institut National des Postes et Télécommunications (INPT-Rabat)
     </div>
     <div class="text-xs">
-        Sise à Avenue Allal El Fassi, Madinat Al Irfane, Rabat - Maroc
+        Sis à Avenue Allal El Fassi, Madinat Al Irfane, Rabat - Maroc
     </div>
     <div class="text-xs">
         Représenté par Monsieur Ahmed Kensi,
         Directeur Adjoint des Stages et Relations avec les Entreprises par intérim,
     </div>
-    <div class="text-sm font-semibold mt-2">
+    <div class="text-xs font-semibold mt-0">
         Et désigné dans ce qui suit par l’INPT
     </div>
-    <div class="text-sm font-semibold mt-2">
+    <div class="text-xs font-semibold mt-2">
         Et : <strong>{{$internship->organization->name}}</strong>
     </div>
     <div class="text-xs">
-        Sise à l'addresse : {{$internship->organization->address}}
+        Sise à l'addresse : <strong>{{$internship->organization->address}}</strong>
     </div>
     <div class="text-xs">
         Représenté par <strong>{{$internship->parrain->full_name}}</strong>,
         <strong>{{$internship->parrain->function}}</strong>
     </div>
-    <div class="text-sm font-semibold mt-2">
+    <div class="text-xs font-semibold mt-0">
         Et désigné dans ce qui suit par l’organisme d’accueil
     </div>
 
@@ -732,7 +733,7 @@
 
     <div class="p-6 bg-white">
         <h1 class="text-base font-semibold mb-0">Préambule</h1>
-        <div class="text-xs mb-4">
+        <div class="text-xs mb-2">
             <p>L’INPT a pour mission la formation, la recherche et l’expertise. Il est chargé de la formation initiale
                 et de la
                 formation continue dans les domaines des télécommunications, des technologies de l’information et de la
@@ -763,7 +764,8 @@
         <div class="text-xs mb-2">
             <p>L’étudiant(e) sera encadré(e) par un Responsable de stage désigné par l'organisme d'accueil, en
                 l'occurence
-                {{$internship->supervisor->full_name}}</p>
+                <strong>{{$internship->supervisor->full_name}}</strong>
+            </p>
             <p>Le thème du stage est établi d'un commun accord entre l’organisme d’accueil et l’élève ingénieur.</p>
         </div>
         <h2 class="text-base font-semibold mb-0">Article 3</h2>

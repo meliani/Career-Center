@@ -692,39 +692,41 @@
             </g>
         </svg>
     </div>
-    <h1 class="text-xl text-center font-bold mb-2 mt-10">
-        CONVENTION DE STAGE "TECHNIQUE"
-    </h1>
-    <h2 class="text-xs text-center mb-10 mx-auto max-w-sm">
-        2<sup>ème</sup> Année du cycle des Ingénieurs d’État (INE)
-        de l’Institut National des Postes et Télécommunications (INPT-Rabat)
-    </h2>
+    <div class="border-2 border-gray-500 p-2 rounded-md mx-auto max-w-sm mt-10 mb-6">
+        <h1 class="text-xl font-semibold text-center mb-2">
+            CONVENTION DE STAGE "TECHNIQUE"
+        </h1>
+        <h2 class="text-xs text-center mx-auto max-w-sm">
 
+            2<sup>ème</sup> Année du cycle Ingénieur (INE)
+            de l’Institut National des Postes et Télécommunications (INPT-Rabat)
+        </h2>
+    </div>
 
-    <div class="text-sm font-semibold">
+    <div class="text-xs font-semibold">
         Entre : L’Institut National des Postes et Télécommunications (INPT-Rabat)
     </div>
     <div class="text-xs">
-        Sise à Avenue Allal El Fassi, Madinat Al Irfane, Rabat - Maroc
+        Sis à Avenue Allal El Fassi, Madinat Al Irfane, Rabat - Maroc
     </div>
     <div class="text-xs">
         Représenté par Monsieur Ahmed Kensi,
         Directeur Adjoint des Stages et Relations avec les Entreprises par intérim,
     </div>
-    <div class="text-sm font-semibold mt-2">
+    <div class="text-xs font-semibold mt-0">
         Et désigné dans ce qui suit par l’INPT
     </div>
-    <div class="text-sm font-semibold mt-2">
+    <div class="text-xs font-semibold mt-2">
         Et : <strong>{{$internship->organization->name}}</strong>
     </div>
     <div class="text-xs">
-        Sise à l'addresse : {{$internship->organization->address}}
+        Sise à l'addresse : <strong>{{$internship->organization->address}}</strong>
     </div>
     <div class="text-xs">
         Représenté par <strong>{{$internship->parrain->full_name}}</strong>,
         <strong>{{$internship->parrain->function}}</strong>
     </div>
-    <div class="text-sm font-semibold mt-2">
+    <div class="text-xs font-semibold mt-0">
         Et désigné dans ce qui suit par l’organisme d’accueil
     </div>
 
@@ -733,28 +735,36 @@
     <div class="p-6 bg-white">
         <h1 class="text-base font-semibold mb-0">Préambule</h1>
         <div class="text-xs mb-2">
-            <p>L’INPT a pour mission la formation, la recherche et l’expertise. Il est chargé de la formation initiale
+            <p>L’INPT a pour mission la formation, la recherche et l’expertise. Il est chargé de la formation
+                initiale
                 et de la
-                formation continue dans les domaines des télécommunications, des technologies de l’information et de la
+                formation continue dans les domaines des télécommunications, des technologies de l’information et de
+                la
                 communication et
                 disciplines connexes.</p>
-            <p>La mise en situation professionnelle est une étape importante dans la formation d’ingénieurs, elle permet
+            <p>La mise en situation professionnelle est une étape importante dans la formation d’ingénieurs, elle
+                permet
                 aux élèves de se
-                confronter aux réalités techniques, scientifiques, économiques et sociales. C’est dans cette optique que
+                confronter aux réalités techniques, scientifiques, économiques et sociales. C’est dans cette optique
+                que
                 l’INPT s’inscrit et marque sa
-                volonté d’avoir dans ses programmes de formation, des stages de divers types orientés vers des objectifs
+                volonté d’avoir dans ses programmes de formation, des stages de divers types orientés vers des
+                objectifs
                 globaux et spécifiques
                 (Stage Ouvrier, Stage Technique et Stage de Projet de Fin d’Études).</p>
-            <p>Durant le stage technique dont la durée est de 4 à 8 semaines, l’élève ingénieur effectue une recherche
+            <p>Durant le stage technique dont la durée est de 4 à 8 semaines, l’élève ingénieur effectue une
+                recherche
                 personnelle sur le thème
                 proposé.</p>
         </div>
         <h2 class="text-base font-semibold mb-0">Article 1</h2>
         <div class="text-xs mb-2">
-            <p>La présente convention règle les rapports entre l’organisme d’accueil d'une part, l’INPT et le stagiaire
+            <p>La présente convention règle les rapports entre l’organisme d’accueil d'une part, l’INPT et le
+                stagiaire
                 d'autre part.</p>
             <p>Cette convention concerne
-                <strong>{{$internship->student->long_full_name}}</strong>, élève ingénieur en 2<sup>ème</sup> année du
+                <strong>{{$internship->student->long_full_name}}</strong>, élève ingénieur en 2<sup>ème</sup> année
+                du
                 cycle ingénieur
                 de l’INPT, inscrit(e) en filière <strong>{{$internship->student->program}}</strong>.
             </p>
@@ -769,7 +779,7 @@
         </div>
         <h2 class="text-base font-semibold mb-0">Article 3</h2>
         <div class="text-xs mb-2">
-            <p>Thème du stage : {{$internship->title}}</p>
+            <p>Thème du stage : <strong>{{$internship->title}}</strong></p>
             <p>
                 La durée du stage est fixée à <strong>{{$internship->duration_in_weeks}} semaines</strong>, du
                 @if($internship->starting_at instanceof \Carbon\Carbon)
@@ -783,7 +793,8 @@
         <h2 class="text-base font-semibold mb-0">Article 4</h2>
         <div class="text-xs mb-2">
             <p class="text-xs mb-2">
-                Durant son stage l’élève ingénieur est soumis à la discipline de l’organisme d’accueil, notamment en ce
+                Durant son stage l’élève ingénieur est soumis à la discipline de l’organisme d’accueil, notamment en
+                ce
                 qui
                 concerne l'horaire et le respect du secret professionnel.
             </p>
@@ -1498,11 +1509,13 @@
         <div class="text-xs mb-2">
             <p>
                 A la fin du stage, l'organisme d’accueil délivre une attestation de stage mentionnant la période du
-                stage et une fiche d'appreciation de l'encadrant sur le travail et le comportement de l'élève ingénieur
+                stage et une fiche d'appreciation de l'encadrant sur le travail et le comportement de l'élève
+                ingénieur
                 stagiaire.
             </p>
             <p>
-                Ces documents sont à communiquer à la direction adjointe des stages et relataions avec les entreprises
+                Ces documents sont à communiquer à la direction adjointe des stages et relataions avec les
+                entreprises
                 de l'INPT par email sur <strong>entreprises@inpt.ac.ma</strong>.
             </p>
         </div>
@@ -1521,9 +1534,11 @@
             {{-- <div class="border-t-2 pt-2 text-gray-400 text-center">Cachet de l’organisme d'accueil</div> --}}
         </div>
         <div class="border-2 border-gray-300 w-full p-0 flex flex-col items-center min-h-[250px]">
-            <div class="min-h-[100px] text-gray-800 pt-2">Date et Signature du stagiaire avec Mention manuscrite « Lu et
+            <div class="min-h-[100px] text-gray-800 pt-2">Date et Signature du stagiaire avec Mention manuscrite «
+                Lu et
                 approuvé »</div>
-            {{-- <div class="border-t-2 pt-2 text-gray-400 text-center">Mention manuscrite « Lu et approuvé »</div> --}}
+            {{-- <div class="border-t-2 pt-2 text-gray-400 text-center">Mention manuscrite « Lu et approuvé »</div>
+            --}}
         </div>
         <div class="border-2 border-gray-300 w-full pt-0 flex flex-col justify-between min-h-[250px]">
             <div class="pt-2 text-gray-800 text-center">Le représentant de l’INPT</div>

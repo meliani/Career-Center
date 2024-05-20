@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\URL;
 
 class DocumentTemplateResource extends Resource
 {
@@ -53,7 +54,11 @@ class DocumentTemplateResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('example_url')
-                    ->searchable(),
+                    ->label('Agreement PDF')
+                    ->limit(30)
+                    ->formatStateUsing(fn (DocumentTemplate $record) => ! is_null($record->example_url) ? 'View example agreement' : 'Generate a new PDF')
+                    ->url(fn (DocumentTemplate $record) => URL::to($record->example_url), shouldOpenInNewTab: true),
+
                 Tables\Columns\TextColumn::make('type')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('level'),
