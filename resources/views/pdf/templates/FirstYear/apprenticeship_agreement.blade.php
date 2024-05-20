@@ -692,19 +692,20 @@
             </g>
         </svg>
     </div>
-    <h1 class="text-xl font-bold text-center mb-2 mt-10">
+    <h1 class="text-xl font-semibold text-center mb-2 mt-10">
         CONVENTION DE STAGE "OUVRIER"
     </h1>
     <h2 class="text-xs text-center mb-10 mx-auto max-w-sm">
-        1ère Année du cycle des Ingénieurs d’État (INE) de l’Institut National des Postes et Télécommunications (INPT)
+        1<sup>ère</sup> Année du cycle des Ingénieurs d’État (INE) de l’Institut National des Postes et
+        Télécommunications (INPT-Rabat)
     </h2>
 
 
     <div class="text-sm font-semibold">
-        Entre : L’Institut National des Postes et Télécommunications
+        Entre : L’Institut National des Postes et Télécommunications (INPT-Rabat)
     </div>
     <div class="text-xs">
-        Situé au Av. Allal El Fassi, Madinat Al Irfane, Rabat - Maroc
+        Sise à Avenue Allal El Fassi, Madinat Al Irfane, Rabat - Maroc
     </div>
     <div class="text-xs">
         Représenté par Monsieur Ahmed Kensi,
@@ -716,8 +717,8 @@
     <div class="text-sm font-semibold mt-2">
         Et : <strong>{{$internship->organization->name}}</strong>
     </div>
-    <div class="text-center text-xs">
-        {{$internship->organization->address}}
+    <div class="text-xs">
+        Sise à l'addresse : {{$internship->organization->address}}
     </div>
     <div class="text-xs">
         Représenté par <strong>{{$internship->parrain->full_name}}</strong>,
@@ -730,13 +731,13 @@
 
 
     <div class="p-6 bg-white">
-        <h1 class="text-2xl font-bold mb-4">Préambule</h1>
+        <h1 class="text-base font-semibold mb-0">Préambule</h1>
         <div class="text-xs mb-4">
-            <p>L'INPT forme des ingénieurs en Réseaux de Télécommunications, de l’Informatique et du Multimédia. Ces
-                ingénieurs pourront être
-                de futurs responsables pour des entreprises, dans un monde ouvert aux dynamiques des réseaux et des
-                systèmes
-                d'information.</p>
+            <p>L’INPT a pour mission la formation, la recherche et l’expertise. Il est chargé de la formation initiale
+                et de la
+                formation continue dans les domaines des télécommunications, des technologies de l’information et de la
+                communication et
+                disciplines connexes.</p>
             <p>La mise en situation professionnelle est une étape importante dans la formation d’ingénieurs, elle permet
                 aux élèves de se
                 confronter aux réalités techniques, scientifiques, économiques et sociales. C’est dans cette optique que
@@ -748,30 +749,40 @@
                 poste où il se familiarise
                 avec les conditions de travail et observe le fonctionnement de l’organisme d’accueil.</p>
         </div>
-        <h2 class="text-base font-semibold mb-2">Article 1</h2>
+        <h2 class="text-base font-semibold mb-0">Article 1</h2>
         <div class="text-xs mb-2">
             <p>La présente convention règle les rapports entre l’organisme d’accueil d'une part, l’INPT et le stagiaire
                 d'autre part.</p>
-            <p>Cette convention concerne l’élève ingénieur :
-                <strong>{{$internship->student->long_full_name}}</strong>, élève ingénieur de la 1ère année du cycle INE
-                de l’INPT.
+            <p>Cette convention concerne
+                <strong>{{$internship->student->long_full_name}}</strong>, élève ingénieur en 1<sup>ère</sup> année du
+                cycle INE
+                de l’INPT, inscrit(e) en filière <strong>{{$internship->student->program}}</strong>.
             </p>
         </div>
-        <h2 class="text-base font-semibold mb-2">Article 2</h2>
+        <h2 class="text-base font-semibold mb-0">Article 2</h2>
         <div class="text-xs mb-2">
-            <p>L’étudiant(e) sera encadré(e) par un Responsable de stage désigné par l'organisme d'accueil
+            <p>L’étudiant(e) sera encadré(e) par un Responsable de stage désigné par l'organisme d'accueil, en
+                l'occurence
                 {{$internship->supervisor->full_name}}</p>
             <p>Le thème du stage est établi d'un commun accord entre l’organisme d’accueil et l’élève ingénieur.</p>
-            <h2 class="text-base font-semibold mb-2">Article 3</h2>
-            <p class="text-xs mb-2">
+        </div>
+        <h2 class="text-base font-semibold mb-0">Article 3</h2>
+        <div class="text-xs mb-2">
+            <p>
             <p>Thème du stage : <strong>{{$internship->title}}</strong></p>
             <p>
                 La durée du stage est fixée à <strong>{{$internship->duration_in_weeks}} semaines</strong>, du
-                <strong>{{$internship->starting_at->format('d/m/Y')}}</strong> au
-                <strong>{{$internship->ending_at->format('d/m/Y')}}</strong>.
+                @if($internship->starting_at instanceof \Carbon\Carbon)
+                <strong>{{$internship->starting_at->format('d/m/Y')}}</strong>
+                au
+                <strong>{{$internship->ending_at->format('d/m/Y')}}</strong>
+                .
+                @else
+                ..................... au .....................
+                @endif
             </p>
         </div>
-        <h2 class="text-base font-semibold mb-2">Article 4</h2>
+        <h2 class="text-base font-semibold mb-0">Article 4</h2>
         <p class="text-xs mb-2">
             Durant son stage l’élève ingénieur est soumis à la discipline de l’organisme d’accueil, notamment en ce qui
             concerne l'horaire et le respect du secret professionnel.
@@ -1471,32 +1482,31 @@
     </div>
     <div class="p-6 bg-white">
 
-        <h2 class="text-base font-semibold mb-2">Article 5</h2>
+        <h2 class="text-base font-semibold mb-0">Article 5</h2>
         <p class="text-xs mb-2">
             En cas de faute grave, de manquement à la discipline ou de tout autre problème, l’organisme d’accueil
             informera, aussitôt la
             direction de l’INPT pour convenir des mesures à prendre.
         </p>
-        <h2 class="text-base font-semibold mb-2">Article 6</h2>
+        <h2 class="text-base font-semibold mb-0">Article 6</h2>
         <p class="text-xs mb-2">
             L'élève ingénieur continuera à bénéficier du régime d'assurance universitaire souscrite par l’INPT en sa
             faveur, durant la période de
             son stage.
         </p>
-        <h2 class="text-base font-semibold mb-2">Article 7</h2>
+        <h2 class="text-base font-semibold mb-0">Article 7</h2>
         <div class="text-xs mb-2">
-            <p>A la fin du stage, l'organisme d’accueil est prié d’établir une attestation mentionnant la période du
-                stage.
-                De plus le Responsable du
-                stage communiquera à l’INPT, dès la fin du stage, son appréciation sur le travail et le comportement de
-                l’élève ingénieur stagiaire au
-                moyen d'une fiche d'évaluation élaborée par les soins de l’INPT.</p>
-            <p>Cette lettre sera envoyée à l’attention du Directeur Adjoint chargé des Relations avec les Entreprises,
-                par
-                fax au N° 00–212– 537–
-                77–30–44.</p>
+            <p>
+                A la fin du stage, l'organisme d’accueil délivre une attestation de stage mentionnant la période du
+                stage et une fiche d'appreciation de l'encadrant sur le travail et le comportement de l'élève ingénieur
+                stagiaire.
+            </p>
+            <p>
+                Ces documents sont à communiquer à la direction adjointe des stages et relataions avec les entreprises
+                de l'INPT par email sur <strong>entreprises@inpt.ac.ma</strong>.
+            </p>
         </div>
-        <h2 class="text-base font-semibold mb-2">Article 8</h2>
+        <h2 class="text-base font-semibold mb-0">Article 8</h2>
         <p class="text-xs mb-2">
             L’élève ingénieur s'engage à fournir au terme de son stage, un rapport représentant les résultats de son
             travail à l'organisme
@@ -1519,12 +1529,12 @@
             <div class="pt-2 text-gray-800 text-center">Le représentant de l’INPT</div>
         </div>
     </div>
-    <div class="p-4 text-gray-500 fixed bottom-0 w-full border-t-2">
+    <div class="p-2 text-gray-500 fixed bottom-0 w-full border-t-2">
         <p class="text-xs mb-0">Av. Allal El Fassi,</p>
         <p class="text-xs mb-0">Madinat Al Irfane,</p>
         <p class="text-xs mb-1">Rabat - Maroc</p>
-        <p class="text-xs mb-0">Tél. : + 212 5 37 77 30 77</p>
-        <p class="text-xs mb-0">Fax : + 212 5 37 77 30 44</p>
+        <p class="text-xs mb-0">+ 212 538 002 700</p>
+        <p class="text-xs mb-1">+ 212 538 002 860/765</p>
         <p class="text-xs mb-0">https://www.inpt.ac.ma</p>
     </div>
 </body>

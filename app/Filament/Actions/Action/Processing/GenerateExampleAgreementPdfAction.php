@@ -39,7 +39,7 @@ class GenerateExampleAgreementPdfAction extends Action
                     'long_full_name' => '........ .........',
                     'full_name' => '........ .........',
                     'level' => '........',
-                    'specialty' => '........',
+                    'program' => '........',
                     'email' => '......................',
                     'phone' => '............',
                     'address' => '......................',
