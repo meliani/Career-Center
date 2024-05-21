@@ -12,10 +12,10 @@ use Malzariey\FilamentDaterangepickerFilter\Fields\DateRangePicker;
 
 class ApprenticeshipAgreementForm
 {
-    public static function getSchema(): array
+    public function getSchema(): array
     {
         return [
-            ...AddOrganizationForm::getSchema(),
+            ...(new AddOrganizationForm())->getSchema(),
             Forms\Components\TextInput::make('title')
                 ->columnSpanFull()->required(),
             Forms\Components\RichEditor::make('description')
@@ -24,6 +24,7 @@ class ApprenticeshipAgreementForm
                 ->columnSpanFull(),
 
             Forms\Components\Fieldset::make(__('Organization contacts'))
+                ->hiddenOn('edit')
                 ->columns(2)
                 ->schema([
                     // Forms\Components\Placeholder::make('Le parrain est le représentant de l\'organisme d\'accueil'),
@@ -48,12 +49,13 @@ class ApprenticeshipAgreementForm
                                 ->preload()
                                 ->required()
                                 ->createOptionForm([
-                                    ...AddOrganizationForm::getSchema(),
+                                    ...(new AddOrganizationForm(1))->getSchema(),
                                 ]),
+                            // ->default(fn (Get $get) => $get('organization_id')),
                             Forms\Components\Fieldset::make(__('Parrain'))
                                 ->columns(3)
                                 ->schema([
-                                    ...AddOrganizationContactForm::getSchema(),
+                                    ...(new AddOrganizationContactForm())->getSchema(),
                                 ]),
                         ]),
                     Forms\Components\Select::make('supervisor_id')
@@ -69,29 +71,26 @@ class ApprenticeshipAgreementForm
                         ->required()
                         ->createOptionForm([
                             Forms\Components\Select::make('organization_id')
+                                // ->default(fn (Get $get) => $get('organization_id'))
                                 ->relationship('organization', 'name')
                                 ->searchable()
                                 ->preload()
                                 ->required()
                                 ->createOptionForm([
-                                    ...AddOrganizationForm::getSchema(),
+                                    ...(new AddOrganizationForm())->getSchema(),
                                 ]),
                             Forms\Components\Fieldset::make(__('Supervisor'))
                                 ->columns(3)
                                 ->schema([
-                                    ...AddOrganizationContactForm::getSchema(),
+                                    ...(new AddOrganizationContactForm())->getSchema(),
                                 ]),
                         ]),
-                ]),
-
-            Forms\Components\Fieldset::make(__('Internship dates'))
-                ->columns(2)
-                ->schema([
                     DateRangePicker::make('internship_period')
                         ->required(),
                     // Forms\Components\DateTimePicker::make('starting_at'),
                     // Forms\Components\DateTimePicker::make('ending_at'),
                 ]),
+
             Forms\Components\Fieldset::make(__('Remuneration and workload'))
                 ->columns(8)
                 ->schema([

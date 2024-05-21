@@ -41,8 +41,7 @@ class ApprenticeshipResource extends StudentBaseResource
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema(ApprenticeshipAgreementForm::getSchema());
+        return $form->schema((new ApprenticeshipAgreementForm())->getSchema());
     }
 
     public static function table(Table $table): Table

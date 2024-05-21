@@ -7,7 +7,7 @@ use Filament\Forms;
 
 class AddOrganizationContactForm
 {
-    public static function getSchema(): array
+    public function getSchema(): array
     {
         return [
             Forms\Components\Select::make('title')
