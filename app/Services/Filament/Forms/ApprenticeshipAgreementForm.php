@@ -8,23 +8,33 @@ use Filament\Forms;
 use Filament\Forms\Get;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Malzariey\FilamentDaterangepickerFilter\Fields\DateRangePicker;
 
 class ApprenticeshipAgreementForm
 {
-    public static function getSchema(): array
+    public function getSchema(): array
     {
         return [
-            ...AddOrganizationForm::getSchema(),
+            ...(new AddOrganizationForm())->getSchema(),
             Forms\Components\TextInput::make('title')
                 ->columnSpanFull()->required(),
             Forms\Components\RichEditor::make('description')
                 ->columnSpanFull(),
-            Forms\Components\SpatieTagsInput::make('keywords'),
 
+            Forms\Components\SpatieTagsInput::make('keywords')
+                ->placeholder('Add a keyword and press enter or click away to add it')
+                ->columnSpanFull(),
             Forms\Components\Fieldset::make(__('Organization contacts'))
-                ->columns(4)
+
+                ->columns(2)
                 ->schema([
+                    // Forms\Components\Placeholder::make('Le parrain est le représentant de l\'organisme d\'accueil'),
+                    Forms\Components\Section::make()
+                        ->schema([Forms\Components\Placeholder::make('Note')->hiddenLabel()
+                            ->content(__('Parrain is the representative of the host organization'))])
+                        ->hiddenOn('edit'),
                     Forms\Components\Select::make('parrain_id')
+                        ->hiddenOn('edit')
                         ->relationship(
                             name: 'parrain',
                             titleAttribute: 'name',
@@ -42,12 +52,13 @@ class ApprenticeshipAgreementForm
                                 ->preload()
                                 ->required()
                                 ->createOptionForm([
-                                    ...AddOrganizationForm::getSchema(),
+                                    ...(new AddOrganizationForm())->getSchema(),
                                 ]),
+                            // ->default(fn (Get $get) => $get('organization_id')),
                             Forms\Components\Fieldset::make(__('Parrain'))
                                 ->columns(3)
                                 ->schema([
-                                    ...AddOrganizationContactForm::getSchema(),
+                                    ...(new AddOrganizationContactForm())->getSchema(),
                                 ]),
                         ]),
                     Forms\Components\Select::make('supervisor_id')
@@ -63,27 +74,27 @@ class ApprenticeshipAgreementForm
                         ->required()
                         ->createOptionForm([
                             Forms\Components\Select::make('organization_id')
+                                // ->default(fn (Get $get) => $get('organization_id'))
                                 ->relationship('organization', 'name')
                                 ->searchable()
                                 ->preload()
                                 ->required()
                                 ->createOptionForm([
-                                    ...AddOrganizationForm::getSchema(),
+                                    ...(new AddOrganizationForm())->getSchema(),
                                 ]),
                             Forms\Components\Fieldset::make(__('Supervisor'))
                                 ->columns(3)
                                 ->schema([
-                                    ...AddOrganizationContactForm::getSchema(),
+                                    ...(new AddOrganizationContactForm())->getSchema(),
                                 ]),
                         ]),
+                    DateRangePicker::make('internship_period')
+                        ->required()
+                        ->hiddenOn('edit'),
+                    // Forms\Components\DateTimePicker::make('starting_at'),
+                    // Forms\Components\DateTimePicker::make('ending_at'),
                 ]),
 
-            Forms\Components\Fieldset::make(__('Internship dates'))
-                ->columns(4)
-                ->schema([
-                    Forms\Components\DateTimePicker::make('starting_at'),
-                    Forms\Components\DateTimePicker::make('ending_at'),
-                ]),
             Forms\Components\Fieldset::make(__('Remuneration and workload'))
                 ->columns(8)
                 ->schema([
@@ -97,16 +108,18 @@ class ApprenticeshipAgreementForm
                         ->live()
                         ->id('currency'),
                     Forms\Components\TextInput::make('remuneration')
+                        ->label('Monthly remuneration')
                         ->numeric()
                         ->columnSpan(2)
                         // get prefix from crrency value
                         ->id('remuneration')
-                        ->prefix(fn (Get $get) => $get('currency')),
+                        ->prefix(fn (Get $get) => $get('currency'))
+                        ->live(),
 
                     Forms\Components\TextInput::make('workload')
                         ->placeholder('Hours / Week')
-                        ->numeric(),
-
+                        ->numeric()
+                        ->visible(fn (Get $get): bool => $get('remuneration') !== null && $get('remuneration') > 0),
                 ]),
             Forms\Components\Placeholder::make('Note')
                 ->content(__('To generate document save and go to apprenticeship list')),

@@ -42,6 +42,7 @@
         "laravel/tinker": "^2.8",
         "leandrocfe/filament-apex-charts": "^3.0",
         "maatwebsite/excel": "^3.1",
+        "malzariey/filament-daterangepicker-filter": "^2.6",
         "parallax/filament-comments": "^1.0",
         "parfaitementweb/filament-country-field": "dev-dev",
         "pboivin/filament-peek": "^2.2",
