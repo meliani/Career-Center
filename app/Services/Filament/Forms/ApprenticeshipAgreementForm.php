@@ -20,11 +20,16 @@ class ApprenticeshipAgreementForm
                 ->columnSpanFull()->required(),
             Forms\Components\RichEditor::make('description')
                 ->columnSpanFull(),
-            Forms\Components\SpatieTagsInput::make('keywords'),
+            Forms\Components\SpatieTagsInput::make('keywords')
+                ->columnSpanFull(),
 
             Forms\Components\Fieldset::make(__('Organization contacts'))
-                ->columns(4)
+                ->columns(2)
                 ->schema([
+                    // Forms\Components\Placeholder::make('Le parrain est le représentant de l\'organisme d\'accueil'),
+                    Forms\Components\Section::make()
+                        ->schema([Forms\Components\Placeholder::make('Note')->hiddenLabel()
+                            ->content("Le parrain est le représentant de l'organisme d'accueil")]),
                     Forms\Components\Select::make('parrain_id')
                         ->relationship(
                             name: 'parrain',
@@ -48,9 +53,6 @@ class ApprenticeshipAgreementForm
                             Forms\Components\Fieldset::make(__('Parrain'))
                                 ->columns(3)
                                 ->schema([
-                                    Forms\Components\Section::make()
-                                        ->schema([Forms\Components\Placeholder::make('Note')->hiddenLabel()
-                                            ->content("Le parrain est le représentant de l'organisme d'accueil")]),
                                     ...AddOrganizationContactForm::getSchema(),
                                 ]),
                         ]),
@@ -83,7 +85,7 @@ class ApprenticeshipAgreementForm
                 ]),
 
             Forms\Components\Fieldset::make(__('Internship dates'))
-                ->columns(4)
+                ->columns(2)
                 ->schema([
                     DateRangePicker::make('internship_period')
                         ->required(),
@@ -107,11 +109,13 @@ class ApprenticeshipAgreementForm
                         ->columnSpan(2)
                         // get prefix from crrency value
                         ->id('remuneration')
-                        ->prefix(fn (Get $get) => $get('currency')),
+                        ->prefix(fn (Get $get) => $get('currency'))
+                        ->live(),
 
                     Forms\Components\TextInput::make('workload')
                         ->placeholder('Hours / Week')
-                        ->numeric(),
+                        ->numeric()
+                        ->visible(fn (Get $get): bool => $get('remuneration') !== null && $get('remuneration') > 0),
                 ]),
             Forms\Components\Placeholder::make('Note')
                 ->content(__('To generate document save and go to apprenticeship list')),
