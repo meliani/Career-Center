@@ -757,7 +757,13 @@
             <p>Cette convention concerne
                 <strong>{{$internship->student->long_full_name}}</strong>, élève ingénieur en 1<sup>ère</sup> année du
                 cycle INE
-                de l’INPT, inscrit(e) en filière <strong>{{$internship->student->program}}</strong>.
+                de l’INPT, inscrit(e) en filière <strong>
+                    @if(is_a($internship->student->program, \App\Enums\Program::class))
+                    {{$internship->student->program->getDescription()}}
+                    @else
+                    {{$internship->student->program}}
+                    @endif
+                </strong>.
             </p>
         </div>
         <h2 class="text-base font-semibold mb-0">Article 2</h2>
