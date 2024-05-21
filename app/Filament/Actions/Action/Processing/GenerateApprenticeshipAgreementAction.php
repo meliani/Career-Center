@@ -1,0 +1,69 @@
+<?php
+
+namespace App\Filament\Actions\Action\Processing;
+
+use App\Models\Apprenticeship;
+use App\Services\UrlService;
+// use Filament\Forms\Components\Actions\Action;
+use Filament\Notifications\Notification;
+use Filament\Tables\Actions\Action;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Str; // Ajouter ce use
+
+use function Spatie\LaravelPdf\Support\pdf;
+
+class GenerateApprenticeshipAgreementAction extends Action
+{
+    public static function make(?string $name = null): static
+    {
+        $static = app(static::class, [
+            'name' => $name ?? static::getDefaultName(),
+        ]);
+
+        $static->configure()->action(function (array $data, Apprenticeship $apprenticeship): void {
+            $apprenticeship = $apprenticeship->load('student', 'organization');
+            $template_view = 'pdf.templates.' . $apprenticeship->student->level->value . '.apprenticeship_agreement';
+            $pdf_path = 'storage/pdf/apprenticeship_agreements/' . $apprenticeship->student->level->value;
+            $pdf_file_name = 'convention-de-stage-' . Str::slug($apprenticeship->student->full_name) . '-' . time() . '.pdf';
+
+            if (! File::exists($pdf_path)) {
+                File::makeDirectory($pdf_path, 0755, true);
+            }
+
+            // Générer l'URL de vérification
+            $verificationString = $apprenticeship->student->id . '-' . $apprenticeship->id;
+            $encodedUrl = UrlService::encodeUrl($verificationString);
+            $verificationUrl = URL::to('/verify-agreement?x=' . $encodedUrl);
+
+            // Générer le QR code
+            $qrCodeSvg = UrlService::getQrCodeSvg($verificationUrl);
+
+            $chromePath = env('BROWSERSHOT_CHROME_PATH');
+            pdf()
+                ->view($template_view, [
+                    'internship' => $apprenticeship,
+                    'qrCodeSvg' => $qrCodeSvg, // Ajouter le QR code à la vue
+                ])
+                ->save(
+                    $pdf_path . '/' . $pdf_file_name
+                )
+                ->name($pdf_file_name);
+
+            $apprenticeship->pdf_path = $pdf_path;
+            $apprenticeship->pdf_file_name = $pdf_file_name;
+            $apprenticeship->save();
+
+            Notification::make()
+                ->title('Internship Agreement has been generated successfully')
+                ->success()
+                ->actions([
+                    \Filament\Notifications\Actions\Action::make('Download')
+                        ->url(URL::to($pdf_path . '/' . $pdf_file_name), shouldOpenInNewTab: true),
+                ])
+                ->send();
+        });
+
+        return $static;
+    }
+}

@@ -21,7 +21,7 @@ class UrlService
     {
         $parts = explode(self::$separator, $url, 2);
 
-        if (count($parts) < 3) {
+        if (count($parts) < 2) {
             throw new \Exception('Invalid data');
         }
 
@@ -32,6 +32,10 @@ class UrlService
 
     private static function encryptv1($verification_string)
     {
+        if (is_null($verification_string)) {
+            throw new \Exception('Verification string cannot be null');
+        }
+
         $encrypted_x = Enums\UrlVersion::V1->value . self::$separator . Crypt::encryptString($verification_string);
 
         return $encrypted_x;
@@ -48,15 +52,20 @@ class UrlService
         [$version, $verification_string] = $parts;
         $verification_string = Crypt::decryptString($verification_string);
 
-        [$StudentId, $ApprenticeshipId] = explode('-', $verification_string);
+        [$StudentId, $InternshipId] = explode('-', $verification_string);
 
-        return ['StudentId' => $StudentId, 'ApprenticeshipId' => $ApprenticeshipId];
+        return ['StudentId' => $StudentId, 'InternshipId' => $InternshipId];
     }
 
     private static function encapsulate($url)
     {
         $secretKey = env('APP_KEY');
-        $iv = substr(hash('sha256', env('APP_IV')), 0, 16);
+        $iv = substr(hash('sha256', env('APP_IV', 'default_iv')), 0, 16); // Provide a default value for APP_IV to avoid null
+
+        if (is_null($url)) {
+            throw new \Exception('URL cannot be null');
+        }
+
         $encapsulated = openssl_encrypt($url, 'AES-256-CBC', $secretKey, 0, $iv);
 
         return base64_encode($encapsulated);
@@ -65,7 +74,12 @@ class UrlService
     private static function decapsulate($url)
     {
         $secretKey = env('APP_KEY');
-        $iv = substr(hash('sha256', env('APP_IV')), 0, 16);
+        $iv = substr(hash('sha256', env('APP_IV', 'default_iv')), 0, 16); // Provide a default value for APP_IV to avoid null
+
+        if (is_null($url)) {
+            throw new \Exception('URL cannot be null');
+        }
+
         $decapsulated = openssl_decrypt(base64_decode($url), 'AES-256-CBC', $secretKey, 0, $iv);
 
         return $decapsulated;
@@ -81,7 +95,7 @@ class UrlService
         return self::decryptv1(self::decapsulate($url));
     }
 
-    public function getQrCodeSvg(string $url)
+    public static function getQrCodeSvg(string $url)
     {
         $svg = (new Writer(
             new ImageRenderer(

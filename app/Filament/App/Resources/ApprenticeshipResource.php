@@ -2,6 +2,7 @@
 
 namespace App\Filament\App\Resources;
 
+use App\Filament\Actions\Action\Processing\GenerateApprenticeshipAgreementAction;
 use App\Filament\App\Resources\ApprenticeshipResource\Pages;
 use App\Filament\Core\StudentBaseResource;
 use App\Models\Apprenticeship;
@@ -112,7 +113,10 @@ class ApprenticeshipResource extends StudentBaseResource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-            ])
+                GenerateApprenticeshipAgreementAction::make('Generate Apprenticeship Agreement PDF')
+                    ->label(__('Generate Apprenticeship Agreement PDF'))
+                    ->requiresConfirmation(),
+            ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     // Tables\Actions\DeleteBulkAction::make(),

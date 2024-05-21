@@ -1,12 +1,16 @@
-<x-filament-panels::page>
-    <x-filament::card>
-        <x-slot name="header">
-            qsdsqqsqqs
-            <h2 class="font-semibold text-xl text-gray-800">Apprenticeship information</h2>
-        </x-slot>
-
-        <x-slot name="content">
-            {{ $ApprenticeshipId }}
-        </x-slot>
-    </x-filament::card>
-</x-filament-panels::page>
+<div class="flex justify-center items-center min-h-screen flex-col">
+    @if(isset($studentId) && isset($internshipId))
+    <div class="text-green-500 text-9xl">
+        &#10004;
+    </div>
+    <div class="text-center mt-4">
+        <p class="text-xl">Document authentique</p>
+        <p class="text-xl">Student ID: {{ $studentId }}</p>
+        <p class="text-xl">Internship ID: {{ $internshipId }}</p>
+    </div>
+    @else
+    <div class="text-red-500 text-xl">
+        StudentId or InternshipId not found.
+    </div>
+    @endif
+</div>
