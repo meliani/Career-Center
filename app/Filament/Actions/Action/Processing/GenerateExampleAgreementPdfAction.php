@@ -23,7 +23,7 @@ class GenerateExampleAgreementPdfAction extends Action
 
         $static->configure()->action(function (array $data, DocumentTemplate $documentTemplate): void {
             // Générer l'URL de vérification
-            $verificationString = 'StudentId-123-InternshipId-456';
+            $verificationString = 'TestRecord-TestRecord';
             $encodedUrl = UrlService::encodeUrl($verificationString);
             $verificationUrl = URL::to('/verify-agreement?x=' . $encodedUrl);
 
@@ -31,7 +31,7 @@ class GenerateExampleAgreementPdfAction extends Action
             $qrCodeSvg = UrlService::getQrCodeSvg($verificationUrl);
 
             // Génération du PDF
-            $template_view = 'pdf.templates.' . $documentTemplate->level . '.internship_agreement';
+            $template_view = 'pdf.templates.' . $documentTemplate->level . '.agreement_template';
             $pdf_path = 'storage/pdf/example_agreements/' . $documentTemplate->level;
             $pdf_file_name = 'convention-de-stage-' . Str::slug('example') . '-' . time() . hash('sha256', 123) . '.pdf';
 

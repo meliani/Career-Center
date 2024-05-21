@@ -28,6 +28,11 @@ class BaseResource extends Resource
         return __(static::$pluralModelLabel);
     }
 
+    public static function getNavigationGroup(): string
+    {
+        return __(static::$navigationGroup);
+    }
+
     // public static function canViewAny(): bool
     // {
     //     return false;

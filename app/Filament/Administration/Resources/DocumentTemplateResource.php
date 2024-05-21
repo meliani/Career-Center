@@ -4,10 +4,11 @@ namespace App\Filament\Administration\Resources;
 
 use App\Filament\Actions\Action\Processing\GenerateExampleAgreementPdfAction;
 use App\Filament\Administration\Resources\DocumentTemplateResource\Pages;
+use App\Filament\Core\BaseResource as Resource;
 use App\Models\DocumentTemplate;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Resources\Resource;
+// use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -18,7 +19,15 @@ class DocumentTemplateResource extends Resource
 {
     protected static ?string $model = DocumentTemplate::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-document-plus';
+
+    protected static ?string $title = 'Document Templates';
+
+    protected static ?string $modelLabel = 'Document Template';
+
+    protected static ?string $pluralModelLabel = 'Document Templates';
+
+    protected static ?string $navigationGroup = 'Settings';
 
     public static function form(Form $form): Form
     {

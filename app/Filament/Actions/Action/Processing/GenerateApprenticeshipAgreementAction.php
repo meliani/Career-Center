@@ -23,7 +23,7 @@ class GenerateApprenticeshipAgreementAction extends Action
 
         $static->configure()->action(function (array $data, Apprenticeship $apprenticeship): void {
             $apprenticeship = $apprenticeship->load('student', 'organization');
-            $template_view = 'pdf.templates.' . $apprenticeship->student->level->value . '.apprenticeship_agreement';
+            $template_view = 'pdf.templates.' . $apprenticeship->student->level->value . '.agreement_template';
             $pdf_path = 'storage/pdf/apprenticeship_agreements/' . $apprenticeship->student->level->value;
             $pdf_file_name = 'convention-de-stage-' . Str::slug($apprenticeship->student->full_name) . '-' . time() . '.pdf';
 
