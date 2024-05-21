@@ -4,12 +4,10 @@ namespace App\Services\Filament\Forms;
 
 use App\Enums;
 use App\Filament\Actions;
-use App\Models\Apprenticeship;
 use Filament\Forms;
 use Filament\Forms\Get;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\URL;
 
 class ApprenticeshipAgreementForm
 {
@@ -108,20 +106,19 @@ class ApprenticeshipAgreementForm
                     Forms\Components\TextInput::make('workload')
                         ->placeholder('Hours / Week')
                         ->numeric(),
-                ]),
-            Forms\Components\Fieldset::make(__('Internship documents'))
-                // ->columns(6)
-                ->schema([
-                    \Filament\Forms\Components\Actions::make([
-                        Actions\Action\Processing\GenerateApprenticeshipAgreementPdfAction::make('Generate Apprenticeship Agreement PDF')
-                            ->label(__('Generate Apprenticeship Agreement PDF'))
-                            ->requiresConfirmation(),
-                    ]),
-                    // display generated pdf
-                    // Forms\Components\Actions\Action::make('get pdf')
-                    //     ->url(fn (Apprenticeship $record) => app('url') . $record->pdf_path . '/' . urlencode($record->pdf_name)),
 
                 ]),
+            Forms\Components\Placeholder::make('Note')
+                ->content(__('To generate document save and go to apprenticeship list')),
+            // Forms\Components\Fieldset::make(__('Internship documents'))
+            //     // ->columns(6)
+            //     ->schema([
+            //         \Filament\Forms\Components\Actions::make([
+            //             Actions\Action\Processing\GenerateApprenticeshipAgreementPdfAction::make('Generate Apprenticeship Agreement PDF')
+            //                 ->label(__('Generate Apprenticeship Agreement PDF'))
+            //                 ->requiresConfirmation(),
+            //         ]),
+            //     ]),
         ];
     }
 }
