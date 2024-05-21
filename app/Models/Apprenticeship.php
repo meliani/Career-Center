@@ -4,9 +4,11 @@ namespace App\Models;
 
 use App\Enums;
 use App\Services\UrlService;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Period\Period;
 use Spatie\Tags\HasTags;
 
 class Apprenticeship extends Model
@@ -16,6 +18,14 @@ class Apprenticeship extends Model
     use SoftDeletes;
 
     protected $table = 'apprenticeships';
+
+    protected $appends = [
+        'duration_in_weeks',
+        'verification_string',
+        'encoded_url',
+        'decoded_url',
+        'internship_period',
+    ];
 
     protected $fillable = [
         'student_id',
@@ -122,5 +132,24 @@ class Apprenticeship extends Model
     public function getDecodedUrlAttribute()
     {
         return UrlService::decodeUrl($this->encoded_url);
+    }
+
+    public function setInternshipPeriodAttribute($value)
+    {
+        if (strpos($value, ' - ') !== false) {
+            [$start, $end] = explode(' - ', $value);
+            $this->attributes['starting_at'] = Carbon::createFromFormat('d/m/Y', $start);
+            $this->attributes['ending_at'] = Carbon::createFromFormat('d/m/Y', $end);
+        }
+    }
+
+    public function getPeriodAttribute()
+    {
+        return Period::make($this->starting_at, $this->ending_at);
+    }
+
+    public function getInternshipPeriodAttribute()
+    {
+        return $this->starting_at->format('Y-m-d') . ' - ' . $this->ending_at->format('Y-m-d');
     }
 }
