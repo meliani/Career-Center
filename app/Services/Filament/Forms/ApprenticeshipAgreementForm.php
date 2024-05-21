@@ -110,6 +110,8 @@ class ApprenticeshipAgreementForm
                 ]),
             Forms\Components\Placeholder::make('Note')
                 ->content(__('To generate document save and go to apprenticeship list')),
+            // Section::make()->schema([ Placeholder::make('No Label')->hiddenLabel()->content("blah blah") ]),
+
             // Forms\Components\Fieldset::make(__('Internship documents'))
             //     // ->columns(6)
             //     ->schema([
