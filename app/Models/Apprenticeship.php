@@ -150,6 +150,6 @@ class Apprenticeship extends Model
 
     public function getInternshipPeriodAttribute()
     {
-        return $this->starting_at->format('Y-m-d') . ' - ' . $this->ending_at->format('Y-m-d');
+        return $this->starting_at->format('d/m/Y') . ' - ' . $this->ending_at->format('d/m/Y');
     }
 }
