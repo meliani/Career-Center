@@ -31,7 +31,8 @@ class ApprenticeshipAgreementForm
                     // Forms\Components\Placeholder::make('Le parrain est le représentant de l\'organisme d\'accueil'),
                     Forms\Components\Section::make()
                         ->schema([Forms\Components\Placeholder::make('Note')->hiddenLabel()
-                            ->content(__('Parrain is the representative of the host organization'))]),
+                            ->content(__('Parrain is the representative of the host organization'))])
+                        ->hiddenOn('edit'),
                     Forms\Components\Select::make('parrain_id')
                         ->hiddenOn('edit')
                         ->relationship(
