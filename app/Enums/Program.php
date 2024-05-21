@@ -34,12 +34,12 @@ enum Program: string implements HasLabel
     {
         return match ($this) {
             self::AMOA => 'Innovation et AMOA',
-            self::ASEDS => 'Advanced Software Engineering for Digital Services',
+            self::ASEDS => 'Ingénierie Logicielle avancée pour les Services Numériques',
             self::DATA => 'Sciences de Données',
-            self::ICCN => 'Cybersécurité Et Confiance Numérique',
+            self::ICCN => 'Cybersécurité & Confiance Numérique',
             self::SESNUM => 'Systèmes Embraqués et Services Numériques',
-            self::SMARTICT => 'Smart Information & Communication Technology Engineering',
-            self::SUD => 'Systèmes Ubiquitaires et Distribués',
+            self::SMARTICT => "Ingénierie des Technologies de l'Information et de la Communication Intelligentes",
+            self::SUD => 'Ingénierie des Systèmes Ubiquitaires et Distribués',
             self::NULL => __('Undefined'),
             default => 'Undefined',
         };
