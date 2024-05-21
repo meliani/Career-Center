@@ -7,7 +7,10 @@ use App\Filament\App\Resources\ApprenticeshipResource\Pages;
 use App\Filament\Core\StudentBaseResource;
 use App\Models\Apprenticeship;
 use App\Services\Filament\Forms\ApprenticeshipAgreementForm;
+use Filament;
 use Filament\Forms\Form;
+use Filament\Infolists;
+use Filament\Infolists\Infolist;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -123,7 +126,9 @@ class ApprenticeshipResource extends StudentBaseResource
                     // Tables\Actions\ForceDeleteBulkAction::make(),
                     // Tables\Actions\RestoreBulkAction::make(),
                 ]),
+            ])->headerActions([
             ]);
+
     }
 
     public static function getRelations(): array
@@ -148,6 +153,59 @@ class ApprenticeshipResource extends StudentBaseResource
         return parent::getEloquentQuery()
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
+            ]);
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                Infolists\Components\Section::make(__('Internship agreement and validation process'))
+                    ->headerActions([
+                        // Infolists\Components\Actions\Action::make('edit page', 'edit')
+                        //     ->label('Edit')
+                        //     ->icon('heroicon-o-pencil')
+                        //     ->size(Filament\Support\Enums\ActionSize::ExtraLarge)
+                        //     ->tooltip('Edit this internship agreement')
+                        //     ->url(fn ($record) => \App\Filament\App\Resources\ApprenticeshipResource::getUrl('edit', [$record->id])),
+                    ])
+                    ->schema([
+
+                        Infolists\Components\Fieldset::make('Internship agreement')
+                            ->schema([
+                                Infolists\Components\TextEntry::make('student.long_full_name')
+                                    ->label('Student'),
+                                Infolists\Components\TextEntry::make('title')
+                                    ->label('Title'),
+                                Infolists\Components\TextEntry::make('description')
+                                    ->columnSpanFull(),
+                                Infolists\Components\TextEntry::make('organization_name')
+                                    ->label('Organization name'),
+                                Infolists\Components\TextEntry::make('id_pfe')
+                                    ->label('ID PFE'),
+                                Infolists\Components\TextEntry::make('status')
+                                    ->label('Status'),
+                                Infolists\Components\TextEntry::make('assigned_department')
+                                    ->label('Assigned department'),
+                            ]),
+                        Infolists\Components\Fieldset::make('Administative dates')
+                            ->schema([
+                                Infolists\Components\TextEntry::make('announced_at')
+                                    ->date()
+                                    ->label('Announced at'),
+                                Infolists\Components\TextEntry::make('validated_at')
+                                    ->date()
+                                    ->label('Validated at'),
+                                Infolists\Components\TextEntry::make('received_at')
+                                    ->date()
+                                    ->label('Received at'),
+                                Infolists\Components\TextEntry::make('signed_at')
+                                    ->date()
+                                    ->label('Signed at'),
+                            ])
+                            ->columns(4),
+
+                    ]),
             ]);
     }
 }
