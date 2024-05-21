@@ -10,7 +10,7 @@
     </div>
     @else
     <div class="text-red-500 text-xl">
-        StudentId or InternshipId not found.
+        Ce document n'est pas authentique ou à subit une altération. Veuillez contacter l'administration de l'école.
     </div>
     @endif
 </div>
