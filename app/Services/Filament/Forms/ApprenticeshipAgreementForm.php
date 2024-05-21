@@ -20,9 +20,10 @@ class ApprenticeshipAgreementForm
                 ->columnSpanFull()->required(),
             Forms\Components\RichEditor::make('description')
                 ->columnSpanFull(),
-            Forms\Components\SpatieTagsInput::make('keywords')
-                ->columnSpanFull(),
 
+            Forms\Components\SpatieTagsInput::make('keywords')
+                ->placeholder('Add a keyword and press enter or click away to add it')
+                ->columnSpanFull(),
             Forms\Components\Fieldset::make(__('Organization contacts'))
                 ->hiddenOn('edit')
                 ->columns(2)
@@ -30,7 +31,7 @@ class ApprenticeshipAgreementForm
                     // Forms\Components\Placeholder::make('Le parrain est le représentant de l\'organisme d\'accueil'),
                     Forms\Components\Section::make()
                         ->schema([Forms\Components\Placeholder::make('Note')->hiddenLabel()
-                            ->content("Le parrain est le représentant de l'organisme d'accueil")]),
+                            ->content(__('Parrain is the representative of the host organization'))]),
                     Forms\Components\Select::make('parrain_id')
                         ->relationship(
                             name: 'parrain',
@@ -104,6 +105,7 @@ class ApprenticeshipAgreementForm
                         ->live()
                         ->id('currency'),
                     Forms\Components\TextInput::make('remuneration')
+                        ->label('Monthly remuneration')
                         ->numeric()
                         ->columnSpan(2)
                         // get prefix from crrency value
