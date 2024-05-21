@@ -25,7 +25,7 @@ class ApprenticeshipAgreementForm
                 ->placeholder('Add a keyword and press enter or click away to add it')
                 ->columnSpanFull(),
             Forms\Components\Fieldset::make(__('Organization contacts'))
-                ->hiddenOn('edit')
+
                 ->columns(2)
                 ->schema([
                     // Forms\Components\Placeholder::make('Le parrain est le représentant de l\'organisme d\'accueil'),
@@ -33,6 +33,7 @@ class ApprenticeshipAgreementForm
                         ->schema([Forms\Components\Placeholder::make('Note')->hiddenLabel()
                             ->content(__('Parrain is the representative of the host organization'))]),
                     Forms\Components\Select::make('parrain_id')
+                        ->hiddenOn('edit')
                         ->relationship(
                             name: 'parrain',
                             titleAttribute: 'name',
@@ -50,7 +51,7 @@ class ApprenticeshipAgreementForm
                                 ->preload()
                                 ->required()
                                 ->createOptionForm([
-                                    ...(new AddOrganizationForm(1))->getSchema(),
+                                    ...(new AddOrganizationForm())->getSchema(),
                                 ]),
                             // ->default(fn (Get $get) => $get('organization_id')),
                             Forms\Components\Fieldset::make(__('Parrain'))
@@ -87,7 +88,8 @@ class ApprenticeshipAgreementForm
                                 ]),
                         ]),
                     DateRangePicker::make('internship_period')
-                        ->required(),
+                        ->required()
+                        ->hiddenOn('edit'),
                     // Forms\Components\DateTimePicker::make('starting_at'),
                     // Forms\Components\DateTimePicker::make('ending_at'),
                 ]),
