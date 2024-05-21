@@ -8,6 +8,7 @@ use Filament\Forms;
 use Filament\Forms\Get;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Malzariey\FilamentDaterangepickerFilter\Fields\DateRangePicker;
 
 class ApprenticeshipAgreementForm
 {
@@ -47,6 +48,9 @@ class ApprenticeshipAgreementForm
                             Forms\Components\Fieldset::make(__('Parrain'))
                                 ->columns(3)
                                 ->schema([
+                                    Forms\Components\Section::make()
+                                        ->schema([Forms\Components\Placeholder::make('Note')->hiddenLabel()
+                                            ->content("Le parrain est le représentant de l'organisme d'accueil")]),
                                     ...AddOrganizationContactForm::getSchema(),
                                 ]),
                         ]),
@@ -81,8 +85,10 @@ class ApprenticeshipAgreementForm
             Forms\Components\Fieldset::make(__('Internship dates'))
                 ->columns(4)
                 ->schema([
-                    Forms\Components\DateTimePicker::make('starting_at'),
-                    Forms\Components\DateTimePicker::make('ending_at'),
+                    DateRangePicker::make('internship_period')
+                        ->required(),
+                    // Forms\Components\DateTimePicker::make('starting_at'),
+                    // Forms\Components\DateTimePicker::make('ending_at'),
                 ]),
             Forms\Components\Fieldset::make(__('Remuneration and workload'))
                 ->columns(8)
@@ -106,7 +112,6 @@ class ApprenticeshipAgreementForm
                     Forms\Components\TextInput::make('workload')
                         ->placeholder('Hours / Week')
                         ->numeric(),
-
                 ]),
             Forms\Components\Placeholder::make('Note')
                 ->content(__('To generate document save and go to apprenticeship list')),
