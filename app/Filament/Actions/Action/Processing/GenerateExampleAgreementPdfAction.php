@@ -3,12 +3,12 @@
 namespace App\Filament\Actions\Action\Processing;
 
 use App\Models\DocumentTemplate;
+use App\Services\UrlService;
 use Filament\Notifications\Notification;
 use Filament\Tables\Actions\Action;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
-use Spatie\Browsershot\Browsershot;
 use stdClass;
 
 use function Spatie\LaravelPdf\Support\pdf;
@@ -17,16 +17,21 @@ class GenerateExampleAgreementPdfAction extends Action
 {
     public static function make(?string $name = null): static
     {
-
         $static = app(static::class, [
             'name' => $name ?? static::getDefaultName(),
         ]);
 
         $static->configure()->action(function (array $data, DocumentTemplate $documentTemplate): void {
+            // Générer l'URL de vérification
+            $verificationString = 'StudentId-123-InternshipId-456';
+            $encodedUrl = UrlService::encodeUrl($verificationString);
+            $verificationUrl = URL::to('/verify-agreement?x=' . $encodedUrl);
 
-            // we will replace all fields in pdf with points .............
+            // Générer le QR code
+            $qrCodeSvg = UrlService::getQrCodeSvg($verificationUrl);
 
-            $template_view = 'pdf.templates.' . $documentTemplate->level . '.apprenticeship_agreement';
+            // Génération du PDF
+            $template_view = 'pdf.templates.' . $documentTemplate->level . '.internship_agreement';
             $pdf_path = 'storage/pdf/example_agreements/' . $documentTemplate->level;
             $pdf_file_name = 'convention-de-stage-' . Str::slug('example') . '-' . time() . hash('sha256', 123) . '.pdf';
 
@@ -89,12 +94,13 @@ class GenerateExampleAgreementPdfAction extends Action
                 'observations' => '............',
                 'duration_in_weeks' => '............',
             ];
+
             function array_to_object($array)
             {
                 $obj = new stdClass;
                 foreach ($array as $k => $v) {
                     if (is_array($v)) {
-                        $obj->{$k} = array_to_object($v); // Recursion
+                        $obj->{$k} = array_to_object($v);
                     } else {
                         $obj->{$k} = $v;
                     }
@@ -104,28 +110,14 @@ class GenerateExampleAgreementPdfAction extends Action
             }
 
             $internship = array_to_object($internship);
+
             $chromePath = env('BROWSERSHOT_CHROME_PATH');
             pdf()
-                // ->withBrowsershot(function (Browsershot $browsershot) use ($chromePath) {
-                //     $browsershot
-                //         ->setChromePath($chromePath);
-                // })
-                ->view($template_view, ['internship' => $internship])
-                    // ->name('InternshipAgreement.pdf')
-                    // ->withBrowsershot(function (Browsershot $browsershot) {
-                    //     $browsershot
-                    //         // ->scale(0.5)
-                    //         ->noSandbox()
-                    //         ->setNodeBinary('/home/mo/.nvm/versions/node/v20.3.0/bin/node')
-                    //         ->setNpmBinary('/home/mo/.nvm/versions/node/v20.3.0/bin/npm');
-                    //     // ->setBinPath('/usr/bin/chromium-browser');
-                    // })
-                ->save(
-                    // storage_path(
-                    $pdf_path . '/' . $pdf_file_name
-                    // 'storage/pdf/app.pdf'
-                    // )
-                )
+                ->view($template_view, [
+                    'internship' => $internship,
+                    'qrCodeSvg' => $qrCodeSvg,
+                ])
+                ->save($pdf_path . '/' . $pdf_file_name)
                 ->name($pdf_file_name);
 
             $documentTemplate->example_url = $pdf_path . '/' . $pdf_file_name;
@@ -134,13 +126,11 @@ class GenerateExampleAgreementPdfAction extends Action
             Notification::make()
                 ->title('Internship Agreement has been generated successfully')
                 ->success()
-
                 ->actions([
                     \Filament\Notifications\Actions\Action::make('Download')
                         ->url(URL::to($pdf_path . '/' . $pdf_file_name), shouldOpenInNewTab: true),
                 ])
                 ->send();
-
         });
 
         return $static;

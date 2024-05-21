@@ -19,3 +19,4 @@ yarn-error.log
 /.vscode
 /dev_docs
 .env.inpt
+/storage/keys/*
