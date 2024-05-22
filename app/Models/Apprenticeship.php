@@ -116,6 +116,10 @@ class Apprenticeship extends Model
 
     public function getDurationInWeeksAttribute()
     {
+        if (! $this->starting_at || ! $this->ending_at) {
+            return null;
+        }
+
         return $this->starting_at->diffInWeeks($this->ending_at);
     }
 
