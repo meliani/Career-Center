@@ -116,11 +116,13 @@ class Apprenticeship extends Model
 
     public function getDurationInWeeksAttribute()
     {
-        if (! $this->starting_at || ! $this->ending_at) {
-            return null;
-        }
+        // if starting at is carbon instance
 
-        return $this->starting_at->diffInWeeks($this->ending_at);
+        if ($this->starting_at instanceof Carbon) {
+            return $this->starting_at->diffInWeeks($this->ending_at);
+        } else {
+            return 0;
+        }
     }
 
     public function getVerificationStringAttribute()
