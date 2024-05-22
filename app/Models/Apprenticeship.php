@@ -118,7 +118,7 @@ class Apprenticeship extends Model
     {
         // if starting at is carbon instance
 
-        if ($this->starting_at instanceof Carbon) {
+        if ($this->starting_at instanceof Carbon && $this->ending_at instanceof Carbon) {
             return $this->starting_at->diffInWeeks($this->ending_at);
         } else {
             return 0;
