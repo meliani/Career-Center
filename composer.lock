@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "001b694790f8614fcbc59fbcf7bd5313",
+    "content-hash": "4be2087c0488dabc19388a11d5ad9682",
     "packages": [
         {
             "name": "amphp/amp",
@@ -5414,6 +5414,63 @@
             "time": "2024-05-21T17:53:51+00:00"
         },
         {
+            "name": "laravel/helpers",
+            "version": "v1.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/helpers.git",
+                "reference": "6caaa242a23bc39b4e3cf57304b5409260a7a346"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/helpers/zipball/6caaa242a23bc39b4e3cf57304b5409260a7a346",
+                "reference": "6caaa242a23bc39b4e3cf57304b5409260a7a346",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "~5.8.0|^6.0|^7.0|^8.0|^9.0|^10.0|^11.0",
+                "php": "^7.2.0|^8.0"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^1.10",
+                "phpunit/phpunit": "^7.0|^8.0|^9.0|^10.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                },
+                {
+                    "name": "Dries Vints",
+                    "email": "dries@laravel.com"
+                }
+            ],
+            "description": "Provides backwards compatibility for helpers in the latest Laravel release.",
+            "keywords": [
+                "helpers",
+                "laravel"
+            ],
+            "support": {
+                "source": "https://github.com/laravel/helpers/tree/v1.7.0"
+            },
+            "time": "2023-11-30T14:09:05+00:00"
+        },
+        {
             "name": "laravel/prompts",
             "version": "v0.1.22",
             "source": {
@@ -9564,6 +9621,58 @@
                 }
             ],
             "time": "2024-05-02T13:04:39+00:00"
+        },
+        {
+            "name": "shipu/web-installer",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Shipu/web-installer.git",
+                "reference": "694d67dad00e92b73e4b17d0207cba982101751a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Shipu/web-installer/zipball/694d67dad00e92b73e4b17d0207cba982101751a",
+                "reference": "694d67dad00e92b73e4b17d0207cba982101751a",
+                "shasum": ""
+            },
+            "require": {
+                "filament/forms": "^3.0-stable",
+                "filament/support": "^3.0-stable",
+                "laravel/helpers": "^1.6",
+                "livewire/livewire": "^3.0@beta",
+                "spatie/laravel-package-tools": "^1.9"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Shipu\\WebInstaller\\WebInstallerServiceProvider"
+                    ],
+                    "aliases": []
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Shipu\\WebInstaller\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Shipu Ahamed",
+                    "email": "shipuahamed01@gmail.com"
+                }
+            ],
+            "description": "Laravel Web Installer",
+            "support": {
+                "issues": "https://github.com/Shipu/web-installer/issues",
+                "source": "https://github.com/Shipu/web-installer/tree/v1.0.1"
+            },
+            "time": "2023-10-05T18:59:27+00:00"
         },
         {
             "name": "spatie/browsershot",

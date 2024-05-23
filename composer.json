@@ -52,6 +52,7 @@
         "rap2hpoutre/similar-text-finder": "^0.2.0",
         "ryangjchandler/filament-progress-column": "^0.4.1",
         "saade/filament-fullcalendar": "^3.1",
+        "shipu/web-installer": "^1.0",
         "spatie/laravel-data": "^4.2",
         "spatie/laravel-pdf": "^1.4",
         "spatie/period": "^2.4",
