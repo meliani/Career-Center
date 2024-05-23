@@ -29,6 +29,11 @@ class DocumentTemplateResource extends Resource
 
     protected static ?string $navigationGroup = 'Settings';
 
+    /* Authorizations */
+    public static function canAccess(): bool
+    {
+        return auth()->user()->isAdministrator() || auth()->user()->isSuperAdministrator();
+    }
     public static function form(Form $form): Form
     {
         return $form
