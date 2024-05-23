@@ -6,6 +6,11 @@ use Filament\Facades\Filament;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Jeffgreco13\FilamentBreezy\Livewire\MyProfileComponent;
+use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
+use Ysfkaya\FilamentPhoneInput\Tables\PhoneColumn;
+use Ysfkaya\FilamentPhoneInput\Infolists\PhoneEntry;
+use Ysfkaya\FilamentPhoneInput\Infolists\PhoneInputNumberType;
+use App\Models\Student;
 
 class StudentAccountSettingsPage extends MyProfileComponent
 {
@@ -18,15 +23,17 @@ class StudentAccountSettingsPage extends MyProfileComponent
 
     public array $data;
 
-    public $user;
+    public Student $user;
 
     public array $only = ['email_perso', 'phone', 'lm', 'cv'];
 
     public function mount()
     {
-        $this->user = Filament::getCurrentPanel()->auth()->user();
-        // dd($this->user);
+        $this->user = auth()->user();
+        // $this->user = Filament::getCurrentPanel()->auth()->user();
+
         $this->form->fill($this->user->only($this->only));
+
 
     }
 
@@ -35,8 +42,7 @@ class StudentAccountSettingsPage extends MyProfileComponent
         return $form
             ->schema([
                 TextInput::make('email_perso')->email()->label(__('Personal Email')),
-                TextInput::make('phone')->label(__('Phone'))
-                    ->numeric(),
+                PhoneInput::make('phone'),
                 TextInput::make('lm')->label(__('Cover Letter'))
                     ->placeholder(__('Link to your cover letter')),
                 TextInput::make('cv')->label(__('CV'))
@@ -48,13 +54,15 @@ class StudentAccountSettingsPage extends MyProfileComponent
 
     public function submit(): void
     {
+        // $data = collect($this->validate($this->user->rules())->form->getState())->only($this->only)->all();
         $data = collect($this->form->getState())->only($this->only)->all();
-        // $this->validate();
 
-        /* $data = collect($this->form->getState())->only('new_password')->all();
-        $this->user->update([
-            'password' => Hash::make($data['new_password']),
-        ]); */
+        // $data = $this->validate($data, [
+        //     'email_perso' => ['required', 'email'],
+        //     'phone' => ['required'],
+        //     'lm' => ['required'],
+        //     'cv' => ['required'],
+        // ]);
 
         $this->user->update([
             'email_perso' => $data['email_perso'],

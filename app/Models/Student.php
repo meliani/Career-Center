@@ -163,7 +163,25 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-
+    public function rules()
+    {
+        return [
+            // 'title' => 'sometimes|max:255',
+            // 'pin' => 'numeric',
+            // 'email' => 'required|email|unique:students',
+            // 'first_name' => 'required|max:255',
+            // 'last_name' => 'required|max:255',
+            // 'email_perso' => 'email',
+            'phone' => 'required',
+            // 'cv' => 'url',
+            // 'lm' => 'url',
+            // 'photo' => 'image',
+            // 'birth_date' => 'date',
+            // 'level' => 'required',
+            // 'program' => 'required',
+            // 'is_mobility' => 'boolean',
+        ];
+    }
     public function routeNotificationForMail(): array | string
     {
         // Return email address only...

@@ -58,6 +58,7 @@
         "spatie/period": "^2.4",
         "stechstudio/filament-impersonate": "^3.5",
         "vinkla/hashids": "^11.0",
+        "ysfkaya/filament-phone-input": "^2.3",
         "z3d0x/filament-logger": "^0.6.2"
     },
     "require-dev": {

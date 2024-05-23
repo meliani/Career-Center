@@ -36,6 +36,8 @@ use Illuminate\Support\ServiceProvider;
 use Spatie\LaravelPdf\Enums\Format;
 use Spatie\LaravelPdf\Enums\Unit;
 use Spatie\LaravelPdf\Facades\Pdf;
+use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
+use Ysfkaya\FilamentPhoneInput\PhoneInputNumberType;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -59,6 +61,8 @@ class AppServiceProvider extends ServiceProvider
         $this->configureRateLimiter();
         $this->autoTranslateLabels();
         $this->configurePdf();
+
+        $this->configureFilamentPlugins();
 
     }
 
@@ -170,6 +174,9 @@ class AppServiceProvider extends ServiceProvider
             // $group->label(fn () => __($group->label));
 
         });
+
+
+        /*  */
     }
 
     public function turnOnSslIfProduction(UrlGenerator $url): void
@@ -233,5 +240,22 @@ class AppServiceProvider extends ServiceProvider
                     ->orderBy(implode('_', [$table, $field]), $direction);
             });
         });
+    }
+
+    public function configureFilamentPlugins(): void
+    {
+        PhoneInput::configureUsing(function (PhoneInput $phoneInput): void {
+            $phoneInput->translateLabel()
+            ->excludeCountries(['EH'])
+            ->disableIpLookUp()
+            ->initialCountry('ma')
+            ->useFullscreenPopup()
+            ->validateFor(
+                // country: 'TR' | ['US', 'GB'], // default: 'AUTO'
+                type: libPhoneNumberType::MOBILE | libPhoneNumberType::FIXED_LINE, // default: null
+                lenient: true, // default: false
+            );
+        });
+
     }
 }
