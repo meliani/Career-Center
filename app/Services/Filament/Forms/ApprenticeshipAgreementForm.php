@@ -15,6 +15,10 @@ class ApprenticeshipAgreementForm
     public function getSchema(): array
     {
         return [
+            Forms\Components\Section::make()->schema([ 
+                Forms\Components\Placeholder::make('Note')->hiddenLabel()->content(__('Notice: You can only announce one internship agreement during an academic year.')),
+                Forms\Components\Placeholder::make('Note')->hiddenLabel()->content(__('When you save this form, you will not be able to change the organization and its representatives.')),
+         ]),
             ...(new AddOrganizationForm())->getSchema(),
             Forms\Components\TextInput::make('title')
                 ->columnSpanFull()->required(),
