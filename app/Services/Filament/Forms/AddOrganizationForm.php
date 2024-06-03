@@ -37,6 +37,7 @@ class AddOrganizationForm
                     Country::make('country')
                         ->required()
                         ->searchable(),
+                    Forms\Components\TextInput::make('address')
                 ]),
         ];
     }
