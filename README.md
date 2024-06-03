@@ -128,15 +128,15 @@ Check [Support.md](SUPPORT.md)
 
 ## How to contribute
 
-Fork to your account -> Clone locally -> Create Feature Branche -> Make your changes -> push to your github -> Open pull request on main repo
+`Fork to your account -> Clone locally -> Create Feature Branche -> Make your changes -> push to your github -> Open pull request on main repo`
 
 OR
 
-Open an Issue here -> explain your idea or join a gist for example.
+`Open an Issue here -> explain your idea or join a gist for example.`
 
 OR
 
-Start a topic in discussion panel.
+`Start a topic in discussion panel.`
 
 ## Code quality
 
