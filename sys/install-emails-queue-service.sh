@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Create the file
-touch /etc/systemd/system/laravel-email-queue-worker.service
+touch /etc/systemd/system/laravel-emails-queue-worker.service
 
 # Load .env file
 set -o allexport
@@ -9,9 +9,9 @@ source .env
 set +o allexport
 
 # Write the service configuration
-cat <<EOF > /etc/systemd/system/laravel-email-queue-worker.service
+cat <<EOF > /etc/systemd/system/laravel-emails-queue-worker.service
 [Unit]
-Description=Laravel Email Queue Worker
+Description=Laravel Emails Queue Worker
 After=network.target
 
 [Service]
@@ -29,5 +29,5 @@ EOF
 systemctl daemon-reload
 
 # Enable and start the service
-systemctl enable laravel-email-queue-worker.service
-systemctl start laravel-email-queue-worker.service
+systemctl enable laravel-emails-queue-worker.service
+systemctl start laravel-emails-queue-worker.service
