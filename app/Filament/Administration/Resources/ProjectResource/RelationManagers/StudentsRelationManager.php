@@ -28,7 +28,7 @@ class StudentsRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('full_name')
+                Forms\Components\TextInput::make('long_full_name')
                     // ->relationship('student', 'full_name')
                     ->required()
                     ->maxLength(255),
@@ -38,11 +38,14 @@ class StudentsRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('full_name')
+            ->recordTitleAttribute('long_full_name')
             ->searchable(false)
             ->paginated(false)
             ->columns([
-                Tables\Columns\TextColumn::make('full_name'),
+                Tables\Columns\TextColumn::make('long_full_name')
+                    ->searchable(['first_name', 'last_name'])
+                    ->sortable()
+                    ->label(__('Name')),
                 Tables\Columns\TextColumn::make('program')
                     ->tooltip(fn ($record) => $record->program->getDescription())
                     ->badge(),
@@ -56,6 +59,10 @@ class StudentsRelationManager extends RelationManager
             ->headerActions([
                 // Tables\Actions\CreateAction::make(),
                 Tables\Actions\AttachAction::make()
+                    ->recordSelectSearchColumns(['first_name', 'last_name'])
+                    ->recordTitle(function ($record) {
+                        return sprintf('%s %s', $record->first_name, $record->last_name);
+                    })
                     ->preloadRecordSelect()
                     ->label(__('Add Project Teammate'))
                     ->color('primary')

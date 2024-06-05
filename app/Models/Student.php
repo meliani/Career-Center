@@ -238,7 +238,7 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
 
     public function getLongFullNameAttribute()
     {
-        return ($this->title?->getLabel() ? $this->title->getLabel() . '. ' : '') . $this->attributes['first_name'] . ' ' . $this->attributes['last_name'];
+        return trim("{$this->title->getLabel()} {$this->first_name} {$this->last_name}");
     }
 
     public function scopeActive($query)
