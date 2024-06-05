@@ -22,8 +22,8 @@ class AnouncementsCalendarWidget extends FullCalendarWidget
 
     public static function canView(): bool
     {
-        return auth()->user()->isSuperAdministrator();
-        // return false;
+        // return auth()->user()->isSuperAdministrator();
+        return false;
     }
 
     /**
