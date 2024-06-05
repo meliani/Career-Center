@@ -101,7 +101,7 @@ class ProjectResource extends Core\BaseResource
                     ->sortable()
                     ->sortableMany()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('students.full_name')
+                Tables\Columns\TextColumn::make('students.long_full_name')
                     ->label('Student name')
                     ->searchable(
                         ['first_name', 'last_name']
