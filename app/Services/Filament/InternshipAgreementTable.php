@@ -20,10 +20,11 @@ class InternshipAgreementTable
                 ->searchable()
                 ->sortable(),
 
-            Tables\Columns\TextColumn::make('student.full_name')
+            Tables\Columns\TextColumn::make('student.long_full_name')
                 ->label(__('Student name'))
-                ->searchable()
-                ->sortable(),
+                ->searchable(
+                    ['first_name', 'last_name']
+                )->sortable(),
             // ->formatStateUsing(function ($state, InternshipAgreement $internship) {
             //     return $internship->student->title->getLabel() . ' ' . $internship->student->first_name . ' ' . $internship->student->last_name;
             // }),
