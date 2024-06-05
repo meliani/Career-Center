@@ -74,6 +74,7 @@ class ProjectResource extends Core\BaseResource
         return $form
             ->schema([
                 Forms\Components\Section::make('Defense information')
+                    ->hidden(fn () => auth()->user()->isAdministrator() === false)
                     ->relationship('timetable')
                     ->columns(3)
                     ->schema([
@@ -397,6 +398,7 @@ class ProjectResource extends Core\BaseResource
         return $infolist
             ->schema([
                 Infolists\Components\Section::make(__('Defense information'))
+                    ->hidden(fn () => auth()->user()->isAdministrator() === false)
                     ->columns(3)
                     ->schema([
                         Infolists\Components\TextEntry::make('timetable.timeslot.start_time')
