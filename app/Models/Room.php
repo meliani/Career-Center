@@ -6,7 +6,6 @@ use App\Enums;
 
 class Room extends Core\BackendBaseModel
 {
-
     // public static function getInstances(): array
     // {
     //     foreach (RoomEnum::getInstances() as $room) {
@@ -14,6 +13,12 @@ class Room extends Core\BackendBaseModel
     //     }
     //     return $rooms;
     // }
+
+    public function scopeEnabled($query)
+    {
+        return $query->where('status', Enums\RoomStatus::Available);
+    }
+
     protected $fillable = [
         'name',
         'description',
@@ -21,8 +26,8 @@ class Room extends Core\BackendBaseModel
         'created_by',
         'updated_by',
     ];
+
     protected $casts = [
         'status' => Enums\RoomStatus::class,
     ];
-
 }

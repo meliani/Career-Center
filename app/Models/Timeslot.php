@@ -22,15 +22,18 @@ class Timeslot extends Core\BackendBaseModel
     ];
 
     protected $casts = [
-        'start_time' => 'date:Y-m-d H:i:s',
-        'end_time' => 'date:Y-m-d H:i:s',
+        // 'start_time' => 'date:Y-m-d H:i:s',
+        // 'end_time' => 'date:Y-m-d H:i:s',
         'is_enabled' => 'boolean',
+        'is_taken' => 'boolean',
+        'start_time' => 'datetime',
+        'end_time' => 'datetime',
     ];
 
-    protected $dates = [
-        'start_time',
-        'end_time',
-    ];
+    // protected $dates = [
+    //     'start_time',
+    //     'end_time',
+    // ];
     //     protected $attributes = [
     //         'is_enabled' => true,
     //         'is_taken' => false,

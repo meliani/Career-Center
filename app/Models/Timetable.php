@@ -11,7 +11,7 @@ class Timetable extends Core\BackendBaseModel
 
     public function room()
     {
-        return $this->belongsTo(Room::class);
+        return $this->belongsTo(Room::class)->enabled();
     }
 
     public function project()
@@ -29,7 +29,9 @@ class Timetable extends Core\BackendBaseModel
         //     'id', // Local key on the projects table...
         //     'id' // Local key on the environments table...
         // );
-        return $this->hasManyThrough(Professor::class, Project::class,
+        return $this->hasManyThrough(
+            Professor::class,
+            Project::class,
             'id', // Foreign key on the projects table...
             'id', // Foreign key on the professors table...
             'project_id', // Local key on the timetables table...

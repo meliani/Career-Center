@@ -73,20 +73,51 @@ class ProjectResource extends Core\BaseResource
     {
         return $form
             ->schema([
+                Forms\Components\Section::make('Defense information')
+                    ->relationship('timetable')
+                    ->columns(3)
+                    ->schema([
+                        Forms\Components\Fieldset::make('Time')
+                            ->relationship('timeslot')
+                            ->schema([
+                                Forms\Components\DateTimePicker::make('start_time')
+                                    // ->format('m/d/Y hh:ii:ss')
+                                    ->seconds(false)
+                                    ->native(false)
+                                    ->displayFormat('Y-m-d H:i:s')
+                                    ->required(),
+                                // ->disabled(fn () => auth()->user()->isAdministrator() === false),
+                                Forms\Components\DateTimePicker::make('end_time')
+                                    ->seconds(false)
+                                    // ->native(false)
+                                    ->displayFormat('Y-m-d H:i:s')
+                                    ->required(),
+                                // ->disabled(fn () => auth()->user()->isAdministrator() === false),
+                            ]),
+
+                        Forms\Components\Select::make('room_id')
+                            ->relationship('room', 'name')
+                            ->required(),
+                        // ->disabled(fn () => auth()->user()->isAdministrator() === false),
+                    ])
+                    ->columns(3),
 
                 Forms\Components\Section::make('Project information')
                     ->schema([
-                        Forms\Components\Textarea::make('title')
+                        Forms\Components\MarkdownEditor::make('title')
                             ->disabled(fn () => auth()->user()->isAdministrator() === false)
                             ->required()
-                            ->maxLength(255),
+                            ->maxLength(255)
+                            ->columnspan(2),
                         Forms\Components\DatePicker::make('start_date')
+                            ->native(false)
                             ->disabled(fn () => auth()->user()->isAdministrator() === false),
                         Forms\Components\DatePicker::make('end_date')
+                            ->native(false)
                             ->disabled(fn () => auth()->user()->isAdministrator() === false),
                     ])
                     ->collapsible()
-                    ->columns(2),
+                    ->columns(4),
             ]);
     }
 
@@ -365,62 +396,69 @@ class ProjectResource extends Core\BaseResource
     {
         return $infolist
             ->schema([
+                Infolists\Components\Section::make(__('Defense information'))
+                    ->columns(3)
+                    ->schema([
+                        Infolists\Components\TextEntry::make('timetable.timeslot.start_time')
+                            ->label('Defense start time')
+                            ->dateTime(),
+                        Infolists\Components\TextEntry::make('timetable.timeslot.end_time')
+                            ->label('Defense end time')
+                            ->dateTime(),
+                        Infolists\Components\TextEntry::make('timetable.room.name')
+                            ->label('Room'),
+                        Infolists\Components\Fieldset::make('Jury')
+                            ->schema([
+                                RepeatableEntry::make('professors')
+                                    ->label('')
+                                    ->schema([
+                                        Infolists\Components\TextEntry::make('name')
+                                            ->label(__('Supervisor')),
+                                    ])
+                                    ->contained(false),
+                                // Infolists\Components\TextEntry::make('professors.name')
+                                //     ->label('')
+                                //     ->formatStateUsing(
+                                //         fn ($record) => $record->professors->map(
+                                //             fn ($professor) => $professor->pivot->jury_role->getLabel() . ': ' . $professor->name
+                                //         )->join(', ')
+                                //     ),
+                            ]),
+                    ]),
+
                 Infolists\Components\Section::make(__('Project information'))
                     ->headerActions([
                         // CommentsAction::make(),
                     ])
-
                     ->columns(3)
                     ->schema([
-                        Infolists\Components\Fieldset::make('Project information')
+                        Infolists\Components\TextEntry::make('id_pfe')
+                            ->label('PFE ID'),
+                        Infolists\Components\TextEntry::make('students.long_full_name')
+                            ->label('Student'),
+                        Infolists\Components\TextEntry::make('students.program')
+                            ->label('Program'),
+                        Infolists\Components\TextEntry::make('organization')
+                            ->label('Organization'),
+
+                        Infolists\Components\TextEntry::make('title')
+                            ->label('Project title'),
+
+                        Infolists\Components\TextEntry::make('description')
+                            ->label('Project description')
+                            ->formatStateUsing(
+                                fn ($record) => "{$record->description}"
+                            )
+                            ->html()
+                            ->columnSpanFull(),
+                        Infolists\Components\Fieldset::make('Dates')
                             ->schema([
-                                Infolists\Components\TextEntry::make('id_pfe')
-                                    ->label('PFE ID'),
-                                Infolists\Components\TextEntry::make('students.long_full_name')
-                                    ->label('Student'),
-                                Infolists\Components\TextEntry::make('students.program')
-                                    ->label('Program'),
-                                Infolists\Components\TextEntry::make('organization')
-                                    ->label('Organization'),
-
-                                Infolists\Components\TextEntry::make('title')
-                                    ->label('Project title'),
-
-                                Infolists\Components\TextEntry::make('description')
-                                    ->label('Project description')
-                                    ->formatStateUsing(
-                                        fn ($record) => "{$record->description}"
-                                    )
-                                    ->html()
-                                    ->columnSpanFull(),
-                                Infolists\Components\Fieldset::make('Dates')
-                                    ->schema([
-                                        Infolists\Components\TextEntry::make('start_date')
-                                            ->label('Project start date')
-                                            ->date(),
-                                        Infolists\Components\TextEntry::make('end_date')
-                                            ->label('Project end date')
-                                            ->date(),
-                                    ]),
-
-                                Infolists\Components\Fieldset::make('Jury information')
-                                    ->schema([
-                                        RepeatableEntry::make('professors')
-                                            ->label('')
-                                            ->schema([
-                                                Infolists\Components\TextEntry::make('name')
-                                                    ->label(__('Supervisor')),
-                                            ])
-                                            ->contained(false),
-                                        // Infolists\Components\TextEntry::make('professors.name')
-                                        //     ->label('')
-                                        //     ->formatStateUsing(
-                                        //         fn ($record) => $record->professors->map(
-                                        //             fn ($professor) => $professor->pivot->jury_role->getLabel() . ': ' . $professor->name
-                                        //         )->join(', ')
-                                        //     ),
-                                    ]),
-
+                                Infolists\Components\TextEntry::make('start_date')
+                                    ->label('Project start date')
+                                    ->date(),
+                                Infolists\Components\TextEntry::make('end_date')
+                                    ->label('Project end date')
+                                    ->date(),
                             ]),
 
                         Infolists\Components\Fieldset::make('Entreprise supervisor')
