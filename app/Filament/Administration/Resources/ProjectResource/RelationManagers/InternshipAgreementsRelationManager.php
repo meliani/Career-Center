@@ -32,7 +32,7 @@ class InternshipAgreementsRelationManager extends RelationManager
                 Forms\Components\TextInput::make('title')
                     // ->relationship('student', 'full_name')
                     ->required(),
-                Forms\Components\TextInput::make('student.full_name')
+                Forms\Components\TextInput::make('student.long_full_name')
                     ->required(),
             ]);
     }
@@ -42,22 +42,31 @@ class InternshipAgreementsRelationManager extends RelationManager
         return $table
             ->paginated(false)
             ->searchable(false)
-            ->recordTitleAttribute('title', 'student.full_name')
+            ->recordTitleAttribute('title', 'student.long_full_name')
             ->columns([
                 Tables\Columns\TextColumn::make('id_pfe'),
+                Tables\Columns\TextColumn::make('student.long_full_name'),
                 Tables\Columns\TextColumn::make('title'),
-                Tables\Columns\TextColumn::make('student.full_name'),
             ])
             ->filters([
                 //
             ])
             ->headerActions([
                 Tables\Actions\AssociateAction::make()
+                    // ->recordTitleAttribute('title', 'student.long_full_name')
+                    ->recordTitle(fn ($record): string => "{$record->title} ({$record->student->long_full_name})")
+                    // ->recordSelectSearchColumns(['student.name'])
                     ->preloadRecordSelect()
-                    ->recordSelectSearchColumns(['title', 'id_pfe'])
+                    // ->recordSelectSearchColumns(['title', 'id_pfe'])
                     ->recordSelect(
-                        fn (Select $select) => $select->placeholder(__('Search by title or id_pfe...')),
+                        fn (Select $select) => $select->placeholder(__('Search by title or id_pfe...'))
+                        // ->options(function (RelationManager $livewire): array {
+                        //     return $livewire->getOwnerRecord()->students()
+                        //         ->pluck('name')
+                        //         ->toArray();
+                        // }),
                     ),
+
             ])
             ->actions([
                 Tables\Actions\DissociateAction::make(),
@@ -67,5 +76,10 @@ class InternshipAgreementsRelationManager extends RelationManager
                     Tables\Actions\DetachBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public function hasCombinedRelationManagerTabsWithContent(): bool
+    {
+        return true;
     }
 }
