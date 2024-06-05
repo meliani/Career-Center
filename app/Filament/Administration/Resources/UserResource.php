@@ -132,8 +132,12 @@ class UserResource extends Resource
             ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    SendUsersBulkEmail::make('send_emails'),
-                    SendBulkInvitationEmail::make('send_invitations'),
+                    SendUsersBulkEmail::make('write_email')
+                        ->label('Write Emails to selected users')
+                        ->requiresConfirmation(),
+                    SendBulkInvitationEmail::make('send_invitations')
+                        ->label('Send Invitations to join the platform')
+                        ->requiresConfirmation(),
                 ]),
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),

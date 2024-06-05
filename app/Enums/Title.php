@@ -9,6 +9,7 @@ enum Title: string implements HasColor, HasLabel
 {
     case Mrs = 'Mrs';
     case Mr = 'Mr';
+    case NULL = '';
 
     public static function getArray(): array
     {
@@ -21,8 +22,9 @@ enum Title: string implements HasColor, HasLabel
     public function getLabel(): ?string
     {
         return match ($this) {
-            self::Mrs => __('Mrs'),
-            self::Mr => __('Mr'),
+            self::Mrs => __('Mrs.'),
+            self::Mr => __('Mr.'),
+            self::NULL => __(''),
         };
     }
 

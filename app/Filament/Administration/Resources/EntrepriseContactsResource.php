@@ -2,6 +2,9 @@
 
 namespace App\Filament\Administration\Resources;
 
+use App\Enums\EntrepriseContactCategory;
+use App\Enums\Title;
+use App\Filament\Actions\BulkAction;
 use App\Filament\Administration\Resources\EntrepriseContactsResource\Pages;
 use App\Models\EntrepriseContacts;
 use Filament\Forms;
@@ -21,7 +24,7 @@ class EntrepriseContactsResource extends Resource
     public static function canAccess(): bool
     {
         if (auth()->check()) {
-            return false;
+            return auth()->user()->isSuperAdministrator();
         }
 
         return false;
@@ -36,13 +39,14 @@ class EntrepriseContactsResource extends Resource
     {
         return $form
             ->schema([
+
                 Forms\Components\TextInput::make('email')
                     ->email()
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('title')
-                    ->required()
-                    ->maxLength(255),
+                Forms\Components\Select::make('title')
+                    ->options(Title::class)
+                    ->required(),
                 Forms\Components\TextInput::make('first_name')
                     ->required()
                     ->maxLength(255),
@@ -76,28 +80,35 @@ class EntrepriseContactsResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('long_full_name')
+                    ->searchable(false),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('title')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('first_name')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('last_name')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('company')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('position')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('alumni_promotion')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('category')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('years_of_interactions_with_students')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('alumni_promotion')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('number_of_bounces')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\IconColumn::make('is_account_disabled')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -109,12 +120,17 @@ class EntrepriseContactsResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('category')
+                    ->options(EntrepriseContactCategory::class),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    BulkAction\Email\SendSecondYearMailingCampaign::make('Send Second Year Mailing Campaign')
+                        ->requiresConfirmation(),
+                ]),
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
