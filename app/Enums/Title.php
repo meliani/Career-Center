@@ -16,6 +16,7 @@ enum Title: string implements HasColor, HasLabel
         return [
             Title::Mrs->value,
             Title::Mr->value,
+            Title::NULL->value,
         ];
     }
 
