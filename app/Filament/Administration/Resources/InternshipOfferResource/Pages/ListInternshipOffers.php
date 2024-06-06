@@ -1,0 +1,19 @@
+<?php
+
+namespace App\Filament\Administration\Resources\InternshipOfferResource\Pages;
+
+use App\Filament\Administration\Resources\InternshipOfferResource;
+use Filament\Actions;
+use Filament\Resources\Pages\ListRecords;
+
+class ListInternshipOffers extends ListRecords
+{
+    protected static string $resource = InternshipOfferResource::class;
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            Actions\CreateAction::make(),
+        ];
+    }
+}
