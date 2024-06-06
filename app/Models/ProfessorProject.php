@@ -67,6 +67,20 @@ class ProfessorProject extends Pivot
         return $this->belongsTo(Professor::class);
     }
 
+    public function reviewers()
+    {
+        return $this->belongsToMany(Professor::class, 'professor_project_reviewer', 'professor_project_id', 'professor_id')
+            ->withPivot('created_by', 'updated_by', 'approved_by')
+            ->withTimestamps();
+    }
+
+    public function supervisor()
+    {
+        return $this->hasOne(Professor::class, 'professor_project_id');
+
+        // return $this->belongsTo(Professor::class, 'professor_id');
+    }
+
     public function project()
     {
         return $this->belongsTo(Project::class);

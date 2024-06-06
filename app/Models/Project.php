@@ -114,13 +114,18 @@ class Project extends Core\BackendBaseModel
 
     public function supervisor()
     {
-        if (! $this->professors()->exists()) {
-            return null;
-        }
+        // dd($this->professors()
+        //     ->wherePivot('jury_role', Enums\JuryRole::Supervisor->value));
 
         return $this->professors()
-            ->wherePivot('jury_role', Enums\JuryRole::Supervisor)
-            ->first();
+            ->wherePivot('jury_role', Enums\JuryRole::Supervisor->value);
+    }
+
+    public function reviewers()
+    {
+
+        return $this->professors()
+            ->wherePivot('jury_role', Enums\JuryRole::Reviewer->value);
     }
 
     public function timetable()
