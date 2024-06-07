@@ -32,4 +32,8 @@ Route::get('lang/{lang}', 'App\Http\Controllers\LanguageController@switchLang');
 Route::get('/verify-agreement', QrUrlDecoder::class);
 // Route::get('/qr-response', Pages\QrResponse::class)->name('qr-response');
 
-Route::get('/mail-preview/{email}', 'App\Http\Controllers\MailPreviewController@show');
+// Route::get('/mail-preview/{email}', 'App\Http\Controllers\MailPreviewController@show');
+
+Route::get('/public-internship-offer-form', \App\Livewire\PublicInternshipOfferForm::class);
+
+Route::get('/new-internship', \App\Livewire\NewInternship::class)->name('new-internship');

@@ -17,25 +17,20 @@
     </style>
 
     @filamentStyles
+    {{-- @livewireStyles() --}}
     @vite('resources/css/app.css')
 </head>
 
 <body class="antialiased">
-    @auth
-    <x-impersonate::banner style='light' />
-    @endauth
-
 
     {{ $slot }}
 
-
     @filamentScripts
-    {{-- @vite('resources/js/app.js') --}}
+    {{-- @livewireScripts() --}}
+    @vite('resources/js/app.js')
 
     @livewire('notifications')
-    @auth
-    @livewire('database-notifications')
-    @endauth
+    {{-- @livewire('database-notifications') --}}
 </body>
 
 </html>

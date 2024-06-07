@@ -39,6 +39,7 @@ class InternshipOffer extends Model
         'status',
         'applyable',
         'expire_at',
+        'organization_id',
     ];
 
     protected $casts = [
@@ -61,5 +62,10 @@ class InternshipOffer extends Model
         static::deleting(function (InternshipOffer $internshipOffer) {
             $internshipOffer->tags()->detach();
         });
+    }
+
+    public function organization()
+    {
+        return $this->belongsTo(Organization::class);
     }
 }
