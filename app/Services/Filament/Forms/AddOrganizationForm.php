@@ -21,6 +21,7 @@ class AddOrganizationForm
     {
         return [
             Forms\Components\Select::make('organization_id')
+                ->optionsLimit(3)
                 ->hiddenOn('edit')
                 ->default($this->organization_id)
                 ->relationship('organization', 'name')
@@ -37,7 +38,7 @@ class AddOrganizationForm
                     Country::make('country')
                         ->required()
                         ->searchable(),
-                    Forms\Components\TextInput::make('address')
+                    Forms\Components\TextInput::make('address'),
                 ]),
         ];
     }
