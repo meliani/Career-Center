@@ -141,6 +141,7 @@ class NewInternship extends Page implements HasForms
                                             ->label('Duration in months')
                                             ->minValue(1)
                                             ->maxValue(6)
+                                            ->inputMode('decimal')
                                             ->numeric(),
                                     ]),
                                 // Forms\Components\TextInput::make('status'),
@@ -158,6 +159,8 @@ class NewInternship extends Page implements HasForms
                                     ->schema([
 
                                         Forms\Components\TextInput::make('application_link')
+                                            ->url()
+                                            ->suffixIcon('heroicon-m-globe-alt')
                                             ->hidden(fn (Get $get) => $get('recruting_type') != 'RecruiterManaged')
                                             ->columnSpan(2)
                                             ->maxLength(191),

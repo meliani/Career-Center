@@ -137,4 +137,9 @@ class Project extends Core\BackendBaseModel
     {
         return $this->whereDoesntHave('timetable');
     }
+
+    public function getDepartmentAttribute()
+    {
+        return $this->internship_agreements()->first() ? $this->internship_agreements()->first()->assigned_department : 'Undefined Department';
+    }
 }

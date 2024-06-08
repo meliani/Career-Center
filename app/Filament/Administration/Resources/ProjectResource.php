@@ -18,7 +18,6 @@ use Filament\Support\Enums as FilamentEnums;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Contracts\Database\Query\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Parallax\FilamentComments\Actions\CommentsAction;
 use Parallax\FilamentComments\Infolists\Components\CommentsEntry;
 use pxlrbt\FilamentExcel;
@@ -64,9 +63,13 @@ class ProjectResource extends Core\BaseResource
         ];
     }
 
-    public static function canView(Model $record): bool
+    public static function canViewAny(): bool
     {
-        return true;
+        if (auth()->check()) {
+            return auth()->user()->isAdministrator() || auth()->user()->isProfessor() || auth()->user()->isDepartmentHead() || auth()->user()->isProgramCoordinator() || auth()->user()->isDirection();
+        }
+
+        return false;
     }
 
     public static function form(Form $form): Form
@@ -135,7 +138,7 @@ class ProjectResource extends Core\BaseResource
                             ->sortable()
                             ->sortableMany()
                             ->searchable(),
-                        Tables\Columns\TextColumn::make('students.long_full_name')
+                        Tables\Columns\TextColumn::make('students.full_name')
                             ->label('Student name')
                             ->searchable(
                                 ['first_name', 'last_name']
@@ -144,11 +147,16 @@ class ProjectResource extends Core\BaseResource
                         Tables\Columns\TextColumn::make('students.program')
                             ->label('Program')
                             ->searchable()->sortableMany(),
-                        Tables\Columns\TextColumn::make('internship_agreements.assigned_department')
+                        // Tables\Columns\TextColumn::make('internship_agreements.assigned_department')
+                        //     ->label('Assigned department')
+                        //     // ->sortable(false)
+                        //     ->sortableMany()
+                        //     ->searchable(),
+
+                        Tables\Columns\TextColumn::make('department')
                             ->label('Assigned department')
-                            // ->sortable(false)
-                            ->sortableMany()
-                            ->searchable(),
+                            ->searchable()
+                            ->sortableMany(),
                     ]),
                 // Tables\Columns\TextColumn::make('professors.department')
                 //     ->label('department of supervisor'),
