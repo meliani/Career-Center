@@ -40,53 +40,53 @@ class NewInternship extends Page implements HasForms
                     ->columns(4)
                     ->schema([
                         Forms\Components\Fieldset::make('Organization Information')
-                            ->columns(4)
+                            ->columns(3)
                             ->schema([
                                 // Forms\Components\TextInput::make('year_id')
                                 //     ->numeric(),
                                 // ...(new AddOrganizationForm())->getSchema(),
-                                Forms\Components\Select::make('organization_id')
-                                    // ->hiddenOn('edit')
-                                    // ->default($this->organization_id)
-                                    ->relationship('organization', 'name')
-                                    ->searchable()
-                                    ->preload()
-                                    ->required()
-                                    // ->live()
-                                    // ->createOptionAction(
-                                    //     fn (Action $action) => $action->modalWidth('3xl'),
-                                    // )
-                                    ->id('country_id')
-                                    ->createOptionForm([
-                                        Forms\Components\TextInput::make('name')
-                                            ->required(),
-                                        Forms\Components\TextInput::make('city')
-                                            ->required(),
-                                        Country::make('country')
-                                            ->required()
-                                            ->searchable(),
-                                        Forms\Components\TextInput::make('address'),
-                                    ])->editOptionForm([
-                                        Forms\Components\TextInput::make('name')
-                                            ->required(),
-                                        Forms\Components\TextInput::make('city')
-                                            ->required(),
-                                        Country::make('country')
-                                            ->required()
-                                            ->searchable(),
-                                        Forms\Components\TextInput::make('address'),
-                                    ]),
+                                // Forms\Components\Select::make('organization_id')
+                                //     // ->hiddenOn('edit')
+                                //     // ->default($this->organization_id)
+                                //     ->relationship('organization', 'name')
+                                //     ->searchable()
+                                //     ->preload()
+                                //     ->required()
+                                //     // ->live()
+                                //     // ->createOptionAction(
+                                //     //     fn (Action $action) => $action->modalWidth('3xl'),
+                                //     // )
+                                //     ->id('country_id')
+                                //     ->createOptionForm([
+                                //         Forms\Components\TextInput::make('name')
+                                //             ->required(),
+                                //         Forms\Components\TextInput::make('city')
+                                //             ->required(),
+                                //         Country::make('country')
+                                //             ->required()
+                                //             ->searchable(),
+                                //         Forms\Components\TextInput::make('address'),
+                                //     ])->editOptionForm([
+                                //         Forms\Components\TextInput::make('name')
+                                //             ->required(),
+                                //         Forms\Components\TextInput::make('city')
+                                //             ->required(),
+                                //         Country::make('country')
+                                //             ->required()
+                                //             ->searchable(),
+                                //         Forms\Components\TextInput::make('address'),
+                                //     ]),
 
-                                // Forms\Components\TextInput::make('organization_name')
-                                //     ->maxLength(191),
+                                Forms\Components\TextInput::make('organization_name')
+                                    ->maxLength(191),
                                 Country::make('country')
                                     ->required()
                                     ->searchable(),
                                 Forms\Components\ToggleButtons::make('organization_type')
                                     ->options([
-                                        'Company' => 'Company',
-                                        'NGO' => 'NGO',
-                                        'Public' => 'Public Institution',
+                                        'Company' => __('Company'),
+                                        'NGO' => __('NGO'),
+                                        'Public' => __('Public Institution'),
                                     ])
                                     ->columnSpan(2)
                                     ->inline()
@@ -96,7 +96,7 @@ class NewInternship extends Page implements HasForms
                                 Forms\Components\Fieldset::make('Organization Responsible Information')
                                     ->columns(4)
                                     ->schema([
-                                        Forms\Components\TextInput::make('responsible_fullname')
+                                        Forms\Components\TextInput::make('responsible_name')
                                             ->maxLength(191),
                                         Forms\Components\TextInput::make('responsible_occupation')
                                             ->maxLength(191),
@@ -114,8 +114,8 @@ class NewInternship extends Page implements HasForms
                                 Forms\Components\ToggleButtons::make('internship_type')
                                     ->inline()
                                     ->options([
-                                        'Remote' => 'Remote',
-                                        'Onsite' => 'Onsite',
+                                        'Remote' => __('Remote'),
+                                        'Onsite' => __('On site'),
                                     ])
                                     ->default('Remote')
                                     ->live(),
@@ -147,8 +147,8 @@ class NewInternship extends Page implements HasForms
                                 Forms\Components\ToggleButtons::make('recruting_type')
                                     ->inline()
                                     ->options([
-                                        'SchoolManaged' => 'School Managed',
-                                        'RecruiterManaged' => 'Recruiter Managed',
+                                        'SchoolManaged' => __('School Managed'),
+                                        'RecruiterManaged' => __('Recruiter Managed'),
                                     ])
                                     ->default('RecruiterManaged')
                                     ->live(),
@@ -156,7 +156,7 @@ class NewInternship extends Page implements HasForms
                                     ->columns(8)
                                     ->schema([
 
-                                        Forms\Components\TextInput::make('link')
+                                        Forms\Components\TextInput::make('application_link')
                                             ->hidden(fn (Get $get) => $get('recruting_type') != 'RecruiterManaged')
                                             ->columnSpan(2)
                                             ->maxLength(191),
@@ -192,6 +192,7 @@ class NewInternship extends Page implements HasForms
                                             ->visible(fn (Get $get): bool => $get('remuneration') !== null && $get('remuneration') > 0),
 
                                         Forms\Components\DatePicker::make('expire_at')
+                                            ->columnSpan(2)
                                             ->label('Application deadline'),
                                         Forms\Components\FileUpload::make('attached_file')
                                             ->columnSpanFull(),
