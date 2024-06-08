@@ -334,5 +334,7 @@
     "When you save this form, you will not be able to change the organization and its representatives.": "Lorsque vous enregistrez ce formulaire, vous ne pourrez pas changer l'organisation et ses représentants.",
     "DirectContact": "Carte de visite",
     "Internship Offer has been submitted successfully": "L'offre de stage a été soumise avec succès",
-    "Publish Internship Offer": "Publier une offre de stage"
+    "Publish Internship Offer": "Publier une offre de stage",
+    "Publish Offer": "Publier l'offre",
+    "Internship location": "Lieu de stage"
 }
