@@ -35,7 +35,11 @@ class BaseResource extends Resource
 
     public static function canViewAny(): bool
     {
-        return auth()->user()->isAdministrator();
+        if (auth()->check()) {
+            return auth()->user()->isAdministrator();
+        }
+
+        return false;
     }
 
     // public static function canView(Model $record): bool
