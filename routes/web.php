@@ -36,4 +36,4 @@ Route::get('/verify-agreement', QrUrlDecoder::class);
 
 Route::get('/public-internship-offer-form', \App\Livewire\PublicInternshipOfferForm::class);
 
-Route::get('/new-internship', \App\Livewire\NewInternship::class)->name('new-internship');
+Route::get('/publier-un-stage', \App\Livewire\NewInternship::class)->name('new-internship');

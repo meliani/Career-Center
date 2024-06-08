@@ -115,7 +115,7 @@ class NewInternship extends Page implements HasForms
                                     ->inline()
                                     ->options([
                                         'Remote' => __('Remote'),
-                                        'Onsite' => __('On site'),
+                                        'OnSite' => __('On site'),
                                     ])
                                     ->default('Remote')
                                     ->live(),

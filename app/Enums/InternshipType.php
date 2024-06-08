@@ -11,8 +11,8 @@ enum InternshipType: string implements HasColor, HasIcon, HasLabel
 {
     // use IsKanbanStatus;
 
-    case OnSite = 'onsite';
-    case Remote = 'remote';
+    case OnSite = 'OnSite';
+    case Remote = 'Remote';
 
     public static function getArray(): array
     {
