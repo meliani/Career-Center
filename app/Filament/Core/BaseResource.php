@@ -33,10 +33,10 @@ class BaseResource extends Resource
         return __(static::$navigationGroup);
     }
 
-    // public static function canViewAny(): bool
-    // {
-    //     return false;
-    // }
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->isAdministrator();
+    }
 
     // public static function canView(Model $record): bool
     // {

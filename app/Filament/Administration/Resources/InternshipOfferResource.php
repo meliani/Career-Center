@@ -3,21 +3,34 @@
 namespace App\Filament\Administration\Resources;
 
 use App\Filament\Administration\Resources\InternshipOfferResource\Pages;
-use App\Filament\Administration\Resources\InternshipOfferResource\RelationManagers;
+use App\Filament\Core\BaseResource;
 use App\Models\InternshipOffer;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class InternshipOfferResource extends Resource
+class InternshipOfferResource extends BaseResource
 {
     protected static ?string $model = InternshipOffer::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $modelLabel = 'internship offer';
+
+    protected static ?string $pluralModelLabel = 'internship offers';
+
+    protected static ?string $title = 'Manage internship offers';
+
+    protected static ?string $recordTitleAttribute = 'organization_name';
+
+    protected static ?string $navigationGroup = 'Entreprises';
+
+    protected static ?string $navigationIcon = 'heroicon-o-briefcase';
+
+    protected static ?int $sort = 2;
+
+    protected static ?string $navigationBadgeTooltip = 'Internship offers';
 
     public static function form(Form $form): Form
     {

@@ -135,6 +135,7 @@ class NewInternship extends Page implements HasForms
                                     ->columns(4)
                                     ->schema([
                                         Forms\Components\TextInput::make('internship_location')
+                                            ->columnSpan(2)
                                             ->maxLength(191),
                                         Forms\Components\TextInput::make('internship_duration')
                                             ->label('Duration in months')
