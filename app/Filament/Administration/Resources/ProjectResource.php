@@ -152,7 +152,6 @@ class ProjectResource extends Core\BaseResource
                         //     // ->sortable(false)
                         //     ->sortableMany()
                         //     ->searchable(),
-
                         Tables\Columns\TextColumn::make('department')
                             ->label('Assigned department')
                             ->searchable()
@@ -167,14 +166,15 @@ class ProjectResource extends Core\BaseResource
                         //     ->searchable(
                         //         ['first_name', 'last_name']
                         //     ),
+
+                        Tables\Columns\TextColumn::make('supervisor.name')
+                            ->label('Supervisor'),
                         Tables\Columns\TextColumn::make('reviewers.name')
                             ->label('Reviewers')
                             ->searchable(
                                 ['first_name', 'last_name']
                             )
                             ->sortableMany(),
-                        Tables\Columns\TextColumn::make('supervisor.name')
-                            ->label('Supervisor'),
                         // Tables\Columns\TextColumn::make('reviewers.name')
                         //     ->label('Reviewers'),
                         // ->formatStateUsing(
