@@ -1,3 +1,4 @@
+[![Deploy on Push](https://github.com/meliani/Career-Center/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/meliani/Career-Center/actions/workflows/deploy.yml)
 # Careers Management System for Schools
 
     ⚠️ Warning ⚠️
