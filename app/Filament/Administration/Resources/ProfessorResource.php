@@ -109,6 +109,11 @@ class ProfessorResource extends Core\BaseResource
 
         return $table
             // ->defaultPaginationPageOption(20)
+            ->groups([
+                Tables\Grouping\Group::make('department')
+                    ->label(__('Department'))
+                    ->collapsible(),
+            ])
             ->striped()
             ->columns(
                 $livewire->isGridLayout()

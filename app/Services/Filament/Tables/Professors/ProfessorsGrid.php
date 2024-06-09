@@ -32,18 +32,17 @@ class ProfessorsGrid
                                 ['first_name', 'last_name']
                             )
                             ->formatStateUsing(function ($record) {
-                                return $record->long_full_name;
+                                return "$record->long_full_name ({$record->department->getLabel()})";
                             }),
                         // Tables\Columns\TextColumn::make('first_name')
                         //     ->searchable(),
                         // Tables\Columns\TextColumn::make('last_name')
                         //     ->searchable(),
-                        Tables\Columns\TextColumn::make('department')
-                            ->verticallyAlignCenter()
-                            ->description(__('Dpeartment'), position: 'above')
-                            ->alignCenter()
-
-                            ->searchable(),
+                        // Tables\Columns\TextColumn::make('department')
+                        //     ->verticallyAlignCenter()
+                        //     ->description(__('Dpeartment'), position: 'above')
+                        //     ->alignCenter()
+                        //     ->searchable(),
                         Tables\Columns\TextColumn::make('projects_count')
                             ->alignment(Alignment::Center)
                             ->searchable(false)
@@ -100,12 +99,13 @@ class ProfessorsGrid
                             ->searchable()
                             ->formatStateUsing(function ($record) {
 
-                                return ($record->assigned_program) ? $record->role->getLabel() . "({$record?->assigned_program?->getLabel()})" : (($record->role === Role::Professor) ? '' : $record->role->getLabel());
+                                return ($record->assigned_program) ? $record->role->getLabel() . " ({$record?->assigned_program?->getLabel()})" : (($record->role === Role::Professor) ? null : $record->role->getLabel());
                                 // return $record->role->getLabel() . ' (' . $record?->assigned_program?->getLabel() . ')';
                             }),
                     ]),
                     Tables\Columns\TextColumn::make('email')
-                        ->description(__('email'), position: 'above')
+                        // ->description(__('email'), position: 'above')
+                        ->icon('heroicon-m-envelope')
                         ->searchable(),
                 ]),
             ])->collapsible(),
