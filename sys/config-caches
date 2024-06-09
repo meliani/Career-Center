@@ -1,4 +1,3 @@
-composer dump-autoload -o &&
 php artisan icons:cache &&
 php artisan view:cache &&
 php artisan route:cache &&
