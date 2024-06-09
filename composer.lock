@@ -1177,16 +1177,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.311.1",
+            "version": "3.311.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "90218b9372469babf294f97bdd764c9d47ec8a57"
+                "reference": "731cd73062909594c5f7443413c4c4c40ed1c25c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/90218b9372469babf294f97bdd764c9d47ec8a57",
-                "reference": "90218b9372469babf294f97bdd764c9d47ec8a57",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/731cd73062909594c5f7443413c4c4c40ed1c25c",
+                "reference": "731cd73062909594c5f7443413c4c4c40ed1c25c",
                 "shasum": ""
             },
             "require": {
@@ -1266,9 +1266,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.311.1"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.311.2"
             },
-            "time": "2024-06-06T18:05:50+00:00"
+            "time": "2024-06-07T18:05:33+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -6615,16 +6615,16 @@
         },
         {
             "name": "malzariey/filament-daterangepicker-filter",
-            "version": "2.7.2",
+            "version": "2.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/malzariey/filament-daterangepicker-filter.git",
-                "reference": "d02ab79c21a9c08c981d35d9ad600f4242f6dd9d"
+                "reference": "37dca49a04593be4df207107fe62131a02954d8a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/malzariey/filament-daterangepicker-filter/zipball/d02ab79c21a9c08c981d35d9ad600f4242f6dd9d",
-                "reference": "d02ab79c21a9c08c981d35d9ad600f4242f6dd9d",
+                "url": "https://api.github.com/repos/malzariey/filament-daterangepicker-filter/zipball/37dca49a04593be4df207107fe62131a02954d8a",
+                "reference": "37dca49a04593be4df207107fe62131a02954d8a",
                 "shasum": ""
             },
             "require": {
@@ -6670,7 +6670,7 @@
             ],
             "support": {
                 "issues": "https://github.com/malzariey/filament-daterangepicker-filter/issues",
-                "source": "https://github.com/malzariey/filament-daterangepicker-filter/tree/2.7.2"
+                "source": "https://github.com/malzariey/filament-daterangepicker-filter/tree/2.7.3"
             },
             "funding": [
                 {
@@ -6678,7 +6678,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-06-04T16:24:25+00:00"
+            "time": "2024-06-07T06:30:43+00:00"
         },
         {
             "name": "markbaker/complex",
