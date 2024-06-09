@@ -40,6 +40,15 @@ class StudentResource extends Core\BaseResource
 
     public static $User;
 
+    public static function canViewAny(): bool
+    {
+        if (auth()->check()) {
+            return auth()->user()->isAdministrator() || auth()->user()->isDirection();
+        }
+
+        return false;
+    }
+
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::where('level', 'ThirdYear')->count();

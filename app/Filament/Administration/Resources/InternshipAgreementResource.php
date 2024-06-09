@@ -15,7 +15,6 @@ use Filament\Infolists\Infolist;
 use Filament\Tables;
 use Filament\Tables\Actions\ImportAction;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Model;
 use Spatie\LaravelPdf\Facades\Pdf;
 
 use function Spatie\LaravelPdf\Support\pdf;
@@ -34,9 +33,13 @@ class InternshipAgreementResource extends Core\BaseResource
 
     protected static ?string $navigationGroup = 'Students and projects';
 
-    public static function canView(Model $record): bool
+    public static function canViewAny(): bool
     {
-        return true;
+        if (auth()->check()) {
+            return auth()->user()->isAdministrator() || auth()->user()->isDirection();
+        }
+
+        return false;
     }
 
     public static function getModelLabel(): string
