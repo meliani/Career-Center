@@ -15,6 +15,7 @@ use Filament\Forms\Form;
 use Filament\Support\Enums as FilamentEnums;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Hydrat\TableLayoutToggle\Facades\TableLayoutToggle;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 
@@ -180,6 +181,8 @@ class ProfessorResource extends Core\BaseResource
             ->defaultSort('projects_count', 'desc')
             ->headerActions([
                 \pxlrbt\FilamentExcel\Actions\Tables\ExportAction::make(),
+                TableLayoutToggle::getToggleViewTableAction(compact: true),
+
             ]);
     }
 
