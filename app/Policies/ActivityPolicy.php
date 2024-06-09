@@ -2,10 +2,9 @@
 
 namespace App\Policies;
 
+use App\Enums\Role;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use App\Enums\Role;
-
 
 class ActivityPolicy extends CorePolicy
 {
@@ -18,12 +17,14 @@ class ActivityPolicy extends CorePolicy
     {
         //
     }
+
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(Role::SuperAdministrator);
+        return $user->hasRole(Role::Administrator);
     }
+
     public function view(User $user): bool
     {
-        return $user->hasRole(Role::SuperAdministrator);
+        return $user->hasRole(Role::Administrator);
     }
 }
