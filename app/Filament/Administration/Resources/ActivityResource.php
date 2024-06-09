@@ -136,7 +136,6 @@ class ActivityResource extends Resource
                 TextColumn::make('description')
                     ->label(__('filament-logger::filament-logger.resource.label.description'))
                     ->toggleable()
-                    ->toggledHiddenByDefault()
                     ->wrap(),
 
                 TextColumn::make('subject_type')
