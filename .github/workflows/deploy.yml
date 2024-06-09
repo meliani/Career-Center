@@ -20,4 +20,4 @@ jobs:
 
       - name: Execute deployment script
         run: |
-          ssh -o StrictHostKeyChecking=no elmeliani@carrieres.inpt.ac.ma 'cd /var/www/html/careers_backend && git pull $$ composer install && ./sys/cache'
+          ssh -o StrictHostKeyChecking=no elmeliani@carrieres.inpt.ac.ma 'cd /var/www/html/careers_backend && git pull && composer install && ./sys/cache'
