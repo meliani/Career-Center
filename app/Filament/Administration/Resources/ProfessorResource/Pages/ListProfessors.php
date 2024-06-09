@@ -8,14 +8,22 @@ use App\Models\Professor;
 use Filament\Actions;
 use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
+use Hydrat\TableLayoutToggle\Concerns\HasToggleableTable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
 class ListProfessors extends ListRecords
 {
+    use HasToggleableTable;
+
     protected static string $resource = ProfessorResource::class;
 
     public Collection $ProfessorsByDepartment;
+
+    public function getDefaultLayoutView(): string
+    {
+        return 'grid';
+    }
 
     protected function getHeaderActions(): array
     {
