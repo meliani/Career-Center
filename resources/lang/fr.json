@@ -368,5 +368,10 @@
     "Internship type": "Type de stage",
     "Internship Details": "Détails du stage",
     "Projects IDs": "Identifiants des projets",
-    "Name": "Nom et prénom"
+    "Name": "Nom et prénom",
+    "Projects Participations": "Participations aux projets",
+    "Undefined Defense Date": "Date de soutenance non définie",
+    "External supervisor": "Encadrant externe",
+    "Subject": "Sujet",
+    "Defense plan": "Plan de soutenance"
 }

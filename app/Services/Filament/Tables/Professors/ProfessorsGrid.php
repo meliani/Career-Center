@@ -4,6 +4,7 @@ namespace App\Services\Filament\Tables\Professors;
 
 use App\Enums\Role;
 use Filament\Support\Enums\Alignment;
+use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
 use Filament\Tables\Columns\Layout\Grid;
 use Filament\Tables\Columns\Layout\Panel;
@@ -31,6 +32,7 @@ class ProfessorsGrid
                             ->searchable(
                                 ['first_name', 'last_name']
                             )
+                            ->weight(FontWeight::Bold)
                             ->formatStateUsing(function ($record) {
                                 return "$record->long_full_name ({$record->department->getLabel()})";
                             }),
@@ -43,8 +45,20 @@ class ProfessorsGrid
                         //     ->description(__('Dpeartment'), position: 'above')
                         //     ->alignCenter()
                         //     ->searchable(),
+                    ]),
+                    Split::make([
+                        Tables\Columns\TextColumn::make('role')
+                            ->weight(FontWeight::Medium)
+                            ->searchable()
+                            ->formatStateUsing(function ($record) {
+
+                                return ($record->assigned_program) ? $record->role->getLabel() . " ({$record?->assigned_program?->getLabel()})" : (($record->role === Role::Professor) ? null : $record->role->getLabel());
+                                // return $record->role->getLabel() . ' (' . $record?->assigned_program?->getLabel() . ')';
+                            }),
+                    ]),
+                    Split::make([
                         Tables\Columns\TextColumn::make('projects_count')
-                            ->alignment(Alignment::Center)
+                            // ->alignment(Alignment::Center)
                             ->searchable(false)
                             ->summarize([
                                 Summarizers\Average::make()
@@ -55,14 +69,13 @@ class ProfessorsGrid
                                     ->label(__('Range')),
                                 Summarizers\Sum::make(),
                             ])
-                            // ->formatStateUsing(fn ($record) => $record->projects_count . ' ' . __('projects pariticpations'))
-                            ->description(__('Number of Projects Participations'), position: 'above')
-                            ->label(__('Number of Projects Participations'))
+                            ->weight(FontWeight::Medium)
+                            ->formatStateUsing(fn ($record) => "{$record->projects_count} participations aux PFEs")
                         // ->label(new HtmlString(__('Number of <br /> Projects Participations')))
                         // ->label(new HtmlString(nl2br("Home \n number")))
                         // ->translateLabel(false)
-                            ->alignEnd()
-                            ->verticallyAlignCenter()
+                            // ->alignEnd()
+                            // ->verticallyAlignCenter()
                             ->sortable()
                             ->counts('projects'),
                     ]),

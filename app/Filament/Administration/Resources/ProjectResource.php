@@ -17,6 +17,7 @@ use Filament\Resources\RelationManagers\RelationGroup;
 use Filament\Support\Enums as FilamentEnums;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Hydrat\TableLayoutToggle\Facades\TableLayoutToggle;
 use Illuminate\Contracts\Database\Query\Builder;
 use Parallax\FilamentComments\Actions\CommentsAction;
 use Parallax\FilamentComments\Infolists\Components\CommentsEntry;
@@ -127,182 +128,25 @@ class ProjectResource extends Core\BaseResource
 
     public static function table(Table $table): Table
     {
+        $livewire = $table->getLivewire();
+
         return $table
             ->defaultPaginationPageOption(10)
             ->striped()
-            ->columns([
-                Tables\Columns\ColumnGroup::make(__('The student'))
-                    ->columns([
-                        Tables\Columns\TextColumn::make('internship_agreements.id_pfe')
-                            ->label('ID PFE')
-                            ->sortable()
-                            ->sortableMany()
-                            ->searchable(),
-                        Tables\Columns\TextColumn::make('students.full_name')
-                            ->label('Student name')
-                            ->searchable(
-                                ['first_name', 'last_name']
-                            )
-                            ->sortableMany(),
-                        Tables\Columns\TextColumn::make('students.program')
-                            ->label('Program')
-                            ->searchable()->sortableMany(),
-                        // Tables\Columns\TextColumn::make('internship_agreements.assigned_department')
-                        //     ->label('Assigned department')
-                        //     // ->sortable(false)
-                        //     ->sortableMany()
-                        //     ->searchable(),
-                        Tables\Columns\TextColumn::make('department')
-                            ->label('Assigned department')
-                            ->searchable()
-                            ->sortableMany(),
-                    ]),
-                // Tables\Columns\TextColumn::make('professors.department')
-                //     ->label('department of supervisor'),
-                Tables\Columns\ColumnGroup::make(__('Defense information'))
-                    ->columns([
-                        // Tables\Columns\TextColumn::make('supervisor.name')
-                        //     ->label('Supervisor')
-                        //     ->searchable(
-                        //         ['first_name', 'last_name']
-                        //     ),
-
-                        Tables\Columns\TextColumn::make('supervisor.name')
-                            ->label('Supervisor'),
-                        Tables\Columns\TextColumn::make('reviewers.name')
-                            ->label('Reviewers')
-                            ->searchable(
-                                ['first_name', 'last_name']
-                            )
-                            ->sortableMany(),
-                        // Tables\Columns\TextColumn::make('reviewers.name')
-                        //     ->label('Reviewers'),
-                        // ->formatStateUsing(
-                        //     fn ($record) => $record->professors->map(
-                        //         fn ($professor) =>
-                        //         // $professor->pivot->jury_role->getLabel() . ': '
-                        //         // .
-                        //         $professor->name
-                        //     )->join(', ')
-                        // )
-
-                        // ->listWithLineBreaks()
-                        // ->bulleted()
-
-                        // ->formatStateUsing(function ($state, Project $project) {
-                        //     return $project->professors->map(function ($professor) {
-                        //         return $professor->name;
-                        //     })->join(', ');
-                        // })
-                        Tables\Columns\TextColumn::make('timetable.timeslot.start_time')
-                            ->label('Defense start time')
-                            // ->toggleable(isToggledHiddenByDefault: true)
-                            ->searchable()
-                            ->sortable()
-                            ->formatStateUsing(
-                                fn ($state, $record) => $record->timetable->timeslot->start_time->format('Y-m-d H:i:s')
-                            )
-                            ->dateTime(),
-                        Tables\Columns\TextColumn::make('timetable.timeslot.end_time')
-                            ->label('Defense end time')
-                            // ->toggleable(isToggledHiddenByDefault: true)
-                            ->searchable()
-                            ->sortable()
-                            ->formatStateUsing(
-                                fn ($state) => date('Y-m-d H:i:s', strtotime($state))
-                            )
-                            ->dateTime(),
-                        Tables\Columns\TextColumn::make('timetable.room.name')
-                            ->label('Room'),
-                    ]),
-
-                Tables\Columns\ColumnGroup::make(__('Entreprise information'))
-                    ->columns([
-
-                        Tables\Columns\TextColumn::make('internship_agreements.organization_name')
-                            ->label('Organization')
-                            ->searchable()
-                            ->sortableMany(),
-                        Tables\Columns\TextColumn::make('internship_agreements.city')
-                            ->label('City')
-                            ->searchable()
-                            ->sortableMany(),
-                        Tables\Columns\TextColumn::make('internship_agreements.country')
-                            ->label('country')
-                            ->searchable()
-                            ->sortableMany(),
-                        Tables\Columns\TextColumn::make('start_date')
-                            ->label('Project start date')
-                            ->date()
-                            ->sortable(),
-                        Tables\Columns\TextColumn::make('end_date')
-                            ->label('Project end date')
-                            ->date()
-                            ->sortable(),
-                        Tables\Columns\TextColumn::make('title')
-                            ->limit(90)
-                            ->searchable()
-                            ->sortable(),
-                    ]),
-
-                Tables\Columns\ColumnGroup::make(__('Entreprise Contacts'))
-                    ->columns([
-                        Tables\Columns\TextColumn::make('internship_agreements.parrain_nom')
-                            ->label('Nom Parrain')
-                            ->searchable()
-                            ->sortable(),
-                        Tables\Columns\TextColumn::make('internship_agreements.parrain_prenom')
-                            ->label('Prenom Parrain')
-                            ->searchable()
-                            ->sortable(),
-
-                        Tables\Columns\TextColumn::make('internship_agreements.parrain_fonction')
-                            ->label('Fonction Parrain')
-                            ->searchable()
-                            ->sortable(),
-                        Tables\Columns\TextColumn::make('internship_agreements.parrain_tel')
-                            ->label('Tel Parrain')
-                            ->searchable()
-                            ->sortable(),
-                        Tables\Columns\TextColumn::make('internship_agreements.parrain_mail')
-                            ->label('Mail Parrain')
-                            ->searchable()
-                            ->sortable(),
-                        Tables\Columns\TextColumn::make('internship_agreements.encadrant_ext_nom')
-                            ->label('Nom Encadrant Externe')
-                            ->searchable()
-                            ->sortable(),
-                        Tables\Columns\TextColumn::make('internship_agreements.encadrant_ext_prenom')
-                            ->label('Prenom Encadrant Externe')
-                            ->searchable()
-                            ->sortable(),
-                        Tables\Columns\TextColumn::make('internship_agreements.encadrant_ext_fonction')
-                            ->label('Fonction Encadrant Externe')
-                            ->searchable()
-                            ->sortable(),
-                        Tables\Columns\TextColumn::make('internship_agreements.encadrant_ext_tel')
-                            ->label('Tel Encadrant Externe')
-                            ->searchable()
-                            ->sortable(),
-                        Tables\Columns\TextColumn::make('internship_agreements.encadrant_ext_mail')
-                            ->label('Mail Encadrant Externe')
-                            ->searchable()
-                            ->sortable(),
-                        Tables\Columns\TextColumn::make('internship_agreements.keywords')
-                            ->label('Keywords')
-                            ->searchable()
-                            ->limit(50),
-                    ]),
-
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-            ])
+            ->columns(
+                $livewire->isGridLayout()
+                    ? \App\Services\Filament\Tables\Projects\ProjectsGrid::get()
+                    : \App\Services\Filament\Tables\Projects\ProjectsTable::get()
+            )
+            ->contentGrid(
+                fn () => $livewire->isGridLayout()
+                    ? [
+                        'md' => 3,
+                        'lg' => 3,
+                        'xl' => 3,
+                        '2xl' => 4,
+                    ] : null
+            )
             ->filters([
                 Tables\Filters\SelectFilter::make('Assigned department')
                     ->options(Enums\Department::class)
@@ -331,6 +175,7 @@ class ProjectResource extends Core\BaseResource
 
             ])
             ->headerActions([
+
                 Tables\Actions\ActionGroup::make([
                     \App\Filament\Actions\Action\Processing\ImportProfessorsFromInternshipAgreements::make('Import Professors From Internship Agreements')
                         ->hidden(fn () => auth()->user()->isAdministrator() === false),
@@ -359,6 +204,8 @@ class ProjectResource extends Core\BaseResource
 
                             ]),
                     ]),
+                TableLayoutToggle::getToggleViewTableAction(compact: true),
+
             ])
             ->actions([
                 \Parallax\FilamentComments\Tables\Actions\CommentsAction::make()

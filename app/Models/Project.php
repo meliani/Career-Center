@@ -142,4 +142,49 @@ class Project extends Core\BackendBaseModel
     {
         return $this->internship_agreements()->first() ? $this->internship_agreements()->first()->assigned_department : 'Undefined Department';
     }
+
+    public function getAddressAttribute()
+    {
+        return $this->internship_agreements()->first() ? "{$this->internship_agreements()->first()->city}, {$this->internship_agreements()->first()->country}" : 'Undefined Address';
+    }
+
+    public function getOrganizationNameAttribute()
+    {
+        return $this->internship_agreements()->first() ? $this->internship_agreements()->first()->organization_name : 'Undefined Organization';
+    }
+
+    public function getExternalSupervisorAttribute()
+    {
+        return $this->internship_agreements()->first() ? "{$this->internship_agreements()->first()->encadrant_ext_name}, {$this->internship_agreements()->first()->encadrant_ext_fonction}" : 'Undefined External Supervisor';
+    }
+
+    public function getParrainAttribute()
+    {
+        return $this->internship_agreements()->first() ? "{$this->internship_agreements()->first()->parrain_name}, {$this->internship_agreements()->first()->parrain_fonction}" : 'Undefined Parrain';
+    }
+
+    public function getParrainContactAttribute()
+    {
+        return $this->internship_agreements()->first() ? "{$this->internship_agreements()->first()->parrain_tel}, {$this->internship_agreements()->first()->parrain_mail}" : 'Undefined Parrain Contact';
+    }
+
+    public function getExternalSupervisorContactAttribute()
+    {
+        return $this->internship_agreements()->first() ? "{$this->internship_agreements()->first()->encadrant_ext_tel}, {$this->internship_agreements()->first()->encadrant_ext_mail}" : 'Undefined External Supervisor Contact';
+    }
+
+    public function getKeywordsAttribute()
+    {
+        return $this->internship_agreements()->first() ? $this->internship_agreements()->first()->keywords : 'Undefined Keywords';
+    }
+
+    public function getDefensePlanAttribute()
+    {
+        return $this->timetable()->exists() ? "Le {$this->timetable->timeslot->end_time->format('d M Y')} de {$this->timetable->timeslot->start_time->format('H:i')} à {$this->timetable->timeslot->end_time->format('H:i')}, {$this->timetable->room->name}" : __('Undefined Defense Date');
+    }
+
+    public function getProjectDatesAttribute()
+    {
+        return "Du {$this->start_date->format('d M')} au {$this->end_date->format('d M Y')}";
+    }
 }

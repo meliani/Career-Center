@@ -8,10 +8,13 @@ use App\Models\Student;
 use Filament\Actions;
 use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
+use Hydrat\TableLayoutToggle\Concerns\HasToggleableTable;
 use Illuminate\Support\Collection;
 
 class ListProjects extends ListRecords
 {
+    use HasToggleableTable;
+
     protected static string $resource = ProjectResource::class;
 
     public Collection $ProjectsByProgram;
@@ -22,6 +25,11 @@ class ListProjects extends ListRecords
             ->groupBy('program')
             ->pluck('total', 'program');
         // dd($this->ProjectsByProgram);
+    }
+
+    public function getDefaultLayoutView(): string
+    {
+        return 'list';
     }
 
     protected function getHeaderActions(): array
