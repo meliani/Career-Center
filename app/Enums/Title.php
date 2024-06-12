@@ -9,6 +9,7 @@ enum Title: string implements HasColor, HasLabel
 {
     case Mrs = 'Mrs';
     case Mr = 'Mr';
+    case Dr = 'Dr';
     case NULL = '';
 
     public static function getArray(): array
@@ -16,6 +17,7 @@ enum Title: string implements HasColor, HasLabel
         return [
             Title::Mrs->value,
             Title::Mr->value,
+            Title::Dr->value,
             Title::NULL->value,
         ];
     }
@@ -25,6 +27,7 @@ enum Title: string implements HasColor, HasLabel
         return match ($this) {
             self::Mrs => __('Mrs.'),
             self::Mr => __('Mr.'),
+            self::Dr => __('Dr.'),
             self::NULL => __(''),
         };
     }
@@ -33,6 +36,7 @@ enum Title: string implements HasColor, HasLabel
     {
         return match ($this) {
             self::Mrs => 'warning',
+            self::Dr => 'success',
             self::Mr => 'info',
         };
     }
