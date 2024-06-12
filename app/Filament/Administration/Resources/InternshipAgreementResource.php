@@ -126,8 +126,8 @@ class InternshipAgreementResource extends Core\BaseResource
                 fn () => $livewire->isGridLayout()
                     ? [
                         'md' => 2,
-                        'lg' => 2,
-                        'xl' => 2,
+                        'lg' => 3,
+                        'xl' => 4,
                     ] : null
             )
             ->filters([

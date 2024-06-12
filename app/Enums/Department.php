@@ -2,9 +2,11 @@
 
 namespace App\Enums;
 
+use Filament\Support\Contracts\HasColor;
+use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
 
-enum Department: string implements HasLabel
+enum Department: string implements HasColor, HasIcon, HasLabel
 {
     /* MIR,     Département Systèmes de Communications.
     Département Eélectronique , Micro ondes et Optique.
@@ -70,6 +72,17 @@ enum Department: string implements HasLabel
             self::GLC => 'warning',
             self::SC => 'danger',
             self::NULL => 'secondary',
+        };
+    }
+
+    public function getIcon(): ?string
+    {
+        return match ($this) {
+            self::EMO => 'heroicon-o-signal',
+            self::MIR => 'heroicon-o-calculator',
+            self::GLC => 'heroicon-o-language',
+            self::SC => 'heroicon-o-cpu-chip',
+            self::NULL => 'heroicon-o-no-symbol',
         };
     }
 }

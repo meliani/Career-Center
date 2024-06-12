@@ -132,7 +132,7 @@ class ProjectResource extends Core\BaseResource
 
         return $table
             ->defaultPaginationPageOption(10)
-            ->striped()
+            // ->striped()
             ->columns(
                 $livewire->isGridLayout()
                     ? \App\Services\Filament\Tables\Projects\ProjectsGrid::get()

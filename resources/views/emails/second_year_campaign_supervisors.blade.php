@@ -11,7 +11,7 @@ Pour plus d'informations sur la formation offerte à nos élèves ingénieurs, v
 
 **Vous voudrez bien trouver sur le lien suivant le formulaire de demande :**
 
-- **[Accéder à la plateforme](https://carrieres.inpt.ac.ma/submit_offer) ( Voie unique pour les demandes de stagiaires INPT )**
+- **[https://carrieres.inpt.ac.ma/publier-un-stage](https://carrieres.inpt.ac.ma/publier-un-stage) ( Voie unique pour les demandes de stagiaires INPT )**
 
 En vous remerciant à l’avance pour votre collaboration, nous vous prions d’agréer, **{{ $name }}**, l’expression de nos salutations distinguées.
 

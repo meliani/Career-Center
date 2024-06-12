@@ -2,9 +2,11 @@
 
 namespace App\Enums;
 
+use Filament\Support\Contracts\HasColor;
+use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
 
-enum Program: string implements HasLabel
+enum Program: string implements HasColor, HasIcon, HasLabel
 {
     case AMOA = 'AMOA';
     case ASEDS = 'ASEDS';
@@ -56,5 +58,33 @@ enum Program: string implements HasLabel
             Program::SMARTICT->value,
             Program::SUD->value,
         ];
+    }
+
+    public function getColor(): string
+    {
+        return match ($this) {
+            self::AMOA => 'blue',
+            self::ASEDS => 'green',
+            self::DATA => 'yellow',
+            self::ICCN => 'red',
+            self::SESNUM => 'purple',
+            self::SMARTICT => 'indigo',
+            self::SUD => 'pink',
+            self::NULL => 'gray',
+        };
+    }
+
+    public function getIcon(): string
+    {
+        return match ($this) {
+            self::AMOA => 'heroicon-o-academic-cap',
+            self::ASEDS => 'heroicon-o-academic-cap',
+            self::DATA => 'heroicon-o-academic-cap',
+            self::ICCN => 'heroicon-o-academic-cap',
+            self::SESNUM => 'heroicon-o-academic-cap',
+            self::SMARTICT => 'heroicon-o-academic-cap',
+            self::SUD => 'heroicon-o-academic-cap',
+            self::NULL => 'heroicon-o-academic-cap',
+        };
     }
 }

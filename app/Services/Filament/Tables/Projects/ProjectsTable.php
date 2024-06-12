@@ -24,7 +24,7 @@ class ProjectsTable
                         ->sortableMany(),
                     Tables\Columns\TextColumn::make('students.program')
                         ->label('Program')
-                        ->searchable()->sortableMany(),
+                        ->searchable()->sortableMany()->badge(),
                     // Tables\Columns\TextColumn::make('internship_agreements.assigned_department')
                     //     ->label('Assigned department')
                     //     // ->sortable(false)
@@ -68,6 +68,7 @@ class ProjectsTable
                         ->sortable(),
                     Tables\Columns\TextColumn::make('defense_plan')
                         ->label('Defense Plan')
+                        ->toggleable(isToggledHiddenByDefault: true)
                         ->searchable(false),
                     Tables\Columns\TextColumn::make('timetable.timeslot.start_time')
                         ->label('Defense start time')
