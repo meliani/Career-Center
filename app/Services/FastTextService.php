@@ -13,8 +13,8 @@ class FastTextService
 
     public function __construct()
     {
-        $this->fastTextPath = '/home/mo/code/ML/fastText/fasttext'; // Adjust path as needed
-        $this->modelPath = '/home/mo/code/ML/fastText/lid.176.bin'; // Adjust path as needed
+        $this->fastTextPath = env('FASTTEXT_BINARY_PATH', '/path/to/fasttext'); // Adjust path as needed
+        $this->modelPath = env('FASTTEXT_MODEL_PATH', '/path/to/lid.176.bin'); // Adjust path as needed
     }
 
     public function detectLanguage($text)
