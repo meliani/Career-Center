@@ -14,7 +14,7 @@ Je suis convaincu que vous n’épargnerez aucun effort pour participer à la pr
 Pour plus d'informations sur les nouvelles filières d'ingénieur, veuillez visiter le [site web de l'INPT](https://www.inpt.ac.ma).
 Vous voudrez bien trouver sur le lien suivant le formulaire de demande :
 
-- **[https://carrieres.inpt.ac.ma/publier-un-stage](https://carrieres.inpt.ac.ma/publier-un-stage) ( Voie unique pour les demandes de stagiaires INPT )**
+- [https://carrieres.inpt.ac.ma/publier-un-stage](https://carrieres.inpt.ac.ma/publier-un-stage) ( Voie unique pour les demandes de stagiaires INPT )
 
 N’hésitez pas non plus, de transférer cette demande aux autres lauréats et à d’autres entreprises susceptibles d’être
 intéressées par nos INE.

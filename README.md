@@ -74,6 +74,25 @@ php artisan storage:link
 php artisan serve
 ```
 
+
+### 6. Addons
+
+#### install fasttext data models
+
+Go somewhere in your server and run comands below
+Copy the binary and model paths to the `.env` file
+    
+```
+git clone https://github.com/facebookresearch/fastText.git
+cd fastText
+make
+```
+
+```
+wget https://dl.fbaipublicfiles.com/fasttext/supervised-models/lid.176.bin
+```
+
+
 If you have trouble with the installation, please send an email to <m@meliani.xyz> or open an issue.
 
 ## Features
