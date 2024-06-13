@@ -56,6 +56,7 @@
         "spatie/laravel-pdf": "^1.4",
         "spatie/period": "^2.4",
         "stechstudio/filament-impersonate": "^3.5",
+        "symfony/process": "^6.4",
         "vinkla/hashids": "^11.0",
         "webklex/laravel-imap": "^5.3",
         "z3d0x/filament-logger": "^0.6.2"
