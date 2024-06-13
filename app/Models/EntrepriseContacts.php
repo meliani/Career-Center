@@ -24,6 +24,7 @@ class EntrepriseContacts extends Model
         'category',
         'years_of_interactions_with_students',
         'number_of_bounces',
+        'bounce_reason',
         'is_account_disabled',
     ];
 
