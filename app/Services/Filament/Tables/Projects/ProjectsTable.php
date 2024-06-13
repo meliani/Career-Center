@@ -62,6 +62,10 @@ class ProjectsTable
                         )
                         ->sortableMany(),
 
+                    Tables\Columns\TextColumn::make('language')
+                        ->label('Detected language')
+                        ->searchable(false)
+                        ->sortable(),
                     Tables\Columns\TextColumn::make('title')
                         ->limit(90)
                         ->searchable()
@@ -72,13 +76,13 @@ class ProjectsTable
                         ->searchable(false),
                     Tables\Columns\TextColumn::make('timetable.timeslot.start_time')
                         ->label('Defense start time')
-                        ->searchable()
+                        ->searchable(false)
                         ->sortable()
                         ->toggleable(isToggledHiddenByDefault: true)
                         ->dateTime('d M Y H:i'),
                     Tables\Columns\TextColumn::make('timetable.timeslot.end_time')
                         ->label('Defense end time')
-                        ->searchable()
+                        ->searchable(false)
                         ->sortable()
                         ->toggleable(isToggledHiddenByDefault: true)
                         ->dateTime('d M Y H:i'),

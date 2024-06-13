@@ -39,6 +39,7 @@ class Project extends Core\BackendBaseModel
 
     protected $fillable = [
         'title',
+        'language',
         'start_date',
         'end_date',
     ];
@@ -53,6 +54,7 @@ class Project extends Core\BackendBaseModel
     protected $casts = [
         'start_date' => 'date:Y/m/d',
         'end_date' => 'date:Y/m/d',
+        'language' => Enums\Language::class,
     ];
 
     public function getIdPfeAttribute()
