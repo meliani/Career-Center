@@ -20,3 +20,4 @@ yarn-error.log
 /dev_docs
 .env.inpt
 /storage/keys/*
+*.key
