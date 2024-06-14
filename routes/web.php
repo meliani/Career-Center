@@ -1,5 +1,6 @@
 <?php
 
+use App\Facades\GlobalDefenseCalendarConnector;
 use App\Filament\Org\Pages;
 use App\Http\Controllers\QrUrlDecoder;
 use Illuminate\Support\Facades\Route;
@@ -37,3 +38,10 @@ Route::get('/verify-agreement', QrUrlDecoder::class);
 Route::get('/public-internship-offer-form', \App\Livewire\PublicInternshipOfferForm::class);
 
 Route::get('/publier-un-stage', \App\Livewire\NewInternship::class)->name('new-internship');
+
+Route::get('/soutenances', function () {
+    $connector = new GlobalDefenseCalendarConnector();
+    $data = $connector->getDefenses(); // Assuming fetchData() is a method to get the data
+
+    return view('livewire.defense-calendar', ['data' => $data]);
+})->name('globalDefenseCalendar');
