@@ -58,15 +58,21 @@ class ProfessorsTable
                 // ->action(fn ($record) => Pages\EditProfessor::route('/{record}/edit'))
                 ->label(__('Projects')),
             Tables\Columns\TextColumn::make('role')
-                ->searchable(),
+                ->searchable()
+                ->hidden(fn () => auth()->user()->isAdministrator() === false),
+
             Tables\Columns\TextColumn::make('email')
+                ->toggleable(isToggledHiddenByDefault: true)
                 ->searchable(),
             Tables\Columns\TextColumn::make('assigned_program')
                 ->label(__('Program Coordinator Program'))
-                ->searchable(),
+                ->searchable()
+                ->hidden(fn () => auth()->user()->isAdministrator() === false),
+
             Tables\Columns\ToggleColumn::make('is_enabled')
                 ->toggleable(isToggledHiddenByDefault: true)
-                ->sortable(),
+                ->sortable()
+                ->hidden(fn () => auth()->user()->isAdministrator() === false),
             // Tables\Columns\TextColumn::make('email_verified_at')
             //     ->dateTime()
             //     ->sortable(),

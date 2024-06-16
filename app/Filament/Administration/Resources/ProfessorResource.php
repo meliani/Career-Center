@@ -185,7 +185,8 @@ class ProfessorResource extends Core\BaseResource
             ])
             ->defaultSort('projects_count', 'desc')
             ->headerActions([
-                \pxlrbt\FilamentExcel\Actions\Tables\ExportAction::make(),
+                \pxlrbt\FilamentExcel\Actions\Tables\ExportAction::make()
+                    ->hidden(fn () => auth()->user()->isAdministrator() === false),
                 TableLayoutToggle::getToggleViewTableAction(compact: true),
 
             ]);

@@ -114,7 +114,9 @@ class ProfessorsGrid
 
                                 return ($record->assigned_program) ? $record->role->getLabel() . " ({$record?->assigned_program?->getLabel()})" : (($record->role === Role::Professor) ? null : $record->role->getLabel());
                                 // return $record->role->getLabel() . ' (' . $record?->assigned_program?->getLabel() . ')';
-                            }),
+                            })
+                            ->hidden(fn () => auth()->user()->isAdministrator() === false),
+
                     ]),
                     Tables\Columns\TextColumn::make('email')
                         // ->description(__('email'), position: 'above')

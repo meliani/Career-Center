@@ -7,18 +7,31 @@ use App\Models\User;
 
 class ProfessorPolicy extends CorePolicy
 {
-    public function viewAny(User $user): bool
+    public function viewAny(User $user, Professor $professor): bool
     {
-        return $user->isAdministrator() || $user->isProgramCoordinator() || $user->isDepartmentHead() || $user->isDirection() || $user->isProfessor();
+        if ($user->isAdministrator() || $user->isDirection()) {
+            return true;
+        } elseif ($user->isDepartmentHead()) {
+            return true;
+        } elseif ($user->isProfessor() && $professor->projects()->each(fn ($project, $key) => $project->professors->each(fn ($professor, $key) => $professor->id === $user->id))) {
+            return true;
+        }
+
+        return false;
+
     }
 
     public function view(User $user, Professor $professor)
     {
         if ($user->isDepartmentHead() && $professor->department === $user->department) {
             return $user->id === $professor->id;
+            // return true;
+        } elseif ($user->isProfessor() && $professor->projects->each(fn ($project, $key) => $project->professors->each(fn ($professor, $key) => $professor->id === $user->id))) {
+            return $user->id === $professor->id;
+            // return true;
         }
 
-        return $user->isAdministrator() || $user->isProgramCoordinator() || $user->isDepartmentHead() || $user->isDirection() || $user->isProfessor();
+        return $user->isAdministrator() || $user->isDirection();
     }
 
     public function update(User $user, Professor $professor)

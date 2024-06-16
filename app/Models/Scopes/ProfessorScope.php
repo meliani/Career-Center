@@ -27,15 +27,25 @@ class ProfessorScope implements Scope
                         });
                     });
 
-                return;
+                // return;
             } elseif (auth()->user()->isDepartmentHead()) {
                 $builder
                     ->where('department', '=', auth()->user()->department);
 
-                return;
+                // return;
             } elseif (auth()->user()->isProfessor()) {
-                $builder
-                    ->where('id', '=', auth()->user()->id);
+                $builder->where('department', '=', auth()->user()->department);
+                // ->whereHas('projects', function ($query) {
+                //     // Assuming there's a 'professors' relationship within 'projects'
+                //     $query->whereHas('professors', function ($query) {
+                //         // Filter projects to those the current professor is involved in
+                //         $query->where('id', '=', auth()->user()->id);
+                //     });
+                // });
+
+                // return;
+                // $builder
+                //     ->where('id', '=', auth()->user()->id);
             } else {
                 abort(403, 'You are not authorized to view this page');
             }

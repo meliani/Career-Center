@@ -44,6 +44,11 @@ class Professor extends User
             ->using(ProfessorProject::class);
     }
 
+    public function getProjectsCountAttribute()
+    {
+        return $this->projects()->withoutGlobalScopes()->count();
+    }
+
     public function hasProjects()
     {
         return $this->projects()->exists();

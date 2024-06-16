@@ -19,10 +19,10 @@ class CorePolicy
 
     protected $direction = [Role::Direction];
 
-    public function viewAny(User $user): bool
-    {
-        return $user->hasAnyRole($this->administrators);
-    }
+    // public function viewAny(User $user): bool
+    // {
+    //     return $user->hasAnyRole($this->administrators);
+    // }
 
     // public function view(User $user, ?Model $model): bool
     // {
