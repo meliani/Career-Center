@@ -3,210 +3,149 @@
 namespace App\Filament\Administration\Resources;
 
 use App\Filament\Administration\Resources\TimetableResource\Pages;
-use App\Filament\Core;
+use App\Models\Project;
 use App\Models\Timetable;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\DB;
 
-class TimetableResource extends Core\BaseResource
+class TimetableResource extends Resource
 {
     protected static ?string $model = Timetable::class;
 
-    protected static ?string $title = 'Defense Timetable';
-
-    protected static ?string $modelLabel = 'Defenses Timetable';
-
-    protected static ?string $pluralModelLabel = 'Defenses Timetable';
-
-    protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
-
-    protected static ?int $navigationSort = 10;
-
-    protected static ?string $navigationGroup = 'Planning';
-
-    protected static ?string $navigationLabel = 'Defense Timetable';
-
-    public static function getTitle(): string
-    {
-        return __(self::$title);
-    }
-
-    public static function getNavigationLabel(): string
-    {
-        return __(self::$navigationLabel);
-    }
-
-    public static function getnavigationGroup(): string
-    {
-        return __(self::$navigationGroup);
-    }
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('timeslot_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('room_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('project_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('user_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('confirmed_by')
-                    ->numeric(),
-                Forms\Components\TextInput::make('cancelled_by')
-                    ->numeric(),
-                Forms\Components\TextInput::make('rescheduled_by')
-                    ->numeric(),
-                Forms\Components\TextInput::make('deleted_by')
-                    ->numeric(),
-                Forms\Components\TextInput::make('created_by')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('updated_by')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\Toggle::make('is_enabled')
-                    ->required(),
-                Forms\Components\Toggle::make('is_taken')
-                    ->required(),
-                Forms\Components\Toggle::make('is_confirmed')
-                    ->required(),
-                Forms\Components\Toggle::make('is_cancelled')
-                    ->required(),
-                Forms\Components\Toggle::make('is_rescheduled')
-                    ->required(),
-                Forms\Components\Toggle::make('is_deleted')
-                    ->required(),
-                Forms\Components\DateTimePicker::make('confirmed_at'),
-                Forms\Components\DateTimePicker::make('cancelled_at'),
-                Forms\Components\DateTimePicker::make('rescheduled_at'),
+                Forms\Components\Select::make('timeslot_id')
+                    ->label('Timeslot')
+                    ->options(Timetable::unplanned()->with('timeslot')->get()->pluck('timeslot.start_time', 'timeslot_id')),
+                Forms\Components\Select::make('room_id')
+                    ->label('Room')
+                    ->relationship('room', 'name'),
+                Forms\Components\Select::make('project_id')
+                    ->label('Project')
+                    ->searchable()
+                    // ->options(
+                    //     Project::pluck('title', 'id')
+                    // )
+                    ->options(
+                        Project::join('internships', 'projects.id', '=', 'internships.project_id')
+                            ->join('students', 'internships.student_id', '=', 'students.id')
+                            ->select(DB::raw("CONCAT(COALESCE(students.name, 'Unknown Student'), ' - ', COALESCE(projects.title, 'Untitled Project')) AS student_project"), 'projects.id')
+                            ->pluck('student_project', 'id')
+                    ),
+                // Forms\Components\TextInput::make('user_id')
+                //     ->numeric(),
+                // Forms\Components\Toggle::make('is_enabled'),
+                // Forms\Components\Toggle::make('is_taken'),
+                // Forms\Components\Toggle::make('is_confirmed'),
+                // Forms\Components\Toggle::make('is_cancelled'),
+                // Forms\Components\Toggle::make('is_rescheduled'),
+                // Forms\Components\Toggle::make('is_deleted'),
+                // Forms\Components\DateTimePicker::make('confirmed_at'),
+                // Forms\Components\DateTimePicker::make('cancelled_at'),
+                // Forms\Components\DateTimePicker::make('rescheduled_at'),
+                // Forms\Components\TextInput::make('confirmed_by')
+                //     ->numeric(),
+                // Forms\Components\TextInput::make('cancelled_by')
+                //     ->numeric(),
+                // Forms\Components\TextInput::make('rescheduled_by')
+                //     ->numeric(),
+                // Forms\Components\TextInput::make('deleted_by')
+                //     ->numeric(),
+                // Forms\Components\TextInput::make('created_by')
+                //     ->numeric(),
+                // Forms\Components\TextInput::make('updated_by')
+                //     ->numeric(),
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
-            ->groups([
-                Group::make('timeslot.start_time')
-                    ->date(),
-            ])
             ->columns([
-
-                Tables\Columns\TextColumn::make('project.end_date')
-                    ->label('End Date')
-                    ->searchable()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('timeslot.start_time')
-                    ->label('Start Time')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('timeslot.end_time')
-                    ->label('End Time')
-                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('room.name')
-                    ->label('Room')
-                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('project.title')
-                    ->label('Project')
-                    ->searchable()
                     ->sortable()
                     ->limit(50),
-                Tables\Columns\TextColumn::make('project.professors.name')
-                    ->label('Supervisor - Reviewer'),
-                Tables\Columns\TextColumn::make('timeslot_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('room_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('project_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('user_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('confirmed_by')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('cancelled_by')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('rescheduled_by')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('deleted_by')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('created_by')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('updated_by')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\IconColumn::make('is_enabled')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->boolean(),
-                Tables\Columns\IconColumn::make('is_taken')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->boolean(),
-                Tables\Columns\IconColumn::make('is_confirmed')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->boolean(),
-                Tables\Columns\IconColumn::make('is_cancelled')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->boolean(),
-                Tables\Columns\IconColumn::make('is_rescheduled')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->boolean(),
-                Tables\Columns\IconColumn::make('is_deleted')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->boolean(),
-                Tables\Columns\TextColumn::make('confirmed_at')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('cancelled_at')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('rescheduled_at')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->dateTime()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('project.internship_agreements.student.name')
+                    ->sortable()
+                    ->limit(50)
+                    ->label('Student'),
+                Tables\Columns\TextColumn::make('project.internship_agreements.id_pfe')
+                    ->sortable()
+                    ->limit(50)
+                    ->label('ID PFE'),
+
+                // Tables\Columns\TextColumn::make('user_id')
+                //     ->numeric()
+                //     ->sortable(),
+                // Tables\Columns\IconColumn::make('is_enabled')
+                //     ->boolean(),
+                // Tables\Columns\IconColumn::make('is_taken')
+                //     ->boolean(),
+                // Tables\Columns\IconColumn::make('is_confirmed')
+                //     ->boolean(),
+                // Tables\Columns\IconColumn::make('is_cancelled')
+                //     ->boolean(),
+                // Tables\Columns\IconColumn::make('is_rescheduled')
+                //     ->boolean(),
+                // Tables\Columns\IconColumn::make('is_deleted')
+                //     ->boolean(),
+                // Tables\Columns\TextColumn::make('confirmed_at')
+                //     ->dateTime()
+                //     ->sortable(),
+                // Tables\Columns\TextColumn::make('cancelled_at')
+                //     ->dateTime()
+                //     ->sortable(),
+                // Tables\Columns\TextColumn::make('rescheduled_at')
+                //     ->dateTime()
+                //     ->sortable(),
+                // Tables\Columns\TextColumn::make('deleted_at')
+                //     ->dateTime()
+                //     ->sortable()
+                //     ->toggleable(isToggledHiddenByDefault: true),
+                // Tables\Columns\TextColumn::make('confirmed_by')
+                //     ->numeric()
+                //     ->sortable(),
+                // Tables\Columns\TextColumn::make('cancelled_by')
+                //     ->numeric()
+                //     ->sortable(),
+                // Tables\Columns\TextColumn::make('rescheduled_by')
+                //     ->numeric()
+                //     ->sortable(),
+                // Tables\Columns\TextColumn::make('deleted_by')
+                //     ->numeric()
+                //     ->sortable(),
+                // Tables\Columns\TextColumn::make('created_by')
+                //     ->numeric()
+                //     ->sortable(),
+                // Tables\Columns\TextColumn::make('updated_by')
+                //     ->numeric()
+                //     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->toggleable(isToggledHiddenByDefault: true)
                     ->dateTime()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->toggleable(isToggledHiddenByDefault: true)
                     ->dateTime()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -227,8 +166,9 @@ class TimetableResource extends Core\BaseResource
     {
         return [
             'index' => Pages\ListTimetables::route('/'),
-            // 'create' => Pages\CreateTimetable::route('/create'),
-            // 'edit' => Pages\EditTimetable::route('/{record}/edit'),
+            'create' => Pages\CreateTimetable::route('/create'),
+            'view' => Pages\ViewTimetable::route('/{record}'),
+            'edit' => Pages\EditTimetable::route('/{record}/edit'),
         ];
     }
 }

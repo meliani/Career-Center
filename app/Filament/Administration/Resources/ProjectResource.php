@@ -8,6 +8,7 @@ use App\Filament\Administration\Resources\ProjectResource\Pages;
 use App\Filament\Administration\Resources\ProjectResource\RelationManagers;
 use App\Filament\Core;
 use App\Models\Project;
+use App\Models\Timetable;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists;
@@ -77,37 +78,9 @@ class ProjectResource extends Core\BaseResource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Defense information')
-                    ->hidden(fn () => auth()->user()->isAdministrator() === false)
-                    ->relationship('timetable')
-                    ->columns(3)
-                    ->schema([
-                        Forms\Components\Fieldset::make('Time')
-                            ->relationship('timeslot')
-                            ->schema([
-                                Forms\Components\DateTimePicker::make('start_time')
-                                    // ->format('m/d/Y hh:ii:ss')
-                                    ->seconds(false)
-                                    ->native(false)
-                                    ->displayFormat('Y-m-d H:i:s')
-                                    ->required(),
-                                // ->disabled(fn () => auth()->user()->isAdministrator() === false),
-                                Forms\Components\DateTimePicker::make('end_time')
-                                    ->seconds(false)
-                                    // ->native(false)
-                                    ->displayFormat('Y-m-d H:i:s')
-                                    ->required(),
-                                // ->disabled(fn () => auth()->user()->isAdministrator() === false),
-                            ]),
-
-                        Forms\Components\Select::make('room_id')
-                            ->relationship('room', 'name')
-                            ->required(),
-                        // ->disabled(fn () => auth()->user()->isAdministrator() === false),
-                    ])
-                    ->columns(3),
 
                 Forms\Components\Section::make('Project information')
+                    ->columnSpan(1)
                     ->schema([
                         Forms\Components\MarkdownEditor::make('title')
                             ->disabled(fn () => auth()->user()->isAdministrator() === false)
@@ -122,7 +95,40 @@ class ProjectResource extends Core\BaseResource
                             ->disabled(fn () => auth()->user()->isAdministrator() === false),
                     ])
                     ->collapsible()
-                    ->columns(4),
+                    ->columns(2),
+                // Forms\Components\Section::make('Defense information')
+                //     ->label('Defense information')
+                //     ->columnSpan(1)
+                //     ->hidden(fn () => auth()->user()->isAdministrator() === false)
+                //     ->relationship('timetable')
+                //     ->columns(3)
+                //     ->schema([
+                //         // Forms\Components\Fieldset::make('Time')
+                //         //     ->relationship('timeslot')
+                //         //     ->schema([
+                //         //         Forms\Components\DateTimePicker::make('start_time')
+                //         //             // ->format('m/d/Y hh:ii:ss')
+                //         //             ->seconds(false)
+                //         //             ->native(false)
+                //         //             ->displayFormat('Y-m-d H:i:s')
+                //         //             ->required(),
+                //         //         // ->disabled(fn () => auth()->user()->isAdministrator() === false),
+                //         //         Forms\Components\DateTimePicker::make('end_time')
+                //         //             ->seconds(false)
+                //         //             // ->native(false)
+                //         //             ->displayFormat('Y-m-d H:i:s')
+                //         //             ->required(),
+                //         //         // ->disabled(fn () => auth()->user()->isAdministrator() === false),
+                //         //     ]),
+                //         // Forms\Components\Select::make('timeslot_id')
+                //         //     ->dataSource('unplanned_timetable'),
+                //         // Forms\Components\Select::make('room_id')
+                //         //     ->relationship('room', 'name')
+                //         //     ->required(),
+                //         // ->disabled(fn () => auth()->user()->isAdministrator() === false),
+                //     ])
+                //     ->columns(3),
+
             ]);
     }
 
@@ -148,6 +154,10 @@ class ProjectResource extends Core\BaseResource
                     ] : null
             )
             ->filters([
+                Tables\Filters\SelectFilter::make('professor')
+                    ->searchable()
+                    ->preload()
+                    ->relationship('professors', 'name'),
                 Tables\Filters\SelectFilter::make('Assigned department')
                     ->options(Enums\Department::class)
                     ->query(

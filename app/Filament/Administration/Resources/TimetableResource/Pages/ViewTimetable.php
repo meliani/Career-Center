@@ -4,16 +4,16 @@ namespace App\Filament\Administration\Resources\TimetableResource\Pages;
 
 use App\Filament\Administration\Resources\TimetableResource;
 use Filament\Actions;
-use Filament\Resources\Pages\ListRecords;
+use Filament\Resources\Pages\ViewRecord;
 
-class ListTimetables extends ListRecords
+class ViewTimetable extends ViewRecord
 {
     protected static string $resource = TimetableResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\EditAction::make(),
         ];
     }
 }
