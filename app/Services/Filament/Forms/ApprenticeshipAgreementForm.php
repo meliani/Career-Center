@@ -15,10 +15,10 @@ class ApprenticeshipAgreementForm
     public function getSchema(): array
     {
         return [
-            Forms\Components\Section::make()->schema([ 
+            Forms\Components\Section::make()->schema([
                 Forms\Components\Placeholder::make('Note')->hiddenLabel()->content(__('Notice: You can only announce one internship agreement during an academic year.')),
                 Forms\Components\Placeholder::make('Note')->hiddenLabel()->content(__('When you save this form, you will not be able to change the organization and its representatives.')),
-         ]),
+            ]),
             ...(new AddOrganizationForm())->getSchema(),
             Forms\Components\TextInput::make('title')
                 ->columnSpanFull()->required(),
@@ -26,7 +26,13 @@ class ApprenticeshipAgreementForm
                 ->columnSpanFull(),
 
             Forms\Components\SpatieTagsInput::make('keywords')
+                ->splitKeys(['Tab', ',', ';'])
+                ->nestedRecursiveRules([
+                    'min:2',
+                    'max:50',
+                ])
                 ->placeholder('Add a keyword and press enter or click away to add it')
+                ->color('success')
                 ->columnSpanFull(),
             Forms\Components\Fieldset::make(__('Organization contacts'))
 
