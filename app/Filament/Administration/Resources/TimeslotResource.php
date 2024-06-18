@@ -46,8 +46,7 @@ class TimeslotResource extends Resource
                 Forms\Components\DateTimePicker::make('end_time'),
                 Forms\Components\Toggle::make('is_enabled'),
                 // Forms\Components\Toggle::make('is_taken'),
-                Forms\Components\TextInput::make('remaining_slots')
-                    ->maxLength(1),
+
             ]);
     }
 
@@ -64,11 +63,9 @@ class TimeslotResource extends Resource
                 Tables\Columns\ToggleColumn::make('is_enabled')
                     ->label('Enabled')
                     ->sortable(),
-                // Tables\Columns\ToggleColumn::make('is_taken')
+                // Tables\Columns\ToggleColumn::make('is_available')
                 //     ->label('Taken')
                 //     ->sortable(),
-                Tables\Columns\TextColumn::make('remaining_slots')
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
