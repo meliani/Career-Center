@@ -25,7 +25,7 @@ class Timeslot extends Core\BackendBaseModel
         // 'start_time' => 'date:Y-m-d H:i:s',
         // 'end_time' => 'date:Y-m-d H:i:s',
         'is_enabled' => 'boolean',
-        'is_taken' => 'boolean',
+        'is_available' => 'boolean',
         'start_time' => 'datetime',
         'end_time' => 'datetime',
     ];

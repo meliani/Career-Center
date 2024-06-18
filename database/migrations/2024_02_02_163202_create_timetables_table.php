@@ -35,7 +35,7 @@ return new class extends Migration
             $table->foreignId('updated_by')->constrained('users');
             $table->timestamps();
             // timeslot_id and date should be unique
-            $table->unique(['timeslot_id', 'room_id', 'project_id']);
+            $table->unique(['timeslot_id', 'room_id']);
             $table->unique('project_id');
         });
     }

@@ -2,6 +2,7 @@
 
 namespace App\Services\Filament\Tables\Projects;
 
+use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
 
 class ProjectsGrid
@@ -12,6 +13,7 @@ class ProjectsGrid
 
             Tables\Columns\Layout\Split::make([
                 Tables\Columns\TextColumn::make('students.full_name')
+                    ->weight(FontWeight::Bold)
                     ->label('Student name')
                     ->searchable(
                         ['first_name', 'last_name']
@@ -20,33 +22,35 @@ class ProjectsGrid
 
             ]),
 
-            Tables\Columns\Layout\Split::make([
-                Tables\Columns\TextColumn::make('internship_agreements.id_pfe')
-                    ->grow(false)
-                    ->label('ID PFE')
-                    ->sortableMany()
-                    ->searchable()->badge(),
-                Tables\Columns\TextColumn::make('students.program')
-                    ->grow(false)
-                    ->label('Program')
-                    ->searchable()->sortableMany()->badge(),
-                Tables\Columns\TextColumn::make('department')
-                    ->grow(false)
-                    ->label('Assigned department')
-                    ->searchable(false)
-                    ->sortable(false)->badge(),
-            ]),
-            Tables\Columns\TextColumn::make('organization_name')
-                ->badge()
-                ->grow(false)
-                ->verticallyAlignCenter()
-                ->alignRight()
-                ->searchable(false)
-                ->sortable(false),
-            Tables\Columns\Layout\Split::make([
-                Tables\Columns\TextColumn::make('address')
+            Tables\Columns\Layout\Panel::make([
+
+                Tables\Columns\TextColumn::make('organization_name')
+                    ->weight(FontWeight::Bold)
+                    ->grow(true)
+                    ->verticallyAlignCenter()
+                    // ->alignRight()
                     ->searchable(false)
                     ->sortable(false),
+                Tables\Columns\TextColumn::make('address')
+                    // ->alignRight()
+                    ->searchable(false)
+                    ->sortable(false),
+                Tables\Columns\Layout\Split::make([
+                    Tables\Columns\TextColumn::make('internship_agreements.id_pfe')
+                        ->grow(false)
+                        ->label('ID PFE')
+                        ->sortableMany()
+                        ->searchable()->badge(),
+                    Tables\Columns\TextColumn::make('students.program')
+                        ->grow(false)
+                        ->label('Program')
+                        ->searchable()->sortableMany()->badge(),
+                    Tables\Columns\TextColumn::make('department')
+                        ->grow(false)
+                        ->label('Assigned department')
+                        ->searchable(false)
+                        ->sortable(false)->badge(),
+                ]),
             ]),
             Tables\Columns\Layout\Split::make([
                 Tables\Columns\Layout\Stack::make([
@@ -76,6 +80,7 @@ class ProjectsGrid
             ]),
             Tables\Columns\Layout\Split::make([
                 Tables\Columns\TextColumn::make('reviewers.name')
+                    ->description(__('Reviewers'), position: 'above')
                     ->searchable(false)
                     ->sortable(false),
             ]),
@@ -101,7 +106,8 @@ class ProjectsGrid
                     //     ->searchable()
                     //     ->limit(50),
                 ]),
-            ]),
+            ])
+                ->collapsible(),
         ];
     }
 }

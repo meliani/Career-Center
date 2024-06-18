@@ -18,8 +18,7 @@ class CreateTimeslotsTable extends Migration
             $table->timestamp('start_time');
             $table->timestamp('end_time');
             $table->boolean('is_enabled')->default(true);
-            $table->boolean('is_taken')->default(false);
-            $table->integer('remaining_slots')->nullable();
+            $table->boolean('is_available')->default(false);
             $table->timestamps();
         });
     }

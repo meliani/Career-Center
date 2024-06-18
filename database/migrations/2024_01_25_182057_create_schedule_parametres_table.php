@@ -19,9 +19,6 @@ class CreateScheduleParametresTable extends Migration
             $table->time('day_ending_at');
             $table->time('lunch_starting_at');
             $table->time('lunch_ending_at');
-            $table->integer('number_of_rooms');
-            $table->integer('max_defenses_per_professor');
-            $table->integer('max_rooms');
             $table->integer('minutes_per_slot');
             $table->timestamps();
         });
@@ -35,4 +32,4 @@ class CreateScheduleParametresTable extends Migration
     {
         Schema::dropIfExists('schedule_parameters');
     }
-};
+}
