@@ -16,7 +16,34 @@ class TimetableResource extends Resource
 {
     protected static ?string $model = Timetable::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $title = 'Defense Timetable';
+
+    protected static ?string $modelLabel = 'Defense Timetable';
+
+    protected static ?string $pluralModelLabel = 'Defense Timetables';
+
+    protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
+
+    protected static ?int $navigationSort = 10;
+
+    protected static ?string $navigationGroup = 'Planning';
+
+    protected static ?string $navigationLabel = 'Defense Timetable';
+
+    public static function getNavigationLabel(): string
+    {
+        return __(self::$navigationLabel);
+    }
+
+    public static function getnavigationGroup(): string
+    {
+        return __(self::$navigationGroup);
+    }
+
+    public static function canViewAny(): bool
+    {
+        return true;
+    }
 
     public static function form(Form $form): Form
     {
@@ -24,7 +51,8 @@ class TimetableResource extends Resource
             ->schema([
                 Forms\Components\Select::make('timeslot_id')
                     ->label('Timeslot')
-                    ->options(Timetable::unplanned()->with('timeslot')->get()->pluck('timeslot.start_time', 'timeslot_id')),
+                    ->relationship('timeslot', 'start_time'),
+                // ->options(Timetable::unplanned()->with('timeslot')->get()->pluck('timeslot.start_time', 'timeslot_id')),
                 Forms\Components\Select::make('room_id')
                     ->label('Room')
                     ->relationship('room', 'name'),
@@ -69,6 +97,13 @@ class TimetableResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultGroup('timeslot.start_time')
+            ->groups([
+                Tables\Grouping\Group::make('timeslot.start_time')
+                    ->date()
+                    ->collapsible()
+                    ->label(__('Day of')),
+            ])
             ->columns([
                 Tables\Columns\TextColumn::make('timeslot.start_time')
                     ->sortable(),

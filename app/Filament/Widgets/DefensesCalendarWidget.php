@@ -3,6 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Filament\Administration\Resources\ProjectResource;
+use App\Filament\Administration\Resources\TimetableResource;
 use App\Models\Project;
 use App\Models\Timetable;
 use Filament\Forms;
@@ -18,7 +19,7 @@ class DefensesCalendarWidget extends FullCalendarWidget
 
     public static function canView(): bool
     {
-        return auth()->user()->isSuperAdministrator();
+        return auth()->user()->isSuperAdministrator() || auth()->user()->isAdministrator() || auth()->user()->isProfessor() || auth()->user()->isDepartmentHead() || auth()->user()->isProgramCoordinator();
     }
 
     public function getFormSchema(): array
@@ -68,20 +69,30 @@ class DefensesCalendarWidget extends FullCalendarWidget
                     ->title(
                         $project->students->map(fn ($person) => $person->full_name)->join(', ') .
                     "\n\r" . '(' .
-                    $project->timetable->room->name . ')' .
+                    $project->timetable->room?->name . ')' .
                     ' - PFE N° ' .
                     $project->internship_agreements->map(fn ($agreement) => $agreement->id_pfe)->join(', ')
                     )
                     ->start($project->timetable->timeslot->start_time ?? '')
                     ->end($project->timetable->timeslot->end_time ?? '')
+                    // ->url(
+                    //     url: ProjectResource::getUrl(name: 'view', parameters: ['record' => $project]),
+                    //     shouldOpenUrlInNewTab: true
+                    // )
+                    // ->url(
+                    //     url: TimetableResource::getUrl(name: 'edit', parameters: ['record' => $project->timetable]),
+                    //     shouldOpenUrlInNewTab: true
+                    // )
                     ->url(
-                        url: ProjectResource::getUrl(name: 'view', parameters: ['record' => $project]),
+                        url: auth()->user()->isAdministrator()
+        ? TimetableResource::getUrl(name: 'edit', parameters: ['record' => $project->timetable])
+        : ProjectResource::getUrl(name: 'view', parameters: ['record' => $project]),
                         shouldOpenUrlInNewTab: true
                     )
                     ->extendedProps([
                         'description' => $project->title,
                         // 'professors' => $project->timetable->professors->map(fn ($professor) => $professor->full_name)->join(', '),
-                        'room' => $project->timetable?->room->name,
+                        'room' => $project->timetable?->room?->name,
                     ])
                     // ->backgroundColor($project->timetable->room->color)
                     // ->textColor($project->timetable->room->color)

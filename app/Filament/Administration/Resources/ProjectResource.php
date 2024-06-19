@@ -286,7 +286,7 @@ class ProjectResource extends Core\BaseResource
         return $infolist
             ->schema([
                 Infolists\Components\Section::make(__('Defense information'))
-                    ->hidden(fn () => auth()->user()->isAdministrator() === false)
+                    // ->hidden(fn () => auth()->user()->isAdministrator() === false)
                     ->columns(3)
                     ->schema([
                         Infolists\Components\TextEntry::make('timetable.timeslot.start_time')
@@ -299,11 +299,18 @@ class ProjectResource extends Core\BaseResource
                             ->label('Room'),
                         Infolists\Components\Fieldset::make('Jury')
                             ->schema([
-                                RepeatableEntry::make('professors')
+                                RepeatableEntry::make('supervisor')
                                     ->label('')
                                     ->schema([
                                         Infolists\Components\TextEntry::make('name')
                                             ->label(__('Supervisor')),
+                                    ])
+                                    ->contained(false),
+                                RepeatableEntry::make('reviewers')
+                                    ->label('')
+                                    ->schema([
+                                        Infolists\Components\TextEntry::make('name')
+                                            ->label(__('Reviewer')),
                                     ])
                                     ->contained(false),
                                 // Infolists\Components\TextEntry::make('professors.name')

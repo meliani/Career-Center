@@ -21,7 +21,7 @@ class DefensesCalendar extends Page
     /* Authorizations */
     public static function canAccess(): bool
     {
-        return auth()->user()->isAdministrator() || auth()->user()->isSuperAdministrator();
+        return auth()->user()->isAdministrator() || auth()->user()->isSuperAdministrator() || auth()->user()->isProfessor() || auth()->user()->isDepartmentHead() || auth()->user()->isProgramCoordinator();
     }
 
     public static function canView(): bool

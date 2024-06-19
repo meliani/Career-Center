@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Filament\Notifications\Notification;
+
 class Timetable extends Core\BackendBaseModel
 {
     protected $fillable = [
@@ -27,10 +29,30 @@ class Timetable extends Core\BackendBaseModel
         'updated_by',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::updating(function ($timetable) {
+            $exists = self::where('timeslot_id', $timetable->timeslot_id)
+                ->where('room_id', $timetable->room_id)
+                ->where('id', '!=', $timetable->id)
+                ->exists();
+            if ($exists) {
+                Notification::make()
+                    ->title(__("Timeslot {$timetable->timeslot->start_time} and Room {$timetable->room->name} conflict, your operation is aborted"))
+                    ->danger()
+                    ->send();
+
+                return false; // This will abort the update operation.
+            }
+        });
+    }
+
     public function setProjectIdAttribute($projectId)
     {
         // remove the project_id from previous timetable
-        $this->where('project_id', $projectId)->update(['project_id' => null]);
+        // $this->where('project_id', $projectId)->update(['project_id' => null]);
         $this->attributes['project_id'] = $projectId;
 
     }
@@ -60,6 +82,11 @@ class Timetable extends Core\BackendBaseModel
     {
         // return $query->whereDoesntHave('project');
         return $query->whereNull('project_id');
+    }
+
+    public function scopePlanned($query)
+    {
+        return $query->whereNotNull('project_id');
     }
 
     public function room()
