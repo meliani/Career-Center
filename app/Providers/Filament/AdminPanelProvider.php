@@ -155,6 +155,18 @@ class AdminPanelProvider extends PanelProvider
                             // ],
                             'resources' => [
                                 [
+                                    'id' => '1',
+                                    'title' => 'Amphi 1',
+                                ],
+                                [
+                                    'id' => '2',
+                                    'title' => 'Amphi 2',
+                                ],
+                                [
+                                    'id' => '3',
+                                    'title' => 'Amphi 3',
+                                ],
+                                [
                                     'id' => '5',
                                     'title' => 'Salle B10',
                                 ],
@@ -162,14 +174,14 @@ class AdminPanelProvider extends PanelProvider
                                     'id' => '6',
                                     'title' => 'Salle B12',
                                 ],
-                                [
-                                    'id' => '7',
-                                    'title' => 'Salle B202',
-                                ],
-                                [
-                                    'id' => '8',
-                                    'title' => 'Salle B119',
-                                ],
+                                // [
+                                //     'id' => '7',
+                                //     'title' => 'Salle B202',
+                                // ],
+                                // [
+                                //     'id' => '8',
+                                //     'title' => 'Salle B119',
+                                // ],
                             ],
                             'views' => [
                                 'timeGridWeek' => [
