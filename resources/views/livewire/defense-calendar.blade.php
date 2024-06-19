@@ -19,6 +19,7 @@
                         <tr class="bg-gray-100">
                             <th class="px-4 py-2">Date Soutenance</th>
                             <th class="px-4 py-2">Heure</th>
+                            <th class="px-4 py-2">Autorisation</th>
                             <th class="px-4 py-2">Lieu</th>
                             <th class="px-4 py-2">ID PFE</th>
                             <th class="px-4 py-2">Nom de l'étudiant</th>
@@ -38,6 +39,7 @@
 
                             <td class="px-4 py-2">{{ $defense['Date Soutenance'] }}</td>
                             <td class="px-4 py-2">{{ $defense['Heure'] }}</td>
+                            <td class="px-4 py-2">{{ $defense['Autorisation'] }}</td>
                             <td class="px-4 py-2">{{ $defense['Lieu'] }}</td>
                             <td class="px-4 py-2">{{ $defense['ID PFE'] }}</td>
                             <td class="px-4 py-2">{{ $defense['Nom de l\'étudiant'] }}</td>

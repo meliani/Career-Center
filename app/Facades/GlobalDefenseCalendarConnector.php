@@ -18,6 +18,7 @@ class GlobalDefenseCalendarConnector extends Facade
         $header = [
             'Date Soutenance',
             'Heure',
+            'Autorisation',
             'Lieu',
             'ID PFE',
             'Nom de l\'étudiant',
