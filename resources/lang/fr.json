@@ -374,5 +374,7 @@
     "External supervisor": "Encadrant externe",
     "Subject": "Sujet",
     "Defense plan": "Plan de soutenance",
-    "Detected language": "Langue détectée"
+    "Detected language": "Langue détectée",
+    "Timeslot and Room conflict, your operation is aborted": "Conflit de créneau horaire et de salle, votre opération est annulée",
+    "Day of": "Journée du"
 }
