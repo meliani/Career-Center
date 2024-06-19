@@ -30,7 +30,7 @@ class ProcessBounceEmails extends Command
         // $messages = $folder->query()->unseen()->get();
 
         // Calculate the start of the previous day
-        $yesterday = now()->subDays(2)->startOfDay();
+        $yesterday = now()->subDays(10)->startOfDay();
 
         // Adjust the query to fetch emails since the start of the previous day
         $messages = $folder->query()->since($yesterday->format('d M Y'))->get();
