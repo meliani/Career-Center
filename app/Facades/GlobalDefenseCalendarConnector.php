@@ -12,11 +12,9 @@ class GlobalDefenseCalendarConnector extends Facade
     {
         $sheets = Sheets::spreadsheet(config('sheets.defenses_spreadsheet_id'))
             ->sheet(config('sheets.defenses_sheet_id'))
+            ->range('A1:J219')
             ->get();
 
-        /* Date Soutenance	Heure	Lieu	ID PFE	Nom de l'étudiant	Filière	Encadrant Interne	"Nom et Prénom
-Examinateur 1"	"Nom et Prénom
-Examinateur 2" */
         $header = [
             'Date Soutenance',
             'Heure',
@@ -27,6 +25,7 @@ Examinateur 2" */
             'Encadrant Interne',
             'Nom et Prénom Examinateur 1',
             'Nom et Prénom Examinateur 2',
+            'remarques',
         ];
         // dd(Sheets::collection(header: $header, rows: $sheets));
 
