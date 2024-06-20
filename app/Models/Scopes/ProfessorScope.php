@@ -46,6 +46,8 @@ class ProfessorScope implements Scope
                 // return;
                 // $builder
                 //     ->where('id', '=', auth()->user()->id);
+            } elseif (auth()->user()->isAdministrativeSupervisor()) {
+                return;
             } else {
                 abort(403, 'You are not authorized to view this page');
             }

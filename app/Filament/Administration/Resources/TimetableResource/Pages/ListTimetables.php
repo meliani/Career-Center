@@ -23,12 +23,15 @@ class ListTimetables extends ListRecords
     public function getTabs(): array
     {
         return [
-            'unplanned' => Tab::make('Unplanned')
-                ->badge(Timetable::unplanned()->count())
-                ->modifyQueryUsing(fn (Builder $query) => $query->unplanned()),
             'planned' => Tab::make('Planned')
+                ->label(__('Planned'))
                 ->badge(Timetable::planned()->count())
                 ->modifyQueryUsing(fn (Builder $query) => $query->planned()),
+            'unplanned' => Tab::make('Unplanned')
+                ->label(__('Unplanned'))
+                ->badge(Timetable::unplanned()->count())
+                ->modifyQueryUsing(fn (Builder $query) => $query->unplanned()),
+
         ];
     }
 }

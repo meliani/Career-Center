@@ -3,24 +3,26 @@
 namespace App\Filament\Administration\Resources;
 
 use App\Filament\Administration\Resources\TimetableResource\Pages;
+use App\Filament\Core\BaseResource;
 use App\Models\Project;
 use App\Models\Timetable;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Resources\Resource;
+use Filament\Infolists;
+use Filament\Infolists\Infolist;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\DB;
 
-class TimetableResource extends Resource
+class TimetableResource extends BaseResource
 {
     protected static ?string $model = Timetable::class;
 
-    protected static ?string $title = 'Defense Timetable';
+    protected static ?string $title = 'Defenses Timetable';
 
     protected static ?string $modelLabel = 'Defense Timetable';
 
-    protected static ?string $pluralModelLabel = 'Defense Timetables';
+    protected static ?string $pluralModelLabel = 'Defenses Timetable';
 
     protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
 
@@ -28,7 +30,7 @@ class TimetableResource extends Resource
 
     protected static ?string $navigationGroup = 'Planning';
 
-    protected static ?string $navigationLabel = 'Defense Timetable';
+    protected static ?string $navigationLabel = 'Defenses Timetable';
 
     public static function getNavigationLabel(): string
     {
@@ -205,5 +207,102 @@ class TimetableResource extends Resource
             'view' => Pages\ViewTimetable::route('/{record}'),
             'edit' => Pages\EditTimetable::route('/{record}/edit'),
         ];
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                Infolists\Components\Section::make(__('Defense information'))
+                    // ->hidden(fn () => auth()->user()->isAdministrator() === false)
+                    ->columns(3)
+                    ->schema([
+                        Infolists\Components\TextEntry::make('timeslot.start_time')
+                            ->label('Defense start time')
+                            ->dateTime(),
+                        Infolists\Components\TextEntry::make('timeslot.end_time')
+                            ->label('Defense end time')
+                            ->dateTime(),
+                        Infolists\Components\TextEntry::make('room.name')
+                            ->label('Room'),
+                        Infolists\Components\Fieldset::make('Jury')
+                            ->schema([
+                                // RepeatableEntry::make('supervisor')
+                                //     ->label('')
+                                //     ->schema([
+                                //         Infolists\Components\TextEntry::make('name')
+                                //             ->label(__('Supervisor')),
+                                //     ])
+                                //     ->contained(false),
+                                // RepeatableEntry::make('reviewers')
+                                //     ->label('')
+                                //     ->schema([
+                                //         Infolists\Components\TextEntry::make('name')
+                                //             ->label(__('Reviewer')),
+                                //     ])
+                                //     ->contained(false),
+                                Infolists\Components\TextEntry::make('project.professors.name')
+                                    ->label('')
+                                    ->formatStateUsing(
+                                        fn ($record) => $record->project->professors->map(
+                                            fn ($professor) => $professor->pivot->jury_role->getLabel() . ': ' . $professor->name
+                                        )->join(', ')
+                                    ),
+                            ]),
+                    ]),
+
+                Infolists\Components\Section::make(__('Project information'))
+                    ->headerActions([
+                        // CommentsAction::make(),
+                    ])
+                    ->columns(3)
+                    ->schema([
+                        Infolists\Components\TextEntry::make('project.id_pfe')
+                            ->label('PFE ID'),
+                        Infolists\Components\TextEntry::make('project.students.long_full_name')
+                            ->label('Student'),
+                        Infolists\Components\TextEntry::make('project.students.program')
+                            ->label('Program'),
+                        Infolists\Components\TextEntry::make('project.organization')
+                            ->label('Organization'),
+
+                        Infolists\Components\TextEntry::make('project.title')
+                            ->label('Project title'),
+
+                        Infolists\Components\TextEntry::make('project.description')
+                            ->label('Project description')
+                            ->formatStateUsing(
+                                fn ($record) => "{$record->description}"
+                            )
+                            ->html()
+                            ->columnSpanFull(),
+                        Infolists\Components\Fieldset::make('Dates')
+                            ->schema([
+                                Infolists\Components\TextEntry::make('project.start_date')
+                                    ->label('Project start date')
+                                    ->date(),
+                                Infolists\Components\TextEntry::make('project.end_date')
+                                    ->label('Project end date')
+                                    ->date(),
+                            ]),
+
+                        Infolists\Components\Fieldset::make('Entreprise supervisor')
+                            ->schema([
+                                Infolists\Components\TextEntry::make('project.internship_agreements.encadrant_ext_nom')
+                                    ->label('')
+                                    ->formatStateUsing(
+                                        fn ($record) => $record->project->internship_agreements->map(
+                                            fn ($internship_agreement) => "**{$internship_agreement->encadrant_ext_name}**" . PHP_EOL . $internship_agreement->encadrant_ext_mail . PHP_EOL . $internship_agreement->encadrant_ext_tel
+                                        )->join(', ')
+                                    )
+                                    ->markdown(),
+
+                            ]),
+                        // CommentsEntry::make('Comments')
+                        //     ->columnSpanFull(),
+                    ]),
+
+            ]);
+
     }
 }

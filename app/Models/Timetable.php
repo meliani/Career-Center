@@ -32,9 +32,12 @@ class Timetable extends Core\BackendBaseModel
     protected static function boot()
     {
         parent::boot();
+        static::addGlobalScope(new Scopes\TimetableScope());
 
         static::updating(function ($timetable) {
-            $exists = self::where('timeslot_id', $timetable->timeslot_id)
+            $professorService = new \App\Services\ProfessorService;
+            $professor_availability = $professorService->checkJuryAvailability($timetable->timeslot, $timetable->project);
+            $exists = self::withoutGlobalScopes()->where('timeslot_id', $timetable->timeslot_id)
                 ->where('room_id', $timetable->room_id)
                 ->where('id', '!=', $timetable->id)
                 ->exists();
@@ -42,6 +45,17 @@ class Timetable extends Core\BackendBaseModel
                 Notification::make()
                     ->title(__("Timeslot {$timetable->timeslot->start_time} and Room {$timetable->room->name} conflict, your operation is aborted"))
                     ->danger()
+                    ->persistent()
+                    // ->sendToDatabase(auth()->user());
+                    ->send();
+
+                return false; // This will abort the update operation.
+            } elseif (! $professor_availability) {
+                Notification::make()
+                    ->title(__('One of professors is not available in this timeslot, your operation is aborted'))
+                    ->danger()
+                    ->persistent()
+                    // ->sendToDatabase(auth()->user());
                     ->send();
 
                 return false; // This will abort the update operation.

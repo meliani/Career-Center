@@ -16,10 +16,9 @@ class ProfessorService
 
     protected static Project $project;
 
-    public static function checkJuryAvailability(Timeslot $timeslot, Room $room, Project $project)
+    public static function checkJuryAvailability(Timeslot $timeslot, Project $project)
     {
         self::$timeslot = $timeslot;
-        self::$room = $room;
         self::$project = $project;
 
         $jury = $project->professors;

@@ -179,8 +179,8 @@
     "Defenses": "Soutenances",
     "Timetables": "Plannings",
     "Defenses Timetables": "Plannings des soutenances",
-    "Defense Timetable": "Planning des soutenances",
-    "Defenses Timetable": "Planning des soutenances",
+    "Defense Timetable": "Soutenance",
+    "Defenses Timetable": "Soutenances",
     "Edit": "Modifier",
     "Email log": "Journal des emails",
     "Email Tracking": "Suivi des emails",
@@ -376,5 +376,9 @@
     "Defense plan": "Plan de soutenance",
     "Detected language": "Langue détectée",
     "Timeslot and Room conflict, your operation is aborted": "Conflit de créneau horaire et de salle, votre opération est annulée",
-    "Day of": "Journée du"
+    "Day of": "Journée du",
+    "Timeslot {$timetable->timeslot->start_time} and Room {$timetable->room->name} conflict, your operation is aborted": "Créneau horaire {$timetable->timeslot->start_time} et salle {$timetable->room->name} en conflit, votre opération est annulée",
+    "Planned": "Crénaux Planifiés",
+    "Unplanned": "Crénaux Non planifiés"
+
 }
