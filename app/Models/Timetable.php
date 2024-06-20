@@ -36,21 +36,9 @@ class Timetable extends Core\BackendBaseModel
 
         static::updating(function ($timetable) {
             $professorService = new \App\Services\ProfessorService;
-            $professor_availability = $professorService->checkJuryAvailability($timetable->timeslot, $timetable->project);
-            $exists = self::withoutGlobalScopes()->where('timeslot_id', $timetable->timeslot_id)
-                ->where('room_id', $timetable->room_id)
-                ->where('id', '!=', $timetable->id)
-                ->exists();
-            if ($exists) {
-                Notification::make()
-                    ->title(__("Timeslot {$timetable->timeslot->start_time} and Room {$timetable->room->name} conflict, your operation is aborted"))
-                    ->danger()
-                    ->persistent()
-                    // ->sendToDatabase(auth()->user());
-                    ->send();
-
-                return false; // This will abort the update operation.
-            } elseif (! $professor_availability) {
+            // we need to add actual slot to be excluded from the check
+            $professor_availability = $professorService->checkJuryAvailability($timetable->timeslot, $timetable->project, $timetable->id);
+            if (! $professor_availability) {
                 Notification::make()
                     ->title(__('One of professors is not available in this timeslot, your operation is aborted'))
                     ->danger()
@@ -59,6 +47,58 @@ class Timetable extends Core\BackendBaseModel
                     ->send();
 
                 return false; // This will abort the update operation.
+            }
+            $exists = self::withoutGlobalScopes()->where('timeslot_id', $timetable->timeslot_id)
+                ->where('room_id', $timetable->room_id)
+                ->where('id', '!=', $timetable->id)
+                ->exists();
+            if ($exists) {
+                $existingTimetable = self::withoutGlobalScopes()->where('timeslot_id', $timetable->timeslot_id)
+                    ->where('room_id', $timetable->room_id)
+                    ->where('id', '!=', $timetable->id)
+                    ->first();
+                $professor_availability = $professorService->checkJuryAvailability($timetable->timeslot, $timetable->project, $existingTimetable->id);
+                if (! $professor_availability) {
+                    Notification::make()
+                        ->title(__('One of professors is not available in this timeslot, your operation is aborted'))
+                        ->danger()
+                        ->persistent()
+                        // ->sendToDatabase(auth()->user());
+                        ->send();
+
+                    return false; // This will abort the update operation.
+                }
+                // dd($timetable->timeslot->start_time, $timetable->room->name, $timetable->project_id);
+
+                if ($existingTimetable->project_id !== null) {
+                    Notification::make()
+                        ->title(__('Timeslot :timeslot and Room :room conflict, your operation is aborted', ['timeslot' => $timetable->timeslot->start_time, 'room' => $timetable->room->name]))
+                        ->danger()
+                        ->persistent()
+                        // ->sendToDatabase(auth()->user());
+                        ->send();
+
+                    return false; // This will abort the update operation.
+                } else {
+                    // dd($timetable->timeslot->start_time, $timetable->room->name, $timetable->project_id);
+                    // self::update
+
+                    return true;
+                }
+            } else {
+                $professor_availability = $professorService->checkJuryAvailability($timetable->timeslot, $timetable->project, $timetable->id);
+                if (! $professor_availability) {
+                    Notification::make()
+                        ->title(__('One of professors is not available in this timeslot, your operation is aborted'))
+                        ->danger()
+                        ->persistent()
+                        // ->sendToDatabase(auth()->user());
+                        ->send();
+
+                    return false; // This will abort the update operation.
+                }
+
+                return true;
             }
         });
     }

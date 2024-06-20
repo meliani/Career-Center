@@ -21,17 +21,23 @@ class DefensesCalendar extends Page
     /* Authorizations */
     public static function canAccess(): bool
     {
-        return auth()->user()->isAdministrator() || auth()->user()->isSuperAdministrator() || auth()->user()->isProfessor() || auth()->user()->isDepartmentHead() || auth()->user()->isProgramCoordinator();
+        return auth()->user()->isAdministrator() || auth()->user()->isSuperAdministrator() || auth()->user()->isProfessor() || auth()->user()->isDepartmentHead() || auth()->user()->isProgramCoordinator() || auth()->user()->isAdministrativeSupervisor();
+    }
+
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->isSuperAdministrator() || auth()->user()->isAdministrator() || auth()->user()->isProfessor() || auth()->user()->isDepartmentHead() || auth()->user()->isProgramCoordinator() || auth()->user()->isAdministrativeSupervisor();
+
     }
 
     public static function canView(): bool
     {
-        return true;
+        return false;
     }
 
     public static function viewAny(): bool
     {
-        return true;
+        return false;
     }
     /* End Authorizations */
 

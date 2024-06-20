@@ -17,24 +17,30 @@ class DefensesCalendarWidget extends FullCalendarWidget
 
     public Model | string | null $model = Timetable::class;
 
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->isSuperAdministrator() || auth()->user()->isAdministrator() || auth()->user()->isProfessor() || auth()->user()->isDepartmentHead() || auth()->user()->isProgramCoordinator() || auth()->user()->isAdministrativeSupervisor();
+
+    }
+
     public static function canView(): bool
     {
-        return auth()->user()->isSuperAdministrator() || auth()->user()->isAdministrator() || auth()->user()->isProfessor() || auth()->user()->isDepartmentHead() || auth()->user()->isProgramCoordinator();
+        return auth()->user()->isSuperAdministrator() || auth()->user()->isAdministrator() || auth()->user()->isProfessor() || auth()->user()->isDepartmentHead() || auth()->user()->isProgramCoordinator() || auth()->user()->isAdministrativeSupervisor();
     }
 
-    public function getFormSchema(): array
-    {
-        return [
-            // Forms\Components\TextInput::make('name'),
+    // public function getFormSchema(): array
+    // {
+    //     return [
+    //         // Forms\Components\TextInput::make('name'),
 
-            Forms\Components\Grid::make()
-                ->schema([
-                    // Forms\Components\DateTimePicker::make('starts_at'),
+    //         Forms\Components\Grid::make()
+    //             ->schema([
+    //                 // Forms\Components\DateTimePicker::make('starts_at'),
 
-                    // Forms\Components\DateTimePicker::make('ends_at'),
-                ]),
-        ];
-    }
+    //                 // Forms\Components\DateTimePicker::make('ends_at'),
+    //             ]),
+    //     ];
+    // }
 
     /**
      * FullCalendar will call this function whenever it needs new event data.
@@ -61,7 +67,8 @@ class DefensesCalendarWidget extends FullCalendarWidget
         //         ];
         //     })
         //     ->toArray();
-        $events = Project::whereHas('timetable')
+        $events = Project::withoutGlobalScopes()->whereHas('timetable')->withoutGlobalScopes()
+            ->with('timetable.timeslot', 'students', 'internship_agreements')->withoutGlobalScopes()
             ->get()
             ->map(
                 fn (Project $project) => EventData::make()
@@ -84,7 +91,7 @@ class DefensesCalendarWidget extends FullCalendarWidget
                     //     shouldOpenUrlInNewTab: true
                     // )
                     ->url(
-                        url: auth()->user()->isAdministrator()
+                        url: auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()
         ? TimetableResource::getUrl(name: 'edit', parameters: ['record' => $project->timetable])
         : ProjectResource::getUrl(name: 'view', parameters: ['record' => $project]),
                         shouldOpenUrlInNewTab: true

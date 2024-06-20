@@ -98,7 +98,7 @@ class ImportPlanningGoogleCommand extends Command
             $startDateTime->setDateFrom($date);
             $endDateTime->setDateFrom($date);
 
-            $timeslot = Timeslot::create([
+            $timeslot = Timeslot::FirstOrCreate([
                 'start_time' => $startDateTime,
                 'end_time' => $endDateTime,
             ]);

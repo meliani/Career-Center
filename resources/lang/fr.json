@@ -377,8 +377,9 @@
     "Detected language": "Langue détectée",
     "Timeslot and Room conflict, your operation is aborted": "Conflit de créneau horaire et de salle, votre opération est annulée",
     "Day of": "Journée du",
-    "Timeslot {$timetable->timeslot->start_time} and Room {$timetable->room->name} conflict, your operation is aborted": "Créneau horaire {$timetable->timeslot->start_time} et salle {$timetable->room->name} en conflit, votre opération est annulée",
+    "Timeslot :timeslot and Room :room conflict, your operation is aborted": "Créneau horaire :timeslot et Salle :room en conflit, votre opération est annulée",
     "Planned": "Crénaux Planifiés",
-    "Unplanned": "Crénaux Non planifiés"
+    "Unplanned": "Crénaux Non planifiés",
+    "One of professors is not available in this timeslot, your operation is aborted": "Un des enseignants n'est pas disponible dans ce créneau horaire, votre opération est annulée"
 
 }

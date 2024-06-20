@@ -103,7 +103,7 @@ class AdminPanelProvider extends PanelProvider
                     FilamentFullCalendarPlugin::make()
                         // ->schedulerLicenseKey('GPL-My-Project-Is-Open-Source')
                         ->schedulerLicenseKey('CC-Attribution-NonCommercial-NoDerivatives')
-                        ->selectable(true)
+                        ->selectable(false)
                         ->editable(false)
                         ->timezone('UTC')
                         ->plugins([

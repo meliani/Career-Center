@@ -16,16 +16,19 @@ class ProfessorService
 
     protected static Project $project;
 
-    public static function checkJuryAvailability(Timeslot $timeslot, Project $project)
+    public static $timetableId;
+
+    public static function checkJuryAvailability(Timeslot $timeslot, Project $project, ?int $timetableId = null)
     {
         self::$timeslot = $timeslot;
         self::$project = $project;
+        self::$timetableId = $timetableId;
 
         $jury = $project->professors;
         // we will check every professor in this jury if he is available in this timeslot
         foreach ($jury as $professor) {
             // we will check if this professor is available in this timeslot
-            if (! self::isProfessorAvailable(self::$timeslot, $professor)) {
+            if (! self::isProfessorAvailable(self::$timeslot, $professor, self::$timetableId)) {
                 return false;
             }
 
@@ -35,11 +38,13 @@ class ProfessorService
 
     }
 
-    public static function isProfessorAvailable(Timeslot $timeslot, Professor $professor)
+    public static function isProfessorAvailable(Timeslot $timeslot, Professor $professor, ?int $timetableId = null)
     {
         //  timetable s related to this timeslot and the project, the projects are related with the professor (hasmany)
-        $projects = $professor->projects;
+        // get professors projects except the current project
+        $projects = $professor->projects->where('id', '!=', self::$project->id);
         $timetables = Timetable::where('timeslot_id', $timeslot->id)
+            // ->Where('id', '!=', $timetableId)
             ->whereIn('project_id', $projects->pluck('id'))
             ->get();
 
