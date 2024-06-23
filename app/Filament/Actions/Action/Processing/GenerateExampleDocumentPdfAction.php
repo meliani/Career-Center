@@ -13,7 +13,7 @@ use stdClass;
 
 use function Spatie\LaravelPdf\Support\pdf;
 
-class GenerateExampleAgreementPdfAction extends Action
+class GenerateExampleDocumentPdfAction extends Action
 {
     public static function make(?string $name = null): static
     {
@@ -22,6 +22,25 @@ class GenerateExampleAgreementPdfAction extends Action
         ]);
 
         $static->configure()->action(function (array $data, DocumentTemplate $documentTemplate): void {
+            if ($documentTemplate->template_type == 'sheet') {
+
+                $template_view = 'pdf.templates.' . $documentTemplate->level . '.Defenses.evaluation_sheet';
+                $pdf_path = 'storage/document_models/defenses/' . $documentTemplate->level;
+                $pdf_file_name = 'evaluation-sheet' . Str::slug('example') . '-' . time() . hash('sha256', 123) . '.pdf';
+
+                if (! File::exists($pdf_path)) {
+                    File::makeDirectory($pdf_path, 0755, true);
+                }
+                pdf()
+                    ->view($template_view)
+                    ->save($pdf_path . '/' . $pdf_file_name)
+                    ->name($pdf_file_name);
+
+                $documentTemplate->example_url = $pdf_path . '/' . $pdf_file_name;
+                $documentTemplate->save();
+
+                return;
+            }
             // Générer l'URL de vérification
             $verificationString = 'TestRecord-TestRecord';
             $encodedUrl = UrlService::encodeUrl($verificationString);

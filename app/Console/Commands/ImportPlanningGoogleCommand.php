@@ -104,9 +104,6 @@ class ImportPlanningGoogleCommand extends Command
             ]);
 
             // Step 5: Create a Planning instance and associate it with the Timeslot
-            /* timeslot_id
-            room_id
-            project_id */
             $room = $this->parseRoom($record['Lieu']);
 
             Timetable::create([

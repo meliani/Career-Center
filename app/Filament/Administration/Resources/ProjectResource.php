@@ -8,7 +8,6 @@ use App\Filament\Administration\Resources\ProjectResource\Pages;
 use App\Filament\Administration\Resources\ProjectResource\RelationManagers;
 use App\Filament\Core;
 use App\Models\Project;
-use App\Models\Timetable;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists;
@@ -96,38 +95,40 @@ class ProjectResource extends Core\BaseResource
                     ])
                     ->collapsible()
                     ->columns(2),
-                // Forms\Components\Section::make('Defense information')
-                //     ->label('Defense information')
-                //     ->columnSpan(1)
-                //     ->hidden(fn () => auth()->user()->isAdministrator() === false)
-                //     ->relationship('timetable')
-                //     ->columns(3)
-                //     ->schema([
-                //         // Forms\Components\Fieldset::make('Time')
-                //         //     ->relationship('timeslot')
-                //         //     ->schema([
-                //         //         Forms\Components\DateTimePicker::make('start_time')
-                //         //             // ->format('m/d/Y hh:ii:ss')
-                //         //             ->seconds(false)
-                //         //             ->native(false)
-                //         //             ->displayFormat('Y-m-d H:i:s')
-                //         //             ->required(),
-                //         //         // ->disabled(fn () => auth()->user()->isAdministrator() === false),
-                //         //         Forms\Components\DateTimePicker::make('end_time')
-                //         //             ->seconds(false)
-                //         //             // ->native(false)
-                //         //             ->displayFormat('Y-m-d H:i:s')
-                //         //             ->required(),
-                //         //         // ->disabled(fn () => auth()->user()->isAdministrator() === false),
-                //         //     ]),
-                //         // Forms\Components\Select::make('timeslot_id')
-                //         //     ->dataSource('unplanned_timetable'),
-                //         // Forms\Components\Select::make('room_id')
-                //         //     ->relationship('room', 'name')
-                //         //     ->required(),
-                //         // ->disabled(fn () => auth()->user()->isAdministrator() === false),
-                //     ])
-                //     ->columns(3),
+                Forms\Components\Section::make('Defense information')
+                    ->label('Defense information')
+                    ->columnSpan(1)
+                    ->hidden(fn () => auth()->user()->isAdministrator() === false)
+                    ->relationship('timetable')
+                    ->columns(3)
+                    ->schema([
+                        // Forms\Components\Fieldset::make('Time')
+                        //     ->relationship('timeslot')
+                        //     ->schema([
+                        //         Forms\Components\DateTimePicker::make('start_time')
+                        //             // ->format('m/d/Y hh:ii:ss')
+                        //             ->seconds(false)
+                        //             ->native(false)
+                        //             ->displayFormat('Y-m-d H:i:s')
+                        //             ->required(),
+                        //         // ->disabled(fn () => auth()->user()->isAdministrator() === false),
+                        //         Forms\Components\DateTimePicker::make('end_time')
+                        //             ->seconds(false)
+                        //             // ->native(false)
+                        //             ->displayFormat('Y-m-d H:i:s')
+                        //             ->required(),
+                        //         // ->disabled(fn () => auth()->user()->isAdministrator() === false),
+                        //     ]),
+                        Forms\Components\Select::make('timeslot_id')
+                            ->relationship('timeslot', 'start_time')
+                            ->required()
+                            ->disabled(fn () => auth()->user()->isAdministrator() === false),
+                        Forms\Components\Select::make('room_id')
+                            ->relationship('room', 'name')
+                            ->required()
+                            ->disabled(fn () => auth()->user()->isAdministrator() === false),
+                    ])
+                    ->columns(3),
 
             ]);
     }
@@ -185,11 +186,9 @@ class ProjectResource extends Core\BaseResource
 
             ])
             ->headerActions([
-
-                Tables\Actions\ActionGroup::make([
-                    \App\Filament\Actions\Action\Processing\ImportProfessorsFromInternshipAgreements::make('Import Professors From Internship Agreements')
-                        ->hidden(fn () => auth()->user()->isAdministrator() === false),
-                ]),
+                \App\Filament\Actions\Action\Processing\GoogleSheetSyncAction::make('Google Sheet Sync')
+                    ->label('Google Sheet Sync')
+                    ->hidden(fn () => auth()->user()->isAdministrator() === false),
 
                 FilamentExcel\Actions\Tables\ExportAction::make()
                     ->exports([
@@ -215,22 +214,27 @@ class ProjectResource extends Core\BaseResource
                             ]),
                     ]),
                 TableLayoutToggle::getToggleViewTableAction(compact: true),
+                Tables\Actions\ActionGroup::make([
+                    \App\Filament\Actions\Action\Processing\ImportProfessorsFromInternshipAgreements::make('Import Professors From Internship Agreements')
+                        ->hidden(fn () => auth()->user()->isAdministrator() === false),
+                ]),
 
             ])
             ->actions([
+                \App\Filament\Actions\Action\AuthorizeDefenseAction::make()
+                    ->disabled(fn ($record): bool => $record['validated_at'] !== null),
                 \Parallax\FilamentComments\Tables\Actions\CommentsAction::make()
                     ->label('')
                     ->tooltip(
                         fn ($record) => "{$record->filamentComments()->count()} " . __('Comments')
                     )
-
                     // ->visible(fn () => true)
                     ->badge(fn ($record) => $record->filamentComments()->count() ? $record->filamentComments()->count() : null),
-                Tables\Actions\ActionGroup::make([
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\ViewAction::make(),
-                ])
-                    ->tooltip(__('Edit or view this project')),
+                // Tables\Actions\ActionGroup::make([
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
+                // ])->dropdown(false)
+                // ->tooltip(__('Edit or view this project')),
                 // ->hidden(true),
             ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([

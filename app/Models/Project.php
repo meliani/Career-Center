@@ -4,6 +4,9 @@ namespace App\Models;
 
 use App\Enums;
 use App\Notifications;
+use Filament;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Notification;
 use Parallax\FilamentComments\Models\Traits\HasFilamentComments;
 
@@ -42,6 +45,16 @@ class Project extends Core\BackendBaseModel
         'language',
         'start_date',
         'end_date',
+        'agreement_verified_at',
+        'agreement_verified_by',
+        'supervisor_approved_at',
+        'supervisor_approved_by',
+        'organization_evaluation_received_at',
+        'organization_evaluation_received_by',
+        'defense_status',
+        'defense_authorized_at',
+        'defense_authorized_by',
+        'evaluation_sheet_url',
     ];
 
     protected $appends = [
@@ -55,6 +68,7 @@ class Project extends Core\BackendBaseModel
         'start_date' => 'date:Y/m/d',
         'end_date' => 'date:Y/m/d',
         'language' => Enums\Language::class,
+        'defense_status' => Enums\DefenseStatus::class,
     ];
 
     public function getIdPfeAttribute()
@@ -132,7 +146,9 @@ class Project extends Core\BackendBaseModel
     {
 
         return $this->professors()
-            ->wherePivot('jury_role', Enums\JuryRole::Reviewer->value);
+            ->wherePivot('jury_role', Enums\JuryRole::Reviewer->value)
+            ->orWherePivot('jury_role', Enums\JuryRole::Reviewer1->value)
+            ->orWherePivot('jury_role', Enums\JuryRole::Reviewer2->value);
     }
 
     public function timetable()
@@ -193,5 +209,31 @@ class Project extends Core\BackendBaseModel
     public function getProjectDatesAttribute()
     {
         return "Du {$this->start_date->format('d M')} au {$this->end_date->format('d M Y')}";
+    }
+
+    public function authorizeDefense()
+    {
+        try {
+            if (Gate::denies('authorize-defense', $this)) {
+                throw new AuthorizationException();
+            }
+
+            $this->defense_authorized_at = now();
+            $this->defense_authorized_by = auth()->id();
+            $this->defense_status = Enums\DefenseStatus::Authorized;
+            $this->save();
+            Filament\Notifications\Notification::make()
+                ->title('Defense has been authorized successfully.')
+                ->success()
+                ->send();
+        } catch (AuthorizationException $e) {
+            Filament\Notifications\Notification::make()
+                ->title('Sorry You dont have the permission to do this action.')
+                ->danger()
+                ->send();
+
+            return response()->json(['error' => 'This action is unauthorized.'], 403);
+        }
+
     }
 }

@@ -5,11 +5,13 @@ namespace App\Providers;
 use App\Enums\Role;
 use App\Models\InternshipAgreement;
 use App\Models\Professor;
+use App\Models\Project;
 use App\Models\User;
 use App\Policies\ActivityPolicy;
 // use Illuminate\Auth\Access\Response;
 use App\Policies\InternshipAgreementPolicy;
 use App\Policies\ProfessorPolicy;
+use App\Policies\ProjectPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Spatie\Activitylog\Models\Activity;
@@ -64,6 +66,7 @@ class AuthServiceProvider extends ServiceProvider
             return false;
         });
         Gate::define('validate-internship', [InternshipAgreementPolicy::class, 'update']);
+        Gate::define('authorize-defense', [ProjectPolicy::class, 'update']);
         Gate::define('sign-internship', [InternshipAgreementPolicy::class, 'update']);
     }
 

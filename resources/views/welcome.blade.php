@@ -187,8 +187,8 @@
     </footer>
     <div class="row">
         <div class="col-12 text-center">
-            <p class="mb-2">Want to contribute? Join us on <a href="https://github.com/meliani/Career-Center"
-                    target="_blank">github.com/meliani/career-center</a></p>
+            <p class="mb-2">Contibution / Audit sur <a href="https://github.com/meliani/Career-Center"
+                    target="_blank">github</a></p>
         </div>
     </div>
     <!-- # JS Plugins -->

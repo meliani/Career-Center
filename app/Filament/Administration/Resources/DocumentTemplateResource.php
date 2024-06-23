@@ -2,7 +2,7 @@
 
 namespace App\Filament\Administration\Resources;
 
-use App\Filament\Actions\Action\Processing\GenerateExampleAgreementPdfAction;
+use App\Filament\Actions\Action\Processing\GenerateExampleDocumentPdfAction;
 use App\Filament\Administration\Resources\DocumentTemplateResource\Pages;
 use App\Filament\Core\BaseResource as Resource;
 use App\Models\DocumentTemplate;
@@ -34,6 +34,7 @@ class DocumentTemplateResource extends Resource
     {
         return auth()->user()->isAdministrator() || auth()->user()->isSuperAdministrator();
     }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -103,7 +104,7 @@ class DocumentTemplateResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                GenerateExampleAgreementPdfAction::make('generate-pdf')
+                GenerateExampleDocumentPdfAction::make('generate-pdf')
                     ->label('Generate PDF')
                     ->icon('heroicon-o-document'),
                 // ->successNotification('The PDF has been generated successfully')

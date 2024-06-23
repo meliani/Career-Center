@@ -56,7 +56,7 @@ class AdminPanelProvider extends PanelProvider
             ->brandName(__('Career Center'))
             ->login()
             ->databaseNotifications()
-            ->databaseNotificationsPolling('30s')
+            // ->databaseNotificationsPolling('30s')
             ->brandLogo(asset('/svg/logo_entreprises.svg'))
             ->favicon(asset('/svg/logo_entreprises_round.svg'))
             ->darkModeBrandLogo(asset('/svg/logo_entreprises_white.svg'))
