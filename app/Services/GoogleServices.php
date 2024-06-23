@@ -44,7 +44,7 @@ class GoogleServices
             $room = $this->parseRoom($record['Lieu']);
             // skip if project not found
             if (! $this->pfeIdToProjectId($record['ID PFE'])) {
-                Debugbar::info('Timetable with null project skipped');
+                // Debugbar::info('Timetable with null project skipped');
 
                 continue;
             }
@@ -54,7 +54,7 @@ class GoogleServices
                 'project_id' => $this->pfeIdToProjectId($record['ID PFE']),
             ]);
             // show message on debugbar
-            Debugbar::info('Data imported successfully');
+            // Debugbar::info('Data imported successfully');
         }
     }
 
@@ -140,14 +140,14 @@ class GoogleServices
         foreach ($this->data as $record) {
             $internshipAgreement = InternshipAgreement::where('id_pfe', $record['ID PFE'])->first();
             if (! $internshipAgreement) {
-                Debugbar::info('Internship agreement not found');
+                // Debugbar::info('Internship agreement not found');
 
                 continue;
             }
 
             $project = $internshipAgreement->project;
             if (! $project) {
-                Debugbar::info('Project not found');
+                // Debugbar::info('Project not found');
 
                 continue;
             }
@@ -162,7 +162,7 @@ class GoogleServices
     {
         // skip if reviewer name is empty
         if (! $reviewerName) {
-            Debugbar::info('Reviewer name is empty');
+            // Debugbar::info('Reviewer name is empty');
 
             return;
         }
@@ -171,14 +171,14 @@ class GoogleServices
             $this->unfoundProfessors += $reviewerName;
             $professor = new Professor(['name' => $reviewerName]);
             $professor->save();
-            Debugbar::info('Professor created successfully');
+            // Debugbar::info('Professor created successfully');
 
         }
 
         if (! $project->professors->contains($professor->id)) {
             $project->professors()->attach($professor->id, ['jury_role' => $role]);
         } else {
-            Debugbar::info('Professor already attached to project');
+            // Debugbar::info('Professor already attached to project');
         }
     }
 
@@ -186,7 +186,7 @@ class GoogleServices
     {
         // skip if supervisor name is empty
         if (! $supervisorName) {
-            Debugbar::info('Supervisor name is empty');
+            // Debugbar::info('Supervisor name is empty');
 
             return;
         }
@@ -195,14 +195,14 @@ class GoogleServices
             $this->unfoundProfessors += $supervisorName;
             $professor = new Professor(['name' => $supervisorName]);
             $professor->save();
-            Debugbar::info('Professor created successfully');
+            // Debugbar::info('Professor created successfully');
 
         }
 
         if (! $project->professors->contains($professor->id)) {
             $project->professors()->attach($professor->id, ['jury_role' => $role]);
         } else {
-            Debugbar::info('Professor already attached to project');
+            // Debugbar::info('Professor already attached to project');
         }
     }
 }
