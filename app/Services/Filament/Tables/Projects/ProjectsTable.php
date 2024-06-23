@@ -31,7 +31,7 @@ class ProjectsTable
                     Tables\Columns\TextColumn::make('external_supervisor')
                         ->label('External Supervisor')
                         ->limit(30)
-                        ->searchable(true),
+                        ->searchable(false),
                     Tables\Columns\TextColumn::make('external_supervisor_contact')
                         ->toggleable(isToggledHiddenByDefault: true)
                         ->label('Contacts External Supervisor')
@@ -54,7 +54,7 @@ class ProjectsTable
                     Tables\Columns\TextColumn::make('title')
                         ->toggleable(isToggledHiddenByDefault: true)
                         ->limit(90)
-                        ->searchable()
+                        ->searchable(false)
                         ->sortable(),
                     Tables\Columns\TextColumn::make('defense_plan')
                         ->label('Defense Plan')
@@ -74,6 +74,7 @@ class ProjectsTable
                         ->dateTime('d M Y H:i'),
                     Tables\Columns\TextColumn::make('timetable.room.name')
                         ->toggleable(isToggledHiddenByDefault: true)
+                        ->searchable(false)
                         ->label('Room'),
                 ]),
             Tables\Columns\ColumnGroup::make(__('The student'))
@@ -82,7 +83,7 @@ class ProjectsTable
                         ->label('ID PFE')
                         ->sortable()
                         ->sortableMany()
-                        ->searchable(),
+                        ->searchable(true),
                     Tables\Columns\TextColumn::make('students.full_name')
                         ->label('Student name')
                         ->searchable(
@@ -104,15 +105,15 @@ class ProjectsTable
                         ->searchable(false)
                         ->sortableMany(),
                     Tables\Columns\TextColumn::make('start_date')
+                        ->searchable(false)
                         ->toggleable(isToggledHiddenByDefault: true)
                         ->label('Project start date')
-                        ->date('d/m/Y')
-                        ->sortable(),
+                        ->date('d/m/Y'),
                     Tables\Columns\TextColumn::make('end_date')
+                        ->searchable(false)
                         ->toggleable(isToggledHiddenByDefault: true)
                         ->label('Project end date')
-                        ->date('d/m/Y')
-                        ->sortable(),
+                        ->date('d/m/Y'),
                 ]),
             // Tables\Columns\TextColumn::make('professors.department')
             //     ->label('department of supervisor'),
@@ -144,10 +145,12 @@ class ProjectsTable
                 ]),
 
             Tables\Columns\TextColumn::make('created_at')
+                ->searchable(false)
                 ->dateTime()
                 ->sortable()
                 ->toggleable(isToggledHiddenByDefault: true),
             Tables\Columns\TextColumn::make('updated_at')
+                ->searchable(false)
                 ->dateTime()
                 ->sortable()
                 ->toggleable(isToggledHiddenByDefault: true),

@@ -42,9 +42,10 @@ class ProjectScope implements Scope
                         $q->where('professor_id', '=', auth()->user()->id);
                     });
             } elseif (auth()->user()->isAdministrativeSupervisor()) {
-                $builder->whereHas('students', function ($q) {
-                    $q->where('program', '=', auth()->user()->assigned_program);
-                });
+                // $builder->whereHas('students', function ($q) {
+                //     $q->where('program', '=', auth()->user()->assigned_program);
+                // });
+                return;
             } else {
                 abort(403, 'You are not authorized to view this page');
             }

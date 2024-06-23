@@ -35,14 +35,15 @@ class TimetableScope implements Scope
                 $builder->where('department', '=', auth()->user()->department);
 
             } elseif (auth()->user()->isAdministrativeSupervisor()) {
-                $builder->whereHas('project', function ($q) {
-                    $q->whereHas('internship_agreements', function ($q) {
-                        $q->whereHas('student', function ($q) {
-                            $q->where('program', '=', auth()->user()->assigned_program);
-                        });
-                    });
-                })
-                    ->orWhere('project_id', null);
+                // $builder->whereHas('project', function ($q) {
+                //     $q->whereHas('internship_agreements', function ($q) {
+                //         $q->whereHas('student', function ($q) {
+                //             $q->where('program', '=', auth()->user()->assigned_program);
+                //         });
+                //     });
+                // })
+                //     ->orWhere('project_id', null);
+                return;
             } else {
                 abort(403, 'You are not authorized to view this page');
             }
