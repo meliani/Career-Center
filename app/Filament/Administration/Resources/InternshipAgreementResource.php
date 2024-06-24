@@ -33,6 +33,12 @@ class InternshipAgreementResource extends Core\BaseResource
 
     protected static ?string $navigationGroup = 'Students and projects';
 
+    protected static ?string $modelLabel = 'Internship Agreement';
+
+    protected static ?string $pluralModelLabel = 'Internship Agreements';
+
+    protected static ?string $title = 'Internship Agreements';
+
     public static function canViewAny(): bool
     {
         if (auth()->check()) {
@@ -40,21 +46,6 @@ class InternshipAgreementResource extends Core\BaseResource
         }
 
         return false;
-    }
-
-    public static function getModelLabel(): string
-    {
-        return __('Internship Agreement');
-    }
-
-    public static function getPluralModelLabel(): string
-    {
-        return __('Internship Agreements');
-    }
-
-    public static function getnavigationGroup(): string
-    {
-        return __(self::$navigationGroup);
     }
 
     public static function getGloballySearchableAttributes(): array

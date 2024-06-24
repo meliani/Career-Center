@@ -287,7 +287,6 @@
     "Your first step towards the workplace": "Votre premier pas vers le monde professionnel",
     "Currency": "Devise",
     "Workload": "charge de travail",
-    "Apprenticeship": "Stage d'apprentissage",
     "Remuneration and workload": "Rémunération et charge de travail",
     "Apprenticeship agreement": "Convention de stage d'apprentissage",
     "Apprenticeship agreements": "Conventions de stage d'apprentissage",
@@ -380,6 +379,9 @@
     "Timeslot :timeslot and Room :room conflict, your operation is aborted": "Créneau horaire :timeslot et Salle :room en conflit, votre opération est annulée",
     "Planned": "Crénaux Planifiés",
     "Unplanned": "Crénaux Non planifiés",
-    "One of professors is not available in this timeslot, your operation is aborted": "Un des enseignants n'est pas disponible dans ce créneau horaire, votre opération est annulée"
+    "One of professors is not available in this timeslot, your operation is aborted": "Un des enseignants n'est pas disponible dans ce créneau horaire, votre opération est annulée",
+    "Announced apprenticeships": "Stages Ouvrier / Technique",
+    "Apprenticeships": "Stages Ouvrier / Technique",
+    "Apprenticeship": "Stage Ouvrier / Technique"
 
 }
