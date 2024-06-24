@@ -20,7 +20,6 @@
                             <!-- Always visible columns headers -->
                             <th class="px-4 py-2 border-gray-500 border-2">Date</th>
                             <th class="px-4 py-2 border-gray-500 border-2">Autorisation</th>
-                            <th class="px-4 py-2 border-gray-500 border-2">ID PFE</th>
                             <th class="px-4 py-2 border-gray-500 border-2">Nom de l'étudiant</th>
 
                             <!-- Hidden on small screens -->
@@ -43,13 +42,13 @@
                             </td>
                             <td class="px-4 py-2  border-gray-500 border-2"><strong>{{ $defense['Autorisation']
                                     }}</strong></td>
-                            <td class="px-4 py-2  border-gray-500 border-2">{{ $defense['ID PFE'] }}</td>
                             <td class="px-4 py-2  border-gray-500 border-2"><strong>{{ $defense['Nom de l\'étudiant']
                                     }}</strong>
                                 {{-- w'ell check if student if empty --}}
                                 @if($defense['Nom de l\'étudiant'] == 'Libre')
                                 @else
                                 <p><strong>Filière: </strong>{{ $defense['Filière'] }}</p>
+                                <p><strong>ID PFE: </strong>{{ $defense['ID PFE'] }}</p>
                                 @endif
                             </td>
 
