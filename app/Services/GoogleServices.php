@@ -117,7 +117,12 @@ class GoogleServices
 
     private function parseRoom($roomString)
     {
-        return Room::where('name', $roomString)->firstOrFail();
+        if (! $roomString) {
+            return null;
+        }
+
+        // return Room::where('name', $roomString)->firstOrFail();
+        return Room::where('name', $roomString)->first() ?? dd("Room '{$roomString}' not found.");
     }
 
     private function pfeIdToProjectId($pfeId)
