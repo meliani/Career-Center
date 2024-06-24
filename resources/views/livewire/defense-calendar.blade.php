@@ -9,7 +9,7 @@
                 <!-- Logo aligned to the right with vertical centering and margins -->
                 <div x-data="{ mode: 'light' }" x-on:dark-mode-toggled.window="mode = $event.detail"
                     class="flex-shrink-0 ml-4 mr-2 my-auto">
-                    <img src="{{ asset('/svg/logo-colors.svg') }}" alt="Logo" class="h-20">
+                    <img src="{{ asset('/svg/logo-colors.svg') }}" alt="Logo" class="h-20 mb-4">
                 </div>
             </div>
             <div class="overflow-x-auto shadow-md sm:rounded-lg">
@@ -18,15 +18,15 @@
                         <tr class="bg-gray-100">
 
                             <!-- Always visible columns headers -->
-                            <th class="px-4 py-2">Date</th>
-                            <th class="px-4 py-2">Autorisation</th>
-                            <th class="px-4 py-2">ID PFE</th>
-                            <th class="px-4 py-2">Nom de l'étudiant</th>
+                            <th class="px-4 py-2 border-gray-500 border-2">Date</th>
+                            <th class="px-4 py-2 border-gray-500 border-2">Autorisation</th>
+                            <th class="px-4 py-2 border-gray-500 border-2">ID PFE</th>
+                            <th class="px-4 py-2 border-gray-500 border-2">Nom de l'étudiant</th>
 
                             <!-- Hidden on small screens -->
-                            <th class="px-4 py-2">Encadrant Interne</th>
-                            <th class="px-4 py-2">Nom et Prénom Examinateur 1</th>
-                            <th class="px-4 py-2">Nom et Prénom Examinateur 2</th>
+                            <th class="px-4 py-2 border-gray-500 border-2">Encadrant Interne</th>
+                            <th class="px-4 py-2 border-gray-500 border-2">Nom et Prénom Examinateur 1</th>
+                            <th class="px-4 py-2 border-gray-500 border-2">Nom et Prénom Examinateur 2</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -36,14 +36,16 @@
                         @endif
                         <tr>
                             <!-- Always visible columns data -->
-                            <td class="px-4 py-2">
+                            <td class="px-4 py-2  border-gray-500 border-2">
                                 <p>{{ $defense['Date Soutenance'] }}</p>
                                 <p>{{ $defense['Heure'] }}</p>
                                 <p>{{ $defense['Lieu'] }}</p>
                             </td>
-                            <td class="px-4 py-2"><strong>{{ $defense['Autorisation'] }}</strong></td>
-                            <td class="px-4 py-2">{{ $defense['ID PFE'] }}</td>
-                            <td class="px-4 py-2"><strong>{{ $defense['Nom de l\'étudiant'] }}</strong>
+                            <td class="px-4 py-2  border-gray-500 border-2"><strong>{{ $defense['Autorisation']
+                                    }}</strong></td>
+                            <td class="px-4 py-2  border-gray-500 border-2">{{ $defense['ID PFE'] }}</td>
+                            <td class="px-4 py-2  border-gray-500 border-2"><strong>{{ $defense['Nom de l\'étudiant']
+                                    }}</strong>
                                 {{-- w'ell check if student if empty --}}
                                 @if($defense['Nom de l\'étudiant'] == 'Libre')
                                 @else
@@ -52,10 +54,12 @@
                             </td>
 
                             <!-- Hidden on small screens -->
-                            <td class="px-4 py-2">{{ $defense['Encadrant Interne'] }}</td>
-                            <td class="px-4 py-2">{{ $defense['Nom et Prénom Examinateur 1'] }}
+                            <td class="px-4 py-2  border-gray-500 border-2">{{ $defense['Encadrant Interne'] }}</td>
+                            <td class="px-4 py-2  border-gray-500 border-2">{{ $defense['Nom et Prénom Examinateur 1']
+                                }}
                             </td>
-                            <td class="px-4 py-2">{{ $defense['Nom et Prénom Examinateur 2'] }}
+                            <td class="px-4 py-2  border-gray-500 border-2">{{ $defense['Nom et Prénom Examinateur 2']
+                                }}
                             </td>
                         </tr>
                         @endforeach
