@@ -1,7 +1,17 @@
 <x-layouts.public-layout>
     <div class="flex justify-center py-4">
         <div class="mt-8 w-full">
-            <!-- Existing content -->
+            <div class="flex items-center justify-between">
+                <!-- Title centered both vertically and horizontally -->
+                <div class="flex-1 text-center mb-6 pb-10 mt-0 my-auto">
+                    <h2 class="text-2xl font-semibold text-gray-800">Calendrier des soutenances 2024</h2>
+                </div>
+                <!-- Logo aligned to the right with vertical centering and margins -->
+                <div x-data="{ mode: 'light' }" x-on:dark-mode-toggled.window="mode = $event.detail"
+                    class="flex-shrink-0 ml-4 mr-2 my-auto">
+                    <img src="{{ asset('/svg/logo-colors.svg') }}" alt="Logo" class="h-20">
+                </div>
+            </div>
             <div class="overflow-x-auto shadow-md sm:rounded-lg">
                 <table class="min-w-full leading-normal text-sm">
                     <thead>
