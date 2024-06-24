@@ -53,11 +53,20 @@ class GoogleServices
 
                 continue;
             }
-            Timetable::firstOrCreate([
-                'room_id' => $room->id,
-                'timeslot_id' => $timeslot->id,
-                'project_id' => $this->pfeIdToProjectId($record['ID PFE']),
-            ]);
+            $timetable = Timetable::where('project_id', $this->pfeIdToProjectId($record['ID PFE']))->first();
+
+            if ($timetable) {
+                $timetable->update([
+                    'room_id' => $room->id,
+                    'timeslot_id' => $timeslot->id,
+                ]);
+            } else {
+                Timetable::create([
+                    'room_id' => $room->id,
+                    'timeslot_id' => $timeslot->id,
+                    'project_id' => $this->pfeIdToProjectId($record['ID PFE']),
+                ]);
+            }
             // show message on debugbar
             // Debugbar::info('Data imported successfully');
             Filament\Notifications\Notification::make()

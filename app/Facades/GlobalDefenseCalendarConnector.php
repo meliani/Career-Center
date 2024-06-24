@@ -12,7 +12,7 @@ class GlobalDefenseCalendarConnector extends Facade
     {
         $sheets = Sheets::spreadsheet(config('sheets.defenses_spreadsheet_id'))
             ->sheet(config('sheets.defenses_sheet_id'))
-            ->range('A1:J219')
+            ->range('A1:J246')
             ->get();
 
         $header = [
