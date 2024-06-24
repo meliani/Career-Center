@@ -18,6 +18,7 @@ class DocumentTemplate extends Model
         'type',
         'level',
         'status',
+        'template_type',
         'created_by',
         'updated_by',
     ];

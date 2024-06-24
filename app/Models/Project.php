@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums;
 use App\Notifications;
+use App\Services;
 use Filament;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Gate;
@@ -176,6 +177,11 @@ class Project extends Core\BackendBaseModel
         return $this->internship_agreements()->first() ? $this->internship_agreements()->first()->organization_name : 'Undefined Organization';
     }
 
+    public function getExternalSupervisorNameAttribute()
+    {
+        return $this->internship_agreements()->first() ? "{$this->internship_agreements()->first()->encadrant_ext_name}" : 'Undefined External Supervisor';
+    }
+
     public function getExternalSupervisorAttribute()
     {
         return $this->internship_agreements()->first() ? "{$this->internship_agreements()->first()->encadrant_ext_name}, {$this->internship_agreements()->first()->encadrant_ext_fonction}" : 'Undefined External Supervisor';
@@ -211,6 +217,49 @@ class Project extends Core\BackendBaseModel
         return "Du {$this->start_date->format('d M')} au {$this->end_date->format('d M Y')}";
     }
 
+    public function getAdministrativeSupervisorAttribute()
+    {
+        $AdministrativeSupervisor = User::administrativeSupervisor($this->internship_agreements()->first()->student->program->value);
+        // dd($AdministrativeSupervisor);
+
+        return $AdministrativeSupervisor ? $AdministrativeSupervisor->full_name : 'Undefined Administrative Supervisor';
+    }
+
+    public function getAcademicSupervisorAttribute()
+    {
+        $AcademicSupervisor = $this->professors()
+            ->wherePivot('jury_role', Enums\JuryRole::Supervisor->value)
+            ->first();
+        // dd($AcademicSupervisor);
+
+        return $AcademicSupervisor ? $AcademicSupervisor->full_name : 'Undefined Academic Supervisor';
+    }
+
+    public function getReviewer1Attribute()
+    {
+        $Reviewer1 = $this->professors()
+            ->wherePivot('jury_role', Enums\JuryRole::Reviewer1->value)
+            ->first();
+        // dd($Reviewer1);
+
+        return $Reviewer1 ? $Reviewer1->full_name : 'Undefined Reviewer 1';
+    }
+
+    public function getReviewer2Attribute()
+    {
+        $Reviewer2 = $this->professors()
+            ->wherePivot('jury_role', Enums\JuryRole::Reviewer2->value)
+            ->first();
+        // dd($Reviewer2);
+
+        return $Reviewer2 ? $Reviewer2->full_name : 'Undefined Reviewer 2';
+    }
+
+    public function defense_authorized_by_user()
+    {
+        return $this->belongsTo(User::class, 'defense_authorized_by', 'id');
+    }
+
     public function authorizeDefense()
     {
         try {
@@ -234,6 +283,15 @@ class Project extends Core\BackendBaseModel
 
             return response()->json(['error' => 'This action is unauthorized.'], 403);
         }
+
+    }
+
+    public function generateEvaluationSheet()
+    {
+        // we gonna use GenerateDefenseDocuments service and generateEvaluationSheet method to generate the evaluation sheet
+
+        $service = new Services\GenerateDefenseDocuments();
+        $service->generateEvaluationSheet($this);
 
     }
 }

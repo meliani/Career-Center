@@ -311,12 +311,12 @@ class InternshipAgreement extends Core\BackendBaseModel
 
     public function getParrainNameAttribute()
     {
-        return $this->parrain_titre->getLabel() . ' ' . $this->parrain_nom . ' ' . $this->parrain_prenom;
+        return $this->parrain_nom . ' ' . $this->parrain_prenom;
     }
 
     public function getEncadrantExtNameAttribute()
     {
-        return $this->encadrant_ext_titre->getLabel() . ' ' . $this->encadrant_ext_nom . ' ' . $this->encadrant_ext_prenom;
+        return $this->encadrant_ext_nom . ' ' . $this->encadrant_ext_prenom;
     }
 
     public function getDureeAttribute()

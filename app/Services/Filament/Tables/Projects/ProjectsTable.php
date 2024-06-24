@@ -16,9 +16,21 @@ class ProjectsTable
                         ->sortable()
                         ->searchable()
                         ->badge(),
+                    /*      like this
+                        Tables\Columns\TextColumn::make('pdf_file_name')
+                    ->label('Agreement PDF')
+                    ->limit(20)
+                    ->url(fn (Apprenticeship $record) => URL::to($record->pdf_path . '/' . $record->pdf_file_name), shouldOpenInNewTab: true), */
                     Tables\Columns\TextColumn::make('evaluation_sheet_url')
-                        ->label('Evaluation sheet')
-                        ->searchable(false),
+                        ->label('Evaluation Sheet')
+                        ->limit(20)
+                        ->url(fn ($record) => $record->evaluation_sheet_url, shouldOpenInNewTab: true),
+                    Tables\Columns\TextColumn::make('defense_authorized_by_user.name')
+
+                        ->label('Authorized by')
+                        ->searchable(false)
+                        ->badge()
+                        ->sortable(),
                 ]),
 
             Tables\Columns\ColumnGroup::make(__('Defense information'))
@@ -28,7 +40,7 @@ class ProjectsTable
                     //     ->searchable(
                     //         ['first_name', 'last_name']
                     //     ),
-                    Tables\Columns\TextColumn::make('external_supervisor')
+                    Tables\Columns\TextColumn::make('external_supervisor_name')
                         ->label('External Supervisor')
                         ->limit(30)
                         ->searchable(false),
@@ -41,9 +53,10 @@ class ProjectsTable
                         ->label('Supervisor'),
                     Tables\Columns\TextColumn::make('reviewers.name')
                         ->label('Reviewers')
-                        ->searchable(
-                            ['first_name', 'last_name']
-                        )
+                        ->searchable(false)
+                        // ->searchable(
+                        //     ['first_name', 'last_name']
+                        // )
                         ->sortableMany(),
 
                     Tables\Columns\TextColumn::make('language')

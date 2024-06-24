@@ -11,6 +11,7 @@ use App\Models\Timeslot;
 use App\Models\Timetable;
 use Barryvdh\Debugbar\Facades\Debugbar;
 use Carbon\Carbon;
+use Filament;
 
 class GoogleServices
 {
@@ -45,6 +46,10 @@ class GoogleServices
             // skip if project not found
             if (! $this->pfeIdToProjectId($record['ID PFE'])) {
                 // Debugbar::info('Timetable with null project skipped');
+                Filament\Notifications\Notification::make()
+                    ->title('Timetable with null project skipped')
+                    ->danger()
+                    ->send();
 
                 continue;
             }
@@ -55,6 +60,10 @@ class GoogleServices
             ]);
             // show message on debugbar
             // Debugbar::info('Data imported successfully');
+            Filament\Notifications\Notification::make()
+                ->title('Data imported successfully')
+                ->danger()
+                ->send();
         }
     }
 
@@ -121,6 +130,7 @@ class GoogleServices
         if (! $internshipAgreement) {
             // throw new \Exception("Project with id_pfe {$pfeId} not found.");
             // we will try to check if project id is imploded with comma
+
             $pfeIds = explode(',', $pfeId);
             foreach ($pfeIds as $id) {
                 $internshipAgreement = InternshipAgreement::where('id_pfe', $id)->first();
@@ -128,8 +138,6 @@ class GoogleServices
                     return $internshipAgreement->project_id;
                 }
             }
-
-            return null;
         }
 
         return $internshipAgreement->project_id;
@@ -141,6 +149,13 @@ class GoogleServices
             $internshipAgreement = InternshipAgreement::where('id_pfe', $record['ID PFE'])->first();
             if (! $internshipAgreement) {
                 // Debugbar::info('Internship agreement not found');
+                $pfeIds = explode(',', $record['ID PFE']);
+                foreach ($pfeIds as $id) {
+                    $internshipAgreement = InternshipAgreement::where('id_pfe', $id)->first();
+                    if ($internshipAgreement) {
+                        return $internshipAgreement->project_id;
+                    }
+                }
 
                 continue;
             }
@@ -193,8 +208,6 @@ class GoogleServices
         $professor = Professor::where('name', $supervisorName)->first();
         if (! $professor) {
             $this->unfoundProfessors += $supervisorName;
-            $professor = new Professor(['name' => $supervisorName]);
-            $professor->save();
             // Debugbar::info('Professor created successfully');
 
         }

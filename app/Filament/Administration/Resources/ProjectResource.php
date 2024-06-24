@@ -188,7 +188,7 @@ class ProjectResource extends Core\BaseResource
             ->headerActions([
                 \App\Filament\Actions\Action\Processing\GoogleSheetSyncAction::make('Google Sheet Sync')
                     ->label('Google Sheet Sync')
-                    ->hidden(fn () => auth()->user()->isAdministrator() === false),
+                    ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()) === false),
 
                 FilamentExcel\Actions\Tables\ExportAction::make()
                     ->exports([
@@ -222,7 +222,9 @@ class ProjectResource extends Core\BaseResource
             ])
             ->actions([
                 \App\Filament\Actions\Action\AuthorizeDefenseAction::make()
-                    ->disabled(fn ($record): bool => $record['validated_at'] !== null),
+                    // ->disabled(fn ($record): bool => $record['validated_at'] !== null)
+                    ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()) === false),
+
                 \Parallax\FilamentComments\Tables\Actions\CommentsAction::make()
                     ->label('')
                     ->tooltip(
@@ -302,21 +304,22 @@ class ProjectResource extends Core\BaseResource
                         Infolists\Components\TextEntry::make('timetable.room.name')
                             ->label('Room'),
                         Infolists\Components\Fieldset::make('Jury')
+                            ->columns(3)
                             ->schema([
-                                RepeatableEntry::make('supervisor')
-                                    ->label('')
-                                    ->schema([
-                                        Infolists\Components\TextEntry::make('name')
-                                            ->label(__('Supervisor')),
-                                    ])
-                                    ->contained(false),
-                                RepeatableEntry::make('reviewers')
-                                    ->label('')
-                                    ->schema([
-                                        Infolists\Components\TextEntry::make('name')
-                                            ->label(__('Reviewer')),
-                                    ])
-                                    ->contained(false),
+                                // RepeatableEntry::make('supervisor')
+                                //     ->label('')
+                                //     ->schema([
+                                //         Infolists\Components\TextEntry::make('name')
+                                //             ->label(__('Supervisor')),
+                                //     ])
+                                //     ->contained(false),
+                                // RepeatableEntry::make('reviewers')
+                                //     ->label('')
+                                //     ->schema([
+                                //         Infolists\Components\TextEntry::make('name')
+                                //             ->label(__('Reviewer')),
+                                //     ])
+                                //     ->contained(false),
                                 // Infolists\Components\TextEntry::make('professors.name')
                                 //     ->label('')
                                 //     ->formatStateUsing(
@@ -324,6 +327,13 @@ class ProjectResource extends Core\BaseResource
                                 //             fn ($professor) => $professor->pivot->jury_role->getLabel() . ': ' . $professor->name
                                 //         )->join(', ')
                                 //     ),
+
+                                Infolists\Components\TextEntry::make('academic_supervisor')
+                                    ->label('Academic supervisor'),
+                                Infolists\Components\TextEntry::make('reviewer1')
+                                    ->label('Reviewer 1'),
+                                Infolists\Components\TextEntry::make('reviewer2')
+                                    ->label('Reviewer 2'),
                             ]),
                     ]),
 

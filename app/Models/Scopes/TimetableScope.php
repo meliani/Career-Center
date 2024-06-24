@@ -24,15 +24,17 @@ class TimetableScope implements Scope
                     });
 
             } elseif (auth()->user()->isDepartmentHead()) {
-                $builder
-                    ->whereHas('projects', function ($q) {
-                        $q->whereHas('internship_agreements', function ($q) {
-                            $q->where('assigned_department', '=', auth()->user()->department);
-                        });
-                    });
+                // $builder
+                //     ->whereHas('projects', function ($q) {
+                //         $q->whereHas('internship_agreements', function ($q) {
+                //             $q->where('assigned_department', '=', auth()->user()->department);
+                //         });
+                //     });
+                return;
 
             } elseif (auth()->user()->isProfessor()) {
-                $builder->where('department', '=', auth()->user()->department);
+                // $builder->where('department', '=', auth()->user()->department);
+                return;
 
             } elseif (auth()->user()->isAdministrativeSupervisor()) {
                 // $builder->whereHas('project', function ($q) {

@@ -20,6 +20,7 @@ class AuthorizeDefenseAction extends Action
         $static->configure()->action(function (array $data, Project $record): void {
 
             $record->authorizeDefense();
+            $record->generateEvaluationSheet();
 
         })
             ->requiresConfirmation();

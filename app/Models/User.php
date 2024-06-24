@@ -209,4 +209,13 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName
     {
         return $this->hasRole(Enums\Role::AdministrativeSupervisor);
     }
+
+    // a function to get administrativeSupervisor from assigned program
+
+    public static function administrativeSupervisor($program)
+    {
+        $adminSupervisor = User::where('assigned_program', $program)->where('role', Enums\Role::AdministrativeSupervisor->value)->first();
+
+        return $adminSupervisor;
+    }
 }

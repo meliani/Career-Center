@@ -702,25 +702,30 @@
     </div>
     <div class="grid grid-cols-1 gap-4 text-xs">
         <fieldset class="border border-black p-2">
-            <legend class="font-bold">Référent, Date & Lieu</legend>
-            <p class="mb-3"><strong>Référent Administratif:</strong> LAKHDAR Kaoutar</p>
-            <p><strong>Date:</strong> 18/07/2023</p>
-            <p><strong>Heure:</strong> 12h00</p>
-            <p><strong>Lieu de la soutenance:</strong> Amphi 3</p>
+            <legend class="font-bold">Référent Administratif, Date & Lieu</legend>
+            <p class="mb-3"><strong>{{ $project->administrative_supervisor }}</strong></p>
+            <p class="text-left">{{ $project->defense_plan}}</p>
         </fieldset>
         <fieldset class="border border-black p-2">
             <legend class="font-bold">Elève & Entreprise</legend>
-            <p><strong>Nom et Prénom de l’élève:</strong> BENKARY Aymane</p>
-            <p><strong>ID PFE:</strong> 602</p>
-            <p><strong>Filière:</strong> SMART ICT</p>
+            <p>
+                <strong>
+                    @php $studentNames = $project->students->pluck('name')->join(' & '); @endphp
+                    {{ $studentNames }}
+                </strong>
+            </p>
+            <p><strong>ID PFE:</strong> {{ $project->id_pfe }}</p>
+            <p><strong>Filière:</strong>
+                @php $programLabels = $project->students->map(fn($student) => $student->program->getLabel())->join(' &
+                '); @endphp
+                {{ $programLabels }}
+            </p>
             <p><strong>Entreprise:</strong> AFD Network Solutions SARL AU</p>
         </fieldset>
 
         <fieldset class="col-span-2 border border-black p-2">
             <legend class="font-bold">Intitulé</legend>
-            <p>Avec un très long titre
-                ça pourrait bien ressembler a ça. du cloup j'ai enlevé le pied de page, elle n'a desormais plus de pieds
-                pour marcher, mais elle a des jambes pour courir.
+            <p>{{ $project->title }}
             </p>
         </fieldset>
 
@@ -728,12 +733,13 @@
             <legend class="font-bold">Jury</legend>
             <div class="grid grid-cols-2 gap-4">
                 <div>
-                    <p class="mb-16"><strong>Encadrant:</strong> BENJILLALI Mustapha</p>
-                    <p class="mb-16"><strong>Examinateur 1:</strong> RAISS EL FENNI Mohammed</p>
+                    <p class="mb-16"><strong>Encadrant:</strong> {{ $project->academic_supervisor }}</p>
+                    <p class="mb-16"><strong>Examinateur 1:</strong> {{ $project->reviewer1 }}</p>
                 </div>
                 <div>
-                    <p class="mb-16"><strong>Examinateur 2:</strong> AIT MANSOUR Asmae</p>
-                    <p class="mb-16"><strong>Examinateur 3 (Entreprise):</strong> Meryem FAHIM</p>
+                    <p class="mb-16"><strong>Examinateur 2:</strong> {{ $project->reviewer2 }}</p>
+                    <p class="mb-16"><strong>Examinateur 3 (Entreprise):</strong> {{ $project->external_supervisor_name
+                        }}</p>
                 </div>
             </div>
         </fieldset>
