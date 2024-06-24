@@ -140,6 +140,14 @@ class ProjectResource extends Core\BaseResource
         return $table
             ->defaultPaginationPageOption(10)
             // ->striped()
+            ->defaultSort('timetable.timeslot.start_time')
+            ->defaultGroup('timetable.timeslot.start_time')
+            ->groups([
+                Tables\Grouping\Group::make('timetable.timeslot.start_time')
+                    ->date()
+                    ->collapsible()
+                    ->label(__('Day of')),
+            ])
             ->columns(
                 $livewire->isGridLayout()
                     ? \App\Services\Filament\Tables\Projects\ProjectsGrid::get()

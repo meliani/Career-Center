@@ -75,6 +75,7 @@ class ProjectsTable
                         ->sortable(false)
                         ->searchable(false),
                     Tables\Columns\TextColumn::make('timetable.timeslot.start_time')
+                        ->toggleable(isToggledHiddenByDefault: true)
                         ->label('Defense start time')
                         ->searchable(false)
                         ->sortable()

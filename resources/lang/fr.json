@@ -382,6 +382,8 @@
     "One of professors is not available in this timeslot, your operation is aborted": "Un des enseignants n'est pas disponible dans ce créneau horaire, votre opération est annulée",
     "Announced apprenticeships": "Stages Ouvrier / Technique",
     "Apprenticeships": "Stages Ouvrier / Technique",
-    "Apprenticeship": "Stage Ouvrier / Technique"
+    "Apprenticeship": "Stage Ouvrier / Technique",
+    "Authorize defense": "Autoriser la soutenance",
+    "Defense authorization": "Autorisation de soutenance"
 
 }
