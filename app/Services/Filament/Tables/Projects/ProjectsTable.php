@@ -72,12 +72,12 @@ class ProjectsTable
                     Tables\Columns\TextColumn::make('defense_plan')
                         ->label('Defense Plan')
                         ->toggleable(isToggledHiddenByDefault: true)
+                        ->sortable(false)
                         ->searchable(false),
                     Tables\Columns\TextColumn::make('timetable.timeslot.start_time')
                         ->label('Defense start time')
                         ->searchable(false)
                         ->sortable()
-                        ->toggleable(isToggledHiddenByDefault: true)
                         ->dateTime('d M Y H:i'),
                     Tables\Columns\TextColumn::make('timetable.timeslot.end_time')
                         ->label('Defense end time')
