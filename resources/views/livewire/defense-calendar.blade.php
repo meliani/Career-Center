@@ -14,9 +14,9 @@
                             <th class="px-4 py-2">Nom de l'étudiant</th>
 
                             <!-- Hidden on small screens -->
-                            <th class="px-4 py-2 hidden sm:table-cell">Encadrant Interne</th>
-                            <th class="px-4 py-2 hidden sm:table-cell">Nom et Prénom Examinateur 1</th>
-                            <th class="px-4 py-2 hidden sm:table-cell">Nom et Prénom Examinateur 2</th>
+                            <th class="px-4 py-2">Encadrant Interne</th>
+                            <th class="px-4 py-2">Nom et Prénom Examinateur 1</th>
+                            <th class="px-4 py-2">Nom et Prénom Examinateur 2</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -42,11 +42,10 @@
                             </td>
 
                             <!-- Hidden on small screens -->
-                            <td class="px-4 py-2 hidden sm:table-cell"></td>
-                            <td class="px-4 py-2 hidden sm:table-cell">{{ $defense['Encadrant Interne'] }}</td>
-                            <td class="px-4 py-2 hidden sm:table-cell">{{ $defense['Nom et Prénom Examinateur 1'] }}
+                            <td class="px-4 py-2">{{ $defense['Encadrant Interne'] }}</td>
+                            <td class="px-4 py-2">{{ $defense['Nom et Prénom Examinateur 1'] }}
                             </td>
-                            <td class="px-4 py-2 hidden sm:table-cell">{{ $defense['Nom et Prénom Examinateur 2'] }}
+                            <td class="px-4 py-2">{{ $defense['Nom et Prénom Examinateur 2'] }}
                             </td>
                         </tr>
                         @endforeach
