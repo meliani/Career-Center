@@ -16,8 +16,8 @@
         }
     </style>
 
-    @filamentStyles
-    {{-- @livewireStyles() --}}
+    {{-- @filamentStyles --}}
+    @livewireStyles()
     @vite('resources/css/app.css')
 </head>
 
@@ -25,11 +25,11 @@
 
     {{ $slot }}
 
-    @filamentScripts
-    {{-- @livewireScripts() --}}
+    {{-- @filamentScripts --}}
+    @livewireScripts()
     @vite('resources/js/app.js')
 
-    @livewire('notifications')
+    {{-- @livewire('notifications') --}}
     {{-- @livewire('database-notifications') --}}
 </body>
 
