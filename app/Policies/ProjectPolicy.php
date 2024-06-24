@@ -24,7 +24,7 @@ class ProjectPolicy extends CorePolicy
 
     public function view(User $user, Project $project): bool
     {
-        if ($user->isAdministrator()) {
+        if ($user->isAdministrator() || $user->isAdministrativeSupervisor()) {
             return true;
         } elseif ($user->isProfessor() && $project->professors->each(fn ($professor, $key) => $professor->id === $user->id)) {
             return true;
@@ -41,7 +41,7 @@ class ProjectPolicy extends CorePolicy
 
     public function update(User $user, Project $project)
     {
-        if ($user->isAdministrator()) {
+        if ($user->isAdministrator() || $user->isAdministrativeSupervisor()) {
             return true;
         } elseif ($user->isProfessor() && $project->professors === $user->id) {
             return true;
