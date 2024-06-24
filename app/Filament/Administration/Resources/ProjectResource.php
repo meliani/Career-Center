@@ -147,6 +147,9 @@ class ProjectResource extends Core\BaseResource
                     ->date()
                     ->collapsible()
                     ->label(__('Day of')),
+                Tables\Grouping\Group::make('defense_status')
+                    ->collapsible()
+                    ->label(__('Defense status')),
             ])
             ->columns(
                 $livewire->isGridLayout()
