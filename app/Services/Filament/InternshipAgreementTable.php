@@ -28,6 +28,18 @@ class InternshipAgreementTable
             // ->formatStateUsing(function ($state, InternshipAgreement $internship) {
             //     return $internship->student->title->getLabel() . ' ' . $internship->student->first_name . ' ' . $internship->student->last_name;
             // }),
+            Tables\Columns\TextColumn::make('starting_at')
+            ->label(__('Start'))
+            ->searchable()
+            ->sortable()
+            ->date(),
+        Tables\Columns\TextColumn::make('ending_at')
+            ->date()
+            ->label(__('End'))
+            ->searchable()
+            ->sortable(),
+            Tables\Columns\TextColumn::make('duration_in_months')
+                ->label(__('Duration')),
             Tables\Columns\TextColumn::make('central_organization')
                 ->label('Central organization')
                 ->searchable()
@@ -117,16 +129,7 @@ class InternshipAgreementTable
                 ->searchable()
                 ->sortable()
                 ->date(),
-            Tables\Columns\TextColumn::make('starting_at')
-                ->label(__('Start'))
-                ->searchable()
-                ->sortable()
-                ->date(),
-            Tables\Columns\TextColumn::make('ending_at')
-                ->date()
-                ->label(__('End'))
-                ->searchable()
-                ->sortable(),
+
         ];
     }
 }
