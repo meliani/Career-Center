@@ -167,6 +167,8 @@
     "A new internship agreement has been announced": "Une nouvelle convention de stage a été déclarée",
     "View Internship Agreement": "Voir la convention de stage",
     "Career Center": "Plateforme Carrières de l'INPT",
+    "INPT Career-Center": "Plateforme Carrières de l'INPT",
+    "All rights reserved.": "Tous droits réservés.",
     "The status of the internship agreement has been changed": "Le statut de la convention de stage a été modifié",
     "Internship with the id {id} has been modified": "Le stage avec l'identifiant {id} a été modifié",
     "Send Professors Projects Overview": "Envoyer un aperçu des projets aux enseignants",
@@ -405,7 +407,8 @@
     "**External supervisor:** ": "**Encadrant externe:** ",
     "**Academic supervisor:** ": "**Encadrant interne:** ",
     "## Supervisors": "## Encadrants",
-    "**Email Sent by ": "**Email envoyé par "
+    "**Email Sent by ": "**Email envoyé par ",
+    "Send defense email": "Envoyer un email de soutenance"
 
 
 }
