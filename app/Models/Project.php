@@ -23,12 +23,12 @@ class Project extends Core\BackendBaseModel
 
     protected static function booted(): void
     {
-
-        static::updated(function ($project) {
-            $admins = \App\Models\User::administrators();
-            Notification::send($admins, new Notifications\ProjectUpdated($project));
-        });
-
+        /*
+            static::updated(function ($project) {
+                $admins = \App\Models\User::administrators();
+                Notification::send($admins, new Notifications\ProjectUpdated($project));
+            });
+        */
     }
 
     // rules
@@ -75,8 +75,6 @@ class Project extends Core\BackendBaseModel
     public function getIdPfeAttribute()
     {
         if ($this->hasTeammate()) {
-            // dd($this->internship_agreements()->first()->id_pfe, $this->internship_agreements()->latest()->first()->id_pfe);
-
             return ($this->internship_agreements()->first() ? $this->internship_agreements()->first()->id_pfe : 'Undefined ID') . ' ' . __('&') . ' ' . ($this->internship_agreements()->latest()->first() ? $this->internship_agreements()->latest()->first()->id_pfe : 'Undefined ID');
         } else {
             return $this->internship_agreements()->first() ? $this->internship_agreements()->first()->id_pfe : 'Undefined ID';
@@ -118,7 +116,8 @@ class Project extends Core\BackendBaseModel
 
     public function internship_agreement()
     {
-        return $this->internship_agreements()->first();
+        // return $this->internship_agreements()->first();
+        return $this->hasOne(InternshipAgreement::class);
     }
 
     public function professors()
@@ -292,6 +291,8 @@ class Project extends Core\BackendBaseModel
 
         $service = new Services\GenerateDefenseDocuments();
         $service->generateEvaluationSheet($this);
+
+        // event(new \App\Events\DefenseAuthorized($this));
 
     }
 }

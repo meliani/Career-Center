@@ -232,10 +232,12 @@ class ProjectResource extends Core\BaseResource
 
             ])
             ->actions([
+                \App\Filament\Actions\Action\SendDefenseEmailAction::make()
+                    // ->disabled(fn ($record): bool => $record['validated_at'] !== null)
+                    ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()) === false),
                 \App\Filament\Actions\Action\AuthorizeDefenseAction::make()
                     // ->disabled(fn ($record): bool => $record['validated_at'] !== null)
                     ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()) === false),
-
                 \Parallax\FilamentComments\Tables\Actions\CommentsAction::make()
                     ->label('')
                     ->tooltip(

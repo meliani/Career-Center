@@ -385,6 +385,27 @@
     "Apprenticeship": "Stage Ouvrier / Technique",
     "Authorize defense": "Autoriser la soutenance",
     "Defense authorization": "Autorisation de soutenance",
-    "Defense status": "Statut de la soutenance"
+    "Defense status": "Statut de la soutenance",
+    "Defense Authorized": "Soutenance autorisée",
+    "## The defense for your project has been authorized.": "## La soutenance pour votre projet a été autorisée.",
+    "View Project": "Voir le projet",
+    "View Planning": "Voir le planning",
+    "**Administrative supervisor:** ": "**Référent administratif:** ",
+    "**Defense Date:** ": "**Date de soutenance:** ",
+    "## Student information": "## Information de l'étudiant",
+    "**Name:** ": "**Nom:** ",
+    "**ID PFE:** ": "**ID PFE:** ",
+    "**Filiere:** ": "**Filière:** ",
+    "**Organization:** ": "**Organisation:** ",
+    "## Project information": "## Information du projet",
+    "**Title:** ": "**Titre:** ",
+    "## Reviewers": "## Examinateurs",
+    "**Reviewer 1:** ": "**Examinateur 1:** ",
+    "**Reviewer 2:** ": "**Examinateur 2:** ",
+    "**External supervisor:** ": "**Encadrant externe:** ",
+    "**Academic supervisor:** ": "**Encadrant interne:** ",
+    "## Supervisors": "## Encadrants",
+    "**Email Sent by ": "**Email envoyé par "
+
 
 }

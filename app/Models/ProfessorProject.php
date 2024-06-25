@@ -42,13 +42,15 @@ class ProfessorProject extends Pivot
             $professorProject->updated_by = auth()->id();
         });
 
-        static::created(function ($professorProject) {
-            if ($professorProject->assigned_by) {
-                $professorProject->assigned_by->notify(new Notifications\ProjectSupervisorCreated($professorProject));
-            }
-            $admins = \App\Models\User::administrators();
-            Notification::send($admins, new Notifications\ProjectSupervisorCreated($professorProject));
-        });
+        /*
+            static::created(function ($professorProject) {
+                if ($professorProject->assigned_by) {
+                    $professorProject->assigned_by->notify(new Notifications\ProjectSupervisorCreated($professorProject));
+                }
+                $admins = \App\Models\User::administrators();
+                Notification::send($admins, new Notifications\ProjectSupervisorCreated($professorProject));
+            });
+        */
 
     }
 

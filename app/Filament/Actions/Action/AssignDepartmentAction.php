@@ -24,10 +24,7 @@ class AssignDepartmentAction extends Action
             'name' => $name ?? static::getDefaultName(),
         ]);
         $static->configure()->action(function (array $data, InternshipAgreement $record): void {
-            // add a form to select the department
-            // dd('action called');
             $record->withoutTimestamps(fn () => $record->assignDepartment($data['assigned_department']));
-
         })
             ->form([\Filament\Forms\Components\Select::make('assigned_department')
                 ->options([
@@ -35,7 +32,8 @@ class AssignDepartmentAction extends Action
                     'MIR' => 'MIR',
                     'EMO' => 'EMO',
                     'GLC' => 'GLC',
-                ])]);
+                ]),
+            ]);
 
         return $static;
     }

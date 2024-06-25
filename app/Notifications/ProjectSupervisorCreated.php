@@ -42,7 +42,7 @@ class ProjectSupervisorCreated extends Notification implements ShouldQueue
         return (new MailMessage)
             ->subject('Ajout d\'un encadrant de projet')
             ->greeting("Bonjour {$notifiable->first_name},")
-            ->line("**{$this->professorProject->assigned_by->name}** a ajouté l'encadrant **{$this->professorProject->professor->name}** au projet N° {$this->professorProject->project->id_pfe}.")
+            ->line("**{$this->professorProject->assigned_by?->name}** a ajouté l'encadrant **{$this->professorProject->professor->name}** au projet N° {$this->professorProject->project->id_pfe}.")
             ->line("Pour plus d'information, veuillez consulter le projet en cliquant sur le lien ci-dessous.")
             ->action('Consulter le projet', \App\Filament\Administration\Resources\ProjectResource::getUrl('edit', [$this->professorProject->project_id]))
             ->line('---')
