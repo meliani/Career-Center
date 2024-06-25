@@ -408,7 +408,8 @@
     "**Academic supervisor:** ": "**Encadrant interne:** ",
     "## Supervisors": "## Encadrants",
     "**Email Sent by ": "**Email envoyé par ",
-    "Send defense email": "Envoyer un email de soutenance"
+    "Send defense email": "Envoyer un email de soutenance",
+    "## The Defense :id has been authorized.": "## La soutenance du PFE ID :id a été autorisée."
 
 
 }
