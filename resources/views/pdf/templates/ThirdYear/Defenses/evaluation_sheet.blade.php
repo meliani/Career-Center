@@ -1536,7 +1536,7 @@
             <p class="mb-3"><strong>{{ $project->administrative_supervisor }}</strong></p>
             <p class="text-left">{{ $project->defense_plan}}</p>
         </fieldset>
-        <fieldset class="border border-black p-2">
+        <fieldset class="border border-black p-2 min-w-[300px]">
             <legend class="font-bold">Elève & Entreprise</legend>
             <p>
                 <strong>
