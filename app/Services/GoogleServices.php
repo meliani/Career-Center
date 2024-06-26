@@ -12,6 +12,7 @@ use App\Models\Timetable;
 use Barryvdh\Debugbar\Facades\Debugbar;
 use Carbon\Carbon;
 use Filament;
+use Filament\Notifications\Notification;
 
 class GoogleServices
 {
@@ -20,6 +21,8 @@ class GoogleServices
     protected $data;
 
     protected $unfoundProfessors = [];
+
+    protected $anomalies = [];
 
     public function __construct()
     {
@@ -57,23 +60,29 @@ class GoogleServices
 
             if ($timetable) {
                 $timetable->update([
-                    'room_id' => $room->id,
+                    'room_id' => $room?->id,
                     'timeslot_id' => $timeslot->id,
                 ]);
             } else {
-                Timetable::create([
-                    'room_id' => $room->id,
+
+                $timetable = Timetable::create([
+                    'room_id' => $room?->id,
                     'timeslot_id' => $timeslot->id,
                     'project_id' => $this->pfeIdToProjectId($record['ID PFE']),
                 ]);
+                $this->checkAnomalies($timetable);
+
             }
             // show message on debugbar
             // Debugbar::info('Data imported successfully');
-            Filament\Notifications\Notification::make()
-                ->title('Data imported successfully')
-                ->danger()
-                ->send();
+
         }
+        Filament\Notifications\Notification::make()
+            ->title('Data imported successfully')
+            ->danger()
+            ->send();
+        $this->notifyAnomalies();
+
     }
 
     private function parseDateAndTime($dateString, $hourString)
@@ -197,11 +206,10 @@ class GoogleServices
         }
         $professor = Professor::where('name', $reviewerName)->first();
         if (! $professor) {
-            $this->unfoundProfessors += $reviewerName;
-            $professor = new Professor(['name' => $reviewerName]);
-            $professor->save();
-            // Debugbar::info('Professor created successfully');
+            $this->unfoundProfessors[] = $reviewerName;
 
+            // Debugbar::info('Professor created successfully');
+            return;
         }
 
         if (! $project->professors->contains($professor->id)) {
@@ -221,15 +229,75 @@ class GoogleServices
         }
         $professor = Professor::where('name', $supervisorName)->first();
         if (! $professor) {
-            $this->unfoundProfessors += $supervisorName;
-            // Debugbar::info('Professor created successfully');
+            $this->unfoundProfessors[] = $supervisorName;
 
+            // Debugbar::info('Professor created successfully');
+            return;
         }
 
         if (! $project->professors->contains($professor->id)) {
             $project->professors()->attach($professor->id, ['jury_role' => $role]);
         } else {
             // Debugbar::info('Professor already attached to project');
+        }
+    }
+
+    public function checkAnomalies($timetable)
+    {
+        $professorService = new \App\Services\ProfessorService;
+        $professor_availability = $professorService->checkJuryAvailability($timetable->timeslot, $timetable->project, $timetable->id);
+
+        $exists = Timetable::withoutGlobalScopes()->where('timeslot_id', $timetable->timeslot_id)
+            ->where('room_id', $timetable->room_id)
+            ->where('id', '!=', $timetable->id)
+            ->exists();
+
+        if (! $professor_availability) {
+            $this->anomalies[] = __('One of professors is not available in this timeslot, your operation is aborted');
+
+            return false;
+        }
+
+        if ($exists) {
+            $existingTimetable = Timetable::withoutGlobalScopes()->where('timeslot_id', $timetable->timeslot_id)
+                ->where('room_id', $timetable->room_id)
+                ->where('id', '!=', $timetable->id)
+                ->first();
+            $professor_availability = $professorService->checkJuryAvailability($timetable->timeslot, $timetable->project, $existingTimetable->id);
+            if (! $professor_availability) {
+                $this->anomalies[] = __('One of professors is not available in this timeslot, your operation is aborted');
+
+                return false;
+            }
+
+            if ($existingTimetable->project_id !== null) {
+                $this->anomalies[] = __('Timeslot :timeslot and Room :room conflict, your operation is aborted', ['timeslot' => $timetable->timeslot->start_time, 'room' => $timetable->room->name]);
+
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            $professor_availability = $professorService->checkJuryAvailability($timetable->timeslot, $timetable->project, $timetable->id);
+            if (! $professor_availability) {
+                $this->anomalies[] = __('One of professors is not available in this timeslot, your operation is aborted');
+
+                return false;
+            }
+        }
+
+    }
+
+    protected function notifyAnomalies()
+    {
+        if (! empty($this->anomalies)) {
+            $message = implode("\n", $this->anomalies); // Concatenate all messages, or format them as you prefer
+            Notification::make()
+                ->title(__('Anomalies Detected') . $message)
+                ->danger()
+                ->persistent()
+                // ->sendToDatabase(auth()->user());
+                ->send();
         }
     }
 }
