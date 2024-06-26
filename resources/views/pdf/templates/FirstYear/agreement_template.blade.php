@@ -720,7 +720,7 @@
     </div>
     <div class="text-xs">
         Sise à l'addresse : <strong>{{$internship->organization->address}}, {{$internship->organization->city}},
-            {{$internship->organization->coutry}}</strong>
+            {{$internship->organization->country}}</strong>
     </div>
     <div class="text-xs">
         Représenté par <strong>{{$internship->parrain->full_name}}</strong>,
