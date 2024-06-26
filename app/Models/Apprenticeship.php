@@ -120,8 +120,8 @@ class Apprenticeship extends Model
 
         if ($this->starting_at instanceof Carbon && $this->ending_at instanceof Carbon) {
             // return $this->starting_at->diffInWeeks($this->ending_at);
-            // return $this->starting_at->floatDiffInRealWeeks($this->ending_at);
-            return $this->starting_at->longAbsoluteDiffForHumans($this->ending_at);
+            return number_format($this->starting_at->floatDiffInRealWeeks($this->ending_at), 1);
+            // return $this->starting_at->longAbsoluteDiffForHumans($this->ending_at);
 
         } else {
             return 0;
