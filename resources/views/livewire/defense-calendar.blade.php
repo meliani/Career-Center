@@ -47,8 +47,8 @@
                                 {{-- w'ell check if student if empty --}}
                                 @if($defense['Nom de l\'étudiant'] == 'Libre')
                                 @else
-                                <p><strong>Filière: </strong>{{ $defense['Filière'] }}</p>
-                                <p><strong>ID PFE: </strong>{{ $defense['ID PFE'] }}</p>
+                                <p>Filière: <strong>{{ $defense['Filière'] }}</strong></p>
+                                <p>ID PFE: <strong>{{ $defense['ID PFE'] }}</strong></p>
                                 @endif
                             </td>
 
