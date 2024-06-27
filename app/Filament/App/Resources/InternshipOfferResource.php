@@ -13,7 +13,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Storage;
 
 class InternshipOfferResource extends Resource
 {
@@ -108,8 +108,7 @@ class InternshipOfferResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('attached_file')
                     ->searchable()
-                    ->url(fn (InternshipOffer $record) => URL::to($record->attached_file), shouldOpenInNewTab: true),
-                Tables\Columns\TextColumn::make('internship_duration')
+                    ->url(fn (InternshipOffer $record) => Storage::url($record->attached_file), shouldOpenInNewTab: true),                Tables\Columns\TextColumn::make('internship_duration')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('remuneration')
