@@ -19,7 +19,7 @@ class GoogleSheetSyncAction extends Action
         $static->configure()->action(function (): void {
             $googleServices = new \App\Services\GoogleServices();
             $googleServices->importData();
-            $googleServices->importProfessors();
+            // $googleServices->importProfessors();
         });
 
         return $static;

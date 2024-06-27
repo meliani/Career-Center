@@ -38,6 +38,25 @@ class ProfessorService
 
     }
 
+    public static function getUnavailableJury(Timeslot $timeslot, Project $project, ?int $timetableId = null)
+    {
+        self::$timeslot = $timeslot;
+        self::$project = $project;
+        self::$timetableId = $timetableId;
+
+        $jury = $project->professors;
+        // we will check every professor in this jury if he is available in this timeslot
+        foreach ($jury as $professor) {
+            // we will check if this professor is available in this timeslot
+            if (! self::isProfessorAvailable(self::$timeslot, $professor, self::$timetableId)) {
+                return $professor;
+            }
+
+        }
+
+        return null;
+    }
+
     public static function isProfessorAvailable(Timeslot $timeslot, Professor $professor, ?int $timetableId = null)
     {
         //  timetable s related to this timeslot and the project, the projects are related with the professor (hasmany)

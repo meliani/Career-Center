@@ -6,16 +6,21 @@ use App\Models\Timetable;
 
 class RoomService
 {
-    public static function checkRoomAvailability($timeslot, $room)
+    public static function checkRoomAvailability($timeslot, $room, $currentTimetableId = null)
     {
-        $timetables = Timetable::where('timeslot_id', $timeslot->id)
-            ->where('room_id', $room->id)->get();
+        // Build the query to check for existing records with the same timeslot_id and room_id
+        $query = Timetable::where('timeslot_id', $timeslot->id)
+            ->where('room_id', $room->id);
 
-        if ($timetables->count() > 0) {
-            return false;
+        // If updating an existing entry, exclude it from the check
+        if ($currentTimetableId !== null) {
+            $query->where('id', '!=', $currentTimetableId);
         }
 
-        return true;
+        // Check if a record exists that matches the query
+        $exists = $query->exists();
 
+        // Return false if a record exists (room not available), true otherwise (room available)
+        return ! $exists;
     }
 }

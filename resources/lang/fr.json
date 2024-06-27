@@ -317,7 +317,7 @@
     "Max defenses per professor": "Max soutenances par enseignant a respecter",
     "Defenses Calendar": "Calendrier des soutenances",
     "Calendars": "Calendriers",
-    "Timetable Overview": "Simulation d'un planning prévionnel",
+    "Timetable Overview": "Souteances par jour",
     "Sign internship agreement": "Signer la convention de stage",
     "To generate document save and go to apprenticeship list": "Pour générer le document, enregistrez et allez à la liste des conventions de stage",
     "Monthly remuneration": "Rémunération mensuelle",
@@ -412,5 +412,6 @@
     "## The Defense :id has been authorized.": "## La soutenance du PFE ID :id a été autorisée.",
     "The residence will not be available after July 31st. Please make the necessary arrangements.": "La résidence ne sera plus disponible après le 31 juillet. Merci de prendre vos dispositions en conséquence.",
     "Notice": "Avis",
-    "I understand": "Je comprends"
+    "I understand": "Je comprends",
+    "Submit my information": "Soumettre mes informations"
 }

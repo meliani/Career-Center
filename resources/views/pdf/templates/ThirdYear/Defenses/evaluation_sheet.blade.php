@@ -1546,7 +1546,7 @@
             <p><strong>ID PFE:</strong> {{ $project->students->last()->active_internship_agreement->id_pfe }}</p>
             <p><strong>Filière:</strong>
                 @php
-                $filiere = $project->students->first()->program->getLabel(); @endphp
+                $filiere = $project->students->last()->program->getLabel(); @endphp
                 {{ $filiere }}
             </p>
             <p><strong>Entreprise:</strong> {{ $project->organization }}</p>
