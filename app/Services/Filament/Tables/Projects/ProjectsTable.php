@@ -9,6 +9,44 @@ class ProjectsTable
     public static function get()
     {
         return [
+            Tables\Columns\ColumnGroup::make(__('The student'))
+                ->columns([
+                    Tables\Columns\TextColumn::make('internship_agreements.id_pfe')
+                        ->label('ID PFE')
+                        ->sortable()
+                        ->sortableMany()
+                        ->searchable(true),
+                    Tables\Columns\TextColumn::make('students.full_name')
+                        ->label('Student name')
+                        ->searchable(
+                            ['first_name', 'last_name']
+                        )
+                        ->sortableMany(),
+                    Tables\Columns\TextColumn::make('students.program')
+                        ->toggleable(isToggledHiddenByDefault: true)
+                        ->label('Program')
+                        ->searchable()->sortableMany()->badge(),
+                    // Tables\Columns\TextColumn::make('internship_agreements.assigned_department')
+                    //     ->label('Assigned department')
+                    //     // ->sortable(false)
+                    //     ->sortableMany()
+                    //     ->searchable(),
+                    Tables\Columns\TextColumn::make('department')
+                        ->toggleable(isToggledHiddenByDefault: true)
+                        ->label('Assigned department')
+                        ->searchable(false)
+                        ->sortableMany(),
+                    Tables\Columns\TextColumn::make('start_date')
+                        ->searchable(false)
+                        ->toggleable(isToggledHiddenByDefault: true)
+                        ->label('Project start date')
+                        ->date('d/m/Y'),
+                    Tables\Columns\TextColumn::make('end_date')
+                        ->searchable(false)
+                        ->toggleable(isToggledHiddenByDefault: true)
+                        ->label('Project end date')
+                        ->date('d/m/Y'),
+                ]),
             Tables\Columns\ColumnGroup::make(__('Defense authorization'))
                 ->columns([
                     Tables\Columns\TextColumn::make('defense_status')
@@ -26,7 +64,7 @@ class ProjectsTable
                         ->limit(20)
                         ->url(fn ($record) => $record->evaluation_sheet_url, shouldOpenInNewTab: true),
                     Tables\Columns\TextColumn::make('defense_authorized_by_user.name')
-
+                        ->toggleable(isToggledHiddenByDefault: true)
                         ->label('Authorized by')
                         ->searchable(false)
                         ->badge()
@@ -91,44 +129,7 @@ class ProjectsTable
                         ->searchable(false)
                         ->label('Room'),
                 ]),
-            Tables\Columns\ColumnGroup::make(__('The student'))
-                ->columns([
-                    Tables\Columns\TextColumn::make('internship_agreements.id_pfe')
-                        ->label('ID PFE')
-                        ->sortable()
-                        ->sortableMany()
-                        ->searchable(true),
-                    Tables\Columns\TextColumn::make('students.full_name')
-                        ->label('Student name')
-                        ->searchable(
-                            ['first_name', 'last_name']
-                        )
-                        ->sortableMany(),
-                    Tables\Columns\TextColumn::make('students.program')
-                        ->toggleable(isToggledHiddenByDefault: true)
-                        ->label('Program')
-                        ->searchable()->sortableMany()->badge(),
-                    // Tables\Columns\TextColumn::make('internship_agreements.assigned_department')
-                    //     ->label('Assigned department')
-                    //     // ->sortable(false)
-                    //     ->sortableMany()
-                    //     ->searchable(),
-                    Tables\Columns\TextColumn::make('department')
-                        ->toggleable(isToggledHiddenByDefault: true)
-                        ->label('Assigned department')
-                        ->searchable(false)
-                        ->sortableMany(),
-                    Tables\Columns\TextColumn::make('start_date')
-                        ->searchable(false)
-                        ->toggleable(isToggledHiddenByDefault: true)
-                        ->label('Project start date')
-                        ->date('d/m/Y'),
-                    Tables\Columns\TextColumn::make('end_date')
-                        ->searchable(false)
-                        ->toggleable(isToggledHiddenByDefault: true)
-                        ->label('Project end date')
-                        ->date('d/m/Y'),
-                ]),
+
             // Tables\Columns\TextColumn::make('professors.department')
             //     ->label('department of supervisor'),
 
