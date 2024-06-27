@@ -19,7 +19,26 @@ class ApprenticeshipAgreementForm
                 Forms\Components\Placeholder::make('Note')->hiddenLabel()->content(__('Notice: You can only announce one internship agreement during an academic year.')),
                 Forms\Components\Placeholder::make('Note')->hiddenLabel()->content(__('When you save this form, you will not be able to change the organization and its representatives.')),
             ]),
-            ...(new AddOrganizationForm())->getSchema(),
+            // ...(new AddOrganizationForm())->getSchema(),
+            Forms\Components\Select::make('organization_id')
+                ->optionsLimit(3)
+                ->hiddenOn('edit')
+                ->relationship('organization', 'name')
+                ->searchable()
+                ->preload()
+                ->required()
+                ->live()
+                ->id('organization_id')
+                ->createOptionForm([
+                    Forms\Components\TextInput::make('name')
+                        ->required(),
+                    Forms\Components\TextInput::make('city')
+                        ->required(),
+                    \Parfaitementweb\FilamentCountryField\Forms\Components\Country::make('country')
+                        ->required()
+                        ->searchable(),
+                    Forms\Components\TextInput::make('address'),
+                ]),
             Forms\Components\TextInput::make('title')
                 ->columnSpanFull()->required(),
             Forms\Components\RichEditor::make('description')
@@ -61,10 +80,7 @@ class ApprenticeshipAgreementForm
                                 ->searchable()
                                 ->preload()
                                 ->required()
-                                ->createOptionForm([
-                                    ...(new AddOrganizationForm())->getSchema(),
-                                ]),
-                            // ->default(fn (Get $get) => $get('organization_id')),
+                                ->default(fn (Get $get) => $get('organization_id')),
                             Forms\Components\Fieldset::make(__('Parrain'))
                                 ->columns(3)
                                 ->schema([
@@ -88,10 +104,7 @@ class ApprenticeshipAgreementForm
                                 ->relationship('organization', 'name')
                                 ->searchable()
                                 ->preload()
-                                ->required()
-                                ->createOptionForm([
-                                    ...(new AddOrganizationForm())->getSchema(),
-                                ]),
+                                ->required(),
                             Forms\Components\Fieldset::make(__('Supervisor'))
                                 ->columns(3)
                                 ->schema([
