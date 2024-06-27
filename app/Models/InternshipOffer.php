@@ -57,15 +57,33 @@ class InternshipOffer extends Model
         'deleted_at',
     ];
 
+    protected $appends = [
+        'internship_duration',
+    ];
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::addGlobalScope(new Scopes\InternshipOfferScope());
+
+    }
+
     protected static function booted(): void
     {
         static::deleting(function (InternshipOffer $internshipOffer) {
             $internshipOffer->tags()->detach();
         });
+
     }
 
     public function organization()
     {
         return $this->belongsTo(Organization::class);
     }
+
+    // public function getInternshipDurationAttribute(): string
+    // {
+    //     return $this->internship_duration . ' ' . __('months');
+    // }
 }
