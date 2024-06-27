@@ -80,16 +80,16 @@ class InternshipOfferResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('year_id')
-                    ->numeric()
-                    ->sortable(),
+                // Tables\Columns\TextColumn::make('year_id')
+                //     ->numeric()
+                //     ->sortable(),
                 Tables\Columns\TextColumn::make('organization_name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('organization_type')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('organization_id')
-                    ->numeric()
-                    ->sortable(),
+                // Tables\Columns\TextColumn::make('organization_type')
+                //     ->searchable(),
+                // Tables\Columns\TextColumn::make('organization_id')
+                //     ->numeric()
+                //     ->sortable(),
                 Tables\Columns\TextColumn::make('country')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('internship_type'),
@@ -97,16 +97,17 @@ class InternshipOfferResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('responsible_occupation')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('responsible_phone')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('responsible_email')
-                    ->searchable(),
+                // Tables\Columns\TextColumn::make('responsible_phone')
+                //     ->searchable(),
+                // Tables\Columns\TextColumn::make('responsible_email')
+                //     ->searchable(),
                 Tables\Columns\TextColumn::make('internship_location')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('keywords')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('attached_file')
-                    ->searchable(),
+                    ->searchable()
+                    ->url(fn (InternshipOffer $record) => URL::to($record->attached_file), shouldOpenInNewTab: true),
                 Tables\Columns\TextColumn::make('internship_duration')
                     ->numeric()
                     ->sortable(),
@@ -117,26 +118,26 @@ class InternshipOfferResource extends Resource
                 Tables\Columns\TextColumn::make('workload')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('recruting_type'),
+                // Tables\Columns\TextColumn::make('recruting_type'),
                 Tables\Columns\TextColumn::make('application_email')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('status'),
-                Tables\Columns\TextColumn::make('applyable'),
+                // Tables\Columns\TextColumn::make('status'),
+                // Tables\Columns\TextColumn::make('applyable'),
                 Tables\Columns\TextColumn::make('expire_at')
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                // Tables\Columns\TextColumn::make('created_at')
+                //     ->dateTime()
+                //     ->sortable()
+                //     ->toggleable(isToggledHiddenByDefault: true),
+                // Tables\Columns\TextColumn::make('updated_at')
+                //     ->dateTime()
+                //     ->sortable()
+                //     ->toggleable(isToggledHiddenByDefault: true),
+                // Tables\Columns\TextColumn::make('deleted_at')
+                //     ->dateTime()
+                //     ->sortable()
+                //     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
