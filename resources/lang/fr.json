@@ -18,15 +18,15 @@
     "Internship Offers": "Offres de Stages",
     "Total assigned internships": "Nombre de stages affectés",
     "Assigned projects": "Nombre de projets affectés",
-    "An overview of the daily announced internships." : "Un aperçu des stages déclarés quotidiennement.",
+    "An overview of the daily announced internships.": "Un aperçu des stages déclarés quotidiennement.",
     "Announced Internships per Organization": "Stages déclarés par organisation",
     "Announced Internships per month": "Nombre de stages déclarés par mois",
     "Internships announced count": "Nombre de stages déclarés",
     "Count of internships": "Nombre de stages",
     "Anounced Internships distribution per Program": "Répartition des stages déclarés par filière",
     "Daily Announced Internships": "Nombre de stages déclarés quotidiennement",
-    "An overview of the announced internships per month." : "Un aperçu des stages déclarés par mois.",
-    "An overview of the announced internships distribution per program." : "Un aperçu de la répartition des stages déclarés par filière.",
+    "An overview of the announced internships per month.": "Un aperçu des stages déclarés par mois.",
+    "An overview of the announced internships distribution per program.": "Un aperçu de la répartition des stages déclarés par filière.",
     "Full Name": "Nom complet",
     "Organization name": "Nom de l'organisation",
     "Sign": "Signer le document",
@@ -241,7 +241,7 @@
     "Switch to edit mode": "Passer en mode édition",
     "Edit project details and jury members": "Modifier les détails du projet et les membres du jury",
     "Assigned by": "Affecté par",
-    ":x projects created, and :y projects were ignored." : ":x projets créés, et :y projets ont été ignorés.",
+    ":x projects created, and :y projects were ignored.": ":x projets créés, et :y projets ont été ignorés.",
     "Approval done by": "Approbation effectuée par",
     "Approve": "Approuver",
     "Approve this jury member (only for administrators and direction)": "Approuver ce membre du jury (uniquement pour les administrateurs et la direction)",
@@ -267,7 +267,7 @@
     "Total Students": "Nombre d'étudiants",
     "Ratio (%)": "Ratio (%)",
     "Verify Email Address": "Vérifier votre adresse email",
-    "Please click the button below to verify your email address.":"Veuillez cliquer sur le bouton ci-dessous pour vérifier votre adresse email.",
+    "Please click the button below to verify your email address.": "Veuillez cliquer sur le bouton ci-dessous pour vérifier votre adresse email.",
     "Reset Password Notification": "Réinitialisation de votre mot de passe INPT-Entreprises",
     "You are receiving this email because we received a password reset request for your account.": "Vous recevez cet email car nous avons reçu une demande de réinitialisation de mot de passe pour votre compte.",
     "Reset Password": "Réinitialiser le mot de passe",
@@ -409,7 +409,8 @@
     "## Supervisors": "## Encadrants",
     "**Email Sent by ": "**Email envoyé par ",
     "Send defense email": "Envoyer un email de soutenance",
-    "## The Defense :id has been authorized.": "## La soutenance du PFE ID :id a été autorisée."
-
-
+    "## The Defense :id has been authorized.": "## La soutenance du PFE ID :id a été autorisée.",
+    "The residence will not be available after July 31st. Please make the necessary arrangements.": "La résidence ne sera plus disponible après le 31 juillet. Merci de prendre vos dispositions en conséquence.",
+    "Notice": "Avis",
+    "I understand": "Je comprends"
 }
