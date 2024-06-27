@@ -193,7 +193,7 @@ class InternshipOfferResource extends Resource
                         Infolists\Components\TextEntry::make('country'),
                     ]),
                 Infolists\Components\Section::make(__('Responsible Information'))
-                    ->columns(3)
+                    ->columns(2)
                     ->schema([
                         Infolists\Components\TextEntry::make('responsible_name'),
                         Infolists\Components\TextEntry::make('responsible_occupation'),
@@ -202,7 +202,7 @@ class InternshipOfferResource extends Resource
                     ]),
 
                 Infolists\Components\Section::make(__('Internship Information'))
-                    ->columns(3)
+                    ->columns(4)
                     ->schema([
                         Infolists\Components\TextEntry::make('internship_type'),
                         Infolists\Components\TextEntry::make('internship_location'),
@@ -214,8 +214,8 @@ class InternshipOfferResource extends Resource
                         Infolists\Components\TextEntry::make('workload'),
                         Infolists\Components\TextEntry::make('recruting_type'),
                         Infolists\Components\TextEntry::make('application_email'),
-                        Infolists\Components\TextEntry::make('status'),
-                        Infolists\Components\TextEntry::make('applyable'),
+                        // Infolists\Components\TextEntry::make('status'),
+                        // Infolists\Components\TextEntry::make('applyable'),
                         Infolists\Components\TextEntry::make('expire_at'),
                     ]),
 
