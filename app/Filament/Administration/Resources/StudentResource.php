@@ -190,13 +190,13 @@ class StudentResource extends Core\BaseResource
             ->filters([
                 Tables\Filters\SelectFilter::make('level')
                     ->options(Enums\StudentLevel::class)
-                    ->label('Level')
+                    ->label(__('Level'))
                     ->default(Enums\StudentLevel::ThirdYear->value)
-                    ->placeholder('All levels'),
+                    ->placeholder(__('All levels')),
                 Tables\Filters\SelectFilter::make('program')
                     ->options(Enums\Program::class)
-                    ->label('Program')
-                    ->placeholder('All programs'),
+                    ->label(__('Program'))
+                    ->placeholder(__('All programs')),
             ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
                 \STS\FilamentImpersonate\Tables\Actions\Impersonate::make()
