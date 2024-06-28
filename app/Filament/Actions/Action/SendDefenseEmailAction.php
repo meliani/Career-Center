@@ -44,11 +44,13 @@ class SendDefenseEmailAction extends Action
     public static function getEmails($project): array
     {
         $administrators = \App\Models\User::administrators()->pluck('email');
-        $programUsers = \App\Models\User::where('assigned_program', $project->internship_agreement->student->program->value)->pluck('email');
+        $AdministrativeSupervisor = \App\Models\User::where('assigned_program', $project->internship_agreement->student->program->value)
+            ->where('role', \App\Enums\Role::AdministrativeSupervisor->value)
+            ->pluck('email');
         $jury = $project->professors->pluck('email');
         $externalJury = $project->external_supervisor_email;
         $extraEmails = ['entreprises@inpt.ac.ma'];
-        self::$emails = $jury->merge($externalJury)->merge($programUsers)->merge($extraEmails)->toArray();
+        self::$emails = $jury->merge($externalJury)->merge($AdministrativeSupervisor)->merge($extraEmails)->toArray();
 
         return self::$emails;
     }
