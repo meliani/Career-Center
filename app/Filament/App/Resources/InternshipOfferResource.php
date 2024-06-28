@@ -86,6 +86,9 @@ class InternshipOfferResource extends Resource
                 //     ->sortable(),
                 Tables\Columns\TextColumn::make('organization_name')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('project_title')
+                    ->limit(30),
+
                 // Tables\Columns\TextColumn::make('organization_type')
                 //     ->searchable(),
                 // Tables\Columns\TextColumn::make('organization_id')
@@ -203,6 +206,12 @@ class InternshipOfferResource extends Resource
                 Infolists\Components\Section::make(__('Internship Information'))
                     ->columns(4)
                     ->schema([
+                        Infolists\Components\TextEntry::make('project_title')
+                            ->columnSpanFull(),
+
+                        Infolists\Components\TextEntry::make('project_details')
+                            ->columnSpanFull(),
+
                         Infolists\Components\TextEntry::make('internship_type'),
                         Infolists\Components\TextEntry::make('internship_location'),
                         Infolists\Components\TextEntry::make('keywords'),
