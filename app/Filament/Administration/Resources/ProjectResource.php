@@ -232,22 +232,24 @@ class ProjectResource extends Core\BaseResource
 
             ])
             ->actions([
-                \App\Filament\Actions\Action\SendDefenseEmailAction::make()
-                    // ->disabled(fn ($record): bool => $record['validated_at'] !== null)
-                    ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()) === false),
-                \App\Filament\Actions\Action\AuthorizeDefenseAction::make()
-                    // ->disabled(fn ($record): bool => $record['validated_at'] !== null)
-                    ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()) === false),
-                \Parallax\FilamentComments\Tables\Actions\CommentsAction::make()
-                    ->label('')
-                    ->tooltip(
-                        fn ($record) => "{$record->filamentComments()->count()} " . __('Comments')
-                    )
-                    // ->visible(fn () => true)
-                    ->badge(fn ($record) => $record->filamentComments()->count() ? $record->filamentComments()->count() : null),
-                // Tables\Actions\ActionGroup::make([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\ViewAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    \App\Filament\Actions\Action\SendDefenseEmailAction::make()
+                        // ->disabled(fn ($record): bool => $record['validated_at'] !== null)
+                        ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()) === false),
+                    \App\Filament\Actions\Action\AuthorizeDefenseAction::make()
+                        // ->disabled(fn ($record): bool => $record['validated_at'] !== null)
+                        ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()) === false),
+                    \Parallax\FilamentComments\Tables\Actions\CommentsAction::make()
+                        ->label('Comment')
+                        ->tooltip(
+                            fn ($record) => "{$record->filamentComments()->count()} " . __('Comments')
+                        )
+                        // ->visible(fn () => true)
+                        ->badge(fn ($record) => $record->filamentComments()->count() ? $record->filamentComments()->count() : null),
+                    // Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\ViewAction::make(),
+                ]),
                 // ])->dropdown(false)
                 // ->tooltip(__('Edit or view this project')),
                 // ->hidden(true),
