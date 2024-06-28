@@ -21,7 +21,8 @@ class ProjectsTable
                         ->searchable(
                             ['first_name', 'last_name']
                         )
-                        ->sortableMany(),
+                        ->sortableMany()
+                        ->limit(20),
                     Tables\Columns\TextColumn::make('students.program')
                         ->toggleable(isToggledHiddenByDefault: true)
                         ->label('Program')
