@@ -110,7 +110,7 @@ class ProjectsTable
                         ->sortable(),
                     Tables\Columns\TextColumn::make('defense_plan')
                         ->label('Defense Plan')
-                        ->toggleable(isToggledHiddenByDefault: true)
+                        ->toggleable(isToggledHiddenByDefault: false)
                         ->sortable(false)
                         ->searchable(false),
                     Tables\Columns\TextColumn::make('timetable.timeslot.start_time')

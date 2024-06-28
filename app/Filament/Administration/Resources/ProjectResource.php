@@ -8,6 +8,7 @@ use App\Filament\Administration\Resources\ProjectResource\Pages;
 use App\Filament\Administration\Resources\ProjectResource\RelationManagers;
 use App\Filament\Core;
 use App\Models\Project;
+use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists;
@@ -16,9 +17,11 @@ use Filament\Infolists\Infolist;
 use Filament\Resources\RelationManagers\RelationGroup;
 use Filament\Support\Enums as FilamentEnums;
 use Filament\Tables;
+use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Table;
 use Hydrat\TableLayoutToggle\Facades\TableLayoutToggle;
 use Illuminate\Contracts\Database\Query\Builder;
+use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 use Parallax\FilamentComments\Actions\CommentsAction;
 use Parallax\FilamentComments\Infolists\Components\CommentsEntry;
 use pxlrbt\FilamentExcel;
@@ -166,6 +169,16 @@ class ProjectResource extends Core\BaseResource
                     ] : null
             )
             ->filters([
+                // DateRangeFilter::make('timetable.timeslot.start_time')
+                // ->label('Defense date')
+                // ->defaultToday()
+                // ->timePicker()
+                // ->modifyQueryUsing(fn (Builder $query, ?Carbon $startDate, ?Carbon $endDate, $dateString) => $query->whereHas('timetable.timeslot', fn ($query) => $query->whereBetween('start_time', [$startDate, $endDate]))),
+                // Tables\Filters\SelectFilter::make('timetable.timeslot.start_time')
+                //     ->label('Defense date')
+                //     ->relationship('timetable.timeslot', 'start_time')
+                //     ->searchable()
+                //     ->preload(),
                 Tables\Filters\SelectFilter::make('professor')
                     ->searchable()
                     ->preload()
@@ -195,7 +208,7 @@ class ProjectResource extends Core\BaseResource
                         ),
                     ),
 
-            ])
+            ], layout: FiltersLayout::AboveContentCollapsible)
             ->headerActions([
                 \App\Filament\Actions\Action\Processing\GoogleSheetSyncAction::make('Google Sheet Sync')
                     ->label('Google Sheet Sync')

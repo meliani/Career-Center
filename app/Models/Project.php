@@ -186,6 +186,16 @@ class Project extends Core\BackendBaseModel
         return $this->internship_agreements()->first() ? "{$this->internship_agreements()->first()->encadrant_ext_name}, {$this->internship_agreements()->first()->encadrant_ext_fonction}" : 'Undefined External Supervisor';
     }
 
+    public function getExternalSupervisorContactAttribute()
+    {
+        return $this->internship_agreements()->first() ? "{$this->internship_agreements()->first()->encadrant_ext_tel}, {$this->internship_agreements()->first()->encadrant_ext_mail}" : 'Undefined External Supervisor Contact';
+    }
+
+    public function getExternalSupervisorEmailAttribute()
+    {
+        return $this->internship_agreements()->first() ? "{$this->internship_agreements()->first()->encadrant_ext_mail}" : 'Undefined External Supervisor Email';
+    }
+
     public function getParrainAttribute()
     {
         return $this->internship_agreements()->first() ? "{$this->internship_agreements()->first()->parrain_name}, {$this->internship_agreements()->first()->parrain_fonction}" : 'Undefined Parrain';
@@ -194,11 +204,6 @@ class Project extends Core\BackendBaseModel
     public function getParrainContactAttribute()
     {
         return $this->internship_agreements()->first() ? "{$this->internship_agreements()->first()->parrain_tel}, {$this->internship_agreements()->first()->parrain_mail}" : 'Undefined Parrain Contact';
-    }
-
-    public function getExternalSupervisorContactAttribute()
-    {
-        return $this->internship_agreements()->first() ? "{$this->internship_agreements()->first()->encadrant_ext_tel}, {$this->internship_agreements()->first()->encadrant_ext_mail}" : 'Undefined External Supervisor Contact';
     }
 
     public function getKeywordsAttribute()

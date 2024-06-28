@@ -27,13 +27,13 @@ class SendDefenseEmailAction extends Action
             return [
                 \Filament\Forms\Components\TagsInput::make('emails')
                     ->label('Emails')
-                    ->placeholder('Enter emails separated by commas')
+                    ->placeholder(__('Enter emails separated by commas'))
                     ->default(function () use ($record) {
                         // Assuming getEmails is a method that takes the $record and returns an array of emails
                         return $record ? self::getEmails($record) : [];
                     }),
-                    // Uncomment and adjust the rules as necessary
-                    // ->rules('required', 'email', 'max:255'),
+                // Uncomment and adjust the rules as necessary
+                // ->rules('required', 'email', 'max:255'),
             ];
         })
             ->requiresConfirmation();
@@ -43,10 +43,13 @@ class SendDefenseEmailAction extends Action
 
     public static function getEmails($project): array
     {
-                    $administrators = \App\Models\User::administrators()->pluck('email');
-            $programUsers = \App\Models\User::where('assigned_program', $project->internship_agreement->student->program->value)->pluck('email');
+        $administrators = \App\Models\User::administrators()->pluck('email');
+        $programUsers = \App\Models\User::where('assigned_program', $project->internship_agreement->student->program->value)->pluck('email');
+        $jury = $project->professors->pluck('email');
+        $externalJury = $project->external_supervisor_email;
+        $extraEmails = ['entreprises@inpt.ac.ma'];
+        self::$emails = $jury->merge($externalJury)->merge($programUsers)->merge($extraEmails)->toArray();
 
-            self::$emails = $administrators->merge($programUsers)->toArray();
-                    return self::$emails;
+        return self::$emails;
     }
 }

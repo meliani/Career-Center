@@ -105,6 +105,10 @@ class ProjectsGrid
                     //     ->label('Keywords')
                     //     ->searchable()
                     //     ->limit(50),
+                    Tables\Columns\TextColumn::make('timetable.timeslot.start_time')
+                        ->description(__('Defense start time'), position: 'above')
+                        ->searchable(false)
+                        ->sortable(false),
                 ]),
             ])
                 ->collapsible(),
