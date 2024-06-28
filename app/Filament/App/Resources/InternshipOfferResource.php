@@ -214,7 +214,8 @@ class InternshipOfferResource extends Resource
 
                         Infolists\Components\TextEntry::make('internship_type'),
                         Infolists\Components\TextEntry::make('internship_location'),
-                        Infolists\Components\TextEntry::make('keywords'),
+                        // Infolists\Components\TextEntry::make('keywords')
+                        //     ->badge(),
                         Infolists\Components\TextEntry::make('attached_file'),
                         Infolists\Components\TextEntry::make('internship_duration')
                             ->suffix(__(' months')),

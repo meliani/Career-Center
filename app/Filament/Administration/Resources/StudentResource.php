@@ -15,6 +15,7 @@ use Filament\Infolists;
 use Filament\Infolists\Infolist;
 use Filament\Notifications\Notification;
 use Filament\Tables;
+use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades;
 
@@ -196,7 +197,7 @@ class StudentResource extends Core\BaseResource
                     ->options(Enums\Program::class)
                     ->label('Program')
                     ->placeholder('All programs'),
-            ])
+            ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
                 \STS\FilamentImpersonate\Tables\Actions\Impersonate::make()
                     ->hidden(fn ($record) => ! $record->canBeImpersonated())
