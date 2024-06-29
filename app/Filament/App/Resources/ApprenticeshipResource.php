@@ -83,7 +83,7 @@ class ApprenticeshipResource extends StudentBaseResource
                 //     ->sortable(),
                 Tables\Columns\Layout\Split::make([
                     Tables\Columns\TextColumn::make('status')
-                        ->description(__('Status'), position: Before)
+                        ->description(__('Status'), position: 'before')
                         ->searchable(),
                     Tables\Columns\TextColumn::make('pdf_file_name')
                         ->description(__('Agreement PDF'), position: 'before')
