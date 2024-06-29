@@ -32,7 +32,7 @@ class CreateApprenticeship extends CreateRecord
                 ->modalHeading(__('Notice'))
                 ->modalDescription(__('The residence will not be available after July 31st. Please make the necessary arrangements.'))
                 ->modalSubmitActionLabel(__('I understand'))
-                ->color('success')
+                ->color('primary')
                 ->icon('heroicon-o-plus-circle')
                 ->action(fn () => $this->create())
                 ->keyBindings(['mod+s']),

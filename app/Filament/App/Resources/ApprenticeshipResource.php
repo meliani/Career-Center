@@ -11,7 +11,9 @@ use Filament;
 use Filament\Forms\Form;
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
+use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -47,6 +49,28 @@ class ApprenticeshipResource extends StudentBaseResource
     public static function table(Table $table): Table
     {
         return $table
+            ->heading(__('My apprenticeship agreements'))
+            ->recordTitleAttribute('title')
+            ->paginated(false)
+            ->searchable(false)
+            ->emptyStateHeading('')
+            ->emptyStateDescription('')
+            ->emptyStateIcon('heroicon-o-document-text')
+            ->emptyStateActions([
+                Action::make('create')
+                    ->label('Create your first apprenticeship agreement')
+                    ->url(route('filament.app.resources.apprenticeships.create'))
+                    ->icon('heroicon-o-plus-circle')
+                    ->button(),
+            ])
+            ->contentGrid(
+                [
+                    'md' => 1,
+                    'lg' => 1,
+                    'xl' => 1,
+                    '2xl' => 1,
+                ]
+            )
             ->columns([
                 // Tables\Columns\TextColumn::make('student_id')
                 //     ->numeric()
@@ -57,12 +81,17 @@ class ApprenticeshipResource extends StudentBaseResource
                 // Tables\Columns\TextColumn::make('project_id')
                 //     ->numeric()
                 //     ->sortable(),
-                Tables\Columns\TextColumn::make('status')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('pdf_file_name')
-                    ->label('Agreement PDF')
-                    ->limit(20)
-                    ->url(fn (Apprenticeship $record) => URL::to($record->pdf_path . '/' . $record->pdf_file_name), shouldOpenInNewTab: true),
+                Tables\Columns\Layout\Split::make([
+                    Tables\Columns\TextColumn::make('status')
+                        ->description(__('Status'), position: 'after')
+                        ->searchable(),
+                    Tables\Columns\TextColumn::make('pdf_file_name')
+                        ->description(__('Agreement PDF'), position: 'before')
+                        ->label('Agreement PDF')
+                        ->limit(20)
+                        ->formatStateUsing(fn (Apprenticeship $record) => ! is_null($record->pdf_file_name) ? 'View agreement' : 'Generate a new PDF')
+                        ->url(fn (Apprenticeship $record) => URL::to($record->pdf_path . '/' . $record->pdf_file_name), shouldOpenInNewTab: true),
+                ]),
                 // Tables\Columns\TextColumn::make('announced_at')
                 //     ->dateTime()
                 //     ->sortable(),
@@ -76,18 +105,20 @@ class ApprenticeshipResource extends StudentBaseResource
                 // Tables\Columns\TextColumn::make('signed_at')
                 //     ->dateTime()
                 //     ->sortable(),
-                Tables\Columns\TextColumn::make('organization.name')
-                    ->label('Organization')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('title')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('starting_at')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('ending_at')
-                    ->dateTime()
-                    ->sortable(),
+                Tables\Columns\Layout\Split::make([
+                    Tables\Columns\TextColumn::make('organization.name')
+                        ->weight(FontWeight::Bold)
+                        ->description(__('Organization'), position: 'above')
+
+                        ->label('Organization')
+                        ->numeric()
+                        ->sortable(),
+                    Tables\Columns\TextColumn::make('title')
+                        ->description(__('Subject'), position: 'above')
+                        ->weight(FontWeight::Bold)
+                        ->searchable(),
+                ]),
+
                 // Tables\Columns\TextColumn::make('remuneration')
                 //     ->numeric()
                 //     ->sortable(),
@@ -96,18 +127,30 @@ class ApprenticeshipResource extends StudentBaseResource
                 // Tables\Columns\TextColumn::make('workload')
                 //     ->numeric()
                 //     ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\Layout\Split::make([
+                    Tables\Columns\Layout\Stack::make([
+                        Tables\Columns\TextColumn::make('starting_at')
+                            ->description(__('Starting from'), position: 'above')
+                            ->date()
+                            ->sortable(),
+                        Tables\Columns\TextColumn::make('ending_at')
+                            ->description(__('to'), position: 'above')
+                            ->date()
+                            ->sortable(),
+                    ]),
+                ]),
+                // Tables\Columns\TextColumn::make('created_at')
+                //     ->dateTime()
+                //     ->sortable()
+                //     ->toggleable(isToggledHiddenByDefault: true),
+                // Tables\Columns\TextColumn::make('updated_at')
+                //     ->dateTime()
+                //     ->sortable()
+                //     ->toggleable(isToggledHiddenByDefault: true),
+                // Tables\Columns\TextColumn::make('deleted_at')
+                //     ->dateTime()
+                //     ->sortable()
+                //     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 // Tables\Filters\TrashedFilter::make(),
@@ -115,8 +158,8 @@ class ApprenticeshipResource extends StudentBaseResource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                GenerateApprenticeshipAgreementAction::make('Generate Apprenticeship Agreement PDF')
-                    ->label(__('Generate Apprenticeship Agreement PDF'))
+                GenerateApprenticeshipAgreementAction::make('Generate Agreement PDF')
+                    ->label(__('Generate Agreement PDF'))
                     ->requiresConfirmation(),
             ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([

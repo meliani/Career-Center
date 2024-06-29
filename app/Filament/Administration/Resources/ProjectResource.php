@@ -142,7 +142,9 @@ class ProjectResource extends Core\BaseResource
 
         return $table
             ->defaultPaginationPageOption(10)
+            ->filtersLayout(FiltersLayout::AboveContentCollapsible)
             // ->striped()
+            ->deferLoading()
             ->defaultSort('timetable.timeslot.start_time')
             ->defaultGroup('timetable.timeslot.start_time')
             ->groups([
@@ -208,7 +210,7 @@ class ProjectResource extends Core\BaseResource
                         ),
                     ),
 
-            ], layout: FiltersLayout::AboveContentCollapsible)
+            ])
             ->headerActions([
                 \App\Filament\Actions\Action\Processing\GoogleSheetSyncAction::make('Google Sheet Sync')
                     ->label('Google Sheet Sync')

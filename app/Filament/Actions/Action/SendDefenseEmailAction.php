@@ -3,11 +3,14 @@
 namespace App\Filament\Actions\Action;
 
 use App\Models\Project;
+use App\Notifications\DefenseAuthorizedNotification;
 use Filament\Tables\Actions\Action;
 
 class SendDefenseEmailAction extends Action
 {
     public static array $emails = [];
+
+    protected static $emailBody;
 
     public static function getDefaultName(): string
     {
@@ -21,10 +24,18 @@ class SendDefenseEmailAction extends Action
             'name' => $name ?? static::getDefaultName(),
         ]);
         $static->configure()->action(function (array $data, Project $record): void {
-            event(new \App\Events\DefenseAuthorized($record, $data['emails']));
+            // event(new \App\Events\DefenseAuthorized($record, $data['emails']));
+            // dd($notification->toMail(auth()->user()->email)->render());
 
         })->form(function ($record) {
+            $notification = new DefenseAuthorizedNotification($record);
+
+            self::$emailBody = $notification->toMail(auth()->user()->email)->render();
+
             return [
+                \Filament\Forms\Components\Textarea::make('email_body')
+                    ->label('Email Body')
+                    ->default(function ($record) {}),
                 \Filament\Forms\Components\TagsInput::make('emails')
                     ->label('Emails')
                     ->placeholder(__('Enter emails separated by commas'))

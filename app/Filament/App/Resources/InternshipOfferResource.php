@@ -85,7 +85,8 @@ class InternshipOfferResource extends Resource
                 //     ->numeric()
                 //     ->sortable(),
                 Tables\Columns\TextColumn::make('organization_name')
-                    ->searchable(),
+                    ->searchable()
+                    ->limit(20),
                 Tables\Columns\TextColumn::make('project_title')
                     ->limit(30),
 
@@ -187,23 +188,30 @@ class InternshipOfferResource extends Resource
     {
         return $infolist
             ->schema([
-                Infolists\Components\Section::make(__('Organization Information'))
-                    ->columns(3)
-                    ->schema([
-                        Infolists\Components\TextEntry::make('organization_name'),
-                        Infolists\Components\TextEntry::make('organization_type'),
-                        Infolists\Components\TextEntry::make('country'),
-                    ]),
-                Infolists\Components\Section::make(__('Responsible Information'))
-                    ->columns(2)
-                    ->schema([
-                        Infolists\Components\TextEntry::make('responsible_name'),
-                        Infolists\Components\TextEntry::make('responsible_occupation'),
-                        // Infolists\Components\TextEntry::make('responsible_phone'),
-                        // Infolists\Components\TextEntry::make('responsible_email'),
-                    ]),
+                Infolists\Components\Group::make([
+                    Infolists\Components\Section::make(__('Organization Information'))
+                        ->columns(3)
+                        ->columnSpan(1)
+                        ->schema([
+                            Infolists\Components\TextEntry::make('organization_name'),
+                            Infolists\Components\TextEntry::make('organization_type'),
+                            Infolists\Components\TextEntry::make('country'),
+                        ]),
+                ]),
+                Infolists\Components\Group::make([
+                    Infolists\Components\Section::make(__('Responsible Information'))
+                        ->columnSpan(1)
+                        ->columns(2)
+                        ->schema([
+                            Infolists\Components\TextEntry::make('responsible_name'),
+                            Infolists\Components\TextEntry::make('responsible_occupation'),
+                            // Infolists\Components\TextEntry::make('responsible_phone'),
+                            // Infolists\Components\TextEntry::make('responsible_email'),
+                        ]),
+                ]),
 
                 Infolists\Components\Section::make(__('Internship Information'))
+                    ->columnSpan(1)
                     ->columns(4)
                     ->schema([
                         Infolists\Components\TextEntry::make('project_title')
@@ -211,7 +219,12 @@ class InternshipOfferResource extends Resource
 
                         Infolists\Components\TextEntry::make('project_details')
                             ->columnSpanFull(),
+                    ]),
 
+                Infolists\Components\Section::make(__('Internship Details'))
+                    ->columnSpan(1)
+                    ->columns(2)
+                    ->schema([
                         Infolists\Components\TextEntry::make('internship_type'),
                         Infolists\Components\TextEntry::make('internship_location'),
                         // Infolists\Components\TextEntry::make('keywords')
@@ -228,8 +241,6 @@ class InternshipOfferResource extends Resource
                         // Infolists\Components\TextEntry::make('applyable'),
                         Infolists\Components\TextEntry::make('expire_at'),
                     ]),
-
             ]);
-
     }
 }

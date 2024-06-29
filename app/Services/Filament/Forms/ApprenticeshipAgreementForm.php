@@ -15,111 +15,123 @@ class ApprenticeshipAgreementForm
     public function getSchema(): array
     {
         return [
-            Forms\Components\Section::make()->schema([
-                Forms\Components\Placeholder::make('Note')->hiddenLabel()->content(__('Notice: You can only announce one internship agreement during an academic year.')),
-                Forms\Components\Placeholder::make('Note')->hiddenLabel()->content(__('When you save this form, you will not be able to change the organization and its representatives.')),
-            ]),
-            // ...(new AddOrganizationForm())->getSchema(),
-            Forms\Components\Select::make('organization_id')
-                ->optionsLimit(3)
-                ->hiddenOn('edit')
-                ->relationship('organization', 'name')
-                ->searchable()
-                ->preload()
-                ->required()
-                ->live()
-                ->id('organization_id')
-                ->createOptionForm([
-                    Forms\Components\TextInput::make('name')
-                        ->required(),
-                    Forms\Components\TextInput::make('city')
-                        ->required(),
-                    \Parfaitementweb\FilamentCountryField\Forms\Components\Country::make('country')
-                        ->required()
-                        ->searchable(),
-                    Forms\Components\TextInput::make('address'),
-                ]),
-            Forms\Components\TextInput::make('title')
-                ->columnSpanFull()->required(),
-            Forms\Components\RichEditor::make('description')
-                ->columnSpanFull(),
-
-            Forms\Components\SpatieTagsInput::make('keywords')
-                ->splitKeys(['Tab', ',', ';'])
-                ->nestedRecursiveRules([
-                    'min:2',
-                    'max:50',
-                ])
-                ->placeholder('Add a keyword and press enter or click away to add it')
-                ->color('success')
-                ->columnSpanFull(),
-            Forms\Components\Fieldset::make(__('Organization contacts'))
-
-                ->columns(2)
+            Forms\Components\Section::make()
                 ->schema([
-                    // Forms\Components\Placeholder::make('Le parrain est le représentant de l\'organisme d\'accueil'),
-                    Forms\Components\Section::make()
-                        ->schema([Forms\Components\Placeholder::make('Note')->hiddenLabel()
-                            ->content(__('Parrain is the representative of the host organization'))])
-                        ->hiddenOn('edit'),
-                    Forms\Components\Select::make('parrain_id')
+                    Forms\Components\Placeholder::make('Note')->hiddenLabel()->content(__('Notice: You can only announce one internship agreement during an academic year.')),
+                    Forms\Components\Placeholder::make('Note')->hiddenLabel()->content(__('When you save this form, you will not be able to change the organization and its representatives.')),
+                ]),
+            // ...(new AddOrganizationForm())->getSchema(),
+            Forms\Components\Section::make()
+                ->columnSpan(1)
+                ->schema([
+                    Forms\Components\Select::make('organization_id')
+                        ->optionsLimit(3)
                         ->hiddenOn('edit')
-                        ->relationship(
-                            name: 'parrain',
-                            titleAttribute: 'name',
-                            // ignoreRecord: true,
-                            modifyQueryUsing: fn (Builder $query, Get $get) => $query->where('organization_id', $get('organization_id'))
-                        )
-                        ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->first_name} {$record->last_name} - {$record->function}") // {$record->organization->name} :
-                        ->searchable(['first_name', 'last_name'])
+                        ->relationship('organization', 'name')
+                        ->searchable()
                         ->preload()
                         ->required()
+                        ->live()
+                        ->id('organization_id')
                         ->createOptionForm([
-                            Forms\Components\Select::make('organization_id')
-                                ->relationship('organization', 'name')
-                                ->searchable()
+                            Forms\Components\TextInput::make('name')
+                                ->required(),
+                            Forms\Components\TextInput::make('city')
+                                ->required(),
+                            \Parfaitementweb\FilamentCountryField\Forms\Components\Country::make('country')
+                                ->required()
+                                ->searchable(),
+                            Forms\Components\TextInput::make('address'),
+                        ]),
+                    Forms\Components\Fieldset::make(__('Organization contacts'))
+                        ->columnSpan(1)
+                        ->columns(2)
+                        ->schema([
+                            // Forms\Components\Placeholder::make('Le parrain est le représentant de l\'organisme d\'accueil'),
+                            Forms\Components\Section::make()
+                                ->schema([Forms\Components\Placeholder::make('Note')->hiddenLabel()
+                                    ->content(__('Parrain is the representative of the host organization'))])
+                                ->hiddenOn('edit'),
+                            Forms\Components\Select::make('parrain_id')
+                                ->hiddenOn('edit')
+                                ->relationship(
+                                    name: 'parrain',
+                                    titleAttribute: 'name',
+                                    // ignoreRecord: true,
+                                    modifyQueryUsing: fn (Builder $query, Get $get) => $query->where('organization_id', $get('organization_id'))
+                                )
+                                ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->first_name} {$record->last_name} - {$record->function}") // {$record->organization->name} :
+                                ->searchable(['first_name', 'last_name'])
                                 ->preload()
                                 ->required()
-                                ->default(fn (Get $get) => $get('organization_id')),
-                            Forms\Components\Fieldset::make(__('Parrain'))
-                                ->columns(3)
-                                ->schema([
-                                    ...(new AddOrganizationContactForm())->getSchema(),
+                                ->createOptionForm([
+                                    Forms\Components\Select::make('organization_id')
+                                        ->relationship('organization', 'name')
+                                        ->searchable()
+                                        ->preload()
+                                        ->required()
+                                        ->default(fn (Get $get) => $get('organization_id')),
+                                    Forms\Components\Fieldset::make(__('Parrain'))
+                                        ->columns(3)
+                                        ->schema([
+                                            ...(new AddOrganizationContactForm())->getSchema(),
+                                        ]),
                                 ]),
-                        ]),
-                    Forms\Components\Select::make('supervisor_id')
-                        ->relationship(
-                            name: 'supervisor',
-                            titleAttribute: 'name',
-                            // ignoreRecord: true,
-                            modifyQueryUsing: fn (Builder $query, Get $get) => $query->where('organization_id', $get('organization_id'))
-                        )
-                        ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->first_name} {$record->last_name} - {$record->function}")
-                        ->searchable(['first_name', 'last_name'])
-                        ->preload()
-                        ->required()
-                        ->createOptionForm([
-                            Forms\Components\Select::make('organization_id')
-                                // ->default(fn (Get $get) => $get('organization_id'))
-                                ->relationship('organization', 'name')
-                                ->searchable()
+                            Forms\Components\Select::make('supervisor_id')
+                                ->relationship(
+                                    name: 'supervisor',
+                                    titleAttribute: 'name',
+                                    // ignoreRecord: true,
+                                    modifyQueryUsing: fn (Builder $query, Get $get) => $query->where('organization_id', $get('organization_id'))
+                                )
+                                ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->first_name} {$record->last_name} - {$record->function}")
+                                ->searchable(['first_name', 'last_name'])
                                 ->preload()
-                                ->required(),
-                            Forms\Components\Fieldset::make(__('Supervisor'))
-                                ->columns(3)
-                                ->schema([
-                                    ...(new AddOrganizationContactForm())->getSchema(),
+                                ->required()
+                                ->createOptionForm([
+                                    Forms\Components\Select::make('organization_id')
+                                        // ->default(fn (Get $get) => $get('organization_id'))
+                                        ->relationship('organization', 'name')
+                                        ->searchable()
+                                        ->preload()
+                                        ->required(),
+                                    Forms\Components\Fieldset::make(__('Supervisor'))
+                                        ->columns(3)
+                                        ->schema([
+                                            ...(new AddOrganizationContactForm())->getSchema(),
+                                        ]),
                                 ]),
+                            DateRangePicker::make('internship_period')
+                                ->required()
+                                ->hiddenOn('edit')
+                                ->columnSpan(2),
+                            // Forms\Components\DateTimePicker::make('starting_at'),
+                            // Forms\Components\DateTimePicker::make('ending_at'),
                         ]),
-                    DateRangePicker::make('internship_period')
-                        ->required()
-                        ->hiddenOn('edit'),
-                    // Forms\Components\DateTimePicker::make('starting_at'),
-                    // Forms\Components\DateTimePicker::make('ending_at'),
+
+                ]),
+            Forms\Components\Section::make()
+                ->columnSpan(1)
+                ->schema([
+                    Forms\Components\TextInput::make('title')
+                        ->columnSpanFull()->required(),
+
+                    Forms\Components\RichEditor::make('description')
+                        ->columnSpanFull(),
+                    Forms\Components\SpatieTagsInput::make('keywords')
+                        ->splitKeys(['Tab', ',', ';'])
+                        ->nestedRecursiveRules([
+                            'min:2',
+                            'max:50',
+                        ])
+                        ->placeholder('Add a keyword and press enter or click away to add it')
+                        ->color('success')
+                        ->columnSpanFull(),
                 ]),
 
             Forms\Components\Fieldset::make(__('Remuneration and workload'))
-                ->columns(8)
+                ->columnSpan(1)
+                ->columns(4)
                 ->schema([
                     Forms\Components\Select::make('currency')
                         ->default(Enums\Currency::MDH->getSymbol())

@@ -63,12 +63,10 @@
         "z3d0x/filament-logger": "^0.6.2"
     },
     "require-dev": {
-        "andyabih/laravel-to-uml": "^1.0",
         "barryvdh/laravel-debugbar": "^3.12",
         "fakerphp/faker": "^1.9.1",
         "larastan/larastan": "^2.0",
         "laravel/pint": "^1.0",
-        "laravel/sail": "^1.18",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^7.0",
         "pestphp/pest": "^2.0",
