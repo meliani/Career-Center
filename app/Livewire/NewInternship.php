@@ -37,10 +37,12 @@ class NewInternship extends Page implements HasForms
             ->schema([
 
                 Forms\Components\Section::make(__('Publish Internship Offer'))
-                    ->columns(4)
+                    ->columns(2)
                     ->schema([
                         Forms\Components\Fieldset::make('Organization Information')
                             ->columns(3)
+                            ->columnSpan(1)
+
                             ->schema([
                                 // Forms\Components\TextInput::make('year_id')
                                 //     ->numeric(),
@@ -94,7 +96,7 @@ class NewInternship extends Page implements HasForms
                                     ->live(),
 
                                 Forms\Components\Fieldset::make('Organization Responsible Information')
-                                    ->columns(4)
+                                    ->columns(2)
                                     ->schema([
                                         Forms\Components\TextInput::make('responsible_name')
                                             ->maxLength(191),
@@ -110,6 +112,7 @@ class NewInternship extends Page implements HasForms
                             ]),
                         Forms\Components\Fieldset::make('Internship Details')
                             ->columns(3)
+                            ->columnSpan(1)
                             ->schema([
                                 Forms\Components\ToggleButtons::make('internship_type')
                                     ->inline()
@@ -144,8 +147,13 @@ class NewInternship extends Page implements HasForms
                                             ->inputMode('decimal')
                                             ->numeric(),
                                     ]),
-                                // Forms\Components\TextInput::make('status'),
-                                // Forms\Components\Toggle::make('is_active'),
+                            ]),
+                        // Forms\Components\TextInput::make('status'),
+                        // Forms\Components\Toggle::make('is_active'),
+                        Forms\Components\Fieldset::make('Recruting Information')
+                            ->columns(3)
+                            ->columnSpan(2)
+                            ->schema([
                                 Forms\Components\ToggleButtons::make('recruting_type')
                                     ->inline()
                                     ->options([
@@ -174,9 +182,9 @@ class NewInternship extends Page implements HasForms
                                             ->hidden(fn (Get $get) => $get('recruting_type') != 'SchoolManaged')
                                             ->default(Enums\Currency::MDH->getSymbol())
                                             ->options([
-                                                Enums\Currency::EUR->getSymbol() => Enums\Currency::EUR->getSymbol(),
-                                                Enums\Currency::USD->getSymbol() => Enums\Currency::USD->getSymbol(),
-                                                Enums\Currency::MDH->getSymbol() => Enums\Currency::MDH->getSymbol(),
+                                                Enums\Currency::EUR->value => Enums\Currency::EUR->getSymbol(),
+                                                Enums\Currency::USD->value => Enums\Currency::USD->getSymbol(),
+                                                Enums\Currency::MDH->value => Enums\Currency::MDH->getSymbol(),
                                             ])
                                             ->live()
                                             ->id('currency'),

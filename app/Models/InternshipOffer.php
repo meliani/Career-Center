@@ -51,6 +51,7 @@ class InternshipOffer extends Model
         'applyable' => 'boolean',
         'expire_at' => 'date',
         'internship_type' => Enums\InternshipType::class,
+        'currency' => Enums\Currency::class,
     ];
 
     protected $dates = [

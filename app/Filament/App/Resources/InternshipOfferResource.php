@@ -232,15 +232,25 @@ class InternshipOfferResource extends Resource
                         //     ->badge(),
                         Infolists\Components\TextEntry::make('attached_file'),
                         Infolists\Components\TextEntry::make('internship_duration')
-                            ->suffix(__(' months')),
-                        Infolists\Components\TextEntry::make('remuneration'),
-                        Infolists\Components\TextEntry::make('currency'),
-                        Infolists\Components\TextEntry::make('workload'),
-                        Infolists\Components\TextEntry::make('recruting_type'),
-                        Infolists\Components\TextEntry::make('application_email'),
+                            ->suffix(__(' months'))
+                            ->placeholder('No duration specified'),
+                        Infolists\Components\TextEntry::make('remuneration')
+                            ->money(fn ($record) => $record->currency->getLabel())
+                            ->placeholder('No remuneration specified'),
+                        // Infolists\Components\TextEntry::make('currency')
+                        //     ->placeholder('No currency specified'),
+                        Infolists\Components\TextEntry::make('workload')
+                            ->suffix(__(' hours'))
+                            ->placeholder('No workload specified'),
+                        Infolists\Components\TextEntry::make('recruting_type')
+                            ->placeholder('No recruiting type specified'),
+                        Infolists\Components\TextEntry::make('application_email')
+                            ->placeholder('No application email specified'),
                         // Infolists\Components\TextEntry::make('status'),
                         // Infolists\Components\TextEntry::make('applyable'),
-                        Infolists\Components\TextEntry::make('expire_at'),
+                        Infolists\Components\TextEntry::make('expire_at')
+                            ->date()
+                            ->placeholder('No expiration date specified'),
                     ]),
             ]);
     }

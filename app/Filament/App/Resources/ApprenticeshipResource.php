@@ -83,11 +83,12 @@ class ApprenticeshipResource extends StudentBaseResource
                 //     ->sortable(),
                 Tables\Columns\Layout\Split::make([
                     Tables\Columns\TextColumn::make('status')
-                        ->description(__('Status'), position: 'after')
+                        ->description(__('Status'), position: Before)
                         ->searchable(),
                     Tables\Columns\TextColumn::make('pdf_file_name')
                         ->description(__('Agreement PDF'), position: 'before')
                         ->label('Agreement PDF')
+                        ->placeholder('No PDF generated yet')
                         ->limit(20)
                         ->formatStateUsing(fn (Apprenticeship $record) => ! is_null($record->pdf_file_name) ? 'View agreement' : 'Generate a new PDF')
                         ->url(fn (Apprenticeship $record) => URL::to($record->pdf_path . '/' . $record->pdf_file_name), shouldOpenInNewTab: true),
