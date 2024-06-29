@@ -6,10 +6,12 @@ use App\Enums;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Parfaitementweb\FilamentCountryField\Traits\HasData;
 use Spatie\Tags\HasTags;
 
 class InternshipOffer extends Model
 {
+    use HasData;
     use HasFactory;
     use HasTags;
     use SoftDeletes;
@@ -86,4 +88,13 @@ class InternshipOffer extends Model
     // {
     //     return $this->internship_duration . ' ' . __('months');
     // }
+    public function getCountry()
+    {
+        return $this->attributes['country'] ?? null; // Example logic
+    }
+
+    public function getCountryAttribute()
+    {
+        return $this->getCountriesList()[$this->getCountry()];
+    }
 }
