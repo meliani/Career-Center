@@ -421,5 +421,11 @@
     "Internship Information": "Information sur le stage",
     "Expire at": "Expire le",
     "Internship duration": "Durée du stage",
-    "Responsible Information": "Information sur le responsable"
+    "Responsible Information": "Information sur le responsable",
+    "PendingCancellation": "Annulation en attente",
+    "Canceled": "Annulé",
+    "Preview email": "Prévisualiser l'email",
+    "Preview": "Prévisualiser",
+    "View and edit recipients": "Voir et éditer les destinataires",
+    "Recipients": "Destinataires"
 }
