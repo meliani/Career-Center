@@ -28,7 +28,7 @@ class DefenseAuthorizedNotification extends Notification
         return (new MailMessage)
             ->template('emails.templates.notification_email')
             ->subject(__('Defense Authorized'))
-            ->line(__('## The Defense :id has been authorized.', ['id' => $this->project->id_pfe]))
+            ->line(__('# The Defense :id has been authorized.', ['id' => $this->project->id_pfe]))
             // Include evaluation sheet data using ->line()
             ->line(__('**Administrative supervisor:** ') . $this->project->administrative_supervisor)
             ->line(__('**Defense Date:** ') . $this->project->defense_plan)
@@ -48,7 +48,11 @@ class DefenseAuthorizedNotification extends Notification
             ->line(__('**Reviewer 1:** ') . $this->project->reviewer1)
             ->line(__('**Reviewer 2:** ') . $this->project->reviewer2)
             ->action(__('View Planning'), url('https://carrieres.inpt.ac.ma/soutenances'))
-            ->line(__('**Email Sent by ') . auth()->user()->full_name . ' (' . auth()->user()->email . ')**');
+            ->line(__('**Email Sent by ') . auth()->user()->full_name . ' (' . auth()->user()->email . ')**')
+            ->attach($this->project->evaluation_sheet_url, [
+                'as' => 'EvaluationSheet.pdf',
+                'mime' => 'application/pdf',
+            ]);
         // ->action(__('View Project'), url('/projects/' . $this->project->id));
     }
 
