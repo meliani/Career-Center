@@ -39,6 +39,6 @@
 @if (! empty($salutation))
 {{ $salutation }}
 @else
-@lang('Regards')
+{{-- @lang('Regards') --}}
 @endif
 </x-mail::message>
