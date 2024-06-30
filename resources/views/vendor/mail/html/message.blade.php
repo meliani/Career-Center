@@ -24,7 +24,7 @@
             @isset($footer)
             {{ $footer}}
             @else
-            © {{ date('Y') }} {{ config('app.name') }}. @lang('All rights reserved.')
+            © 2016 - {{ date('Y') }} {{ config('app.name') }}.
             @endisset
         </x-mail::footer>
     </x-slot:footer>

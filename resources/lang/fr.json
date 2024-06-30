@@ -427,5 +427,8 @@
     "Preview email": "Prévisualiser l'email",
     "Preview": "Prévisualiser",
     "View and edit recipients": "Voir et éditer les destinataires",
-    "Recipients": "Destinataires"
+    "Recipients": "Destinataires",
+    "You can download the evaluation sheet from the link below.": "Vous pouvez télécharger la fiche d'évaluation depuis le lien ci-dessous.",
+    "## Evaluation sheet": "## Fiche d'évaluation",
+    "[Download Evaluation Sheet](:url)": "[Télécharger la fiche d'évaluation](:url)"
 }
