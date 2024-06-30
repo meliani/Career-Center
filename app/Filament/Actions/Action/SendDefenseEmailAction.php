@@ -7,6 +7,7 @@ use App\Notifications\DefenseAuthorizedNotification;
 use Filament\Forms\Components\Wizard\Step;
 use Filament\Tables\Actions\Action;
 use Illuminate\Support\HtmlString;
+use Joaopaulolndev\FilamentPdfViewer\Forms\Components\PdfViewerField;
 
 class SendDefenseEmailAction extends Action
 {
@@ -48,6 +49,15 @@ class SendDefenseEmailAction extends Action
                 self::$emailBody = $notification->toMail(auth()->user()->email)->render();
 
                 return [
+                    // Step::make('Evaluation Sheet')
+                    //     // ->label(__('Evaluation Sheet'))
+                    //     ->description(__('View and download the evaluation sheet'))
+                    //     ->schema([
+                    //         PdfViewerField::make('evaluation_sheet_url')
+                    //             ->label('Evaluation Sheet')
+                    //             // ->minHeight('40svh')
+                    //             ->fileUrl($record->evaluation_sheet_url),
+                    //     ]),
                     Step::make('Preview')
                         ->label(__('Preview'))
                         ->description(__('Preview email'))
@@ -58,11 +68,13 @@ class SendDefenseEmailAction extends Action
                             \Filament\Forms\Components\Placeholder::make('Preview')->hiddenLabel()
                                 ->content(self::$emailBody),
                         ]),
+
                     Step::make('Recipients')
                         ->label(__('Recipients'))
                         ->description(__('View and edit recipients'))
                         ->schema([
-
+                            \Filament\Forms\Components\Placeholder::make('Attachments')
+                                ->content(new HtmlString('<a href="' . $record->evaluation_sheet_url . '" class="text-blue-500 hover:underline">Evaluation Sheet for ' . $record->id_pfe . '</a>')),
                             \Filament\Forms\Components\TagsInput::make('emails')
                                 ->label('Emails')
                                 ->splitKeys(['Tab', ',', ';', ' '])
@@ -77,7 +89,8 @@ class SendDefenseEmailAction extends Action
                         ]),
 
                 ];
-            });
+            })
+            ->color('success');
         // ->form(function ($record) {
         //     $notification = new DefenseAuthorizedNotification($record);
 
