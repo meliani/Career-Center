@@ -46,7 +46,8 @@ class UrlService
         $parts = explode(self::$separator, $cipher, 2);
 
         if (count($parts) < 2) {
-            throw new \Exception('Invalid encrypted data format');
+            // throw new \Exception('Invalid encrypted data format');
+            return ['StudentId' => null, 'InternshipId' => null];
         }
 
         [$version, $verification_string] = $parts;

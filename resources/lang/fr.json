@@ -430,5 +430,9 @@
     "Recipients": "Destinataires",
     "You can download the evaluation sheet from the link below.": "Vous pouvez télécharger la fiche d'évaluation depuis le lien ci-dessous.",
     "## Evaluation sheet": "## Fiche d'évaluation",
-    "[Download Evaluation Sheet](:url)": "[Télécharger la fiche d'évaluation](:url)"
+    "[Download Evaluation Sheet](:url)": "[Télécharger la fiche d'évaluation](:url)",
+    "Internship Title": "Titre du stage",
+    "Starts At": "Commence le",
+    "Ends At": "Finit le",
+    "Recruting Information": "Information de recrutement"
 }
