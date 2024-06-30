@@ -36,7 +36,7 @@ class DefenseAuthorizedNotification extends Notification
             ->line(__('## Student information'))
             ->line(__('**Name:** ') . $this->project->students->implode('full_name', ' & '))
             ->line(__('**ID PFE:** ') . $this->project->id_pfe)
-            ->line(__('**Filiere:** ') . $this->project->students->map(function ($student) {
+            ->line(__('**Program:** ') . $this->project->students->map(function ($student) {
                 return $student->program->value;
             })->implode(' & '))
             ->line(__('**Organization:** ') . $this->project->organization_name)
