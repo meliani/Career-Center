@@ -48,6 +48,7 @@ class DefenseAuthorizedNotification extends Notification
             ->line(__('**Reviewer 1:** ') . $this->project->reviewer1)
             ->line(__('**Reviewer 2:** ') . $this->project->reviewer2)
             ->action(__('View Planning'), url('https://carrieres.inpt.ac.ma/soutenances'))
+            ->line(__('Regards'))
             ->line(__('**Email Sent by ') . auth()->user()->full_name . ' (' . auth()->user()->email . ')**')
             ->attach($this->project->evaluation_sheet_url, [
                 'as' => 'EvaluationSheet.pdf',

@@ -249,6 +249,7 @@ class ProjectResource extends Core\BaseResource
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     \App\Filament\Actions\Action\SendDefenseEmailAction::make()
+                        ->disabled(fn ($record): bool => $record['defense_authorized_at'] == null)
                         // ->disabled(fn ($record): bool => $record['validated_at'] !== null)
                         ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()) === false),
                     \App\Filament\Actions\Action\AuthorizeDefenseAction::make()

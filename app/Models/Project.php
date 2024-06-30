@@ -178,7 +178,7 @@ class Project extends Core\BackendBaseModel
 
     public function getExternalSupervisorNameAttribute()
     {
-        return $this->internship_agreements()->first() ? "{$this->internship_agreements()->first()->encadrant_ext_name}" : 'Undefined External Supervisor';
+        return ucwords(strtolower($this->internship_agreements()->first() ? "{$this->internship_agreements()->first()->encadrant_ext_name}" : 'Undefined External Supervisor'));
     }
 
     public function getExternalSupervisorAttribute()
