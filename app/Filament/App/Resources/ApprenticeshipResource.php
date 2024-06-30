@@ -2,6 +2,7 @@
 
 namespace App\Filament\App\Resources;
 
+use App\Filament\Actions\Action\ApplyForCancelInternshipAction;
 use App\Filament\Actions\Action\Processing\GenerateApprenticeshipAgreementAction;
 use App\Filament\App\Resources\ApprenticeshipResource\Pages;
 use App\Filament\Core\StudentBaseResource;
@@ -162,7 +163,9 @@ class ApprenticeshipResource extends StudentBaseResource
                 GenerateApprenticeshipAgreementAction::make('Generate Agreement PDF')
                     ->label(__('Generate Agreement PDF'))
                     ->requiresConfirmation(),
-            ], position: Tables\Enums\ActionsPosition::BeforeColumns)
+                ApplyForCancelInternshipAction::make('Apply for internship cancellation'),
+
+            ], position: Tables\Enums\ActionsPosition::AfterContent)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     // Tables\Actions\DeleteBulkAction::make(),

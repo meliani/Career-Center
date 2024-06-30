@@ -28,7 +28,7 @@ enum StudentLevel: string implements HasLabel
 
     public function getLabel(): ?string
     {
-        return __($this->name);
+        return __($this->value);
 
     }
 }

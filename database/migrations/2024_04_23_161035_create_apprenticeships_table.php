@@ -36,6 +36,8 @@ class CreateApprenticeshipsTable extends Migration
             $table->foreignId('tutor_id')->nullable();
             $table->string('pdf_path')->nullable();
             $table->string('pdf_file_name')->nullable();
+            $table->dateTime('cancelled_at')->nullable();
+            $table->text('cancellation_reason')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

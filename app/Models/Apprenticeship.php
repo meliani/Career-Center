@@ -51,6 +51,8 @@ class Apprenticeship extends Model
         'supervisor_id',
         'tutor_id',
         'pdf_path',
+        'cancelled_at',
+        'cancellation_reason',
 
     ];
 
@@ -160,5 +162,13 @@ class Apprenticeship extends Model
     public function getInternshipPeriodAttribute()
     {
         return $this->starting_at->format('d/m/Y') . ' - ' . $this->ending_at->format('d/m/Y');
+    }
+
+    public function applyForCancellation($reason)
+    {
+        $this->status = Enums\Status::PendingCancellation;
+        $this->cancelled_at = now();
+        $this->cancellation_reason = $reason;
+        $this->save();
     }
 }

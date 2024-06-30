@@ -2,20 +2,22 @@
 
 namespace App\Enums;
 
-use Filament\Support\Contracts\HasLabel;
 use Filament\Support\Contracts\HasColor;
+use Filament\Support\Contracts\HasLabel;
+
 // use Mokhosh\FilamentKanban\Concerns\IsKanbanStatus;
 
-enum Status: string implements  HasLabel, HasColor
+enum Status: string implements HasColor, HasLabel
 {
     // use IsKanbanStatus;
-    
-    case Draft = "Draft";
-    case Announced = "Announced";
-    case Rejected = "Rejected";
-    case Validated = "Validated";
-    case Completed = "Completed";
-    case Signed = "Signed";
+
+    case Draft = 'Draft';
+    case Announced = 'Announced';
+    case Rejected = 'Rejected';
+    case Validated = 'Validated';
+    case Completed = 'Completed';
+    case Signed = 'Signed';
+    case PendingCancellation = 'PendingCancellation';
 
     // case Approved = "Approved";
     // case Declined = "Declined";
@@ -29,17 +31,21 @@ enum Status: string implements  HasLabel, HasColor
             self::Validated,
             self::Completed,
             self::Signed,
+            self::PendingCancellation,
             // self::Approved,
             // self::Declined,
             // self::Started,
         ];
     }
+
     public function getLabel(): ?string
     {
-        return __($this->name);
+        return __($this->value);
     }
-    public function getColor(): ?string {
-        return match($this) {
+
+    public function getColor(): ?string
+    {
+        return match ($this) {
             self::Draft => 'warning',
             self::Announced => 'info',
             self::Rejected => 'danger',
@@ -49,6 +55,7 @@ enum Status: string implements  HasLabel, HasColor
             self::Signed => 'success',
             // self::Started => 'success',
             self::Completed => 'success',
+            self::PendingCancellation => 'danger',
         };
     }
 }
