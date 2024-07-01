@@ -79,6 +79,9 @@ class AppPanelProvider extends PanelProvider
                         slug: 'my-profile' // Sets the slug for the profile page (default = 'my-profile')
                     )
                     // ->customMyProfilePage(\App\Livewire\StudentAccountSettingsPage::class)
+                    ->withoutMyProfileComponents([
+                        'personal_info',
+                    ])
                     ->myProfileComponents([\App\Livewire\StudentAccountSettingsPage::class])
                     ->enableTwoFactorAuthentication()
                     ->avatarUploadComponent(fn ($fileUpload) => $fileUpload->disableLabel()),
