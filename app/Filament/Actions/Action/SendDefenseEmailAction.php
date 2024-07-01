@@ -73,8 +73,9 @@ class SendDefenseEmailAction extends Action
                         ->label(__('Recipients'))
                         ->description(__('View and edit recipients'))
                         ->schema([
-                            \Filament\Forms\Components\Placeholder::make('Attachments')
-                                ->content(new HtmlString('<a href="' . $record->evaluation_sheet_url . '" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">Evaluation Sheet for ' . $record->id_pfe . '</a>')),                            \Filament\Forms\Components\TagsInput::make('emails')
+                            // \Filament\Forms\Components\Placeholder::make('Attachments')
+                            // ->content(new HtmlString('<a href="' . $record->evaluation_sheet_url . '" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">Evaluation Sheet for ' . $record->id_pfe . '</a>')),
+                            \Filament\Forms\Components\TagsInput::make('emails')
                                 ->label('Emails')
                                 ->splitKeys(['Tab', ',', ';', ' '])
                                 ->nestedRecursiveRules([

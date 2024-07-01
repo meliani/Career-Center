@@ -48,7 +48,10 @@ class DefenseAuthorizedNotification extends Notification
             ->line(__('## Reviewers'))
             ->line(__('**Reviewer 1:** ') . $this->project->reviewer1)
             ->line(__('**Reviewer 2:** ') . $this->project->reviewer2)
-            ->line(__('## Evaluation sheet'))
+            ->lineIf($this->project->organization_evaluation_sheet_url, __('## Organization Evaluation sheet'))
+            ->lineIf($this->project->organization_evaluation_sheet_url, __('You can download the organization evaluation sheet from the link below.'))
+            ->lineIf($this->project->organization_evaluation_sheet_url, __('[Download Organization Evaluation Sheet](:url)', ['url' => $this->project->organization_evaluation_sheet_url]))
+            ->line(__('## Jury Evaluation sheet'))
             ->line(__('You can download the evaluation sheet from the link below.'))
             ->line(__('[Download Evaluation Sheet](:url)', ['url' => $this->project->evaluation_sheet_url]))
 

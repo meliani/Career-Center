@@ -2,6 +2,7 @@
 
 namespace App\Services\Filament\Tables\Projects;
 
+use App\Filament\Actions\Action\AddOrganizationEvaluationSheetAction;
 use Filament\Tables;
 
 class ProjectsTable
@@ -55,6 +56,13 @@ class ProjectsTable
                         ->sortable()
                         ->searchable()
                         ->badge(),
+                    Tables\Columns\TextColumn::make('organization_evaluation_sheet_url')
+                        ->label('Organization Evaluation Sheet')
+                        ->limit(20)
+                        ->action(AddOrganizationEvaluationSheetAction::make())
+                        ->Placeholder(__('Click to add'))
+                        ->url(fn ($record) => $record->organization_evaluation_sheet_url, shouldOpenInNewTab: true),
+
                     /*      like this
                         Tables\Columns\TextColumn::make('pdf_file_name')
                     ->label('Agreement PDF')

@@ -9,6 +9,7 @@ use Filament;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Storage;
 use Parallax\FilamentComments\Models\Traits\HasFilamentComments;
 
 class Project extends Core\BackendBaseModel
@@ -56,6 +57,7 @@ class Project extends Core\BackendBaseModel
         'defense_authorized_at',
         'defense_authorized_by',
         'evaluation_sheet_url',
+        'organization_evaluation_sheet_url',
     ];
 
     protected $appends = [
@@ -299,5 +301,19 @@ class Project extends Core\BackendBaseModel
 
         // event(new \App\Events\DefenseAuthorized($this));
 
+    }
+
+    public function getEvaluationSheetUrlAttribute()
+    {
+        return Storage::url("document/evaluation_sheet/{$this->id}.pdf");
+    }
+
+    public function getOrganizationEvaluationSheetUrlAttribute()
+    {
+        if ($this->attributes['organization_evaluation_sheet_url']) {
+            return Storage::url($this->attributes['organization_evaluation_sheet_url']);
+        }
+
+        return null;
     }
 }
