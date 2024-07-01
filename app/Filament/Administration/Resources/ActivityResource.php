@@ -150,7 +150,8 @@ class ActivityResource extends Resource
                     }),
 
                 TextColumn::make('causer.name')
-                    ->label(__('filament-logger::filament-logger.resource.label.user')),
+                    ->label(__('filament-logger::filament-logger.resource.label.user'))
+                    ->sortable(false),
 
                 TextColumn::make('created_at')
                     ->label(__('filament-logger::filament-logger.resource.label.logged_at'))

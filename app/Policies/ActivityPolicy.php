@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Enums\Role;
+use App\Models\Student;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -18,12 +19,12 @@ class ActivityPolicy extends CorePolicy
         //
     }
 
-    public function viewAny(User $user): bool
+    public function viewAny(User | Student $user): bool
     {
         return $user->hasRole(Role::Administrator);
     }
 
-    public function view(User $user): bool
+    public function view(User | Student $user): bool
     {
         return $user->hasRole(Role::Administrator);
     }
