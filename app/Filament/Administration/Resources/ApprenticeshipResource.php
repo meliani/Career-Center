@@ -100,9 +100,7 @@ class ApprenticeshipResource extends BaseResource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('student.full_name'),
-                Tables\Columns\TextColumn::make('student.title')
-                    ->label('Title'),
+                Tables\Columns\TextColumn::make('student.name'),
                 Tables\Columns\TextColumn::make('student.level')
                     ->label('Level'),
                 Tables\Columns\TextColumn::make('student.program')

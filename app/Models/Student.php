@@ -29,6 +29,54 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
 
     protected $table = 'students';
 
+    protected $appends = [
+        'full_name',
+        'long_full_name',
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    protected $fillable = [
+        'title',
+        'pin',
+        'email',
+        'first_name',
+        'last_name',
+        'email_perso',
+        'phone',
+        'cv',
+        'lm',
+        'photo',
+        'birth_date',
+        'level',
+        'program',
+        'is_mobility',
+        'abroad_school',
+        'year_id',
+        'is_active',
+        'graduated_at',
+        'avatar_url',
+        'is_verified',
+        'email_verified_at',
+    ];
+
+    protected $casts = [
+        'title' => Enums\Title::class,
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'birth_date' => 'date',
+        'is_active' => 'boolean',
+        'is_mobility' => 'boolean',
+        'program' => Enums\Program::class,
+        'level' => Enums\StudentLevel::class,
+        'is_verified' => 'boolean',
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
+
     public function canAccessPanel(Panel $panel): bool
     {
         // if ($panel->getId() === 'app') {
@@ -115,54 +163,6 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
         // $notification->url = filament()->getPanel('app')->getResetPasswordUrl($token, $student);
         // $student->notify($notification);
     }
-
-    protected $appends = [
-        'full_name',
-        'long_full_name',
-    ];
-
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    protected $fillable = [
-        'title',
-        'pin',
-        'email',
-        'first_name',
-        'last_name',
-        'email_perso',
-        'phone',
-        'cv',
-        'lm',
-        'photo',
-        'birth_date',
-        'level',
-        'program',
-        'is_mobility',
-        'abroad_school',
-        'year_id',
-        'is_active',
-        'graduated_at',
-        'avatar_url',
-        'is_verified',
-        'email_verified_at',
-    ];
-
-    protected $casts = [
-        'title' => Enums\Title::class,
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-        'birth_date' => 'date',
-        'is_active' => 'boolean',
-        'is_mobility' => 'boolean',
-        'program' => Enums\Program::class,
-        'level' => Enums\StudentLevel::class,
-        'is_verified' => 'boolean',
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-    ];
 
     public function routeNotificationForMail(): array | string
     {

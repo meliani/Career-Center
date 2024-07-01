@@ -85,16 +85,16 @@ class ProjectResource extends Core\BaseResource
                     ->columnSpan(1)
                     ->schema([
                         Forms\Components\MarkdownEditor::make('title')
-                            ->disabled(fn () => auth()->user()->isAdministrator() === false)
+                            ->disabled(fn () => (auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()) === false)
                             ->required()
                             ->maxLength(255)
                             ->columnspan(2),
                         Forms\Components\DatePicker::make('start_date')
                             ->native(false)
-                            ->disabled(fn () => auth()->user()->isAdministrator() === false),
+                            ->disabled(fn () => (auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()) === false),
                         Forms\Components\DatePicker::make('end_date')
                             ->native(false)
-                            ->disabled(fn () => auth()->user()->isAdministrator() === false),
+                            ->disabled(fn () => (auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()) === false),
                     ])
                     ->collapsible()
                     ->columns(2),
