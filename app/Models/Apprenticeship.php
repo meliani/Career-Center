@@ -59,8 +59,9 @@ class Apprenticeship extends Model
     protected $casts = [
         'assigned_department' => Enums\Department::class,
         'status' => Enums\Status::class,
-        'starting_at' => 'date',
-        'ending_at' => 'date',
+        'currency' => Enums\Currency::class,
+        // 'starting_at' => 'date:Y-m-d',
+        // 'ending_at' => 'date:Y-m-d',
         'remuneration' => 'decimal:2',
 
     ];
@@ -170,5 +171,25 @@ class Apprenticeship extends Model
         $this->cancelled_at = now();
         $this->cancellation_reason = $reason;
         $this->save();
+    }
+
+    public function appliedCancellation()
+    {
+        return $this->status === Enums\Status::PendingCancellation;
+    }
+
+    public function cancel()
+    {
+        $this->status = Enums\Status::Rejected;
+        $this->cancelled_at = now();
+        $this->save();
+    }
+
+    public function getCurrentApprenticeship()
+    {
+        return $this->where('student_id', auth()->id())
+            ->where('status', Enums\Status::Announced)
+            ->orWhere('status', Enums\Status::Validated)
+            ->first();
     }
 }

@@ -14,7 +14,6 @@ class CreateOrganizationsTable extends Migration
             $table->string('address', 255)->nullable();
             $table->string('city')->nullable();
             $table->string('country')->nullable();
-            $table->string('office_location', 255)->nullable();
             $table->unsignedBigInteger('central_organization')->nullable();
             $table->foreign('central_organization')
                 ->references('id')

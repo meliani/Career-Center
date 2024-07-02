@@ -270,37 +270,40 @@ class ApprenticeshipResource extends BaseResource
                                 Infolists\Components\TextEntry::make('organization.country')
                                     ->label('Country'),
                                 Infolists\Components\TextEntry::make('office_location')
-                                    ->label('Office Location'),
+                                    ->label('Office Location')
+                                    ->visible(fn ($record) => $record->office_location),
 
                             ]),
                         Infolists\Components\Fieldset::make('Dates')
                             ->columns(3) // Adjust for each Fieldset as needed
                             ->schema([
                                 Infolists\Components\TextEntry::make('starting_at')
-                                    ->label('Starting at'),
+                                    ->label('Starting at')
+                                    ->date(),
                                 Infolists\Components\TextEntry::make('ending_at')
-                                    ->label('Ending at'),
+                                    ->label('Ending at')
+                                    ->date(),
                             ]),
                         Infolists\Components\Fieldset::make('Remuneration')
                             ->columns(3) // Adjust for each Fieldset as needed
                             ->schema([
+                                // Infolists\Components\TextEntry::make('remuneration')
+                                //     ->label('Amount'),
+                                // Infolists\Components\TextEntry::make('currency')
+                                //     ->label('Currency'),
                                 Infolists\Components\TextEntry::make('remuneration')
-                                    ->label('Amount'),
-                                Infolists\Components\TextEntry::make('currency')
-                                    ->label('Currency'),
-                            ]),
-                        Infolists\Components\Fieldset::make('Workload')
-                            ->columns(3) // Adjust for each Fieldset as needed
-                            ->schema([
+                                    ->money(fn ($record) => $record->currency->getLabel())
+                                    ->placeholder(__('No remuneration specified')),
+
                                 Infolists\Components\TextEntry::make('workload')
-                                    ->label('Hours'),
+                                    ->placeholder(__('No workload specified')),
                             ]),
                         Infolists\Components\Fieldset::make('Supervisors')
                             ->columns(3) // Adjust for each Fieldset as needed
                             ->schema([
-                                Infolists\Components\TextEntry::make('parrain.name')
+                                Infolists\Components\TextEntry::make('parrain.full_name')
                                     ->label('Parrain'),
-                                Infolists\Components\TextEntry::make('supervisor.name')
+                                Infolists\Components\TextEntry::make('supervisor.full_name')
                                     ->label('Supervisor'),
                             ]),
                         Infolists\Components\Fieldset::make('Status')
@@ -308,26 +311,37 @@ class ApprenticeshipResource extends BaseResource
                             ->schema([
                                 Infolists\Components\TextEntry::make('status')
                                     ->label('Status'),
+                                Infolists\Components\TextEntry::make('assigned_department')
+                                    ->label('Assigned Department')
+                                    ->visible(fn ($record) => $record->assigned_department),
                                 Infolists\Components\TextEntry::make('cancellation_reason')
-                                    ->label('Cancellation Reason'),
+                                    ->label('Cancellation Reason')
+                                    ->visible(fn ($record) => $record->appliedCancellation()),
                             ]),
                         Infolists\Components\Fieldset::make('Dates')
+                            ->visible(fn ($record) => ($record->announced_at || $record->validated_at || $record->received_at || $record->signed_at))
                             ->columns(3) // Adjust for each Fieldset as needed
                             ->schema([
                                 Infolists\Components\TextEntry::make('announced_at')
-                                    ->label('Announced at'),
+                                    ->label('Announced at')
+                                    ->date()
+                                    ->visible(fn ($record) => $record->announced_at),
                                 Infolists\Components\TextEntry::make('validated_at')
-                                    ->label('Validated at'),
-                                Infolists\Components\TextEntry::make('assigned_department')
-                                    ->label('Assigned Department'),
+                                    ->label('Validated at')
+                                    ->date()
+                                    ->visible(fn ($record) => $record->validated_at),
+
                                 Infolists\Components\TextEntry::make('received_at')
-                                    ->label('Received at'),
+                                    ->label('Received at')
+                                    ->date()
+                                    ->visible(fn ($record) => $record->received_at),
                                 Infolists\Components\TextEntry::make('signed_at')
-                                    ->label('Signed at'),
-                                Infolists\Components\TextEntry::make('office_location')
-                                    ->label('Office Location'),
+                                    ->label('Signed at')
+                                    ->date()
+                                    ->visible(fn ($record) => $record->signed_at),
+
                             ]),
-                        Infolists\Components\Fieldset::make('Dates')
+                        Infolists\Components\Fieldset::make('System Dates')
                             ->columns(3) // Adjust for each Fieldset as needed
                             ->schema([
                                 Infolists\Components\TextEntry::make('created_at')
@@ -335,7 +349,8 @@ class ApprenticeshipResource extends BaseResource
                                 Infolists\Components\TextEntry::make('updated_at')
                                     ->label('Updated at'),
                                 Infolists\Components\TextEntry::make('deleted_at')
-                                    ->label('Deleted at'),
+                                    ->label('Deleted at')
+                                    ->visible(fn ($record) => $record->trashed()),
                             ]),
                     ]),
             ]);

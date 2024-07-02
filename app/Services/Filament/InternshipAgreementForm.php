@@ -103,6 +103,7 @@ class InternshipAgreementForm
                         ->required()
                         ->maxLength(191),
                     Forms\Components\TextInput::make('office_location')
+                        ->label(__('Internship Office location if different than organization address.'))
                         ->maxLength(255)
                         ->columnSpan(2),
                     Fieldset::make(__('Parrain'))

@@ -236,7 +236,7 @@ class InternshipOfferResource extends Resource
                             ->placeholder('No duration specified'),
                         Infolists\Components\TextEntry::make('remuneration')
                             ->money(fn ($record) => $record->currency->getLabel())
-                            ->placeholder('No remuneration specified'),
+                            ->placeholder(__('No remuneration specified')),
                         // Infolists\Components\TextEntry::make('currency')
                         //     ->placeholder('No currency specified'),
                         Infolists\Components\TextEntry::make('workload')

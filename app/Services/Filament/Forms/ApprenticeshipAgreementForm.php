@@ -24,30 +24,31 @@ class ApprenticeshipAgreementForm
             Forms\Components\Section::make()
                 ->columnSpan(1)
                 ->schema([
-                    Forms\Components\Select::make('organization_id')
-                        ->optionsLimit(3)
-                        ->hiddenOn('edit')
-                        ->relationship('organization', 'name')
-                        ->searchable()
-                        ->preload()
-                        ->required()
-                        ->live()
-                        ->id('organization_id')
-                        ->createOptionForm([
-                            Forms\Components\TextInput::make('name')
-                                ->required(),
-                            Forms\Components\TextInput::make('city')
-                                ->required(),
-                            \Parfaitementweb\FilamentCountryField\Forms\Components\Country::make('country')
-                                ->required()
-                                ->searchable(),
-                            Forms\Components\TextInput::make('address'),
-                        ]),
+                    // Forms\Components\Select::make('organization_id')
+                    //     ->optionsLimit(3)
+                    //     ->hiddenOn('edit')
+                    //     ->relationship('organization', 'name')
+                    //     ->searchable()
+                    //     ->preload()
+                    //     ->required()
+                    //     ->live()
+                    //     ->id('organization_id')
+                    //     ->createOptionForm([
+                    //         Forms\Components\TextInput::make('name')
+                    //             ->label('Organization name')
+                    //             ->required(),
+                    //         Forms\Components\TextInput::make('city')
+                    //             ->required(),
+                    //         \Parfaitementweb\FilamentCountryField\Forms\Components\Country::make('country')
+                    //             ->required()
+                    //             ->searchable(),
+                    //         Forms\Components\TextInput::make('address'),
+                    //     ]),
+                    ...(new AddOrganizationForm())->getSchema(),
                     Forms\Components\Fieldset::make(__('Organization contacts'))
                         ->columnSpan(1)
                         ->columns(2)
                         ->schema([
-                            // Forms\Components\Placeholder::make('Le parrain est le représentant de l\'organisme d\'accueil'),
                             Forms\Components\Section::make()
                                 ->schema([Forms\Components\Placeholder::make('Note')->hiddenLabel()
                                     ->content(__('Parrain is the representative of the host organization'))])
@@ -110,7 +111,7 @@ class ApprenticeshipAgreementForm
                         ]),
 
                 ]),
-            Forms\Components\Section::make()
+            Forms\Components\Section::make(__('Internship information'))
                 ->columnSpan(1)
                 ->schema([
                     Forms\Components\TextInput::make('title')
@@ -127,6 +128,10 @@ class ApprenticeshipAgreementForm
                         ->placeholder('Add a keyword and press enter or click away to add it')
                         ->color('success')
                         ->columnSpanFull(),
+                    Forms\Components\TextInput::make('office_location')
+                        ->label(__('Internship Office location if different than organization address.'))
+                        ->maxLength(255)
+                        ->columnSpan(2),
                 ]),
 
             Forms\Components\Fieldset::make(__('Remuneration and workload'))
@@ -136,9 +141,9 @@ class ApprenticeshipAgreementForm
                     Forms\Components\Select::make('currency')
                         ->default(Enums\Currency::MDH->getSymbol())
                         ->options([
-                            Enums\Currency::EUR->getSymbol() => Enums\Currency::EUR->getSymbol(),
-                            Enums\Currency::USD->getSymbol() => Enums\Currency::USD->getSymbol(),
-                            Enums\Currency::MDH->getSymbol() => Enums\Currency::MDH->getSymbol(),
+                            Enums\Currency::EUR->value => Enums\Currency::EUR->getSymbol(),
+                            Enums\Currency::USD->value => Enums\Currency::USD->getSymbol(),
+                            Enums\Currency::MDH->value => Enums\Currency::MDH->getSymbol(),
                         ])
                         ->live()
                         ->id('currency'),

@@ -444,5 +444,10 @@
     "Defenses from": "Soutenances du",
     "Defenses until": "Soutenances jusqu'au",
     "Defenses until :date": "Soutenances jusqu'au :date",
-    "Defenses from :date": "Soutenances du :date"
+    "Defenses from :date": "Soutenances du :date",
+    "MDH": "Dirham marocain",
+    "EUR": "Euro",
+    "USD": "Dollar américain",
+    "No remuneration specified": "Aucune rémunération spécifiée",
+    "No workload specified": "Aucune charge de travail spécifiée"
 }

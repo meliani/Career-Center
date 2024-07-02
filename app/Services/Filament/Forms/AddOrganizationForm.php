@@ -21,6 +21,7 @@ class AddOrganizationForm
     {
         return [
             Forms\Components\Select::make('organization_id')
+                ->label('Organization name')
                 ->optionsLimit(3)
                 ->hiddenOn('edit')
                 ->relationship('organization', 'name')
@@ -31,6 +32,7 @@ class AddOrganizationForm
                 ->id('organization_id')
                 ->createOptionForm([
                     Forms\Components\TextInput::make('name')
+                        ->label('Organization name')
                         ->required(),
                     Forms\Components\TextInput::make('city')
                         ->required(),

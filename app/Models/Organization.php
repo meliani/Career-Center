@@ -18,7 +18,6 @@ class Organization extends Model
         'address',
         'city',
         'country',
-        'office_location',
         'central_organization',
     ];
 
