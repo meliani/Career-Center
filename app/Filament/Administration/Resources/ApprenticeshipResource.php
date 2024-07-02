@@ -2,11 +2,15 @@
 
 namespace App\Filament\Administration\Resources;
 
+use App\Enums;
 use App\Filament\Administration\Resources\ApprenticeshipResource\Pages;
 use App\Filament\Core\BaseResource;
 use App\Models\Apprenticeship;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Infolists;
+use Filament\Infolists\Components\Fieldset;
+use Filament\Infolists\Infolist;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -45,54 +49,55 @@ class ApprenticeshipResource extends BaseResource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('student_id')
+                Forms\Components\TextInput::make('student.name')
+                    ->disabled(),
+                // Forms\Components\TextInput::make('year_id')
+                //     ->required()
+                //     ->numeric(),
+                // Forms\Components\TextInput::make('project_id')
+                //     ->numeric(),
+                Forms\Components\ToggleButtons::make('status')
+                    ->options(Enums\Status::class)
                     ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('year_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('project_id')
-                    ->numeric(),
-                Forms\Components\TextInput::make('status')
-                    ->maxLength(255),
-                Forms\Components\DateTimePicker::make('announced_at'),
-                Forms\Components\DateTimePicker::make('validated_at'),
-                Forms\Components\TextInput::make('assigned_department'),
-                Forms\Components\DateTimePicker::make('received_at'),
-                Forms\Components\DateTimePicker::make('signed_at'),
-                Forms\Components\Textarea::make('observations')
-                    ->columnSpanFull(),
-                Forms\Components\TextInput::make('organization_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('office_location')
-                    ->maxLength(255),
+                    ->inline(),
+                // Forms\Components\DateTimePicker::make('announced_at'),
+                // Forms\Components\DateTimePicker::make('validated_at'),
+                // Forms\Components\TextInput::make('assigned_department'),
+                // Forms\Components\DateTimePicker::make('received_at'),
+                // Forms\Components\DateTimePicker::make('signed_at'),
+                // Forms\Components\Textarea::make('observations')
+                //     ->columnSpanFull(),
+                Forms\Components\Select::make('organization_id')
+                    ->relationship('organization', 'name')
+                    ->required(),
+                // Forms\Components\TextInput::make('office_location')
+                //     ->maxLength(255),
                 Forms\Components\TextInput::make('title')
                     ->maxLength(255),
-                Forms\Components\Textarea::make('description')
-                    ->columnSpanFull(),
-                Forms\Components\Textarea::make('keywords')
-                    ->columnSpanFull(),
+                // Forms\Components\Textarea::make('description')
+                //     ->columnSpanFull(),
+                // Forms\Components\Textarea::make('keywords')
+                //     ->columnSpanFull(),
                 Forms\Components\DateTimePicker::make('starting_at'),
                 Forms\Components\DateTimePicker::make('ending_at'),
-                Forms\Components\TextInput::make('remuneration')
-                    ->numeric(),
-                Forms\Components\TextInput::make('currency')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('workload')
-                    ->numeric(),
-                Forms\Components\TextInput::make('parrain_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('supervisor_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('tutor_id')
-                    ->numeric(),
-                Forms\Components\TextInput::make('pdf_path')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('pdf_file_name')
-                    ->maxLength(255),
+                // Forms\Components\TextInput::make('remuneration')
+                //     ->numeric(),
+                // Forms\Components\TextInput::make('currency')
+                //     ->maxLength(255),
+                // Forms\Components\TextInput::make('workload')
+                //     ->numeric(),
+                // Forms\Components\TextInput::make('parrain_id')
+                //     ->required()
+                //     ->numeric(),
+                // Forms\Components\TextInput::make('supervisor_id')
+                //     ->required()
+                //     ->numeric(),
+                // Forms\Components\TextInput::make('tutor_id')
+                //     ->numeric(),
+                // Forms\Components\TextInput::make('pdf_path')
+                //     ->maxLength(255),
+                // Forms\Components\TextInput::make('pdf_file_name')
+                //     ->maxLength(255),
             ]);
     }
 
@@ -100,7 +105,8 @@ class ApprenticeshipResource extends BaseResource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('student.name'),
+                Tables\Columns\TextColumn::make('student.full_name')
+                    ->searchable(['first_name', 'last_name']),
                 Tables\Columns\TextColumn::make('student.level')
                     ->label('Level'),
                 Tables\Columns\TextColumn::make('student.program')
@@ -115,10 +121,10 @@ class ApprenticeshipResource extends BaseResource
                     ->searchable()
                     ->limit(50),
                 Tables\Columns\TextColumn::make('starting_at')
-                    ->dateTime()
+                    ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('ending_at')
-                    ->dateTime()
+                    ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('remuneration')
                     ->toggleable(isToggledHiddenByDefault: true)
@@ -132,29 +138,33 @@ class ApprenticeshipResource extends BaseResource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('parrain.name')
-                    ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(false),
                 Tables\Columns\TextColumn::make('supervisor.name')
-                    ->numeric()
+                    ->searchable(false)
                     ->sortable(),
-                Tables\Columns\TextColumn::make('tutor_id')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->numeric()
-                    ->sortable(),
+                // Tables\Columns\TextColumn::make('tutor_id')
+                //     ->toggleable(isToggledHiddenByDefault: true)
+                //     ->numeric()
+                //     ->sortable(),
                 // Tables\Columns\TextColumn::make('pdf_path')
                 //     ->searchable(),
                 // Tables\Columns\TextColumn::make('pdf_file_name')
                 //     ->searchable(),
-                Tables\Columns\TextColumn::make('year_id')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('project_id')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->numeric()
-                    ->sortable(),
+                // Tables\Columns\TextColumn::make('year_id')
+                //     ->toggleable(isToggledHiddenByDefault: true)
+                //     ->numeric()
+                //     ->sortable(),
+                // Tables\Columns\TextColumn::make('project_id')
+                //     ->toggleable(isToggledHiddenByDefault: true)
+                //     ->numeric()
+                //     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('cancellation_reason')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->searchable(),
+
                 Tables\Columns\TextColumn::make('announced_at')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->dateTime()
@@ -233,5 +243,102 @@ class ApprenticeshipResource extends BaseResource
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                Infolists\Components\Section::make('Apprenticeship Agreement')
+                    ->columns(3) // Adjust the number of columns as needed
+                    ->schema([
+                        Infolists\Components\Fieldset::make('Basic Information')
+                            ->columns(3) // Adjust for each Fieldset as needed
+                            ->schema([
+                                Infolists\Components\TextEntry::make('student.long_full_name')
+                                    ->label('Student'),
+                                Infolists\Components\TextEntry::make('title')
+                                    ->label('Title'),
+                                Infolists\Components\TextEntry::make('organization.name')
+                                    ->label('Organization'),
+                            ]),
+                        Infolists\Components\Fieldset::make('Organization details')
+                            ->columns(3) // Adjust for each Fieldset as needed
+                            ->schema([
+                                Infolists\Components\TextEntry::make('organization.city')
+                                    ->label('City'),
+                                Infolists\Components\TextEntry::make('organization.country')
+                                    ->label('Country'),
+                                Infolists\Components\TextEntry::make('office_location')
+                                    ->label('Office Location'),
+
+                            ]),
+                        Infolists\Components\Fieldset::make('Dates')
+                            ->columns(3) // Adjust for each Fieldset as needed
+                            ->schema([
+                                Infolists\Components\TextEntry::make('starting_at')
+                                    ->label('Starting at'),
+                                Infolists\Components\TextEntry::make('ending_at')
+                                    ->label('Ending at'),
+                            ]),
+                        Infolists\Components\Fieldset::make('Remuneration')
+                            ->columns(3) // Adjust for each Fieldset as needed
+                            ->schema([
+                                Infolists\Components\TextEntry::make('remuneration')
+                                    ->label('Amount'),
+                                Infolists\Components\TextEntry::make('currency')
+                                    ->label('Currency'),
+                            ]),
+                        Infolists\Components\Fieldset::make('Workload')
+                            ->columns(3) // Adjust for each Fieldset as needed
+                            ->schema([
+                                Infolists\Components\TextEntry::make('workload')
+                                    ->label('Hours'),
+                            ]),
+                        Infolists\Components\Fieldset::make('Supervisors')
+                            ->columns(3) // Adjust for each Fieldset as needed
+                            ->schema([
+                                Infolists\Components\TextEntry::make('parrain.name')
+                                    ->label('Parrain'),
+                                Infolists\Components\TextEntry::make('supervisor.name')
+                                    ->label('Supervisor'),
+                            ]),
+                        Infolists\Components\Fieldset::make('Status')
+                            ->columns(3) // Adjust for each Fieldset as needed
+                            ->schema([
+                                Infolists\Components\TextEntry::make('status')
+                                    ->label('Status'),
+                                Infolists\Components\TextEntry::make('cancellation_reason')
+                                    ->label('Cancellation Reason'),
+                            ]),
+                        Infolists\Components\Fieldset::make('Dates')
+                            ->columns(3) // Adjust for each Fieldset as needed
+                            ->schema([
+                                Infolists\Components\TextEntry::make('announced_at')
+                                    ->label('Announced at'),
+                                Infolists\Components\TextEntry::make('validated_at')
+                                    ->label('Validated at'),
+                                Infolists\Components\TextEntry::make('assigned_department')
+                                    ->label('Assigned Department'),
+                                Infolists\Components\TextEntry::make('received_at')
+                                    ->label('Received at'),
+                                Infolists\Components\TextEntry::make('signed_at')
+                                    ->label('Signed at'),
+                                Infolists\Components\TextEntry::make('office_location')
+                                    ->label('Office Location'),
+                            ]),
+                        Infolists\Components\Fieldset::make('Dates')
+                            ->columns(3) // Adjust for each Fieldset as needed
+                            ->schema([
+                                Infolists\Components\TextEntry::make('created_at')
+                                    ->label('Created at'),
+                                Infolists\Components\TextEntry::make('updated_at')
+                                    ->label('Updated at'),
+                                Infolists\Components\TextEntry::make('deleted_at')
+                                    ->label('Deleted at'),
+                            ]),
+                    ]),
+            ]);
+
     }
 }
