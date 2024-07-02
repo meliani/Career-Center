@@ -181,6 +181,40 @@ class ProjectResource extends Core\BaseResource
                 //     ->relationship('timetable.timeslot', 'start_time')
                 //     ->searchable()
                 //     ->preload(),
+                Tables\Filters\Filter::make('Defense date')
+                    ->form([
+                        Forms\Components\DatePicker::make('defenses_from')
+                            ->default(now()),
+                        Forms\Components\DatePicker::make('defenses_until')
+                            ->default(now()->addDays(7)),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['defenses_from'],
+                                fn (Builder $query, $date): Builder => $query->whereRelation('timetable.timeslot', 'start_time', '>=', $date),
+                            )
+                            ->when(
+                                $data['defenses_until'],
+                                fn (Builder $query, $date): Builder => $query->whereRelation('timetable.timeslot', 'start_time', '<=', $date),
+                            );
+                    })
+                    ->indicateUsing(function (array $data): array {
+                        $indicators = [];
+
+                        if ($data['defenses_from'] ?? null) {
+                            $indicators[] = Tables\Filters\Indicator::make(__('Defenses from :date', ['date' => Carbon::parse($data['defenses_from'])->toFormattedDateString()]))
+                                ->removeField('defenses_from');
+                        }
+
+                        if ($data['defenses_until'] ?? null) {
+                            $indicators[] = Tables\Filters\Indicator::make(__('Defenses until :date', ['date' => Carbon::parse($data['defenses_until'])->toFormattedDateString()]))
+                                ->removeField('defenses_until');
+                        }
+
+                        return $indicators;
+                    })
+                    ->default(),
                 Tables\Filters\SelectFilter::make('professor')
                     ->searchable()
                     ->preload()

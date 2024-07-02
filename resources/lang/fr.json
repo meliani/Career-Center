@@ -438,5 +438,11 @@
     "Internship Title": "Titre du stage",
     "Starts At": "Commence le",
     "Ends At": "Finit le",
-    "Recruting Information": "Information de recrutement"
+    "Recruting Information": "Information de recrutement",
+    "Pending cancellation": "Annulation en attente",
+    "Internship Office location if different than organization address.": "Lieu de stage si différent de l'adresse de l'organisation.",
+    "Defenses from": "Soutenances du",
+    "Defenses until": "Soutenances jusqu'au",
+    "Defenses until :date": "Soutenances jusqu'au :date",
+    "Defenses from :date": "Soutenances du :date"
 }
