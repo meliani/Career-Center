@@ -3,11 +3,12 @@
 namespace App\Policies;
 
 use App\Models\InternshipAgreement;
+use App\Models\Student;
 use App\Models\User;
 
 class InternshipAgreementPolicy extends CorePolicy
 {
-    public function viewAny(User $user): bool
+    public function viewAny(User | Student $user): bool
     {
         if ($user->isAdministrator() || $user->isDirection()) {
             // || $user->isProfessor() || $user->isProgramCoordinator() || $user->isDepartmentHead()) {
@@ -17,7 +18,7 @@ class InternshipAgreementPolicy extends CorePolicy
         return false;
     }
 
-    public function view(User $user, InternshipAgreement $internship)
+    public function view(User | Student $user, InternshipAgreement $internship)
     {
         if ($user->isAdministrator() || $user->isDirection() || $user->isProfessor() || $user->isDepartmentHead()) {
             return true;
@@ -31,7 +32,7 @@ class InternshipAgreementPolicy extends CorePolicy
         return false;
     }
 
-    public function update(User $user, InternshipAgreement $internship)
+    public function update(User | Student $user, InternshipAgreement $internship)
     {
         if ($user->isAdministrator()) {
             return true;
@@ -45,12 +46,12 @@ class InternshipAgreementPolicy extends CorePolicy
         return false;
     }
 
-    public function delete(User $user, InternshipAgreement $internship)
+    public function delete(User | Student $user, InternshipAgreement $internship)
     {
         return $user->isAdministrator();
     }
 
-    public function forceDelete(User $user, InternshipAgreement $internship)
+    public function forceDelete(User | Student $user, InternshipAgreement $internship)
     {
         return $user->isAdministrator();
     }
