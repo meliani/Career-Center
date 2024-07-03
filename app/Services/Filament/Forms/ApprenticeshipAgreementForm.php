@@ -139,7 +139,7 @@ class ApprenticeshipAgreementForm
                 ->columns(4)
                 ->schema([
                     Forms\Components\Select::make('currency')
-                        ->default(Enums\Currency::MDH->getSymbol())
+                        ->default(null)
                         ->options([
                             Enums\Currency::EUR->value => Enums\Currency::EUR->getSymbol(),
                             Enums\Currency::USD->value => Enums\Currency::USD->getSymbol(),
