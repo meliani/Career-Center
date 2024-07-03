@@ -125,7 +125,8 @@ class Project extends Core\BackendBaseModel
     public function professors()
     {
         return $this->belongsToMany(Professor::class, 'professor_project')
-            ->withPivot('jury_role', 'created_by', 'updated_by', 'approved_by', 'is_president', 'votes')->withTimestamps()
+            ->withPivot('jury_role', 'created_by', 'updated_by', 'approved_by', 'is_president', 'votes', 'was_present')
+            ->withTimestamps()
             ->using(ProfessorProject::class);
 
     }

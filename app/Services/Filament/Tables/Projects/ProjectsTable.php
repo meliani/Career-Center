@@ -4,11 +4,16 @@ namespace App\Services\Filament\Tables\Projects;
 
 use App\Filament\Actions\Action\AddOrganizationEvaluationSheetAction;
 use Filament\Tables;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectsTable
 {
     public static function get()
     {
+        // $closures = ['evaluation_sheet_url' => (fn ($record) => $record->evaluation_sheet_url)];
+
+        // dd($closures['evaluation_sheet_url']($record));
+
         return [
             Tables\Columns\ColumnGroup::make(__('The student'))
                 ->columns([
@@ -49,6 +54,7 @@ class ProjectsTable
                         ->label('Project end date')
                         ->date('d/m/Y'),
                 ]),
+
             Tables\Columns\ColumnGroup::make(__('Defense authorization'))
                 ->columns([
                     Tables\Columns\TextColumn::make('defense_status')
@@ -62,6 +68,7 @@ class ProjectsTable
                         ->action(AddOrganizationEvaluationSheetAction::make())
                         ->Placeholder(__('Click to add'))
                         ->url(fn ($record) => $record->organization_evaluation_sheet_url, shouldOpenInNewTab: true),
+                    // ->simpleLightbox(fn ($record) => $record->organization_evaluation_sheet_url),
 
                     /*      like this
                         Tables\Columns\TextColumn::make('pdf_file_name')
@@ -72,6 +79,8 @@ class ProjectsTable
                         ->label('Evaluation Sheet')
                         ->limit(20)
                         ->url(fn ($record) => $record->evaluation_sheet_url, shouldOpenInNewTab: true),
+                    // ->simpleLightbox(Storage::disk('public')->url($closures['evaluation_sheet_url'](fn ($record) => $record->evaluation_sheet_url))),
+                    // ->simpleLightbox(fn ($record) => $record->evaluation_sheet_url),
                     Tables\Columns\TextColumn::make('defense_authorized_by_user.name')
                         ->toggleable(isToggledHiddenByDefault: true)
                         ->label('Authorized by')

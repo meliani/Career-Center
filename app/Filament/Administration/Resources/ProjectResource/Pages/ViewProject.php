@@ -24,7 +24,7 @@ class ViewProject extends ViewRecord
                 ->size(Filament\Support\Enums\ActionSize::Small)
                 ->tooltip('Edit project details and jury members')
                 ->url(fn ($record) => \App\Filament\Administration\Resources\ProjectResource::getUrl('edit', [$record->id]))
-                ->hidden(fn () => ! (auth()->user()->isAdministrator() || auth()->user()->isProgramCoordinator() || auth()->user()->isDepartmentHead())),
+                ->hidden(fn () => ! (auth()->user()->isAdministrator() || auth()->user()->isProgramCoordinator() || auth()->user()->isDepartmentHead() || auth()->user()->isAdministrativeSupervisor())),
 
         ];
     }

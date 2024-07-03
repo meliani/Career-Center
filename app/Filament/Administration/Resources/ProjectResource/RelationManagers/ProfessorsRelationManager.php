@@ -53,6 +53,9 @@ class ProfessorsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('jury_role')
                     ->label('Jury role')
                     ->badge(),
+                Tables\Columns\CheckboxColumn::make('was_present')
+                    ->label('Was present')
+                    ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()) === false),
                 Tables\Columns\TextColumn::make('pivot.CreatedBy.full_name')
                     ->badge()
                     ->label('Assigned by'),
@@ -88,7 +91,8 @@ class ProfessorsRelationManager extends RelationManager
                         Forms\Components\Select::make('jury_role')->options(Enums\JuryRole::class)
                             ->required()
                             ->default(Enums\JuryRole::Reviewer),
-                    ]),
+                    ])
+                    ->hidden(fn () => auth()->user()->isAdministrator() === false),
             ])
             ->actions([
                 Tables\Actions\Action::make('approve')

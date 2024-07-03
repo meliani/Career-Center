@@ -59,6 +59,11 @@ class ProjectPolicy extends CorePolicy
         return $user->hasAnyRole($this->administrators);
     }
 
+    public function create(User | Student $user): bool
+    {
+
+        return $user->isAdministrator();
+    }
     // public function viewSome(User $user, Project $project)
     // {
     //     if ($user->hasAnyRole($this->professors) && $project->student->program === $user->assigned_program) {
@@ -66,12 +71,15 @@ class ProjectPolicy extends CorePolicy
     //     }
     // }
 
-    // public function viewRelated(User $user, Project $project)
-    // {
-    //     if ($user->hasAnyRole($this->professors) && $project->student->program === $user->assigned_program) {
-    //         return true;
-    //     }
-    // }
+    public function viewRelated(User $user, Project $project)
+    {
+        return false;
+    }
+
+    public function createRelated(User $user, Project $project)
+    {
+        return false;
+    }
 
     // public function updateCertain(User $user, Project $project)
     // {

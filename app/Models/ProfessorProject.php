@@ -19,12 +19,14 @@ class ProfessorProject extends Pivot
     protected $casts = [
         'jury_role' => Enums\JuryRole::class,
         'is_president' => 'boolean',
+        'was_present' => 'boolean',
     ];
 
     protected $fillable = [
         'jury_role',
         'votes',
         'is_president',
+        'was_present',
         'created_by',
         'updated_by',
         'approved_by',

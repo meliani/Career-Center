@@ -15,7 +15,7 @@ class ProfessorScope implements Scope
     {
         if (auth()->check()) {
 
-            if (auth()->user()->isSuperAdministrator() || auth()->user()->isAdministrator() || auth()->user()->isDirection()) {
+            if (auth()->user()->isSuperAdministrator() || auth()->user()->isAdministrator() || auth()->user()->isDirection() || auth()->user()->isAdministrativeSupervisor()) {
                 return;
             } elseif (auth()->user()->isProgramCoordinator()) {
                 $builder

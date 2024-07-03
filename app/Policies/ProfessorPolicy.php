@@ -9,7 +9,7 @@ class ProfessorPolicy extends CorePolicy
 {
     public function viewAny(User $user): bool
     {
-        if ($user->isAdministrator() || $user->isDirection()) {
+        if ($user->isAdministrator() || $user->isDirection() || $user->isAdministrativeSupervisor()) {
             return true;
         } elseif ($user->isProgramCoordinator()) {
             return true;
@@ -47,6 +47,22 @@ class ProfessorPolicy extends CorePolicy
     }
 
     public function forceDelete(User $user, Professor $professor)
+    {
+        return $user->isAdministrator();
+    }
+
+    public function create(User | Student $user): bool
+    {
+
+        return $user->isAdministrator();
+    }
+
+    public function restore(User $user, Professor $professor)
+    {
+        return $user->isAdministrator();
+    }
+
+    public function createRelated(User $user, Professor $professor)
     {
         return $user->isAdministrator();
     }
