@@ -34,6 +34,7 @@ use Pboivin\FilamentPeek\FilamentPeekPlugin;
 use pxlrbt\FilamentEnvironmentIndicator\EnvironmentIndicatorPlugin;
 use pxlrbt\FilamentSpotlight\SpotlightPlugin;
 use Saade\FilamentFullCalendar\FilamentFullCalendarPlugin;
+use SolutionForest\FilamentSimpleLightBox\SimpleLightBoxPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -99,6 +100,7 @@ class AdminPanelProvider extends PanelProvider
 
             ->plugins(
                 [
+                    SimpleLightBoxPlugin::make(),
                     // FilamentRouteStatisticsPlugin::make(),
                     FilamentFullCalendarPlugin::make()
                         // ->schedulerLicenseKey('GPL-My-Project-Is-Open-Source')

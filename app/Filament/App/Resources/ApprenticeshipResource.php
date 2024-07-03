@@ -66,47 +66,14 @@ class ApprenticeshipResource extends StudentBaseResource
             ])
             ->contentGrid(
                 [
-                    'md' => 1,
-                    'lg' => 1,
-                    'xl' => 1,
-                    '2xl' => 1,
+                    'md' => 2,
+                    'lg' => 2,
+                    'xl' => 2,
+                    '2xl' => 2,
                 ]
             )
             ->columns([
-                // Tables\Columns\TextColumn::make('student_id')
-                //     ->numeric()
-                //     ->sortable(),
-                // Tables\Columns\TextColumn::make('year_id')
-                //     ->numeric()
-                //     ->sortable(),
-                // Tables\Columns\TextColumn::make('project_id')
-                //     ->numeric()
-                //     ->sortable(),
-                Tables\Columns\Layout\Split::make([
-                    Tables\Columns\TextColumn::make('status')
-                        ->description(__('Status'), position: 'before')
-                        ->searchable(),
-                    Tables\Columns\TextColumn::make('pdf_file_name')
-                        ->description(__('Agreement PDF'), position: 'before')
-                        ->label('Agreement PDF')
-                        ->placeholder('No PDF generated yet')
-                        ->limit(20)
-                        ->formatStateUsing(fn (Apprenticeship $record) => ! is_null($record->pdf_file_name) ? 'View agreement' : 'Generate a new PDF')
-                        ->url(fn (Apprenticeship $record) => URL::to($record->pdf_path . '/' . $record->pdf_file_name), shouldOpenInNewTab: true),
-                ]),
-                // Tables\Columns\TextColumn::make('announced_at')
-                //     ->dateTime()
-                //     ->sortable(),
-                // Tables\Columns\TextColumn::make('validated_at')
-                //     ->dateTime()
-                //     ->sortable(),
-                // Tables\Columns\TextColumn::make('assigned_department'),
-                // Tables\Columns\TextColumn::make('received_at')
-                //     ->dateTime()
-                //     ->sortable(),
-                // Tables\Columns\TextColumn::make('signed_at')
-                //     ->dateTime()
-                //     ->sortable(),
+
                 Tables\Columns\Layout\Split::make([
                     Tables\Columns\TextColumn::make('organization.name')
                         ->weight(FontWeight::Bold)
@@ -121,14 +88,6 @@ class ApprenticeshipResource extends StudentBaseResource
                         ->searchable(),
                 ]),
 
-                // Tables\Columns\TextColumn::make('remuneration')
-                //     ->numeric()
-                //     ->sortable(),
-                // Tables\Columns\TextColumn::make('currency')
-                //     ->searchable(),
-                // Tables\Columns\TextColumn::make('workload')
-                //     ->numeric()
-                //     ->sortable(),
                 Tables\Columns\Layout\Split::make([
                     Tables\Columns\Layout\Stack::make([
                         Tables\Columns\TextColumn::make('starting_at')
@@ -141,6 +100,55 @@ class ApprenticeshipResource extends StudentBaseResource
                             ->sortable(),
                     ]),
                 ]),
+                Tables\Columns\Layout\Split::make([
+                    Tables\Columns\Layout\Panel::make([
+                        Tables\Columns\TextColumn::make('status')
+                            ->description(__('Status'), position: 'before')
+                            ->searchable(),
+                        Tables\Columns\TextColumn::make('pdf_file_name')
+                            ->description(__('Agreement PDF'), position: 'before')
+                            ->label('Agreement PDF')
+                            ->placeholder('No PDF generated yet')
+                            ->limit(20)
+                            ->formatStateUsing(fn (Apprenticeship $record) => ! is_null($record->pdf_file_name) ? 'View agreement' : 'Generate a new PDF')
+                            ->url(fn (Apprenticeship $record) => URL::to($record->pdf_path . '/' . $record->pdf_file_name), shouldOpenInNewTab: true),
+                    ])
+                        ->columnSpanFull(),
+                ]),
+
+                // Tables\Columns\TextColumn::make('remuneration')
+                //     ->numeric()
+                //     ->sortable(),
+                // Tables\Columns\TextColumn::make('currency')
+                //     ->searchable(),
+                // Tables\Columns\TextColumn::make('workload')
+                //     ->numeric()
+                //     ->sortable(),
+
+                // Tables\Columns\TextColumn::make('student_id')
+                //     ->numeric()
+                //     ->sortable(),
+                // Tables\Columns\TextColumn::make('year_id')
+                //     ->numeric()
+                //     ->sortable(),
+                // Tables\Columns\TextColumn::make('project_id')
+                //     ->numeric()
+                //     ->sortable(),
+
+                // Tables\Columns\TextColumn::make('announced_at')
+                //     ->dateTime()
+                //     ->sortable(),
+                // Tables\Columns\TextColumn::make('validated_at')
+                //     ->dateTime()
+                //     ->sortable(),
+                // Tables\Columns\TextColumn::make('assigned_department'),
+                // Tables\Columns\TextColumn::make('received_at')
+                //     ->dateTime()
+                //     ->sortable(),
+                // Tables\Columns\TextColumn::make('signed_at')
+                //     ->dateTime()
+                //     ->sortable(),
+
                 // Tables\Columns\TextColumn::make('created_at')
                 //     ->dateTime()
                 //     ->sortable()
@@ -194,13 +202,13 @@ class ApprenticeshipResource extends StudentBaseResource
         ];
     }
 
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
-    }
+    // public static function getEloquentQuery(): Builder
+    // {
+    //     return parent::getEloquentQuery()
+    //         ->withoutGlobalScopes([
+    //             SoftDeletingScope::class,
+    //         ]);
+    // }
 
     public static function infolist(Infolist $infolist): Infolist
     {

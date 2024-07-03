@@ -38,6 +38,13 @@ class CreateApprenticeshipsTable extends Migration
             $table->string('pdf_file_name')->nullable();
             $table->dateTime('cancelled_at')->nullable();
             $table->text('cancellation_reason')->nullable();
+            $table->boolean('is_signed_by_student')->default(false);
+            $table->boolean('is_signed_by_organization')->default(false);
+            $table->boolean('is_signed_by_administration')->default(false);
+            $table->dateTime('signed_by_student_at')->nullable();
+            $table->dateTime('signed_by_organization_at')->nullable();
+            $table->dateTime('signed_by_administration_at')->nullable();
+            $table->string('verification_document_url')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

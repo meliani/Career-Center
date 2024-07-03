@@ -449,5 +449,10 @@
     "EUR": "Euro",
     "USD": "Dollar américain",
     "No remuneration specified": "Aucune rémunération spécifiée",
-    "No workload specified": "Aucune charge de travail spécifiée"
+    "No workload specified": "Aucune charge de travail spécifiée",
+    "If the internship has been signed by the organization, you should ask the organization to send us a cancellation request to proceed with the cancellation.": "Si le stage a été signé par l'organisation, vous devriez demander à l'organisation de nous envoyer une demande d'annulation pour procéder à l'annulation.",
+    "Please provide a reason for the cancellation.": "Veuillez fournir une raison pour l'annulation.",
+    "The text you provide here will be sent to the organization to inform them of the cancellation.": "Le texte que vous fournissez ici sera envoyé à l'organisation pour les informer de l'annulation.",
+    "Please upload a photo of the signature section from the original document signed by you and the school to prove it wasn’t signed.": "Veuillez télécharger une photo de la section de signature du document original signé par vous et l'INPT pour prouver qu'il n'a pas été signé.",
+    "Has the internship been signed by the organization?": "Le stage a-t-il été signé par l'organisation?"
 }

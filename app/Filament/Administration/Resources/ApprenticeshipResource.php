@@ -254,6 +254,7 @@ class ApprenticeshipResource extends BaseResource
                     ->schema([
                         Infolists\Components\Fieldset::make('Basic Information')
                             ->columns(3) // Adjust for each Fieldset as needed
+                            ->columnSpan(2)
                             ->schema([
                                 Infolists\Components\TextEntry::make('student.long_full_name')
                                     ->label('Student'),
@@ -263,6 +264,7 @@ class ApprenticeshipResource extends BaseResource
                                     ->label('Organization'),
                             ]),
                         Infolists\Components\Fieldset::make('Organization details')
+                            ->columnSpan(1)
                             ->columns(3) // Adjust for each Fieldset as needed
                             ->schema([
                                 Infolists\Components\TextEntry::make('organization.city')
@@ -275,6 +277,7 @@ class ApprenticeshipResource extends BaseResource
 
                             ]),
                         Infolists\Components\Fieldset::make('Dates')
+                            ->columnSpan(1)
                             ->columns(3) // Adjust for each Fieldset as needed
                             ->schema([
                                 Infolists\Components\TextEntry::make('starting_at')
@@ -285,6 +288,7 @@ class ApprenticeshipResource extends BaseResource
                                     ->date(),
                             ]),
                         Infolists\Components\Fieldset::make('Remuneration')
+                            ->columnSpan(1)
                             ->columns(3) // Adjust for each Fieldset as needed
                             ->schema([
                                 // Infolists\Components\TextEntry::make('remuneration')
@@ -299,6 +303,7 @@ class ApprenticeshipResource extends BaseResource
                                     ->placeholder(__('No workload specified')),
                             ]),
                         Infolists\Components\Fieldset::make('Supervisors')
+                            ->columnSpan(1)
                             ->columns(3) // Adjust for each Fieldset as needed
                             ->schema([
                                 Infolists\Components\TextEntry::make('parrain.full_name')
@@ -317,8 +322,15 @@ class ApprenticeshipResource extends BaseResource
                                 Infolists\Components\TextEntry::make('cancellation_reason')
                                     ->label('Cancellation Reason')
                                     ->visible(fn ($record) => $record->appliedCancellation()),
+                                Infolists\Components\ImageEntry::make('verification_document_url')
+                                    ->label('Verification Document')
+                                    ->disk('cancellation_verification')
+                                    ->visible(fn ($record) => $record->appliedCancellation())
+                                    ->visibility('private')
+                                    ->simpleLightbox(),
                             ]),
                         Infolists\Components\Fieldset::make('Dates')
+                            ->columnSpan(2)
                             ->visible(fn ($record) => ($record->announced_at || $record->validated_at || $record->received_at || $record->signed_at))
                             ->columns(3) // Adjust for each Fieldset as needed
                             ->schema([
@@ -342,6 +354,7 @@ class ApprenticeshipResource extends BaseResource
 
                             ]),
                         Infolists\Components\Fieldset::make('System Dates')
+                            ->columnSpan(1)
                             ->columns(3) // Adjust for each Fieldset as needed
                             ->schema([
                                 Infolists\Components\TextEntry::make('created_at')

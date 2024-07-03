@@ -54,6 +54,7 @@
         "revolution/laravel-google-sheets": "^6.4",
         "ryangjchandler/filament-progress-column": "^0.4.1",
         "saade/filament-fullcalendar": "^3.1",
+        "solution-forest/filament-simplelightbox": "^0.0.7",
         "spatie/laravel-data": "^4.2",
         "spatie/laravel-pdf": "^1.4",
         "spatie/period": "^2.4",

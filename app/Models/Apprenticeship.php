@@ -53,7 +53,13 @@ class Apprenticeship extends Model
         'pdf_path',
         'cancelled_at',
         'cancellation_reason',
-
+        'is_signed_by_student',
+        'is_signed_by_organization',
+        'is_signed_by_administration',
+        'signed_by_student_at',
+        'signed_by_organization_at',
+        'signed_by_administration_at',
+        'verification_document_url',
     ];
 
     protected $casts = [
@@ -63,7 +69,12 @@ class Apprenticeship extends Model
         'starting_at' => 'date',
         'ending_at' => 'date',
         'remuneration' => 'decimal:2',
-
+        'is_signed_by_student' => 'boolean',
+        'is_signed_by_organization' => 'boolean',
+        'is_signed_by_administration' => 'boolean',
+        'signed_by_student_at' => 'datetime',
+        'signed_by_organization_at' => 'datetime',
+        'signed_by_administration_at' => 'datetime',
     ];
 
     protected $dates = [
@@ -165,11 +176,12 @@ class Apprenticeship extends Model
         return $this->starting_at->format('d/m/Y') . ' - ' . $this->ending_at->format('d/m/Y');
     }
 
-    public function applyForCancellation($reason)
+    public function applyForCancellation($reason, $verificationDocumentUrl)
     {
         $this->status = Enums\Status::PendingCancellation;
         $this->cancelled_at = now();
         $this->cancellation_reason = $reason;
+        $this->verification_document_url = $verificationDocumentUrl;
         $this->save();
     }
 
