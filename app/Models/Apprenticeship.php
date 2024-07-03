@@ -60,8 +60,8 @@ class Apprenticeship extends Model
         'assigned_department' => Enums\Department::class,
         'status' => Enums\Status::class,
         'currency' => Enums\Currency::class,
-        // 'starting_at' => 'date:Y-m-d',
-        // 'ending_at' => 'date:Y-m-d',
+        'starting_at' => 'date',
+        'ending_at' => 'date',
         'remuneration' => 'decimal:2',
 
     ];
