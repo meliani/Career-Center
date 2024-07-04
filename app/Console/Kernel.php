@@ -14,8 +14,8 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->command('projects:detect-assured-defenses')
-            ->everySecond();
-        // ->dailyAt('16:00');
+            // ->everySecond();
+            ->dailyAt('16:00');
     }
 
     /**
