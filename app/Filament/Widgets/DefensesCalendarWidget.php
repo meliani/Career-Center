@@ -103,8 +103,9 @@ class DefensesCalendarWidget extends FullCalendarWidget
                         //                 url: auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()
                         // ? TimetableResource::getUrl(name: 'edit', parameters: ['record' => $project->timetable])
                         // : ProjectResource::getUrl(name: 'view', parameters: ['record' => $project]),
-                        url: ProjectResource::getUrl(name: 'view', parameters: ['record' => $project]),
-                        shouldOpenUrlInNewTab: true
+                        // url: ProjectResource::getUrl(name: 'view', parameters: ['record' => $project]),
+                        url: auth()->user()->can('update', $project) ? ProjectResource::getUrl(name: 'view', parameters: ['record' => $project]) : '#',
+                        shouldOpenUrlInNewTab: false
                     )
                     ->extendedProps([
                         'description' => $project->title,
