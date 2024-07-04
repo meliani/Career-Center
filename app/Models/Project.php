@@ -322,4 +322,9 @@ class Project extends Core\BackendBaseModel
 
         return null;
     }
+
+    public function isAuthorized()
+    {
+        return $this->defense_status == Enums\DefenseStatus::Authorized;
+    }
 }
