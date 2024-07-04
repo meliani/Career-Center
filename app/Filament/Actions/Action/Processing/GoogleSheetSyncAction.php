@@ -20,8 +20,7 @@ class GoogleSheetSyncAction extends Action
             $googleServices = new \App\Services\GoogleServices();
             $googleServices->importData();
             // $googleServices->importProfessors();
-        })
-            ->disabled();
+        });
 
         return $static;
     }

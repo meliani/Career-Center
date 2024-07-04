@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums;
 use App\Facades\GlobalDefenseCalendarConnector;
 use App\Models\InternshipAgreement;
 use App\Models\Professor;
@@ -169,7 +170,11 @@ class GoogleServices
             }
         }
 
-        return $internshipAgreement->project_id;
+        if ($internshipAgreement->project->defense_status === Enums\DefenseStatus::Authorized) {
+            return null;
+        } else {
+            return $internshipAgreement->project_id;
+        }
     }
 
     public function importProfessors()
@@ -177,13 +182,19 @@ class GoogleServices
         foreach ($this->data as $record) {
 
             $internshipAgreement = InternshipAgreement::where('id_pfe', $record['ID PFE'])->first();
-            if (! $internshipAgreement) {
+            if ($internshipAgreement) {
+                if ($internshipAgreement->project->defense_status === Enums\DefenseStatus::Authorized) {
+                    continue;
+                }
+            } elseif (! $internshipAgreement) {
                 // Debugbar::info('Internship agreement not found');
                 $pfeIds = explode(',', $record['ID PFE']);
                 foreach ($pfeIds as $id) {
                     $internshipAgreement = InternshipAgreement::where('id_pfe', $id)->first();
                     if ($internshipAgreement) {
-                        return $internshipAgreement->project_id;
+                        if ($internshipAgreement->project->defense_status === Enums\DefenseStatus::Authorized) {
+                            continue;
+                        }
                     }
                 }
 
