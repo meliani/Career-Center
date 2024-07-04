@@ -116,9 +116,9 @@ class AdminPanelProvider extends PanelProvider
                             'resourceTimeGrid',
                         ])
                         ->config([
-                            'initialView' => 'timeGridWeek', //timeGridWeek, timeGridDay, dayGridMonth, listWeek
+                            'initialView' => 'timeGridDay', //timeGridWeek, timeGridDay, dayGridMonth, listWeek
                             'firstDay' => 1, // start the week on a Monday
-                            'eventDisplay' => 'auto', // block, list-item, auto, background, inverse-background and none
+                            'eventDisplay' => 'list-item', // block, list-item, auto, background, inverse-background and none
                             'eventTimeFormat' => [
                                 'hour' => 'numeric',
                                 'minute' => '2-digit',
@@ -168,50 +168,66 @@ class AdminPanelProvider extends PanelProvider
                                     'id' => '3',
                                     'title' => 'Amphi 3',
                                 ],
-                                [
-                                    'id' => '5',
-                                    'title' => 'Salle B10',
-                                ],
+                                // [
+                                //     'id' => '5',
+                                //     'title' => 'Salle B10',
+                                // ],
                                 [
                                     'id' => '6',
                                     'title' => 'Salle B12',
                                 ],
-                                // [
-                                //     'id' => '7',
-                                //     'title' => 'Salle B202',
-                                // ],
+
+                                [
+                                    'id' => '7',
+                                    'title' => 'Salle B202',
+                                ],
                                 // [
                                 //     'id' => '8',
                                 //     'title' => 'Salle B119',
                                 // ],
+                                [
+                                    'id' => '9',
+                                    'title' => 'Salle CF',
+                                ],
                             ],
                             'views' => [
                                 'timeGridWeek' => [
                                     'type' => 'timeGrid',
                                     // 'duration' => ['days' => 5],
                                     'hiddenDays' => [0, 6],
+                                    'buttonText' => __('Time Grid Week'),
                                 ],
                                 'timeGridDay' => [
-                                    'type' => 'timeGrid',
+                                    'type' => 'timeGridDay',
                                     // 'duration' => ['days' => 1],
                                     'hiddenDays' => [0, 6],
+                                    'buttonText' => __('Time Grid Day'),
                                 ],
                                 'resourceTimeGridDay' => [
                                     'type' => 'resourceTimeGrid',
                                     'duration' => ['days' => 1],
                                     'hiddenDays' => [0, 6],
+                                    'text' => 'resourceTimeGridDay',
+                                    'buttonText' => __('Resource Time Grid Day'),
                                 ],
                             ],
+                            // 'buttonText' => [
+                            //     'today' => 'Aujourd\'hui',
+                            //     'month' => 'Mois',
+                            //     'week' => 'Semainegfhf',
+                            //     'day' => 'Jourhfg',
+                            //     'list' => 'Listehgfhgf',
+                            // ],
                             'headerToolbar' => [
                                 'start' => 'prev,next',
                                 'center' => 'title',
-                                'end' => 'today timeGridWeek,resourceTimeGridDay',
+                                'end' => 'today timeGridWeek,timeGridDay,resourceTimeGridDay',
                                 // 'end' => 'today timeGridWeek,timeGridDay timelineWeek,timelineDay resourceTimelineWeek,resourceTimelineDay',
                             ],
                             'eventContent' => 'function(arg) {
                                 return { html: "<b>" + arg.event.title + "</b><br/>" + arg.event.extendedProps.description };
                             }',
-                            'initialDate' => '2024-06-24',
+                            'initialDate' => now(),
 
                         ])
                         ->locale('fr'),

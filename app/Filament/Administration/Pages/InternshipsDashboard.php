@@ -2,17 +2,17 @@
 
 namespace App\Filament\Administration\Pages;
 
-class AdministrationDashboard extends \Filament\Pages\Dashboard
+class InternshipsDashboard extends \Filament\Pages\Dashboard
 {
     // use \JibayMcs\FilamentTour\Tour\HasTour;
 
-    protected static string $routePath = 'administrationDashboard';
+    protected static string $routePath = 'internshipsDashboard';
 
-    protected static ?string $title = 'Welcome dashboard';
+    protected static ?string $title = 'Final projects dashboard';
 
     protected static ?int $navigationSort = 1;
 
-    protected static ?string $navigationLabel = 'Welcome dashboard';
+    protected static ?string $navigationLabel = 'Final projects dashboard';
 
     public function getTitle(): string
     {
@@ -37,12 +37,24 @@ class AdministrationDashboard extends \Filament\Pages\Dashboard
     {
         return [
 
-            \App\Filament\Widgets\DefensesCalendarWidget::class,
             \App\Filament\Widgets\AssignedSupervisorsChart::class,
-            \App\Filament\Widgets\ProfessorsParticipationTable::class,
-            // \App\Filament\Widgets\ProgressionTimelineChart::class,
+            \App\Filament\Widgets\InternshipsByEndDateChart::class,
+            \App\Filament\Widgets\InternshipsByEndDateDailyChart::class,
+            // \App\Filament\Widgets\InternshipsDistributionByDepartmentChart::class,
+            \App\Filament\Widgets\InternshipsPerCityChartFrance::class,
+            \App\Filament\Widgets\InternshipsPerCityChartMorocco::class,
+            \App\Filament\Widgets\InternshipsPerCountryChart::class,
+            \App\Filament\Widgets\InternshipsPerMonthChart::class,
+            \App\Filament\Widgets\InternshipsPerOrganizationChart::class,
+            \App\Filament\Widgets\InternshipsPerProgramChart::class,
+            \App\Filament\Widgets\InternshipsPerStatusChart::class,
+            \App\Filament\Widgets\InternshipsPerWeekChart::class,
+            \App\Filament\Widgets\InternshipsStatusChart::class,
+            // \App\Filament\Widgets\ProfessorsParticipationTable::class,
+            \App\Filament\Widgets\ProgressionTimelineChart::class,
             // \App\Filament\Widgets\TimetableOverviewChart::class,
             // \App\Filament\Widgets\EntrepriseContactsChart::class,
+            // \App\Filament\Widgets\DefensesCalendarWidget::class,
             // \App\Filament\Widgets\AnouncementsCalendarWidget::class,
         ];
     }

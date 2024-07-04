@@ -44,7 +44,11 @@ class TimetableResource extends BaseResource
 
     public static function canViewAny(): bool
     {
-        return true;
+        if (auth()->check()) {
+            return auth()->user()->isAdministrator();
+        }
+
+        return false;
     }
 
     public static function form(Form $form): Form

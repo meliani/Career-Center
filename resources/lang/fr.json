@@ -135,8 +135,8 @@
     "Not assigned": "Non affecté",
     "Assigned": "Affecté",
     "Assigned supervisors": "Nombre d'encadrements affectés",
-    "Direction dashboard": "Tableau de bord direction",
-    "Administration dashboard": "Tableau de bord administration",
+    "Direction dashboard": "Dashboard de direction",
+    "Welcome dashboard": "Dashboard d'accueil",
     "Students and projects": "Étudiants et projets",
     "Student information": "Information de l'étudiant",
     "Remuneration": "Rémunération",
@@ -454,5 +454,10 @@
     "Please provide a reason for the cancellation.": "Veuillez fournir une raison pour l'annulation.",
     "The text you provide here will be sent to the organization to inform them of the cancellation.": "Le texte que vous fournissez ici sera envoyé à l'organisation pour les informer de l'annulation.",
     "Please upload a photo of the signature section from the original document signed by you and the school to prove it wasn’t signed.": "Veuillez télécharger une photo de la section de signature du document original signé par vous et l'INPT pour prouver qu'il n'a pas été signé.",
-    "Has the internship been signed by the organization?": "Le stage a-t-il été signé par l'organisation?"
+    "Has the internship been signed by the organization?": "Le stage a-t-il été signé par l'organisation?",
+    "Time Grid Week": "Grille horaire de la semaine",
+    "Time Grid Day": "Grille horaire de la journée",
+    "Resource Time Grid Day": "Grille horaire par salle",
+    "Defenses dashboard": "Dashboard des soutenances",
+    "Final projects dashboard": "Dashboard des PFE"
 }
