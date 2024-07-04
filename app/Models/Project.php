@@ -111,6 +111,11 @@ class Project extends Core\BackendBaseModel
         return $this->belongsToMany(Student::class);
     }
 
+    public function allStudents()
+    {
+        return $this->belongsToMany(Student::class)->withoutGlobalScopes();
+    }
+
     public function internship_agreements()
     {
         return $this->hasMany(InternshipAgreement::class);

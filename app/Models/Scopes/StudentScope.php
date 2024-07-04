@@ -51,6 +51,8 @@ class StudentScope implements Scope
                                     ->where('year_id', '=', Year::current()->id);
                             });
                         });
+
+                    return;
                 }
             } else {
                 abort(403, 'You are not authorized to view this page');
