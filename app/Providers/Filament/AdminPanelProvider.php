@@ -221,7 +221,7 @@ class AdminPanelProvider extends PanelProvider
                             'headerToolbar' => [
                                 'start' => 'prev,next',
                                 'center' => 'title',
-                                'end' => 'today timeGridWeek,timeGridDay,resourceTimeGridDay',
+                                'end' => 'today timeGridWeek,timeGridDay resourceTimeGridDay',
                                 // 'end' => 'today timeGridWeek,timeGridDay timelineWeek,timelineDay resourceTimelineWeek,resourceTimelineDay',
                             ],
                             'eventContent' => 'function(arg) {

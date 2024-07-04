@@ -354,12 +354,42 @@ class ProjectResource extends Core\BaseResource
 
     public static function infolist(Infolist $infolist): Infolist
     {
+        $organization_evaluation_sheet_url = url($infolist->getRecord()->organization_evaluation_sheet_url);
+        $evaluation_sheet_url = url($infolist->getRecord()->evaluation_sheet_url);
+
         return $infolist
             ->schema([
+                Infolists\Components\Section::make(__('Defense documents'))
+                    // ->hidden(fn () => auth()->user()->isAdministrator() === false)
+                    ->columns(3)
+                    ->schema([
+                        Infolists\Components\TextEntry::make('evaluation_sheet_url')
+                            ->label('Evaluation sheet')
+                            ->formatStateUsing(
+                                fn ($record) => $record->evaluation_sheet_url ? "[Download]({$record->evaluation_sheet_url})" : null
+                            )
+                            ->simpleLightbox($evaluation_sheet_url)
+                            ->markdown(),
+                        Infolists\Components\TextEntry::make('organization_evaluation_sheet_url')
+                            ->label('Organization evaluation sheet')
+                            ->formatStateUsing(
+                                fn ($record) => $record->organization_evaluation_sheet_url ? "[Download]({$record->organization_evaluation_sheet_url})" : null
+                            )
+                            ->simpleLightbox($organization_evaluation_sheet_url)
+                            ->markdown(),
+                    ]),
+
                 Infolists\Components\Section::make(__('Defense information'))
                     // ->hidden(fn () => auth()->user()->isAdministrator() === false)
                     ->columns(3)
                     ->schema([
+                        Infolists\Components\TextEntry::make('defense_status')
+                            ->label('Defense status'),
+                        Infolists\Components\TextEntry::make('defense_authorized_at')
+                            ->label('Defense authorized at')
+                            ->dateTime(),
+                        Infolists\Components\TextEntry::make('defense_authorized_by_user.name')
+                            ->label('Defense authorized by'),
                         Infolists\Components\TextEntry::make('timetable.timeslot.start_time')
                             ->label('Defense start time')
                             ->dateTime(),
