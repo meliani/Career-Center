@@ -15,6 +15,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Storage;
 
 class ApprenticeshipResource extends BaseResource
 {
@@ -247,6 +248,8 @@ class ApprenticeshipResource extends BaseResource
 
     public static function infolist(Infolist $infolist): Infolist
     {
+        $verification_document_url = Storage::disk('cancellation_verification')->url($infolist->getRecord()->verification_document_url);
+
         return $infolist
             ->schema([
                 Infolists\Components\Section::make('Apprenticeship Agreement')
@@ -322,12 +325,12 @@ class ApprenticeshipResource extends BaseResource
                                 Infolists\Components\TextEntry::make('cancellation_reason')
                                     ->label('Cancellation Reason')
                                     ->visible(fn ($record) => $record->appliedCancellation()),
-                                Infolists\Components\ImageEntry::make('verification_document_url')
+                                Infolists\Components\TextEntry::make('verification_document_url')
                                     ->label('Verification Document')
-                                    ->disk('cancellation_verification')
+                                    // ->disk('cancellation_verification')
+                                    // ->visibility('private')
                                     ->visible(fn ($record) => $record->appliedCancellation())
-                                    ->visibility('private')
-                                    ->simpleLightbox(),
+                                    ->simpleLightbox($verification_document_url),
                             ]),
                         Infolists\Components\Fieldset::make('Dates')
                             ->columnSpan(2)
