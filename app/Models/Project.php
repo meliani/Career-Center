@@ -83,6 +83,16 @@ class Project extends Core\BackendBaseModel
         }
     }
 
+    public function getStudentsNamesAttribute()
+    {
+        return $this->students()->implode('name', ' & ');
+    }
+
+    public function getStudentsProgramsAttribute()
+    {
+        return $this->students()->implode('program', ' & ');
+    }
+
     public function getOrganizationAttribute()
     {
         return $this->internship_agreements()->first() ? $this->internship_agreements()->first()->organization_name : 'Undefined Organization';
@@ -247,6 +257,17 @@ class Project extends Core\BackendBaseModel
         return $AcademicSupervisor ? $AcademicSupervisor->full_name : 'Undefined Academic Supervisor';
     }
 
+    public function getAcademicSupervisorPresenceAttribute()
+    {
+        $AcademicSupervisor = $this->professors()
+            ->wherePivot('jury_role', Enums\JuryRole::Supervisor)
+            ->wherePivot('was_present', true)
+            ->first();
+        // dd($AcademicSupervisor);
+
+        return $AcademicSupervisor ? '☀️' : '🌕';
+    }
+
     public function getReviewer1Attribute()
     {
         $Reviewer1 = $this->professors()
@@ -257,6 +278,17 @@ class Project extends Core\BackendBaseModel
         return $Reviewer1 ? $Reviewer1->full_name : 'Undefined Reviewer 1';
     }
 
+    public function getReviewer1PresenceAttribute()
+    {
+        $Reviewer2 = $this->professors()
+            ->wherePivot('jury_role', Enums\JuryRole::Reviewer2)
+            ->wherePivot('was_present', true)
+            ->first();
+        // dd($Reviewer2);
+
+        return $Reviewer2 ? '☀️' : '🌕';
+    }
+
     public function getReviewer2Attribute()
     {
         $Reviewer2 = $this->professors()
@@ -265,6 +297,17 @@ class Project extends Core\BackendBaseModel
         // dd($Reviewer2);
 
         return $Reviewer2 ? $Reviewer2->full_name : 'Undefined Reviewer 2';
+    }
+
+    public function getReviewer2PresenceAttribute()
+    {
+        $Reviewer2 = $this->professors()
+            ->wherePivot('jury_role', Enums\JuryRole::Reviewer2)
+            ->wherePivot('was_present', true)
+            ->first();
+        // dd($Reviewer2);
+
+        return $Reviewer2 ? '☀️' : '🌕';
     }
 
     public function defense_authorized_by_user()
