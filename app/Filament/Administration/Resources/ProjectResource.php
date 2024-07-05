@@ -354,8 +354,8 @@ class ProjectResource extends Core\BaseResource
 
     public static function infolist(Infolist $infolist): Infolist
     {
-        $organization_evaluation_sheet_url = url($infolist->getRecord()->organization_evaluation_sheet_url);
-        $evaluation_sheet_url = url($infolist->getRecord()->evaluation_sheet_url);
+        $organization_evaluation_sheet_url = $infolist->getRecord()->organization_evaluation_sheet_url ? url($infolist->getRecord()->organization_evaluation_sheet_url) : null;
+        $evaluation_sheet_url = $infolist->getRecord()->evaluation_sheet_url ? url($infolist->getRecord()->evaluation_sheet_url) : null;
 
         return $infolist
             ->schema([
