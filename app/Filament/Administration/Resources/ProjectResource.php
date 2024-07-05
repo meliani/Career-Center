@@ -21,7 +21,6 @@ use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Table;
 use Hydrat\TableLayoutToggle\Facades\TableLayoutToggle;
 use Illuminate\Contracts\Database\Query\Builder;
-use Illuminate\Support\Facades\Storage;
 use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 use Parallax\FilamentComments\Actions\CommentsAction;
 use Parallax\FilamentComments\Infolists\Components\CommentsEntry;
@@ -356,7 +355,7 @@ class ProjectResource extends Core\BaseResource
     public static function infolist(Infolist $infolist): Infolist
     {
         $organization_evaluation_sheet_url = url($infolist->getRecord()->organization_evaluation_sheet_url);
-        $evaluation_sheet_url = url(Storage::url($infolist->getRecord()->evaluation_sheet_url));
+        $evaluation_sheet_url = url($infolist->getRecord()->evaluation_sheet_url);
 
         return $infolist
             ->schema([
