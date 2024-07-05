@@ -231,7 +231,7 @@ class Project extends Core\BackendBaseModel
 
     public function getDefensePlanAttribute()
     {
-        return $this->timetable()->exists() ? "Le {$this->timetable->timeslot->end_time->format('d M Y')} de {$this->timetable->timeslot->start_time->format('H:i')} à {$this->timetable->timeslot->end_time->format('H:i')}, {$this->timetable->room->name}" : __('Undefined Defense Date');
+        return $this->timetable()->exists() ? "{$this->timetable->timeslot->end_time->format('d M Y')} de {$this->timetable->timeslot->start_time->format('H:i')} à {$this->timetable->timeslot->end_time->format('H:i')}, {$this->timetable->room->name}" : __('Undefined Defense Date');
     }
 
     public function getProjectDatesAttribute()
