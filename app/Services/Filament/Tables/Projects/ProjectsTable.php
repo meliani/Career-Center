@@ -106,14 +106,20 @@ class ProjectsTable
                         ->searchable(false)
                         ->sortable(),
                     Tables\Columns\TextColumn::make('supervisor.name')
-                        ->label('Supervisor'),
-                    Tables\Columns\TextColumn::make('reviewers.name')
-                        ->label('Reviewers')
-                        ->searchable(false)
+                        ->label('Supervisor')
                         // ->searchable(
                         //     ['first_name', 'last_name']
                         // )
-                        ->sortableMany(),
+                        ->sortable(false),
+                    Tables\Columns\TextColumn::make('reviewers.name')
+                        ->label('Reviewers')
+                        // ->searchable(
+                        //     ['first_name', 'last_name']
+                        // )
+                        ->sortable(false),
+                    // ->searchable(false)
+                    // ->searchable(false)
+                    // ->sortableMany(),
 
                     Tables\Columns\TextColumn::make('language')
                         ->toggleable(isToggledHiddenByDefault: true)
