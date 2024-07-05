@@ -12,7 +12,7 @@ class GlobalDefenseCalendarConnector extends Facade
     {
         $sheets = Sheets::spreadsheet(config('sheets.defenses_spreadsheet_id'))
             ->sheet(config('sheets.defenses_sheet_id'))
-            ->range('A1:J246')
+            ->range('A:N')
             ->get();
 
         $header = [
@@ -27,6 +27,9 @@ class GlobalDefenseCalendarConnector extends Facade
             'Nom et Prénom Examinateur 1',
             'Nom et Prénom Examinateur 2',
             'remarques',
+            'convention signée',
+            'accord encadrant interne',
+            'fiche evaluation entreprise',
         ];
         // dd(Sheets::collection(header: $header, rows: $sheets));
 
