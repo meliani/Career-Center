@@ -38,7 +38,7 @@ enum DefenseStatus: string implements HasColor, HasIcon, HasLabel
             self::Authorized => 'success',
             self::Pending => 'warning',
             self::Rejected => 'danger',
-            self::Completed => 'success',
+            self::Completed => 'primary',
         };
     }
 

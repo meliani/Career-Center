@@ -12,6 +12,8 @@ class DefensesDashboard extends \Filament\Pages\Dashboard
 
     protected static ?string $navigationLabel = 'Defenses dashboard';
 
+    protected static ?string $navigationIcon = 'heroicon-o-presentation-chart-bar';
+
     public function getWidgets(): array
     {
         return [

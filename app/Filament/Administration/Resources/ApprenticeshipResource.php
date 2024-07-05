@@ -22,7 +22,7 @@ class ApprenticeshipResource extends BaseResource
 
     protected static ?string $recordTitleAttribute = 'title';
 
-    protected static ?string $navigationIcon = 'heroicon-o-megaphone';
+    protected static ?string $navigationIcon = 'heroicon-o-building-storefront';
 
     protected static ?int $sort = 1;
 

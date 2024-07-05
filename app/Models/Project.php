@@ -281,7 +281,7 @@ class Project extends Core\BackendBaseModel
     public function getReviewer1PresenceAttribute()
     {
         $Reviewer2 = $this->professors()
-            ->wherePivot('jury_role', Enums\JuryRole::Reviewer2)
+            ->wherePivot('jury_role', Enums\JuryRole::Reviewer1)
             ->wherePivot('was_present', true)
             ->first();
         // dd($Reviewer2);

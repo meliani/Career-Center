@@ -25,7 +25,7 @@ class InternshipAgreementResource extends Core\BaseResource
 
     protected static ?string $recordTitleAttribute = 'title';
 
-    protected static ?string $navigationIcon = 'heroicon-o-megaphone';
+    protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
 
     protected static ?int $sort = 1;
 

@@ -14,6 +14,8 @@ class InternshipsDashboard extends \Filament\Pages\Dashboard
 
     protected static ?string $navigationLabel = 'Final projects dashboard';
 
+    protected static ?string $navigationIcon = 'heroicon-o-command-line';
+
     public function getTitle(): string
     {
         return __(static::$title);
