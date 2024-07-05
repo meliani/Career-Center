@@ -364,16 +364,16 @@ class ProjectResource extends Core\BaseResource
                     ->columns(3)
                     ->schema([
                         Infolists\Components\TextEntry::make('evaluation_sheet_url')
-                            ->label('Evaluation sheet')
+                            ->label('Jury evaluation sheet')
                             ->formatStateUsing(
-                                fn ($record) => $record->evaluation_sheet_url ? "[Download]({$record->evaluation_sheet_url})" : null
+                                fn ($record) => $record->evaluation_sheet_url ? "[View file or Ctrl+Click to open in a new tab]({$record->evaluation_sheet_url})" : null
                             )
                             ->simpleLightbox($evaluation_sheet_url)
                             ->markdown(),
                         Infolists\Components\TextEntry::make('organization_evaluation_sheet_url')
                             ->label('Organization evaluation sheet')
                             ->formatStateUsing(
-                                fn ($record) => $record->organization_evaluation_sheet_url ? "[Download]({$record->organization_evaluation_sheet_url})" : null
+                                fn ($record) => $record->organization_evaluation_sheet_url ? "[View file or Ctrl+Click to open in a new tab]({$record->organization_evaluation_sheet_url})" : null
                             )
                             ->simpleLightbox($organization_evaluation_sheet_url)
                             ->markdown(),
