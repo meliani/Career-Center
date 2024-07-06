@@ -348,7 +348,7 @@ class ProjectResource extends Core\BaseResource
                     Tables\Actions\DeleteBulkAction::make(),
                 ])
                     ->label(__('Mass prossessing'))
-                    ->hidden(fn () => auth()->user()->isAdministrator() === false),
+                    ->hidden(fn () => auth()->user()->cannot('manage-projects')),
                 BulkAction\Email\SendGenericEmail::make('Send mass emails to students')
                     ->tooltip(__('Send customized generic mass emails to students'))
                     ->label(__('Write mass emails to students'))
