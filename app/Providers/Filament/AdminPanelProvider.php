@@ -61,14 +61,18 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogo(asset('/svg/logo_entreprises.svg'))
             ->favicon(asset('/svg/logo_entreprises_round.svg'))
             ->darkModeBrandLogo(asset('/svg/logo_entreprises_white.svg'))
-            ->colors([
-                'danger' => Color::Rose,
-                'gray' => Color::Gray,
-                'info' => Color::Blue,
-                'primary' => Color::Indigo,
-                'success' => Color::Emerald,
-                'warning' => Color::Orange,
-            ])
+            ->colors(
+                \App\Services\ColorService::colorsOfTheDay()
+                //     [
+                //     'danger' => Color::Rose,
+                //     'gray' => Color::Gray,
+                //     'info' => Color::Blue,
+                //     'primary' => Color::Indigo,
+                //     'success' => Color::Emerald,
+                //     'warning' => Color::Orange,
+                //     'secondary' => Color::Cyan,
+                // ]
+            )
             ->discoverResources(in: app_path('Filament/Administration/Resources'), for: 'App\\Filament\\Administration\\Resources')
             ->discoverPages(in: app_path('Filament/Administration/Pages'), for: 'App\\Filament\\Administration\\Pages')
             ->pages([

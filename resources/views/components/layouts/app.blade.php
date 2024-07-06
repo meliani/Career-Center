@@ -32,8 +32,8 @@
     @filamentScripts
     {{-- @vite('resources/js/app.js') --}}
 
-    @livewire('notifications')
     @auth
+    @livewire('notifications')
     @livewire('database-notifications')
     @endauth
 </body>

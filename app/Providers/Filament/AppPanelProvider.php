@@ -29,9 +29,13 @@ class AppPanelProvider extends PanelProvider
             ->authPasswordBroker('students')
             ->id('app')
             ->path('app')
-            ->colors([
-                'primary' => Color::Sky,
-            ])
+            ->colors(
+                \App\Services\ColorService::studentsAppColorsOfTheDay()
+
+                // [
+                //     'primary' => Color::Sky,
+                // ]
+            )
 
             ->passwordReset()
             ->emailVerification()

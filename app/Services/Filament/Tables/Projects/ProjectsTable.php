@@ -71,7 +71,7 @@ class ProjectsTable
                         ->badge()
                         ->color(fn ($record) => $record->organization_evaluation_sheet_url ? 'info' : 'primary')
                         ->formatStateUsing(fn ($record) => $record->organization_evaluation_sheet_url ? __('Open in new tab') : __('Click to add'))
-                        ->tooltip(fn ($record) => $record->organization_evaluation_sheet_url ? __('Open in new tab') : __('Click to add'))
+                        ->tooltip(fn ($record) => $record->organization_evaluation_sheet_url ? __('Open document in a new tab') : __('Click to add an evaluation sheet'))
                         ->url(fn ($record) => $record->organization_evaluation_sheet_url, shouldOpenInNewTab: true),
                     // ->simpleLightbox(fn ($record) => $record->organization_evaluation_sheet_url),
 
