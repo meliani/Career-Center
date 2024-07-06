@@ -90,6 +90,14 @@ class DefensesPerProgramChart extends ApexChartsParentWidget
             'xaxis' => [
                 'categories' => array_column($defensesData, 'program'),
             ],
+            'yaxis' => [
+                // 'labels' => [
+                //     'formatter' => fn ($defensesData) => array_column($defensesData, 'program'),
+                // ],
+            ],
+            'dataLabels' => [
+                'enabled' => true,
+            ],
         ];
 
     }

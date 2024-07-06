@@ -479,5 +479,9 @@
     "Postpone defense": "Reporter la soutenance",
     "Postponed": "Reportée",
     "Comment": "Commentaire",
-    "Percentage of achievement (%)": "Pourcentage d'achèvement (%)"
+    "Percentage of achievement (%)": "Pourcentage d'achèvement (%)",
+    "An overview of the defenses distribution per program.": "Un aperçu de la répartition des soutenances par filière.",
+    "Defenses distribution per Program": "Répartition des soutenances par filière",
+    "Total projects": "Nombre de projets",
+    "Total completed defenses": "Nombre de soutenances achevées"
 }
