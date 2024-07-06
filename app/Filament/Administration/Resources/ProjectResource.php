@@ -345,7 +345,8 @@ class ProjectResource extends Core\BaseResource
                         ->color('success')
                         ->hidden(auth()->user()->cannot('manage-projects'))
                         ->action(fn ($records) => $records->each->completeDefense()),
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->hidden(fn () => auth()->user()->isAdministrator() === false),
                 ])
                     ->label(__('Mass prossessing'))
                     ->hidden(fn () => auth()->user()->cannot('manage-projects')),
