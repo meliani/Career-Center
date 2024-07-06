@@ -215,6 +215,15 @@ class ProjectResource extends Core\BaseResource
                         return $indicators;
                     })
                     ->default(),
+
+                Tables\Filters\SelectFilter::make('defense_status')
+                    ->options(Enums\DefenseStatus::class)
+                    ->query(
+                        fn (Builder $query, array $data) => $query->when(
+                            $data['value'],
+                            fn (Builder $query, $status): Builder => $query->where('defense_status', $status)
+                        ),
+                    ),
                 Tables\Filters\SelectFilter::make('professor')
                     ->searchable()
                     ->preload()
