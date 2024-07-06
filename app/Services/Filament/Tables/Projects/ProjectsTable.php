@@ -69,6 +69,9 @@ class ProjectsTable
                         ->Placeholder(__('Click to add'))
                         ->icon('heroicon-o-document-magnifying-glass')
                         ->badge()
+                        ->visible(function ($record) {
+                            return auth()->user()->can('manage-projects');
+                        })
                         ->color(fn ($record) => $record->organization_evaluation_sheet_url ? 'info' : 'primary')
                         ->formatStateUsing(fn ($record) => $record->organization_evaluation_sheet_url ? __('Open in new tab') : __('Click to add'))
                         ->tooltip(fn ($record) => $record->organization_evaluation_sheet_url ? __('Open document in a new tab') : __('Click to add an evaluation sheet'))

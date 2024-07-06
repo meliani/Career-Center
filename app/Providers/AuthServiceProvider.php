@@ -104,8 +104,9 @@ class AuthServiceProvider extends ServiceProvider
         });
         Gate::define('validate-project', [ProjectPolicy::class, 'update']);
         Gate::define('authorize-defense', [ProjectPolicy::class, 'update']);
-        Gate::define('manage-project', [ProjectPolicy::class, 'update']);
         Gate::define('send-defense-email', [ProjectPolicy::class, 'update']);
+
+        Gate::define('manage-projects', fn (User $user) => ($user->isAdministrator() || $user->isAdministrativeSupervisor() || $user->isProgramCoordinator()));
 
     }
 }

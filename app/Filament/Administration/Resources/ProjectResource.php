@@ -327,6 +327,24 @@ class ProjectResource extends Core\BaseResource
                     ->dropdownWidth(FilamentEnums\MaxWidth::Large)
                     ->hidden(fn () => auth()->user()->isAdministrator() === false),
                 Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\BulkAction::make('authorize')
+                        ->label('Authorize')
+                        ->icon('heroicon-o-check')
+                        ->color('success')
+                        ->hidden(auth()->user()->cannot('manage-projects'))
+                        ->action(fn ($records) => $records->each->authorizeDefense()),
+                    Tables\Actions\BulkAction::make('postpone')
+                        ->label('Postpone')
+                        ->icon('heroicon-o-clock')
+                        ->color('warning')
+                        ->hidden(auth()->user()->cannot('manage-projects'))
+                        ->action(fn ($records) => $records->each->postponeDefense()),
+                    Tables\Actions\BulkAction::make('complete')
+                        ->label('Complete')
+                        ->icon('heroicon-o-check-circle')
+                        ->color('success')
+                        ->hidden(auth()->user()->cannot('manage-projects'))
+                        ->action(fn ($records) => $records->each->completeDefense()),
                     Tables\Actions\DeleteBulkAction::make(),
                 ])
                     ->label(__('Mass prossessing'))

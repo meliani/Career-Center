@@ -18,6 +18,7 @@ class DefensesDashboard extends \Filament\Pages\Dashboard
     {
         return [
             \App\Filament\Widgets\ProfessorsParticipationTable::class,
+            \App\Filament\Widgets\DefensesPerProgramChart::class,
         ];
     }
 
