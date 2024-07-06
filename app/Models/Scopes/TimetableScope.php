@@ -18,10 +18,11 @@ class TimetableScope implements Scope
             if (auth()->user()->isSuperAdministrator() || auth()->user()->isAdministrator() || auth()->user()->isDirection()) {
                 return;
             } elseif (auth()->user()->isProgramCoordinator()) {
-                $builder
-                    ->whereHas('students', function ($q) {
-                        $q->where('program', '=', auth()->user()->assigned_program);
-                    });
+                // $builder
+                //     ->whereHas('students', function ($q) {
+                //         $q->where('program', '=', auth()->user()->assigned_program);
+                //     });
+                return;
 
             } elseif (auth()->user()->isDepartmentHead()) {
                 // $builder

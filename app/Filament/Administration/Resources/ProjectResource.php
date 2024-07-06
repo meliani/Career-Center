@@ -287,17 +287,17 @@ class ProjectResource extends Core\BaseResource
                         ->color('primary')
                         ->disabled(fn ($record): bool => $record['defense_authorized_at'] == null)
                         // ->disabled(fn ($record): bool => $record['validated_at'] !== null)
-                        ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()) === false),
+                        ->hidden(fn ($record) => auth()->user()->can('send-defense-email', $record) === false),
                     \App\Filament\Actions\Action\AuthorizeDefenseAction::make()
                         ->icon('heroicon-o-check')
                         ->color('success')
                         // ->disabled(fn ($record): bool => $record['validated_at'] !== null)
-                        ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()) === false),
+                        ->hidden(fn ($record) => auth()->user()->can('authorize-defense', $record) === false),
                     Tables\Actions\Action::make('Postpone')
                         ->label('Postpone defense')
                         ->icon('heroicon-o-clock')
                         ->color('warning')
-                        ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()) === false)
+                        ->hidden(fn ($record) => auth()->user()->can('authorize-defense', $record) === false)
                         ->action(fn ($record) => $record->postponeDefense()),
                     \Parallax\FilamentComments\Tables\Actions\CommentsAction::make()
                         ->label('Comment')

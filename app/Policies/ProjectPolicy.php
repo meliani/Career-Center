@@ -44,11 +44,11 @@ class ProjectPolicy extends CorePolicy
         if ($user->isAdministrator() || $user->isAdministrativeSupervisor()) {
             return true;
         } elseif ($user->isProfessor() && $project->professors === $user->id) {
-            return true;
+            return false;
         } elseif ($user->isProgramCoordinator() && $project->students->each(fn ($student, $key) => $student->program === $user->assigned_program)) {
-            return true;
+            return false;
         } elseif ($user->isDepartmentHead() && $project->students->each(fn ($student, $key) => $student->department === $user->department)) {
-            return true;
+            return false;
         }
 
         return false;

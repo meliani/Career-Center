@@ -46,6 +46,8 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerInternshipAgreementPolicies();
         // $this->registerPulsesPolicy();
         $this->registerPolicies();
+
+        $this->registerProjectPolicies();
     }
 
     private function registerInternshipAgreementPolicies()
@@ -75,5 +77,35 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('viewPulse', function (User $user) {
             return $user->role === Role::SuperAdministrator;
         });
+    }
+
+    private function registerProjectPolicies()
+    {
+        Gate::define('view-project', function (User $user, Project $project) {
+            if ($user->hasAnyRole($this->administrators)) {
+                return true;
+            }
+
+            return $project->program === $user->assigned_program;
+        });
+        Gate::define('assign-project-to-professor', function (User $user) {
+            if ($user->hasAnyRole($this->administrators)) {
+                return true;
+            }
+
+            return false;
+        });
+        Gate::define('assign-project-to-student', function (User $user) {
+            if ($user->hasAnyRole($this->administrators)) {
+                return true;
+            }
+
+            return false;
+        });
+        Gate::define('validate-project', [ProjectPolicy::class, 'update']);
+        Gate::define('authorize-defense', [ProjectPolicy::class, 'update']);
+        Gate::define('manage-project', [ProjectPolicy::class, 'update']);
+        Gate::define('send-defense-email', [ProjectPolicy::class, 'update']);
+
     }
 }

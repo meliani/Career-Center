@@ -63,6 +63,7 @@ class ProjectsTable
                         ->searchable()
                         ->badge(),
                     Tables\Columns\TextColumn::make('organization_evaluation_sheet_url')
+                        // ->disabled(true)
                         ->label('Organization Evaluation Sheet')
                         ->action(AddOrganizationEvaluationSheetAction::make())
                         ->Placeholder(__('Click to add'))

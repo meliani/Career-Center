@@ -23,9 +23,11 @@ class AddOrganizationEvaluationSheetAction extends Action
             'name' => $name ?? static::getDefaultName(),
         ]);
         $static->configure()->action(function (array $data, Project $record): void {
+
             $record->organization_evaluation_sheet_url = $data['organization_evaluation_sheet_url'];
             $record->save();
         })
+            ->disabled(fn ($record) => auth()->user()->cannot('manage-project', $record))
             ->form(function ($record) {
                 return [
                     \Filament\Forms\Components\FileUpload::make('organization_evaluation_sheet_url')
