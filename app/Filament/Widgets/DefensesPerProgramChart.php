@@ -75,7 +75,7 @@ class DefensesPerProgramChart extends ApexChartsParentWidget
             ],
             'series' => [
                 [
-                    'name' => __('Total projects'),
+                    'name' => __('Total final projects'),
                     'data' => array_column($defensesData, 'total_projects'),
                 ],
                 [
