@@ -52,15 +52,15 @@ class DefensesPerProgramChart extends ApexChartsParentWidget
         $defensesData = \DB::table('projects')
             ->leftJoin('internships', 'projects.id', '=', 'internships.project_id')
             ->leftJoin('students', 'internships.student_id', '=', 'students.id')
-            ->leftJoin('timetables', 'projects.id', '=', 'timetables.project_id')
+            // ->leftJoin('timetables', 'projects.id', '=', 'timetables.project_id')
             // ->leftJoin('timeslots', 'timetables.timeslot_id', '=', 'timeslots.id')
             // ->where('projects.defense_status', DefenseStatus::Completed)
-            ->groupBy('students.program')
+            ->groupBy('program')
             ->select(
-                'students.program',
-                \DB::raw('COUNT(DISTINCT projects.id) AS total_projects'),
-                \DB::raw('COUNT(DISTINCT projects.defense_status = "Completed") AS total_defenses'),
-                \DB::raw('ROUND((COUNT(DISTINCT projects.defense_status = "Completed") / COUNT(DISTINCT projects.id)) * 100, 2) AS percentage')
+                'program',
+                \DB::raw('count(projects.id) as total_projects'),
+                \DB::raw('count(projects.defense_status = "Completed") as total_defenses'),
+                \DB::raw('ROUND(count(projects.defense_status = "Completed") / count(projects.id) * 100,1) as percentage')
             )
             ->get()
             ->toArray();
@@ -75,60 +75,20 @@ class DefensesPerProgramChart extends ApexChartsParentWidget
             ],
             'series' => [
                 [
-                    'name' => __('Total Projects'),
+                    'name' => __('Total projects'),
                     'data' => array_column($defensesData, 'total_projects'),
                 ],
                 [
-                    'name' => __('Total Defenses'),
+                    'name' => __('Total completed defenses'),
                     'data' => array_column($defensesData, 'total_defenses'),
                 ],
                 [
-                    'name' => __('Ratio (%)'),
+                    'name' => __('Percentage of achievement (%)'),
                     'data' => array_column($defensesData, 'percentage'),
                 ],
             ],
             'xaxis' => [
                 'categories' => array_column($defensesData, 'program'),
-            ],
-            'plotOptions' => [
-                'bar' => [
-                    'horizontal' => false,
-                    'endingShape' => 'rounded',
-                ],
-            ],
-            'dataLabels' => [
-                'enabled' => true,
-            ],
-            'stroke' => [
-                'show' => true,
-                'width' => 2,
-                'colors' => ['transparent'],
-            ],
-            'grid' => [
-                'show' => false,
-                'padding' => [
-                    'top' => 0,
-                    'right' => 0,
-                    'bottom' => 0,
-                    'left' => 0,
-                ],
-            ],
-            'yaxis' => [
-                'show' => false,
-                'title' => [
-                    'text' => __('Number of projects'),
-                ],
-            ],
-            'xaxis' => [
-                'title' => [
-                    'text' => __('Program'),
-                ],
-            ],
-            'tooltip' => [
-                'enabled' => true,
-                'y' => [
-                    'formatter' => 'function (val) { return val }',
-                ],
             ],
         ];
 
