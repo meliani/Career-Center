@@ -30,13 +30,13 @@ class ProjectResource extends Core\BaseResource
 {
     protected static ?string $model = Project::class;
 
-    protected static ?string $modelLabel = 'Project';
+    protected static ?string $modelLabel = 'Final project defense';
 
-    protected static ?string $pluralModelLabel = 'Projects';
+    protected static ?string $pluralModelLabel = 'Final projects defenses';
 
-    protected static ?string $title = 'Manage final projects';
+    protected static ?string $title = 'title';
 
-    protected static ?string $recordTitleAttribute = 'organization';
+    protected static ?string $recordTitleAttribute = 'students_names';
 
     protected static ?string $navigationIcon = 'heroicon-o-command-line';
 
@@ -283,12 +283,22 @@ class ProjectResource extends Core\BaseResource
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     \App\Filament\Actions\Action\SendDefenseEmailAction::make()
+                        ->icon('heroicon-o-paper-airplane')
+                        ->color('primary')
                         ->disabled(fn ($record): bool => $record['defense_authorized_at'] == null)
                         // ->disabled(fn ($record): bool => $record['validated_at'] !== null)
                         ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()) === false),
                     \App\Filament\Actions\Action\AuthorizeDefenseAction::make()
+                        ->icon('heroicon-o-check')
+                        ->color('success')
                         // ->disabled(fn ($record): bool => $record['validated_at'] !== null)
                         ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()) === false),
+                    Tables\Actions\Action::make('Postpone')
+                        ->label('Postpone defense')
+                        ->icon('heroicon-o-clock')
+                        ->color('warning')
+                        ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()) === false)
+                        ->action(fn ($record) => $record->postponeDefense()),
                     \Parallax\FilamentComments\Tables\Actions\CommentsAction::make()
                         ->label('Comment')
                         ->tooltip(
@@ -296,10 +306,12 @@ class ProjectResource extends Core\BaseResource
                         )
                         // ->visible(fn () => true)
                         ->badge(fn ($record) => $record->filamentComments()->count() ? $record->filamentComments()->count() : null),
+
                     // Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\ViewAction::make(),
-                ]),
+                ])
+                    ->icon('heroicon-o-bars-3'),
                 // ])->dropdown(false)
                 // ->tooltip(__('Edit or view this project')),
                 // ->hidden(true),
@@ -311,14 +323,13 @@ class ProjectResource extends Core\BaseResource
                         ->hidden(fn () => auth()->user()->isAdministrator() === false)
                         ->requiresConfirmation()
                         ->outlined(),
-                ])
-                    ->label(__('Mass Notification Emails'))
+                ])->label(__('Mass Notification Emails'))
                     ->dropdownWidth(FilamentEnums\MaxWidth::Large)
                     ->hidden(fn () => auth()->user()->isAdministrator() === false),
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ])
-                    ->label(__('edition'))
+                    ->label(__('Mass prossessing'))
                     ->hidden(fn () => auth()->user()->isAdministrator() === false),
                 BulkAction\Email\SendGenericEmail::make('Send mass emails to students')
                     ->tooltip(__('Send customized generic mass emails to students'))

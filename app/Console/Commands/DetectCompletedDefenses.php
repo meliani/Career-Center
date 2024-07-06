@@ -24,6 +24,8 @@ class DetectCompletedDefenses extends Command
         Log::info('Starting update-status command');
 
         $today = Carbon::today();
+        // ->subDays(3);
+
         $projects = Project::where('defense_status', Enums\DefenseStatus::Authorized)
             ->whereHas('timetable', function ($query) use ($today) {
                 // Assuming 'timetable' is the relationship name and 'timeslot' is a date field
@@ -36,8 +38,12 @@ class DetectCompletedDefenses extends Command
 
         foreach ($projects as $project) {
             if ($project->isAuthorized()) {
-                $project->defense_status = Enums\DefenseStatus::Completed;
-                $project->save();
+                // disable edit if in development mode
+                if (config('app.env') === 'production') {
+                    $project->defense_status = Enums\DefenseStatus::Completed;
+                    $project->save();
+                }
+
                 $completedProjects->push($project);
                 $this->info("Project ID {$project->id} status updated to achieved.");
             }

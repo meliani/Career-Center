@@ -341,6 +341,28 @@ class Project extends Core\BackendBaseModel
 
     }
 
+    public function postponeDefense()
+    {
+        try {
+            if (Gate::denies('authorize-defense', $this)) {
+                throw new AuthorizationException();
+            }
+            $this->defense_status = Enums\DefenseStatus::Postponed;
+            $this->save();
+            Filament\Notifications\Notification::make()
+                ->title('Defense has been postponed successfully.')
+                ->success()
+                ->send();
+        } catch (AuthorizationException $e) {
+            Filament\Notifications\Notification::make()
+                ->title('Sorry You dont have the permission to do this action.')
+                ->danger()
+                ->send();
+
+            return response()->json(['error' => 'This action is unauthorized.'], 403);
+        }
+    }
+
     public function generateEvaluationSheet()
     {
         // we gonna use GenerateDefenseDocuments service and generateEvaluationSheet method to generate the evaluation sheet

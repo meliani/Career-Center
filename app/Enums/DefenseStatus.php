@@ -16,6 +16,7 @@ enum DefenseStatus: string implements HasColor, HasIcon, HasLabel
     case Pending = 'Pending';
     case Rejected = 'Rejected';
     case Completed = 'Completed';
+    case Postponed = 'Postponed';
 
     public static function getArray(): array
     {
@@ -24,6 +25,7 @@ enum DefenseStatus: string implements HasColor, HasIcon, HasLabel
             self::Pending,
             self::Rejected,
             self::Completed,
+            self::Postponed,
         ];
     }
 
@@ -39,6 +41,7 @@ enum DefenseStatus: string implements HasColor, HasIcon, HasLabel
             self::Pending => 'warning',
             self::Rejected => 'danger',
             self::Completed => 'primary',
+            self::Postponed => 'secondary',
         };
     }
 
@@ -49,6 +52,7 @@ enum DefenseStatus: string implements HasColor, HasIcon, HasLabel
             self::Pending => 'heroicon-o-clock',
             self::Rejected => 'heroicon-o-x',
             self::Completed => 'heroicon-o-check',
+            self::Postponed => 'heroicon-o-clock',
         };
     }
 }

@@ -64,9 +64,13 @@ class ProjectsTable
                         ->badge(),
                     Tables\Columns\TextColumn::make('organization_evaluation_sheet_url')
                         ->label('Organization Evaluation Sheet')
-                        ->limit(20)
                         ->action(AddOrganizationEvaluationSheetAction::make())
                         ->Placeholder(__('Click to add'))
+                        ->icon('heroicon-o-document-magnifying-glass')
+                        ->badge()
+                        ->color(fn ($record) => $record->organization_evaluation_sheet_url ? 'info' : 'primary')
+                        ->formatStateUsing(fn ($record) => $record->organization_evaluation_sheet_url ? __('Open in new tab') : __('Click to add'))
+                        ->tooltip(fn ($record) => $record->organization_evaluation_sheet_url ? __('Open in new tab') : __('Click to add'))
                         ->url(fn ($record) => $record->organization_evaluation_sheet_url, shouldOpenInNewTab: true),
                     // ->simpleLightbox(fn ($record) => $record->organization_evaluation_sheet_url),
 
@@ -77,7 +81,11 @@ class ProjectsTable
                     ->url(fn (Apprenticeship $record) => URL::to($record->pdf_path . '/' . $record->pdf_file_name), shouldOpenInNewTab: true), */
                     Tables\Columns\TextColumn::make('evaluation_sheet_url')
                         ->label('Evaluation Sheet')
-                        ->limit(20)
+                        ->Placeholder(__('Not generated yet'))
+                        ->icon('heroicon-o-document-magnifying-glass')
+                        ->color(fn ($record) => $record->evaluation_sheet_url ? 'info' : 'gray')
+                        ->formatStateUsing(fn ($record) => $record->evaluation_sheet_url ? __('Open in new tab') : __('Not generated yet'))
+                        ->badge()
                         ->url(fn ($record) => $record->evaluation_sheet_url, shouldOpenInNewTab: true),
                     // ->simpleLightbox(Storage::disk('public')->url($closures['evaluation_sheet_url'](fn ($record) => $record->evaluation_sheet_url))),
                     // ->simpleLightbox(fn ($record) => $record->evaluation_sheet_url),
@@ -106,7 +114,7 @@ class ProjectsTable
                         ->searchable(false)
                         ->sortable(),
                     Tables\Columns\TextColumn::make('supervisor.name')
-                        ->label('Supervisor')
+                        ->label('Academic Supervisor')
                         // ->searchable(
                         //     ['first_name', 'last_name']
                         // )
@@ -132,7 +140,7 @@ class ProjectsTable
                         ->searchable(false)
                         ->sortable(),
                     Tables\Columns\TextColumn::make('defense_plan')
-                        ->label('Defense Plan')
+                        ->label('Defense plan')
                         ->toggleable(isToggledHiddenByDefault: false)
                         ->sortable(false)
                         ->searchable(false),

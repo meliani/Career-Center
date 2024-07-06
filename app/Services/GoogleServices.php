@@ -170,7 +170,7 @@ class GoogleServices
             }
         }
 
-        if ($internshipAgreement->project->defense_status === Enums\DefenseStatus::Authorized) {
+        if ($internshipAgreement->project->defense_status === Enums\DefenseStatus::Authorized || $internshipAgreement->project->defense_status === Enums\DefenseStatus::Completed) {
             return null;
         } else {
             return $internshipAgreement->project_id;
@@ -183,7 +183,7 @@ class GoogleServices
 
             $internshipAgreement = InternshipAgreement::where('id_pfe', $record['ID PFE'])->first();
             if ($internshipAgreement) {
-                if ($internshipAgreement->project->defense_status === Enums\DefenseStatus::Authorized) {
+                if ($internshipAgreement->project->defense_status === Enums\DefenseStatus::Authorized || $internshipAgreement->project->defense_status === Enums\DefenseStatus::Completed) {
                     continue;
                 }
             } elseif (! $internshipAgreement) {
@@ -192,7 +192,7 @@ class GoogleServices
                 foreach ($pfeIds as $id) {
                     $internshipAgreement = InternshipAgreement::where('id_pfe', $id)->first();
                     if ($internshipAgreement) {
-                        if ($internshipAgreement->project->defense_status === Enums\DefenseStatus::Authorized) {
+                        if ($internshipAgreement->project->defense_status === Enums\DefenseStatus::Authorized || $internshipAgreement->project->defense_status === Enums\DefenseStatus::Completed) {
                             continue;
                         }
                     }

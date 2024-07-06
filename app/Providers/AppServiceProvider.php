@@ -23,6 +23,7 @@ use Filament\Forms\Components\ToggleButtons;
 use Filament\Infolists;
 use Filament\Infolists\Components\Entry;
 use Filament\Navigation\NavigationGroup;
+use Filament\Tables;
 use Filament\Tables\Columns\Column;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
@@ -161,6 +162,9 @@ class AppServiceProvider extends ServiceProvider
             Forms\Components\Select::configureUsing(function (Forms\Components\Select $select): void {
                 $select->translateLabel();
             });
+        });
+        Tables\Actions\Action::configureUsing(function (Tables\Actions\Action $action): void {
+            $action->translateLabel();
         });
 
         // NavigationGroup::configureUsing(function (NavigationGroup $group): void {
