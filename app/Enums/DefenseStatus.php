@@ -38,10 +38,10 @@ enum DefenseStatus: string implements HasColor, HasIcon, HasLabel
     {
         return match ($this) {
             self::Authorized => 'success',
-            self::Pending => 'warning',
+            self::Pending => 'secondary',
             self::Rejected => 'danger',
             self::Completed => 'primary',
-            self::Postponed => 'secondary',
+            self::Postponed => 'warning',
         };
     }
 
