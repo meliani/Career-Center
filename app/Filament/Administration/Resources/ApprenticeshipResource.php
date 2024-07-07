@@ -50,8 +50,8 @@ class ApprenticeshipResource extends BaseResource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('student.name')
-                    ->disabled(),
+                // Forms\Components\TextInput::make('student.name')
+                //     ->disabled(),
                 // Forms\Components\TextInput::make('year_id')
                 //     ->required()
                 //     ->numeric(),
