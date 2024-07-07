@@ -385,6 +385,13 @@ class Project extends Core\BackendBaseModel
         }
     }
 
+    public function markAllProfessorsAsPresent()
+    {
+        $this->professors()->each(function ($professor) {
+            $this->professors()->updateExistingPivot($professor->id, ['was_present' => true]);
+        });
+    }
+
     public function generateEvaluationSheet()
     {
         // we gonna use GenerateDefenseDocuments service and generateEvaluationSheet method to generate the evaluation sheet

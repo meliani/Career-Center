@@ -357,6 +357,13 @@ class ProjectResource extends Core\BaseResource
                         ->hidden(auth()->user()->cannot('manage-projects'))
                         ->requiresConfirmation()
                         ->action(fn ($records) => $records->each->completeDefense()),
+                    Tables\Actions\BulkAction::make('markAllProfessorsAsPresent')
+                        ->label('Mark jury as present')
+                        ->icon('heroicon-o-check-circle')
+                        ->color('success')
+                        ->hidden(auth()->user()->cannot('manage-projects'))
+                        ->requiresConfirmation()
+                        ->action(fn ($records) => $records->each->markAllProfessorsAsPresent()),
                     Tables\Actions\DeleteBulkAction::make()
                         ->hidden(fn () => auth()->user()->isAdministrator() === false),
                 ])
