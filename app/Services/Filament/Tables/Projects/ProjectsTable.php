@@ -19,20 +19,18 @@ class ProjectsTable
                 ->columns([
                     Tables\Columns\TextColumn::make('internship_agreements.id_pfe')
                         ->label('ID PFE')
-                        ->sortable()
-                        ->sortableMany()
                         ->searchable(true),
                     Tables\Columns\TextColumn::make('students.full_name')
                         ->label('Student name')
                         ->searchable(
                             ['first_name', 'last_name']
                         )
-                        ->sortableMany()
                         ->limit(20),
                     Tables\Columns\TextColumn::make('students.program')
                         ->toggleable(isToggledHiddenByDefault: true)
                         ->label('Program')
-                        ->searchable()->sortableMany()->badge(),
+                        ->searchable(false)
+                        ->badge(),
                     // Tables\Columns\TextColumn::make('internship_agreements.assigned_department')
                     //     ->label('Assigned department')
                     //     // ->sortable(false)
@@ -59,11 +57,13 @@ class ProjectsTable
                 ->columns([
                     Tables\Columns\TextColumn::make('defense_status')
                         ->label('Status')
-                        ->sortable()
-                        ->searchable()
+                        ->searchable(false)
+
                         ->badge(),
                     Tables\Columns\TextColumn::make('organization_evaluation_sheet_url')
                         // ->disabled(true)
+                        ->searchable(false)
+                        ->sortable(false)
                         ->label('Organization Evaluation Sheet')
                         ->action(AddOrganizationEvaluationSheetAction::make())
                         ->Placeholder(__('Click to add'))
@@ -84,6 +84,8 @@ class ProjectsTable
                     ->limit(20)
                     ->url(fn (Apprenticeship $record) => URL::to($record->pdf_path . '/' . $record->pdf_file_name), shouldOpenInNewTab: true), */
                     Tables\Columns\TextColumn::make('evaluation_sheet_url')
+                        ->searchable(false)
+                        ->sortable(false)
                         ->label('Evaluation Sheet')
                         ->Placeholder(__('Not generated yet'))
                         ->icon('heroicon-o-document-magnifying-glass')
@@ -97,9 +99,7 @@ class ProjectsTable
                     Tables\Columns\TextColumn::make('defense_authorized_by_user.name')
                         ->toggleable(isToggledHiddenByDefault: true)
                         ->label('Authorized by')
-                        ->searchable(false)
-                        ->badge()
-                        ->sortable(),
+                        ->badge(),
                 ]),
 
             Tables\Columns\ColumnGroup::make(__('Defense information'))
@@ -117,7 +117,7 @@ class ProjectsTable
                         ->toggleable(isToggledHiddenByDefault: true)
                         ->label('Contacts External Supervisor')
                         ->searchable(false)
-                        ->sortable(),
+                        ->sortable(false),
                     Tables\Columns\TextColumn::make('supervisor.name')
                         ->label('Academic Supervisor')
                         // ->searchable(
@@ -126,13 +126,8 @@ class ProjectsTable
                         ->sortable(false),
                     Tables\Columns\TextColumn::make('reviewers.name')
                         ->label('Reviewers')
-                        // ->searchable(
-                        //     ['first_name', 'last_name']
-                        // )
+                        ->searchable(false)
                         ->sortable(false),
-                    // ->searchable(false)
-                    // ->searchable(false)
-                    // ->sortableMany(),
 
                     Tables\Columns\TextColumn::make('language')
                         ->toggleable(isToggledHiddenByDefault: true)
@@ -143,7 +138,7 @@ class ProjectsTable
                         ->toggleable(isToggledHiddenByDefault: true)
                         ->limit(90)
                         ->searchable(false)
-                        ->sortable(),
+                        ->sortable(false),
                     Tables\Columns\TextColumn::make('defense_plan')
                         ->label('Defense plan')
                         ->toggleable(isToggledHiddenByDefault: false)
@@ -153,17 +148,18 @@ class ProjectsTable
                         ->toggleable(isToggledHiddenByDefault: true)
                         ->label('Defense start time')
                         ->searchable(false)
-                        ->sortable()
+                        ->sortable(true)
                         ->dateTime('d M Y H:i'),
                     Tables\Columns\TextColumn::make('timetable.timeslot.end_time')
                         ->label('Defense end time')
                         ->searchable(false)
-                        ->sortable()
+                        ->sortable(false)
                         ->toggleable(isToggledHiddenByDefault: true)
                         ->dateTime('d M Y H:i'),
                     Tables\Columns\TextColumn::make('timetable.room.name')
                         ->toggleable(isToggledHiddenByDefault: true)
                         ->searchable(false)
+                        ->sortable(false)
                         ->label('Room'),
                 ]),
 
@@ -174,37 +170,40 @@ class ProjectsTable
                 ->columns([
                     Tables\Columns\TextColumn::make('organization_name')
                         ->label('Organization')
-                        ->searchable(false),
+                        ->searchable(false)
+                        ->sortable(false),
                     Tables\Columns\TextColumn::make('address')
                         ->toggleable(isToggledHiddenByDefault: true)
                         ->label('Address')
-                        ->searchable(false),
+                        ->searchable(false)
+                        ->sortable(false),
                     Tables\Columns\TextColumn::make('parrain')
                         ->label('Le Parrain')
                         ->searchable(false)
-                        ->sortable(),
+                        ->sortable(false),
                     Tables\Columns\TextColumn::make('parrain_contact')
                         ->toggleable(isToggledHiddenByDefault: true)
                         ->label('Contacts Parrain')
                         ->searchable(false)
-                        ->sortable(),
+                        ->sortable(false),
 
                     Tables\Columns\TextColumn::make('keywords')
                         ->toggleable(isToggledHiddenByDefault: true)
                         ->label('Keywords')
                         ->searchable(false)
+                        ->sortable(false)
                         ->limit(50),
                 ]),
 
             Tables\Columns\TextColumn::make('created_at')
                 ->searchable(false)
+                ->sortable(false)
                 ->dateTime()
-                ->sortable()
                 ->toggleable(isToggledHiddenByDefault: true),
             Tables\Columns\TextColumn::make('updated_at')
                 ->searchable(false)
+                ->sortable(false)
                 ->dateTime()
-                ->sortable()
                 ->toggleable(isToggledHiddenByDefault: true),
         ];
     }

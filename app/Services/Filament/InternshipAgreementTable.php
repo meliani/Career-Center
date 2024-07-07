@@ -29,16 +29,17 @@ class InternshipAgreementTable
             //     return $internship->student->title->getLabel() . ' ' . $internship->student->first_name . ' ' . $internship->student->last_name;
             // }),
             Tables\Columns\TextColumn::make('starting_at')
-            ->label(__('Start'))
-            ->searchable()
-            ->sortable()
-            ->date(),
-        Tables\Columns\TextColumn::make('ending_at')
-            ->date()
-            ->label(__('End'))
-            ->searchable()
-            ->sortable(),
+                ->label(__('Start'))
+                ->searchable()
+                ->sortable()
+                ->date(),
+            Tables\Columns\TextColumn::make('ending_at')
+                ->label(__('End'))
+                ->searchable()
+                ->sortable()
+                ->date(),
             Tables\Columns\TextColumn::make('duration_in_months')
+                ->searchable(false)
                 ->label(__('Duration')),
             Tables\Columns\TextColumn::make('central_organization')
                 ->label('Central organization')
@@ -99,7 +100,7 @@ class InternshipAgreementTable
             Tables\Columns\TextColumn::make('project.professors.name')
                 ->label('Supervisor - Reviewer')
                 ->searchable()
-                ->sortable(),
+                ->sortable(false),
             Tables\Columns\TextColumn::make('assigned_department')
                 ->label('Assigned department')
                 ->searchable()
