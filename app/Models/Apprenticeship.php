@@ -204,4 +204,10 @@ class Apprenticeship extends Model
             ->orWhere('status', Enums\Status::Validated)
             ->first();
     }
+
+    public function getAgreementPdfUrlAttribute()
+    {
+        // example of variables : path:"storage/pdf/apprenticeship_agreements/FirstYear"	filename:"convention-de-stage-aya-hichabe-1714397022.pdf"
+        return asset($this->pdf_path) . '/' . $this->pdf_file_name;
+    }
 }

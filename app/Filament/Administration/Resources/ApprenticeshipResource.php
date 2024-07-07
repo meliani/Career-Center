@@ -57,30 +57,24 @@ class ApprenticeshipResource extends BaseResource
                 //     ->numeric(),
                 // Forms\Components\TextInput::make('project_id')
                 //     ->numeric(),
-                Forms\Components\ToggleButtons::make('status')
-                    ->options(Enums\Status::class)
-                    ->required()
-                    ->inline(),
-                // Forms\Components\DateTimePicker::make('announced_at'),
-                // Forms\Components\DateTimePicker::make('validated_at'),
-                // Forms\Components\TextInput::make('assigned_department'),
-                // Forms\Components\DateTimePicker::make('received_at'),
-                // Forms\Components\DateTimePicker::make('signed_at'),
+
                 // Forms\Components\Textarea::make('observations')
                 //     ->columnSpanFull(),
                 Forms\Components\Select::make('organization_id')
                     ->relationship('organization', 'name')
                     ->required(),
-                // Forms\Components\TextInput::make('office_location')
-                //     ->maxLength(255),
+                Forms\Components\TextInput::make('office_location')
+                    ->maxLength(255),
                 Forms\Components\TextInput::make('title')
                     ->maxLength(255),
-                // Forms\Components\Textarea::make('description')
-                //     ->columnSpanFull(),
-                // Forms\Components\Textarea::make('keywords')
-                //     ->columnSpanFull(),
+                Forms\Components\TagsInput::make('keywords'),
                 Forms\Components\DateTimePicker::make('starting_at'),
                 Forms\Components\DateTimePicker::make('ending_at'),
+                Forms\Components\ToggleButtons::make('status')
+                    ->options(Enums\Status::class)
+                    ->required()
+                    ->inline(),
+                // Forms\Components\TextInput::make('assigned_department'),
                 // Forms\Components\TextInput::make('remuneration')
                 //     ->numeric(),
                 // Forms\Components\TextInput::make('currency')
@@ -99,7 +93,19 @@ class ApprenticeshipResource extends BaseResource
                 //     ->maxLength(255),
                 // Forms\Components\TextInput::make('pdf_file_name')
                 //     ->maxLength(255),
-            ]);
+                Forms\Components\Fieldset::make('Dates')
+                    ->columns(2)
+                    ->schema([
+                        // Forms\Components\DateTimePicker::make('announced_at'),
+                        Forms\Components\DateTimePicker::make('validated_at'),
+                        Forms\Components\DateTimePicker::make('received_at'),
+                        Forms\Components\DateTimePicker::make('signed_at'),
+                    ]),
+                Forms\Components\RichEditor::make('description')
+                    ->label('Internship description')
+                    ->columnSpan(3),
+            ])
+            ->columns(4);
     }
 
     public static function table(Table $table): Table
@@ -265,6 +271,13 @@ class ApprenticeshipResource extends BaseResource
                                     ->label('Title'),
                                 Infolists\Components\TextEntry::make('organization.name')
                                     ->label('Organization'),
+                                Infolists\Components\TextEntry::make('agreement_pdf_url')
+                                    ->label('Agreement PDF')
+                                    // ->simpleLightbox($infolist->getRecord()->agreement_pdf_url)
+                                    ->visible(fn ($record) => $record->agreement_pdf_url)
+                                    ->formatStateUsing(fn ($record) => $record->agreement_pdf_url ? __('Download agreement PDF') : __('Not generated yet!'))
+
+                                    ->url(fn ($record) => $record->agreement_pdf_url, shouldOpenInNewTab: true),
                             ]),
                         Infolists\Components\Fieldset::make('Organization details')
                             ->columnSpan(1)
