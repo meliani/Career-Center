@@ -326,32 +326,24 @@ class ProjectResource extends Core\BaseResource
                 // ->hidden(true),
             ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    BulkAction\Email\SendConnectingSupervisorsEmail::make('SendConnectingSupervisorsEmail')
-                        ->label(__('Connection email : Supervisors / Students'))
-                        ->hidden(fn () => auth()->user()->isAdministrator() === false)
-                        ->requiresConfirmation()
-                        ->outlined(),
-                ])->label(__('Mass Notification Emails'))
-                    ->dropdownWidth(FilamentEnums\MaxWidth::Large)
-                    ->hidden(fn () => auth()->user()->isAdministrator() === false),
+
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\BulkAction::make('authorize')
-                        ->label('Authorize')
+                        ->label('Authorize selection')
                         ->icon('heroicon-o-check')
                         ->color('success')
                         ->hidden(auth()->user()->cannot('manage-projects'))
                         ->requiresConfirmation()
                         ->action(fn ($records) => $records->each->authorizeDefense()),
                     Tables\Actions\BulkAction::make('postpone')
-                        ->label('Postpone')
+                        ->label('Postpone selection')
                         ->icon('heroicon-o-clock')
                         ->color('warning')
                         ->hidden(auth()->user()->cannot('manage-projects'))
                         ->requiresConfirmation()
                         ->action(fn ($records) => $records->each->postponeDefense()),
                     Tables\Actions\BulkAction::make('complete')
-                        ->label('Complete')
+                        ->label('Complete selection')
                         ->icon('heroicon-o-check-circle')
                         ->color('success')
                         ->hidden(auth()->user()->cannot('manage-projects'))
@@ -361,21 +353,38 @@ class ProjectResource extends Core\BaseResource
                         ->label('Mark jury as present')
                         ->icon('heroicon-o-check-circle')
                         ->color('success')
+                        ->size(\Filament\Support\Enums\ActionSize::ExtraLarge)
                         ->hidden(auth()->user()->cannot('manage-projects'))
                         ->requiresConfirmation()
                         ->action(fn ($records) => $records->each->markAllProfessorsAsPresent()),
                     Tables\Actions\DeleteBulkAction::make()
                         ->hidden(fn () => auth()->user()->isAdministrator() === false),
                 ])
+                    ->outlined()
+                    ->icon('heroicon-o-ellipsis-horizontal-circle')
+                    ->color('primary')
+                    ->size(\Filament\Support\Enums\ActionSize::Small)
+                    // ->dropdownWidth(\Filament\Support\Enums\MaxWidth::ExtraSmall)
                     ->label(__('Mass prossessing'))
                     ->hidden(fn () => auth()->user()->cannot('manage-projects')),
-                BulkAction\Email\SendGenericEmail::make('Send mass emails to students')
-                    ->tooltip(__('Send customized generic mass emails to students'))
-                    ->label(__('Write mass emails to students'))
-                    ->outlined(),
-
+                Tables\Actions\BulkActionGroup::make([
+                    BulkAction\Email\SendGenericEmail::make('Send mass emails to students')
+                        ->tooltip(__('Send customized generic mass emails to students'))
+                        ->label(__('Write mass emails to students'))
+                        ->outlined(),
+                    BulkAction\Email\SendConnectingSupervisorsEmail::make('SendConnectingSupervisorsEmail')
+                        ->label(__('Connection email : Supervisors / Students'))
+                        ->hidden(fn () => auth()->user()->isAdministrator() === false)
+                        ->requiresConfirmation()
+                        ->outlined(),
+                ])->label(__('Mass Notification Emails'))
+                    ->dropdownWidth(FilamentEnums\MaxWidth::Large)
+                    ->color('secondary')
+                    ->icon('heroicon-o-inbox-stack')
+                    ->size(\Filament\Support\Enums\ActionSize::Small)
+                    ->outlined()
+                    ->hidden(fn () => auth()->user()->isAdministrator() === false),
             ]);
-        // ;
 
     }
 

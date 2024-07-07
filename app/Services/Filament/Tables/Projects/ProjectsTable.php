@@ -92,7 +92,7 @@ class ProjectsTable
                         ->color(fn ($record) => $record->evaluation_sheet_url ? 'info' : 'gray')
                         ->formatStateUsing(fn ($record) => $record->evaluation_sheet_url ? __('Open in new tab') : __('Not generated yet'))
                         ->badge()
-                        ->tooltip(fn ($record) => $record->evaluation_sheet_url ? __('Open document in a new tab') : __('Click to add an evaluation sheet'))
+                        ->tooltip(fn ($record) => $record->evaluation_sheet_url ? __('Open document in a new tab') : __('Click to view the project'))
                         ->url(fn ($record) => $record->evaluation_sheet_url, shouldOpenInNewTab: true),
                     // ->simpleLightbox(Storage::disk('public')->url($closures['evaluation_sheet_url'](fn ($record) => $record->evaluation_sheet_url))),
                     // ->simpleLightbox(fn ($record) => $record->evaluation_sheet_url),

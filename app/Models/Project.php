@@ -325,6 +325,9 @@ class Project extends Core\BackendBaseModel
             $this->defense_authorized_at = now();
             $this->defense_authorized_by = auth()->id();
             $this->defense_status = Enums\DefenseStatus::Authorized;
+            // if (! $this->evaluation_sheet_url) {
+            $this->generateEvaluationSheet();
+            // }
             $this->save();
             Filament\Notifications\Notification::make()
                 ->title('Defense has been authorized successfully.')

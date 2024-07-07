@@ -167,6 +167,10 @@ class AppServiceProvider extends ServiceProvider
             $action->translateLabel();
         });
 
+        Tables\Actions\BulkAction::configureUsing(function (Tables\Actions\BulkAction $action): void {
+            $action->translateLabel();
+        });
+
         // NavigationGroup::configureUsing(function (NavigationGroup $group): void {
         //     $group->translateLabel();
         // });

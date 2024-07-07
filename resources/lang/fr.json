@@ -484,5 +484,8 @@
     "Defenses distribution per Program": "Répartition des soutenances par filière",
     "Total final projects": "Nombre de PFE",
     "Total completed defenses": "Nombre de soutenances achevées",
-    "Mark jury as present": "Marquer les jurys présents"
+    "Mark jury as present": "tous les jurys présents",
+    "Authorize selection": "Autoriser la sélection",
+    "Postpone selection": "Reporter la sélection",
+    "Complete selection": "marquer comme Assurée"
 }
