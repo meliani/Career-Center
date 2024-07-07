@@ -66,10 +66,10 @@ class ApprenticeshipResource extends StudentBaseResource
             ])
             ->contentGrid(
                 [
-                    'md' => 2,
-                    'lg' => 2,
-                    'xl' => 2,
-                    '2xl' => 2,
+                    'md' => 1,
+                    'lg' => 1,
+                    'xl' => 1,
+                    '2xl' => 1,
                 ]
             )
             ->columns([
@@ -89,6 +89,12 @@ class ApprenticeshipResource extends StudentBaseResource
                 ]),
 
                 Tables\Columns\Layout\Split::make([
+                    Tables\Columns\TextColumn::make('status')
+                        // ->description(__('Status'), position: 'above')
+                        ->searchable()
+                        ->grow(true)
+                        ->badge()
+                        ->columnSpan(1),
                     Tables\Columns\Layout\Stack::make([
                         Tables\Columns\TextColumn::make('starting_at')
                             ->description(__('Starting from'), position: 'above')
@@ -100,21 +106,22 @@ class ApprenticeshipResource extends StudentBaseResource
                             ->sortable(),
                     ]),
                 ]),
-                Tables\Columns\Layout\Split::make([
-                    Tables\Columns\Layout\Panel::make([
-                        Tables\Columns\TextColumn::make('status')
-                            ->description(__('Status'), position: 'before')
-                            ->searchable(),
-                        Tables\Columns\TextColumn::make('pdf_file_name')
-                            ->description(__('Agreement PDF'), position: 'before')
-                            ->label('Agreement PDF')
-                            ->placeholder('No PDF generated yet')
-                            ->limit(20)
-                            ->formatStateUsing(fn (Apprenticeship $record) => ! is_null($record->pdf_file_name) ? 'View agreement' : 'Generate a new PDF')
-                            ->url(fn (Apprenticeship $record) => URL::to($record->pdf_path . '/' . $record->pdf_file_name), shouldOpenInNewTab: true),
-                    ])
-                        ->columnSpanFull(),
+                Tables\Columns\Layout\Panel::make([
+                    // Tables\Columns\Layout\Split::make([
+                    // Tables\Columns\Layout\Panel::make([
+
+                    Tables\Columns\TextColumn::make('agreement_pdf_url')
+                        // ->description(__('Agreement PDF'), position: 'before')
+                        ->label('Agreement PDF')
+                        ->placeholder(__('No PDF generated yet'))
+                        // ->limit(20)
+                        ->formatStateUsing(fn ($record) => $record->agreement_pdf_url ? _('Download agreement PDF') : _('No PDF generated yet'))
+                        ->columnSpan(3)
+                        ->badge()
+                        ->url(fn ($record) => $record->agreement_pdf_url, shouldOpenInNewTab: true),
                 ]),
+                // ]),
+                // ]),
 
                 // Tables\Columns\TextColumn::make('remuneration')
                 //     ->numeric()
@@ -166,14 +173,26 @@ class ApprenticeshipResource extends StudentBaseResource
                 // Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                GenerateApprenticeshipAgreementAction::make('Generate Agreement PDF')
-                    ->label(__('Generate Agreement PDF'))
-                    ->requiresConfirmation(),
-                ApplyForCancelInternshipAction::make('Apply for internship cancellation'),
+                Tables\Actions\ActionGroup::make([
 
-            ], position: Tables\Enums\ActionsPosition::AfterContent)
+                    GenerateApprenticeshipAgreementAction::make('Generate Agreement PDF')
+                        ->label(__('Generate Agreement PDF'))
+                        ->icon('heroicon-o-arrow-path')
+                        ->requiresConfirmation(),
+                    ApplyForCancelInternshipAction::make('Apply for internship cancellation')
+                        ->icon('heroicon-o-bolt-slash'),
+                    Tables\Actions\ViewAction::make()
+                        ->label('View details'),
+                    Tables\Actions\EditAction::make()
+                        ->label('Edit possible fields'),
+                ])
+                    ->dropdownWidth(\Filament\Support\Enums\MaxWidth::Small)
+                    // ->outlined()
+                    ->label(__('Manage my internship agreement'))
+                    ->icon('heroicon-o-adjustments-horizontal')
+                    ->color('primary'),
+
+            ], position: Tables\Enums\ActionsPosition::AfterColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     // Tables\Actions\DeleteBulkAction::make(),

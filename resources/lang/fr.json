@@ -487,5 +487,12 @@
     "Mark jury as present": "tous les jurys présents",
     "Authorize selection": "Autoriser la sélection",
     "Postpone selection": "Reporter la sélection",
-    "Complete selection": "marquer comme Assurée"
+    "Complete selection": "marquer comme Assurée",
+    "Agreement PDF": "Convention de stage PDF",
+    "No PDF generated yet": "Aucun PDF généré pour le moment",
+    "Download agreement PDF": "Télécharger la convention de stage PDF",
+    "Generate Agreement PDF": "Générer la convention de stage PDF",
+    "Apply for internship cancellation": "Demander l'annulation du stage",
+    "View details": "Voir les détails",
+    "Edit possible fields": "Champs éditables"
 }
