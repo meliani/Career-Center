@@ -77,7 +77,7 @@ class GoogleServices
 
                     foreach ($professors as $professor) {
                         if ($professor['name'] !== $professorsFromSheet[$professor['role']]) {
-                            $changedProfessors[] = __('Project :project_id has changed professor :professor_role from :old_professor to :new_professor', ['project_id' => $project->id, 'professor_role' => $professor['role'], 'old_professor' => $professor['name'], 'new_professor' => $professorsFromSheet[$professor['role']]]);
+                            $changedProfessors[] = __('Project :project_id has changed professor :professor_role from :old_professor to :new_professor', ['project_id' => $project->id_pfe, 'professor_role' => $professor['role'], 'old_professor' => $professor['name'], 'new_professor' => $professorsFromSheet[$professor['role']]]);
                         }
                     }
 
