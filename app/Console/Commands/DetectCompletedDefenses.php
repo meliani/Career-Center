@@ -24,7 +24,7 @@ class DetectCompletedDefenses extends Command
         Log::info('Starting update-status command');
 
         $today = Carbon::today();
-        // ->subDays(3);
+        // ->addDays(2);
 
         $projects = Project::where('defense_status', Enums\DefenseStatus::Authorized)
             ->whereHas('timetable', function ($query) use ($today) {

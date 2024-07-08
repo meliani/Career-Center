@@ -32,7 +32,7 @@ class CompletedDefensesNotification extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Completed Defenses Notification',
+            subject: __('Completed Defenses Notification for :today', ['today' => now()->format('Y-m-d')]),
         );
     }
 

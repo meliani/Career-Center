@@ -28,7 +28,7 @@ class DefenseAuthorizedNotification extends Notification
         return (new MailMessage)
             ->template('emails.templates.notification_email')
             ->from(auth()->user()->email, auth()->user()->full_name)
-            ->subject(__('Defense Authorized'))
+            ->subject(__('The Defense :id has been authorized', ['id' => $this->project->id_pfe]))
             ->line(__('# The Defense :id has been authorized.', ['id' => $this->project->id_pfe]))
             // Include evaluation sheet data using ->line()
             ->line(__('**Administrative supervisor:** ') . $this->project->administrative_supervisor)

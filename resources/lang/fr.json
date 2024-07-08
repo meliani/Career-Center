@@ -389,7 +389,6 @@
     "Authorize defense": "Autoriser la soutenance",
     "Defense authorization": "Autorisation de soutenance",
     "Defense status": "Statut de la soutenance",
-    "Defense Authorized": "Soutenance autorisée",
     "# The defense for your project has been authorized.": "## La soutenance pour votre projet a été autorisée.",
     "View Project": "Voir le projet",
     "View Planning": "Voir le planning",
@@ -411,6 +410,7 @@
     "**Email Sent by ": "**Email envoyé par ",
     "Send defense email": "Envoyer un email de soutenance",
     "# The Defense :id has been authorized.": "## La soutenance du PFE ID :id a été autorisée.",
+    "The Defense :id has been authorized": "La soutenance du PFE ID :id a été autorisée",
     "The residence will not be available after July 31st. Please make the necessary arrangements.": "La résidence ne sera plus disponible après le 31 juillet. Merci de prendre vos dispositions en conséquence.",
     "Notice": "Avis",
     "I understand": "Je comprends",
@@ -499,5 +499,6 @@
     "First year internships per program": "Stages de première année par filière",
     "Second year internships per program": "Stages de deuxième année par filière",
     "Apprenticeships dashboard": "Dashboard des stages ouvrier / technique",
-    "Professors participation": "Participation des enseignants"
+    "Professors participation": "Participation des enseignants",
+    "Completed Defenses Notification for :today": "Notification des soutenances achevées pour le :today"
 }
