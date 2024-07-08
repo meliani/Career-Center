@@ -131,7 +131,7 @@ class AdminPanelProvider extends PanelProvider
                             ],
                             'displayEventEnd' => true,
                             'slotDuration' => '00:15:00',
-                            'slotMinTime' => '08:00:00',
+                            'slotMinTime' => '09:00:00',
                             'slotMaxTime' => '16:30:00',
                             'allDaySlot' => false,
                             'slotLabelFormat' => [
