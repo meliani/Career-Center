@@ -87,9 +87,9 @@ class StudentResource extends Core\BaseResource
                 Forms\Components\TextInput::make('email_perso')
                     ->email()
                     ->maxLength(191),
-                Forms\Components\TextInput::make('password')
-                    ->password()
-                    ->maxLength(255),
+                // Forms\Components\TextInput::make('password')
+                //     ->password()
+                //     ->maxLength(255),
                 Forms\Components\TextInput::make('phone')
                     ->tel()
                     ->maxLength(191),

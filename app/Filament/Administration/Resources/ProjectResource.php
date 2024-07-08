@@ -257,6 +257,15 @@ class ProjectResource extends Core\BaseResource
 
             ])
             ->headerActions([
+                Tables\Actions\Action::make('Check changed professors')
+                    ->label('Check changed professors')
+                    ->tooltip('Check if professors have been changed after getting Authorization')
+                    ->color('primary')
+                    ->hidden(fn () => auth()->user()->isAdministrator() === false)
+                    ->action(function () {
+                        $googleServices = new \App\Services\GoogleServices();
+                        $googleServices->checkChangedProfessors();
+                    }),
                 \App\Filament\Actions\Action\Processing\GoogleSheetSyncAction::make('Google Sheet Sync')
                     ->label('Google Sheet Sync')
                     ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()) === false),

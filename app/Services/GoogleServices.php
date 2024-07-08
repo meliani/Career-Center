@@ -32,6 +32,66 @@ class GoogleServices
 
     }
 
+    public function getIntenshipAgreement($pfeId)
+    {
+        $internshipAgreement = InternshipAgreement::where('id_pfe', $pfeId)->first();
+        if ($internshipAgreement) {
+            return $internshipAgreement;
+        } else {
+            $pfeIds = explode(',', $pfeId);
+            foreach ($pfeIds as $id) {
+                $internshipAgreement = InternshipAgreement::where('id_pfe', $id)->first();
+                if ($internshipAgreement) {
+                    return $internshipAgreement;
+                }
+            }
+        }
+    }
+
+    public function checkChangedProfessors()
+    {
+        // here we want to check if the professors are changed in the google sheet for Authorized and Completed projects
+        // we will get the professors from the google sheet and compare them with the professors in the database
+        // if they are different we will will display a list at the end of the comparison
+
+        $changedProfessors = [];
+        foreach ($this->data as $record) {
+            $internshipAgreement = $this->getIntenshipAgreement($record['ID PFE']);
+            if ($internshipAgreement) {
+                $project = $internshipAgreement->project;
+                if ($project->defense_status === Enums\DefenseStatus::Authorized || $project->defense_status === Enums\DefenseStatus::Completed) {
+                    // lets get the professors with pivot jury_role : supervisor, reviewer1, reviewer2
+
+                    $professors = $project->professors->map(function ($professor) {
+                        return [
+                            'name' => $professor->name,
+                            'role' => $professor->pivot->jury_role->value,
+                        ];
+                    });
+
+                    $professorsFromSheet = [
+                        'Supervisor' => $record['Encadrant Interne'],
+                        'Reviewer1' => $record['Nom et Prénom Examinateur 1'],
+                        'Reviewer2' => $record['Nom et Prénom Examinateur 2'],
+                    ];
+
+                    foreach ($professors as $professor) {
+                        if ($professor['name'] !== $professorsFromSheet[$professor['role']]) {
+                            $changedProfessors[] = __('Project :project_id has changed professor :professor_role from :old_professor to :new_professor', ['project_id' => $project->id, 'professor_role' => $professor['role'], 'old_professor' => $professor['name'], 'new_professor' => $professorsFromSheet[$professor['role']]]);
+                        }
+                    }
+
+                }
+            }
+        }
+
+        if (! empty($changedProfessors)) {
+            $message = implode("\n", $changedProfessors); // Concatenate all messages, or format them as you prefer
+            dd($message);
+        }
+
+    }
+
     public function importData()
     {
         $this->importProfessors();
@@ -205,7 +265,6 @@ class GoogleServices
 
             if (! $project) {
                 // Debugbar::info('Project not found');
-
                 $this->anomalies[] = __('Project with ID PFE :pfeId not found', ['pfeId' => $record['ID PFE']]);
 
                 continue;
@@ -225,7 +284,6 @@ class GoogleServices
         // skip if reviewer name is empty
         if (! $reviewerName) {
             // Debugbar::info('Reviewer name is empty');
-
             return;
         }
         $professor = Professor::where('name', $reviewerName)->first();
@@ -235,7 +293,6 @@ class GoogleServices
             // Debugbar::info('Professor created successfully');
             return;
         }
-
         if (! $project->professors->contains($professor->id)) {
             $project->professors()->attach($professor->id, ['jury_role' => $role]);
         } else {
@@ -248,7 +305,6 @@ class GoogleServices
         // skip if supervisor name is empty
         if (! $supervisorName) {
             // Debugbar::info('Supervisor name is empty');
-
             return;
         }
         $professor = Professor::where('name', $supervisorName)->first();
@@ -258,7 +314,6 @@ class GoogleServices
             // Debugbar::info('Professor created successfully');
             return;
         }
-
         if (! $project->professors->contains($professor->id)) {
             $project->professors()->attach($professor->id, ['jury_role' => $role]);
         } else {
