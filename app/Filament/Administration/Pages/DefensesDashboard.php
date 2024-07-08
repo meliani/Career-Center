@@ -42,9 +42,9 @@ class DefensesDashboard extends \Filament\Pages\Dashboard
         if (auth()->check()) {
             return auth()->user()->isSuperAdministrator()
             || auth()->user()->isAdministrator()
-            // || auth()->user()->isProfessor()
-            // || auth()->user()->isDepartmentHead()
-            // || auth()->user()->isProgramCoordinator()
+            || auth()->user()->isProfessor()
+            || auth()->user()->isDepartmentHead()
+            || auth()->user()->isProgramCoordinator()
             || auth()->user()->isAdministrativeSupervisor();
         } else {
             return false;

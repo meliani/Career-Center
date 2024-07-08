@@ -12,6 +12,8 @@ class ProfessorsParticipationTable extends BaseWidget
 {
     protected static bool $isLazy = true;
 
+    protected static ?string $heading = 'Participation aux soutenances PFE';
+
     public function table(Table $table): Table
     {
 
