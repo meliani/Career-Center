@@ -19,17 +19,17 @@ class ProfessorsParticipationTable extends BaseWidget
         $query = Professor::query()
             ->withCount([
                 // Assuming 'projects' is the name of the relationship on the Professor model
-                'projects as total_participation_count', // Count total participations
-                'projects as total_presence_count' => function (Builder $query) {
+                'allProjects as total_participation_count', // Count total participations
+                'allProjects as total_presence_count' => function (Builder $query) {
                     $query->where('professor_project.was_present', true); // Adjust 'pivot_table_name' to your actual pivot table name
                 },
-                'projects as supervisor_count' => function (Builder $query) {
+                'allProjects as supervisor_count' => function (Builder $query) {
                     $query->where('professor_project.jury_role', 'Supervisor'); // Adjust 'pivot_table_name' to your actual pivot table name
                 },
-                'projects as reviewer1_count' => function (Builder $query) {
+                'allProjects as reviewer1_count' => function (Builder $query) {
                     $query->where('professor_project.jury_role', 'Reviewer1'); // Adjust 'pivot_table_name' to your actual pivot table name
                 },
-                'projects as reviewer2_count' => function (Builder $query) {
+                'allProjects as reviewer2_count' => function (Builder $query) {
                     $query->where('professor_project.jury_role', 'Reviewer2'); // Adjust 'pivot_table_name' to your actual pivot table name
                 },
             ]);
