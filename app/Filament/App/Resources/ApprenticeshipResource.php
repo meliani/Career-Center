@@ -24,13 +24,15 @@ class ApprenticeshipResource extends StudentBaseResource
 {
     protected static ?string $model = Apprenticeship::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     protected static bool $softDelete = true;
 
     protected static ?string $modelLabel = 'Apprenticeship agreement';
 
     protected static ?string $pluralModelLabel = 'Apprenticeship agreements';
+
+    protected static ?int $navigationSort = 2;
 
     public static function getModelLabel(): string
     {
@@ -81,17 +83,17 @@ class ApprenticeshipResource extends StudentBaseResource
 
                         ->label('Organization')
                         ->numeric()
-                        ->sortable(),
+                        ->sortable(false),
                     Tables\Columns\TextColumn::make('title')
+                        ->sortable(false)
                         ->description(__('Subject'), position: 'above')
-                        ->weight(FontWeight::Bold)
-                        ->searchable(),
+                        ->weight(FontWeight::Bold),
                 ]),
 
                 Tables\Columns\Layout\Split::make([
                     Tables\Columns\TextColumn::make('status')
                         // ->description(__('Status'), position: 'above')
-                        ->searchable()
+                        ->sortable(false)
                         ->grow(true)
                         ->badge()
                         ->columnSpan(1),
@@ -99,11 +101,11 @@ class ApprenticeshipResource extends StudentBaseResource
                         Tables\Columns\TextColumn::make('starting_at')
                             ->description(__('Starting from'), position: 'above')
                             ->date()
-                            ->sortable(),
+                            ->sortable(false),
                         Tables\Columns\TextColumn::make('ending_at')
                             ->description(__('to'), position: 'above')
                             ->date()
-                            ->sortable(),
+                            ->sortable(false),
                     ]),
                 ]),
                 Tables\Columns\Layout\Panel::make([
@@ -118,6 +120,7 @@ class ApprenticeshipResource extends StudentBaseResource
                         ->formatStateUsing(fn ($record) => $record->agreement_pdf_url ? _('Download agreement PDF') : _('No PDF generated yet'))
                         ->columnSpan(3)
                         ->badge()
+                        ->sortable(false)
                         ->url(fn ($record) => $record->agreement_pdf_url, shouldOpenInNewTab: true),
                 ]),
                 // ]),
@@ -173,24 +176,33 @@ class ApprenticeshipResource extends StudentBaseResource
                 // Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
+
                 Tables\Actions\ActionGroup::make([
 
-                    GenerateApprenticeshipAgreementAction::make('Generate Agreement PDF')
-                        ->label(__('Generate Agreement PDF'))
-                        ->icon('heroicon-o-arrow-path')
-                        ->requiresConfirmation(),
                     ApplyForCancelInternshipAction::make('Apply for internship cancellation')
+                        ->color('danger')
                         ->icon('heroicon-o-bolt-slash'),
                     Tables\Actions\ViewAction::make()
+                        ->color('success')
                         ->label('View details'),
                     Tables\Actions\EditAction::make()
+                        ->color('warning')
                         ->label('Edit possible fields'),
                 ])
+                    ->dropdownPlacement('top-start')
                     ->dropdownWidth(\Filament\Support\Enums\MaxWidth::Small)
                     // ->outlined()
                     ->label(__('Manage my internship agreement'))
                     ->icon('heroicon-o-adjustments-horizontal')
                     ->color('primary'),
+                GenerateApprenticeshipAgreementAction::make('Generate Agreement PDF')
+                    ->label(__('Generate Agreement PDF'))
+                    ->icon('heroicon-o-arrow-path')
+                    ->color('primary')
+                    ->requiresConfirmation()
+                    ->outlined()
+                    ->size(\Filament\Support\Enums\ActionSize::ExtraSmall)
+                    ->button(),
 
             ], position: Tables\Enums\ActionsPosition::AfterColumns)
             ->bulkActions([
@@ -199,7 +211,8 @@ class ApprenticeshipResource extends StudentBaseResource
                     // Tables\Actions\ForceDeleteBulkAction::make(),
                     // Tables\Actions\RestoreBulkAction::make(),
                 ]),
-            ])->headerActions([
+            ])
+            ->headerActions([
             ]);
 
     }
@@ -251,15 +264,16 @@ class ApprenticeshipResource extends StudentBaseResource
                                 Infolists\Components\TextEntry::make('title')
                                     ->label('Title'),
                                 Infolists\Components\TextEntry::make('description')
-                                    ->columnSpanFull(),
-                                Infolists\Components\TextEntry::make('organization_name')
+                                    ->columnSpanFull()
+                                    ->html(),
+                                Infolists\Components\TextEntry::make('organization.name')
                                     ->label('Organization name'),
-                                Infolists\Components\TextEntry::make('id_pfe')
-                                    ->label('ID PFE'),
+                                // Infolists\Components\TextEntry::make('id_pfe')
+                                //     ->label('ID PFE'),
                                 Infolists\Components\TextEntry::make('status')
                                     ->label('Status'),
-                                Infolists\Components\TextEntry::make('assigned_department')
-                                    ->label('Assigned department'),
+                                // Infolists\Components\TextEntry::make('assigned_department')
+                                //     ->label('Assigned department'),
                             ]),
                         Infolists\Components\Fieldset::make('Administative dates')
                             ->schema([

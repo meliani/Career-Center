@@ -4,6 +4,7 @@ namespace App\Filament\Widgets;
 
 use App\Enums\DefenseStatus;
 use App\Filament\Core\Widgets\ApexChartsParentWidget;
+use App\Models\Year;
 
 class DefensesPerProgramChart extends ApexChartsParentWidget
 {
@@ -19,11 +20,16 @@ class DefensesPerProgramChart extends ApexChartsParentWidget
     /**
      * Widget Title
      */
-    protected static ?string $heading = 'Defenses distribution per Program';
+    protected static ?string $heading = 'Defenses progress per program';
 
     public static function canView(): bool
     {
         return true;
+    }
+
+    public function getHeading(): string
+    {
+        return __(self::$heading) . ' - ' . Year::current()->title;
     }
 
     public function getDescription(): ?string

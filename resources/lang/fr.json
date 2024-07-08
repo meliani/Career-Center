@@ -32,6 +32,7 @@
     "Sign": "Signer le document",
     "Announced at": "Déclaré le",
     "Internship Offer": "Offre de stage",
+    "Internship offer": "Offre de stage",
     "Internship offers": "Offres de stages",
     "Internship Offer Details": "Détails de l'offre de stage",
     "Validated": "Validé",
@@ -481,7 +482,7 @@
     "Comment": "Commentaire",
     "Percentage of achievement (%)": "Pourcentage d'achèvement (%)",
     "An overview of the defenses distribution per program.": "Un aperçu de la répartition des soutenances par filière.",
-    "Defenses distribution per Program": "Répartition des soutenances par filière",
+    "Defenses progress per program": "Avancement des soutenances par filière",
     "Total final projects": "Nombre de PFE",
     "Total completed defenses": "Nombre de soutenances achevées",
     "Mark jury as present": "tous les jurys présents",
@@ -494,5 +495,8 @@
     "Generate Agreement PDF": "Générer la convention de stage PDF",
     "Apply for internship cancellation": "Demander l'annulation du stage",
     "View details": "Voir les détails",
-    "Edit possible fields": "Champs éditables"
+    "Edit possible fields": "Champs éditables",
+    "First year internships per program": "Stages de première année par filière",
+    "Second year internships per program": "Stages de deuxième année par filière",
+    "Apprenticeships dashboard": "Dashboard des stages ouvrier / technique"
 }

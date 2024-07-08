@@ -1,16 +1,20 @@
 <?php
 
-namespace App\Filament\App\Pages;
+namespace App\Filament\Administration\Pages;
 
-class WelcomeDashboard extends \Filament\Pages\Dashboard
+class ApprenticeshipsDashboard extends \Filament\Pages\Dashboard
 {
-    protected static string $routePath = 'WelcomeDashboard';
+    protected static string $routePath = 'ApprenticeshipsDashboard';
 
-    protected static ?string $title = 'Welcome';
+    protected static ?string $title = 'Apprenticeships';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 4;
 
-    protected static ?string $navigationLabel = 'Welcome dashboard';
+    protected static ?string $navigationLabel = 'Apprenticeships dashboard';
+
+    // icon
+
+    protected static ?string $navigationIcon = 'heroicon-o-computer-desktop';
 
     // public function getTitle(): string
     // {
@@ -35,7 +39,6 @@ class WelcomeDashboard extends \Filament\Pages\Dashboard
     public function getWidgets(): array
     {
         return [
-            \App\Filament\Widgets\DefensesPerProgramChart::class,
             \App\Filament\Widgets\FirstYearApprenticeshipsPerProgramChart::class,
             \App\Filament\Widgets\SecondYearApprenticeshipsPerProgramChart::class,
         ];

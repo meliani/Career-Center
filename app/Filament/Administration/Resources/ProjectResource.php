@@ -42,6 +42,8 @@ class ProjectResource extends Core\BaseResource
 
     protected static ?string $navigationGroup = 'Students and projects';
 
+    protected static ?int $navigationSort = 4;
+
     protected static ?int $sort = 4;
 
     public static function getNavigationBadge(): ?string

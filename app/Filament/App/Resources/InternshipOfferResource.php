@@ -3,12 +3,12 @@
 namespace App\Filament\App\Resources;
 
 use App\Filament\App\Resources\InternshipOfferResource\Pages;
+use App\Filament\Core\StudentBaseResource;
 use App\Models\InternshipOffer;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
-use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -17,11 +17,23 @@ use Illuminate\Support\Facades\Storage;
 use Parfaitementweb\FilamentCountryField\Forms\Components\Country;
 use Parfaitementweb\FilamentCountryField\Tables\Columns\CountryColumn;
 
-class InternshipOfferResource extends Resource
+class InternshipOfferResource extends StudentBaseResource
 {
     protected static ?string $model = InternshipOffer::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
+
+    protected static ?int $navigationSort = 3;
+
+    protected static ?string $modelLabel = 'Internship offer';
+
+    protected static ?string $pluralModelLabel = 'Internship offers';
+
+    protected static ?string $title = 'Internship offers';
+
+    protected static ?string $recordTitleAttribute = 'title';
+
+    // protected static ?string $navigationGroup = 'Students and projects';
 
     public static function form(Form $form): Form
     {

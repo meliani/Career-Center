@@ -94,7 +94,7 @@ class Apprenticeship extends Model
             $apprenticeship->student_id = auth()->id();
             $apprenticeship->year_id = Year::current()->id;
             $apprenticeship->status = Enums\Status::Announced;
-
+            $apprenticeship->announced_at = now();
         });
 
     }

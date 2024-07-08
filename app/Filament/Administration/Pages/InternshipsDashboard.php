@@ -10,7 +10,7 @@ class InternshipsDashboard extends \Filament\Pages\Dashboard
 
     protected static ?string $title = 'Final projects dashboard';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 2;
 
     protected static ?string $navigationLabel = 'Final projects dashboard';
 
