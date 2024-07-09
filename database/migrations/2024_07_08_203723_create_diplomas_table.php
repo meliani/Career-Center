@@ -32,7 +32,6 @@ return new class extends Migration
             $table->string('program_english'); // Filière Anglais
             $table->string('program_arabic'); // Filière Arabe
             $table->string('qr_code')->nullable(); // qr code
-            $table->timestamps();
         });
     }
 

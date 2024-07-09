@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\URL;
 
 class Diploma extends Model
 {
-    use HasFactory;
+    // use HasFactory;
 
     protected $fillable = [
         'registration_number',
@@ -32,11 +32,11 @@ class Diploma extends Model
         'qr_code',
     ];
 
-    protected $casts = [
-        // 'birth_date' => 'date',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-    ];
+    // protected $casts = [
+    //     // 'birth_date' => 'date',
+    //     // 'created_at' => 'datetime',
+    //     // 'updated_at' => 'datetime',
+    // ];
 
     public function getFullNameArAttribute()
     {
