@@ -205,8 +205,12 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName
         return $this->hasRole(Enums\Role::Direction);
     }
 
-    public function isAdministrativeSupervisor()
+    public function isAdministrativeSupervisor($id = null)
     {
+        if ($id) {
+            return $this->id === $id;
+        }
+
         return $this->hasRole(Enums\Role::AdministrativeSupervisor);
     }
 

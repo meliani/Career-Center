@@ -17,6 +17,14 @@ class BaseResource extends Resource
     // {
     //     return static::getModel()::count();
     // }
+    public static function canAccess(): bool
+    {
+        if (auth()->check()) {
+            return auth()->user()->isSuperAdministrator();
+        }
+
+        return false;
+    }
 
     public static function getModelLabel(): string
     {
