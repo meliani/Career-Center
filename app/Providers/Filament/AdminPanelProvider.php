@@ -111,7 +111,9 @@ class AdminPanelProvider extends PanelProvider
                         ->schedulerLicenseKey('CC-Attribution-NonCommercial-NoDerivatives')
                         ->selectable(false)
                         ->editable(false)
-                        ->timezone(env('APP_TIMEZONE', 'UTC'))
+                        // ->timezone(env('APP_TIMEZONE', 'UTC+1'))
+                        ->timezone(config('app.timezone', 'UTC+1'))
+                        ->locale(config('app.locale', 'en'))
                         ->plugins([
                             // these plugins are already included ['dayGrid', 'timeGrid', 'interaction', 'list', 'moment', 'momentTimezone']
                             // 'scrollGrid',
