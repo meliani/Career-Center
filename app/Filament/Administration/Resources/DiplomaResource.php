@@ -144,7 +144,7 @@ class DiplomaResource extends BaseResource
                 Tables\Columns\TextColumn::make('birth_place_fr')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('birth_date')
-                    ->date()
+                    // ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('nationality')
                     ->searchable(),
