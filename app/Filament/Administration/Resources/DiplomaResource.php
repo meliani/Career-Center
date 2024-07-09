@@ -91,7 +91,7 @@ class DiplomaResource extends BaseResource
                 Forms\Components\TextInput::make('birth_place_fr')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\DatePicker::make('birth_date')
+                Forms\Components\TextInput::make('birth_date')
                     ->required(),
                 Forms\Components\TextInput::make('nationality')
                     ->required()
