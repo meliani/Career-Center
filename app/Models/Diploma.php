@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\URL;
 class Diploma extends Model
 {
     // use HasFactory;
+    public $timestamps = false;
 
     protected $fillable = [
         'registration_number',
