@@ -34,6 +34,8 @@ class Diploma extends Model
 
     protected $casts = [
         // 'birth_date' => 'date',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     public function getFullNameArAttribute()
