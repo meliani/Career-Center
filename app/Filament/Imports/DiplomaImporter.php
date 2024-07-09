@@ -46,7 +46,7 @@ class DiplomaImporter extends Importer
                 ->rules(['required', 'max:255']),
             ImportColumn::make('birth_date')
                 ->requiredMapping()
-                ->rules(['required', 'date']),
+                ->rules(['required']),
             ImportColumn::make('nationality')
                 ->requiredMapping()
                 ->rules(['required', 'max:255']),
