@@ -314,7 +314,8 @@ class DiplomaResource extends BaseResource
                             $mpdf->WriteText(215, $titlePositionY + 74, $record->full_name_ar, '', 0, 'R', true, 0, false, false, 0);
                             $mpdf->WriteText(40, $titlePositionY + 80, $record->birth_place_fr);
                             $mpdf->WriteText(230, $titlePositionY + 80, $record->birth_place_ar, '', 0, 'R', true, 0, false, false, 0);
-                            $mpdf->WriteText(136, $titlePositionY + 80, $record->birth_date->format('d/m/Y'));
+                            // $mpdf->WriteText(136, $titlePositionY + 80, $record->birth_date->format('d/m/Y'));
+                            $mpdf->WriteText(136, $titlePositionY + 80, $record->birth_date);
                             $mpdf->WriteText(136, $titlePositionY + 86, $record->cin);
                             $mpdf->WriteText(136, $titlePositionY + 92, $record->cne, 0, 0, 'R');
                             $mpdf->WriteText(32, $titlePositionY + 103, $record->assigned_program, '', 0, 'L', true, 0, false, false, 0);
