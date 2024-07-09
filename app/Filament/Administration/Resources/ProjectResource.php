@@ -68,10 +68,12 @@ class ProjectResource extends Core\BaseResource
             'professors.last_name',
         ];
     }
+
     public static function canAccess(): bool
     {
         return auth()->user()->isAdministrator() || auth()->user()->isProfessor() || auth()->user()->isDepartmentHead() || auth()->user()->isProgramCoordinator() || auth()->user()->isDirection() || auth()->user()->isAdministrativeSupervisor();
     }
+
     public static function canViewAny(): bool
     {
         if (auth()->check()) {
