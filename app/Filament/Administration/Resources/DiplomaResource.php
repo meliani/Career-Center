@@ -224,17 +224,6 @@ class DiplomaResource extends BaseResource
                     ),
                 Tables\Filters\SelectFilter::make('program_code')
                     ->options([
-                        /* SMART ICT
-                        ICCN
-                        DATA
-                        Mobilité
-                        DATA Mobilité DD 22
-                        DATA Mobilité DD 23
-                        DATA Mobilité Master
-                        DATA Mobilité Simple
-                        ASEDS
-                        AMOA
-                        SUD-CLOUD & IoT */
                         'SMART ICT' => 'SMART ICT',
                         'ICCN' => 'ICCN',
                         'DATA' => 'DATA',
@@ -246,6 +235,7 @@ class DiplomaResource extends BaseResource
                         'ASEDS' => 'ASEDS',
                         'AMOA' => 'AMOA',
                         'SUD-CLOUD & IoT' => 'SUD-CLOUD & IoT',
+                        'SESNUM' => 'SESNUM',
                     ])
                     ->query(
                         fn (Builder $query, array $data) => $query->when(
