@@ -460,7 +460,7 @@ class DiplomaResource extends BaseResource
 
         // Calculate the starting X position for the text to be centered
         $occupiedWidth = $textWidth + $leftMargin + $rightMargin;
-        $startXPosition = ($usablePageWidth - $occupiedWidth * 0.75) / 2 + $leftMargin;
+        $startXPosition = ($usablePageWidth - $occupiedWidth * 0.8) / 2 + $leftMargin;
         // dd($startXPosition);
 
         return $startXPosition;
