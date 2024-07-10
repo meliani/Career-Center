@@ -329,16 +329,11 @@ class DiplomaResource extends BaseResource
                             // $mpdf->WriteText(35, $titlePositionY + 103, $record->assigned_program . '              ' . $record->program_arabic);
                             $referenceSentence = $record->assigned_program . ' ' . $record->program_arabic;
                             $adjustedSentence = self::adjustSpacingForPDF($record->assigned_program, $record->program_arabic, $referenceSentence);
-
-                            // Write the adjusted sentence to the PDF
                             $leftMargin = 15; // Adjust as needed
                             $rightMargin = 15; // Adjust as needed
-
                             $startXPosition = self::calculateCenterPosition($mpdf, $adjustedSentence, $pageWidth, $leftMargin, $rightMargin);
-
-                            // Now you can use $startXPosition to write your text centered
                             $mpdf->WriteText($startXPosition, $titlePositionY + 103, $adjustedSentence);
-                            $mpdf->WriteText(136, $titlePositionY + 110, '2024');
+                            $mpdf->WriteText(142, $titlePositionY + 110, '2024');
                             // $textSize = $mpdf->GetStringWidth($record->assigned_program);
                             // $positionLeftHalf = $centerLeftHalf - ($textSize / 2) - $customMargin; // Adjust left half position by subtracting margin
                             // $positionRightHalf = $centerRightHalf - ($textSize / 2) + $customMargin; // Adjust right half position by adding margin for RTL text
