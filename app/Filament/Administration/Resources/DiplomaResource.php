@@ -320,7 +320,7 @@ class DiplomaResource extends BaseResource
                             // $mpdf->SetXY(-99, $titlePositionY + 99);
                             $mpdf->WriteText(215, $titlePositionY + 74, $record->full_name_ar, '', 0, 'R', true, 0, false, false, 0);
                             $mpdf->WriteText(40, $titlePositionY + 80, $record->birth_place_fr);
-                            $mpdf->WriteText(230, $titlePositionY + 80, $record->birth_place_ar, '', 0, 'R', true, 0, false, false, 0);
+                            $mpdf->WriteText(220, $titlePositionY + 80, $record->birth_place_ar, '', 0, 'R', true, 0, false, false, 0);
                             $mpdf->WriteText(136, $titlePositionY + 80, $record->birth_date);
                             $mpdf->WriteText(136, $titlePositionY + 86, $record->cin);
                             $mpdf->WriteText(132, $titlePositionY + 92, $record->cne, 0, 0, 'R');
@@ -331,7 +331,13 @@ class DiplomaResource extends BaseResource
                             $adjustedSentence = self::adjustSpacingForPDF($record->assigned_program, $record->program_arabic, $referenceSentence);
 
                             // Write the adjusted sentence to the PDF
-                            $mpdf->WriteText(35, $titlePositionY + 103, $adjustedSentence);
+                            $leftMargin = 15; // Adjust as needed
+                            $rightMargin = 15; // Adjust as needed
+
+                            $startXPosition = self::calculateCenterPosition($mpdf, $adjustedSentence, $pageWidth, $leftMargin, $rightMargin);
+
+                            // Now you can use $startXPosition to write your text centered
+                            $mpdf->WriteText($startXPosition, $titlePositionY + 103, $adjustedSentence);
                             $mpdf->WriteText(136, $titlePositionY + 110, '2024');
                             // $textSize = $mpdf->GetStringWidth($record->assigned_program);
                             // $positionLeftHalf = $centerLeftHalf - ($textSize / 2) - $customMargin; // Adjust left half position by subtracting margin
@@ -390,8 +396,35 @@ class DiplomaResource extends BaseResource
 
     private static function adjustSpacingForPDF($assignedProgram, $programArabic, $referenceSentence)
     {
+        // // Calculate the length of the reference sentence
+        // $referenceLength = mb_strlen($referenceSentence);
+
+        // // Combine the assigned program and Arabic program with a base spacing
+        // $baseSpacing = '              '; // 14 spaces as the base
+        // $combinedSentence = $assignedProgram . $baseSpacing . $programArabic;
+        // $combinedLength = mb_strlen($combinedSentence);
+
+        // // Calculate the difference in length
+        // $lengthDifference = $referenceLength - $combinedLength;
+
+        // // Determine the number of additional spaces needed based on the difference
+        // // Adjust the scaling factor as needed
+        // $additionalSpacesCount = max(0, (int) ($lengthDifference / 10)); // Example scaling factor
+
+        // // Create the additional spaces string
+        // $additionalSpaces = str_repeat(' ', $additionalSpacesCount);
+
+        // // Combine the sentences with the adjusted spacing
+        // $adjustedSentence = $assignedProgram . $baseSpacing . $additionalSpaces . $programArabic;
+
+        // return $adjustedSentence;
+
         // Calculate the length of the reference sentence
         $referenceLength = mb_strlen($referenceSentence);
+
+        // Calculate the lengths of the individual parts
+        $assignedProgramLength = mb_strlen($assignedProgram);
+        $programArabicLength = mb_strlen($programArabic);
 
         // Combine the assigned program and Arabic program with a base spacing
         $baseSpacing = '              '; // 14 spaces as the base
@@ -401,9 +434,12 @@ class DiplomaResource extends BaseResource
         // Calculate the difference in length
         $lengthDifference = $referenceLength - $combinedLength;
 
-        // Determine the number of additional spaces needed based on the difference
-        // Adjust the scaling factor as needed
-        $additionalSpacesCount = max(0, (int) ($lengthDifference / 10)); // Example scaling factor
+        // Adjust the calculation for additional spaces to account for the Arabic part's length
+        // This increases the additional spaces for shorter Arabic parts
+        $scalingFactor = ($assignedProgramLength / ($programArabicLength + 1)) * 5; // Adjust this factor as needed
+
+        // Calculate the number of additional spaces needed
+        $additionalSpacesCount = max(0, (int) ($lengthDifference / $scalingFactor));
 
         // Create the additional spaces string
         $additionalSpaces = str_repeat(' ', $additionalSpacesCount);
@@ -412,5 +448,21 @@ class DiplomaResource extends BaseResource
         $adjustedSentence = $assignedProgram . $baseSpacing . $additionalSpaces . $programArabic;
 
         return $adjustedSentence;
+    }
+
+    private static function calculateCenterPosition($mpdf, $text, $pageWidth, $leftMargin = 40, $rightMargin = 40)
+    {
+        // Calculate the width of the text
+        $textWidth = $mpdf->GetStringWidth($text);
+
+        // Calculate the usable page width
+        $usablePageWidth = $pageWidth - $leftMargin - $rightMargin;
+
+        // Calculate the starting X position for the text to be centered
+        $occupiedWidth = $textWidth + $leftMargin + $rightMargin;
+        $startXPosition = ($usablePageWidth - $occupiedWidth * 0.75) / 2 + $leftMargin;
+        // dd($startXPosition);
+
+        return $startXPosition;
     }
 }
