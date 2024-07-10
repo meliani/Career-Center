@@ -351,7 +351,7 @@ class DiplomaResource extends BaseResource
                 ]),
 
                 Tables\Actions\BulkAction::make('generate-pdf-mpdf')
-                    ->label('Generate PDF mPDF')
+                    ->label('Generate PDF Recto')
                     ->icon('heroicon-o-document')
                     ->action(function ($records) {
                         $titlePositionY = 50;
@@ -426,7 +426,7 @@ class DiplomaResource extends BaseResource
                             $mpdf->SetFont('DejaVuSans', 'SemiBold', 10);
                             $mpdf->WriteText(55, $titlePositionY + 74, $record->full_name);
                             // $mpdf->SetXY(-99, $titlePositionY + 99);
-                            $mpdf->WriteText(57, $titlePositionY + 80, $record->birth_place_fr);
+                            $mpdf->WriteText(34, $titlePositionY + 80, $record->birth_place_fr);
                             $mpdf->WriteText(215, $titlePositionY + 74, $record->full_name_ar);
                             $mpdf->WriteText(220, $titlePositionY + 80, $record->birth_place_ar);
                             $startXPosition = self::calculateCenterPosition($mpdf, $record->birth_date, $pageWidth) + 35;
@@ -466,7 +466,7 @@ class DiplomaResource extends BaseResource
                     })
                     ->hidden(fn () => ! (auth()->user()->isAdministrativeSupervisor(12) || auth()->user()->isAdministrator())),
                 Tables\Actions\BulkAction::make('generate-pdf-verso-mpdf')
-                    ->label('Generate PDF mPDF')
+                    ->label('Generate PDF Verso')
                     ->color('success')
                     ->icon('heroicon-o-document')
                     ->action(function ($records) {
@@ -534,7 +534,7 @@ class DiplomaResource extends BaseResource
                                 $mpdf->WriteText(123, $titlePositionY + 51, $record->council);
                                 $mpdf->SetFont('DejaVuSans', 'NarrowBold', 9);
                                 $mpdf->WriteText(35, $titlePositionY + 67, $record->full_name);
-                                $mpdf->WriteText(45, $titlePositionY + 74, $record->birth_place_fr);
+                                $mpdf->WriteText(40, $titlePositionY + 74, $record->birth_place_fr);
                                 $mpdf->WriteText(115, $titlePositionY + 74, $record->birth_date);
                                 // $mpdf->WriteText(55, $titlePositionY + 83, $record->cin);
                                 //                                 $mpdf->WriteText(90, $titlePositionY + 90, $record->cne);
@@ -543,9 +543,9 @@ class DiplomaResource extends BaseResource
                                 $mpdf->WriteText(196, $titlePositionY + 51.5, $record->council);
                                 $mpdf->SetFont('DejaVuSans', 'NarrowBold', 9);
                                 $mpdf->WriteText(200, $titlePositionY + 67, $record->full_name);
-                                $mpdf->WriteText(180, $titlePositionY + 73, $record->birth_place_fr);
-                                $mpdf->WriteText(257, $titlePositionY + 73, $record->birth_date);
-                                $mpdf->WriteText(222, $titlePositionY + 80, $record->cin);
+                                $mpdf->WriteText(172, $titlePositionY + 73.5, $record->birth_place_fr);
+                                $mpdf->WriteText(257, $titlePositionY + 73.5, $record->birth_date);
+                                $mpdf->WriteText(222, $titlePositionY + 79.5, $record->cin);
                                 // $mpdf->WriteText(220, $titlePositionY + 89, $record->cne);
                                 $mpdf->SetFont('DejaVuSans', 'NarrowBold', 7.5);
 
@@ -580,7 +580,7 @@ class DiplomaResource extends BaseResource
                                 $mpdf->WriteText(220, $titlePositionY + 89, $record->cne);
                                 $mpdf->SetFont('DejaVuSans', 'NarrowBold', 7.5);
 
-                                $mpdf->WriteText(172, $titlePositionY + 105.3, $record->program_english);
+                                $mpdf->WriteText(174, $titlePositionY + 105.3, $record->program_english);
                                 $mpdf->SetFont('DejaVuSans', 'NarrowBold', 9);
                                 $mpdf->WriteText(185, $titlePositionY + 110, '2024');
 
