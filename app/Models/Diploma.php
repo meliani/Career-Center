@@ -31,6 +31,7 @@ class Diploma extends Model
         'program_arabic',
         'defense_status',
         'is_foreign',
+        'is_deliberated',
     ];
 
     // protected $casts = [

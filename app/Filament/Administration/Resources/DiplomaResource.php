@@ -176,6 +176,9 @@ class DiplomaResource extends BaseResource
                 Tables\Columns\CheckboxColumn::make('is_foreign')
                     ->label('Foreign student')
                     ->sortable(),
+                Tables\Columns\CheckboxColumn::make('is_deliberated')
+                    ->label('Deliberated')
+                    ->sortable(),
                 // Tables\Columns\TextColumn::make('created_at')
                 //     ->dateTime()
                 //     ->sortable()
