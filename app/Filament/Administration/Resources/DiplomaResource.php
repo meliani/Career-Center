@@ -173,7 +173,7 @@ class DiplomaResource extends BaseResource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('defense_status')
                     ->searchable(),
-                Tables\Columns\Checkbox::make('is_foreign')
+                Tables\Columns\CheckboxColumn::make('is_foreign')
                     ->label('Foreign student')
                     ->sortable(),
                 // Tables\Columns\TextColumn::make('created_at')
