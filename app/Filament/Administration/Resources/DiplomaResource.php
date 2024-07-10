@@ -355,7 +355,9 @@ class DiplomaResource extends BaseResource
                     ->icon('heroicon-o-document')
                     ->action(function ($records) {
                         $titlePositionY = 50;
-                        $backgroundPdfPath = Storage::disk('local')->path('document-templates/diploma-template.pdf');
+                        $diploma_recto = Storage::disk('local')->path('document-templates/diploma-template-recto.pdf');
+                        $foreign_diploma_recto = Storage::disk('local')->path('document-templates/foreign-diploma-recto.pdf');
+
                         $mpdf = new \Mpdf\Mpdf
                         // ();
                         ([
@@ -375,9 +377,9 @@ class DiplomaResource extends BaseResource
                         // $mpdf->WriteHTML(file_get_contents($backgroundPdfPath));
                         $mpdf->AddPage('L');
                         $mpdf->SetFont('DejaVuSans', 'SemiBold', 10);
-                        $mpdf->setSourceFile($backgroundPdfPath);
-                        $tplId = $mpdf->importPage(1);
-                        $mpdf->useTemplate($tplId, ['adjustPageSize' => false]);
+                        // $mpdf->setSourceFile($diploma_recto);
+                        // $tplId = $mpdf->importPage(1);
+                        // $mpdf->useTemplate($tplId, ['adjustPageSize' => false]);
                         // $mpdf->SetPageTemplate($tplId);
                         $pageWidth = $mpdf->w;
                         $pageHeight = $mpdf->h;
@@ -385,9 +387,13 @@ class DiplomaResource extends BaseResource
                         $centerRightHalf = ($pageWidth / 4) * 3;
                         $customMargin = 0;
 
+                        $mpdf->SetSourceFile($foreign_diploma_recto);
+                        $tpl_foreign_diploma_recto = $mpdf->importPage(1);
+                        $mpdf->SetSourceFile($diploma_recto);
+                        $tpl_diploma_recto = $mpdf->importPage(1);
+
                         $index = 0; // Initialize a counter
                         $totalItems = count($records); // Total number of items
-
                         foreach ($records as $record) {
                             $index++; // Increment counter at the start of each iteration
                             $loop = (object) [
@@ -397,6 +403,13 @@ class DiplomaResource extends BaseResource
                                 'remaining' => $totalItems - $index, // Remaining items
                                 'count' => $totalItems, // Total items
                             ];
+
+                            if ($record->is_foreign) {
+                                $mpdf->useTemplate($tpl_foreign_diploma_recto, ['adjustPageSize' => false]);
+                            } else {
+                                $mpdf->useTemplate($tpl_diploma_recto, ['adjustPageSize' => false]);
+                            }
+
                             $errorCorrectionLevel = ErrorCorrectionLevel::M();
                             $qrLink = $record->generateVerificationLink();
                             $svg = (new Writer(
@@ -411,10 +424,10 @@ class DiplomaResource extends BaseResource
                             // $startXPosition = self::calculateCenterPosition($mpdf, $record->council, $pageWidth) - 30;
                             $mpdf->WriteText(60, $titlePositionY + 61.3, $record->council);
                             $mpdf->SetFont('DejaVuSans', 'SemiBold', 10);
-                            $mpdf->WriteText(48, $titlePositionY + 74, $record->full_name);
+                            $mpdf->WriteText(55, $titlePositionY + 74, $record->full_name);
                             // $mpdf->SetXY(-99, $titlePositionY + 99);
+                            $mpdf->WriteText(57, $titlePositionY + 80, $record->birth_place_fr);
                             $mpdf->WriteText(215, $titlePositionY + 74, $record->full_name_ar);
-                            $mpdf->WriteText(40, $titlePositionY + 80, $record->birth_place_fr);
                             $mpdf->WriteText(220, $titlePositionY + 80, $record->birth_place_ar);
                             $startXPosition = self::calculateCenterPosition($mpdf, $record->birth_date, $pageWidth) + 35;
                             $mpdf->WriteText($startXPosition, $titlePositionY + 80, $record->birth_date);
@@ -423,14 +436,12 @@ class DiplomaResource extends BaseResource
                             $startXPosition = self::calculateCenterPosition($mpdf, $record->cne, $pageWidth) + 35;
                             $mpdf->WriteText($startXPosition, $titlePositionY + 92, $record->cne);
                             // $mpdf->SetDirectionality('rtl');
-                            // Calculate positions for assigned_program with margin adjustment
-                            // $mpdf->WriteText(35, $titlePositionY + 103, $record->assigned_program . '              ' . $record->program_arabic);
                             $referenceSentence = $record->assigned_program . ' ' . $record->program_arabic;
-                            $adjustedSentence = self::adjustSpacingForPDF($record->assigned_program, $record->program_arabic, $referenceSentence);
-                            $leftMargin = 15; // Adjust as needed
-                            $rightMargin = 15; // Adjust as needed
-                            $startXPosition = self::calculateCenterPosition($mpdf, $adjustedSentence, $pageWidth, $leftMargin, $rightMargin);
-                            $mpdf->WriteText($startXPosition, $titlePositionY + 103, $adjustedSentence);
+                            $assigned_program = self::adjustSpacingForPDF($record->assigned_program, $record->program_arabic, $referenceSentence);
+                            $leftMargin = 15;
+                            $rightMargin = 15;
+                            $startXPosition = self::calculateCenterPosition($mpdf, $assigned_program, $pageWidth, $leftMargin, $rightMargin);
+                            $mpdf->WriteText($startXPosition, $titlePositionY + 103.5, $assigned_program);
                             $startXPosition = self::calculateCenterPosition($mpdf, '2024', $pageWidth) + 35;
                             $mpdf->WriteText($startXPosition, $titlePositionY + 110, '2024');
                             $mpdf->SetXY(19, 175);
@@ -439,7 +450,6 @@ class DiplomaResource extends BaseResource
                             if (! $loop->last) {
                                 $mpdf->AddPage('L');
                                 $mpdf->SetFont('DejaVuSans', 'SemiBold', 10);
-                                $mpdf->useTemplate($tplId, ['adjustPageSize' => false]);
                             }
                             // $mpdf->WriteHTML('<div style="text-align: left; direction: ltr;">السلام عليكم</div>');
                         }
@@ -461,7 +471,8 @@ class DiplomaResource extends BaseResource
                     ->icon('heroicon-o-document')
                     ->action(function ($records) {
                         $titlePositionY = 50;
-                        $backgroundPdfPath = Storage::disk('local')->path('document-templates/diploma-template-verso.pdf');
+                        $diploma_verso = Storage::disk('local')->path('document-templates/diploma-template-verso.pdf');
+                        $foreign_diploma_verso = Storage::disk('local')->path('document-templates/foreign-diploma-verso.pdf');
                         $mpdf = new \Mpdf\Mpdf
                         // ();
                         ([
@@ -479,14 +490,17 @@ class DiplomaResource extends BaseResource
 
                         $mpdf->AddPage('L');
                         $mpdf->SetFont('DejaVuSans', 'NarrowBold', 9);
-                        $mpdf->setSourceFile($backgroundPdfPath);
-                        $tplId = $mpdf->importPage(1);
-                        $mpdf->useTemplate($tplId, ['adjustPageSize' => false]);
+
                         $pageWidth = $mpdf->w;
                         $pageHeight = $mpdf->h;
                         $centerLeftHalf = $pageWidth / 4;
                         $centerRightHalf = ($pageWidth / 4) * 3;
                         $customMargin = 0;
+
+                        $mpdf->SetSourceFile($foreign_diploma_verso);
+                        $tpl_foreign_diploma_verso = $mpdf->importPage(1);
+                        $mpdf->SetSourceFile($diploma_verso);
+                        $tpl_diploma_verso = $mpdf->importPage(1);
 
                         $index = 0; // Initialize a counter
                         $totalItems = count($records); // Total number of items
@@ -509,39 +523,75 @@ class DiplomaResource extends BaseResource
                                 )
                             ))->writeString($qrLink);
 
-                            // $mpdf->SetXY(90, $titlePositionY + 65);
-                            $mpdf->SetFont('DejaVuSans', 'Narrow', 7.5);
-                            $mpdf->WriteText(123, $titlePositionY + 54, $record->council);
-                            $mpdf->SetFont('DejaVuSans', 'NarrowBold', 9);
-                            $mpdf->WriteText(35, $titlePositionY + 70, $record->full_name_ar);
-                            $mpdf->WriteText(45, $titlePositionY + 77, $record->birth_place_ar);
-                            $mpdf->WriteText(115, $titlePositionY + 77, $record->birth_date);
-                            $mpdf->WriteText(55, $titlePositionY + 83, $record->cin);
-                            $mpdf->WriteText(90, $titlePositionY + 90, $record->cne);
-                            $mpdf->WriteText(28, $titlePositionY + 104, $record->program_tifinagh);
-                            $mpdf->WriteText(35, $titlePositionY + 110, '2024');
+                            if ($record->is_foreign) {
+                                $mpdf->useTemplate($tpl_foreign_diploma_verso, ['adjustPageSize' => false]);
+                            } else {
+                                $mpdf->useTemplate($tpl_diploma_verso, ['adjustPageSize' => false]);
+                            }
+                            if ($record->is_foreign) {
+                                // $mpdf->SetXY(90, $titlePositionY + 65);
+                                $mpdf->SetFont('DejaVuSans', 'Narrow', 7.5);
+                                $mpdf->WriteText(123, $titlePositionY + 51, $record->council);
+                                $mpdf->SetFont('DejaVuSans', 'NarrowBold', 9);
+                                $mpdf->WriteText(35, $titlePositionY + 67, $record->full_name);
+                                $mpdf->WriteText(45, $titlePositionY + 74, $record->birth_place_fr);
+                                $mpdf->WriteText(115, $titlePositionY + 74, $record->birth_date);
+                                // $mpdf->WriteText(55, $titlePositionY + 83, $record->cin);
+                                //                                 $mpdf->WriteText(90, $titlePositionY + 90, $record->cne);
 
-                            $mpdf->SetFont('DejaVuSans', 'Narrow', 7.5);
-                            $mpdf->WriteText(196, $titlePositionY + 54.5, $record->council);
-                            $mpdf->SetFont('DejaVuSans', 'NarrowBold', 9);
-                            $mpdf->WriteText(200, $titlePositionY + 70, $record->full_name);
-                            $mpdf->WriteText(180, $titlePositionY + 76, $record->birth_place_fr);
-                            $mpdf->WriteText(257, $titlePositionY + 76, $record->birth_date);
-                            $mpdf->WriteText(222, $titlePositionY + 83, $record->cin);
-                            $mpdf->WriteText(220, $titlePositionY + 89, $record->cne);
-                            $mpdf->SetFont('DejaVuSans', 'NarrowBold', 7.5);
+                                $mpdf->SetFont('DejaVuSans', 'Narrow', 7.5);
+                                $mpdf->WriteText(196, $titlePositionY + 51.5, $record->council);
+                                $mpdf->SetFont('DejaVuSans', 'NarrowBold', 9);
+                                $mpdf->WriteText(200, $titlePositionY + 67, $record->full_name);
+                                $mpdf->WriteText(180, $titlePositionY + 73, $record->birth_place_fr);
+                                $mpdf->WriteText(257, $titlePositionY + 73, $record->birth_date);
+                                $mpdf->WriteText(222, $titlePositionY + 80, $record->cin);
+                                // $mpdf->WriteText(220, $titlePositionY + 89, $record->cne);
+                                $mpdf->SetFont('DejaVuSans', 'NarrowBold', 7.5);
 
-                            $mpdf->WriteText(172, $titlePositionY + 105.3, $record->program_english);
-                            $mpdf->SetFont('DejaVuSans', 'NarrowBold', 9);
-                            $mpdf->WriteText(185, $titlePositionY + 110, '2024');
+                                $mpdf->WriteText(28, $titlePositionY + 85, $record->program_tifinagh);
+                                $mpdf->WriteText(174, $titlePositionY + 94, $record->program_english);
+                                $mpdf->SetFont('DejaVuSans', 'NarrowBold', 9);
+                                $mpdf->WriteText(38, $titlePositionY + 100.5, '2024');
+                                $mpdf->WriteText(188, $titlePositionY + 102, '2024');
 
-                            $mpdf->SetXY(19, 175);
-                            $svg = '<img src="data:image/svg+xml;base64,' . base64_encode($svg) . '" />';
-                            $mpdf->WriteHTML($svg);
+                                $mpdf->SetXY(19, 175);
+                                $svg = '<img src="data:image/svg+xml;base64,' . base64_encode($svg) . '" />';
+                                $mpdf->WriteHTML($svg);
+                            } else {
+                                $mpdf->SetFont('DejaVuSans', 'Narrow', 7.5);
+                                $mpdf->WriteText(123, $titlePositionY + 54, $record->council);
+                                $mpdf->SetFont('DejaVuSans', 'NarrowBold', 9);
+                                $mpdf->WriteText(35, $titlePositionY + 70, $record->full_name_ar);
+                                $mpdf->WriteText(45, $titlePositionY + 77, $record->birth_place_ar);
+                                $mpdf->WriteText(115, $titlePositionY + 77, $record->birth_date);
+                                $mpdf->WriteText(55, $titlePositionY + 83, $record->cin);
+                                $mpdf->WriteText(90, $titlePositionY + 90, $record->cne);
+                                $mpdf->WriteText(28, $titlePositionY + 104, $record->program_tifinagh);
+                                $mpdf->WriteText(35, $titlePositionY + 110, '2024');
+
+                                $mpdf->SetFont('DejaVuSans', 'Narrow', 7.5);
+                                $mpdf->WriteText(196, $titlePositionY + 54.5, $record->council);
+                                $mpdf->SetFont('DejaVuSans', 'NarrowBold', 9);
+                                $mpdf->WriteText(200, $titlePositionY + 70, $record->full_name);
+                                $mpdf->WriteText(180, $titlePositionY + 76, $record->birth_place_fr);
+                                $mpdf->WriteText(257, $titlePositionY + 76, $record->birth_date);
+                                $mpdf->WriteText(222, $titlePositionY + 83, $record->cin);
+                                $mpdf->WriteText(220, $titlePositionY + 89, $record->cne);
+                                $mpdf->SetFont('DejaVuSans', 'NarrowBold', 7.5);
+
+                                $mpdf->WriteText(172, $titlePositionY + 105.3, $record->program_english);
+                                $mpdf->SetFont('DejaVuSans', 'NarrowBold', 9);
+                                $mpdf->WriteText(185, $titlePositionY + 110, '2024');
+
+                                $mpdf->SetXY(19, 175);
+                                $svg = '<img src="data:image/svg+xml;base64,' . base64_encode($svg) . '" />';
+                                $mpdf->WriteHTML($svg);
+                            }
                             if (! $loop->last) {
                                 $mpdf->AddPage('L');
                                 $mpdf->SetFont('DejaVuSans', 'SemiBold', 10);
-                                $mpdf->useTemplate($tplId, ['adjustPageSize' => false]);
+
                             }
                             // $mpdf->WriteHTML('<div style="text-align: left; direction: ltr;">السلام عليكم</div>');
                         }
@@ -588,29 +638,6 @@ class DiplomaResource extends BaseResource
 
     private static function adjustSpacingForPDF($assignedProgram, $programArabic, $referenceSentence)
     {
-        // // Calculate the length of the reference sentence
-        // $referenceLength = mb_strlen($referenceSentence);
-
-        // // Combine the assigned program and Arabic program with a base spacing
-        // $baseSpacing = '              '; // 14 spaces as the base
-        // $combinedSentence = $assignedProgram . $baseSpacing . $programArabic;
-        // $combinedLength = mb_strlen($combinedSentence);
-
-        // // Calculate the difference in length
-        // $lengthDifference = $referenceLength - $combinedLength;
-
-        // // Determine the number of additional spaces needed based on the difference
-        // // Adjust the scaling factor as needed
-        // $additionalSpacesCount = max(0, (int) ($lengthDifference / 10)); // Example scaling factor
-
-        // // Create the additional spaces string
-        // $additionalSpaces = str_repeat(' ', $additionalSpacesCount);
-
-        // // Combine the sentences with the adjusted spacing
-        // $adjustedSentence = $assignedProgram . $baseSpacing . $additionalSpaces . $programArabic;
-
-        // return $adjustedSentence;
-
         // Calculate the length of the reference sentence
         $referenceLength = mb_strlen($referenceSentence);
 
@@ -619,21 +646,25 @@ class DiplomaResource extends BaseResource
         $programArabicLength = mb_strlen($programArabic);
 
         // Combine the assigned program and Arabic program with a base spacing
-        $baseSpacing = '              '; // 14 spaces as the base
+        $baseSpacing = '      '; // 14 spaces as the base
         $combinedSentence = $assignedProgram . $baseSpacing . $programArabic;
         $combinedLength = mb_strlen($combinedSentence);
 
         // Calculate the difference in length
         $lengthDifference = $referenceLength - $combinedLength;
-        $lengthDifference = $combinedLength;
 
         // Adjust the calculation for additional spaces to account for the Arabic part's length
         // This increases the additional spaces for shorter Arabic parts
-        $scalingFactor = ($assignedProgramLength / ($programArabicLength + 1)) * 5; // Adjust this factor as needed
+        $scalingFactor = ($assignedProgramLength / ($programArabicLength - 90)) * 0.2; // Adjust this factor as needed
 
         // Calculate the number of additional spaces needed
         $additionalSpacesCount = max(0, (int) ($lengthDifference / $scalingFactor));
-        // dd($scalingFactor, $additionalSpacesCount, $lengthDifference, $combinedLength);
+
+        // $scalingFactor = 20; // Number of characters in the combined sentence per additional space
+
+        // // Calculate the number of additional spaces needed
+        // $additionalSpacesCount = max(0, (int) ($lengthDifference / $scalingFactor));
+
         // Create the additional spaces string
         $additionalSpaces = str_repeat(' ', $additionalSpacesCount);
 
