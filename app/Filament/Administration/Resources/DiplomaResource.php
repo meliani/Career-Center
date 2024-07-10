@@ -17,6 +17,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use setasign\Fpdi\Tfpdf\Fpdi;
@@ -115,7 +116,7 @@ class DiplomaResource extends BaseResource
                 Forms\Components\TextInput::make('program_arabic')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('qr_code')
+                Forms\Components\TextInput::make('defense_status')
                     ->maxLength(255),
             ]);
     }
@@ -123,6 +124,15 @@ class DiplomaResource extends BaseResource
     public static function table(Table $table): Table
     {
         return $table
+            ->filtersLayout(Tables\Enums\FiltersLayout::AboveContentCollapsible)
+            ->groups([
+                Tables\Grouping\Group::make('defense_status')
+                    ->collapsible()
+                    ->label(__('Defense status')),
+                Tables\Grouping\Group::make('is_foreign')
+                    ->collapsible()
+                    ->label(__('Foreign students')),
+            ])
             ->columns([
                 Tables\Columns\TextColumn::make('registration_number')
                     ->searchable(),
@@ -161,8 +171,11 @@ class DiplomaResource extends BaseResource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('program_arabic')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('qr_code')
+                Tables\Columns\TextColumn::make('defense_status')
                     ->searchable(),
+                Tables\Columns\Checkbox::make('is_foreign')
+                    ->label('Foreign student')
+                    ->sortable(),
                 // Tables\Columns\TextColumn::make('created_at')
                 //     ->dateTime()
                 //     ->sortable()
@@ -173,7 +186,14 @@ class DiplomaResource extends BaseResource
                 //     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('defense_status')
+                    ->options(\App\Enums\DefenseStatus::class)
+                    ->query(
+                        fn (Builder $query, array $data) => $query->when(
+                            $data['value'],
+                            fn (Builder $query, $status): Builder => $query->where('defense_status', $status)
+                        ),
+                    ),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
@@ -327,15 +347,21 @@ class DiplomaResource extends BaseResource
                             ))->writeString($qrLink);
 
                             $mpdf->SetXY(90, $titlePositionY + 65);
-                            $mpdf->WriteText(135, $titlePositionY + 62, $record->council);
+                            $mpdf->SetFont('DejaVuSans', 'Regular', 9);
+                            $startXPosition = self::calculateCenterPosition($mpdf, $record->council, $pageWidth) - 30;
+                            $mpdf->WriteText($startXPosition, $titlePositionY + 61, $record->council);
+                            $mpdf->SetFont('DejaVuSans', 'SemiBold', 10);
                             $mpdf->WriteText(48, $titlePositionY + 74, $record->full_name);
                             // $mpdf->SetXY(-99, $titlePositionY + 99);
-                            $mpdf->WriteText(215, $titlePositionY + 74, $record->full_name_ar, '', 0, 'R', true, 0, false, false, 0);
+                            $mpdf->WriteText(215, $titlePositionY + 74, $record->full_name_ar);
                             $mpdf->WriteText(40, $titlePositionY + 80, $record->birth_place_fr);
-                            $mpdf->WriteText(220, $titlePositionY + 80, $record->birth_place_ar, '', 0, 'R', true, 0, false, false, 0);
-                            $mpdf->WriteText(136, $titlePositionY + 80, $record->birth_date);
-                            $mpdf->WriteText(136, $titlePositionY + 86, $record->cin);
-                            $mpdf->WriteText(132, $titlePositionY + 92, $record->cne, 0, 0, 'R');
+                            $mpdf->WriteText(220, $titlePositionY + 80, $record->birth_place_ar);
+                            $startXPosition = self::calculateCenterPosition($mpdf, $record->birth_date, $pageWidth) + 35;
+                            $mpdf->WriteText($startXPosition, $titlePositionY + 80, $record->birth_date);
+                            $startXPosition = self::calculateCenterPosition($mpdf, $record->cin, $pageWidth) + 35;
+                            $mpdf->WriteText($startXPosition, $titlePositionY + 86, $record->cin);
+                            $startXPosition = self::calculateCenterPosition($mpdf, $record->cne, $pageWidth) + 35;
+                            $mpdf->WriteText($startXPosition, $titlePositionY + 92, $record->cne);
                             // $mpdf->SetDirectionality('rtl');
                             // Calculate positions for assigned_program with margin adjustment
                             // $mpdf->WriteText(35, $titlePositionY + 103, $record->assigned_program . '              ' . $record->program_arabic);
@@ -345,17 +371,8 @@ class DiplomaResource extends BaseResource
                             $rightMargin = 15; // Adjust as needed
                             $startXPosition = self::calculateCenterPosition($mpdf, $adjustedSentence, $pageWidth, $leftMargin, $rightMargin);
                             $mpdf->WriteText($startXPosition, $titlePositionY + 103, $adjustedSentence);
-                            $mpdf->WriteText(142, $titlePositionY + 110, '2024');
-                            // $textSize = $mpdf->GetStringWidth($record->assigned_program);
-                            // $positionLeftHalf = $centerLeftHalf - ($textSize / 2) - $customMargin; // Adjust left half position by subtracting margin
-                            // $positionRightHalf = $centerRightHalf - ($textSize / 2) + $customMargin; // Adjust right half position by adding margin for RTL text
-                            // $mpdf->WriteText($positionLeftHalf, $titlePositionY + 105, $record->assigned_program);
-
-                            // // Calculate positions for program_arabic with margin adjustment
-                            // $textSize = $mpdf->GetStringWidth($record->program_arabic);
-                            // $positionLeftHalf = $centerLeftHalf - ($textSize / 2) - $customMargin; // Adjust left half position by subtracting margin
-                            // $positionRightHalf = $centerRightHalf - ($textSize / 2) + $customMargin; // Adjust right half position by adding margin for RTL text
-                            // $mpdf->WriteText($positionRightHalf, $titlePositionY + 105, $record->program_arabic, '', 0, 'R', true, 0, false, false, 0);
+                            $startXPosition = self::calculateCenterPosition($mpdf, '2024', $pageWidth) + 35;
+                            $mpdf->WriteText($startXPosition, $titlePositionY + 110, '2024');
                             $mpdf->SetXY(19, 175);
                             $svg = '<img src="data:image/svg+xml;base64,' . base64_encode($svg) . '" />';
                             $mpdf->WriteHTML($svg);
@@ -433,7 +450,9 @@ class DiplomaResource extends BaseResource
                             ))->writeString($qrLink);
 
                             // $mpdf->SetXY(90, $titlePositionY + 65);
+                            $mpdf->SetFont('DejaVuSans', 'Narrow', 7.5);
                             $mpdf->WriteText(123, $titlePositionY + 54, $record->council);
+                            $mpdf->SetFont('DejaVuSans', 'NarrowBold', 9);
                             $mpdf->WriteText(35, $titlePositionY + 70, $record->full_name_ar);
                             $mpdf->WriteText(45, $titlePositionY + 77, $record->birth_place_ar);
                             $mpdf->WriteText(115, $titlePositionY + 77, $record->birth_date);
@@ -442,12 +461,14 @@ class DiplomaResource extends BaseResource
                             $mpdf->WriteText(28, $titlePositionY + 104, $record->program_tifinagh);
                             $mpdf->WriteText(35, $titlePositionY + 110, '2024');
 
+                            $mpdf->SetFont('DejaVuSans', 'Narrow', 7.5);
                             $mpdf->WriteText(196, $titlePositionY + 54.5, $record->council);
+                            $mpdf->SetFont('DejaVuSans', 'NarrowBold', 9);
                             $mpdf->WriteText(200, $titlePositionY + 70, $record->full_name);
                             $mpdf->WriteText(180, $titlePositionY + 76, $record->birth_place_fr);
                             $mpdf->WriteText(257, $titlePositionY + 76, $record->birth_date);
                             $mpdf->WriteText(222, $titlePositionY + 83, $record->cin);
-                            $mpdf->WriteText(220, $titlePositionY + 90, $record->cne);
+                            $mpdf->WriteText(220, $titlePositionY + 89, $record->cne);
                             $mpdf->SetFont('DejaVuSans', 'NarrowBold', 7.5);
 
                             $mpdf->WriteText(172, $titlePositionY + 105.3, $record->program_english);
@@ -480,6 +501,11 @@ class DiplomaResource extends BaseResource
             ->headerActions([
                 Tables\Actions\ImportAction::make()
                     ->importer(DiplomaImporter::class),
+                Tables\Actions\Action::make('Sync with Defenses')
+                    // ->confirm('Are you sure you want to sync the diplomas with defenses?')
+                    ->action(function () {
+                        Diploma::syncWithDefenses();
+                    }),
             ]);
     }
 
@@ -539,6 +565,7 @@ class DiplomaResource extends BaseResource
 
         // Calculate the difference in length
         $lengthDifference = $referenceLength - $combinedLength;
+        $lengthDifference = $combinedLength;
 
         // Adjust the calculation for additional spaces to account for the Arabic part's length
         // This increases the additional spaces for shorter Arabic parts
@@ -546,7 +573,7 @@ class DiplomaResource extends BaseResource
 
         // Calculate the number of additional spaces needed
         $additionalSpacesCount = max(0, (int) ($lengthDifference / $scalingFactor));
-
+        // dd($scalingFactor, $additionalSpacesCount, $lengthDifference, $combinedLength);
         // Create the additional spaces string
         $additionalSpaces = str_repeat(' ', $additionalSpacesCount);
 

@@ -29,7 +29,8 @@ class Diploma extends Model
         'program_tifinagh',
         'program_english',
         'program_arabic',
-        'qr_code',
+        'defense_status',
+        'is_foreign',
     ];
 
     // protected $casts = [
@@ -48,5 +49,30 @@ class Diploma extends Model
         $verification_string = \App\Services\UrlService::encodeDiplomaUrl($this->registration_number);
 
         return route('diploma.verify', $verification_string);
+    }
+
+    public static function syncWithDefenses()
+    {
+        $diplomas = Diploma::all();
+        $students = \App\Models\Student::get('first_name', 'last_name', 'defense_status');
+        $students = \App\Models\Student::whereHas('internship', function ($query) {
+            $query->whereHas('project');
+        })
+            ->get();
+        // ->get('name', 'first_name', 'last_name', 'defense_status');
+        // Stats about the distances between the names of the students and the diplomas
+        //  VAR = 12.29
+        // AVG = 15.59
+        // MAX = 30
+        // MIN = 3
+
+        foreach ($diplomas as $diploma) {
+            foreach ($students as $student) {
+                $distances = levenshtein($student->name, $diploma->full_name);
+                if ($distances < 12) {
+                    $diploma->update(['defense_status' => $student->internship->project->defense_status]);
+                }
+            }
+        }
     }
 }
