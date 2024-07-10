@@ -72,7 +72,9 @@ class Diploma extends Model
             $best_match = null; // To keep track of the student with the closest name
 
             foreach ($students as $student) {
-                $current_distance = levenshtein(strtolower($student->name), strtolower($diploma->full_name));
+                $studentName = preg_replace('/\s+/', ' ', trim(strtolower($student->name)));
+                $diplomaName = preg_replace('/\s+/', ' ', trim(strtolower($diploma->full_name)));
+                $current_distance = levenshtein($studentName, $diplomaName);
                 if ($current_distance < $best_distance) {
                     $best_distance = $current_distance;
                     $best_match = $student; // Update the best match
@@ -83,9 +85,8 @@ class Diploma extends Model
             if ($best_distance < 3) {
                 $imported_students[] = $best_match->name . ' => ' . $diploma->full_name . ' (' . $best_distance . ')';
 
-                $diploma->update([
-                    'defense_status' => $best_match->defense_status,
-                ]);
+                $diploma->defense_status = $best_match->internship->project->defense_status;
+                $diploma->save();
             }
         }
         dd($imported_students);
