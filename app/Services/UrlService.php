@@ -47,7 +47,6 @@ class UrlService
             throw new \Exception('Verification string cannot be null');
         }
         $cipher = 'AES-128-CBC';
-        // $encrypted_x = Crypt::encryptString($verification_string);
         // Decode the APP_KEY from base64 to get the raw key
         $key = base64_decode(env('APP_KEY'));
 
@@ -65,13 +64,16 @@ class UrlService
         // Combine the IV with the encrypted data to make it possible to decrypt later
         $encrypted_x = base64_encode($iv . $encrypted);
 
+        // Convert the base64-encoded string to a URL-safe version
+        $encrypted_x = str_replace(['+', '/', '='], ['-', '_', ''], $encrypted_x);
+
         return $encrypted_x;
     }
 
-    private static function decryptV1Short($verification_string)
+    private static function decryptV1Short($encrypted_x)
     {
-        if (is_null($verification_string)) {
-            throw new \Exception('Verification string cannot be null');
+        if (is_null($encrypted_x)) {
+            throw new \Exception('Encrypted string cannot be null');
         }
         $cipher = 'AES-128-CBC';
         // Decode the APP_KEY from base64 to get the raw key
@@ -82,14 +84,15 @@ class UrlService
             $key = substr($key, 0, 16);
         }
 
-        // Decode the encrypted data
-        $data = base64_decode($verification_string);
+        // Convert the URL-safe base64-encoded string back to its original form
+        $encrypted_x = str_replace(['-', '_'], ['+', '/'], $encrypted_x);
+        // Decode the combined IV and encrypted data
+        $combined = base64_decode($encrypted_x);
 
-        // Extract the IV from the data
-        $iv = substr($data, 0, openssl_cipher_iv_length($cipher));
-
-        // Extract the encrypted data from the data
-        $encrypted = substr($data, openssl_cipher_iv_length($cipher));
+        // Extract the IV and encrypted data
+        $ivLength = openssl_cipher_iv_length($cipher);
+        $iv = substr($combined, 0, $ivLength);
+        $encrypted = substr($combined, $ivLength);
 
         // Decrypt the data
         $decrypted = openssl_decrypt($encrypted, $cipher, $key, 0, $iv);
