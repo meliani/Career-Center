@@ -299,6 +299,11 @@ class DiplomaResource extends BaseResource
                         $tplId = $mpdf->importPage(1);
                         $mpdf->useTemplate($tplId, ['adjustPageSize' => false]);
                         // $mpdf->SetPageTemplate($tplId);
+                        $pageWidth = $mpdf->w;
+                        $pageHeight = $mpdf->h;
+                        $centerLeftHalf = $pageWidth / 4;
+                        $centerRightHalf = ($pageWidth / 4) * 3;
+                        $customMargin = 0;
                         foreach ($records as $record) {
                             $errorCorrectionLevel = ErrorCorrectionLevel::M();
                             $qrLink = $record->generateVerificationLink();
@@ -318,10 +323,26 @@ class DiplomaResource extends BaseResource
                             $mpdf->WriteText(230, $titlePositionY + 80, $record->birth_place_ar, '', 0, 'R', true, 0, false, false, 0);
                             $mpdf->WriteText(136, $titlePositionY + 80, $record->birth_date);
                             $mpdf->WriteText(136, $titlePositionY + 86, $record->cin);
-                            $mpdf->WriteText(136, $titlePositionY + 92, $record->cne, 0, 0, 'R');
-                            $mpdf->WriteText(32, $titlePositionY + 103, $record->assigned_program, '', 0, 'L', true, 0, false, false, 0);
-                            $mpdf->SetDirectionality('rtl');
-                            $mpdf->WriteText(195, $titlePositionY + 103, $record->program_arabic);
+                            $mpdf->WriteText(132, $titlePositionY + 92, $record->cne, 0, 0, 'R');
+                            // $mpdf->SetDirectionality('rtl');
+                            // Calculate positions for assigned_program with margin adjustment
+                            // $mpdf->WriteText(35, $titlePositionY + 103, $record->assigned_program . '              ' . $record->program_arabic);
+                            $referenceSentence = $record->assigned_program . ' ' . $record->program_arabic;
+                            $adjustedSentence = self::adjustSpacingForPDF($record->assigned_program, $record->program_arabic, $referenceSentence);
+
+                            // Write the adjusted sentence to the PDF
+                            $mpdf->WriteText(35, $titlePositionY + 103, $adjustedSentence);
+                            $mpdf->WriteText(136, $titlePositionY + 110, '2024');
+                            // $textSize = $mpdf->GetStringWidth($record->assigned_program);
+                            // $positionLeftHalf = $centerLeftHalf - ($textSize / 2) - $customMargin; // Adjust left half position by subtracting margin
+                            // $positionRightHalf = $centerRightHalf - ($textSize / 2) + $customMargin; // Adjust right half position by adding margin for RTL text
+                            // $mpdf->WriteText($positionLeftHalf, $titlePositionY + 105, $record->assigned_program);
+
+                            // // Calculate positions for program_arabic with margin adjustment
+                            // $textSize = $mpdf->GetStringWidth($record->program_arabic);
+                            // $positionLeftHalf = $centerLeftHalf - ($textSize / 2) - $customMargin; // Adjust left half position by subtracting margin
+                            // $positionRightHalf = $centerRightHalf - ($textSize / 2) + $customMargin; // Adjust right half position by adding margin for RTL text
+                            // $mpdf->WriteText($positionRightHalf, $titlePositionY + 105, $record->program_arabic, '', 0, 'R', true, 0, false, false, 0);
                             $mpdf->SetXY(18, 176);
                             $svg = '<img src="data:image/svg+xml;base64,' . base64_encode($svg) . '" />';
                             $mpdf->WriteHTML($svg);
@@ -365,5 +386,31 @@ class DiplomaResource extends BaseResource
             'view' => Pages\ViewDiploma::route('/{record}'),
             'edit' => Pages\EditDiploma::route('/{record}/edit'),
         ];
+    }
+
+    private static function adjustSpacingForPDF($assignedProgram, $programArabic, $referenceSentence)
+    {
+        // Calculate the length of the reference sentence
+        $referenceLength = mb_strlen($referenceSentence);
+
+        // Combine the assigned program and Arabic program with a base spacing
+        $baseSpacing = '              '; // 14 spaces as the base
+        $combinedSentence = $assignedProgram . $baseSpacing . $programArabic;
+        $combinedLength = mb_strlen($combinedSentence);
+
+        // Calculate the difference in length
+        $lengthDifference = $referenceLength - $combinedLength;
+
+        // Determine the number of additional spaces needed based on the difference
+        // Adjust the scaling factor as needed
+        $additionalSpacesCount = max(0, (int) ($lengthDifference / 10)); // Example scaling factor
+
+        // Create the additional spaces string
+        $additionalSpaces = str_repeat(' ', $additionalSpacesCount);
+
+        // Combine the sentences with the adjusted spacing
+        $adjustedSentence = $assignedProgram . $baseSpacing . $additionalSpaces . $programArabic;
+
+        return $adjustedSentence;
     }
 }
