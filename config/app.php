@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
 
 return [
+    'private_key_path' => env('PRIVATE_KEY_PATH'),
+    'public_key_path' => env('PUBLIC_KEY_PATH'),
 
     /*
     |--------------------------------------------------------------------------

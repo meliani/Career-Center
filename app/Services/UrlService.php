@@ -41,6 +41,62 @@ class UrlService
         return $encrypted_x;
     }
 
+    private static function encryptV1Short($verification_string)
+    {
+        if (is_null($verification_string)) {
+            throw new \Exception('Verification string cannot be null');
+        }
+        $cipher = 'AES-128-CBC';
+        // $encrypted_x = Crypt::encryptString($verification_string);
+        // Decode the APP_KEY from base64 to get the raw key
+        $key = base64_decode(env('APP_KEY'));
+
+        // Ensure the key is the correct length for AES-128-CBC (16 bytes)
+        if (strlen($key) > 16) {
+            $key = substr($key, 0, 16);
+        }
+
+        // Generate a random IV for AES-128-CBC
+        $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length($cipher));
+
+        // Encrypt the verification string
+        $encrypted = openssl_encrypt($verification_string, $cipher, $key, 0, $iv);
+
+        // Combine the IV with the encrypted data to make it possible to decrypt later
+        $encrypted_x = base64_encode($iv . $encrypted);
+
+        return $encrypted_x;
+    }
+
+    private static function decryptV1Short($verification_string)
+    {
+        if (is_null($verification_string)) {
+            throw new \Exception('Verification string cannot be null');
+        }
+        $cipher = 'AES-128-CBC';
+        // Decode the APP_KEY from base64 to get the raw key
+        $key = base64_decode(env('APP_KEY'));
+
+        // Ensure the key is the correct length for AES-128-CBC (16 bytes)
+        if (strlen($key) > 16) {
+            $key = substr($key, 0, 16);
+        }
+
+        // Decode the encrypted data
+        $data = base64_decode($verification_string);
+
+        // Extract the IV from the data
+        $iv = substr($data, 0, openssl_cipher_iv_length($cipher));
+
+        // Extract the encrypted data from the data
+        $encrypted = substr($data, openssl_cipher_iv_length($cipher));
+
+        // Decrypt the data
+        $decrypted = openssl_decrypt($encrypted, $cipher, $key, 0, $iv);
+
+        return $decrypted;
+    }
+
     private static function decryptv1($cipher)
     {
         $parts = explode(self::$separator, $cipher, 2);
@@ -89,6 +145,16 @@ class UrlService
     public static function encodeUrl($verification_string)
     {
         return self::encapsulate(self::encryptv1($verification_string));
+    }
+
+    public static function encodeDiplomaUrl($verification_string)
+    {
+        return self::encryptV1Short($verification_string);
+    }
+
+    public static function decodeDiplomaUrl($url)
+    {
+        return self::decryptV1Short($url);
     }
 
     public static function decodeUrl($url)

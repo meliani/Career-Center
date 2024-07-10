@@ -4,9 +4,15 @@ namespace App\Services;
 
 class KeyManagementService
 {
-    public static function signData($data)
+    public static function signData($data, $passphrase = null)
     {
-        $privateKey = openssl_pkey_get_private('file://' . config('app.private_key_path'));
+        $privateKeyPath = 'file://' . config('app.private_key_path');
+        $privateKey = openssl_pkey_get_private($privateKeyPath, $passphrase);
+
+        if (! $privateKey) {
+            throw new \Exception('Unable to load private key: ' . openssl_error_string());
+        }
+
         openssl_sign($data, $signature, $privateKey, OPENSSL_ALGO_SHA256);
         openssl_free_key($privateKey);
 

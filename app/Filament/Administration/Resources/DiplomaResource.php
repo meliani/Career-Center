@@ -6,11 +6,12 @@ use App\Filament\Administration\Resources\DiplomaResource\Pages;
 use App\Filament\Core\BaseResource;
 use App\Filament\Imports\DiplomaImporter;
 use App\Models\Diploma;
+use BaconQrCode\Common\ErrorCorrectionLevel;
 use BaconQrCode\Renderer\Image\SvgImageBackEnd;
 use BaconQrCode\Renderer\ImageRenderer;
 use BaconQrCode\Renderer\RendererStyle\RendererStyle;
-use BaconQrCode\Writer;
 // use setasign\Fpdi\Fpdi;
+use BaconQrCode\Writer;
 use Elibyy\TCPDF\Facades\TCPDF as PDF;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -299,6 +300,7 @@ class DiplomaResource extends BaseResource
                         $mpdf->useTemplate($tplId, ['adjustPageSize' => false]);
                         // $mpdf->SetPageTemplate($tplId);
                         foreach ($records as $record) {
+                            $errorCorrectionLevel = ErrorCorrectionLevel::M();
                             $qrLink = $record->generateVerificationLink();
                             $svg = (new Writer(
                                 new ImageRenderer(

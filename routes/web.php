@@ -2,6 +2,7 @@
 
 use App\Facades\GlobalDefenseCalendarConnector;
 use App\Filament\Org\Pages;
+use App\Http\Controllers\DiplomaVerificationController;
 use App\Http\Controllers\QrUrlDecoder;
 use Illuminate\Support\Facades\Route;
 
@@ -32,10 +33,8 @@ Route::get('lang/{lang}', 'App\Http\Controllers\LanguageController@switchLang');
 // Route::get('/url', QrUrlDecoder::class);
 Route::get('/verify-agreement', QrUrlDecoder::class);
 Route::get(
-    '/verify-diploma/{diploma}',
-    function (\App\Models\Diploma $diploma) {
-        return "Diploma: $diploma->id";
-    }
+    '/verify-diploma/{verification_code}',
+    DiplomaVerificationController::class
 )
     ->name('diploma.verify');
 // Route::get('/qr-response', Pages\QrResponse::class)->name('qr-response');

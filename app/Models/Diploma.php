@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\URL;
 
 class Diploma extends Model
 {
@@ -46,6 +45,8 @@ class Diploma extends Model
 
     public function generateVerificationLink()
     {
-        return URL::signedRoute('diploma.verify', ['diploma' => $this->id]);
+        $verification_string = \App\Services\UrlService::encodeDiplomaUrl($this->registration_number);
+
+        return route('diploma.verify', $verification_string);
     }
 }
