@@ -68,12 +68,26 @@ class Diploma extends Model
         // MIN = 3
 
         foreach ($diplomas as $diploma) {
+            $best_distance = PHP_INT_MAX; // Initialize with the maximum possible value
+            $best_match = null; // To keep track of the student with the closest name
+
             foreach ($students as $student) {
-                $distances = levenshtein($student->name, $diploma->full_name);
-                if ($distances < 12) {
-                    $diploma->update(['defense_status' => $student->internship->project->defense_status]);
+                $current_distance = levenshtein(strtolower($student->name), strtolower($diploma->full_name));
+                if ($current_distance < $best_distance) {
+                    $best_distance = $current_distance;
+                    $best_match = $student; // Update the best match
                 }
             }
+
+            // If a sufficiently close match is found, update the diploma
+            if ($best_distance < 3) {
+                $imported_students[] = $best_match->name . ' => ' . $diploma->full_name . ' (' . $best_distance . ')';
+
+                $diploma->update([
+                    'defense_status' => $best_match->defense_status,
+                ]);
+            }
         }
+        dd($imported_students);
     }
 }
