@@ -406,10 +406,10 @@ class DiplomaResource extends BaseResource
                                 )
                             ))->writeString($qrLink);
 
-                            $mpdf->SetXY(90, $titlePositionY + 65);
+                            // $mpdf->SetXY(60, $titlePositionY + 65);
                             $mpdf->SetFont('DejaVuSans', 'Regular', 9);
-                            $startXPosition = self::calculateCenterPosition($mpdf, $record->council, $pageWidth) - 30;
-                            $mpdf->WriteText($startXPosition, $titlePositionY + 61, $record->council);
+                            // $startXPosition = self::calculateCenterPosition($mpdf, $record->council, $pageWidth) - 30;
+                            $mpdf->WriteText(60, $titlePositionY + 61.3, $record->council);
                             $mpdf->SetFont('DejaVuSans', 'SemiBold', 10);
                             $mpdf->WriteText(48, $titlePositionY + 74, $record->full_name);
                             // $mpdf->SetXY(-99, $titlePositionY + 99);
