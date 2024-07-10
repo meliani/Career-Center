@@ -12,7 +12,10 @@
 
                 <div class="text-center mt-4">
                     <p class="text-2xl"><strong>Diplôme Authentique</strong></p>
+
                     <div class="flex flex-col justify-center items-center">
+                        <p class="text-xl">{{ __('Promotion') }} <strong>{{ $payload->council }}</strong>
+                        </p>
                         <x-heroicon-o-check class="w-16 h-16 text-green-500" />
                     </div>
                     <p class="text-xl">{{ __('Full Name') }}: <strong>{{ $payload->full_name }}</strong></p>
@@ -20,8 +23,7 @@
                             }}</strong></p>
                     <p class="text-xl">{{ __('Organization') }}: <strong>INPT-Rabat</strong>
                     </p>
-                    <p class="text-xl">{{ __('Promotion') }} <strong>{{ $payload->council }}</strong>
-                    </p>
+
                 </div>
                 @else
                 <div class="flex flex-col justify-center items-center text-red-500">
