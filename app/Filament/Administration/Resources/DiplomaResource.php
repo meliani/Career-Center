@@ -222,6 +222,38 @@ class DiplomaResource extends BaseResource
                             fn (Builder $query, $isDeliberated): Builder => $query->where('is_deliberated', $isDeliberated)
                         ),
                     ),
+                Tables\Filters\SelectFilter::make('program_code')
+                    ->options([
+                        /* SMART ICT
+                        ICCN
+                        DATA
+                        Mobilité
+                        DATA Mobilité DD 22
+                        DATA Mobilité DD 23
+                        DATA Mobilité Master
+                        DATA Mobilité Simple
+                        ASEDS
+                        AMOA
+                        SUD-CLOUD & IoT */
+                        'SMART ICT' => 'SMART ICT',
+                        'ICCN' => 'ICCN',
+                        'DATA' => 'DATA',
+                        'Mobilité' => 'Mobilité',
+                        'DATA Mobilité DD 22' => 'DATA Mobilité DD 22',
+                        'DATA Mobilité DD 23' => 'DATA Mobilité DD 23',
+                        'DATA Mobilité Master' => 'DATA Mobilité Master',
+                        'DATA Mobilité Simple' => 'DATA Mobilité Simple',
+                        'ASEDS' => 'ASEDS',
+                        'AMOA' => 'AMOA',
+                        'SUD-CLOUD & IoT' => 'SUD-CLOUD & IoT',
+                    ])
+                    ->query(
+                        fn (Builder $query, array $data) => $query->when(
+                            $data['value'],
+                            fn (Builder $query, $programCode): Builder => $query->where('program_code', $programCode)
+                        ),
+                    ),
+
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
