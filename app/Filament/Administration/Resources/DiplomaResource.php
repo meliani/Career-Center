@@ -175,6 +175,7 @@ class DiplomaResource extends BaseResource
                 Tables\Columns\TextColumn::make('program_arabic')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('defense_status')
+                    ->badge()
                     ->searchable(),
                 Tables\Columns\CheckboxColumn::make('is_foreign')
                     ->label('Foreign student')
