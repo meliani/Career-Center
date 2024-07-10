@@ -401,7 +401,7 @@ class DiplomaResource extends BaseResource
                         ]);
 
                         $mpdf->AddPage('L');
-                        $mpdf->SetFont('DejaVuSans', 'SemiBold', 10);
+                        $mpdf->SetFont('DejaVuSans', 'NarrowBold', 9);
                         $mpdf->setSourceFile($backgroundPdfPath);
                         $tplId = $mpdf->importPage(1);
                         $mpdf->useTemplate($tplId, ['adjustPageSize' => false]);
@@ -432,22 +432,27 @@ class DiplomaResource extends BaseResource
                                 )
                             ))->writeString($qrLink);
 
-                            $mpdf->SetXY(90, $titlePositionY + 65);
-                            $mpdf->WriteText(135, $titlePositionY + 62, $record->council);
-                            $mpdf->WriteText(48, $titlePositionY + 74, $record->full_name);
-                            $mpdf->WriteText(215, $titlePositionY + 74, $record->full_name_ar, '', 0, 'R', true, 0, false, false, 0);
-                            $mpdf->WriteText(40, $titlePositionY + 80, $record->birth_place_fr);
-                            $mpdf->WriteText(220, $titlePositionY + 80, $record->birth_place_ar, '', 0, 'R', true, 0, false, false, 0);
-                            $mpdf->WriteText(136, $titlePositionY + 80, $record->birth_date);
-                            $mpdf->WriteText(136, $titlePositionY + 86, $record->cin);
-                            $mpdf->WriteText(132, $titlePositionY + 92, $record->cne, 0, 0, 'R');
-                            $referenceSentence = $record->assigned_program . ' ' . $record->program_arabic;
-                            $adjustedSentence = self::adjustSpacingForPDF($record->assigned_program, $record->program_arabic, $referenceSentence);
-                            $leftMargin = 15; // Adjust as needed
-                            $rightMargin = 15; // Adjust as needed
-                            $startXPosition = self::calculateCenterPosition($mpdf, $adjustedSentence, $pageWidth, $leftMargin, $rightMargin);
-                            $mpdf->WriteText($startXPosition, $titlePositionY + 103, $adjustedSentence);
-                            $mpdf->WriteText(142, $titlePositionY + 110, '2024');
+                            // $mpdf->SetXY(90, $titlePositionY + 65);
+                            $mpdf->WriteText(123, $titlePositionY + 54, $record->council);
+                            $mpdf->WriteText(35, $titlePositionY + 70, $record->full_name_ar);
+                            $mpdf->WriteText(45, $titlePositionY + 77, $record->birth_place_ar);
+                            $mpdf->WriteText(115, $titlePositionY + 77, $record->birth_date);
+                            $mpdf->WriteText(55, $titlePositionY + 83, $record->cin);
+                            $mpdf->WriteText(90, $titlePositionY + 90, $record->cne);
+                            $mpdf->WriteText(28, $titlePositionY + 104, $record->program_tifinagh);
+                            $mpdf->WriteText(35, $titlePositionY + 110, '2024');
+
+                            $mpdf->WriteText(196, $titlePositionY + 54.5, $record->council);
+                            $mpdf->WriteText(200, $titlePositionY + 70, $record->full_name);
+                            $mpdf->WriteText(180, $titlePositionY + 76, $record->birth_place_fr);
+                            $mpdf->WriteText(257, $titlePositionY + 76, $record->birth_date);
+                            $mpdf->WriteText(222, $titlePositionY + 83, $record->cin);
+                            $mpdf->WriteText(220, $titlePositionY + 90, $record->cne);
+                            $mpdf->SetFont('DejaVuSans', 'NarrowBold', 7.5);
+
+                            $mpdf->WriteText(172, $titlePositionY + 105.3, $record->program_english);
+                            $mpdf->SetFont('DejaVuSans', 'NarrowBold', 9);
+                            $mpdf->WriteText(185, $titlePositionY + 110, '2024');
 
                             $mpdf->SetXY(19, 175);
                             $svg = '<img src="data:image/svg+xml;base64,' . base64_encode($svg) . '" />';
