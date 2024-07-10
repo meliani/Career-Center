@@ -344,7 +344,7 @@ class DiplomaResource extends BaseResource
                             // $positionLeftHalf = $centerLeftHalf - ($textSize / 2) - $customMargin; // Adjust left half position by subtracting margin
                             // $positionRightHalf = $centerRightHalf - ($textSize / 2) + $customMargin; // Adjust right half position by adding margin for RTL text
                             // $mpdf->WriteText($positionRightHalf, $titlePositionY + 105, $record->program_arabic, '', 0, 'R', true, 0, false, false, 0);
-                            $mpdf->SetXY(18, 176);
+                            $mpdf->SetXY(19, 175);
                             $svg = '<img src="data:image/svg+xml;base64,' . base64_encode($svg) . '" />';
                             $mpdf->WriteHTML($svg);
                             $mpdf->AddPage('L');
