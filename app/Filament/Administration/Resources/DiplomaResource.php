@@ -132,6 +132,9 @@ class DiplomaResource extends BaseResource
                 Tables\Grouping\Group::make('is_foreign')
                     ->collapsible()
                     ->label(__('Foreign students')),
+                Tables\Grouping\Group::make('is_deliberated')
+                    ->collapsible()
+                    ->label(__('Deliberated students')),
             ])
             ->columns([
                 Tables\Columns\TextColumn::make('registration_number')
@@ -195,6 +198,28 @@ class DiplomaResource extends BaseResource
                         fn (Builder $query, array $data) => $query->when(
                             $data['value'],
                             fn (Builder $query, $status): Builder => $query->where('defense_status', $status)
+                        ),
+                    ),
+                Tables\Filters\SelectFilter::make('is_foreign')
+                    ->options([
+                        '1' => 'Foreign student',
+                        '0' => 'Not foreign student',
+                    ])
+                    ->query(
+                        fn (Builder $query, array $data) => $query->when(
+                            $data['value'],
+                            fn (Builder $query, $isForeign): Builder => $query->where('is_foreign', $isForeign)
+                        ),
+                    ),
+                Tables\Filters\SelectFilter::make('is_deliberated')
+                    ->options([
+                        '1' => 'Deliberated',
+                        '0' => 'Not deliberated',
+                    ])
+                    ->query(
+                        fn (Builder $query, array $data) => $query->when(
+                            $data['value'],
+                            fn (Builder $query, $isDeliberated): Builder => $query->where('is_deliberated', $isDeliberated)
                         ),
                     ),
             ])
