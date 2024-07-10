@@ -304,7 +304,19 @@ class DiplomaResource extends BaseResource
                         $centerLeftHalf = $pageWidth / 4;
                         $centerRightHalf = ($pageWidth / 4) * 3;
                         $customMargin = 0;
+
+                        $index = 0; // Initialize a counter
+                        $totalItems = count($records); // Total number of items
+
                         foreach ($records as $record) {
+                            $index++; // Increment counter at the start of each iteration
+                            $loop = (object) [
+                                'index' => $index, // Current iteration number
+                                'first' => $index === 1, // True if first iteration
+                                'last' => $index === $totalItems, // True if last iteration
+                                'remaining' => $totalItems - $index, // Remaining items
+                                'count' => $totalItems, // Total items
+                            ];
                             $errorCorrectionLevel = ErrorCorrectionLevel::M();
                             $qrLink = $record->generateVerificationLink();
                             $svg = (new Writer(
@@ -347,9 +359,11 @@ class DiplomaResource extends BaseResource
                             $mpdf->SetXY(19, 175);
                             $svg = '<img src="data:image/svg+xml;base64,' . base64_encode($svg) . '" />';
                             $mpdf->WriteHTML($svg);
-                            $mpdf->AddPage('L');
-                            $mpdf->SetFont('DejaVuSans', 'SemiBold', 10);
-                            $mpdf->useTemplate($tplId, ['adjustPageSize' => false]);
+                            if (! $loop->last) {
+                                $mpdf->AddPage('L');
+                                $mpdf->SetFont('DejaVuSans', 'SemiBold', 10);
+                                $mpdf->useTemplate($tplId, ['adjustPageSize' => false]);
+                            }
                             // $mpdf->WriteHTML('<div style="text-align: left; direction: ltr;">السلام عليكم</div>');
                         }
                         $mpdf->Output(Storage::disk('diplomas')->path('mpdf.pdf'), 'F');
@@ -364,7 +378,99 @@ class DiplomaResource extends BaseResource
 
                     })
                     ->hidden(fn () => ! (auth()->user()->isAdministrativeSupervisor(12) || auth()->user()->isAdministrator())),
+                Tables\Actions\BulkAction::make('generate-pdf-verso-mpdf')
+                    ->label('Generate PDF mPDF')
+                    ->color('success')
+                    ->icon('heroicon-o-document')
+                    ->action(function ($records) {
+                        $titlePositionY = 50;
+                        $backgroundPdfPath = Storage::disk('local')->path('document-templates/diploma-template-verso.pdf');
+                        $mpdf = new \Mpdf\Mpdf
+                        // ();
+                        ([
+                            'mode' => 'utf-8',
+                            'format' => 'A4',
+                            'orientation' => 'L',
+                            // 'unit' => 'px',
+                            'margin_left' => 0,
+                            'margin_right' => 0,
+                            'margin_top' => 0,
+                            'margin_bottom' => 0,
+                            'margin_header' => 0,
+                            'margin_footer' => 0,
+                        ]);
 
+                        $mpdf->AddPage('L');
+                        $mpdf->SetFont('DejaVuSans', 'SemiBold', 10);
+                        $mpdf->setSourceFile($backgroundPdfPath);
+                        $tplId = $mpdf->importPage(1);
+                        $mpdf->useTemplate($tplId, ['adjustPageSize' => false]);
+                        $pageWidth = $mpdf->w;
+                        $pageHeight = $mpdf->h;
+                        $centerLeftHalf = $pageWidth / 4;
+                        $centerRightHalf = ($pageWidth / 4) * 3;
+                        $customMargin = 0;
+
+                        $index = 0; // Initialize a counter
+                        $totalItems = count($records); // Total number of items
+
+                        foreach ($records as $record) {
+                            $index++; // Increment counter at the start of each iteration
+                            $loop = (object) [
+                                'index' => $index, // Current iteration number
+                                'first' => $index === 1, // True if first iteration
+                                'last' => $index === $totalItems, // True if last iteration
+                                'remaining' => $totalItems - $index, // Remaining items
+                                'count' => $totalItems, // Total items
+                            ];
+                            $errorCorrectionLevel = ErrorCorrectionLevel::M();
+                            $qrLink = $record->generateVerificationLink();
+                            $svg = (new Writer(
+                                new ImageRenderer(
+                                    new RendererStyle(60, 0, null, null, null),
+                                    new SvgImageBackEnd()
+                                )
+                            ))->writeString($qrLink);
+
+                            $mpdf->SetXY(90, $titlePositionY + 65);
+                            $mpdf->WriteText(135, $titlePositionY + 62, $record->council);
+                            $mpdf->WriteText(48, $titlePositionY + 74, $record->full_name);
+                            $mpdf->WriteText(215, $titlePositionY + 74, $record->full_name_ar, '', 0, 'R', true, 0, false, false, 0);
+                            $mpdf->WriteText(40, $titlePositionY + 80, $record->birth_place_fr);
+                            $mpdf->WriteText(220, $titlePositionY + 80, $record->birth_place_ar, '', 0, 'R', true, 0, false, false, 0);
+                            $mpdf->WriteText(136, $titlePositionY + 80, $record->birth_date);
+                            $mpdf->WriteText(136, $titlePositionY + 86, $record->cin);
+                            $mpdf->WriteText(132, $titlePositionY + 92, $record->cne, 0, 0, 'R');
+                            $referenceSentence = $record->assigned_program . ' ' . $record->program_arabic;
+                            $adjustedSentence = self::adjustSpacingForPDF($record->assigned_program, $record->program_arabic, $referenceSentence);
+                            $leftMargin = 15; // Adjust as needed
+                            $rightMargin = 15; // Adjust as needed
+                            $startXPosition = self::calculateCenterPosition($mpdf, $adjustedSentence, $pageWidth, $leftMargin, $rightMargin);
+                            $mpdf->WriteText($startXPosition, $titlePositionY + 103, $adjustedSentence);
+                            $mpdf->WriteText(142, $titlePositionY + 110, '2024');
+
+                            $mpdf->SetXY(19, 175);
+                            $svg = '<img src="data:image/svg+xml;base64,' . base64_encode($svg) . '" />';
+                            $mpdf->WriteHTML($svg);
+                            if (! $loop->last) {
+                                $mpdf->AddPage('L');
+                                $mpdf->SetFont('DejaVuSans', 'SemiBold', 10);
+                                $mpdf->useTemplate($tplId, ['adjustPageSize' => false]);
+                            }
+                            // $mpdf->WriteHTML('<div style="text-align: left; direction: ltr;">السلام عليكم</div>');
+                        }
+                        $mpdf->Output(Storage::disk('diplomas')->path('mpdf-verso.pdf'), 'F');
+                        \Filament\Notifications\Notification::make()
+                            ->title('PDF generated successfully')
+                            ->success()
+                            ->actions([
+                                \Filament\Notifications\Actions\Action::make('Download')
+                                    ->url(URL::to(Storage::disk('diplomas')->url('mpdf-verso.pdf')), shouldOpenInNewTab: true),
+                            ])
+                            ->send();
+
+                    })
+                    ->hidden(fn () => ! (auth()->user()->isAdministrativeSupervisor(12) || auth()->user()->isAdministrator())),
             ])
             ->headerActions([
                 Tables\Actions\ImportAction::make()
