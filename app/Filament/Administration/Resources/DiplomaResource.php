@@ -524,9 +524,9 @@ class DiplomaResource extends BaseResource
                                 $mpdf->SetFont('DejaVuSans', 'Narrow', 7.5);
                                 $mpdf->WriteText(123, $titlePositionY + 51, $record->council);
                                 $mpdf->SetFont('DejaVuSans', 'NarrowBold', 9);
-                                $mpdf->WriteText(35, $titlePositionY + 67, $record->full_name);
-                                $mpdf->WriteText(40, $titlePositionY + 74, $record->birth_place_fr);
-                                $mpdf->WriteText(115, $titlePositionY + 74, $record->birth_date);
+                                $mpdf->WriteText(35, $titlePositionY + 67, $record->full_name_ar);
+                                $mpdf->WriteText(40, $titlePositionY + 74, $record->birth_place_ar);
+                                // $mpdf->WriteText(115, $titlePositionY + 74, $record->birth_date);
                                 // $mpdf->WriteText(55, $titlePositionY + 83, $record->cin);
                                 //                                 $mpdf->WriteText(90, $titlePositionY + 90, $record->cne);
 
