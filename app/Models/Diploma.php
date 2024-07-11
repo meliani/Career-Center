@@ -29,6 +29,7 @@ class Diploma extends Model
         'program_tifinagh',
         'program_english',
         'program_arabic',
+        'verification_string',
         'defense_status',
         'is_foreign',
         'is_deliberated',
@@ -48,8 +49,12 @@ class Diploma extends Model
     public function generateVerificationLink()
     {
         $verification_string = \App\Services\UrlService::encodeShortUrl($this->registration_number);
+        $verification_url = route('diploma.verify', $verification_string);
 
-        return route('diploma.verify', $verification_string);
+        $this->verification_string = $verification_string;
+        $this->save();
+
+        return $verification_url;
     }
 
     public static function syncWithDefenses()

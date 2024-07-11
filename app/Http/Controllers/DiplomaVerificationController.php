@@ -9,9 +9,9 @@ class DiplomaVerificationController extends Controller
 {
     public function __invoke(Request $request, $verification_code)
     {
-        $verification_code = \App\Services\UrlService::decodeShortUrl($verification_code);
+        $registration_number = \App\Services\UrlService::decodeShortUrl($verification_code);
         // dd($id);
-        $payload = Diploma::where('registration_number', $verification_code)->first();
+        $payload = Diploma::where('registration_number', $registration_number)->first();
 
         if (! $payload) {
             return view(
@@ -19,7 +19,7 @@ class DiplomaVerificationController extends Controller
                 [
                     'payload' => $payload,
                     'is_authentic' => false,
-                    'verification_code' => $verification_code,
+                    'verification_code' => $registration_number,
                 ]
             );
         } else {
@@ -28,7 +28,7 @@ class DiplomaVerificationController extends Controller
                 [
                     'payload' => $payload,
                     'is_authentic' => true,
-                    'verification_code' => $verification_code,
+                    'verification_code' => $registration_number,
                 ]
             );
         }

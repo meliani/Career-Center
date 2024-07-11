@@ -335,6 +335,14 @@ class DiplomaResource extends BaseResource
                                 PDF::Output(Storage::disk('diplomas')->path('tcpdf.pdf'), 'F');
                             }
                         }),
+                    Tables\Actions\BulkAction::make('generate verification strings')
+                        ->label('Generate verification strings')
+                        // ->icon('heroicon-o-qrcode')
+                        ->action(function ($records) {
+                            foreach ($records as $record) {
+                                $record->generateVerificationLink();
+                            }
+                        }),
                 ])
                     ->hidden(fn () => ! (auth()->user()->isSuperAdministrator())),
                 Tables\Actions\BulkActionGroup::make([

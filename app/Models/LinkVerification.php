@@ -16,7 +16,6 @@ class LinkVerification extends Model
             'is_valid' => $isValid,
             'ip_address' => $ipAddress,
             'user_agent' => $userAgent,
-
         ]);
     }
 }
