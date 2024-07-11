@@ -3,6 +3,7 @@
 use App\Facades\GlobalDefenseCalendarConnector;
 use App\Filament\Org\Pages;
 use App\Http\Controllers\DiplomaVerificationController;
+use App\Http\Controllers\PVVerificationController;
 use App\Http\Controllers\QrUrlDecoder;
 use Illuminate\Support\Facades\Route;
 
@@ -37,6 +38,11 @@ Route::get(
     DiplomaVerificationController::class
 )
     ->name('diploma.verify');
+Route::get(
+    '/verify-deliberation-pv/{verification_code}',
+    PVVerificationController::class
+)
+    ->name('deliberation-pv.verify');
 // Route::get('/qr-response', Pages\QrResponse::class)->name('qr-response');
 
 // Route::get('/mail-preview/{email}', 'App\Http\Controllers\MailPreviewController@show');

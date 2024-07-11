@@ -150,12 +150,12 @@ class UrlService
         return self::encapsulate(self::encryptv1($verification_string));
     }
 
-    public static function encodeDiplomaUrl($verification_string)
+    public static function encodeShortUrl($verification_string)
     {
         return self::encryptV1Short($verification_string);
     }
 
-    public static function decodeDiplomaUrl($url)
+    public static function decodeShortUrl($url)
     {
         return self::decryptV1Short($url);
     }
