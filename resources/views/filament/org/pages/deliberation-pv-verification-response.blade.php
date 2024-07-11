@@ -14,9 +14,6 @@
                     <p class="text-2xl"><strong>Document Authentique</strong></p>
 
                     <div class="flex flex-col justify-center items-center">
-                        <p class="text-xl">{{ __('Date du conseil: ') }} <strong>{{
-                                $payload->meeting_date->format('d/m/Y') }}</strong></p>
-                        </p>
                         <x-heroicon-o-check class="w-16 h-16 text-green-500" />
                     </div>
                     <p class="text-xl">Procès-verbal du Jury de troisième Année : <strong>{{ $payload->year->title
