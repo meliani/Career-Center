@@ -3,14 +3,14 @@
 namespace App\Filament\Administration\Resources;
 
 use App\Filament\Administration\Resources\DeliberationPVResource\Pages;
+use App\Filament\Core\BaseResource;
 use App\Models\DeliberationPV;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class DeliberationPVResource extends Resource
+class DeliberationPVResource extends BaseResource
 {
     protected static ?string $model = DeliberationPV::class;
 
