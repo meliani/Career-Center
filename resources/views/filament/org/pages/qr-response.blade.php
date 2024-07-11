@@ -11,7 +11,7 @@
                 @if($is_authentic)
 
                 <div class="text-center mt-4">
-                    <p class="text-2xl"><strong>Ce Document est authentique</strong></p>
+                    <p class="text-2xl"><strong>Cette convention de stage est authentique</strong></p>
                     <div class="flex flex-col justify-center items-center">
                         <x-heroicon-o-check class="w-16 h-16 text-green-500" />
                     </div>
