@@ -16,6 +16,12 @@ class DeliberationPVResource extends BaseResource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $modelLabel = 'Deliberation PV';
+
+    protected static ?string $pluralModelLabel = 'Deliberation PVs';
+
+    protected static ?string $navigationGroup = 'INPT';
+
     public static function form(Form $form): Form
     {
         return $form
