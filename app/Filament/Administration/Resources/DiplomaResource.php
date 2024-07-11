@@ -408,7 +408,7 @@ class DiplomaResource extends BaseResource
                                 $mpdf->WriteText(34, $titlePositionY + 80, $record->birth_place_fr);
                             } else {
                                 $mpdf->useTemplate($tpl_diploma_recto, ['adjustPageSize' => false]);
-                                $mpdf->WriteText(52, $titlePositionY + 80, $record->birth_place_fr);
+                                $mpdf->WriteText(57, $titlePositionY + 80, $record->birth_place_fr);
                             }
 
                             // $mpdf->SetXY(60, $titlePositionY + 65);
