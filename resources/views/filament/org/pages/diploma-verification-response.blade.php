@@ -41,4 +41,8 @@
             </x-filament::card>
         </div>
     </div>
+    @php
+    \App\Models\LinkVerification::recordScan(request()->url(), $verification_code, $is_authentic, request()->ip(),
+    request()->userAgent());
+    @endphp
 </x-layouts.public-layout>

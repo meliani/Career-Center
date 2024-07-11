@@ -19,6 +19,7 @@ class DiplomaVerificationController extends Controller
                 [
                     'payload' => $payload,
                     'is_authentic' => false,
+                    'verification_code' => $verification_code,
                 ]
             );
         } else {
@@ -27,6 +28,7 @@ class DiplomaVerificationController extends Controller
                 [
                     'payload' => $payload,
                     'is_authentic' => true,
+                    'verification_code' => $verification_code,
                 ]
             );
         }

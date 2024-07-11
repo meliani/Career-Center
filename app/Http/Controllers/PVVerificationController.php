@@ -16,20 +16,24 @@ class PVVerificationController extends Controller
 
         if (! $payload) {
             // $payload = DeliberationPV::first();
+            // \App\Models\LinkVerification::recordScan($request->url(), $verification_code, false, $request->ip(), $request->userAgent());
 
             return view(
                 'filament.org.pages.deliberation-pv-verification-response',
                 [
                     'payload' => $payload,
                     'is_authentic' => false,
+                    'verification_code' => $verification_code,
                 ]
             );
         } else {
+
             return view(
                 'filament.org.pages.deliberation-pv-verification-response',
                 [
                     'payload' => $payload,
                     'is_authentic' => true,
+                    'verification_code' => $verification_code,
                 ]
             );
         }

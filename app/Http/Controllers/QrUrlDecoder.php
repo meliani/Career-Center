@@ -35,6 +35,7 @@ class QrUrlDecoder extends Controller
             'student' => $student,
             'internship' => $internship,
             'is_authentic' => true,
+            'verification_code' => $x,
         ]);
         // ->layout('components.layouts.public');
     }
