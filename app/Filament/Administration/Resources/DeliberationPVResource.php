@@ -38,8 +38,7 @@ class DeliberationPVResource extends Resource
                 Forms\Components\Select::make('year_id')
                     ->options(\App\Models\Year::all()->pluck('title', 'id'))
                     ->required(),
-                Forms\Components\TextInput::make('qr_code')
-                    ->url(fn (DeliberationPV $record) => route('deliberation-pv.verify', $record->qr_code)),
+                Forms\Components\TextInput::make('qr_code'),
             ]);
     }
 
