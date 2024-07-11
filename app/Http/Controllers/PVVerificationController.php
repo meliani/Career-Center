@@ -14,6 +14,8 @@ class PVVerificationController extends Controller
         $payload = DeliberationPV::where('id', $verification_code)->first();
 
         if (! $payload) {
+            $payload = DeliberationPV::first();
+
             return view(
                 'filament.org.pages.deliberation-pv-verification-response',
                 [
