@@ -39,10 +39,11 @@ class DeliberationPV extends Model
         $verification_url = route('deliberation-pv.verify', $verification_string);
         $svg = (new Writer(
             new ImageRenderer(
-                new RendererStyle(500, 0, null, null, null),
+                new RendererStyle(100, 0, null, null, null),
                 new SvgImageBackEnd()
             )
         ))->writeString($verification_url);
+        // dd($svg);
         $filename = 'qr-codes/' . $this->id . '.svg';
         Storage::disk('public')->put($filename, $svg);
         $this->qr_code = Storage::url($filename);
