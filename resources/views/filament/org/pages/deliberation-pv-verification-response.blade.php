@@ -19,9 +19,11 @@
                         </p>
                         <x-heroicon-o-check class="w-16 h-16 text-green-500" />
                     </div>
-                    <p class="text-xl">{{ __('College year') }}: <strong>{{ $payload->year->title }}</strong></p>
-                    <p class="text-xl">{{ __('Organization') }}: <strong>INPT-Rabat</strong>
+                    <p class="text-xl">{{ Procès-verbal du Jury de troisième Année }}: <strong>{{ $payload->year->title
+                            }}</strong></p>
+                    <p class="text-xl"><strong>INPT - Rabat - Maroc</strong>
                     </p>
+                    <p class="text-xl">scolarite@inpt.ac.ma</p>
 
                 </div>
                 @else
