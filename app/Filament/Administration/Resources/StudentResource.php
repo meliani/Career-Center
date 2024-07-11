@@ -41,6 +41,11 @@ class StudentResource extends Core\BaseResource
 
     public static $User;
 
+    public static function canAccess(): bool
+    {
+        return auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor();
+    }
+
     public static function canViewAny(): bool
     {
         if (auth()->check()) {
