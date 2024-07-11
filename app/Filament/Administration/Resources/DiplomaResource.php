@@ -395,12 +395,6 @@ class DiplomaResource extends BaseResource
                                 'count' => $totalItems, // Total items
                             ];
 
-                            if ($record->is_foreign) {
-                                $mpdf->useTemplate($tpl_foreign_diploma_recto, ['adjustPageSize' => false]);
-                            } else {
-                                $mpdf->useTemplate($tpl_diploma_recto, ['adjustPageSize' => false]);
-                            }
-
                             $errorCorrectionLevel = ErrorCorrectionLevel::M();
                             $qrLink = $record->generateVerificationLink();
                             $svg = (new Writer(
@@ -409,6 +403,13 @@ class DiplomaResource extends BaseResource
                                     new SvgImageBackEnd()
                                 )
                             ))->writeString($qrLink);
+                            if ($record->is_foreign) {
+                                $mpdf->useTemplate($tpl_foreign_diploma_recto, ['adjustPageSize' => false]);
+                                $mpdf->WriteText(34, $titlePositionY + 80, $record->birth_place_fr);
+                            } else {
+                                $mpdf->useTemplate($tpl_diploma_recto, ['adjustPageSize' => false]);
+                                $mpdf->WriteText(52, $titlePositionY + 80, $record->birth_place_fr);
+                            }
 
                             // $mpdf->SetXY(60, $titlePositionY + 65);
                             $mpdf->SetFont('DejaVuSans', 'Regular', 9);
@@ -417,7 +418,7 @@ class DiplomaResource extends BaseResource
                             $mpdf->SetFont('DejaVuSans', 'SemiBold', 10);
                             $mpdf->WriteText(55, $titlePositionY + 74, $record->full_name);
                             // $mpdf->SetXY(-99, $titlePositionY + 99);
-                            $mpdf->WriteText(34, $titlePositionY + 80, $record->birth_place_fr);
+
                             $mpdf->WriteText(215, $titlePositionY + 74, $record->full_name_ar);
                             $mpdf->WriteText(220, $titlePositionY + 80, $record->birth_place_ar);
                             $startXPosition = self::calculateCenterPosition($mpdf, $record->birth_date, $pageWidth) + 35;
