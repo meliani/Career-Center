@@ -18,7 +18,7 @@ class PVVerificationController extends Controller
                 'filament.org.pages.deliberation-pv-verification-response',
                 [
                     'payload' => $payload,
-                    'is_authentic' => false,
+                    'is_authentic' => true,
                 ]
             );
         } else {
