@@ -72,8 +72,14 @@ class UrlService
 
     private static function decryptV1Short($encrypted_x)
     {
+
+        if (strlen($encrypted_x) < 44) {
+            return ['StudentId' => null, 'InternshipId' => null];
+        }
+
         if (is_null($encrypted_x)) {
-            throw new \Exception('Encrypted string cannot be null');
+            // throw new \Exception('Encrypted string cannot be null');
+            return ['StudentId' => null, 'InternshipId' => null];
         }
         $cipher = 'AES-128-CBC';
         // Decode the APP_KEY from base64 to get the raw key
@@ -82,6 +88,7 @@ class UrlService
         // Ensure the key is the correct length for AES-128-CBC (16 bytes)
         if (strlen($key) > 16) {
             $key = substr($key, 0, 16);
+            // dd($key);
         }
 
         // Convert the URL-safe base64-encoded string back to its original form
@@ -96,6 +103,10 @@ class UrlService
 
         // Decrypt the data
         $decrypted = openssl_decrypt($encrypted, $cipher, $key, 0, $iv);
+        // if ($decrypted === false) {
+        //     // Optionally, log the error details for debugging
+        //     throw new \Exception('Decryption failed: ' . openssl_error_string());
+        // }
 
         return $decrypted;
     }

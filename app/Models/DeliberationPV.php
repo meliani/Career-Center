@@ -47,6 +47,7 @@ class DeliberationPV extends Model
         $filename = 'qr-codes/' . $this->id . '.svg';
         Storage::disk('public')->put($filename, $svg);
         $this->qr_code = Storage::url($filename);
+        $this->verification_string = $verification_string;
 
         $this->save();
 
