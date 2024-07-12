@@ -105,6 +105,7 @@ class UrlService
         //     // Optionally, log the error details for debugging
         //     throw new \Exception('Decryption failed: ' . openssl_error_string());
         // }
+        // dd($decrypted);
 
         return $decrypted;
     }

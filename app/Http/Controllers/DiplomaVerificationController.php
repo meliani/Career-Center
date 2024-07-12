@@ -19,9 +19,10 @@ class DiplomaVerificationController extends Controller
             ]);
         }
         $encrypted_field = \App\Services\UrlService::decodeShortUrl($verification_code);
+
         // dd($id);
         $payload = Diploma::where(env('ENCRYPTED_FIELD', 'hey'), $encrypted_field)->first();
-
+        $payload = Diploma::where(env('VERIFICATION_FIELD', 'hey'), $encrypted_field)->first();
         if (! $payload) {
             return view(
                 'filament.org.pages.diploma-verification-response',
