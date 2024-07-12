@@ -48,7 +48,8 @@ class Diploma extends Model
 
     public function generateVerificationLink()
     {
-        $verification_string = \App\Services\UrlService::encodeShortUrl($this->registration_number);
+
+        $verification_string = \App\Services\UrlService::encodeShortUrl($this->attributes[env('ENCRYPTED_FIELD', 'hey')]);
         $verification_url = route('diploma.verify', $verification_string);
 
         $this->verification_string = $verification_string;
