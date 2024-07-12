@@ -11,8 +11,9 @@
                 @if($is_authentic)
 
                 <div class="text-center mt-4">
-                    <p class="text-2xl"><strong>Diplôme Authentique</strong></p>
-
+                    @if($message)
+                    <p><strong>{{ $message }}</strong></p>
+                    @endif
                     <div class="flex flex-col justify-center items-center">
                         <p class="text-xl">{{ __('Promotion') }} <strong>{{ $payload->council }}</strong>
                         </p>
@@ -28,7 +29,9 @@
                 @else
                 <div class="flex flex-col justify-center items-center text-red-500">
                     <div class="text-center text-xl mt-4">
-                        <p><strong>Ce document n'est pas authentique</strong></p>
+                        @if($message)
+                        <p><strong>{{ $message }}</strong></p>
+                        @endif
                         <div class="flex flex-col justify-center items-center">
                             <x-heroicon-o-x-mark class="w-16 h-16" />
                         </div>

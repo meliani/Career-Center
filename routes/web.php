@@ -39,6 +39,10 @@ Route::get(
 )
     ->name('diploma.verify');
 Route::get(
+    '/verify-diploma/',
+    DiplomaVerificationController::class
+);
+Route::get(
     '/verify-deliberation-pv/{verification_code}',
     PVVerificationController::class
 )

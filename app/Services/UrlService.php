@@ -72,15 +72,13 @@ class UrlService
 
     private static function decryptV1Short($encrypted_x)
     {
-
-        if (strlen($encrypted_x) < 44) {
-            return ['StudentId' => null, 'InternshipId' => null];
+        // if (is_null($encrypted_x)) {
+        //     throw new \Exception('Encrypted string cannot be null');
+        // }
+        if (strlen($encrypted_x) < 54 || is_null($encrypted_x)) {
+            return 'INVALID URL';
         }
 
-        if (is_null($encrypted_x)) {
-            // throw new \Exception('Encrypted string cannot be null');
-            return ['StudentId' => null, 'InternshipId' => null];
-        }
         $cipher = 'AES-128-CBC';
         // Decode the APP_KEY from base64 to get the raw key
         $key = base64_decode(env('APP_KEY'));
