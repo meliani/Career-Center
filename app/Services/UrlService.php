@@ -75,9 +75,9 @@ class UrlService
         // if (is_null($encrypted_x)) {
         //     throw new \Exception('Encrypted string cannot be null');
         // }
-        if (strlen($encrypted_x) < 54 || is_null($encrypted_x)) {
-            return 'INVALID URL';
-        }
+        // if (strlen($encrypted_x) < 54 || is_null($encrypted_x)) {
+        //     return 'INVALID URL';
+        // }
 
         $cipher = 'AES-128-CBC';
         // Decode the APP_KEY from base64 to get the raw key
