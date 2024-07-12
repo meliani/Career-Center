@@ -52,7 +52,7 @@ class Diploma extends Model
         $verification_string = \App\Services\UrlService::encodeShortUrl($this->attributes[env('ENCRYPTED_FIELD', 'hey')]);
         $verification_url = route('diploma.verify', $verification_string);
 
-        $this->verification_string = $verification_string;
+        // $this->verification_string = $verification_string;
         $this->save();
 
         return $verification_url;
