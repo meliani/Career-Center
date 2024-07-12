@@ -12,6 +12,7 @@ class QrUrlDecoder extends Controller
     public function __invoke(Request $request)
     {
         $x = $request->get('x');
+
         $InternshipHash = UrlService::decodeUrl($x);
 
         // Exemple pour afficher les informations de l'étudiant et du stage
@@ -23,7 +24,9 @@ class QrUrlDecoder extends Controller
                 'slot' => 'qr-response',
                 'studentId' => null,
                 'internshipId' => null,
-                'is_authentic' => false,
+                'is_authentic' => true,
+                'verification_code' => $x,
+                'payload' => false,
             ]);
         }
 

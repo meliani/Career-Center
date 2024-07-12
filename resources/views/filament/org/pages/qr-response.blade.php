@@ -15,6 +15,7 @@
                     <div class="flex flex-col justify-center items-center">
                         <x-heroicon-o-check class="w-16 h-16 text-green-500" />
                     </div>
+                    @if($payload)
                     <p class="text-xl">{{ __('Full Name') }}: <strong>{{ $student->full_name }}</strong></p>
                     <p class="text-xl">{{ __('Program') }}: <strong>{{ $student->program->getDescription()
                             }}</strong></p>
@@ -26,6 +27,7 @@
                             }}</strong></p>
                     <p class="text-xl">{{ __('Ends At') }}: <strong>{{ $internship->ending_at->format('d/m/Y')
                             }}</strong></p>
+                    @endif
                 </div>
                 @else
                 <div class="flex flex-col justify-center items-center text-red-500">

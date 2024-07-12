@@ -121,7 +121,6 @@ class UrlService
 
         [$version, $verification_string] = $parts;
         $verification_string = Crypt::decryptString($verification_string);
-
         [$StudentId, $InternshipId] = explode('-', $verification_string);
 
         return ['StudentId' => $StudentId, 'InternshipId' => $InternshipId];
@@ -141,16 +140,17 @@ class UrlService
         return base64_encode($encapsulated);
     }
 
-    private static function decapsulate($url)
+    private static function decapsulate($x)
     {
         $secretKey = env('APP_KEY');
         $iv = substr(hash('sha256', env('APP_IV', 'default_iv')), 0, 16); // Provide a default value for APP_IV to avoid null
-
-        if (is_null($url)) {
+        // dd($x);
+        if (is_null($x)) {
             throw new \Exception('URL cannot be null');
         }
 
-        $decapsulated = openssl_decrypt(base64_decode($url), 'AES-256-CBC', $secretKey, 0, $iv);
+        $decapsulated = openssl_decrypt(base64_decode($x), 'AES-256-CBC', $secretKey, 0, $iv);
+        // dd($decapsulated);
 
         return $decapsulated;
     }
