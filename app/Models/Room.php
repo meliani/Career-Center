@@ -14,7 +14,7 @@ class Room extends Core\BackendBaseModel
     //     return $rooms;
     // }
 
-    public function scopeEnabled($query)
+    public function scopeAvailable($query)
     {
         return $query->where('status', Enums\RoomStatus::Available);
     }

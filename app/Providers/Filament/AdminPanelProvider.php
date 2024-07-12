@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use Amendozaaguiar\FilamentRouteStatistics\FilamentRouteStatisticsPlugin;
+use App\Models\Room;
 use Awcodes\LightSwitch\Enums\Alignment;
 use Awcodes\LightSwitch\LightSwitchPlugin;
 use Croustibat\FilamentJobsMonitor\FilamentJobsMonitorPlugin;
@@ -40,6 +41,15 @@ class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
+        // Fetch rooms from the database
+        $rooms = Room::available()->get();
+        // Transform the rooms into the desired format
+        $resources = $rooms->map(function ($room) {
+            return [
+                'id' => (string) $room->id, // Assuming 'id' is an integer, cast to string if necessary
+                'title' => $room->name, // Assuming the room name is stored in 'name' attribute
+            ];
+        })->toArray();
 
         return $panel
             // ->topbar(false)
@@ -161,41 +171,7 @@ class AdminPanelProvider extends PanelProvider
                             //         'titleFormat' => ['year', 'month', 'day'],
                             //     ],
                             // ],
-                            'resources' => [
-                                [
-                                    'id' => '1',
-                                    'title' => 'Amphi 1',
-                                ],
-                                [
-                                    'id' => '2',
-                                    'title' => 'Amphi 2',
-                                ],
-                                [
-                                    'id' => '3',
-                                    'title' => 'Amphi 3',
-                                ],
-                                // [
-                                //     'id' => '5',
-                                //     'title' => 'Salle B10',
-                                // ],
-                                [
-                                    'id' => '6',
-                                    'title' => 'Salle B12',
-                                ],
-
-                                [
-                                    'id' => '7',
-                                    'title' => 'Salle B202',
-                                ],
-                                // [
-                                //     'id' => '8',
-                                //     'title' => 'Salle B119',
-                                // ],
-                                [
-                                    'id' => '9',
-                                    'title' => 'Salle CF',
-                                ],
-                            ],
+                            'resources' => $resources,
                             'views' => [
                                 'timeGridWeek' => [
                                     'type' => 'timeGrid',
