@@ -10,7 +10,7 @@ class DiplomaVerificationController extends Controller
     public function __invoke(Request $request, $verification_code = null)
     {
         // dd($verification_code);
-        if (! $verification_code || ($verification_code == 'INVALID URL')) {
+        if (! $verification_code) {
             return view('filament.org.pages.diploma-verification-response', [
                 'payload' => null,
                 'is_authentic' => false,
