@@ -9,9 +9,9 @@ class DiplomaVerificationController extends Controller
 {
     public function __invoke(Request $request, $verification_code)
     {
-        $registration_number = \App\Services\UrlService::decodeShortUrl($verification_code);
+        $encrypted_field = \App\Services\UrlService::decodeShortUrl($verification_code);
         // dd($id);
-        $payload = Diploma::where('registration_number', $registration_number)->first();
+        $payload = Diploma::where(env('ENCRYPTED_FIELD', 'hey'), $encrypted_field)->first();
 
         if (! $payload) {
             return view(
