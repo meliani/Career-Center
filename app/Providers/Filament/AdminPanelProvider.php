@@ -42,7 +42,7 @@ class AdminPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         // Fetch rooms from the database
-        $rooms = Room::available()->get();
+        $rooms = Room::available()->orderBy('order')->get();
         // Transform the rooms into the desired format
         $resources = $rooms->map(function ($room) {
             return [
