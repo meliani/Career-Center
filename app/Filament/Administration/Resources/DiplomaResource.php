@@ -222,7 +222,8 @@ class DiplomaResource extends BaseResource
                             $data['value'],
                             fn (Builder $query, $isDeliberated): Builder => $query->where('is_deliberated', $isDeliberated)
                         ),
-                    ),
+                    )
+                    ->label('Deliberated'),
                 Tables\Filters\SelectFilter::make('program_code')
                     ->options(
                         Diploma::query()
