@@ -22,7 +22,7 @@ class DiplomaVerificationController extends Controller
 
         // dd($id);
         $payload = Diploma::where(env('ENCRYPTED_FIELD', 'hey'), $encrypted_field)->first();
-        $payload = Diploma::where(env('VERIFICATION_FIELD', 'hey'), $encrypted_field)->first();
+        $payload = Diploma::where(env('VERIFICATION_FIELD', 'hey'), $verification_code)->first();
         if (! $payload) {
             return view(
                 'filament.org.pages.diploma-verification-response',
