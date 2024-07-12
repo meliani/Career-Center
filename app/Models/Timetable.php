@@ -145,7 +145,7 @@ class Timetable extends Core\BackendBaseModel
 
     public function room()
     {
-        return $this->belongsTo(Room::class)->enabled();
+        return $this->belongsTo(Room::class)->available();
     }
 
     public function project()
