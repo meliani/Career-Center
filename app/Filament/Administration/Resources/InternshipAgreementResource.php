@@ -92,6 +92,18 @@ class InternshipAgreementResource extends Core\BaseResource
             ])
             ->emptyStateDescription(__('Once students starts announcing internships, it will appear here.'))
             ->headerActions([
+                Tables\Actions\Action::make('Parse keywords')
+                    ->icon('heroicon-o-document')
+                    ->label('Parse keywords')
+                    ->hidden(fn () => auth()->user()->isSuperAdministrator() === false)
+                    ->action(
+                        function () {
+                            $internshipAgreements = InternshipAgreement::all();
+                            foreach ($internshipAgreements as $internshipAgreement) {
+                                $internshipAgreement->parseKeywords(); // This now structures and stores the tags
+                            }
+                        }
+                    ),
                 \pxlrbt\FilamentExcel\Actions\Tables\ExportAction::make()
                     ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isDepartmentHead() || auth()->user()->isProgramCoordinator()) === false)
                     ->outlined(),

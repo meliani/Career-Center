@@ -333,4 +333,27 @@ class InternshipAgreement extends Core\BackendBaseModel
     {
         return $query->whereNotNull('signed_at');
     }
+
+    public function parseKeywords()
+    {
+        $text = $this->keywords; // Assuming the original keywords are stored in a `keywords` attribute
+        $lines = explode("\n", $text);
+        $allKeywords = [];
+
+        foreach ($lines as $line) {
+            $keywords = explode(',', $line);
+            foreach ($keywords as $keyword) {
+                $cleanKeyword = trim($keyword);
+                if (! empty($cleanKeyword)) {
+                    $allKeywords[] = strtolower($cleanKeyword); // Normalize to lowercase
+                }
+            }
+        }
+
+        $uniqueKeywords = array_unique($allKeywords);
+        $tags = json_encode($uniqueKeywords, JSON_UNESCAPED_UNICODE); // Convert to JSON array for storage
+
+        $this->tags = $tags; // Assuming the new column is named `tags`
+        $this->save();
+    }
 }
