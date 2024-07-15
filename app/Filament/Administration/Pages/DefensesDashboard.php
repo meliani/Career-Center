@@ -21,6 +21,7 @@ class DefensesDashboard extends \Filament\Pages\Dashboard
             \App\Filament\Widgets\DefensesPerProgramChart::class,
             \App\Filament\Widgets\ProfessorsParticipationTable::class,
             \App\Filament\Widgets\TimetableOverviewChart::class,
+            \App\Filament\Widgets\AssignedSupervisorsReviewersChart::class,
         ];
     }
 
