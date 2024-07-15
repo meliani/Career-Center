@@ -7,6 +7,7 @@ use App\Filament\Actions\BulkAction;
 use App\Filament\Administration\Resources\ProjectResource\Pages;
 use App\Filament\Administration\Resources\ProjectResource\RelationManagers;
 use App\Filament\Core;
+use App\Filament\Widgets\DefensesPerProgramChart;
 use App\Models\Project;
 use Carbon\Carbon;
 use Filament\Forms;
@@ -25,6 +26,8 @@ use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 use Parallax\FilamentComments\Actions\CommentsAction;
 use Parallax\FilamentComments\Infolists\Components\CommentsEntry;
 use pxlrbt\FilamentExcel;
+
+use function Spatie\LaravelPdf\Support\pdf;
 
 class ProjectResource extends Core\BaseResource
 {
@@ -262,6 +265,40 @@ class ProjectResource extends Core\BaseResource
 
             ])
             ->headerActions([
+                Tables\Actions\Action::make('Generate report')
+                    ->label('Generate report')
+                    ->icon('heroicon-o-document')
+                    ->color('primary')
+                    ->hidden(fn () => auth()->user()->isSuperAdministrator() === false)
+                    ->action(function () {
+                        $chartWidget = new DefensesPerProgramChart();
+                        $chartOptions = $chartWidget->getOptions();
+                        $chartWidget->dataURI();
+
+                        $html = '<h1>' . $chartOptions['chart']['type'] . ' Chart</h1>';
+                        $html .= '<table border="1">';
+                        $html .= '<tr><th>Program</th><th>Total Projects</th><th>Total Defenses</th><th>Percentage</th></tr>';
+
+                        foreach ($chartOptions['xaxis']['categories'] as $index => $program) {
+                            $html .= '<tr>';
+                            $html .= '<td>' . $program . '</td>';
+                            $html .= '<td>' . $chartOptions['series'][0]['data'][$index] . '</td>';
+                            $html .= '<td>' . $chartOptions['series'][1]['data'][$index] . '</td>';
+                            $html .= '<td>' . $chartOptions['series'][2]['data'][$index] . '%</td>';
+                            $html .= '</tr>';
+                        }
+
+                        $html .= '</table>';
+                        pdf()
+                            ->html($html)
+                            ->name('defenses_report.pdf')
+                            ->save('storage/pdf/defenses_report.pdf');
+
+                        return pdf()
+                            ->html($html)
+                            ->name('defenses_report.pdf')
+                            ->download();
+                    }),
                 Tables\Actions\Action::make('Check changed professors')
                     ->label('Check changed professors')
                     ->tooltip('Check if professors have been changed after getting Authorization')
