@@ -19,9 +19,9 @@ class DefensesDashboard extends \Filament\Pages\Dashboard
         return [
             \App\Filament\Widgets\CompletedDefensesRatioChart::class,
             \App\Filament\Widgets\DefensesPerProgramChart::class,
-            \App\Filament\Widgets\ProfessorsParticipationTable::class,
-            \App\Filament\Widgets\TimetableOverviewChart::class,
             \App\Filament\Widgets\AssignedSupervisorsReviewersChart::class,
+            \App\Filament\Widgets\TimetableOverviewChart::class,
+            \App\Filament\Widgets\ProfessorsParticipationTable::class,
         ];
     }
 
