@@ -119,7 +119,7 @@ class Timetable extends Core\BackendBaseModel
 
     public function timeslot()
     {
-        return $this->belongsTo(Timeslot::class);
+        return $this->belongsTo(Timeslot::class)->orderBy('start_time', 'asc');
     }
 
     public function available_timeslots()

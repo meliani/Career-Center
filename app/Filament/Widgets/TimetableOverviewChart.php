@@ -32,7 +32,9 @@ class TimetableOverviewChart extends ApexChartsParentWidget
      */
     protected function getOptions(): array
     {
-        $timetables = Timetable::with('timeslot')->get();
+        $timetables = Timetable::with(['timeslot' => function ($query) {
+            $query->orderBy('start_time', 'asc');
+        }])->get();
         $timetableDatesCount = [];
 
         foreach ($timetables as $timetable) {

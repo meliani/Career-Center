@@ -2,7 +2,6 @@
 
 namespace App\Filament\Widgets;
 
-use App\Enums\DefenseStatus;
 use App\Filament\Core\Widgets\ApexChartsParentWidget;
 use App\Models\Year;
 
@@ -44,66 +43,50 @@ class DefensesPerProgramChart extends ApexChartsParentWidget
      *
      *
      **/
-
-    /**
-     * Data comes from projects
-     * Each project is linked to multiple timetables through the timetables table, which contains project_id and timeslot_id.
-     * Each timetable is linked to a specific timeslot.
-     * Each project has a defense_status that can be 'Approved', 'Completed', 'Postponed', or null.
-     * The 'program' is an Enum in the student model, indicating the program the student is enrolled in.
-     * To find the student_id associated with a project, we must look into the internships table, which contains both student_id and project_id.
-     */
-    protected function getOptions(): array
+    public function getOptions(): array
     {
-        $defensesData = \DB::table('projects')
-            ->leftJoin('internships', 'projects.id', '=', 'internships.project_id')
-            ->leftJoin('students', 'internships.student_id', '=', 'students.id')
-            // ->leftJoin('timetables', 'projects.id', '=', 'timetables.project_id')
-            // ->leftJoin('timeslots', 'timetables.timeslot_id', '=', 'timeslots.id')
-            // ->where('projects.defense_status', DefenseStatus::Completed)
-            ->groupBy('program')
-            ->select(
-                'program',
-                \DB::raw('count(projects.id) as total_projects'),
-                \DB::raw('count(projects.defense_status = "Completed") as total_defenses'),
-                \DB::raw('ROUND(count(projects.defense_status = "Completed") / count(projects.id) * 100,1) as percentage')
-            )
-            ->get()
-            ->toArray();
-
-        // dd($defensesData);
+        $defensesData = \DB::table('students')
+            ->join('project_student', 'students.id', '=', 'project_student.student_id')
+            ->join('projects', 'project_student.project_id', '=', 'projects.id')
+            ->selectRaw('
+            students.program,
+            COUNT(DISTINCT projects.id) AS total_projects,
+            COUNT(DISTINCT CASE WHEN projects.defense_status = \'completed\' THEN projects.id END) AS total_defenses,
+            ROUND((COUNT(DISTINCT CASE WHEN projects.defense_status = \'completed\' THEN projects.id END) / COUNT(DISTINCT projects.id)) * 100, 1) AS percentage
+        ')
+            ->whereNotNull('projects.id') // Ensure only students with projects are counted
+            ->groupBy('students.program')
+            ->get();
 
         return [
             'chart' => [
                 'type' => 'bar',
                 'height' => 300,
-                'with: 100%',
+                'width' => '100%', // Corrected typo from 'with: 100%' to 'width' => '100%'
             ],
             'series' => [
                 [
                     'name' => __('Total final projects'),
-                    'data' => array_column($defensesData, 'total_projects'),
+                    'data' => array_column($defensesData->toArray(), 'total_projects'),
                 ],
                 [
                     'name' => __('Total completed defenses'),
-                    'data' => array_column($defensesData, 'total_defenses'),
+                    'data' => array_column($defensesData->toArray(), 'total_defenses'),
                 ],
                 [
                     'name' => __('Percentage of achievement (%)'),
-                    'data' => array_column($defensesData, 'percentage'),
+                    'data' => array_column($defensesData->toArray(), 'percentage'),
                 ],
             ],
             'xaxis' => [
-                'categories' => array_column($defensesData, 'program'),
+                'categories' => array_column($defensesData->toArray(), 'program'),
             ],
-            'yaxis' => [
-                // 'labels' => [
-                //     'formatter' => fn ($defensesData) => array_column($defensesData, 'program'),
-                // ],
-            ],
-            'dataLabels' => [
-                'enabled' => true,
-            ],
+            // Optionally, uncomment and adjust the yaxis labels if needed
+            // 'yaxis' => [
+            //     'labels' => [
+            //         'formatter' => function($value) { return $value . '%'; },
+            //     ],
+            // ],
         ];
 
     }

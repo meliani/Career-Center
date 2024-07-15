@@ -318,7 +318,7 @@
     "Max defenses per professor": "Max soutenances par enseignant a respecter",
     "Defenses Calendar": "Calendrier des soutenances",
     "Calendars": "Calendriers",
-    "Timetable Overview": "Souteances par jour",
+    "Timetable Overview": "Aperçu du planning",
     "Sign internship agreement": "Signer la convention de stage",
     "To generate document save and go to apprenticeship list": "Pour générer le document, enregistrez et allez à la liste des conventions de stage",
     "Monthly remuneration": "Rémunération mensuelle",
@@ -506,5 +506,10 @@
     "This document is genuine": "Ce document est authentique",
     "Deliberated": "Délibéré",
     "Diploma": "Diplôme",
-    "Diplomas": "Diplômes"
+    "Diplomas": "Diplômes",
+    "Defense completed": "Soutenance assurée",
+    "Pending authorization": "Autorisation en attente",
+    "Completed defenses ratio": "Taux de réalisation des soutenances",
+    "Number of defenses": "Nombre de soutenances",
+    "Total defenses": "Nombre de soutenances"
 }
