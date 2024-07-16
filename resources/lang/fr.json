@@ -511,5 +511,6 @@
     "Pending authorization": "Autorisation en attente",
     "Completed defenses ratio": "Taux de réalisation des soutenances",
     "Number of defenses": "Nombre de soutenances",
-    "Total defenses": "Nombre de soutenances"
+    "Total defenses": "Nombre de soutenances",
+    "This QR code is invalid. Please try again.": "Ce code QR est invalide. Veuillez réessayer."
 }

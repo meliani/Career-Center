@@ -32,7 +32,7 @@ class DiplomaVerificationController extends Controller
                     'payload' => $payload,
                     'is_authentic' => false,
                     'verification_code' => $verification_code,
-                    'message' => __('This document is not genuine'),
+                    'message' => __('This QR code is invalid. Please try again'),
                 ]
             );
         } else {
@@ -42,7 +42,7 @@ class DiplomaVerificationController extends Controller
                     'payload' => $payload,
                     'is_authentic' => true,
                     'verification_code' => $verification_code,
-                    'message' => __('This document is genuine'),
+                    'message' => __('Student information'),
                 ]
             );
         }
