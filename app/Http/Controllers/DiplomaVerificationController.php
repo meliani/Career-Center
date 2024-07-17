@@ -15,7 +15,7 @@ class DiplomaVerificationController extends Controller
                 'payload' => null,
                 'is_authentic' => false,
                 'verification_code' => $verification_code,
-                'message' => __('Invalid verification code. Please try again.'),
+                'message' => __('QR code is empty. Please don\'t try again.'),
             ]);
         }
         $encrypted_field = \App\Services\UrlService::decodeShortUrl($verification_code);
@@ -32,7 +32,7 @@ class DiplomaVerificationController extends Controller
                     'payload' => $payload,
                     'is_authentic' => false,
                     'verification_code' => $verification_code,
-                    'message' => __('This QR code is invalid. Please try again'),
+                    'message' => __('This QR code is invalid. Please try again.'),
                 ]
             );
         } else {
@@ -42,7 +42,7 @@ class DiplomaVerificationController extends Controller
                     'payload' => $payload,
                     'is_authentic' => true,
                     'verification_code' => $verification_code,
-                    'message' => __('Student information'),
+                    'message' => __('Diploma information'),
                 ]
             );
         }

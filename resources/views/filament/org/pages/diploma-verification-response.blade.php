@@ -12,17 +12,19 @@
 
                 <div class="text-center mt-4">
                     @if($message)
-                    <p><strong>{{ $message }}</strong></p>
+                    <p class="text-2xl mb-5"><strong>{{ $message }}</strong></p>
                     @endif
+                    <p class="text-xl mb-1">{{ __('Promotion') }} <strong>{{ $payload->council }}</strong>
+                    </p>
                     <div class="flex flex-col justify-center items-center">
-                        <p class="text-xl">{{ __('Promotion') }} <strong>{{ $payload->council }}</strong>
-                        </p>
-                        <x-heroicon-o-check class="w-16 h-16 text-green-500" />
+
+                        {{--
+                        <x-heroicon-o-check class="w-16 h-16 text-green-500" /> --}}
                     </div>
-                    <p class="text-xl">{{ __('Full Name') }}: <strong>{{ $payload->full_name }}</strong></p>
-                    <p class="text-xl">{{ __('Program') }}: <strong>{{ $payload->assigned_program
+                    <p class="text-xl mb-1">{{ __('Full Name') }}: <strong>{{ $payload->full_name }}</strong></p>
+                    <p class="text-xl mb-6">{{ __('Program') }}: <strong>{{ $payload->assigned_program
                             }}</strong></p>
-                    <p class="text-xl">{{ __('Organization') }}: <strong>INPT-Rabat</strong>
+                    <p class="text-xl mb-2">{{ __('Organization') }}: <strong>INPT-Rabat</strong>
                     </p>
 
                 </div>
