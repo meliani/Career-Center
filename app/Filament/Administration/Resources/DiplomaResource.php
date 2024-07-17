@@ -180,10 +180,10 @@ class DiplomaResource extends BaseResource
                 //     ->label('Deliberated')
                 //     ->sortable(),
                 Tables\Columns\CheckboxColumn::make('deliberation1_desision')
-                    ->label('Deliberated')
+                    ->label('Deliberated 1')
                     ->sortable(),
                 Tables\Columns\CheckboxColumn::make('deliberation2_desision')
-                    ->label('Deliberated')
+                    ->label('Deliberated 2')
                     ->sortable(),
                 // Tables\Columns\TextColumn::make('created_at')
                 //     ->dateTime()
