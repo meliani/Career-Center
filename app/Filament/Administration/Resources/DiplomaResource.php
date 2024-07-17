@@ -10,7 +10,6 @@ use BaconQrCode\Common\ErrorCorrectionLevel;
 use BaconQrCode\Renderer\Image\SvgImageBackEnd;
 use BaconQrCode\Renderer\ImageRenderer;
 use BaconQrCode\Renderer\RendererStyle\RendererStyle;
-// use setasign\Fpdi\Fpdi;
 use BaconQrCode\Writer;
 use Elibyy\TCPDF\Facades\TCPDF as PDF;
 use Filament\Forms;
@@ -20,9 +19,6 @@ use Filament\Tables\Table;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
-use setasign\Fpdi\Tfpdf\Fpdi;
-use Spatie\LaravelPdf\Enums\Format;
-use Spatie\LaravelPdf\Enums\Orientation;
 
 // use Tecnickcom\TCPDF as PDF;
 
@@ -250,89 +246,6 @@ class DiplomaResource extends BaseResource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\BulkAction::make('generate-pdf')
-                        ->label('Generate PDF')
-                        ->icon('heroicon-o-document')
-                        ->action(function ($records) {
-                            $pdf = pdf()->view('pdf.templates.ThirdYear.diploma', ['records' => $records]);
-                            $pdf->disk('diplomas')
-                                ->orientation(Orientation::Landscape)
-                                ->format(Format::A4)
-                                ->save('diploma.pdf');
-                        }),
-                    Tables\Actions\BulkAction::make('generate-pdf-fpdi')
-                        ->label('Generate PDF FPDI')
-                        ->icon('heroicon-o-document')
-                        ->action(function ($records) {
-                            $titlePositionY = 35;
-
-                            // Initialize FPDI
-                            // $pdf = new Fpdi();
-                            // $pdf = new Tfpdf('L', 'mm', true, 'UTF-8', false);
-                            $pdf = new Fpdi('L', 'mm');
-                            $pdf->AddPage('L'); // 'L' for Landscape orientation
-
-                            // Specify the path to your background PDF
-                            $backgroundPdfPath = Storage::disk('local')->path('document-templates/diploma-template.pdf');
-                            // Set the source file
-                            $pageCount = $pdf->setSourceFile($backgroundPdfPath);
-                            // Import the first page of the PDF
-                            $tplId = $pdf->importPage(1);
-                            $pdf->useTemplate($tplId, ['adjustPageSize' => true]);
-
-                            // $pdf->AddFont('DejaVuSans', 'Bold', Storage::disk('local')->path('fonts/dejavu/DejaVuSans-Bold.ttf'), true);
-                            $pdf->AddFont('DejaVuSans', 'Bold', 'DejaVuSans-Bold.ttf', true);
-                            // $pdf->SetFont('Arial', '', 12);
-                            $pdf->SetFont('DejaVuSans', 'Bold', 14);
-                            // Loop through your records and add them to the PDF
-                            foreach ($records as $record) {
-                                $pdf->SetXY(45, $titlePositionY + 73);
-                                $pdf->Write(0, $record->full_name);
-                                $pdf->SetXY(-10, $titlePositionY + 73);
-                                $pdf->Write(0, 'السلام عليكم', '', 0, 'L', true, 0, false, false, 0);
-
-                                // $pdf->Write(0, $record->full_name_ar);
-                                // $pdf->Cell(100, 20, $record->full_name_ar, 0, 1, 'C');
-                                // $pdf->SetRightMargin(10); // Adjust according to your needs
-                                // $pdf->SetX(-10, true); // Move to the right edge
-                                // $pdf->Cell(0, 10, 'مرحبا بالعالم', 0, 1, 'R'); // 'R' for right alignment
-                                $reversedText = mb_convert_encoding($record->full_name_ar, 'UTF-16BE', 'UTF-8');
-                                // $reversedText = strrev($record->full_name_ar);
-                                $reversedText = strrev($reversedText);
-                                $reversedText = mb_convert_encoding($reversedText, 'UTF-8', 'UTF-16LE');
-                                $pdf->Write(-10, $reversedText);
-
-                                // $pdf->Write(0, utf8_decode($record->full_name_ar));
-                                // $pdf->Write(10, mb_convert_encoding($record->full_name_ar, 'windows-1252', 'utf-8'));
-                                // $pdf->Write(15, iconv('utf-8', 'windows-1252', $record->full_name_ar));
-                                // dd($record->full_name_ar);
-
-                            }
-
-                            // Save the PDF to a file in the 'diplomas' disk
-                            $pdfPath = Storage::disk('diplomas')->path('diploma-fpdi.pdf');
-                            $pdf->Output($pdfPath, 'F');
-                        }),
-                    Tables\Actions\BulkAction::make('generate-pdf-Tcpdf')
-                        ->label('Generate PDF TCPDF')
-                        ->icon('heroicon-o-document')
-                        ->action(function ($records) {
-                            $backgroundPdfPath = Storage::disk('local')->path('document-templates/diploma-template.pdf');
-                            // PDF::SetTitle('Hello World');
-                            PDF::SetFont('DejaVuSans', '', 14);
-                            PDF::AddPage('L');
-                            PDF::setSourceFile($backgroundPdfPath);
-                            $tplId = PDF::importPage(1);
-                            PDF::useTemplate($tplId, ['adjustPageSize' => true]);
-                            foreach ($records as $record) {
-                                PDF::SetXY(45, $titlePositionY + 73);
-                                PDF::Write(0, $record->full_name);
-                                PDF::SetXY(-10, $titlePositionY + 73);
-                                PDF::Write(0, $record->full_name_ar);
-
-                                PDF::Output(Storage::disk('diplomas')->path('tcpdf.pdf'), 'F');
-                            }
-                        }),
                     Tables\Actions\BulkAction::make('generate verification strings')
                         ->label('Generate verification strings')
                         // ->icon('heroicon-o-qrcode')
@@ -400,15 +313,9 @@ class DiplomaResource extends BaseResource
                                 'remaining' => $totalItems - $index, // Remaining items
                                 'count' => $totalItems, // Total items
                             ];
+                            // $svg = self::generateLinkQrSvg($record);
+                            $svg = self::generateTextQrSvg($record);
 
-                            $errorCorrectionLevel = ErrorCorrectionLevel::M();
-                            $qrLink = $record->generateVerificationLink();
-                            $svg = (new Writer(
-                                new ImageRenderer(
-                                    new RendererStyle(60, 0, null, null, null),
-                                    new SvgImageBackEnd()
-                                )
-                            ))->writeString($qrLink);
                             if ($record->is_foreign) {
                                 $mpdf->useTemplate($tpl_foreign_diploma_recto, ['adjustPageSize' => false]);
                                 $mpdf->WriteText(34, $titlePositionY + 80, $record->birth_place_fr);
@@ -512,14 +419,8 @@ class DiplomaResource extends BaseResource
                                 'remaining' => $totalItems - $index, // Remaining items
                                 'count' => $totalItems, // Total items
                             ];
-                            $errorCorrectionLevel = ErrorCorrectionLevel::M();
-                            $qrLink = $record->generateVerificationLink();
-                            $svg = (new Writer(
-                                new ImageRenderer(
-                                    new RendererStyle(60, 0, null, null, null),
-                                    new SvgImageBackEnd()
-                                )
-                            ))->writeString($qrLink);
+                            // $svg = self::generateLinkQrSvg($record);
+                            $svg = self::generateTextQrSvg($record);
 
                             if ($record->is_foreign) {
                                 $mpdf->useTemplate($tpl_foreign_diploma_verso, ['adjustPageSize' => false]);
@@ -686,5 +587,33 @@ class DiplomaResource extends BaseResource
         // dd($startXPosition);
 
         return $startXPosition;
+    }
+
+    public static function generateLinkQrSvg($record)
+    {
+        $errorCorrectionLevel = ErrorCorrectionLevel::M();
+        $qrLink = $record->generateVerificationLink();
+        $svg = (new Writer(
+            new ImageRenderer(
+                new RendererStyle(60, 0, null, null, null),
+                new SvgImageBackEnd()
+            )
+        ))->writeString($qrLink);
+
+        return $svg;
+    }
+
+    public static function generateTextQrSvg($record)
+    {
+        $errorCorrectionLevel = ErrorCorrectionLevel::M();
+        $qrLink = $record->generateTextForQrCode();
+        $svg = (new Writer(
+            new ImageRenderer(
+                new RendererStyle(60, 0, null, null, null),
+                new SvgImageBackEnd()
+            )
+        ))->writeString($qrLink);
+
+        return $svg;
     }
 }

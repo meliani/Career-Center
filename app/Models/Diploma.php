@@ -97,4 +97,13 @@ class Diploma extends Model
         }
         dd($imported_students);
     }
+
+    public function generateTextForQrCode()
+    {
+        $text = $this->full_name . "\n";
+        $text .= $this->cin . "\n";
+        $text .= 'Promotion : ' . $this->council . "\n";
+
+        return $text;
+    }
 }

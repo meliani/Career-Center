@@ -37,9 +37,9 @@
                         <div class="flex flex-col justify-center items-center">
                             <x-heroicon-o-x-mark class="w-16 h-16" />
                         </div>
-                        <p>Il se peut que le document que vous avez soumis a subi une altération. Veuillez contacter
+                        <p>Veuillez contacter
                             l'administration de
-                            l'école.</p>
+                            l'INPT en cas de besoin.</p>
                     </div>
                 </div>
                 @endif
