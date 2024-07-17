@@ -46,7 +46,6 @@ class AssignedSupervisorsReviewersChart extends ApexChartsParentWidget
             ->groupBy('users.department', \DB::raw("CASE WHEN jury_role IN ('Reviewer1', 'Reviewer2') THEN 'Reviewer' ELSE jury_role END"))
             ->get();
 
-        // Assuming the need to display this data in a chart
         $chartData = $data->groupBy('department_name')->map(function ($items) {
             $roleCounts = [
                 'Supervisor' => 0,

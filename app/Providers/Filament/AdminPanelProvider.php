@@ -41,7 +41,7 @@ class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
-        // Fetch rooms from the database
+        // // Fetch rooms from the database
         $rooms = Room::available()->orderBy('order')->get();
         // Transform the rooms into the desired format
         $resources = $rooms->map(function ($room) {
@@ -171,6 +171,14 @@ class AdminPanelProvider extends PanelProvider
                             //         'titleFormat' => ['year', 'month', 'day'],
                             //     ],
                             // ],
+                            // 'resources' => function () {
+                            //     return Room::all()->map(function ($room) {
+                            //         return [
+                            //             'id' => $room->id,
+                            //             'title' => $room->name,
+                            //         ];
+                            //     })->toArray();
+                            // },
                             'resources' => $resources,
                             'views' => [
                                 'timeGridWeek' => [

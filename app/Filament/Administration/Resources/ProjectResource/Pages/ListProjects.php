@@ -21,10 +21,9 @@ class ListProjects extends ListRecords
 
     public function __construct()
     {
-        $this->ProjectsByProgram = Student::whereHas('projects')->select('program', \DB::raw('count(*) as total'))
-            ->groupBy('program')
-            ->pluck('total', 'program');
-        // dd($this->ProjectsByProgram);
+        // $this->ProjectsByProgram = Student::whereHas('projects')->select('program', \DB::raw('count(*) as total'))
+        //     ->groupBy('program')
+        //     ->pluck('total', 'program');
     }
 
     public function getDefaultLayoutView(): string

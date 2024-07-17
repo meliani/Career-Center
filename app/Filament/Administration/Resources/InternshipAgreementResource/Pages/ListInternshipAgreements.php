@@ -22,9 +22,9 @@ class ListInternshipAgreements extends ListRecords
 
     public function __construct()
     {
-        $this->InternshipAgreementByStatus = InternshipAgreement::select('status', \DB::raw('count(*) as total'))
-            ->groupBy('status')
-            ->pluck('total', 'status');
+        // $this->InternshipAgreementByStatus = InternshipAgreement::select('status', \DB::raw('count(*) as total'))
+        //     ->groupBy('status')
+        //     ->pluck('total', 'status');
     }
 
     protected function getHeaderActions(): array
