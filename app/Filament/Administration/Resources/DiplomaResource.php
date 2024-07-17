@@ -250,6 +250,24 @@ class DiplomaResource extends BaseResource
                         ),
                     )
                     ->label('Deliberated 1'),
+                Tables\Filters\SelectFilter::make('council')
+                    ->options(
+                        Diploma::query()
+                            ->select('council')
+                            ->distinct()
+                            ->get()
+                            ->mapWithKeys(fn ($diploma) => [$diploma->council => $diploma->council])
+                            ->toArray(),
+                    )
+                    ->searchable()
+                    ->label('Council')
+                    ->query(
+                        fn (Builder $query, array $data) => $query->when(
+                            $data['values'],
+                            fn (Builder $query, $data): Builder => $query->whereIn('council', $data)
+                        ),
+                    )
+                    ->multiple(),
 
                 Tables\Filters\SelectFilter::make('program_code')
                     ->options(
