@@ -359,14 +359,9 @@ class DiplomaResource extends BaseResource
                             // $mpdf->WriteHTML('<div style="text-align: left; direction: ltr;">السلام عليكم</div>');
                         }
                         $mpdf->Output(Storage::disk('diplomas')->path('mpdf.pdf'), 'F');
-                        \Filament\Notifications\Notification::make()
-                            ->title('PDF generated successfully')
-                            ->success()
-                            ->actions([
-                                \Filament\Notifications\Actions\Action::make('Download')
-                                    ->url(URL::to(Storage::disk('diplomas')->url('mpdf.pdf')), shouldOpenInNewTab: true),
-                            ])
-                            ->send();
+                        $filename = 'mpdf-recto' . now() . '.pdf';
+
+                        self::notifyDocumentCreated($filename);
 
                     })
                     ->hidden(fn () => ! (auth()->user()->isAdministrativeSupervisor(12) || auth()->user()->isAdministrator())),
@@ -494,15 +489,10 @@ class DiplomaResource extends BaseResource
                             }
                             // $mpdf->WriteHTML('<div style="text-align: left; direction: ltr;">السلام عليكم</div>');
                         }
-                        $mpdf->Output(Storage::disk('diplomas')->path('mpdf-verso.pdf'), 'F');
-                        \Filament\Notifications\Notification::make()
-                            ->title('PDF generated successfully')
-                            ->success()
-                            ->actions([
-                                \Filament\Notifications\Actions\Action::make('Download')
-                                    ->url(URL::to(Storage::disk('diplomas')->url('mpdf-verso.pdf')), shouldOpenInNewTab: true),
-                            ])
-                            ->send();
+                        $filename = 'mpdf-verso' . now() . '.pdf';
+                        $mpdf->Output(Storage::disk('diplomas')->path($filename), 'F');
+
+                        self::notifyDocumentCreated($filename);
 
                     })
                     ->hidden(fn () => ! (auth()->user()->isAdministrativeSupervisor(12) || auth()->user()->isAdministrator())),
@@ -615,5 +605,17 @@ class DiplomaResource extends BaseResource
         ))->writeString($qrLink);
 
         return $svg;
+    }
+
+    public static function notifyDocumentCreated($filename)
+    {
+        \Filament\Notifications\Notification::make()
+            ->title('PDF generated successfully')
+            ->success()
+            ->actions([
+                \Filament\Notifications\Actions\Action::make('Download')
+                    ->url(URL::to(Storage::disk('diplomas')->url($filename)), shouldOpenInNewTab: true),
+            ])
+            ->send();
     }
 }
