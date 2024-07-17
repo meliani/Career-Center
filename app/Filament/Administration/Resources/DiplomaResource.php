@@ -176,7 +176,13 @@ class DiplomaResource extends BaseResource
                 Tables\Columns\CheckboxColumn::make('is_foreign')
                     ->label('Foreign student')
                     ->sortable(),
-                Tables\Columns\CheckboxColumn::make('is_deliberated')
+                // Tables\Columns\CheckboxColumn::make('is_deliberated')
+                //     ->label('Deliberated')
+                //     ->sortable(),
+                Tables\Columns\CheckboxColumn::make('deliberation1_desision')
+                    ->label('Deliberated')
+                    ->sortable(),
+                Tables\Columns\CheckboxColumn::make('deliberation2_desision')
                     ->label('Deliberated')
                     ->sortable(),
                 // Tables\Columns\TextColumn::make('created_at')
@@ -220,6 +226,31 @@ class DiplomaResource extends BaseResource
                         ),
                     )
                     ->label('Deliberated'),
+                Tables\Filters\SelectFilter::make('deliberation1_desision')
+                    ->options([
+                        '1' => 'Deliberated',
+                        '0' => 'Not deliberated',
+                    ])
+                    ->query(
+                        fn (Builder $query, array $data) => $query->when(
+                            $data['value'],
+                            fn (Builder $query, $isDeliberated): Builder => $query->where('deliberation1_desision', $isDeliberated)
+                        ),
+                    )
+                    ->label('Deliberated 1'),
+                Tables\Filters\SelectFilter::make('deliberation2_desision')
+                    ->options([
+                        '1' => 'Deliberated',
+                        '0' => 'Not deliberated',
+                    ])
+                    ->query(
+                        fn (Builder $query, array $data) => $query->when(
+                            $data['value'],
+                            fn (Builder $query, $isDeliberated): Builder => $query->where('deliberation2_desision', $isDeliberated)
+                        ),
+                    )
+                    ->label('Deliberated 1'),
+
                 Tables\Filters\SelectFilter::make('program_code')
                     ->options(
                         Diploma::query()
