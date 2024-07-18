@@ -18,6 +18,7 @@
 
     @filamentStyles
     @vite('resources/css/app.css')
+    @stack('styles')
 </head>
 
 <body class="antialiased">
@@ -36,6 +37,8 @@
     @livewire('notifications')
     @livewire('database-notifications')
     @endauth
+
+    @stack('scripts')
 </body>
 
 </html>

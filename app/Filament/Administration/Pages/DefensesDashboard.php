@@ -17,6 +17,7 @@ class DefensesDashboard extends \Filament\Pages\Dashboard
     public function getWidgets(): array
     {
         return [
+            // \App\Filament\Widgets\InternshipsWordCloudWidget::class,
             \App\Filament\Widgets\CompletedDefensesRatioChart::class,
             \App\Filament\Widgets\DefensesPerProgramChart::class,
             \App\Filament\Widgets\AssignedSupervisorsReviewersChart::class,
