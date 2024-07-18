@@ -39,7 +39,7 @@ class ApprenticeshipResource extends BaseResource
 
     public static function canAccess(): bool
     {
-        return auth()->user()->isAdministrator() || auth()->user()->isProfessor() || auth()->user()->isDepartmentHead() || auth()->user()->isProgramCoordinator() || auth()->user()->isDirection();
+        return auth()->user()->isAdministrator();
     }
 
     public static function getNavigationBadge(): ?string
@@ -50,7 +50,7 @@ class ApprenticeshipResource extends BaseResource
     public static function canViewAny(): bool
     {
         if (auth()->check()) {
-            return auth()->user()->isAdministrator() || auth()->user()->isDirection();
+            return auth()->user()->isAdministrator();
         }
 
         return false;
