@@ -42,6 +42,11 @@ class ApprenticeshipResource extends BaseResource
         return auth()->user()->isAdministrator() || auth()->user()->isProfessor() || auth()->user()->isDepartmentHead() || auth()->user()->isProgramCoordinator() || auth()->user()->isDirection();
     }
 
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count('id');
+    }
+
     public static function canViewAny(): bool
     {
         if (auth()->check()) {
