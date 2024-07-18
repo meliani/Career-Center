@@ -407,8 +407,8 @@ class DiplomaResource extends BaseResource
                             }
                             // $mpdf->WriteHTML('<div style="text-align: left; direction: ltr;">السلام عليكم</div>');
                         }
-                        $mpdf->Output(Storage::disk('diplomas')->path('mpdf.pdf'), 'F');
                         $filename = 'mpdf-recto' . now() . '.pdf';
+                        $mpdf->Output(Storage::disk('diplomas')->path($filename), 'F');
 
                         self::notifyDocumentCreated($filename);
 
