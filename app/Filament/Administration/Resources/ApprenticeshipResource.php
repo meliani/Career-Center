@@ -37,6 +37,11 @@ class ApprenticeshipResource extends BaseResource
 
     protected static ?string $title = 'Announced apprenticeships';
 
+    public static function canAccess(): bool
+    {
+        return auth()->user()->isAdministrator() || auth()->user()->isProfessor() || auth()->user()->isDepartmentHead() || auth()->user()->isProgramCoordinator() || auth()->user()->isDirection();
+    }
+
     public static function canViewAny(): bool
     {
         if (auth()->check()) {

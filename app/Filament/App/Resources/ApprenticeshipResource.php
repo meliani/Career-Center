@@ -34,11 +34,6 @@ class ApprenticeshipResource extends StudentBaseResource
 
     protected static ?int $navigationSort = 2;
 
-    public static function canAccess(): bool
-    {
-        return auth()->user()->isAdministrator() || auth()->user()->isProfessor() || auth()->user()->isDepartmentHead() || auth()->user()->isProgramCoordinator() || auth()->user()->isDirection();
-    }
-
     public static function getModelLabel(): string
     {
         return __(static::$modelLabel);
