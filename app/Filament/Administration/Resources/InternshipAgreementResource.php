@@ -39,6 +39,11 @@ class InternshipAgreementResource extends Core\BaseResource
 
     protected static ?string $title = 'Internship Agreements';
 
+    public static function canAccess(): bool
+    {
+        return auth()->user()->isAdministrator() || auth()->user()->isProfessor() || auth()->user()->isDepartmentHead() || auth()->user()->isProgramCoordinator() || auth()->user()->isDirection();
+    }
+
     public static function canViewAny(): bool
     {
         if (auth()->check()) {
