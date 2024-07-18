@@ -105,6 +105,18 @@ class InternshipAgreementTable
                 ->label('Assigned department')
                 ->searchable()
                 ->sortable(),
+            Tables\Columns\TextColumn::make('remuneration')
+                ->label('Remuneration')
+                ->searchable(false)
+                ->sortable(false),
+            Tables\Columns\TextColumn::make('currency')
+                ->label('Currency')
+                ->searchable(false)
+                ->sortable(false),
+            Tables\Columns\TextColumn::make('load')
+                ->label('Hour per week')
+                ->searchable(false)
+                ->sortable(false),
 
             Tables\Columns\TextColumn::make('announced_at')
                 ->toggleable(isToggledHiddenByDefault: true)
