@@ -169,6 +169,8 @@
                     <div class="footer-widget">
                         <h5 class="mb-4 text-primary font-secondary">{{__('Quick Links')}}</h5>
                         <ul class="list-unstyled">
+                            <li class="mb-2"><a href="/alumni">{{__('Alumni')}}</a>
+                            </li>
                             <li class="mb-2"><a href="/backend">{{__('Administration area')}}</a>
                             </li>
                             <li class="mb-2"><a href="/backend">{{__('Teacher space')}}</a>
@@ -177,6 +179,7 @@
                             </li>
                             <li class="mb-2"><a href="/app">{{__('Engineer space')}}</a>
                             </li>
+
                         </ul>
                     </div>
                 </div>

@@ -9,27 +9,20 @@ use Filament\Support\Contracts\HasLabel;
 enum AlumniDegree: string implements HasColor, HasIcon, HasLabel
 {
     case Engineer = 'Engineer';
-    case Master = 'Master';
-    case Bachelor = 'Bachelor';
-    case Doctor = 'Doctor';
+    // case Master = 'Master';
+    // case Doctor = 'Doctor';
 
     public function getLabel(): ?string
     {
-        return match ($this) {
-            Degree::Engineer => __('Engineer'),
-            Degree::Master => __('Master'),
-            Degree::Bachelor => __('Bachelor'),
-            Degree::Doctor => __('Doctor'),
-        };
+        return __($this->name);
     }
 
     public static function getArray(): array
     {
         return [
-            Degree::Engineer->value,
-            Degree::Master->value,
-            Degree::Bachelor->value,
-            Degree::Doctor->value,
+            self::Engineer->value,
+            self::Master->value,
+            self::Doctor->value,
         ];
     }
 
@@ -38,7 +31,6 @@ enum AlumniDegree: string implements HasColor, HasIcon, HasLabel
         return match ($this) {
             self::Engineer => 'success',
             self::Master => 'danger',
-            self::Bachelor => 'warning',
             self::Doctor => 'info',
         };
     }
@@ -46,9 +38,8 @@ enum AlumniDegree: string implements HasColor, HasIcon, HasLabel
     public function getIcon(): ?string
     {
         return match ($this) {
-            self::Engineer => 'heroicon-o-check-circle',
-            self::Master => 'heroicon-o-x-circle',
-            self::Bachelor => 'heroicon-o-exclamation-circle',
+            self::Engineer => 'heroicon-o-academic-cap',
+            self::Master => 'heroicon-o-academic-cap',
             self::Doctor => 'heroicon-o-academic-cap',
         };
     }
