@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('first_name');
             $table->string('last_name');
-            //  Enum department from enum class
             $table->enum('department', array_map(fn ($case) => $case->name, Department::cases()))->nullable();
             $table->enum('role', array_map(fn ($case) => $case->name, Role::cases()))->default('Professor');
             $table->string('email')->unique();
