@@ -2,6 +2,7 @@
 
 use App\Enums\AlumniDegree;
 use App\Enums\Program;
+use App\Enums\Title;
 use App\Enums\WorkStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -16,7 +17,7 @@ return new class extends Migration
     {
         Schema::create('alumni_references', function (Blueprint $table) {
             $table->id();
-            $table->enum('title', ['Mr', 'Mrs'])->nullable();
+            $table->enum('title', array_map(fn ($case) => $case->name, Title::cases()))->nullable();
             $table->string('name')->nullable();
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
