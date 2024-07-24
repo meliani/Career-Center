@@ -31,7 +31,7 @@ class AlumniPanelProvider extends PanelProvider
             ->topNavigation()
             ->sidebarFullyCollapsibleOnDesktop()
             // ->databaseTransactions()
-            // ->authGuard('alumnis')
+            ->authGuard('alumnis')
             ->sidebarCollapsibleOnDesktop()
             ->spa()
             // ->maxContentWidth(MaxWidth::Full)

@@ -19,16 +19,16 @@ return new class extends Migration
             $table->id();
             $table->enum('title', array_map(fn ($case) => $case->name, Title::cases()))->nullable();
             $table->string('name')->nullable();
-            $table->string('first_name');
-            $table->string('last_name');
+            $table->string('first_name')->nullable();
+            $table->string('last_name')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
 
             $table->string('phone_number')->nullable();
-            $table->foreignId('graduation_year_id')->constrained('years');
+            $table->foreignId('graduation_year_id')->nullable();
             $table->enum('degree', array_map(fn ($case) => $case->name, AlumniDegree::cases()))->nullable();
-            $table->enum('assigned_program', array_map(fn ($case) => $case->name, Program::cases()))->nullable();
+            $table->enum('program', array_map(fn ($case) => $case->name, Program::cases()))->nullable();
             $table->integer('is_enabled')->nullable();
             $table->tinyInteger('is_mobility')->nullable()->default(0);
             $table->string('abroad_school', 191)->nullable();

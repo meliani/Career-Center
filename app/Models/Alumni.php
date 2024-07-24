@@ -71,18 +71,7 @@ class Alumni extends Authenticatable implements FilamentUser, HasAvatar, HasName
 
     public function getFilamentName(): string
     {
-        return "{$this->first_name} {$this->last_name}";
-        // return 'hello';
-    }
-
-    public function getFullNameAttribute(): string
-    {
-        return $this->first_name . ' ' . $this->last_name;
-    }
-
-    public function getLongFullNameAttribute(): string
-    {
-        return $this->title . ' ' . $this->first_name . ' ' . $this->last_name;
+        return $this->name;
     }
 
     public function graduationYear()

@@ -31,6 +31,7 @@ class RegisterAlumni extends BaseRegister
                         //     ->required()
                         //     ->maxLength(255),
                         $this->getNameFormComponent()
+                            ->Placeholder(__('Full Name'))
                             ->columnSpanFull(),
 
                     ]),
@@ -40,20 +41,28 @@ class RegisterAlumni extends BaseRegister
                 // ->endsWith(['@ine.inpt.ac.ma']),
                 $this->getPasswordFormComponent(),
                 $this->getPasswordConfirmationFormComponent(),
-                ToggleButtons::make('degree')
-                    ->options(Enums\AlumniDegree::class)
-                    ->inline()
-                    ->required(),
-                Select::make('program')
-                    ->options(Enums\Program::class)
-                    ->required(),
+                // ToggleButtons::make('degree')
+                //     ->options(Enums\AlumniDegree::class)
+                //     ->inline()
+                //     ->required(),
+                Forms\Components\Group::make()
+                    ->columns(2)
+                    ->schema([
+                        Select::make('program')
+                            ->options(Enums\Program::class)
+                            ->required(),
+                        Select::make('graduation_year_id')
+                            ->label(__('Graduation year'))
+                            ->options(\App\Models\Year::all()->pluck('title', 'id')->toArray()),
+                    ]),
                 // TextInput::make('email_perso')
                 //     ->email()
                 //     ->required()
                 //     ->maxLength(255),
-                TextInput::make('phone')
-                    // ->required()
-                    ->rule('phone:MA'),
+                TextInput::make('phone_number')
+                    ->required()
+                    ->Placeholder('06XXXXXXXX')
+                    ->rule('phone'),
 
             ]);
     }

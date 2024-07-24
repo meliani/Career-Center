@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('phone_number')->nullable();
             $table->foreignId('graduation_year_id')->nullable();
             $table->enum('degree', array_map(fn ($case) => $case->name, AlumniDegree::cases()))->nullable();
-            $table->enum('assigned_program', array_map(fn ($case) => $case->name, Program::cases()))->nullable();
+            $table->enum('program', array_map(fn ($case) => $case->name, Program::cases()))->nullable();
             $table->integer('is_enabled')->nullable();
             $table->tinyInteger('is_mobility')->nullable();
             $table->string('abroad_school', 191)->nullable();
