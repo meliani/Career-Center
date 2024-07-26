@@ -16,13 +16,13 @@ enum OfferStatus: string implements HasColor, HasIcon, HasLabel
     case Disabled = 'Disabled';
     case Expired = 'Expired';
 
-    public static function getArray(): array
+    public static function getArray()
     {
         return [
-            self::Published,
-            self::Submitted,
-            self::Disabled,
-            self::Expired,
+            OfferStatus::Published->value,
+            OfferStatus::Submitted->value,
+            OfferStatus::Disabled->value,
+            OfferStatus::Expired->value,
         ];
     }
 

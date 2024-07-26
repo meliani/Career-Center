@@ -454,8 +454,7 @@
     "If the internship has been signed by the organization, you should ask the organization to send us a cancellation request to proceed with the cancellation.": "Si le stage a été signé par l'organisation, vous devriez demander à l'organisation de nous envoyer une demande d'annulation pour procéder à l'annulation.",
     "Please provide a reason for the cancellation.": "Veuillez fournir une raison pour l'annulation.",
     "The text you provide here will be sent to the organization to inform them of the cancellation.": "Le texte que vous fournissez ici sera envoyé à l'organisation pour les informer de l'annulation.",
-    "Please upload a photo of the signature section from the original document signed by you and the school to prove it wasn’t signed.": "Veuillez télécharger une photo de la section de signature du document original signé par vous et l'INPT pour prouver qu'il n'a pas été signé.",
-    "Has the internship been signed by the organization?": "Le stage a-t-il été signé par l'organisation?",
+    "Has the agreement been signed by the organization?": "La convention a-t-elle été signée par l'organisation?",
     "Time Grid Week": "Grille horaire de la semaine",
     "Time Grid Day": "Grille horaire de la journée",
     "Resource Time Grid Day": "Grille horaire par salle",
@@ -516,5 +515,10 @@
     "QR code is empty. Please don't try again.": "Le code QR est vide. Veuillez ne pas réessayer.",
     "Diploma information": "Informations sur le Diplôme",
     "Profile updated": "Profil mis à jour",
-    "Graduation year": "Année de diplomation"
+    "Graduation year": "Année de diplomation",
+    "Yes (The organization has signed the agreement)": "Oui (L'organisation a signé la convention)",
+    "No (The organization has not signed the agreement)": "Non (L'organisation n'a pas signé la convention)",
+    "Cancellation reason": "Raison de l'annulation",
+    "Verification document": "Document de vérification",
+    "Please upload a photo of the last page of the agreement to verify signatures.": "Veuillez télécharger une photo de la dernière page de la convention pour vérifier les signatures."
 }
