@@ -520,5 +520,10 @@
     "No (The organization has not signed the agreement)": "Non (L'organisation n'a pas signé la convention)",
     "Cancellation reason": "Raison de l'annulation",
     "Verification document": "Document de vérification",
-    "Please upload a photo of the last page of the agreement to verify signatures.": "Veuillez télécharger une photo de la dernière page de la convention pour vérifier les signatures."
+    "Please upload a photo of the last page of the agreement to verify signatures.": "Veuillez télécharger une photo de la dernière page de la convention pour vérifier les signatures.",
+    "Prefer no title": "Préfère ne pas avoir de titre",
+    "Phone number (international format)": "Numéro de téléphone (format international)",
+    "Year of Graduation from INPT": "Année de diplomation de l'INPT",
+    "Please let us know about your degree upgrade": "Veuillez nous informer de votre évolution de diplôme",
+    "Could you kindly tell us about your current work status?": "Pourriez-vous nous informer de votre situation professionnelle actuelle?"
 }

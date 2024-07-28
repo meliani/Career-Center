@@ -29,9 +29,11 @@ return new class extends Migration
             $table->foreignId('graduation_year_id')->nullable();
             $table->enum('degree', array_map(fn ($case) => $case->name, AlumniDegree::cases()))->nullable();
             $table->enum('program', array_map(fn ($case) => $case->name, Program::cases()))->nullable();
-            $table->integer('is_enabled')->nullable();
             $table->tinyInteger('is_mobility')->nullable()->default(0);
             $table->string('abroad_school', 191)->nullable();
+            $table->integer('is_verified')->nullable();
+            $table->timestamp('verified_at')->nullable();
+            $table->string('verified_by')->nullable();
             $table->enum('work_status', array_map(fn ($case) => $case->name, WorkStatus::cases()))->nullable();
             $table->string('resume_url')->nullable();
 

@@ -14,7 +14,6 @@ use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\SpatieLaravelTranslatablePlugin;
-use Filament\Support\Colors\Color;
 use Filament\Support\Enums\MaxWidth;
 use Filament\Widgets;
 use Hugomyb\FilamentErrorMailer\FilamentErrorMailerPlugin;
@@ -39,9 +38,9 @@ use SolutionForest\FilamentSimpleLightBox\SimpleLightBoxPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
-    public function panel(Panel $panel): Panel
+    private function getRoomResources()
     {
-        // // Fetch rooms from the database
+        // Fetch rooms from the database
         $rooms = Room::available()->orderBy('order')->get();
         // Transform the rooms into the desired format
         $resources = $rooms->map(function ($room) {
@@ -50,6 +49,14 @@ class AdminPanelProvider extends PanelProvider
                 'title' => $room->name, // Assuming the room name is stored in 'name' attribute
             ];
         })->toArray();
+
+        return $resources;
+    }
+
+    public function panel(Panel $panel): Panel
+    {
+
+        $resources = $this->getRoomResources();
 
         return $panel
             // ->topbar(false)
@@ -73,15 +80,6 @@ class AdminPanelProvider extends PanelProvider
             ->darkModeBrandLogo(asset('/svg/logo_entreprises_white.svg'))
             ->colors(
                 \App\Services\ColorService::colorsOfTheDay()
-                //     [
-                //     'danger' => Color::Rose,
-                //     'gray' => Color::Gray,
-                //     'info' => Color::Blue,
-                //     'primary' => Color::Indigo,
-                //     'success' => Color::Emerald,
-                //     'warning' => Color::Orange,
-                //     'secondary' => Color::Cyan,
-                // ]
             )
             ->discoverResources(in: app_path('Filament/Administration/Resources'), for: 'App\\Filament\\Administration\\Resources')
             ->discoverPages(in: app_path('Filament/Administration/Pages'), for: 'App\\Filament\\Administration\\Pages')

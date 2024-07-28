@@ -11,25 +11,26 @@ enum WorkStatus: string implements HasColor, HasIcon, HasLabel
     case Employed = 'Employed';
     case Unemployed = 'Unemployed';
     case LookingForJob = 'Looking for job';
+    case SelfEmployed = 'Self-employed';
     case Student = 'Student';
+    case Retired = 'Retired';
+    case Other = 'Other';
 
     public function getLabel(): ?string
     {
-        return match ($this) {
-            WorkStatus::Employed => __('Employed'),
-            WorkStatus::Unemployed => __('Unemployed'),
-            WorkStatus::LookingForJob => __('Looking for job'),
-            WorkStatus::Student => __('Student'),
-        };
+        return __($this->name);
     }
 
     public static function getArray(): array
     {
         return [
-            WorkStatus::Employed->value,
-            WorkStatus::Unemployed->value,
-            WorkStatus::LookingForJob->value,
-            WorkStatus::Student->value,
+            self::Employed->value,
+            self::Unemployed->value,
+            self::LookingForJob->value,
+            self::SelfEmployed->value,
+            self::Student->value,
+            self::Retired->value,
+            self::Other->value,
         ];
     }
 
@@ -39,7 +40,10 @@ enum WorkStatus: string implements HasColor, HasIcon, HasLabel
             self::Employed => 'success',
             self::Unemployed => 'danger',
             self::LookingForJob => 'warning',
-            self::Student => 'info',
+            self::SelfEmployed => 'info',
+            self::Student => 'primary',
+            self::Retired => 'secondary',
+            self::Other => 'dark',
         };
     }
 
@@ -48,8 +52,11 @@ enum WorkStatus: string implements HasColor, HasIcon, HasLabel
         return match ($this) {
             self::Employed => 'heroicon-o-check-circle',
             self::Unemployed => 'heroicon-o-x-circle',
-            self::LookingForJob => 'heroicon-o-exclamation-circle',
+            self::LookingForJob => 'heroicon-o-x-circle',
+            self::SelfEmployed => 'heroicon-o-x-circle',
             self::Student => 'heroicon-o-academic-cap',
+            self::Retired => 'heroicon-o-briefcase',
+            self::Other => 'heroicon-o-question-mark-circle',
         };
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Livewire;
 
+use App\Enums;
+use App\Models\StudentExchangePartner;
 use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Components\TextInput;
@@ -14,6 +16,7 @@ class AlumniAccountSettingsPage extends MyProfileComponent
     // {
     //     return view('livewire.student-account-settings-page');
     // }
+    public static $sort = 2;
 
     protected string $view = 'livewire.student-account-settings-page';
 
@@ -21,7 +24,7 @@ class AlumniAccountSettingsPage extends MyProfileComponent
 
     public $user;
 
-    public array $only = ['phone_number', 'degree', 'program', 'abroad_school', 'graduation_year_id'];
+    public array $only = ['degree', 'program', 'abroad_school', 'graduation_year_id', 'work_status'];
 
     public function mount()
     {
@@ -37,39 +40,34 @@ class AlumniAccountSettingsPage extends MyProfileComponent
             ->schema([
                 Forms\Components\Group::make()
                     ->schema([
+                        // $this->getNameComponent(),
+                        // Forms\Components\TextInput::make('name')
+                        //     ->label(__('Name')),
+                        // Forms\Components\TextInput::make('email')
+                        //     ->label(__('Email')),
+                        // TextInput::make('phone_number')
+                        //     ->label(__('Phone')),
+
+                        Forms\Components\Select::make('graduation_year_id')
+                            ->label(__('Year of Graduation from INPT'))
+                            ->options(\App\Models\Year::all()->pluck('title', 'id')->toArray()),
 
                         Forms\Components\ToggleButtons::make('degree')
-                            ->options([
-                                'bachelor' => 'Bachelor',
-                                'master' => 'Master',
-                                'phd' => 'PhD',
-                            ])
+                            ->label(__('Please let us know about your degree upgrade'))
+                            ->options(Enums\AlumniDegree::class)
                             ->inline()
                             ->live(),
-                        Forms\Components\Select::make('program')
-                            ->options([
-                                'engineering' => 'Engineering',
-                                'business' => 'Business',
-                                'design' => 'Design',
-                                'science' => 'Science',
-                                'other' => 'Other',
-                            ]),
-                        Forms\Components\Select::make('abroad_school')
-                            ->options([
-                                'Telecom Paris' => 'Telecom Paris',
-                                'Telecom SudParis' => 'Telecom SudParis',
-                                'Telecom Lille' => 'Telecom Lille',
-                                'Telecom Nancy' => 'Telecom Nancy',
-                                'Telecom Saint-Etienne' => 'Telecom Saint-Etienne',
-                                'Telecom Bretagne' => 'Telecom Bretagne',
-                            ]),
-                        Forms\Components\Select::make('graduation_year_id')
-                            ->label(__('Graduation year'))
-                            ->options(\App\Models\Year::all()->pluck('title', 'id')->toArray()),
-                        TextInput::make('phone_number')
-                            ->label(__('Phone')),
+                        Forms\Components\ToggleButtons::make('work_status')
+                            ->label(__('Could you kindly tell us about your current work status?'))
+                            ->options(Enums\WorkStatus::class)
+                            ->inline()
+                            ->live(),
+                        // Forms\Components\Select::make('program')
+                        //     ->options(Enums\Program::class),
+                        // Forms\Components\Select::make('abroad_school')
+                        //     ->options(fn () => StudentExchangePartner::all()->pluck('name', 'id')->toArray()),
                     ])
-                    ->columns(2),
+                    ->columns(1),
 
             ])
             ->statePath('data');
@@ -86,11 +84,11 @@ class AlumniAccountSettingsPage extends MyProfileComponent
         ]); */
 
         $this->user->update([
-            'phone_number' => $data['phone_number'],
             'degree' => $data['degree'],
-            'program' => $data['program'],
-            'abroad_school' => $data['abroad_school'],
+            // 'program' => $data['program'],
+            // 'abroad_school' => $data['abroad_school'],
             'graduation_year_id' => $data['graduation_year_id'],
+            'work_status' => $data['work_status'],
         ]);
 
         \Filament\Notifications\Notification::make()

@@ -35,9 +35,12 @@ class WelcomeDashboard extends \Filament\Pages\Dashboard
     public function getWidgets(): array
     {
         return [
-            \App\Filament\Widgets\DefensesPerProgramChart::class,
-            \App\Filament\Widgets\FirstYearApprenticeshipsPerProgramChart::class,
-            \App\Filament\Widgets\SecondYearApprenticeshipsPerProgramChart::class,
+            // \App\Filament\Widgets\DefensesPerProgramChart::class,
+            // \App\Filament\Widgets\FirstYearApprenticeshipsPerProgramChart::class,
+            // \App\Filament\Widgets\SecondYearApprenticeshipsPerProgramChart::class,
+
+            \App\Filament\Alumni\Widgets\AccountPendingApprovalMessage::class,
+            \App\Filament\Alumni\Widgets\EmailPendingVerificationMessage::class,
         ];
     }
 }

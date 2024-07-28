@@ -54,7 +54,8 @@ class AlumniPanelProvider extends PanelProvider
             ->discoverResources(in: app_path('Filament/Alumni/Resources'), for: 'App\\Filament\\Alumni\\Resources')
             ->discoverPages(in: app_path('Filament/Alumni/Pages'), for: 'App\\Filament\\Alumni\\Pages')
             ->pages([
-                \App\Filament\App\Pages\WelcomeDashboard::class,
+                \App\Filament\Alumni\Pages\WelcomeDashboard::class,
+                \App\Filament\Alumni\Pages\MyProfilePage::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Alumni/Widgets'), for: 'App\\Filament\\Alumni\\Widgets')
             ->widgets([
@@ -78,19 +79,21 @@ class AlumniPanelProvider extends PanelProvider
                 \Leandrocfe\FilamentApexCharts\FilamentApexChartsPlugin::make(),
                 \Jeffgreco13\FilamentBreezy\BreezyCore::make()
                     ->myProfile(
-                        shouldRegisterUserMenu: true, // Sets the 'account' link in the panel User Menu (default = true)
-                        shouldRegisterNavigation: false, // Adds a main navigation item for the My Profile page (default = false)
-                        navigationGroup: __('Settings'), // Sets the navigation group for the My Profile page (default = null)
+                        // shouldRegisterUserMenu: true, // Sets the 'account' link in the panel User Menu (default = true)
+                        // shouldRegisterNavigation: false, // Adds a main navigation item for the My Profile page (default = false)
+                        // navigationGroup: __('Settings'), // Sets the navigation group for the My Profile page (default = null)
                         hasAvatars: true, // Enables the avatar upload form component (default = false)
                         slug: 'my-profile' // Sets the slug for the profile page (default = 'my-profile')
                     )
-                    // ->customMyProfilePage(\App\Livewire\StudentAccountSettingsPage::class)
+                    ->customMyProfilePage(\App\Filament\Alumni\Pages\MyProfilePage::class)
                     // ->withoutMyProfileComponents([
                     //     'personal_info',
                     // ])
-                    ->myProfileComponents([\App\Livewire\AlumniAccountSettingsPage::class])
+                    ->myProfileComponents(['alumni_info' => \App\Livewire\AlumniAccountSettingsPage::class,
+                        'personal_info' => \App\Livewire\AlumniPersonalInfo::class,
+                    ])
                     ->enableTwoFactorAuthentication()
-                    ->avatarUploadComponent(fn ($fileUpload) => $fileUpload->disableLabel()),
+                    ->avatarUploadComponent(fn ($fileUpload) => $fileUpload->disableLabel()->disk('alumni-profile-photos')),
             ]);
     }
 }

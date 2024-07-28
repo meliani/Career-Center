@@ -9,8 +9,8 @@ use Filament\Support\Contracts\HasLabel;
 enum AlumniDegree: string implements HasColor, HasIcon, HasLabel
 {
     case Engineer = 'Engineer';
-    // case Master = 'Master';
-    // case Doctor = 'Doctor';
+    case Master = 'Master';
+    case Doctor = 'Doctor';
 
     public function getLabel(): ?string
     {
