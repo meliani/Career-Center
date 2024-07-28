@@ -18,7 +18,7 @@ enum WorkStatus: string implements HasColor, HasIcon, HasLabel
 
     public function getLabel(): ?string
     {
-        return __($this->name);
+        return __($this->value);
     }
 
     public static function getArray(): array
@@ -43,7 +43,7 @@ enum WorkStatus: string implements HasColor, HasIcon, HasLabel
             self::SelfEmployed => 'info',
             self::Student => 'primary',
             self::Retired => 'secondary',
-            self::Other => 'dark',
+            self::Other => 'info',
         };
     }
 
