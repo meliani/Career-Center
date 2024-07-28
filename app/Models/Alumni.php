@@ -39,6 +39,7 @@ class Alumni extends Authenticatable implements FilamentUser, HasAvatar, HasName
         'email',
         'phone_number',
         'graduation_year_id',
+        'graduation_degree',
         'degree',
         'program',
         'is_verified',
@@ -51,6 +52,13 @@ class Alumni extends Authenticatable implements FilamentUser, HasAvatar, HasName
         'number_of_bounces',
         'bounce_reason',
         'is_account_disabled',
+    ];
+
+    protected $casts = [
+        'is_verified' => 'boolean',
+        'verified_at' => 'datetime',
+        'is_mobility' => 'boolean',
+        'is_account_disabled' => 'boolean',
     ];
 
     public function canAccessPanel(Panel $panel): bool
@@ -80,6 +88,6 @@ class Alumni extends Authenticatable implements FilamentUser, HasAvatar, HasName
 
     public function isVerified()
     {
-        return $this->is_enabled;
+        return $this->is_verified;
     }
 }

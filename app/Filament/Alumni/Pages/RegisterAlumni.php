@@ -75,11 +75,17 @@ class RegisterAlumni extends BaseRegister
         $alumniReference = AlumniReference::where('name', $data['name'])->first();
 
         if ($alumniReference) {
+            $data['is_verified'] = true;
+            $data['verified_at'] = now();
+            $data['verified_by'] = systemUser()->id;
             $alumni = $this->getUserModel()::create($data);
             $alumni->notify(new AlumniAccountCreated($alumni));
 
             return $alumni;
         } else {
+            $data['is_verified'] = true;
+            $data['verified_at'] = now();
+            $data['verified_by'] = systemUser()->id;
             $alumniAccountRequest = Alumni::create($data);
             $alumniAccountRequest->notify(new AlumniAccountRequestCreated($alumniAccountRequest));
 

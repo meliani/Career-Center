@@ -527,5 +527,16 @@
     "Please let us know about your degree upgrade": "Veuillez nous informer de votre évolution de diplôme",
     "Could you kindly tell us about your current work status?": "Pourriez-vous nous informer de votre situation professionnelle actuelle?",
     "Verification process may take up to 24 hours": "Le processus de vérification peut prendre jusqu'à 24 heures",
-    "You can fill in your profile while waiting for verification": "Vous pouvez remplir votre profil en attendant la vérification"
+    "You can fill in your profile while waiting for verification": "Vous pouvez remplir votre profil en attendant la vérification",
+    "Employed": "Employé(e)",
+    "Unemployed": "Sans emploi",
+    "Self-employed": "Auto-entrepreneur",
+    "Other": "Autre",
+    "Retired": "Retraité(e)",
+    "Looking for job": "En recherche d'emploi",
+    "Doctor": "Docteur",
+    "Engineer": "Ingénieur",
+    "Master": "Master",
+    "Give us your updates": "Donnez-nous vos mises à jour",
+    "Please provide us with your latest information": "Veuillez nous fournir vos dernières informations"
 }

@@ -25,6 +25,7 @@ class AlumniPanelProvider extends PanelProvider
             ->path('alumni')
             ->passwordReset()
             ->emailVerification()
+            ->breadcrumbs(false)
             ->profile(isSimple: false)
             ->registration(\App\Filament\Alumni\Pages\RegisterAlumni::class)
             // ->topbar(false)
