@@ -38,6 +38,7 @@ return new class extends Migration
             $table->enum('status', Enums\OfferStatus::getArray());
             $table->boolean('applyable')->nullable();
             $table->date('expire_at')->nullable();
+            $table->unsignedInteger('user_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
