@@ -9,9 +9,10 @@
                     {{ __('Right after verification, you will be able to access all features of the application') }}.
                     {{ __('Verification process may take up to 24 hours') }}.
                 </p>
-                <p class="text-gray-600">
-                    {{-- fill in your profile while --}}
+                <h2 class="text-base font-semibold text-gray-800">
+                    {{-- fill inyour profile while --}}
                     {{ __('You can fill in your profile while waiting for verification') }}.
+                </h2>
             </div>
         </x-filament::card>
     </x-filament::section>
