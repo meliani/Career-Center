@@ -14,6 +14,7 @@ enum Role: string implements HasLabel
     case SuperAdministrator = 'SuperAdministrator';
     case AdministrativeSupervisor = 'AdministrativeSupervisor';
     case Direction = 'Direction';
+    case System = 'System';
 
     public static function getProfessorRoles(): array
     {
