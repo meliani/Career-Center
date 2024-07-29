@@ -71,6 +71,7 @@ enum Role: string implements HasLabel
             Role::SuperAdministrator,
             Role::AdministrativeSupervisor,
             Role::Direction,
+            Role::System,
         ];
     }
 
@@ -85,6 +86,7 @@ enum Role: string implements HasLabel
             Role::SuperAdministrator->value,
             Role::AdministrativeSupervisor->value,
             Role::Direction->value,
+            Role::System->value,
 
         ];
     }
@@ -100,6 +102,7 @@ enum Role: string implements HasLabel
             Role::SuperAdministrator->value,
             Role::AdministrativeSupervisor->value,
             Role::Direction->value,
+            Role::System->value,
 
         ];
     }
@@ -115,6 +118,7 @@ enum Role: string implements HasLabel
             Role::SuperAdministrator => __('Super Administrator'),
             Role::AdministrativeSupervisor => __('Administrative Supervisor'),
             Role::Direction => __('Direction'),
+            Role::System => __('System'),
         };
     }
 }

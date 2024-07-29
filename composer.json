@@ -48,6 +48,7 @@
         "parallax/filament-comments": "^1.0",
         "parfaitementweb/filament-country-field": "dev-dev",
         "pboivin/filament-peek": "^2.2",
+        "propaganistas/laravel-phone": "^5.3",
         "pxlrbt/filament-environment-indicator": "^2.0",
         "pxlrbt/filament-excel": "^2.3",
         "pxlrbt/filament-spotlight": "^1.2",

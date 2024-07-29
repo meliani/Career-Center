@@ -61,6 +61,8 @@ class AppServiceProvider extends ServiceProvider
         $this->autoTranslateLabels();
         $this->configurePdf();
 
+        require_once app_path('Helpers/SystemHelper.php');
+
     }
 
     private function configurePdf()

@@ -113,6 +113,22 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName
         return ! $this->isSuperAdministrator();
     }
 
+    public function canAccessPanel(Panel $panel): bool
+    {
+        /* if ($panel->getId() === 'Administration') {
+            return $this->hasAnyRole($this->administrators);
+        }
+        if ($panel->getId() === 'ProgramCoordinator') {
+            return $this->haAnyRole($this->powerProfessors);
+        } */
+        if ($panel->getId() === 'Administration' || $panel->getId() === 'alumni') {
+            return $this->hasAnyRole(Enums\Role::getAll());
+        }
+
+        // return str_ends_with($this->email, '@inpt.ac.ma') && $this->hasVerifiedEmail();
+        return false;
+    }
+
     public function getFilamentAvatarUrl(): ?string
     {
         return $this->avatar_url ? Storage::url($this->avatar_url) : null;
@@ -152,22 +168,6 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName
     public function hasAnyRole(array $roles)
     {
         return in_array($this->role, $roles);
-    }
-
-    public function canAccessPanel(Panel $panel): bool
-    {
-        /* if ($panel->getId() === 'Administration') {
-            return $this->hasAnyRole($this->administrators);
-        }
-        if ($panel->getId() === 'ProgramCoordinator') {
-            return $this->haAnyRole($this->powerProfessors);
-        } */
-        if ($panel->getId() === 'Administration' || $panel->getId() === 'app') {
-            return $this->hasAnyRole(Enums\Role::getAll());
-        }
-
-        // return str_ends_with($this->email, '@inpt.ac.ma') && $this->hasVerifiedEmail();
-        return false;
     }
 
     public function isSuperAdministrator()

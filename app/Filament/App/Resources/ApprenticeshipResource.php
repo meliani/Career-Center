@@ -80,11 +80,12 @@ class ApprenticeshipResource extends StudentBaseResource
                     Tables\Columns\TextColumn::make('organization.name')
                         ->weight(FontWeight::Bold)
                         ->description(__('Organization'), position: 'above')
-
+                        ->toggleable(false)
                         ->label('Organization')
                         ->numeric()
                         ->sortable(false),
                     Tables\Columns\TextColumn::make('title')
+                        ->toggleable(false)
                         ->sortable(false)
                         ->description(__('Subject'), position: 'above')
                         ->weight(FontWeight::Bold),
@@ -93,16 +94,19 @@ class ApprenticeshipResource extends StudentBaseResource
                 Tables\Columns\Layout\Split::make([
                     Tables\Columns\TextColumn::make('status')
                         // ->description(__('Status'), position: 'above')
+                        ->toggleable(false)
                         ->sortable(false)
                         ->grow(true)
                         ->badge()
                         ->columnSpan(1),
                     Tables\Columns\Layout\Stack::make([
                         Tables\Columns\TextColumn::make('starting_at')
+                            ->toggleable(false)
                             ->description(__('Starting from'), position: 'above')
                             ->date()
                             ->sortable(false),
                         Tables\Columns\TextColumn::make('ending_at')
+                            ->toggleable(false)
                             ->description(__('to'), position: 'above')
                             ->date()
                             ->sortable(false),
@@ -113,6 +117,7 @@ class ApprenticeshipResource extends StudentBaseResource
                     // Tables\Columns\Layout\Panel::make([
 
                     Tables\Columns\TextColumn::make('agreement_pdf_url')
+                        ->toggleable(false)
                         // ->description(__('Agreement PDF'), position: 'before')
                         ->label('Agreement PDF')
                         ->placeholder(__('No PDF generated yet'))
