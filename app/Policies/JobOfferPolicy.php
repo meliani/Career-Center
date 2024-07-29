@@ -33,7 +33,11 @@ class JobOfferPolicy
      */
     public function create(User | Alumni $user): bool
     {
-        return $user->isVerified();
+        if ($user instanceof Alumni) {
+            return $user->isVerified();
+        } elseif ($user instanceof User) {
+            return $user->isAdministrator();
+        }
     }
 
     /**
