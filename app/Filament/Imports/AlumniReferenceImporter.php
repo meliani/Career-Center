@@ -32,7 +32,7 @@ class AlumniReferenceImporter extends Importer
                     // , 'unique:alumni_references'
                 ]),
             ImportColumn::make('phone_number')
-                ->rules(['max:255', 'phone:MA'])
+                ->rules(['max:255', 'phone:INTERNATIONAL,MA'])
                 ->ignoreBlankState(),
             ImportColumn::make('graduation_year_id')
                 ->requiredMapping()
@@ -83,7 +83,7 @@ class AlumniReferenceImporter extends Importer
             ]);
         }
 
-        return new AlumniReference();
+        return new AlumniReference;
     }
 
     public static function getCompletedNotificationBody(Import $import): string
