@@ -1,6 +1,8 @@
 [![Deploy on Push](https://github.com/meliani/Career-Center/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/meliani/Career-Center/actions/workflows/deploy.yml)
 # Careers Management System for Schools
 
+    ⚠️ 19 September 2024: We're back for some heavy work ths year ⚠️
+
     ⚠️ Warning ⚠️
 
     This repository contains the source code of carrieres.inpt.ac.ma, backed by proprietary code. 
