@@ -1,5 +1,19 @@
 # TODO
 
+## the following features are to be implemented
+
+- Recommandations des compétences ou profils recherchés sur le marché de l'emploi par les recruteurs afin de vous aider à mieux améliorer votre formation de vos étudiants en fonction du besoin réel sur le marché de l'emploi.
+
+- Suivi automatisé du processus d'intégration de vos étudiants au sein des entreprises où ils sont recrutés
+
+- Partage automatique des documents administratifs avec les tuteurs entreprise de vos étudiants
+
+- Recueil automatique des feedbacks des recruteurs concernant l'attitude de vos étudiants au sein de leurs entreprises
+
+- Mise à votre disposition d'un dashboard CRM qui vous permet d'évaluer le taux d'insertion professionnelle et de performance de vos étudiants au sein des entreprises
+
+- Mise en relation de vos étudiants avec les entreprises marocaines les plus réputées en leur permettant de trouver rapidement des opportunités personnalisées de recrutement.
+
 ## continue implementing the following packages
 
 - [ ] pxlrbt/filament-activity-log
