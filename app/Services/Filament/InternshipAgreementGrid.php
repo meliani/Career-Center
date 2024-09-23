@@ -15,13 +15,18 @@ class InternshipAgreementGrid
     public static function get()
     {
         return [
-            Tables\Columns\TextColumn::make('student.first_name')
-                ->label(__('Student first name'))
+            // Tables\Columns\TextColumn::make('student.first_name')
+            //     ->label(__('Student first name'))
+            //     ->searchable()
+            //     ->sortable()
+            //     ->formatStateUsing(function ($state, InternshipAgreement $internship) {
+            //         return $internship->student?->first_name . ' ' . $internship->student?->last_name;
+            //     })
+            //     ->weight(FontWeight::Bold),
+            Tables\Columns\TextColumn::make('student.name')
+                ->label(__('Student name'))
                 ->searchable()
                 ->sortable()
-                ->formatStateUsing(function ($state, InternshipAgreement $internship) {
-                    return $internship->student->first_name . ' ' . $internship->student->last_name;
-                })
                 ->weight(FontWeight::Bold),
             Tables\Columns\TextColumn::make('title')
                 ->weight(FontWeight::Bold)

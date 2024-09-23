@@ -28,6 +28,14 @@ class InternshipAgreementTable
             // ->formatStateUsing(function ($state, InternshipAgreement $internship) {
             //     return $internship->student->title->getLabel() . ' ' . $internship->student->first_name . ' ' . $internship->student->last_name;
             // }),
+            Tables\Columns\TextColumn::make('student.email_perso')
+                ->label(__('Student personal email'))
+                ->searchable(false)
+                ->sortable(false),
+            Tables\Columns\TextColumn::make('student.program')
+                ->label(__('Student program'))
+                ->searchable(false)
+                ->sortable(false),
             Tables\Columns\TextColumn::make('starting_at')
                 ->label(__('Start'))
                 ->searchable()
@@ -81,7 +89,7 @@ class InternshipAgreementTable
                 ->toggleable(isToggledHiddenByDefault: true)
                 ->label(__('Parrain'))
                 ->formatStateUsing(function ($state, InternshipAgreement $internship) {
-                    return $internship->parrain_titre->getLabel() . ' ' . $internship->parrain_nom . ' ' . $internship->parrain_prenom;
+                    return $internship->parrain_titre?->getLabel() . ' ' . $internship->parrain_nom . ' ' . $internship->parrain_prenom;
                 })
                 ->searchable()
                 ->sortable(),
@@ -89,7 +97,7 @@ class InternshipAgreementTable
                 ->toggleable(isToggledHiddenByDefault: true)
                 ->label('Encadrant')
                 ->formatStateUsing(function ($state, InternshipAgreement $internship) {
-                    return $internship->encadrant_ext_titre->getLabel() . ' ' . $internship->encadrant_ext_nom . ' ' . $internship->encadrant_ext_prenom;
+                    return $internship->encadrant_ext_titre?->getLabel() . ' ' . $internship->encadrant_ext_nom . ' ' . $internship->encadrant_ext_prenom;
                 })
                 ->searchable()
                 ->sortable(),
@@ -97,6 +105,10 @@ class InternshipAgreementTable
                 ->label('Status')
                 ->searchable()
                 ->sortable(),
+            Tables\Columns\TextColumn::make('project.defense_status')
+                ->label('Defense status')
+                ->searchable(false)
+                ->sortable(false),
             Tables\Columns\TextColumn::make('project.professors.name')
                 ->label('Supervisor - Reviewer')
                 ->searchable()
