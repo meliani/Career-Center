@@ -27,7 +27,7 @@ class GoogleServices
 
     public function __construct()
     {
-        $this->connector = new GlobalDefenseCalendarConnector();
+        $this->connector = new GlobalDefenseCalendarConnector;
         $this->data = $this->connector->getDefenses();
 
     }
@@ -97,7 +97,7 @@ class GoogleServices
         $this->importProfessors();
 
         foreach ($this->data as $record) {
-            if ($record['Date Soutenance'] == 'Date Soutenance') {
+            if ($record['Date Soutenance'] == 'Date Soutenance' || $record['Date Soutenance'] == 'TBD' || $record['Date Soutenance'] == '') {
                 continue;
             }
 
@@ -155,13 +155,13 @@ class GoogleServices
     private function parseDateAndTime($dateString, $hourString)
     {
         $frenchToEnglishDays = [
-            'Lundi' => 'Monday',
-            'Mardi' => 'Tuesday',
-            'Mercredi' => 'Wednesday',
-            'Jeudi' => 'Thursday',
-            'Vendredi' => 'Friday',
-            'Samedi' => 'Saturday',
-            'Dimanche' => 'Sunday',
+            'lundi' => 'Monday',
+            'mardi' => 'Tuesday',
+            'mercredi' => 'Wednesday',
+            'jeudi' => 'Thursday',
+            'vendredi' => 'Friday',
+            'samedi' => 'Saturday',
+            'dimanche' => 'Sunday',
         ];
 
         $frenchToEnglishMonths = [
@@ -173,11 +173,12 @@ class GoogleServices
             'juin' => 'June',
             'juillet' => 'July',
             'août' => 'August',
-            'Septembre' => 'September',
+            'septembre' => 'September',
             'octobre' => 'October',
             'novembre' => 'November',
             'décembre' => 'December',
         ];
+        $dateString = strtolower($dateString);
 
         foreach ($frenchToEnglishDays as $french => $english) {
             $dateString = str_replace($french, $english, $dateString);
