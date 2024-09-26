@@ -540,5 +540,13 @@
     "Give us your updates": "Donnez-nous vos mises à jour",
     "Please provide us with your latest information": "Veuillez nous fournir vos dernières informations",
     "Add Job Offer": "Ajouter une offre d'emploi",
-    "Pending": "En attente"
+    "Pending": "En attente",
+    "Defense documents": "Documents de soutenance",
+    "Jury evaluation sheet": "Fiche d'évaluation du jury",
+    "Organization evaluation sheet": "Fiche d'évaluation de l'organisation",
+    "Defense authorized at": "Soutenance autorisée le",
+    "Defense authorized by": "Soutenance autorisée par",
+    "Academic supervisor": "Encadrant interne",
+    "Reviewer 1": "Examinateur 1",
+    "Reviewer 2": "Examinateur 2"
 }
