@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('BACKEND_DB_CONNECTION', 'sqlite'),
+    'default' => env('BACKEND_DB_CONNECTION', 'backend_database'),
 
     /*
     |--------------------------------------------------------------------------

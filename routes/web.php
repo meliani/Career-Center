@@ -17,7 +17,12 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+// Route::group(['middleware' => 'redirect.if.not.installed'], function () {
+//     Route::get('install', function () {
+//         return view('welcome');
+//     })->name('install');
 
+// });
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
@@ -56,7 +61,7 @@ Route::get(
 Route::get('/publier-un-stage', \App\Livewire\NewInternship::class)->name('new-internship');
 
 Route::get('/soutenances', function () {
-    $connector = new GlobalDefenseCalendarConnector();
+    $connector = new GlobalDefenseCalendarConnector;
     $data = $connector->getDefenses(); // Assuming fetchData() is a method to get the data
 
     return view('livewire.defense-calendar', ['data' => $data]);

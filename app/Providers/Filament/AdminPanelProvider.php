@@ -101,6 +101,7 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                // \Shipu\WebInstaller\Middleware\RedirectIfNotInstalled::class,
             ])
             ->authMiddleware([
                 Authenticate::class,
