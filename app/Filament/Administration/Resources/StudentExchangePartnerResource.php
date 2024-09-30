@@ -29,6 +29,7 @@ class StudentExchangePartnerResource extends BaseResource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->label('School name')
                     ->required()
                     ->maxLength(255),
                 Country::make('country'),
@@ -50,6 +51,7 @@ class StudentExchangePartnerResource extends BaseResource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label('School name')
                     ->searchable(),
                 CountryColumn::make('country')
                     ->searchable(),
