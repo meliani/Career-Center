@@ -60,17 +60,11 @@ class GenerateExampleDocumentPdfAction extends Action
 
             $internship = [
                 'student' => [
-                    'long_full_name' => 'Student full name',
-                    'full_name' => 'Student full name',
-                    'address' => 'Student address',
-                    'city' => 'Student city',
-                    'country' => 'Student country',
-                    'postal_code' => '999999999',
+                    'long_full_name' => 'Nom et prénom de l\'étudiant',
+                    'full_name' => 'Nom complet de l\'étudiant',
                     'phone' => '0666666666',
                     'email' => 'student@school.org',
-                    'birth_date' => '............',
-                    'birth_place' => '............',
-                    'program' => '............',
+                    'program' => 'Filière de l\'étudiant',
                     'program_coordinator' => [
                         'full_name' => 'Program coordinator full name',
                         'phone' => '0666666666',
@@ -116,12 +110,7 @@ class GenerateExampleDocumentPdfAction extends Action
                 'remuneration' => '1000 DH',
                 'working_hours' => '8h - 17h',
                 'working_days' => 'Lundi - Vendredi',
-                'internship_objectives' => '......................',
-                'internship_tasks' => '......................',
-                'internship_location' => '......................',
-                'internship_schedule' => '......................',
-                'internship_conditions' => '......................',
-                'internship_insurance' => '......................',
+                'office_location' => 'adresse du bureau ou le stagiaire va travailler',
             ];
 
             function array_to_object($array)
