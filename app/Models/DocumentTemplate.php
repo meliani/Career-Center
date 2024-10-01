@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\DocumentTemplateType;
+use App\Enums\StudentLevel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -18,9 +20,15 @@ class DocumentTemplate extends Model
         'type',
         'level',
         'status',
-        'template_type',
         'created_by',
         'updated_by',
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'type' => DocumentTemplateType::class,
+        'level' => StudentLevel::class,
     ];
 
     public function createdBy()

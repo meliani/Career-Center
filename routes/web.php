@@ -59,6 +59,9 @@ Route::get(
 // Route::get('/public-internship-offer-form', \App\Livewire\PublicInternshipOfferForm::class);
 
 Route::get('/publier-un-stage', \App\Livewire\NewInternship::class)->name('new-internship');
+// Route::get('/publier-une-offre-demploi', \App\Livewire\NewJobOffer::class)->name('new-job-offer');
+
+Route::get('/publier-un-evenement', \App\Livewire\NewMidweekEvent::class)->name('new-midweek-event');
 
 Route::get('/soutenances', function () {
     $connector = new GlobalDefenseCalendarConnector;

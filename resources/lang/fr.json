@@ -370,7 +370,7 @@
     "Internship type": "Type de stage",
     "Internship Details": "Détails du stage",
     "Projects IDs": "Identifiants des projets",
-    "Name": "Nom et prénom",
+    "Name": "Nom",
     "Projects Participations": "Participations aux projets",
     "Undefined Defense Date": "Date de soutenance non définie",
     "External supervisor": "Encadrant externe",
@@ -548,5 +548,13 @@
     "Defense authorized by": "Soutenance autorisée par",
     "Academic supervisor": "Encadrant interne",
     "Reviewer 1": "Examinateur 1",
-    "Reviewer 2": "Examinateur 2"
+    "Reviewer 2": "Examinateur 2",
+    "Cancelled": "Annulée",
+    "Event Name": "Nom de l'événement",
+    "Organization account": "Compte de l'organisation",
+    "Session": "Session",
+    "Submit my proposal": "Soumettre ma proposition",
+    "Give your event a name": "Donnez un nom à votre événement",
+    "In the bottom of the form, you can see our sessions calendar.": "En bas du formulaire, vous pouvez voir notre calendrier des sessions.",
+    "Midweek Pro Connect is a weekly event that takes place every Wednesday. It is a great opportunity for students and companies to connect and discuss potential internships, job opportunities, and more.": "Midweek Pro Connect est un événement hebdomadaire qui a lieu chaque mercredi. C'est une excellente occasion pour les étudiants et les entreprises de se connecter et de discuter de stages potentiels, d'opportunités d'emploi, et plus encore."
 }
