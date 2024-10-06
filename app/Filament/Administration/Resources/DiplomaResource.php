@@ -185,6 +185,9 @@ class DiplomaResource extends BaseResource
                 Tables\Columns\CheckboxColumn::make('deliberation2_desision')
                     ->label('Deliberated 2')
                     ->sortable(),
+                Tables\Columns\CheckboxColumn::make('deliberation3_desision')
+                    ->label('Deliberated 3')
+                    ->sortable(),
                 // Tables\Columns\TextColumn::make('created_at')
                 //     ->dateTime()
                 //     ->sortable()
@@ -635,7 +638,7 @@ class DiplomaResource extends BaseResource
         $svg = (new Writer(
             new ImageRenderer(
                 new RendererStyle(60, 0, null, null, null),
-                new SvgImageBackEnd()
+                new SvgImageBackEnd
             )
         ))->writeString($qrLink);
 
@@ -649,7 +652,7 @@ class DiplomaResource extends BaseResource
         $svg = (new Writer(
             new ImageRenderer(
                 new RendererStyle(60, 0, null, null, null),
-                new SvgImageBackEnd()
+                new SvgImageBackEnd
             )
         ))->writeString($qrLink);
 

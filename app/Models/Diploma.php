@@ -33,6 +33,9 @@ class Diploma extends Model
         'defense_status',
         'is_foreign',
         'is_deliberated',
+        'deliberation1_desision',
+        'deliberation2_desision',
+        'deliberation3_desision',
     ];
 
     // protected $casts = [
