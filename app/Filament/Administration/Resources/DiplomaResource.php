@@ -252,7 +252,19 @@ class DiplomaResource extends BaseResource
                             fn (Builder $query, $isDeliberated): Builder => $query->where('deliberation2_desision', $isDeliberated)
                         ),
                     )
-                    ->label('Deliberated 1'),
+                    ->label('Deliberated 2'),
+                Tables\Filters\SelectFilter::make('deliberation3_desision')
+                    ->options([
+                        '1' => 'Deliberated',
+                        '0' => 'Not deliberated',
+                    ])
+                    ->query(
+                        fn (Builder $query, array $data) => $query->when(
+                            $data['value'],
+                            fn (Builder $query, $isDeliberated): Builder => $query->where('deliberation3_desision', $isDeliberated)
+                        ),
+                    )
+                    ->label('Deliberated 3'),
                 Tables\Filters\SelectFilter::make('council')
                     ->options(
                         Diploma::query()
