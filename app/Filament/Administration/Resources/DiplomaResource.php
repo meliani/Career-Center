@@ -217,18 +217,6 @@ class DiplomaResource extends BaseResource
                             fn (Builder $query, $isForeign): Builder => $query->where('is_foreign', $isForeign)
                         ),
                     ),
-                Tables\Filters\SelectFilter::make('is_deliberated')
-                    ->options([
-                        '1' => 'Deliberated',
-                        '0' => 'Not deliberated',
-                    ])
-                    ->query(
-                        fn (Builder $query, array $data) => $query->when(
-                            $data['value'],
-                            fn (Builder $query, $isDeliberated): Builder => $query->where('is_deliberated', $isDeliberated)
-                        ),
-                    )
-                    ->label('Deliberated'),
                 Tables\Filters\SelectFilter::make('deliberation1_desision')
                     ->options([
                         '1' => 'Deliberated',
