@@ -28,7 +28,7 @@ enum Title: string implements HasColor, HasLabel
             self::Mrs => __('Mrs.'),
             self::Mr => __('Mr.'),
             self::Dr => __('Dr.'),
-            self::NULL => __('Prefer no title'),
+            self::NULL => __(''),
         };
     }
 
