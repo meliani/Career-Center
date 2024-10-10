@@ -10,6 +10,7 @@ enum EntrepriseContactCategory: string implements HasColor, HasLabel
     case Alumni = 'Alumni';
     case Supervisor = 'Supervisor';
     case DirectContact = 'DirectContact';
+    case Parrain = 'Parrain';
 
     public function getLabel(): ?string
     {
@@ -17,6 +18,7 @@ enum EntrepriseContactCategory: string implements HasColor, HasLabel
             EntrepriseContactCategory::Alumni => __(EntrepriseContactCategory::Alumni->value),
             EntrepriseContactCategory::Supervisor => __(EntrepriseContactCategory::Supervisor->value),
             EntrepriseContactCategory::DirectContact => __(EntrepriseContactCategory::DirectContact->value),
+            EntrepriseContactCategory::Parrain => __(EntrepriseContactCategory::Parrain->value),
         };
     }
 
@@ -26,6 +28,7 @@ enum EntrepriseContactCategory: string implements HasColor, HasLabel
             self::Alumni => 'success',
             self::Supervisor => 'info',
             self::DirectContact => 'warning',
+            self::Parrain => 'danger',
         };
     }
 
@@ -34,7 +37,8 @@ enum EntrepriseContactCategory: string implements HasColor, HasLabel
         return match ($this) {
             self::Alumni => 'user-tie',
             self::Supervisor => 'user-tie',
-            self::DirectContact => 'user'
+            self::DirectContact => 'user',
+            self::Parrain => 'user',
         };
 
     }

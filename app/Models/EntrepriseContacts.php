@@ -28,12 +28,17 @@ class EntrepriseContacts extends Model
         'number_of_bounces',
         'bounce_reason',
         'is_account_disabled',
+        'last_time_contacted',
+        'last_year_id_supervised',
+        'interactions_count',
     ];
 
     protected $casts = [
         'is_account_disabled' => 'boolean',
         'category' => EntrepriseContactCategory::class,
         'title' => Title::class,
+        'last_time_contacted' => 'datetime',
+
     ];
 
     public function getFullNameAttribute(): string
@@ -44,5 +49,12 @@ class EntrepriseContacts extends Model
     public function getLongFullNameAttribute(): string
     {
         return trim("{$this->title->getLongTitle()} {$this->first_name} {$this->last_name}");
+    }
+
+    // year relationship
+
+    public function year()
+    {
+        return $this->belongsTo(Year::class, 'last_year_id_supervised', 'id');
     }
 }

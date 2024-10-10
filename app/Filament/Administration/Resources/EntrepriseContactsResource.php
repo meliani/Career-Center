@@ -75,6 +75,12 @@ class EntrepriseContactsResource extends Resource
                     ->numeric(),
                 Forms\Components\Toggle::make('is_account_disabled')
                     ->required(),
+                Forms\Components\DateTimePicker::make('last_time_contacted'),
+                Forms\Components\Select::make('last_year_id_supervised')
+                    ->relationship('year', 'title')
+                    ->label('Last Year Supervised a student'),
+                Forms\Components\TextInput::make('interactions_count')
+                    ->numeric(),
             ]);
     }
 
@@ -112,6 +118,16 @@ class EntrepriseContactsResource extends Resource
                 Tables\Columns\IconColumn::make('is_account_disabled')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->boolean(),
+                Tables\Columns\TextColumn::make('year.title')
+                    ->searchable(false)
+                    ->label('Last Year Supervised a student'),
+                Tables\Columns\TextColumn::make('interactions_count')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('last_time_contacted')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

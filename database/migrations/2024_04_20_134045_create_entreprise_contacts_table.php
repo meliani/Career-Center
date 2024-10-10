@@ -20,10 +20,13 @@ return new class extends Migration
             $table->string('company');
             $table->string('position');
             $table->string('alumni_promotion');
-            $table->string('category');
+            $table->enum('category', \App\Enums\EntrepriseContactCategory::toArray());
             $table->string('years_of_interactions_with_students');
             $table->integer('number_of_bounces');
             $table->boolean('is_account_disabled');
+            $table->timestamp('last_time_contacted')->nullable();
+            $table->foreignId('last_year_id_supervised')->nullable()->constrained('years');
+            $table->integer('interactions_count')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });
