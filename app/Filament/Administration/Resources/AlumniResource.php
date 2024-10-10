@@ -151,6 +151,9 @@ class AlumniResource extends BaseResource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                \STS\FilamentImpersonate\Tables\Actions\Impersonate::make()
+                    ->hidden(fn ($record) => ! $record->canBeImpersonated())
+                    ->guard('alumnis'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
