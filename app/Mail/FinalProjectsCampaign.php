@@ -32,7 +32,7 @@ class FinalProjectsCampaign extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: "Demande de stages techniques pour les élèves ingénieurs de l'INPT",
+            subject: "Stages PFE pour les élèves ingénieurs de l'INPT",
         );
     }
 
