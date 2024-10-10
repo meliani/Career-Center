@@ -32,6 +32,16 @@ enum Title: string implements HasColor, HasLabel
         };
     }
 
+    public function getLongTitle(): ?string
+    {
+        return match ($this) {
+            self::Mrs => __('Madam'),
+            self::Mr => __('Mister'),
+            self::Dr => __('Doctor'),
+            self::NULL => __(''),
+        };
+    }
+
     public function getColor(): ?string
     {
         return match ($this) {

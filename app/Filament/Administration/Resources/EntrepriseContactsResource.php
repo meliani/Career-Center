@@ -12,6 +12,8 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class EntrepriseContactsResource extends Resource
 {
@@ -130,7 +132,10 @@ class EntrepriseContactsResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     BulkAction\Email\SendSecondYearMailingCampaign::make('Send Second Year Mailing Campaign')
                         ->requiresConfirmation(),
-                ]),
+                    BulkAction\Email\SendFinalProjectsMailingCampaign::make('Send Final Projects Mailing Campaign')
+                        ->requiresConfirmation(),
+                ])
+                    ->label('Email'),
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
@@ -151,5 +156,13 @@ class EntrepriseContactsResource extends Resource
             'create' => Pages\CreateEntrepriseContacts::route('/create'),
             'edit' => Pages\EditEntrepriseContacts::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 }

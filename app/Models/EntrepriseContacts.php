@@ -6,10 +6,12 @@ use App\Enums\EntrepriseContactCategory;
 use App\Enums\Title;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class EntrepriseContacts extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     protected $table = 'entreprise_contacts';
 
@@ -41,6 +43,6 @@ class EntrepriseContacts extends Model
 
     public function getLongFullNameAttribute(): string
     {
-        return trim("{$this->title->getLabel()} {$this->first_name} {$this->last_name}");
+        return trim("{$this->title->getLongTitle()} {$this->first_name} {$this->last_name}");
     }
 }
