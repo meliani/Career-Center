@@ -124,6 +124,8 @@ class EntrepriseContactsResource extends Resource
             ->filters([
                 Tables\Filters\SelectFilter::make('category')
                     ->options(EntrepriseContactCategory::class),
+                Tables\Filters\TrashedFilter::make(),
+
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
