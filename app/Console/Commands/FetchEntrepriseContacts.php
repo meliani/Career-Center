@@ -132,7 +132,10 @@ class FetchEntrepriseContacts extends Command
                 // $existingContact->bounce_reason = null;
                 // $existingContact->is_account_disabled = false;
                 $existingContact->last_year_id_supervised = $internshipAgreement->year_id;
-                $existingContact->increment('interactions_count');
+                // increment only if last year is different from the current year
+                if ($existingContact->last_year_id_supervised != $internshipAgreement->year_id) {
+                    $existingContact->increment('interactions_count');
+                }
 
                 $existingContact->save();
             }
@@ -195,8 +198,9 @@ class FetchEntrepriseContacts extends Command
                 // $existingContact->bounce_reason = null;
                 // $existingContact->is_account_disabled = false;
                 $existingContact->last_year_id_supervised = $internshipAgreement->year_id;
-                $existingContact->increment('interactions_count');
-
+                if ($existingContact->last_year_id_supervised != $internshipAgreement->year_id) {
+                    $existingContact->increment('interactions_count');
+                }
                 $existingContact->save();
             }
 
