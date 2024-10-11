@@ -81,6 +81,7 @@ class NewInternship extends Page implements HasForms
                             ->inline()
                             ->options(Enums\InternshipLevel::class)
                             ->default('FinalYearInternship')
+                            ->columnSpan(2)
                             ->live(),
                         Forms\Components\ToggleButtons::make('internship_type')
                             ->inline()

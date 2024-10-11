@@ -11,8 +11,8 @@ enum InternshipLevel: string implements HasColor, HasLabel
     // use IsKanbanStatus;
 
     case FinalYearInternship = 'FinalYearInternship';
-    case IntroductoryInternship = 'IntroductoryInternship';
     case TechnicalInternship = 'TechnicalInternship';
+    case IntroductoryInternship = 'IntroductoryInternship';
     // case MasterThesis = 'MasterThesis';
     // case PhDThesis = 'PhDThesis';
 
@@ -20,8 +20,8 @@ enum InternshipLevel: string implements HasColor, HasLabel
     {
         return [
             self::FinalYearInternship,
-            self::IntroductoryInternship,
             self::TechnicalInternship,
+            self::IntroductoryInternship,
         ];
     }
 
