@@ -30,6 +30,7 @@ class EntrepriseContacts extends Model
         'is_account_disabled',
         'last_time_contacted',
         'last_year_id_supervised',
+        'first_year_id_supervised',
         'interactions_count',
     ];
 

@@ -26,6 +26,7 @@ return new class extends Migration
             $table->boolean('is_account_disabled');
             $table->timestamp('last_time_contacted')->nullable();
             $table->foreignId('last_year_id_supervised')->nullable()->constrained('years');
+            $table->foreignId('first_year_id_supervised')->nullable()->constrained('years');
             $table->integer('interactions_count')->default(0);
             $table->timestamps();
             $table->softDeletes();

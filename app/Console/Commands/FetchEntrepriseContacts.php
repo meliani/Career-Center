@@ -106,6 +106,7 @@ class FetchEntrepriseContacts extends Command
                 $entrepriseContact->bounce_reason = null;
                 $entrepriseContact->is_account_disabled = false;
                 $entrepriseContact->last_year_id_supervised = $internshipAgreement->year_id;
+                $entrepriseContact->first_year_id_supervised = $internshipAgreement->year_id;
                 $entrepriseContact->interactions_count = 1;
 
                 $entrepriseContact->save();
@@ -168,6 +169,7 @@ class FetchEntrepriseContacts extends Command
                 $entrepriseContact->bounce_reason = null;
                 $entrepriseContact->is_account_disabled = false;
                 $entrepriseContact->last_year_id_supervised = $internshipAgreement->year_id;
+                $entrepriseContact->first_year_id_supervised = $internshipAgreement->year_id;
                 $entrepriseContact->interactions_count = 1;
 
                 $entrepriseContact->save();
