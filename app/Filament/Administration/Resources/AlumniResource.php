@@ -154,7 +154,7 @@ class AlumniResource extends BaseResource
                 \STS\FilamentImpersonate\Tables\Actions\Impersonate::make()
                     ->hidden(fn ($record) => ! $record->canBeImpersonated())
                     ->guard('alumnis'),
-            ])
+            ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),

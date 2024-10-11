@@ -153,7 +153,9 @@ class EntrepriseContactsResource extends Resource
                     BulkAction\Email\SendFinalProjectsMailingCampaign::make('Send Final Projects Mailing Campaign')
                         ->requiresConfirmation(),
                 ])
-                    ->label('Email'),
+                    // ->size(\Filament\Support\Enums\ActionSize::ExtraLarge)
+                    ->dropdownWidth(\Filament\Support\Enums\MaxWidth::Small)
+                    ->label('Email Campaigns'),
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
