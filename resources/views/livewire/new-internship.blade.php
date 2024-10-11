@@ -10,6 +10,12 @@
             </span>
         </div>
     </div>
+    {{-- a big page title --}}
+    <div class="flex justify-center py-4">
+        <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-200">
+            {{ __('Proposez un stage') }}
+        </h1>
+    </div>
     <x-filament::card>
         <x-filament-panels::form wire:submit="create">
             {{ $this->form }}
