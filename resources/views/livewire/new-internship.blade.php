@@ -29,35 +29,34 @@
     </x-filament::card>
     @elseif ($confirming)
     <x-filament::card class="text-center">
-        <h2 class="text-xl font-bold">{{ __('Confirm Internship Offer') }}</h2>
         <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-                <p><strong>{{ __('Organization Name') }}:</strong> {{ $data['organization_name'] ?? 'N/A' }}</p>
+                <p><strong>{{ __('Organization name') }}:</strong> {{ $data['organization_name'] ?? 'N/A' }}</p>
                 <p><strong>{{ __('Country') }}:</strong> {{ $data['country'] ?? 'N/A' }}</p>
-                <p><strong>{{ __('Organization Type') }}:</strong> {{ $data['organization_type'] ?? 'N/A' }}</p>
-                <p><strong>{{ __('Responsible Name') }}:</strong> {{ $data['responsible_name'] ?? 'N/A' }}</p>
-                <p><strong>{{ __('Responsible Occupation') }}:</strong> {{ $data['responsible_occupation'] ?? 'N/A' }}
+                <p><strong>{{ __('Organization type') }}:</strong> {{ $data['organization_type'] ?? 'N/A' }}</p>
+                <p><strong>{{ __('Responsible name') }}:</strong> {{ $data['responsible_name'] ?? 'N/A' }}</p>
+                <p><strong>{{ __('Responsible occupation') }}:</strong> {{ $data['responsible_occupation'] ?? 'N/A' }}
                 </p>
-                <p><strong>{{ __('Responsible Phone') }}:</strong> {{ $data['responsible_phone'] ?? 'N/A' }}</p>
-                <p><strong>{{ __('Responsible Email') }}:</strong> {{ $data['responsible_email'] ?? 'N/A' }}</p>
+                <p><strong>{{ __('Responsible phone') }}:</strong> {{ $data['responsible_phone'] ?? 'N/A' }}</p>
+                <p><strong>{{ __('Responsible email') }}:</strong> {{ $data['responsible_email'] ?? 'N/A' }}</p>
             </div>
             <div>
-                <p><strong>{{ __('Internship Level') }}:</strong> {{ $data['internship_level'] ?? 'N/A' }}</p>
-                <p><strong>{{ __('Internship Type') }}:</strong> {{ $data['internship_type'] ?? 'N/A' }}</p>
-                <p><strong>{{ __('Project Title') }}:</strong> {{ $data['project_title'] ?? 'N/A' }}</p>
-                <p><strong>{{ __('Project Details') }}:</strong> {!! nl2br(e($data['project_details'] ?? 'N/A')) !!}</p>
+                <p><strong>{{ __('Internship level') }}:</strong> {{ $data['internship_level'] ?? 'N/A' }}</p>
+                <p><strong>{{ __('Internship type') }}:</strong> {{ $data['internship_type'] ?? 'N/A' }}</p>
+                <p><strong>{{ __('Project title') }}:</strong> {{ $data['project_title'] ?? 'N/A' }}</p>
+                <p><strong>{{ __('Project details') }}:</strong> {!! nl2br(e($data['project_details'] ?? 'N/A')) !!}</p>
                 <p><strong>{{ __('Tags') }}:</strong> {{ isset($data['tags']) ? implode(', ', $data['tags']) : 'N/A' }}
                 </p>
-                <p><strong>{{ __('Internship Location') }}:</strong> {{ $data['internship_location'] ?? 'N/A' }}</p>
-                <p><strong>{{ __('Internship Duration') }}:</strong> {{ $data['internship_duration'] ?? 'N/A' }}</p>
-                <p><strong>{{ __('Recruiting Type') }}:</strong> {{ $data['recruting_type'] ?? 'N/A' }}</p>
-                <p><strong>{{ __('Application Link') }}:</strong> {{ $data['application_link'] ?? 'N/A' }}</p>
-                <p><strong>{{ __('Application Email') }}:</strong> {{ $data['application_email'] ?? 'N/A' }}</p>
+                <p><strong>{{ __('Internship location') }}:</strong> {{ $data['internship_location'] ?? 'N/A' }}</p>
+                <p><strong>{{ __('Internship duration') }}:</strong> {{ $data['internship_duration'] ?? 'N/A' }}</p>
+                <p><strong>{{ __('Recruiting type') }}:</strong> {{ $data['recruting_type'] ?? 'N/A' }}</p>
+                <p><strong>{{ __('Application link') }}:</strong> {{ $data['application_link'] ?? 'N/A' }}</p>
+                <p><strong>{{ __('Application email') }}:</strong> {{ $data['application_email'] ?? 'N/A' }}</p>
                 <p><strong>{{ __('Currency') }}:</strong> {{ $data['currency'] ?? 'N/A' }}</p>
                 <p><strong>{{ __('Remuneration') }}:</strong> {{ $data['remuneration'] ?? 'N/A' }}</p>
                 <p><strong>{{ __('Workload') }}:</strong> {{ $data['workload'] ?? 'N/A' }}</p>
-                <p><strong>{{ __('Application Deadline') }}:</strong> {{ $data['expire_at'] ?? 'N/A' }}</p>
-                <p><strong>{{ __('Attached File') }}:</strong>
+                <p><strong>{{ __('Application deadline') }}:</strong> {{ $data['expire_at'] ?? 'N/A' }}</p>
+                {{-- <p><strong>{{ __('Attached file') }}:</strong>
                     @if(is_array($data['attached_file'] ?? null))
                     @foreach($data['attached_file'] as $file)
                     <a href="{{ $file }}" target="_blank">{{ $file }}</a><br>
@@ -69,7 +68,7 @@
                     {{ 'N/A' }}
                     @endif
                     @endif
-                </p>
+                </p> --}}
             </div>
         </div>
         <div class="mt-4 space-y-2">
