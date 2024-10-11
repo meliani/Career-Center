@@ -98,7 +98,9 @@ class NewInternship extends Page implements HasForms
                                     ->columnSpanFull(),
 
                                 Forms\Components\TagsInput::make('tags')
-                                    ->placeholder('Add tags')
+                                    ->placeholder(__('Add keywords'))
+                                    ->splitKeys(['Tab', ',', ';'])
+
                                     ->columnSpanFull(),
                             ]),
                         Forms\Components\Fieldset::make('Internship location and duration')

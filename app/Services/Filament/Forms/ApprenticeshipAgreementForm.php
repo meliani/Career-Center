@@ -44,7 +44,7 @@ class ApprenticeshipAgreementForm
                     //             ->searchable(),
                     //         Forms\Components\TextInput::make('address'),
                     //     ]),
-                    ...(new AddOrganizationForm())->getSchema(),
+                    ...(new AddOrganizationForm)->getSchema(),
                     Forms\Components\Fieldset::make(__('Organization contacts'))
                         ->columnSpan(1)
                         ->columns(2)
@@ -75,7 +75,7 @@ class ApprenticeshipAgreementForm
                                     Forms\Components\Fieldset::make(__('Parrain'))
                                         ->columns(3)
                                         ->schema([
-                                            ...(new AddOrganizationContactForm())->getSchema(),
+                                            ...(new AddOrganizationContactForm)->getSchema(),
                                         ]),
                                 ]),
                             Forms\Components\Select::make('supervisor_id')
@@ -99,7 +99,7 @@ class ApprenticeshipAgreementForm
                                     Forms\Components\Fieldset::make(__('Supervisor'))
                                         ->columns(3)
                                         ->schema([
-                                            ...(new AddOrganizationContactForm())->getSchema(),
+                                            ...(new AddOrganizationContactForm)->getSchema(),
                                         ]),
                                 ]),
                             DateRangePicker::make('internship_period')
@@ -125,7 +125,7 @@ class ApprenticeshipAgreementForm
                             'min:2',
                             'max:50',
                         ])
-                        ->placeholder('Add a keyword and press enter or click away to add it')
+                        ->placeholder('Add keywords')
                         ->color('success')
                         ->columnSpanFull(),
                     Forms\Components\TextInput::make('office_location')
