@@ -45,6 +45,8 @@ class FetchEntrepriseContacts extends Command
         'encadrant_ext_tel',
         'encadrant_ext_mail',
         'year_id',
+        'organization_name',
+        'central_organization',
         */
 
         /*
@@ -99,7 +101,7 @@ class FetchEntrepriseContacts extends Command
                 $entrepriseContact->title = $internshipAgreement->parrain_titre;
                 $entrepriseContact->first_name = $internshipAgreement->parrain_prenom;
                 $entrepriseContact->last_name = $internshipAgreement->parrain_nom;
-                $entrepriseContact->company = $internshipAgreement->company;
+                $entrepriseContact->company = $internshipAgreement->organization_name;
                 $entrepriseContact->position = $internshipAgreement->parrain_fonction;
                 $entrepriseContact->category = EntrepriseContactCategory::Parrain;
                 $entrepriseContact->number_of_bounces = 0;
@@ -120,15 +122,15 @@ class FetchEntrepriseContacts extends Command
                 if (strlen($internshipAgreement->parrain_nom) > strlen($existingContact->last_name)) {
                     $existingContact->last_name = $internshipAgreement->parrain_nom;
                 }
-                if (strlen($internshipAgreement->company) > strlen($existingContact->company)) {
-                    $existingContact->company = $internshipAgreement->company;
+                if (strlen($internshipAgreement->organization_name) > strlen($existingContact->company)) {
+                    $existingContact->company = $internshipAgreement->organization_name;
                 }
                 if (strlen($internshipAgreement->parrain_fonction) > strlen($existingContact->position)) {
                     $existingContact->position = $internshipAgreement->parrain_fonction;
                 }
-                $existingContact->number_of_bounces = 0;
-                $existingContact->bounce_reason = null;
-                $existingContact->is_account_disabled = false;
+                // $existingContact->number_of_bounces = 0;
+                // $existingContact->bounce_reason = null;
+                // $existingContact->is_account_disabled = false;
                 $existingContact->last_year_id_supervised = $internshipAgreement->year_id;
                 $existingContact->increment('interactions_count');
 
@@ -162,7 +164,7 @@ class FetchEntrepriseContacts extends Command
                 $entrepriseContact->title = $internshipAgreement->encadrant_ext_titre;
                 $entrepriseContact->first_name = $internshipAgreement->encadrant_ext_prenom;
                 $entrepriseContact->last_name = $internshipAgreement->encadrant_ext_nom;
-                $entrepriseContact->company = $internshipAgreement->company;
+                $entrepriseContact->company = $internshipAgreement->organization_name;
                 $entrepriseContact->position = $internshipAgreement->encadrant_ext_fonction;
                 $entrepriseContact->category = EntrepriseContactCategory::Supervisor;
                 $entrepriseContact->number_of_bounces = 0;
@@ -183,15 +185,15 @@ class FetchEntrepriseContacts extends Command
                 if (strlen($internshipAgreement->encadrant_ext_nom) > strlen($existingContact->last_name)) {
                     $existingContact->last_name = $internshipAgreement->encadrant_ext_nom;
                 }
-                if (strlen($internshipAgreement->company) > strlen($existingContact->company)) {
-                    $existingContact->company = $internshipAgreement->company;
+                if (strlen($internshipAgreement->organization_name) > strlen($existingContact->company)) {
+                    $existingContact->company = $internshipAgreement->organization_name;
                 }
                 if (strlen($internshipAgreement->encadrant_ext_fonction) > strlen($existingContact->position)) {
                     $existingContact->position = $internshipAgreement->encadrant_ext_fonction;
                 }
-                $existingContact->number_of_bounces = 0;
-                $existingContact->bounce_reason = null;
-                $existingContact->is_account_disabled = false;
+                // $existingContact->number_of_bounces = 0;
+                // $existingContact->bounce_reason = null;
+                // $existingContact->is_account_disabled = false;
                 $existingContact->last_year_id_supervised = $internshipAgreement->year_id;
                 $existingContact->increment('interactions_count');
 

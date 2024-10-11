@@ -562,5 +562,7 @@
     "FinalYearInternship": "Stage de fin d'études",
     "IntroductoryInternship": "Stage ouvrier",
     "TechnicalInternship": "Stage technique",
-    "OnSite": "Sur site"
+    "OnSite": "Sur site",
+    "Internship level": "Niveau de stage",
+    "Internship type (for location)": "Type de stage (pour le lieu)"
 }

@@ -84,6 +84,7 @@ class NewInternship extends Page implements HasForms
                             ->columnSpan(2)
                             ->live(),
                         Forms\Components\ToggleButtons::make('internship_type')
+                            ->label('Internship type (for location)')
                             ->inline()
                             ->options(Enums\InternshipType::class)
                             ->default('OnSite')

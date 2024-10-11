@@ -13,7 +13,7 @@ d'études.
 A cet égard, nous nous adressons à vous pour vous demander ,si vous voudrez bien , proposer des sujets de PFE au profit
 des élèves ingénieurs en fin de formation de cette année.
 
-Si comme nous le souhaitons, vous acceptez de poursuivre l'action, nous vous prions de servir le formulaire suivant :[https://carrieres.inpt.ac.ma/publier-un-stage](https://carrieres.inpt.ac.ma/publier-un-stage). Les projets de fin d’études (PFE) pour cette année 2024-2025 auront lieu à partir de mi-Janvier 2025, pour une durée de 4 à 6 mois, avec une soutenance en juillet 2025.
+Si comme nous le souhaitons, vous acceptez de poursuivre l'action, nous vous prions de servir le formulaire suivant : [https://carrieres.inpt.ac.ma/publier-un-stage](https://carrieres.inpt.ac.ma/publier-un-stage). Les projets de fin d’études (PFE) pour cette année 2024-2025 auront lieu à partir de **mi-Janvier 2025**, pour une durée de 4 à 6 mois, avec une soutenance en **juillet 2025**.
 
 Pour plus d'informations sur la formation offerte à nos élèves ingénieurs, visitez le site web de l'INPT www.inpt.ac.ma
 
