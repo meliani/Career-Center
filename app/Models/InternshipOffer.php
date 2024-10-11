@@ -60,15 +60,15 @@ class InternshipOffer extends Model
         'deleted_at',
     ];
 
-    protected $appends = [
-        'internship_duration',
-    ];
+    // protected $appends = [
+    //     'internship_duration',
+    // ];
 
     protected static function boot(): void
     {
         parent::boot();
 
-        static::addGlobalScope(new Scopes\InternshipOfferScope());
+        static::addGlobalScope(new Scopes\InternshipOfferScope);
 
     }
 
@@ -89,13 +89,13 @@ class InternshipOffer extends Model
     // {
     //     return $this->internship_duration . ' ' . __('months');
     // }
-    public function getCountry()
-    {
-        return $this->attributes['country'] ?? null; // Example logic
-    }
+    // public function getCountry()
+    // {
+    //     return $this->attributes['country'] ?? null; // Example logic
+    // }
 
-    public function getCountryAttribute()
-    {
-        return $this->getCountriesList()[$this->getCountry()];
-    }
+    // public function getCountryAttribute()
+    // {
+    //     return $this->getCountriesList()[$this->getCountry()];
+    // }
 }

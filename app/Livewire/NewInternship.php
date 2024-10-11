@@ -9,7 +9,6 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
-use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Illuminate\Contracts\View\View;
 use Parfaitementweb\FilamentCountryField\Forms\Components\Country;
@@ -18,9 +17,13 @@ class NewInternship extends Page implements HasForms
 {
     use InteractsWithForms;
 
-    protected ?string $heading = 'Custom Page Heading';
+    protected ?string $heading = 'New Internship Offer';
 
     public ?array $data = [];
+
+    public bool $confirming = false;
+
+    public bool $submitted = false;
 
     public function mount(): void
     {
@@ -102,6 +105,12 @@ class NewInternship extends Page implements HasForms
                                     ->splitKeys(['Tab', ',', ';'])
 
                                     ->columnSpanFull(),
+                                // Forms\Components\SpatieTagsInput::make('tags')
+                                //     ->placeholder(__('Add keywords'))
+                                //     ->splitKeys(['Tab', ',', ';'])
+                                //     ->columnSpanFull(),
+                                // ->type('InternshipOfferTags'),
+
                             ]),
                         Forms\Components\Fieldset::make('Internship location and duration')
                             ->columns(4)
@@ -149,12 +158,16 @@ class NewInternship extends Page implements HasForms
 
                                 Forms\Components\Select::make('currency')
                                     ->hidden(fn (Get $get) => $get('recruting_type') != 'SchoolManaged')
-                                    ->default(Enums\Currency::MDH->getSymbol())
+                                    // ->default(Enums\Currency::MDH->getSymbol())
                                     ->options([
                                         Enums\Currency::EUR->value => Enums\Currency::EUR->getSymbol(),
                                         Enums\Currency::USD->value => Enums\Currency::USD->getSymbol(),
                                         Enums\Currency::MDH->value => Enums\Currency::MDH->getSymbol(),
+                                        /* Enums\Currency::EUR->getSymbol() => Enums\Currency::EUR->value,
+                                        Enums\Currency::USD->getSymbol() => Enums\Currency::USD->value,
+                                        Enums\Currency::MDH->getSymbol() => Enums\Currency::MDH->value, */
                                     ])
+                                    // ->options(Enums\Currency::class)
                                     ->live()
                                     ->id('currency'),
                                 Forms\Components\TextInput::make('remuneration')
@@ -184,22 +197,47 @@ class NewInternship extends Page implements HasForms
 
     }
 
+    public function confirm(): void
+    {
+        $this->data = $this->form->getState();
+        $this->confirming = true;
+    }
+
     public function create(): void
     {
         $data = $this->form->getState();
-
+        // if (is_array($data['attached_file'] ?? null)) {
+        //     $data['attached_file'] = json_encode($data['attached_file']);
+        // }
+        // if (is_array($data['tags'] ?? null)) {
+        //     $data['tags'] = json_encode($data['tags']);
+        // }
         $record = InternshipOffer::create($data);
+
+        // $record->tags()->sync($data['tags'] ?? []);
+
+        // $record->save();
 
         $this->form->model($record)->saveRelationships();
 
-        Notification::make()
-            ->title(__('Internship Offer has been submitted successfully'))
-            ->success()
-            ->send();
+        $this->submitted = true;
+
+    }
+
+    public function resetForm(): void
+    {
+        $this->data = [];
+        $this->confirming = false;
+        $this->submitted = false;
+        $this->form->fill();
     }
 
     public function render(): View
     {
-        return view('livewire.new-internship'); //->layout('components.layouts.public');
+        return view('livewire.new-internship', [
+            'confirming' => $this->confirming,
+            'submitted' => $this->submitted,
+            'data' => new InternshipOffer($this->data),
+        ]);
     }
 }
