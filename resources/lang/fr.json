@@ -558,5 +558,8 @@
     "In the bottom of the form, you can see our sessions calendar.": "En bas du formulaire, vous pouvez voir notre calendrier des sessions.",
     "Midweek Pro Connect is a weekly event that takes place every Wednesday. It is a great opportunity for students and companies to connect and discuss potential internships, job opportunities, and more.": "Midweek Pro Connect est un événement hebdomadaire qui a lieu chaque mercredi. C'est une excellente occasion pour les étudiants et les entreprises de se connecter et de discuter de stages potentiels, d'opportunités d'emploi, et plus encore.",
     "Mister": "Monsieur",
-    "Madam": "Madame"
+    "Madam": "Madame",
+    "FinalYearInternship": "Stage de fin d'études",
+    "IntroductoryInternship": "Stage ouvrier",
+    "TechnicalInternship": "Stage technique"
 }
