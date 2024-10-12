@@ -29,11 +29,12 @@
     </x-filament::card>
     @elseif ($confirming)
     <x-filament::card class="text-center">
-        <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-12">
             <div>
                 <p><strong>{{ __('Organization name') }}:</strong> {{ $data['organization_name'] ?? 'N/A' }}</p>
                 <p><strong>{{ __('Country') }}:</strong> {{ $data['country'] ?? 'N/A' }}</p>
-                <p><strong>{{ __('Organization type') }}:</strong> {{ $data['organization_type'] ?? 'N/A' }}</p>
+                {{-- <p><strong>{{ __('Organization type') }}:</strong> {{ $data['organization_type'] ?? 'N/A' }}</p>
+                --}}
                 <p><strong>{{ __('Responsible name') }}:</strong> {{ $data['responsible_name'] ?? 'N/A' }}</p>
                 <p><strong>{{ __('Responsible occupation') }}:</strong> {{ $data['responsible_occupation'] ?? 'N/A' }}
                 </p>
@@ -44,7 +45,7 @@
                 {{-- <p><strong>{{ __('Internship level') }}:</strong> {{ $data['internship_level']->getLabel() ?? 'N/A'
                     }}
                 </p> --}}
-                <p><strong>{{ __('Internship type') }}:</strong> {{ $data['internship_type'] ?? 'N/A' }}</p>
+                {{-- <p><strong>{{ __('Internship type') }}:</strong> {{ $data['internship_type'] ?? 'N/A' }}</p> --}}
                 <p><strong>{{ __('Project title') }}:</strong> {{ $data['project_title'] ?? 'N/A' }}</p>
                 <p><strong>{{ __('Project details') }}:</strong> {!! nl2br(e($data['project_details'] ?? 'N/A')) !!}</p>
                 <p><strong>{{ __('Tags') }}:</strong> {{ isset($data['tags']) ? implode(', ', $data['tags']) : 'N/A' }}
@@ -52,6 +53,8 @@
                 <p><strong>{{ __('Internship location') }}:</strong> {{ $data['internship_location'] ?? 'N/A' }}</p>
                 <p><strong>{{ __('Internship duration') }}:</strong> {{ $data['internship_duration'] ?? 'N/A' }}</p>
                 {{-- <p><strong>{{ __('Recruiting type') }}:</strong> {{ $data['recruting_type'] ?? 'N/A' }}</p> --}}
+            </div>
+            <div>
                 <p><strong>{{ __('Application link') }}:</strong> {{ $data['application_link'] ?? 'N/A' }}</p>
                 <p><strong>{{ __('Application email') }}:</strong> {{ $data['application_email'] ?? 'N/A' }}</p>
                 {{-- <p><strong>{{ __('Currency') }}:</strong> {{ $data['currency'] ?? 'N/A' }}</p> --}}
