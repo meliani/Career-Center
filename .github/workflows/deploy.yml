@@ -1,0 +1,27 @@
+name: Deploy on Push
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Sync repository files to server with rsync
+        run: |
+          rsync -avz --delete-after --exclude 'storage' --exclude '.env' --exclude 'vendor' -e "ssh -o StrictHostKeyChecking=no" ./ elmeliani@carrieres.inpt.ac.ma:/tmp/careers_backend_temp
+
+      - name: Move files and execute deployment script on server
+        run: |
+          ssh -o StrictHostKeyChecking=no elmeliani@carrieres.inpt.ac.ma 'rsync -avz --exclude storage --exclude .env --exclude vendor /tmp/careers_backend_temp/ /var/www/html/careers_backend/ && cd /var/www/html/careers_backend && ./sys/cache'
