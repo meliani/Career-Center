@@ -128,11 +128,12 @@ class NewInternship extends Page implements HasForms
                     ]),
                 // Forms\Components\TextInput::make('status'),
                 // Forms\Components\Toggle::make('is_active'),
-                Forms\Components\Fieldset::make('Recruting Information')
+                Forms\Components\Fieldset::make('Application management')
                     ->columns(3)
                     ->columnSpanfull()
                     ->schema([
                         Forms\Components\ToggleButtons::make('recruting_type')
+                            ->label('')
                             ->inline()
                             ->options([
                                 'SchoolManaged' => __('School Managed'),

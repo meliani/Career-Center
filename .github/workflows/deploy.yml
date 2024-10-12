@@ -24,4 +24,4 @@ jobs:
 
       - name: Move files and execute deployment script on server
         run: |
-          ssh -o StrictHostKeyChecking=no elmeliani@carrieres.inpt.ac.ma 'rsync -avz --exclude storage --exclude public --exclude .env --exclude vendor /tmp/careers_backend_temp/ /var/www/html/careers_backend/ && cd /var/www/html/careers_backend && ./sys/cache'
+          ssh -o StrictHostKeyChecking=no elmeliani@carrieres.inpt.ac.ma 'rsync -avz --exclude storage --exclude public --exclude .env --exclude vendor /tmp/careers_backend_temp/ /var/www/html/careers_backend/'
