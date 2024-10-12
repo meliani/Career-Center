@@ -188,8 +188,8 @@ class NewInternship extends Page implements HasForms
                                 Forms\Components\DatePicker::make('expire_at')
                                     ->columnSpan(2)
                                     ->label('Application deadline'),
-                                Forms\Components\FileUpload::make('attached_file')
-                                    ->columnSpanFull(),
+                                // Forms\Components\FileUpload::make('attached_file')
+                                //     ->columnSpanFull(),
                             ]),
 
                     ]),

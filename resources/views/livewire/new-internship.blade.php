@@ -83,9 +83,14 @@
         </div>
     </x-filament::card>
     @else
-    <form wire:submit.prevent="confirm">
+    <x-filament::card>
         {{ $this->form }}
-        <x-filament::button type="submit" color="primary">{{ __('Review and Confirm') }}</x-filament::button>
-    </form>
+        <div class="mt-4 flex justify-center">
+            <x-filament::button icon="heroicon-m-sparkles" color="primary" wire:click='confirm'
+                class="flex items-center">
+                {{ __('Review and Confirm') }}
+            </x-filament::button>
+        </div>
+    </x-filament::card>
     @endif
 </div>
