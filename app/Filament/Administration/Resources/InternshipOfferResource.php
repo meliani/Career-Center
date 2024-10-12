@@ -65,7 +65,7 @@ class InternshipOfferResource extends BaseResource
                     ->maxLength(191),
                 Forms\Components\TextInput::make('attached_file')
                     ->maxLength(191),
-                Forms\Components\Textarea::make('link')
+                Forms\Components\Textarea::make('application_link')
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('internship_duration'),
                 Forms\Components\TextInput::make('remuneration')
@@ -117,6 +117,9 @@ class InternshipOfferResource extends BaseResource
                 Tables\Columns\TextColumn::make('recruting_type'),
                 Tables\Columns\TextColumn::make('application_email')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('application_link')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('number_of_students_requested'),
                 Tables\Columns\TextColumn::make('status'),
                 Tables\Columns\TextColumn::make('applyable'),
                 Tables\Columns\TextColumn::make('expire_at')

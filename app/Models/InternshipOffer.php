@@ -38,6 +38,8 @@ class InternshipOffer extends Model
         'currency',
         'recruting_type',
         'application_email',
+        'application_link',
+        'number_of_students_requested',
         'status',
         'applyable',
         'expire_at',
@@ -45,7 +47,6 @@ class InternshipOffer extends Model
     ];
 
     protected $casts = [
-        'internship_type' => 'string',
         'recruting_type' => 'string',
         'status' => Enums\OfferStatus::class,
         'applyable' => 'boolean',

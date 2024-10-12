@@ -38,6 +38,7 @@ class CreateInternshipOffersTable extends Migration
             $table->unsignedInteger('workload')->nullable();
             $table->enum('recruting_type', ['SchoolManaged', 'RecruiterManaged'])->nullable();
             $table->string('application_email')->nullable();
+            $table->unsignedInteger('number_of_students_requested')->nullable();
             $table->enum('status', Enums\OfferStatus::getArray());
             $table->boolean('applyable')->nullable();
             $table->date('expire_at')->nullable();

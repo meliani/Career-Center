@@ -48,7 +48,8 @@ class NewInternship extends Page implements HasForms
                             ->autocomplete('organization')
                             ->columnSpan(2),
                         Country::make('country')
-                            ->searchable(),
+                            ->searchable()
+                            ->default('MA'),
 
                         Forms\Components\ToggleButtons::make('organization_type')
                             ->options([
@@ -120,11 +121,21 @@ class NewInternship extends Page implements HasForms
                                     ->maxLength(191),
                                 Forms\Components\TextInput::make('internship_duration')
                                     ->label('Duration in months')
-                                    ->minValue(1)
+                                    ->minValue(fn (Get $get) => $get('internship_level') == 'FinalYearInternship' ? 4 : 1)
+                                    ->default(4)
                                     ->maxValue(6)
                                     ->inputMode('decimal')
                                     ->numeric(),
+
                             ]),
+                        Forms\Components\TextInput::make('number_of_students_requested')
+                            ->label('Number of students requested')
+                            ->minValue(1)
+                            ->default(1)
+                            ->maxValue(20)
+                            ->inputMode('decimal')
+                            ->columnSpanFull()
+                            ->numeric(),
                     ]),
                 // Forms\Components\TextInput::make('status'),
                 // Forms\Components\Toggle::make('is_active'),
@@ -147,6 +158,8 @@ class NewInternship extends Page implements HasForms
 
                                 Forms\Components\TextInput::make('application_link')
                                     ->url()
+                                    // ->prefix('https://')
+                                    // ->mask('https://example.com')
                                     ->suffixIcon('heroicon-m-globe-alt')
                                     ->hidden(fn (Get $get) => $get('recruting_type') != 'RecruiterManaged')
                                     ->columnSpan(2)

@@ -20,11 +20,12 @@
     <x-filament::card class="text-center">
         <h2 class="text-2xl font-bold">{{ __('Internship Offer Submitted Successfully') }}</h2>
         <div class="mt-4 space-y-2">
-            <x-filament::button wire:click="resetForm" color="primary">{{ __('Add More') }}</x-filament::button>
+            <x-filament::button wire:click="resetForm" color="success">{{ __('Add More') }}</x-filament::button>
             <x-filament::button tag="a" href="{{ route('home') }}" color="primary">{{ __('Go to Home Screen') }}
             </x-filament::button>
-            <x-filament::button tag="a" href="https://inpt.ac.ma" target="_blank" color="primary">{{ __('Visit INPT
-                Website') }}</x-filament::button>
+            <x-filament::button tag="a" href="https://www.inpt.ac.ma" target="_blank" color="primary">
+                {{ __('Visit INPT Website') }}
+            </x-filament::button>
         </div>
     </x-filament::card>
     @elseif ($confirming)
@@ -51,8 +52,13 @@
                 <p><strong>{{ __('Tags') }}:</strong> {{ isset($data['tags']) ? implode(', ', $data['tags']) : 'N/A' }}
                 </p>
                 <p><strong>{{ __('Internship location') }}:</strong> {{ $data['internship_location'] ?? 'N/A' }}</p>
-                <p><strong>{{ __('Internship duration') }}:</strong> {{ $data['internship_duration'] ?? 'N/A' }}</p>
-                {{-- <p><strong>{{ __('Recruiting type') }}:</strong> {{ $data['recruting_type'] ?? 'N/A' }}</p> --}}
+                <p><strong>{{ __('Internship duration') }}:</strong> {{ $data['internship_duration'] ." mois"?? 'N/A' }}
+                </p>
+                <p><strong>{{ __('Number of students requested') }}:</strong> {{ $data['number_of_students_requested']."
+                    étudiant(s)"
+                    ?? 'N/A' }}
+                    {{--
+                <p><strong>{{ __('Recruiting type') }}:</strong> {{ $data['recruting_type'] ?? 'N/A' }}</p> --}}
             </div>
             <div>
                 <p><strong>{{ __('Application link') }}:</strong> {{ $data['application_link'] ?? 'N/A' }}</p>
@@ -77,8 +83,8 @@
             </div>
         </div>
         <div class="mt-4 space-y-2">
-            <x-filament::button wire:click="create" color="primary">{{ __('Confirm and Submit') }}</x-filament::button>
-            <x-filament::button wire:click="$set('confirming', false)" color="primary">{{ __('Edit') }}
+            <x-filament::button wire:click="create" color="success">{{ __('Confirm and Submit') }}</x-filament::button>
+            <x-filament::button wire:click="$set('confirming', false)" color="warning">{{ __('Edit') }}
             </x-filament::button>
         </div>
     </x-filament::card>
@@ -86,7 +92,7 @@
     <x-filament::card>
         {{ $this->form }}
         <div class="mt-4 flex justify-center">
-            <x-filament::button icon="heroicon-m-sparkles" color="primary" wire:click='confirm'
+            <x-filament::button icon="heroicon-m-sparkles" color="success" wire:click='confirm'
                 class="flex items-center">
                 {{ __('Review and Confirm') }}
             </x-filament::button>
