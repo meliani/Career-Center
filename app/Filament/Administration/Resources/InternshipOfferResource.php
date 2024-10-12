@@ -11,6 +11,8 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Parfaitementweb\FilamentCountryField\Forms\Components\Country;
+use Parfaitementweb\FilamentCountryField\Tables\Columns\CountryColumn;
 
 class InternshipOfferResource extends BaseResource
 {
@@ -36,12 +38,12 @@ class InternshipOfferResource extends BaseResource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('year_id')
-                    ->numeric(),
+                // Forms\Components\Select::make('year_id')
+                //     ->relationship('year'),
                 Forms\Components\TextInput::make('organization_name')
                     ->maxLength(191),
-                Forms\Components\TextInput::make('country')
-                    ->maxLength(191),
+                Country::make('country')
+                    ->searchable(),
                 Forms\Components\TextInput::make('internship_type'),
                 Forms\Components\TextInput::make('responsible_fullname')
                     ->maxLength(191),
@@ -90,7 +92,7 @@ class InternshipOfferResource extends BaseResource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('organization_name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('country')
+                CountryColumn::make('country')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('internship_type'),
                 Tables\Columns\TextColumn::make('responsible_fullname')
