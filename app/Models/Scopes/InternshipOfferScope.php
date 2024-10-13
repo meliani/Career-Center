@@ -17,6 +17,15 @@ class InternshipOfferScope implements Scope
     {
         if (auth()->check()) {
             if (Auth::user() instanceof Student) {
+                // check student level with internship_level, FirstYear,2,3 and  FinalYearInternship TechnicalInternship' 'IntroductoryInternship';
+
+                if (Auth::user()->level->value == 'FirstYear' || Auth::user()->level->value == 'SecondYear') {
+                    $builder->where('internship_level', '=', 'IntroductoryInternship')
+                        ->orWhere('internship_level', '=', 'TechnicalInternship');
+                } elseif (Auth::user()->level->value == 'ThirdYear') {
+                    $builder->where('internship_level', '=', 'FinalYearInternship');
+                }
+
                 $builder->where('status', '=', 'Published');
 
                 return;

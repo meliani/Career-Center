@@ -7,6 +7,7 @@ use App\Filament\Actions\Action\Processing\GenerateApprenticeshipAgreementAction
 use App\Filament\App\Resources\ApprenticeshipResource\Pages;
 use App\Filament\Core\StudentBaseResource;
 use App\Models\Apprenticeship;
+use App\Models\Student;
 use App\Services\Filament\Forms\ApprenticeshipAgreementForm;
 use Filament;
 use Filament\Forms\Form;
@@ -18,6 +19,7 @@ use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
 
 class ApprenticeshipResource extends StudentBaseResource
@@ -44,9 +46,21 @@ class ApprenticeshipResource extends StudentBaseResource
         return __(static::$pluralModelLabel);
     }
 
+    public static function canAccess(): bool
+    {
+        // check if auth is student and check level if its a first or secondYear
+        if (Auth::user() instanceof Student) {
+            if (Auth::user()->level->value == 'FirstYear' || Auth::user()->level->value == 'SecondYear') {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public static function form(Form $form): Form
     {
-        return $form->schema((new ApprenticeshipAgreementForm())->getSchema());
+        return $form->schema((new ApprenticeshipAgreementForm)->getSchema());
     }
 
     public static function table(Table $table): Table

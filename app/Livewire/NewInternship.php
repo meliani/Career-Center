@@ -219,19 +219,15 @@ class NewInternship extends Page implements HasForms
 
     public function create(): void
     {
+
         $data = $this->form->getState();
-        // if (is_array($data['attached_file'] ?? null)) {
-        //     $data['attached_file'] = json_encode($data['attached_file']);
-        // }
-        // if (is_array($data['tags'] ?? null)) {
-        //     $data['tags'] = json_encode($data['tags']);
-        // }
+        // Attach the current year
+        $data['year_id'] = Year::current()->id;
+
+        // Update the status to "submitted"
+        $data['status'] = 'Submitted';
+
         $record = InternshipOffer::create($data);
-
-        // $record->tags()->sync($data['tags'] ?? []);
-
-        // $record->save();
-
         $this->form->model($record)->saveRelationships();
 
         $this->submitted = true;

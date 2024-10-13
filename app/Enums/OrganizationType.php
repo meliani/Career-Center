@@ -3,10 +3,9 @@
 namespace App\Enums;
 
 use Filament\Support\Contracts\HasColor;
-use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
 
-enum OrganizationType: string implements HasColor, HasIcon, HasLabel
+enum OrganizationType: string implements HasColor, HasLabel
 {
     case Company = 'Company';
     case NGO = 'NGO';

@@ -20,7 +20,9 @@ class InternshipOffer extends Model
 
     protected $fillable = [
         'year_id',
+        'internship_level',
         'organization_name',
+        'organization_type',
         'country',
         'internship_type',
         'responsible_fullname',
@@ -47,12 +49,15 @@ class InternshipOffer extends Model
     ];
 
     protected $casts = [
-        'recruting_type' => 'string',
+        'recruting_type' => Enums\RecrutingType::class,
         'status' => Enums\OfferStatus::class,
+        'internship_level' => Enums\InternshipLevel::class,
         'applyable' => 'boolean',
         'expire_at' => 'date',
         'internship_type' => Enums\InternshipType::class,
         'currency' => Enums\Currency::class,
+        'organization_type' => Enums\OrganizationType::class,
+        'countr',
     ];
 
     protected $dates = [
@@ -90,13 +95,13 @@ class InternshipOffer extends Model
     // {
     //     return $this->internship_duration . ' ' . __('months');
     // }
-    // public function getCountry()
-    // {
-    //     return $this->attributes['country'] ?? null; // Example logic
-    // }
+    public function getCountry()
+    {
+        return $this->attributes['country'] ?? null; // Example logic
+    }
 
-    // public function getCountryAttribute()
-    // {
-    //     return $this->getCountriesList()[$this->getCountry()];
-    // }
+    public function getCountryAttribute()
+    {
+        return $this->getCountriesList()[$this->getCountry()] ?? null;
+    }
 }

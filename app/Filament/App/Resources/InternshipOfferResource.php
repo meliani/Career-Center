@@ -97,9 +97,11 @@ class InternshipOfferResource extends StudentBaseResource
                 // Tables\Columns\TextColumn::make('year_id')
                 //     ->numeric()
                 //     ->sortable(),
+                Tables\Columns\TextColumn::make('internship_level')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('organization_name')
                     ->searchable()
-                    ->limit(20),
+                    ->limit(30),
                 Tables\Columns\TextColumn::make('project_title')
                     ->limit(30),
 
@@ -112,37 +114,46 @@ class InternshipOfferResource extends StudentBaseResource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('internship_type'),
                 Tables\Columns\TextColumn::make('responsible_name')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('responsible_occupation')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 // Tables\Columns\TextColumn::make('responsible_phone')
                 //     ->searchable(),
                 // Tables\Columns\TextColumn::make('responsible_email')
                 //     ->searchable(),
                 Tables\Columns\TextColumn::make('internship_location')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
-                Tables\Columns\TextColumn::make('keywords')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('attached_file')
-                    ->searchable()
-                    ->url(fn (InternshipOffer $record) => Storage::url($record->attached_file), shouldOpenInNewTab: true),                Tables\Columns\TextColumn::make('internship_duration')
+
+                // Tables\Columns\TextColumn::make('attached_file')
+                //     ->searchable()
+                //     ->url(fn (InternshipOffer $record) => Storage::url($record->attached_file), shouldOpenInNewTab: true),
+                Tables\Columns\TextColumn::make('internship_duration')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->suffix(__(' months')),
                 Tables\Columns\TextColumn::make('remuneration')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('currency')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
-                Tables\Columns\TextColumn::make('workload')
-                    ->numeric()
-                    ->sortable(),
+                // Tables\Columns\TextColumn::make('workload')
+                // ->toggleable(isToggledHiddenByDefault: true)
+                //     ->numeric()
+                //     ->sortable(),
                 // Tables\Columns\TextColumn::make('recruting_type'),
                 Tables\Columns\TextColumn::make('application_email')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 // Tables\Columns\TextColumn::make('status'),
                 // Tables\Columns\TextColumn::make('applyable'),
                 Tables\Columns\TextColumn::make('expire_at')
                     ->date()
-                    ->sortable(),
+                    ->sortable()
+                    ->badge(),
                 // Tables\Columns\TextColumn::make('created_at')
                 //     ->dateTime()
                 //     ->sortable()
@@ -253,7 +264,7 @@ class InternshipOfferResource extends StudentBaseResource
                         //     ->placeholder('No currency specified'),
                         Infolists\Components\TextEntry::make('workload')
                             ->suffix(__(' hours'))
-                            ->placeholder('No workload specified'),
+                            ->placeholder(__('No workload specified')),
                         Infolists\Components\TextEntry::make('recruting_type')
                             ->placeholder('No recruiting type specified'),
                         Infolists\Components\TextEntry::make('application_email')

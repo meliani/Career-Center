@@ -35,7 +35,7 @@ class Year extends Core\BackendBaseModel
 
     public static function current()
     {
-        return Year::latest()->first();
+        return self::where('is_current', true)->first();
     }
 
     /**
