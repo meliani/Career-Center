@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Enums;
 use App\Models\InternshipOffer;
+use App\Models\Year;
 use Filament\Forms;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
