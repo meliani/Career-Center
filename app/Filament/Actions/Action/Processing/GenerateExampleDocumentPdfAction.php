@@ -24,8 +24,8 @@ class GenerateExampleDocumentPdfAction extends Action
         $static->configure()->action(function (array $data, DocumentTemplate $documentTemplate): void {
             if ($documentTemplate->template_type == 'sheet') {
 
-                $template_view = 'pdf.templates.' . $documentTemplate->level . '.Defenses.evaluation_sheet';
-                $pdf_path = 'storage/document_models/defenses/' . $documentTemplate->level;
+                $template_view = 'pdf.templates.' . $documentTemplate->level->value . '.Defenses.evaluation_sheet';
+                $pdf_path = 'storage/document_models/defenses/' . $documentTemplate->level->value;
                 $pdf_file_name = 'evaluation-sheet' . Str::slug('example') . '-' . time() . hash('sha256', 123) . '.pdf';
 
                 if (! File::exists($pdf_path)) {
@@ -50,8 +50,8 @@ class GenerateExampleDocumentPdfAction extends Action
             $qrCodeSvg = UrlService::getQrCodeSvg($verificationUrl);
 
             // Génération du PDF
-            $template_view = 'pdf.templates.' . $documentTemplate->level . '.agreement_template';
-            $pdf_path = 'storage/pdf/example_agreements/' . $documentTemplate->level;
+            $template_view = 'pdf.templates.' . $documentTemplate->level->value . '.agreement_template';
+            $pdf_path = 'storage/pdf/example_agreements/' . $documentTemplate->level->value;
             $pdf_file_name = 'convention-de-stage-' . Str::slug('example') . '-' . time() . hash('sha256', 123) . '.pdf';
 
             if (! File::exists($pdf_path)) {
