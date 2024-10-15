@@ -4,12 +4,12 @@
 
 <head>
     <meta charset="utf-8">
-    <title>INPT Entreprises</title>
+    <title>{{ __('Career Center') }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
-    <meta name="description" content="This is meta description">
-    <meta name="author" content="Themefisher">
-    <link rel="shortcut icon" href="frontpage/images/favicon.png" type="image/x-icon">
-    <link rel="icon" href="frontpage/images/favicon.png" type="image/x-icon">
+    <meta name="description" content="Career Center">
+    <meta name="author" content="meliani">
+    <link rel="shortcut icon" href="{{ asset('/svg/logo_entreprises_round.svg') }}" type="image/x-icon">
+    <link rel="icon" href="{{ asset('/svg/logo_entreprises_round.svg') }}" type="image/x-icon">
 
     <!-- # Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -34,7 +34,7 @@
             <div class="container">
                 <a class="navbar-brand" href="/">
                     <img loading="preload" decoding="async" class="img-fluid" width="280"
-                        src="frontpage/images/logo_entreprises.svg" alt="Wallet">
+                        src="frontpage/images/logo_entreprises.svg" alt="logo">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -43,25 +43,43 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav m-auto mb-2 mb-lg-0">
-                        <!-- Navigation items go here -->
+                        {{-- a menu and its submenus to publish offers and check existing ones --}}
                     </ul>
                     <div class="d-flex flex-column flex-lg-row">
                         {{-- <a href="/app" class="btn btn-outline-primary mb-2 mb-lg-0 mr-lg-2 me-3">
                             {{__('Student login')}}
                         </a> --}}
-                        <a href="/backend" class="btn btn-outline-primary mb-2 mb-lg-0 mr-lg-2 me-3">
-                            {{__('Teacher login')}}</a>
+
                         <ul class="navbar-nav">
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button"
+                                <a class="nav-link dropdown-toggle" href="#" id="internship_offers" role="button"
                                     data-bs-toggle="dropdown" aria-expanded="true" style="padding-right: 1rem;">
-                                    {{__('Language')}}
+                                    {{__('Internship offers')}}
                                 </a>
-                                <ul class="dropdown-menu" aria-labelledby="languageDropdown">
-                                    <li><a class="dropdown-item" href="{{ url('lang/en') }}">{{__('English')}}</a></li>
-                                    <li><a class="dropdown-item" href="{{ url('lang/fr') }}">{{__('French')}}</a></li>
+                                <ul class="dropdown-menu" aria-labelledby="internship_offers">
+                                    <li><a class="dropdown-item" href="{{ route('new-internship') }}">
+                                            {{__('Post an internship offer')}}</a></li>
+                                    <li><a class="dropdown-item"
+                                            href="{{ route('filament.app.resources.internship-offers.index') }}">
+                                            {{__('Ongoing offers')}} (INPT)</a></li>
                                 </ul>
                             </li>
+                            <li>
+                                <a href="/backend" class="btn btn-outline-primary mb-2 mb-lg-0 mr-lg-2 me-3">
+                                    {{__('Teacher login')}}</a>
+                            </li>
+                            {{-- <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="true" style="padding-right: 1rem;">
+                                    {{ __('Language') }} ({{ App::getLocale() }})
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="languageDropdown">
+                                    <li><a class="dropdown-item" href="{{ route('changeLang', ['locale' => 'en']) }}">
+                                            {{ __('English') }}</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('changeLang', ['locale' => 'fr']) }}">
+                                            {{ __('French') }}</a></li>
+                                </ul>
+                            </li> --}}
                         </ul>
                     </div>
                 </div>
@@ -75,7 +93,9 @@
             <div class="row align-items-center justify-content-center">
                 <div class="col-lg-6 mb-5 mb-lg-0">
                     <div class="block text-center text-lg-start pe-0 pe-xl-5">
-                        <h1 class="text mb-4">Nous accompagnons vos premiers pas vers l’entreprise</h1>
+                        <h1 class="text mb-4">
+                            {{__('We support you in your first steps towards business')}}.
+                        </h1>
                         <!-- <p class="mb-4">Unlocking Potential, Igniting Excellence</p>  -->
                         <p class="mb-4">L'équipe de la direction adjointe des stages et relations entreprises vous
                             accompagne dans vos premiers pas vers l'entreprise. Votre carrière se construit dès
