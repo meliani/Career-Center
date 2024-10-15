@@ -51,7 +51,7 @@ class ProcessBounceEmails extends Command
                 $bounceData = $this->parseBounce($body, $headers);
                 if ($bounceData) {
                     if ($this->option('preview')) {
-                        $this->previewBounce($message);
+                        $this->previewBounce($message, $bounceData);
                     } else {
                         $this->line("Processing bounce for {$email} ({$bounceData['reason']})");
                         $this->updateEmailStatus($email, $bounceData['reason']);
@@ -70,6 +70,19 @@ class ProcessBounceEmails extends Command
     {
         // Detect common bounce indicators
         $patterns = [
+            // '/delivery[^\n]*failed/i',
+            // '/user[^\n]*unknown/i',
+            // '/mailbox[^\n]*full/i',
+            // '/recipient[^\n]*not[^\n]*found/i',
+            // '/user[^\n]*does[^\n]*not[^\n]*exist/i',
+            // '/account[^\n]*disabled/i',
+            // '/not[^\n]*deliverable/i',
+            // '/permanent[^\n]*error/i',
+            // '/undelivered[^\n]*mail/i',
+            // '/returned[^\n]*to[^\n]*sender/i',
+            // '/user[^\n]*not[^\n]*known/i',
+            // '/unrouteable[^\n]*address/i',
+            // '/delivery[^\n]*failed/i',
             '/delivery[^\n]*failed/i',
             '/user[^\n]*unknown/i',
             '/mailbox[^\n]*full/i',
@@ -82,6 +95,35 @@ class ProcessBounceEmails extends Command
             '/returned[^\n]*to[^\n]*sender/i',
             '/user[^\n]*not[^\n]*known/i',
             '/unrouteable[^\n]*address/i',
+            '/invalid[^\n]*address/i',
+            '/host[^\n]*unknown/i',
+            '/no[^\n]*route[^\n]*to[^\n]*host/i',
+            '/message[^\n]*undeliverable/i',
+            '/unable[^\n]*to[^\n]*deliver/i',
+            '/failed[^\n]*delivery/i',
+            '/mail[^\n]*rejected/i',
+            '/no[^\n]*mail[^\n]*server[^\n]*available/i',
+            '/relay[^\n]*denied/i',
+            '/unknown[^\n]*recipient/i',
+            '/cannot[^\n]*deliver/i',
+            '/fatal[^\n]*error/i',
+            '/quota[^\n]*exceeded/i',
+            '/domain[^\n]*not[^\n]*found/i',
+            '/local[^\n]*delivery[^\n]*failed/i',
+            '/address[^\n]*does[^\n]*not[^\n]*exist/i',
+            '/invalid[^\n]*mailbox/i',
+            '/temporary[^\n]*failure/i',
+            '/remote[^\n]*server[^\n]*unavailable/i',
+            '/delivery[^\n]*status[^\n]*notification[^\n]*failure/i',
+            '/non[^\n]*remis/i',
+            '/mail[^\n]*delivery[^\n]*failure/i',
+            '/mail[^\n]*delivery[^\n]*failed/i',
+            '/failure[^\n]*notice/i',
+            '/postmaster[^\n]*email[^\n]*delivery[^\n]*failure/i',
+            '/undeliverable[^\n]*/i',
+            '/undelivered[^\n]*mail[^\n]*returned[^\n]*to[^\n]*sender/i',
+            '/delivery[^\n]*status[^\n]*notification[^\n]*delay/i',
+
         ];
 
         foreach ($patterns as $pattern) {
@@ -95,11 +137,11 @@ class ProcessBounceEmails extends Command
 
     private function parseBounce($body, $headers)
     {
-        // Extract the email address and reason from the email body or headers
+        // Extract the email address from the email body or headers
         preg_match('/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i', $body, $matches);
         $email = $matches[0] ?? null;
 
-        // Determine the bounce reason from common patterns
+        // Define the bounce reason with updated patterns
         $reason = 'unknown';
         $patterns = [
             'user not exists' => '/user[^\n]*does[^\n]*not[^\n]*exist/i',
@@ -122,8 +164,14 @@ class ProcessBounceEmails extends Command
             'server busy' => '/server[^\n]*busy/i',
             'service unavailable' => '/service[^\n]*unavailable/i',
             'timeout' => '/timeout/i',
-            // Add the new pattern for "invalid recipients"
             'invalid recipients' => '/invalid[^\n]*recipients/i',
+            'failure notice' => '/failure[^\n]*notice/i',
+            'postmaster email failure' => '/postmaster[^\n]*email[^\n]*delivery[^\n]*failure/i',
+            'undelivered mail' => '/undelivered[^\n]*mail[^\n]*returned[^\n]*to[^\n]*sender/i',
+            'non-deliverable' => '/undeliverable[^\n]*/i',
+            'delivery status delay' => '/delivery[^\n]*status[^\n]*notification[^\n]*delay/i',
+            'mail delivery failure' => '/mail[^\n]*delivery[^\n]*failure/i',
+            'permanent failure' => '/undeliverable[^\n]*stages[^\n]*pfe[^\n]*pour[^\n]*les[^\n]*élèves[^\n]*ingénieurs/i',
         ];
 
         foreach ($patterns as $key => $pattern) {
@@ -150,12 +198,15 @@ class ProcessBounceEmails extends Command
 
     }
 
-    private function previewBounce($message)
+    private function previewBounce($message, $bounceData)
     {
         $date = new DateTime($message->getDate());
         $from = $message->getFrom()[0] ? $message->getFrom()[0]->mail : 'Unknown sender';
+        $subject = $message->getSubject() ?? 'No subject';
+        $bouncedEmail = $this->getBouncedEmail($message) ?? 'No bounced email';
+
         // $this->error("Subject: {$message->getSubject()} | From: {$from} | Date: " . $date->format('Y-m-d H:i:s'));
-        $this->error("{$this->getBouncedEmail($message)}From: {$from} | Date: " . $date->format('Y-m-d H:i:s'));
+        $this->error("Bounced Email: {$bouncedEmail} | From: {$from} | Date: " . $date->format('Y-m-d H:i:s') . " | Reason: {$bounceData['reason']}");
     }
 
     private function getBouncedEmail($message)
