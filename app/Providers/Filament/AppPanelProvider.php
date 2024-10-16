@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\App\Pages\LoginStudent;
 use App\Filament\App\Pages\RegisterStudent;
 use App\Filament\App\Pages\WelcomeDashboard;
 use Filament\Http\Middleware\Authenticate;
@@ -9,7 +10,6 @@ use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Panel;
 use Filament\PanelProvider;
-use Filament\Support\Colors\Color;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -23,6 +23,7 @@ class AppPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
+            ->viteTheme('resources/css/filament/app/theme.css')
             // ->topbar(false)
             ->topNavigation()
             ->authGuard('students')
@@ -31,12 +32,7 @@ class AppPanelProvider extends PanelProvider
             ->path('app')
             ->colors(
                 \App\Services\ColorService::studentsAppColorsOfTheDay()
-
-                // [
-                //     'primary' => Color::Sky,
-                // ]
             )
-
             ->passwordReset()
             ->emailVerification()
             ->profile(isSimple: false) //isSimple: true)
@@ -44,6 +40,7 @@ class AppPanelProvider extends PanelProvider
             // ->default()
             // ->brandName(__('Engineer portal'))
             ->login()
+            // ->login(LoginStudent::class)
             // ->registration(RegisterStudent::class)
             ->databaseNotifications()
             // ->databaseNotificationsPolling('30s')
@@ -69,7 +66,7 @@ class AppPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
-            ])
+            ], isPersistent: true)
             ->authMiddleware([
                 Authenticate::class,
             ])
