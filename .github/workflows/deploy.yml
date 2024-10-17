@@ -25,3 +25,7 @@ jobs:
       - name: Move files and execute deployment script on server
         run: |
           ssh -o StrictHostKeyChecking=no elmeliani@carrieres.inpt.ac.ma 'rsync -avz --exclude storage --exclude public --exclude .env --exclude vendor /tmp/careers_backend_temp/ /var/www/html/careers_backend/'
+     - name: deploy css and js
+        run: |
+          rsync -avz -e "ssh -o StrictHostKeyChecking=no -i private_key" public/build/ elmeliani@carrieres.inpt.ac.ma:/var/www/html/careers_backend/public/build/
+          ssh -o StrictHostKeyChecking=no -i private_key elmeliani@carrieres.inpt.ac.ma "cd /var/www/html/careers_backend && php artisan config:cache && php artisan route:cache && php artisan view:cache && php artisan cache:clear"
