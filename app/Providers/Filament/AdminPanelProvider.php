@@ -24,6 +24,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Jeffgreco13\FilamentBreezy\BreezyCore;
 use JibayMcs\FilamentTour\FilamentTourPlugin;
@@ -75,9 +76,9 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->databaseNotifications()
             // ->databaseNotificationsPolling('30s')
-            ->brandLogo(asset('/svg/logo_entreprises.svg'))
+            ->brandLogo(asset('/svg/logo_entreprises_vectorized.svg'))
+            ->darkModeBrandLogo(asset('/svg/logo_entreprises_white_vectorized.svg'))
             ->favicon(asset('/svg/logo_entreprises_round.svg'))
-            ->darkModeBrandLogo(asset('/svg/logo_entreprises_white.svg'))
             ->colors(
                 \App\Services\ColorService::colorsOfTheDay()
             )
@@ -257,7 +258,13 @@ class AdminPanelProvider extends PanelProvider
                         ->enableTwoFactorAuthentication()
                         ->avatarUploadComponent(fn ($fileUpload) => $fileUpload->disableLabel())
                         ->enableSanctumTokens(
-                            permissions: ['view'] // optional, customize the permissions (default = ["create", "view", "update", "delete"])
+                            condition: true,
+                            permissions: [
+                                'view',
+                                'create',
+                                'update',
+                                'delete',
+                            ] // customize the permissions (default = ["create", "view", "update", "delete"])
                         ),
 
                 ]

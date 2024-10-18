@@ -5,6 +5,7 @@ use App\Filament\Org\Pages;
 use App\Http\Controllers\DiplomaVerificationController;
 use App\Http\Controllers\PVVerificationController;
 use App\Http\Controllers\QrUrlDecoder;
+use App\Models\DefenseSync;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -54,8 +55,27 @@ Route::get('/publish-internship', \App\Livewire\NewInternship::class)->name('new
 Route::get('/publier-un-evenement', \App\Livewire\NewMidweekEvent::class)->name('new-midweek-event');
 
 Route::get('/soutenances', function () {
-    $connector = new GlobalDefenseCalendarConnector;
-    $data = $connector->getDefenses(); // Assuming fetchData() is a method to get the data
+    // $connector = new GlobalDefenseCalendarConnector;
+    // $data = $connector->getDefenses(); // Assuming fetchData() is a method to get the data
+
+    $data = DefenseSync::all()->map(function ($defense) {
+        return collect([
+            'Date Soutenance' => $defense->date_soutenance,
+            'Heure' => $defense->heure,
+            'Autorisation' => $defense->autorisation,
+            'Lieu' => $defense->lieu,
+            'ID PFE' => $defense->id_pfe,
+            "Nom de l'étudiant" => $defense->nom_etudiant,
+            'Filière' => $defense->filiere,
+            'Encadrant Interne' => $defense->encadrant_interne,
+            'Nom et Prénom Examinateur 1' => $defense->examinateur_1,
+            'Nom et Prénom Examinateur 2' => $defense->examinateur_2,
+            'remarques' => $defense->remarques,
+            'convention signée' => $defense->convention_signee,
+            'accord encadrant interne' => $defense->accord_encadrant_interne,
+            'fiche evaluation entreprise' => $defense->fiche_evaluation_entreprise,
+        ]);
+    });
 
     return view('livewire.defense-calendar', ['data' => $data]);
 })->name('globalDefenseCalendar');

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\DefenseController;
 use App\Http\Resources\TicketResource;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
@@ -30,3 +31,6 @@ Route::middleware('auth:sanctum')->get('/tickets', function (Request $request) {
 });
 Route::get('/login', '\App\Http\Controllers\Api\AuthController@login')->name('login');
 // Route::apiResource('/*', App\Http\Controllers\Api\AuthController::class);
+
+Route::middleware('auth:sanctum')->post('defenses', [DefenseController::class, 'store']);
+Route::get('defenses', [DefenseController::class, 'index']);
