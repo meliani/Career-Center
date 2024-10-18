@@ -61,7 +61,11 @@
                                             {{__('Post an internship offer')}}</a></li>
                                     <li><a class="dropdown-item"
                                             href="{{ route('filament.app.resources.internship-offers.index') }}">
-                                            {{__('Ongoing offers')}} (INPT)</a></li>
+                                            {{ $internshipOffersCount }} {{__('Ongoing offers')}}
+                                            <p>
+                                                ( {{ __('Dedicated to INPT students') }} )
+                                            </p>
+                                        </a></li>
                                 </ul>
                             </li>
                             <li>
