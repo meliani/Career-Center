@@ -2,7 +2,7 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\App\Pages\LoginStudent;
+use App\Filament\App\Pages\Auth\Login;
 use App\Filament\App\Pages\RegisterStudent;
 use App\Filament\App\Pages\WelcomeDashboard;
 use Filament\Http\Middleware\Authenticate;
@@ -44,9 +44,9 @@ class AppPanelProvider extends PanelProvider
             // ->registration(RegisterStudent::class)
             ->databaseNotifications()
             // ->databaseNotificationsPolling('30s')
-            ->brandLogo(asset('/svg/logo_entreprises.svg'))
+            ->brandLogo(asset('/svg/logo_entreprises_vectorized.svg'))
             ->favicon(asset('/svg/logo_entreprises_round.svg'))
-            ->darkModeBrandLogo(asset('/svg/logo_entreprises_white.svg'))
+            ->darkModeBrandLogo(asset('/svg/logo_entreprises_white_vectorized.svg'))
 
             ->discoverResources(in: app_path('Filament/App/Resources'), for: 'App\\Filament\\App\\Resources')
             ->discoverPages(in: app_path('Filament/App/Pages'), for: 'App\\Filament\\App\\Pages')
@@ -91,6 +91,7 @@ class AppPanelProvider extends PanelProvider
                 // ->enableSanctumTokens(
                 //     permissions: ['view'] // optional, customize the permissions (default = ["create", "view", "update", "delete"])
                 // ),
-            ]);
+            ])
+            ->login(Login::class);
     }
 }
