@@ -24,34 +24,23 @@ use Illuminate\Support\Facades\Route;
 
 // });
 Route::get('/', function () {
-    return view('welcome');
+    $internshipOffersCount = \App\Models\InternshipOffer::withoutTrashed()
+        // ->where('status', 'Published')
+        ->where('internship_level', 'FinalYearInternship')->count();
+    // dd($internshipOffersCount);
+
+    return view('welcome', [
+        'internshipOffersCount' => $internshipOffersCount,
+    ]);
 })->name('home');
 Route::get('lang/{lang}', 'App\Http\Controllers\LanguageController@switchLang');
-
-// Route::get('/', function () {
-//     return redirect('/backend');
-// });
-// Route::get('/programCoordinator', function () {
-//     return redirect('/programCoordinator/login');
-// });
 
 // Route::get('/url/{version}/{cipher}', Pages\QrResponse::class);
 // Route::get('/url', QrUrlDecoder::class);
 Route::get('/verify-agreement', QrUrlDecoder::class);
-Route::get(
-    '/verify-diploma/{verification_code}',
-    DiplomaVerificationController::class
-)
-    ->name('diploma.verify');
-Route::get(
-    '/verify-diploma/',
-    DiplomaVerificationController::class
-);
-Route::get(
-    '/verify-deliberation-pv/{verification_code}',
-    PVVerificationController::class
-)
-    ->name('deliberation-pv.verify');
+Route::get('/verify-diploma/{verification_code}', DiplomaVerificationController::class)->name('diploma.verify');
+Route::get('/verify-diploma/', DiplomaVerificationController::class);
+Route::get('/verify-deliberation-pv/{verification_code}', PVVerificationController::class)->name('deliberation-pv.verify');
 // Route::get('/qr-response', Pages\QrResponse::class)->name('qr-response');
 
 // Route::get('/mail-preview/{email}', 'App\Http\Controllers\MailPreviewController@show');
