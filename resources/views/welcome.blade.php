@@ -34,7 +34,7 @@
             <div class="container">
                 <a class="navbar-brand" href="/">
                     <img loading="preload" decoding="async" class="img-fluid" width="280"
-                        src="frontpage/images/logo_entreprises.svg" alt="logo">
+                        src="{{ asset('/svg/logo_entreprises_vectorized.svg') }}" alt="Logo">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
