@@ -9,6 +9,8 @@ enum StudentLevel: string implements HasLabel
     case FirstYear = 'FirstYear';
     case SecondYear = 'SecondYear';
     case ThirdYear = 'ThirdYear';
+    case AlumniTransitional = 'AlumniTransitional';
+    case Alumni = 'Alumni';
 
     public static function getValues(): array
     {
@@ -23,12 +25,13 @@ enum StudentLevel: string implements HasLabel
             StudentLevel::FirstYear->value,
             StudentLevel::SecondYear->value,
             StudentLevel::ThirdYear->value,
+            StudentLevel::AlumniTransitional->value,
+            StudentLevel::Alumni->value,
         ];
     }
 
     public function getLabel(): ?string
     {
         return __($this->value);
-
     }
 }
