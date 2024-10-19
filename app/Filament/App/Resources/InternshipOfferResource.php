@@ -2,6 +2,7 @@
 
 namespace App\Filament\App\Resources;
 
+use App\Enums;
 use App\Filament\App\Resources\InternshipOfferResource\Pages;
 use App\Filament\Core\StudentBaseResource;
 use App\Models\InternshipOffer;
@@ -13,7 +14,6 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Facades\Storage;
 use Parfaitementweb\FilamentCountryField\Forms\Components\Country;
 use Parfaitementweb\FilamentCountryField\Tables\Columns\CountryColumn;
 
@@ -31,7 +31,7 @@ class InternshipOfferResource extends StudentBaseResource
 
     protected static ?string $title = 'Internship offers';
 
-    protected static ?string $recordTitleAttribute = 'title';
+    protected static ?string $recordTitleAttribute = 'project_title';
 
     // protected static ?string $navigationGroup = 'Students and projects';
 
@@ -93,93 +93,69 @@ class InternshipOfferResource extends StudentBaseResource
     public static function table(Table $table): Table
     {
         return $table
+            ->contentGrid(
+                [
+                    'md' => 2,
+                    'lg' => 2,
+                    'xl' => 2,
+                    '2xl' => 2,
+                ]
+            )
             ->columns([
-                // Tables\Columns\TextColumn::make('year_id')
-                //     ->numeric()
-                //     ->sortable(),
-                Tables\Columns\TextColumn::make('internship_level')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('organization_name')
-                    ->searchable()
-                    ->limit(30),
-                Tables\Columns\TextColumn::make('project_title')
-                    ->limit(30),
+                Tables\Columns\Layout\Split::make([
+                    Tables\Columns\TextColumn::make('organization_name')
+                            // ->description(__('Organization'), position: 'above')
+                        ->toggleable(false)
+                        ->sortable(false)
+                        ->grow(true)
+                        ->weight(\Filament\Support\Enums\FontWeight::Bold),
+                    Tables\Columns\TextColumn::make('internship_type')
+                        ->toggleable(false)
+                        ->sortable(false),
+                    Tables\Columns\TextColumn::make('internship_duration')
+                        ->numeric()
+                        ->toggleable(false)
+                        ->sortable(false)
+                        ->suffix(__(' months')),
+                ]),
+                Tables\Columns\Layout\Split::make([
 
-                // Tables\Columns\TextColumn::make('organization_type')
-                //     ->searchable(),
-                // Tables\Columns\TextColumn::make('organization_id')
-                //     ->numeric()
-                //     ->sortable(),
-                CountryColumn::make('country')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('internship_type'),
-                Tables\Columns\TextColumn::make('responsible_name')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('responsible_occupation')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->searchable(),
-                // Tables\Columns\TextColumn::make('responsible_phone')
-                //     ->searchable(),
-                // Tables\Columns\TextColumn::make('responsible_email')
-                //     ->searchable(),
-                Tables\Columns\TextColumn::make('internship_location')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->searchable(),
+                    Tables\Columns\Layout\Stack::make([
 
-                // Tables\Columns\TextColumn::make('attached_file')
-                //     ->searchable()
-                //     ->url(fn (InternshipOffer $record) => Storage::url($record->attached_file), shouldOpenInNewTab: true),
-                Tables\Columns\TextColumn::make('internship_duration')
-                    ->numeric()
-                    ->sortable()
-                    ->suffix(__(' months')),
-                Tables\Columns\TextColumn::make('remuneration')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('currency')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->searchable(),
-                // Tables\Columns\TextColumn::make('workload')
-                // ->toggleable(isToggledHiddenByDefault: true)
-                //     ->numeric()
-                //     ->sortable(),
-                // Tables\Columns\TextColumn::make('recruting_type'),
-                Tables\Columns\TextColumn::make('application_email')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->searchable(),
-                // Tables\Columns\TextColumn::make('status'),
-                // Tables\Columns\TextColumn::make('applyable'),
-                Tables\Columns\TextColumn::make('expire_at')
-                    ->date()
-                    ->sortable()
-                    ->badge(),
-                // Tables\Columns\TextColumn::make('created_at')
-                //     ->dateTime()
-                //     ->sortable()
-                //     ->toggleable(isToggledHiddenByDefault: true),
-                // Tables\Columns\TextColumn::make('updated_at')
-                //     ->dateTime()
-                //     ->sortable()
-                //     ->toggleable(isToggledHiddenByDefault: true),
-                // Tables\Columns\TextColumn::make('deleted_at')
-                //     ->dateTime()
-                //     ->sortable()
-                //     ->toggleable(isToggledHiddenByDefault: true),
+                        Tables\Columns\TextColumn::make('project_title')
+                            ->description(__('Subject'), position: 'above')
+                            ->toggleable(false)
+                            ->sortable(false),
+                        // CountryColumn::make('country'),
+
+                    ]),
+                ]),
+
+                Tables\Columns\Layout\Split::make([
+                    Tables\Columns\TextColumn::make('application_email')
+                        ->description(__('Application email'), position: 'above')
+                        ->toggleable(false)
+                        ->sortable(false),
+                    Tables\Columns\TextColumn::make('expire_at')
+                        ->description(__('Expiration date'), position: 'above')
+                        ->date()
+                        ->toggleable(false)
+                        ->sortable(false)
+                        ->badge(),
+                ]),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
+                // Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
+                Tables\Actions\Action::make('ApplyToInternshipOffer')
+                    ->label('Apply')
+                    ->icon('heroicon-o-check')
+                    ->color('primary')
+                    ->action(fn ($record) => auth()->user()->applyToInternshipOffer($record))
+                    ->disabled(fn ($record) => auth()->user()->hasAppliedToInternshipOffer($record))
+                    ->visible(fn ($record) => $record->recruting_type === Enums\RecrutingType::SchoolManaged),
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
-                ]),
             ]);
     }
 
@@ -194,19 +170,19 @@ class InternshipOfferResource extends StudentBaseResource
     {
         return [
             'index' => Pages\ListInternshipOffers::route('/'),
-            'create' => Pages\CreateInternshipOffer::route('/create'),
+            // 'create' => Pages\CreateInternshipOffer::route('/create'),
             'view' => Pages\ViewInternshipOffer::route('/{record}'),
-            'edit' => Pages\EditInternshipOffer::route('/{record}/edit'),
+            // 'edit' => Pages\EditInternshipOffer::route('/{record}/edit'),
         ];
     }
 
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
-    }
+    // public static function getEloquentQuery(): Builder
+    // {
+    //     return parent::getEloquentQuery()
+    //         ->withoutGlobalScopes([
+    //             SoftDeletingScope::class,
+    //         ]);
+    // }
 
     public static function infolist(Infolist $infolist): Infolist
     {
@@ -273,7 +249,17 @@ class InternshipOfferResource extends StudentBaseResource
                         // Infolists\Components\TextEntry::make('applyable'),
                         Infolists\Components\TextEntry::make('expire_at')
                             ->date()
-                            ->placeholder('No expiration date specified'),
+                            ->placeholder('No expiration date specified')
+                            ->badge(),
+                    ])
+                    ->headerActions([
+                        \Filament\Infolists\Components\Actions\Action::make('ApplyToInternshipOffer')
+                            ->label('Apply')
+                            ->icon('heroicon-o-check')
+                            ->color('primary')
+                            ->action(fn ($record) => auth()->user()->applyToInternshipOffer($record))
+                            ->disabled(fn ($record) => auth()->user()->hasAppliedToInternshipOffer($record))
+                            ->visible(fn ($record) => $record->recruting_type === Enums\RecrutingType::SchoolManaged),
                     ]),
             ]);
     }

@@ -103,7 +103,7 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
     public static function boot()
     {
         parent::boot();
-        static::addGlobalScope(new Scopes\StudentScope());
+        static::addGlobalScope(new Scopes\StudentScope);
 
         // static::addGlobalScope(function ($query) {
         //     if (auth()->check()) {
@@ -145,7 +145,7 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
         $student = $this;
 
         //send veryfication email
-        $notification = new VerifyEmail();
+        $notification = new VerifyEmail;
         $notification->url = URL::temporarySignedRoute(
             'filament.app.auth.email-verification.verify',
             now()->addMinutes(config('auth.verification.expire', 60)),
@@ -251,5 +251,23 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
         return User::where('role', Role::ProgramCoordinator)
             ->where('program', $this->program)
             ->first();
+    }
+
+    public function applications()
+    {
+        return $this->hasMany(InternshipApplication::class);
+    }
+
+    public function applyToInternshipOffer(InternshipOffer $internshipOffer)
+    {
+        $this->applications()->create([
+            'student_id' => $this->id,
+            'internship_offer_id' => $internshipOffer->id,
+        ]);
+    }
+
+    public function hasAppliedToInternshipOffer(InternshipOffer $internshipOffer)
+    {
+        return $this->applications()->where('internship_offer_id', $internshipOffer->id)->exists();
     }
 }

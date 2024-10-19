@@ -111,4 +111,9 @@ class InternshipOffer extends Model
         $this->save();
 
     }
+
+    public function applications()
+    {
+        return $this->hasMany(InternshipApplication::class);
+    }
 }
