@@ -192,7 +192,6 @@ class ApprenticeshipResource extends StudentBaseResource
                 //     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                // Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
 

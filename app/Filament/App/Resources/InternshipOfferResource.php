@@ -119,9 +119,7 @@ class InternshipOfferResource extends StudentBaseResource
                         ->suffix(__(' months')),
                 ]),
                 Tables\Columns\Layout\Split::make([
-
                     Tables\Columns\Layout\Stack::make([
-
                         Tables\Columns\TextColumn::make('project_title')
                             ->description(__('Subject'), position: 'above')
                             ->toggleable(false)
@@ -152,9 +150,23 @@ class InternshipOfferResource extends StudentBaseResource
                     ->label('Apply')
                     ->icon('heroicon-o-check')
                     ->color('primary')
-                    ->action(fn ($record) => auth()->user()->applyToInternshipOffer($record))
                     ->disabled(fn ($record) => auth()->user()->hasAppliedToInternshipOffer($record))
-                    ->visible(fn ($record) => $record->recruting_type === Enums\RecrutingType::SchoolManaged),
+                    ->visible(fn ($record) => $record->recruting_type === Enums\RecrutingType::SchoolManaged)
+                    ->requiresConfirmation()
+                    ->modalIconColor('success')
+                    ->modalIcon('heroicon-o-check')
+                    ->modalHeading(__('Make sure you profile is up to date'))
+                    ->modalDescription(__('Your CV and other information must be up to date to apply to this internship.'))
+                    ->modalSubmitActionLabel(__('Apply'))
+                    ->color('success')
+                    ->action(function ($record) {
+                        auth()->user()->applyToInternshipOffer($record);
+                        \Filament\Notifications\Notification::make()
+                            ->title(__('Internship offer applied'))
+                            ->success()
+                            ->icon('heroicon-s-check-circle')
+                            ->send();
+                    }),
                 Tables\Actions\ViewAction::make(),
             ]);
     }
@@ -196,6 +208,31 @@ class InternshipOfferResource extends StudentBaseResource
                             Infolists\Components\TextEntry::make('organization_name'),
                             Infolists\Components\TextEntry::make('organization_type'),
                             Infolists\Components\TextEntry::make('country'),
+                        ])
+                        ->headerActions([
+                            \Filament\Infolists\Components\Actions\Action::make('ApplyToInternshipOffer')
+                                ->label('Apply to internship')
+                                ->icon('heroicon-o-check')
+                                ->color('primary')
+
+                                ->disabled(fn ($record) => auth()->user()->hasAppliedToInternshipOffer($record))
+                                ->visible(fn ($record) => $record->recruting_type === Enums\RecrutingType::SchoolManaged)
+                                ->requiresConfirmation()
+                                ->modalIconColor('success')
+                                ->modalIcon('heroicon-o-check')
+                                ->modalHeading(__('Make sure you profile is up to date'))
+                                ->modalDescription(__('Your CV and other information must be up to date to apply to this internship.'))
+                                ->modalSubmitActionLabel(__('Apply'))
+                                ->color('success')
+                                ->action(function ($record) {
+                                    auth()->user()->applyToInternshipOffer($record);
+                                    \Filament\Notifications\Notification::make()
+                                        ->title(__('Internship offer applied'))
+                                        ->success()
+                                        ->icon('heroicon-s-check-circle')
+                                        ->send();
+                                }),
+
                         ]),
                 ]),
                 Infolists\Components\Group::make([
@@ -251,15 +288,6 @@ class InternshipOfferResource extends StudentBaseResource
                             ->date()
                             ->placeholder('No expiration date specified')
                             ->badge(),
-                    ])
-                    ->headerActions([
-                        \Filament\Infolists\Components\Actions\Action::make('ApplyToInternshipOffer')
-                            ->label('Apply')
-                            ->icon('heroicon-o-check')
-                            ->color('primary')
-                            ->action(fn ($record) => auth()->user()->applyToInternshipOffer($record))
-                            ->disabled(fn ($record) => auth()->user()->hasAppliedToInternshipOffer($record))
-                            ->visible(fn ($record) => $record->recruting_type === Enums\RecrutingType::SchoolManaged),
                     ]),
             ]);
     }

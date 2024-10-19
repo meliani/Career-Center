@@ -3,19 +3,25 @@
 namespace App\Filament\App\Resources;
 
 use App\Filament\App\Resources\InternshipApplicationResource\Pages;
+use App\Filament\Core\StudentBaseResource;
 use App\Models\InternshipApplication;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
-class InternshipApplicationResource extends Resource
+class InternshipApplicationResource extends StudentBaseResource
 {
     protected static ?string $model = InternshipApplication::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
+
+    protected static ?string $modelLabel = 'My Internship Application';
+
+    protected static ?string $pluralModelLabel = 'My Internship Applications';
+
+    protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
     {
@@ -39,32 +45,37 @@ class InternshipApplicationResource extends Resource
     {
         return $table
             // ->heading(__('My Internship Applications'))
-            ->contentGrid(
-                [
-                    'md' => 1,
-                    'lg' => 1,
-                    'xl' => 1,
-                    '2xl' => 1,
-                ]
-            )
+            // ->contentGrid(
+            //     [
+            //         'md' => 1,
+            //         'lg' => 1,
+            //         'xl' => 1,
+            //         '2xl' => 1,
+            //     ]
+            // )
             ->columns([
-                Tables\Columns\TextColumn::make('student.full_name')
-                    ->numeric()
-                    ->sortable(),
+                // Tables\Columns\TextColumn::make('student.full_name')
+                //     ->numeric()
+                //     ->sortable(),
                 Tables\Columns\TextColumn::make('internshipOffer.organization_name')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label('Applied at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                // Tables\Columns\TextColumn::make('updated_at')
+                //     ->dateTime()
+                //     ->sortable()
+                //     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
+            ])
+            ->actions([
+                Tables\Actions\DeleteAction::make(),
+                // Tables\Actions\ViewAction::make(),
             ]);
     }
 
