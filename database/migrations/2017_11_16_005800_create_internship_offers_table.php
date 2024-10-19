@@ -14,7 +14,7 @@ class CreateInternshipOffersTable extends Migration
     public function up()
     {
         Schema::create('internship_offers', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->bigInteger('year_id')->unsigned()->nullable();
             $table->enum('internship_level', Enums\InternshipLevel::getArray());
             $table->string('organization_name')->nullable();

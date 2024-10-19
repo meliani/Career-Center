@@ -13,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('job_offers', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->string('organization_name')->nullable();
             $table->enum('organization_type', Enums\OrganizationType::getArray());
             $table->bigInteger('organization_id')->nullable();
