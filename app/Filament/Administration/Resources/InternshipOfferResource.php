@@ -130,6 +130,10 @@ class InternshipOfferResource extends BaseResource
                     ->numeric()
                     ->sortable()
                     ->suffix(__(' months')),
+                Tables\Columns\TextColumn::make('recruting_type')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->searchable(),
+
                 Tables\Columns\TextColumn::make('remuneration')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
@@ -175,7 +179,22 @@ class InternshipOfferResource extends BaseResource
                     Tables\Actions\DeleteBulkAction::make(),
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
-                ]),
+                ])
+                    ->label(__('Delete')),
+                Tables\Actions\BulkAction::make('Publish')
+                    ->label('Publish selection')
+                    ->icon('heroicon-o-check')
+                    ->color('success')
+                    ->action(
+                        function ($records) {
+                            $records->each->publish();
+                            \Filament\Notifications\Notification::make()
+                                ->title(__('Internship offers published'))
+                                ->success()
+                                ->icon('heroicon-s-check-circle')
+                                ->send();
+                        }
+                    ),
             ]);
     }
 

@@ -104,4 +104,11 @@ class InternshipOffer extends Model
     {
         return $this->getCountriesList()[$this->getCountry()] ?? null;
     }
+
+    public function publish()
+    {
+        $this->status = Enums\OfferStatus::Published;
+        $this->save();
+
+    }
 }
