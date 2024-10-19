@@ -9,7 +9,7 @@ enum OrganizationType: string implements HasColor, HasLabel
 {
     case Company = 'Company';
     case NGO = 'NGO';
-    case PublicInstitution = 'Public Institution';
+    case PublicInstitution = 'PublicInstitution';
 
     public function getLabel(): ?string
     {
