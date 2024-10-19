@@ -3,10 +3,10 @@
 @config 'tailwind.config.js';
 
 
-.fi-simple-layout {
+/* .fi-simple-layout {
     @apply bg-cyan-100/50;
 }
 
 .fi-simple-main {
     @apply bg-emerald-100/50;
-}
+} */
