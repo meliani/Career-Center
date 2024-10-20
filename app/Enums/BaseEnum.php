@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-abstract class BaseEnum
+abstract class BaseEnum implements HasLabel
 {
     public static function getValues(): array
     {

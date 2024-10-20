@@ -270,4 +270,29 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
     {
         return $this->applications()->where('internship_offer_id', $internshipOffer->id)->exists();
     }
+
+    public function passTheYear($year, $level)
+    {
+        $this->year_id = $year->id;
+        $this->level = $level;
+        $this->save();
+    }
+
+    public function PassToNextLevel()
+    {
+        $this->level = $this->level->next();
+        $this->save();
+    }
+
+    public function changeAcademicYear($year)
+    {
+        $this->year_id = $year;
+        $this->save();
+    }
+
+    public function changeLevel($level)
+    {
+        $this->level = $level;
+        $this->save();
+    }
 }

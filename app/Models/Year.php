@@ -38,6 +38,18 @@ class Year extends Core\BackendBaseModel
         return self::where('is_current', true)->first();
     }
 
+    public static function getYearsForSelect($number = 2)
+    {
+        $years = [];
+
+        $currentYearId = Year::current()->id;
+
+        $years = Year::whereBetween('id', [$currentYearId - $number - 1, $currentYearId + 1])->pluck('title', 'id');
+
+        return $years;
+
+    }
+
     /**
      * Get the Internships for the Year.
      */

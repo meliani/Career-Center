@@ -112,6 +112,7 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('send-defense-email', [ProjectPolicy::class, 'update']);
 
         Gate::define('manage-projects', fn (User $user) => ($user->isAdministrator() || $user->isAdministrativeSupervisor()));
+        Gate::define('manage-students', fn (User $user) => ($user->isAdministrator()));
         Gate::define('create-token', fn (User $user) => $user->isSuperAdministrator());
 
     }

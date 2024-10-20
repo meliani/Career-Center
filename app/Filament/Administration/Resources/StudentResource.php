@@ -238,15 +238,53 @@ class StudentResource extends Core\BaseResource
                 ])->hidden(fn () => auth()->user()->isAdministrator() === false),
             ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ])->hidden(fn () => auth()->user()->isAdministrator() === false)
+                    ->label(false)
+                    ->icon('heroicon-o-ellipsis-horizontal-circle'),
 
                 BulkAction\Email\SendGenericEmail::make('Send Email')
                     ->outlined()
                     ->label(__('Send email')),
+
                 Tables\Actions\BulkActionGroup::make([
-                    \pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction::make(),
-                    Tables\Actions\DeleteBulkAction::make(),
-                ])->hidden(fn () => auth()->user()->isAdministrator() === false)
-                    ->label(__('actions')),
+                    Tables\Actions\BulkAction::make('PassToNextLevel')
+                        ->label('Pass to next level')
+                        ->icon('heroicon-o-arrow-right-circle')
+                        ->color('primary')
+                        // ->disabled(fn ($records) => $records->contains(fn ($record) => $record->level->is(Enums\StudentLevel::FifthYear)))
+                        ->form([
+                            Forms\Components\ToggleButtons::make('level')
+                                ->options(Enums\StudentLevel::class)
+                                ->required(),
+                        ])
+                        ->action(fn ($records) => $records->each->passToNextLevel()),
+                    Tables\Actions\BulkAction::make('ChangeAcademicYear')
+                        ->label('Change academic year')
+                        ->icon('heroicon-o-calendar')
+                        ->color('primary')
+                        ->form([
+                            Forms\Components\Select::make('year_id')
+                                ->options(\App\Models\Year::getYearsForSelect(2))
+                                ->default(\App\Models\Year::current()->id)
+                                ->searchable()
+                                ->required(),
+                        ])
+                        ->action(fn ($records) => $records->each->changeAcademicYear(request('year_id'))),
+                ])
+                    ->outlined()
+                    ->icon('heroicon-o-ellipsis-horizontal-circle')
+                    ->color('primary')
+                    ->size(Filament\Support\Enums\ActionSize::Small)
+                    ->label(__('Mass prossessing'))
+                    ->hidden(fn () => auth()->user()->cannot('manage-students')),
+                \pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction::make()
+                    ->label('Export to Excel')
+                    ->icon('heroicon-o-document')
+                    ->color('primary')
+                    ->hidden(fn () => auth()->user()->cannot('manage-students')),
+
             ]);
     }
 
