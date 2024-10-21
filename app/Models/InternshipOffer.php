@@ -3,17 +3,20 @@
 namespace App\Models;
 
 use App\Enums;
+use CyrildeWit\EloquentViewable\Contracts\Viewable;
+use CyrildeWit\EloquentViewable\InteractsWithViews;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Parfaitementweb\FilamentCountryField\Traits\HasData;
 use Spatie\Tags\HasTags;
 
-class InternshipOffer extends Model
+class InternshipOffer extends Model implements Viewable
 {
     use HasData;
     use HasFactory;
     use HasTags;
+    use InteractsWithViews;
     use SoftDeletes;
 
     protected $table = 'internship_offers';
@@ -57,7 +60,6 @@ class InternshipOffer extends Model
         'internship_type' => Enums\InternshipType::class,
         'currency' => Enums\Currency::class,
         'organization_type' => Enums\OrganizationType::class,
-        'countr',
     ];
 
     protected $dates = [

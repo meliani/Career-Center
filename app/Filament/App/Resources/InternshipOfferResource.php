@@ -198,6 +198,9 @@ class InternshipOfferResource extends StudentBaseResource
 
     public static function infolist(Infolist $infolist): Infolist
     {
+        // dd($infolist->record);
+        views($infolist->record)->record();
+
         return $infolist
             ->schema([
                 Infolists\Components\Group::make([
