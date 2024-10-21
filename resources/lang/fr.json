@@ -560,7 +560,7 @@
     "Midweek Pro Connect is a weekly event that takes place every Wednesday. It is a great opportunity for students and companies to connect and discuss potential internships, job opportunities, and more.": "Midweek Pro Connect est un événement hebdomadaire qui a lieu chaque mercredi. C'est une excellente occasion pour les étudiants et les entreprises de se connecter et de discuter de stages potentiels, d'opportunités d'emploi, et plus encore.",
     "Mister": "Monsieur",
     "Madam": "Madame",
-    "FinalYearInternship": "Stage de fin d'études",
+    "FinalYearInternship": "PFE",
     "IntroductoryInternship": "Stage ouvrier",
     "TechnicalInternship": "Stage technique",
     "OnSite": "Sur site",
@@ -595,5 +595,6 @@
     "Alumni Transition": "Transition lauréat",
     "AlumniTransitional": "En transition lauréat",
     "internship offers": "offres de stage",
-    "internship offer": "offre de stage"
+    "internship offer": "offre de stage",
+    "Published": "Publiée"
 }
