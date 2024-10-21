@@ -12,6 +12,7 @@ use Filament\Infolists\Infolist;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Parfaitementweb\FilamentCountryField\Forms\Components\Country;
 use Parfaitementweb\FilamentCountryField\Tables\Columns\CountryColumn;
@@ -49,6 +50,11 @@ class InternshipOfferResource extends BaseResource
         }
 
         return false;
+    }
+
+    public static function canView(Model $record): bool
+    {
+        return self::canViewAny();
     }
 
     public static function form(Form $form): Form
@@ -223,7 +229,7 @@ class InternshipOfferResource extends BaseResource
     {
         return [
             'index' => Pages\ListInternshipOffers::route('/'),
-            'create' => Pages\CreateInternshipOffer::route('/create'),
+            // 'create' => Pages\CreateInternshipOffer::route('/create'),
             'view' => Pages\ViewInternshipOffer::route('/{record}'),
             'edit' => Pages\EditInternshipOffer::route('/{record}/edit'),
         ];
