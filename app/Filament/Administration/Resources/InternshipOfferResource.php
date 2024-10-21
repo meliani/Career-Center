@@ -110,11 +110,13 @@ class InternshipOfferResource extends BaseResource
     {
         return $table
             ->columns([
-                // Tables\Columns\TextColumn::make('year_id')
-                //     ->numeric()
-                //     ->sortable(),
+                Tables\Columns\TextColumn::make('status')
+                    ->sortable()
+                    ->badge(),
+
                 Tables\Columns\TextColumn::make('internship_level')
-                    ->searchable(),
+                    ->searchable()
+                    ->badge(),
                 Tables\Columns\TextColumn::make('organization_name')
                     ->searchable()
                     ->limit(30),

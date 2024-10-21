@@ -26,7 +26,7 @@ use Illuminate\Support\Facades\Route;
 // });
 Route::get('/', function () {
     $internshipOffersCount = \App\Models\InternshipOffer::withoutTrashed()
-        // ->where('status', 'Published')
+        ->where('status', 'Published')
         ->where('internship_level', 'FinalYearInternship')->count();
     // dd($internshipOffersCount);
 
