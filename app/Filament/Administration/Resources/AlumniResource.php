@@ -23,7 +23,7 @@ class AlumniResource extends BaseResource
 
     protected static ?string $pluralModelLabel = 'Alumni';
 
-    protected static ?string $navigationGroup = 'Alumni';
+    protected static ?string $navigationGroup = 'System';
 
     public static function form(Form $form): Form
     {

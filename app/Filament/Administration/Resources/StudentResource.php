@@ -37,7 +37,7 @@ class StudentResource extends Core\BaseResource
 
     protected static ?string $recordFirstNameAttribute = 'first_name';
 
-    protected static ?string $navigationGroup = 'Students and projects';
+    protected static ?string $navigationGroup = 'System';
 
     public static $User;
 
