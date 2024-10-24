@@ -8,6 +8,7 @@ use CyrildeWit\EloquentViewable\InteractsWithViews;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use NumberFormatter;
 use Parfaitementweb\FilamentCountryField\Traits\HasData;
 use Spatie\Tags\HasTags;
 
@@ -117,5 +118,46 @@ class InternshipOffer extends Model implements Viewable
     public function applications()
     {
         return $this->hasMany(InternshipApplication::class);
+    }
+
+    public function getViewsCountAttribute()
+    {
+        $viewsCount = views($this)->count();
+
+        if ($viewsCount === 0) {
+            return null;
+        }
+
+        return $this->formatNumber($viewsCount) . ' ' . trans_choice('view|views', $viewsCount);
+    }
+
+    public function getUniqueViewsCountAttribute()
+    {
+        $uniqueViewsCount = views($this)->unique()->count();
+
+        if ($uniqueViewsCount === 0) {
+            return null;
+        }
+
+        return $this->formatNumber($uniqueViewsCount) . ' ' . trans_choice('visitor|visitors', $uniqueViewsCount);
+    }
+
+    public function getViewsSummaryAttribute()
+    {
+        $viewsCount = $this->getViewsCountAttribute();
+        $uniqueViewsCount = $this->getUniqueViewsCountAttribute();
+
+        if ($viewsCount === null && $uniqueViewsCount === null) {
+            return null;
+        }
+
+        return ($viewsCount ?? __('No views yet')) . ' ' . __('by') . ' ' . ($uniqueViewsCount ?? __('No unique views yet'));
+    }
+
+    protected function formatNumber($number)
+    {
+        $formatter = new NumberFormatter(app()->getLocale(), NumberFormatter::DECIMAL);
+
+        return $formatter->format($number);
     }
 }

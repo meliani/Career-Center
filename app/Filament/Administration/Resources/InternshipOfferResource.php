@@ -119,9 +119,10 @@ class InternshipOfferResource extends BaseResource
                     ->badge(),
                 Tables\Columns\TextColumn::make('organization_name')
                     ->searchable()
-                    ->limit(30),
+                    ->description(fn (InternshipOffer $record) => $record->views_summary)
+                    ->limit(50),
                 Tables\Columns\TextColumn::make('project_title')
-                    ->limit(30),
+                    ->limit(50),
 
                 // Tables\Columns\TextColumn::make('organization_type')
                 //     ->searchable(),
@@ -175,6 +176,7 @@ class InternshipOfferResource extends BaseResource
                 Tables\Columns\TextColumn::make('expire_at')
                     ->date()
                     ->sortable()
+                    ->since()
                     ->badge(),
                 // Tables\Columns\TextColumn::make('created_at')
                 //     ->dateTime()
