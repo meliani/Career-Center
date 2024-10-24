@@ -154,10 +154,10 @@ class ApprenticeshipResource extends BaseResource
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('parrain.name')
+                Tables\Columns\TextColumn::make('parrain.full_name')
                     ->sortable()
                     ->searchable(false),
-                Tables\Columns\TextColumn::make('supervisor.name')
+                Tables\Columns\TextColumn::make('supervisor.full_name')
                     ->searchable(false)
                     ->sortable(),
                 // Tables\Columns\TextColumn::make('tutor_id')
