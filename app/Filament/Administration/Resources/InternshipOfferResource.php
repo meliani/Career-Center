@@ -9,6 +9,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
+use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -116,49 +117,67 @@ class InternshipOfferResource extends BaseResource
 
                 Tables\Columns\TextColumn::make('internship_level')
                     ->searchable()
-                    ->badge(),
+                    ->badge()
+                    ->description(fn (InternshipOffer $record) => $record->internship_duration ? $record->internship_duration . ' months' : null)
+                    ->label('Level and duration'),
                 Tables\Columns\TextColumn::make('organization_name')
                     ->searchable()
-                    ->description(fn (InternshipOffer $record) => $record->views_summary)
-                    ->limit(50),
+                    // ->description(fn (InternshipOffer $record) => $record->views_summary)
+                    // ->limit(50)
+                    ->weight(FontWeight::Bold)
+                    ->wrap()
+                    // ->width('1%')
+                    ->formatStateUsing(fn (InternshipOffer $record) => $record->organization_name . ' - ' . $record->country)
+                    ->description(fn (InternshipOffer $record) => $record->responsible_name . ' - ' . $record->responsible_occupation)
+                    ->tooltip(fn (InternshipOffer $record) => $record->views_summary)
+                    ->wrapHeader(false),
+                // ->size(Tables\Columns\TextColumn\TextColumnSize::Large)
+                // ->lineClamp(2),
                 Tables\Columns\TextColumn::make('project_title')
                     ->lineClamp(2)
-                    ->limit(70),
-
+                    ->description(fn (InternshipOffer $record) => $record->internship_type->getLabel() . ' - ' . $record->internship_location)
+                    ->limit(60)
+                    ->tooltip(fn (InternshipOffer $record) => $record->project_title)
+                    ->wrap()
+                    ->wrapHeader(false),
+                Tables\Columns\TextColumn::make('views_count')
+                    ->label('Views')
+                    ->numeric()
+                    ->sortable(),
                 // Tables\Columns\TextColumn::make('organization_type')
                 //     ->searchable(),
                 // Tables\Columns\TextColumn::make('organization_id')
                 //     ->numeric()
                 //     ->sortable(),
-                CountryColumn::make('country')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('internship_type'),
-                Tables\Columns\TextColumn::make('keywords')
-                    ->badge(),
-                Tables\Columns\TextColumn::make('views_count')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('responsible_name')
+                // CountryColumn::make('country')
+                //     ->searchable(),
+                // Tables\Columns\TextColumn::make('internship_type'),
+                Tables\Columns\TagsColumn::make('keywords')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
-                Tables\Columns\TextColumn::make('responsible_occupation')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->searchable(),
+
+                // Tables\Columns\TextColumn::make('responsible_name')
+                //     ->toggleable(isToggledHiddenByDefault: true)
+                //     ->searchable()
+                //     ->description(fn (InternshipOffer $record) => $record->responsible_occupation . ' - ' . $record->responsible_email),
+                // Tables\Columns\TextColumn::make('responsible_occupation')
+                //     ->toggleable(isToggledHiddenByDefault: true)
+                //     ->searchable(),
                 // Tables\Columns\TextColumn::make('responsible_phone')
                 //     ->searchable(),
                 // Tables\Columns\TextColumn::make('responsible_email')
                 //     ->searchable(),
-                Tables\Columns\TextColumn::make('internship_location')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->searchable(),
+                // Tables\Columns\TextColumn::make('internship_location')
+                //     ->toggleable(isToggledHiddenByDefault: true)
+                //     ->searchable(),
 
                 // Tables\Columns\TextColumn::make('attached_file')
                 //     ->searchable()
                 //     ->url(fn (InternshipOffer $record) => Storage::url($record->attached_file), shouldOpenInNewTab: true),
-                Tables\Columns\TextColumn::make('internship_duration')
-                    ->numeric()
-                    ->sortable()
-                    ->suffix(__(' months')),
+                // Tables\Columns\TextColumn::make('internship_duration')
+                //     ->numeric()
+                //     ->sortable()
+                //     ->suffix(__(' months')),
                 Tables\Columns\TextColumn::make('recruting_type')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
