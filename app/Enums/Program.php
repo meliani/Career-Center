@@ -15,7 +15,7 @@ enum Program: string implements HasColor, HasIcon, HasLabel
     case SESNUM = 'SESNUM';
     case SMARTICT = 'SMART-ICT';
     case SUD = 'SUD';
-    case NULL = 'Other';
+    // case NULL = 'Other';
 
     public function getLabel(): ?string
     {
@@ -27,7 +27,7 @@ enum Program: string implements HasColor, HasIcon, HasLabel
             self::SESNUM => 'SESNUM',
             self::SMARTICT => 'SMART-ICT',
             self::SUD => 'SUD',
-            self::NULL => __('Other'),
+            // self::NULL => __('Other'),
             // default => 'Other',
         };
     }
@@ -42,7 +42,7 @@ enum Program: string implements HasColor, HasIcon, HasLabel
             self::SESNUM => 'Systèmes Embraqués et Services Numériques',
             self::SMARTICT => "Ingénierie des Technologies de l'Information et de la Communication Intelligentes",
             self::SUD => 'Ingénierie des Systèmes Ubiquitaires et Distribués',
-            self::NULL => __('Other'),
+            // self::NULL => __('Other'),
             // default => 'Undefined',
         };
     }
@@ -57,7 +57,7 @@ enum Program: string implements HasColor, HasIcon, HasLabel
             Program::SESNUM->value,
             Program::SMARTICT->value,
             Program::SUD->value,
-            Program::NULL->value,
+            // Program::NULL->value,
         ];
     }
 
@@ -71,7 +71,7 @@ enum Program: string implements HasColor, HasIcon, HasLabel
             self::SESNUM => 'purple',
             self::SMARTICT => 'indigo',
             self::SUD => 'pink',
-            self::NULL => 'gray',
+            // self::NULL => 'gray',
         };
     }
 
@@ -85,7 +85,7 @@ enum Program: string implements HasColor, HasIcon, HasLabel
             self::SESNUM => 'heroicon-o-academic-cap',
             self::SMARTICT => 'heroicon-o-academic-cap',
             self::SUD => 'heroicon-o-academic-cap',
-            self::NULL => 'heroicon-o-academic-cap',
+            // self::NULL => 'heroicon-o-academic-cap',
         };
     }
 }

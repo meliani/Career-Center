@@ -34,9 +34,9 @@ class ListProfessors extends ListRecords
 
     public function __construct()
     {
-        // $this->ProfessorsByDepartment = Professor::select('department', \DB::raw('count(*) as total'))
-        //     ->groupBy('department')
-        //     ->pluck('total', 'department');
+        $this->ProfessorsByDepartment = Professor::select('department', \DB::raw('count(*) as total'))
+            ->groupBy('department')
+            ->pluck('total', 'department');
     }
 
     public function getTabs(): array

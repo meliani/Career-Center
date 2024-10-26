@@ -193,10 +193,10 @@ class ProjectResource extends Core\BaseResource
                 //     ->preload(),
                 Tables\Filters\Filter::make('Defense date')
                     ->form([
-                        Forms\Components\DatePicker::make('defenses_from')
-                            ->default(now()),
-                        Forms\Components\DatePicker::make('defenses_until')
-                            ->default(now()->addDays(7)),
+                        Forms\Components\DatePicker::make('defenses_from'),
+                        // ->default(now()),
+                        Forms\Components\DatePicker::make('defenses_until'),
+                        // ->default(now()->addDays(7)),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query
@@ -223,8 +223,8 @@ class ProjectResource extends Core\BaseResource
                         }
 
                         return $indicators;
-                    })
-                    ->default(),
+                    }),
+                // ->default(),
 
                 Tables\Filters\SelectFilter::make('defense_status')
                     ->options(Enums\DefenseStatus::class)
@@ -269,9 +269,9 @@ class ProjectResource extends Core\BaseResource
                     ->label('Generate report')
                     ->icon('heroicon-o-document')
                     ->color('primary')
-                    ->hidden(fn () => auth()->user()->isSuperAdministrator() === false)
+                    ->hidden(true)
                     ->action(function () {
-                        $chartWidget = new DefensesPerProgramChart();
+                        $chartWidget = new DefensesPerProgramChart;
                         $chartOptions = $chartWidget->getOptions();
                         $chartWidget->dataURI();
 
@@ -305,7 +305,7 @@ class ProjectResource extends Core\BaseResource
                     ->color('primary')
                     ->hidden(fn () => auth()->user()->isAdministrator() === false)
                     ->action(function () {
-                        $googleServices = new \App\Services\GoogleServices();
+                        $googleServices = new \App\Services\GoogleServices;
                         $googleServices->checkChangedProfessors();
                     }),
                 \App\Filament\Actions\Action\Processing\GoogleSheetSyncAction::make('Google Sheet Sync')

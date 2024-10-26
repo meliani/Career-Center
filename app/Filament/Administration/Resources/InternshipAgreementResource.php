@@ -175,6 +175,7 @@ class InternshipAgreementResource extends Core\BaseResource
                                 ->save('pdf from agreement.pdf')
                         ),
                 ])->hidden(fn () => env('APP_ENV') === 'production')
+                    ->hidden(true)
                     ->icon('heroicon-o-printer'),
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
@@ -186,6 +187,7 @@ class InternshipAgreementResource extends Core\BaseResource
 
                 ])
                     ->hidden((auth()->user()->isAdministrator() || auth()->user()->isPowerProfessor()) === false)
+                    ->hidden(true)
                     ->label('')
                     ->icon('heroicon-o-ellipsis-vertical')
                     ->size(Filament\Support\Enums\ActionSize::ExtraLarge)
@@ -205,7 +207,7 @@ class InternshipAgreementResource extends Core\BaseResource
                 ])
                     ->dropdownWidth(Filament\Support\Enums\MaxWidth::ExtraSmall)
                     ->label('')
-                    ->icon('heroicon-o-squares-plus')
+                    ->icon('heroicon-o-bars-3')
                     ->size(Filament\Support\Enums\ActionSize::ExtraLarge)
                     ->tooltip(__('Validate, sign, or assign department'))
                     ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isPowerProfessor()) === false),

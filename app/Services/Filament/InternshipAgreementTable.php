@@ -10,37 +10,41 @@ class InternshipAgreementTable
     public static function get()
     {
         return [
-            Tables\Columns\TextColumn::make('id')
-                ->toggleable(isToggledHiddenByDefault: true)
-                ->label(__('ID'))
-                ->searchable()
-                ->sortable(),
-            Tables\Columns\TextColumn::make('id_pfe')
-                ->label(__('PFE ID'))
-                ->searchable()
-                ->sortable(),
+            // Tables\Columns\TextColumn::make('id')
+            //     ->toggleable(isToggledHiddenByDefault: true)
+            //     ->label(__('ID'))
+            //     ->searchable()
+            //     ->sortable(),
+            // Tables\Columns\TextColumn::make('id_pfe')
+            //     ->label(__('PFE ID'))
+            //     ->searchable()
+            //     ->sortable(),
 
             Tables\Columns\TextColumn::make('student.long_full_name')
                 ->label(__('Student name'))
                 ->searchable(
                     ['first_name', 'last_name']
-                )->sortable(),
+                )->sortable()
+                ->description(fn (InternshipAgreement $internship) => $internship->student->id_pfe),
             // ->formatStateUsing(function ($state, InternshipAgreement $internship) {
             //     return $internship->student->title->getLabel() . ' ' . $internship->student->first_name . ' ' . $internship->student->last_name;
             // }),
             Tables\Columns\TextColumn::make('student.email_perso')
                 ->label(__('Student personal email'))
                 ->searchable(false)
-                ->sortable(false),
+                ->sortable(false)
+                ->visibleFrom('md'),
             Tables\Columns\TextColumn::make('student.program')
                 ->label(__('Student program'))
                 ->searchable(false)
-                ->sortable(false),
+                ->sortable(false)
+                ->visibleFrom('md'),
             Tables\Columns\TextColumn::make('starting_at')
                 ->label(__('Start'))
                 ->searchable()
                 ->sortable()
-                ->date(),
+                ->date()
+                ->visibleFrom('md'),
             Tables\Columns\TextColumn::make('ending_at')
                 ->label(__('End'))
                 ->searchable()
@@ -50,6 +54,7 @@ class InternshipAgreementTable
                 ->searchable(false)
                 ->label(__('Duration')),
             Tables\Columns\TextColumn::make('central_organization')
+                ->toggleable(isToggledHiddenByDefault: true)
                 ->label('Central organization')
                 ->searchable()
                 ->sortable(),
@@ -57,15 +62,17 @@ class InternshipAgreementTable
             Tables\Columns\TextColumn::make('organization_name')
                 ->label('Organization')
                 ->searchable()
-                ->sortable(),
-            Tables\Columns\TextColumn::make('city')
-                ->label('City')
-                ->searchable()
-                ->sortable(),
-            Tables\Columns\TextColumn::make('country')
-                ->label('Country')
-                ->searchable()
-                ->sortable(),
+                ->sortable()
+                ->description(fn (InternshipAgreement $internship) => $internship->country . ' - ' . $internship->city),
+            // Tables\Columns\TextColumn::make('city')
+            //     ->label('City')
+            //     ->searchable()
+            //     ->sortable(),
+            // Tables\Columns\TextColumn::make('country')
+            //     ->label('Country')
+            //     ->searchable()
+            //     ->sortable()
+            //     ->description(fn (InternshipAgreement $internship) => $internship->city),
 
             Tables\Columns\TextColumn::make('title')
                 ->label(__('Title'))
@@ -79,6 +86,7 @@ class InternshipAgreementTable
             Tables\Columns\TextColumn::make('description')
                 ->label(__('Description'))
                 ->searchable()
+                ->width('xl')
                 ->sortable()
                 ->wrap()
                 ->lineClamp(2)

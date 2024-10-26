@@ -122,7 +122,8 @@ class InternshipOfferResource extends BaseResource
                     ->description(fn (InternshipOffer $record) => $record->views_summary)
                     ->limit(50),
                 Tables\Columns\TextColumn::make('project_title')
-                    ->limit(50),
+                    ->lineClamp(2)
+                    ->limit(70),
 
                 // Tables\Columns\TextColumn::make('organization_type')
                 //     ->searchable(),
@@ -132,6 +133,11 @@ class InternshipOfferResource extends BaseResource
                 CountryColumn::make('country')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('internship_type'),
+                Tables\Columns\TextColumn::make('keywords')
+                    ->badge(),
+                Tables\Columns\TextColumn::make('views_count')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('responsible_name')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),

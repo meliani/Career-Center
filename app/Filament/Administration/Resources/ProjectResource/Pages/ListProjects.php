@@ -21,9 +21,9 @@ class ListProjects extends ListRecords
 
     public function __construct()
     {
-        // $this->ProjectsByProgram = Student::whereHas('projects')->select('program', \DB::raw('count(*) as total'))
-        //     ->groupBy('program')
-        //     ->pluck('total', 'program');
+        $this->ProjectsByProgram = Student::whereHas('projects')->select('program', \DB::raw('count(*) as total'))
+            ->groupBy('program')
+            ->pluck('total', 'program');
     }
 
     public function getDefaultLayoutView(): string
@@ -42,6 +42,7 @@ class ListProjects extends ListRecords
     {
         $tabs = [];
         foreach (Enums\Program::getArray() as $program) {
+            // $program = $program_enum->getLabel();
             $tabs[$program] = Tab::make($program)
                 ->badge($this->ProjectsByProgram[$program] ?? 0)
                 ->modifyQueryUsing(fn ($query) => $query->whereHas('students', fn ($q) => $q->where('program', $program)));
