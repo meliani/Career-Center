@@ -94,7 +94,7 @@
     "ThirdYear": "Troisième année",
     "Settings": "Paramètres",
     "Internship agreement": "Convention de stage",
-    "Internship Agreements": "Stages PFE",
+    "Internship Agreements": "Conventions de stage",
     "internship agreements": "Conventions de Stage",
     "Internship agreements": "Conventions de stage",
     "Planning": "Planification",
@@ -602,5 +602,9 @@
     "views": "vues",
     "view": "vue",
     "visitors": "visiteurs",
-    "visitor": "visiteur"
+    "visitor": "visiteur",
+    "Level and duration": "Niveau et durée",
+    "Views": "Vues",
+    "view|views": "vue|vues",
+    "visitor|visitors": "visiteur|visiteurs"
 }
