@@ -89,7 +89,7 @@ class Apprenticeship extends Model
     protected static function booted(): void
     {
 
-        static::addGlobalScope(new Scopes\ApprenticeshipScope());
+        static::addGlobalScope(new Scopes\ApprenticeshipScope);
         static::creating(function (Apprenticeship $apprenticeship) {
             $apprenticeship->student_id = auth()->id();
             $apprenticeship->year_id = Year::current()->id;
@@ -197,7 +197,7 @@ class Apprenticeship extends Model
         $this->save();
     }
 
-    public function getCurrentApprenticeship()
+    public function getCurrentApprenticeshipAttribute()
     {
         return $this->where('student_id', auth()->id())
             ->where('status', Enums\Status::Announced)

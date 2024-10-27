@@ -135,7 +135,7 @@ class InternshipOfferResource extends BaseResource
                 // ->lineClamp(2),
                 Tables\Columns\TextColumn::make('project_title')
                     ->lineClamp(2)
-                    ->description(fn (InternshipOffer $record) => $record->internship_type->getLabel() . ' - ' . $record->internship_location)
+                    ->description(fn (InternshipOffer $record) => $record->internship_type?->getLabel() . ' - ' . $record->internship_location)
                     ->limit(60)
                     ->tooltip(fn (InternshipOffer $record) => $record->project_title)
                     ->wrap()
@@ -152,7 +152,7 @@ class InternshipOfferResource extends BaseResource
                 // CountryColumn::make('country')
                 //     ->searchable(),
                 // Tables\Columns\TextColumn::make('internship_type'),
-                Tables\Columns\TagsColumn::make('keywords')
+                Tables\Columns\TagsColumn::make('tags')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
 
@@ -184,10 +184,11 @@ class InternshipOfferResource extends BaseResource
 
                 Tables\Columns\TextColumn::make('remuneration')
                     ->toggleable(isToggledHiddenByDefault: true)
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('currency')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->searchable(),
+                    ->searchable()
+                    ->money(fn (InternshipOffer $record) => $record->currency->getLabel()),
+                // Tables\Columns\TextColumn::make('currency')
+                //     ->toggleable(isToggledHiddenByDefault: true)
+                //     ->searchable(),
                 // Tables\Columns\TextColumn::make('workload')
                 // ->toggleable(isToggledHiddenByDefault: true)
                 //     ->numeric()
