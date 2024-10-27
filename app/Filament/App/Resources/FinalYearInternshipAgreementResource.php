@@ -5,8 +5,11 @@ namespace App\Filament\App\Resources;
 use App\Enums;
 use App\Enums\Currency;
 use App\Filament\App\Resources\FinalYearInternshipAgreementResource\Pages;
+use App\Filament\Core\StudentBaseResource;
 use App\Models\FinalYearInternshipAgreement;
 use App\Models\Organization;
+use App\Models\Student;
+use App\Models\User;
 use App\Models\Year;
 use Filament\Forms;
 use Filament\Forms\Components\SpatieTagsInput;
@@ -14,19 +17,44 @@ use Filament\Forms\Components\Wizard\Step;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
-use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\SpatieTagsColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Malzariey\FilamentDaterangepickerFilter\Fields\DateRangePicker;
 
-class FinalYearInternshipAgreementResource extends Resource
+class FinalYearInternshipAgreementResource extends StudentBaseResource
 {
     protected static ?string $model = FinalYearInternshipAgreement::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    protected static ?string $modelLabel = 'Internship Agreement';
+
+    protected static ?string $pluralModelLabel = 'Internship Agreements';
+
+    protected static ?string $navigationGroup = 'Final Project';
+
+    public static function canAccess(): bool
+    {
+        if (env('APP_ENV') === 'production') {
+            return false;
+        }
+        if (Auth::user() instanceof Student) {
+            if (Auth::user()->level === Enums\StudentLevel::ThirdYear) {
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    public static function canViewAny(): bool
+    {
+        return false;
+    }
 
     public static function form(Form $form): Form
     {
@@ -80,8 +108,8 @@ class FinalYearInternshipAgreementResource extends Resource
                             Forms\Components\Group::make()
                                 ->schema([
                                     Forms\Components\Select::make('organization_id')
-                                        ->label('Select Existing Organization')
-                                        ->relationship('organization', 'name')
+                                        ->label('Select Existing Organization or Create New')
+                                        ->relationship('ActiveOrganizations', 'name')
                                         ->searchable()
                                         ->preload()
                                         ->getOptionLabelUsing(fn (Model $record) => $record->name . ' - ' . $record->country)
@@ -103,21 +131,40 @@ class FinalYearInternshipAgreementResource extends Resource
                                             Forms\Components\TextInput::make('website')
                                                 ->url()
                                                 ->maxLength(255),
-                                            Forms\Components\Select::make('country')
-                                                ->searchable()
-                                                ->required(),
+                                            \Parfaitementweb\FilamentCountryField\Forms\Components\Country::make('country')
+                                                ->default('MA')
+                                                ->required()
+                                                ->live()
+                                                ->searchable(),
                                             Forms\Components\TextInput::make('city')
                                                 ->required()
                                                 ->maxLength(255),
                                             Forms\Components\TextInput::make('address')
                                                 ->maxLength(255),
-                                            Forms\Components\Textarea::make('description')
-                                                ->maxLength(65535)
-                                                ->columnSpanFull(),
                                         ])
                                         ->required()
-                                        ->live(),
+                                        ->live()
+                                        ->reactive()
+                                        ->afterStateUpdated(function ($state, callable $set) {
+                                            $organization = Organization::find($state);
+                                            $set('organization_info', $organization ? $organization->toArray() : null);
+                                        }),
+                                    Forms\Components\Placeholder::make('organization_info')
+                                        ->label('Organization Information')
+                                        ->content(function ($get) {
+                                            $organization = Organization::find($get('organization_id'));
+
+                                            if (! $organization) {
+                                                return __('Select an organization or create a new one.');
+                                            }
+
+                                            return __('Adress') . ': ' . e($organization->address) . ' - ' .
+                                                e($organization->city) . ', ' .
+                                                e($organization->country);
+                                        }),
                                 ]),
+                            // we gonna add a section with live information about the organization when its selected
+
                         ]),
 
                     // Step 3: Organization Contacts
@@ -131,6 +178,7 @@ class FinalYearInternshipAgreementResource extends Resource
                                         ->description('The mentor from the organization who will guide the intern')
                                         ->schema([
                                             Forms\Components\Select::make('parrain_id')
+                                                ->preload()
                                                 ->relationship(
                                                     name: 'parrain',
                                                     titleAttribute: 'full_name',
@@ -140,7 +188,6 @@ class FinalYearInternshipAgreementResource extends Resource
                                                     fn (Model $record) => "{$record->full_name} - {$record->function}"
                                                 )
                                                 ->searchable(['first_name', 'last_name'])
-                                                ->preload()
                                                 ->required()
                                                 ->createOptionForm([
                                                     Forms\Components\TextInput::make('first_name')->required(),
@@ -160,6 +207,7 @@ class FinalYearInternshipAgreementResource extends Resource
                                         ->description('The supervisor from the academic institution')
                                         ->schema([
                                             Forms\Components\Select::make('external_supervisor_id')
+                                                ->preload()
                                                 ->relationship(
                                                     name: 'supervisor',
                                                     titleAttribute: 'full_name',
@@ -169,7 +217,6 @@ class FinalYearInternshipAgreementResource extends Resource
                                                     fn (Model $record) => "{$record->full_name} - {$record->function}"
                                                 )
                                                 ->searchable(['first_name', 'last_name'])
-                                                ->preload()
                                                 ->required()
                                                 ->createOptionForm([
                                                     Forms\Components\TextInput::make('first_name')->required(),

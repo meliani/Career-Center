@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -19,7 +20,23 @@ class Organization extends Model
         'city',
         'country',
         'central_organization',
+        'status',
+        'created_by_student_id',
     ];
+
+    protected $casts = [
+        'status' => Enums\OrganizationStatus::class,
+    ];
+
+    protected static function booted(): void
+    {
+
+        static::creating(function (Organization $organization) {
+            $organization->status = Enums\OrganizationStatus::Published;
+            $organization->created_by_student_id = auth()->id();
+
+        });
+    }
 
     public function centralOrganization()
     {
@@ -39,5 +56,11 @@ class Organization extends Model
     public function getCountryAttribute()
     {
         return $this->getCountriesList()[$this->getCountry()];
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', Enums\OrganizationStatus::Active)
+            ->orWhere('status', Enums\OrganizationStatus::Published);
     }
 }

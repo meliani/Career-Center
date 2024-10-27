@@ -83,7 +83,7 @@ class AppPanelProvider extends PanelProvider
                     )
                     // ->customMyProfilePage(\App\Livewire\StudentAccountSettingsPage::class)
                     ->withoutMyProfileComponents([
-                        'personal_info',
+                        // 'personal_info',
                     ])
                     ->myProfileComponents([\App\Livewire\StudentAccountSettingsPage::class])
                     ->enableTwoFactorAuthentication()
@@ -92,6 +92,14 @@ class AppPanelProvider extends PanelProvider
                 //     permissions: ['view'] // optional, customize the permissions (default = ["create", "view", "update", "delete"])
                 // ),
             ])
-            ->login(Login::class);
+            ->login(Login::class)
+            ->navigationGroups([
+                'Internship Offers',
+                'Offres de Stages',
+                'Final Project',
+                'PFE',
+                'Settings',
+            ])
+            ->breadcrumbs(false);
     }
 }

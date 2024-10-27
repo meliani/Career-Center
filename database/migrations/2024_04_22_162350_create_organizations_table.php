@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\OrganizationStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -19,6 +20,7 @@ class CreateOrganizationsTable extends Migration
                 ->references('id')
                 ->on('organizations')
                 ->onDelete('set null')->nullable();
+            $table->enum('status', OrganizationStatus::getArray())->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

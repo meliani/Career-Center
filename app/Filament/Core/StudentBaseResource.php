@@ -11,7 +11,7 @@ class StudentBaseResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Students space';
 
-    // protected static ?string $navigationGroup = 'Students space';
+    protected static ?string $navigationGroup = 'Students space';
 
     // public static function getNavigationBadge(): ?string
     // {
@@ -35,6 +35,11 @@ class StudentBaseResource extends Resource
         }
 
         return false;
+    }
+
+    public static function getNavigationGroup(): string
+    {
+        return __(static::$navigationGroup) ?? '';
     }
 
     // public static function canView(Model $record): bool

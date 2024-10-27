@@ -33,6 +33,8 @@ class InternshipOfferResource extends StudentBaseResource
 
     protected static ?string $recordTitleAttribute = 'project_title';
 
+    protected static ?string $navigationGroup = 'Internship Offers';
+
     // protected static ?string $navigationGroup = 'Students and projects';
 
     public static function form(Form $form): Form
@@ -140,6 +142,10 @@ class InternshipOfferResource extends StudentBaseResource
                         ->toggleable(false)
                         ->sortable(false)
                         ->badge(),
+                    // \Mokhosh\FilamentRating\Columns\RatingColumn::make('averageRating')
+                    //     ->label('')
+                    //     ->color('primary')
+                    //     ->theme(\Mokhosh\FilamentRating\RatingTheme::HalfStars),
                 ]),
             ])
             ->filters([
@@ -269,7 +275,7 @@ class InternshipOfferResource extends StudentBaseResource
                         Infolists\Components\TextEntry::make('internship_location'),
                         // Infolists\Components\TextEntry::make('keywords')
                         //     ->badge(),
-                        Infolists\Components\TextEntry::make('attached_file'),
+                        // Infolists\Components\TextEntry::make('attached_file'),
                         Infolists\Components\TextEntry::make('internship_duration')
                             ->suffix(__(' months'))
                             ->placeholder('No duration specified'),
@@ -291,6 +297,10 @@ class InternshipOfferResource extends StudentBaseResource
                             ->date()
                             ->placeholder('No expiration date specified')
                             ->badge(),
+                        \Mokhosh\FilamentRating\Entries\RatingEntry::make('averageRating')
+                            ->label('')
+                            ->color('primary')
+                            ->theme(\Mokhosh\FilamentRating\RatingTheme::HalfStars),
                     ]),
             ]);
     }

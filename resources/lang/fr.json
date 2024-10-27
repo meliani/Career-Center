@@ -592,6 +592,7 @@
     "Applied at": "Postulé le",
     "My Internship Applications": "Mes candidatures de stage",
     "My Internship Application": "Ma candidature de stage",
+    "My Applications": "Mes candidatures",
     "Alumni Transition": "Transition lauréat",
     "AlumniTransitional": "En transition lauréat",
     "internship offers": "offres de stage",
@@ -606,5 +607,7 @@
     "Level and duration": "Niveau et durée",
     "Views": "Vues",
     "view|views": "vue|vues",
-    "visitor|visitors": "visiteur|visiteurs"
+    "visitor|visitors": "visiteur|visiteurs",
+    "Final Project": "PFE",
+    "Adress": "Adresse"
 }

@@ -35,6 +35,7 @@ class WelcomeDashboard extends \Filament\Pages\Dashboard
     public function getWidgets(): array
     {
         return [
+            // \App\Filament\App\Widgets\Dashboards\GettingStartedWidget::class,
             \App\Filament\Widgets\DefensesPerProgramChart::class,
             \App\Filament\Widgets\FirstYearApprenticeshipsPerProgramChart::class,
             \App\Filament\Widgets\SecondYearApprenticeshipsPerProgramChart::class,

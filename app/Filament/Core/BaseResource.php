@@ -11,7 +11,7 @@ class BaseResource extends Resource
 
     protected static ?string $pluralModelLabel = 'INPT';
 
-    protected static ?string $navigationGroup = 'Test';
+    // protected static ?string $navigationGroup = 'Test';
 
     // public static function getNavigationBadge(): ?string
     // {
@@ -28,17 +28,17 @@ class BaseResource extends Resource
 
     public static function getModelLabel(): string
     {
-        return __(static::$modelLabel);
+        return __(static::$modelLabel) ?? '';
     }
 
     public static function getPluralModelLabel(): string
     {
-        return __(static::$pluralModelLabel);
+        return __(static::$pluralModelLabel) ?? '';
     }
 
     public static function getNavigationGroup(): string
     {
-        return __(static::$navigationGroup);
+        return __(static::$navigationGroup) ?? '';
     }
 
     public static function canViewAny(): bool

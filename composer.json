@@ -45,6 +45,7 @@
         "leandrocfe/filament-apex-charts": "^3.0",
         "maatwebsite/excel": "^3.1",
         "malzariey/filament-daterangepicker-filter": "^2.7",
+        "mokhosh/filament-rating": "^1.4",
         "mpdf/mpdf": "^8.2",
         "parallax/filament-comments": "^1.0",
         "parfaitementweb/filament-country-field": "dev-dev",
@@ -65,6 +66,7 @@
         "symfony/process": "^6.4",
         "vinkla/hashids": "^11.0",
         "webklex/laravel-imap": "^5.3",
+        "willvincent/laravel-rateable": "^3.3",
         "z3d0x/filament-logger": "^0.6.2"
     },
     "require-dev": {

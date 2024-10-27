@@ -8,6 +8,7 @@ use App\Models\InternshipApplication;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -19,7 +20,9 @@ class InternshipApplicationResource extends StudentBaseResource
 
     protected static ?string $modelLabel = 'My Internship Application';
 
-    protected static ?string $pluralModelLabel = 'My Internship Applications';
+    protected static ?string $pluralModelLabel = 'My Applications';
+
+    protected static ?string $navigationGroup = 'Internship Offers';
 
     protected static ?int $navigationSort = 4;
 
@@ -76,7 +79,16 @@ class InternshipApplicationResource extends StudentBaseResource
             ->actions([
                 Tables\Actions\DeleteAction::make(),
                 // Tables\Actions\ViewAction::make(),
-            ]);
+            ])
+            ->emptyStateActions([
+                Action::make('create')
+                    ->label('Apply for an internship')
+                    ->icon('heroicon-o-plus-circle')
+                    ->url('/app/internship-offers'),
+            ])
+            ->emptyStateHeading('No internship applications')
+            ->emptyStateDescription('You have not applied for any internships yet.')
+            ->emptyStateIcon('heroicon-o-document-text');
     }
 
     public static function getRelations(): array

@@ -228,11 +228,14 @@ class AppServiceProvider extends ServiceProvider
                 NavigationGroup::make()
                     ->label('Emails'),
                 NavigationGroup::make()
+                    ->label('Internship offers'),
+                NavigationGroup::make()
                     ->label('Settings'),
                 NavigationGroup::make()
                     ->label('System'),
                 // NavigationGroup::make()
                 //     ->label(fn () => __('Settings')),
+
             ]);
         });
         Column::macro('sortableMany', function () {

@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use NumberFormatter;
 use Parfaitementweb\FilamentCountryField\Traits\HasData;
 use Spatie\Tags\HasTags;
+use willvincent\Rateable\Rateable;
 
 class InternshipOffer extends Model implements Viewable
 {
@@ -18,6 +19,7 @@ class InternshipOffer extends Model implements Viewable
     use HasFactory;
     use HasTags;
     use InteractsWithViews;
+    use Rateable;
     use SoftDeletes;
 
     protected $table = 'internship_offers';

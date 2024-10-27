@@ -15,7 +15,7 @@ class FinalYearInternshipAgreement extends Model
     use HasTags;
     use SoftDeletes;
 
-    protected $table = 'final_year_internships';
+    // protected $table = 'final_year_internships';
 
     protected $appends = [
         // 'duration_in_weeks',
@@ -70,6 +70,11 @@ class FinalYearInternshipAgreement extends Model
     public function organization()
     {
         return $this->belongsTo(Organization::class);
+    }
+
+    public function ActiveOrganizations()
+    {
+        return $this->belongsTo(Organization::class)->active();
     }
 
     public function parrain()
