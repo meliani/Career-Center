@@ -273,6 +273,7 @@ class AdminPanelProvider extends PanelProvider
             //     // \LaraZeus\Boredom\BoringAvatarsProvider::class
             // )
             ->navigationGroups([
+                'Dashboards',
                 'Students and projects',
                 'Étudiants et projets',
                 'Juries',
