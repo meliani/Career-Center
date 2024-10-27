@@ -11,6 +11,15 @@ enum Currency: string implements HasColor, HasLabel
     case EUR = 'EUR';
     case USD = 'USD';
 
+    // public static function getOptions(): array
+    // {
+    //     return [
+    //         self::MDH => self::MDH()->getLabel(),
+    //         self::EUR => self::EUR()->getLabel(),
+    //         self::USD => self::USD()->getLabel(),
+    //     ];
+    // }
+
     public static function getArray(): array
     {
         return [
