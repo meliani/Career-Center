@@ -14,6 +14,8 @@ class AdministrationDashboard extends \Filament\Pages\Dashboard
 
     protected static ?string $navigationLabel = 'Welcome dashboard';
 
+    protected static ?string $navigationGroup = 'Dashboards';
+
     public function getTitle(): string
     {
         return __(static::$title);
@@ -37,9 +39,9 @@ class AdministrationDashboard extends \Filament\Pages\Dashboard
     {
         return [
 
-            \App\Filament\Widgets\DefensesCalendarWidget::class,
             \App\Filament\Widgets\AssignedSupervisorsChart::class,
             \App\Filament\Widgets\ProfessorsParticipationTable::class,
+            \App\Filament\Widgets\DefensesCalendarWidget::class,
             // \App\Filament\Widgets\ProgressionTimelineChart::class,
             // \App\Filament\Widgets\TimetableOverviewChart::class,
             // \App\Filament\Widgets\EntrepriseContactsChart::class,

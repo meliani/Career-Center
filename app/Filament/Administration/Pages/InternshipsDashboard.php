@@ -16,6 +16,8 @@ class InternshipsDashboard extends \Filament\Pages\Dashboard
 
     protected static ?string $navigationIcon = 'heroicon-o-command-line';
 
+    protected static ?string $navigationGroup = 'Dashboards';
+
     public function getTitle(): string
     {
         return __(static::$title);

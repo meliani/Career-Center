@@ -12,7 +12,7 @@ class ApprenticeshipsDashboard extends \Filament\Pages\Dashboard
 
     protected static ?string $navigationLabel = 'Apprenticeships dashboard';
 
-    // icon
+    protected static ?string $navigationGroup = 'Dashboards';
 
     protected static ?string $navigationIcon = 'heroicon-o-computer-desktop';
 
