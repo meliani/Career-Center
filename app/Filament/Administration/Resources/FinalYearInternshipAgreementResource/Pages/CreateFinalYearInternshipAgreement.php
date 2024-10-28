@@ -3,17 +3,9 @@
 namespace App\Filament\Administration\Resources\FinalYearInternshipAgreementResource\Pages;
 
 use App\Filament\Administration\Resources\FinalYearInternshipAgreementResource;
-use Filament\Actions;
-use Filament\Resources\Pages\ListRecords;
+use Filament\Resources\Pages\CreateRecord;
 
-class ListFinalYearInternships extends ListRecords
+class CreateFinalYearInternshipAgreement extends CreateRecord
 {
     protected static string $resource = FinalYearInternshipAgreementResource::class;
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\CreateAction::make(),
-        ];
-    }
 }

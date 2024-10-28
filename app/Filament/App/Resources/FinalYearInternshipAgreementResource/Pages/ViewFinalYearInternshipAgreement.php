@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Filament\Administration\Resources\FinalYearInternshipAgreementResource\Pages;
+namespace App\Filament\App\Resources\FinalYearInternshipAgreementResource\Pages;
 
-use App\Filament\Administration\Resources\FinalYearInternshipAgreementResource;
+use App\Filament\App\Resources\FinalYearInternshipAgreementResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ViewRecord;
 
-class ViewFinalYearInternship extends ViewRecord
+class ViewFinalYearInternshipAgreement extends ViewRecord
 {
     protected static string $resource = FinalYearInternshipAgreementResource::class;
 

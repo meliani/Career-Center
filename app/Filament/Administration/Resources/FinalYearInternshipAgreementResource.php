@@ -3,7 +3,7 @@
 namespace App\Filament\Administration\Resources;
 
 use App\Filament\Administration\Resources\FinalYearInternshipAgreementResource\Pages;
-use App\Models\FinalYearInternship;
+use App\Models\FinalYearInternshipAgreement;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class FinalYearInternshipAgreementResource extends Resource
 {
-    protected static ?string $model = FinalYearInternship::class;
+    protected static ?string $model = FinalYearInternshipAgreement::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -201,10 +201,10 @@ class FinalYearInternshipAgreementResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListFinalYearInternships::route('/'),
-            'create' => Pages\CreateFinalYearInternship::route('/create'),
-            'view' => Pages\ViewFinalYearInternship::route('/{record}'),
-            'edit' => Pages\EditFinalYearInternship::route('/{record}/edit'),
+            'index' => Pages\ListFinalYearInternshipAgreements::route('/'),
+            'create' => Pages\CreateFinalYearInternshipAgreement::route('/create'),
+            'view' => Pages\ViewFinalYearInternshipAgreement::route('/{record}'),
+            'edit' => Pages\EditFinalYearInternshipAgreement::route('/{record}/edit'),
         ];
     }
 

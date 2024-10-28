@@ -493,10 +493,10 @@ class FinalYearInternshipAgreementResource extends StudentBaseResource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListFinalYearInternships::route('/'),
-            'create' => Pages\CreateFinalYearInternship::route('/create'),
-            'view' => Pages\ViewFinalYearInternship::route('/{record}'),
-            'edit' => Pages\EditFinalYearInternship::route('/{record}/edit'),
+            'index' => Pages\ListFinalYearInternshipAgreements::route('/'),
+            'create' => Pages\CreateFinalYearInternshipAgreement::route('/create'),
+            'view' => Pages\ViewFinalYearInternshipAgreement::route('/{record}'),
+            'edit' => Pages\EditFinalYearInternshipAgreement::route('/{record}/edit'),
         ];
     }
 }

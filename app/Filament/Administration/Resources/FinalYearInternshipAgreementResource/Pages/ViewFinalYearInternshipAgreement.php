@@ -4,19 +4,16 @@ namespace App\Filament\Administration\Resources\FinalYearInternshipAgreementReso
 
 use App\Filament\Administration\Resources\FinalYearInternshipAgreementResource;
 use Filament\Actions;
-use Filament\Resources\Pages\EditRecord;
+use Filament\Resources\Pages\ViewRecord;
 
-class EditFinalYearInternship extends EditRecord
+class ViewFinalYearInternshipAgreement extends ViewRecord
 {
     protected static string $resource = FinalYearInternshipAgreementResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
-            Actions\ViewAction::make(),
-            Actions\DeleteAction::make(),
-            Actions\ForceDeleteAction::make(),
-            Actions\RestoreAction::make(),
+            Actions\EditAction::make(),
         ];
     }
 }
