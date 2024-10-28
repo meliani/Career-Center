@@ -12,6 +12,16 @@ enum EntrepriseContactCategory: string implements HasColor, HasLabel
     case DirectContact = 'DirectContact';
     case Parrain = 'Parrain';
 
+    public static function getArray(): array
+    {
+        return [
+            self::Alumni->value,
+            self::Supervisor->value,
+            self::DirectContact->value,
+            self::Parrain->value,
+        ];
+    }
+
     public function getLabel(): ?string
     {
         return match ($this) {

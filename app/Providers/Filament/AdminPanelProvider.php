@@ -41,17 +41,27 @@ class AdminPanelProvider extends PanelProvider
 {
     private function getRoomResources()
     {
-        // Fetch rooms from the database
-        $rooms = Room::available()->orderBy('order')->get();
-        // Transform the rooms into the desired format
-        $resources = $rooms->map(function ($room) {
-            return [
-                'id' => (string) $room->id, // Assuming 'id' is an integer, cast to string if necessary
-                'title' => $room->name, // Assuming the room name is stored in 'name' attribute
-            ];
-        })->toArray();
-
-        return $resources;
+        try {
+            // Check database connection by attempting a simple query
+            \DB::connection()->getPdo();
+    
+            // Fetch rooms from the database
+            $rooms = Room::available()->orderBy('order')->get();
+    
+            // Transform the rooms into the desired format
+            $resources = $rooms->map(function ($room) {
+                return [
+                    'id' => (string) $room->id, 
+                    'title' => $room->name, 
+                ];
+            })->toArray();
+    
+            return $resources;
+        } catch (\Exception $e) {
+            // Handle the database connection error
+            \Log::error("Database connection failed: " . $e->getMessage());
+            return []; // Return an empty array or handle as necessary
+        }
     }
 
     public function panel(Panel $panel): Panel

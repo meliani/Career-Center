@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('company');
             $table->string('position');
             $table->string('alumni_promotion');
-            $table->enum('category', \App\Enums\EntrepriseContactCategory::toArray());
+            $table->enum('category', \App\Enums\EntrepriseContactCategory::getArray());
             $table->string('years_of_interactions_with_students');
             $table->integer('number_of_bounces');
             $table->boolean('is_account_disabled');

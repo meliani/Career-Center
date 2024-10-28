@@ -84,11 +84,11 @@ return [
 
         'logging_database' => [
             'driver' => 'mysql',
-            'url' => env('LOGGING_DATABASE_URL'),
+            'url' => env('LOGGING_DATABASE_URL', env('BACKEND_DATABASE_URL')),
             'host' => env('LOGGING_DB_HOST', env('BACKEND_DB_HOST', '127.0.0.1')),
             'port' => env('LOGGING_DB_PORT', env('BACKEND_DB_PORT', '3306')),
-            'database' => env('LOGGING_DB_DATABASE', env('BACKEND_DB_DATABASE', 'forge')),
-            'username' => env('LOGGING_DB_USERNAME', env('BACKEND_DB_USERNAME', 'forge')),
+            'database' => env('LOGGING_DB_DATABASE', env('BACKEND_DB_DATABASE', 'sqlite')),
+            'username' => env('LOGGING_DB_USERNAME', env('BACKEND_DB_USERNAME', 'sqlite')),
             'password' => env('LOGGING_DB_PASSWORD', env('BACKEND_DB_PASSWORD', '')),
             'unix_socket' => env('LOGGING_DB_SOCKET', env('BACKEND_DB_SOCKET', '')),
             'charset' => 'utf8mb4',

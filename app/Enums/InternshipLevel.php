@@ -19,9 +19,9 @@ enum InternshipLevel: string implements HasColor, HasLabel
     public static function getArray(): array
     {
         return [
-            self::FinalYearInternship,
-            self::TechnicalInternship,
-            self::IntroductoryInternship,
+            self::FinalYearInternship->value,
+            self::TechnicalInternship->value,
+            self::IntroductoryInternship->value,
         ];
     }
 

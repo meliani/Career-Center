@@ -15,7 +15,7 @@ return [
         'view' => [
 
             'table_name' => 'views_stats',
-            'connection' => env('LOGGING_DB_CONNECTION', 'mysql'),
+            'connection' => env('LOGGING_DB_CONNECTION', env('DB_CONNECTION', 'sqlite')),
 
         ],
 

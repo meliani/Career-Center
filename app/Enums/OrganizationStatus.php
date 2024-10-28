@@ -18,9 +18,9 @@ enum OrganizationStatus: string implements HasColor, HasLabel
     public static function getArray(): array
     {
         return [
-            self::Active,
-            self::Inactive,
-            self::Published,
+            self::Active->value,
+            self::Inactive->value,
+            self::Published->value,
         ];
     }
 
