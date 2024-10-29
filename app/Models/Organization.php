@@ -22,6 +22,7 @@ class Organization extends Model
         'central_organization',
         'status',
         'created_by_student_id',
+        'industry_information_id',
     ];
 
     protected $casts = [
@@ -46,6 +47,26 @@ class Organization extends Model
     public function organizations()
     {
         return $this->hasMany(Organization::class, 'central_organization');
+    }
+
+    public function industryInformation()
+    {
+        return $this->belongsTo(IndustryInformation::class);
+    }
+
+    public function expertiseFields()
+    {
+        return $this->belongsToMany(ExpertiseField::class);
+    }
+
+    public function internshipOffers()
+    {
+        return $this->hasMany(InternshipOffer::class);
+    }
+
+    public function students()
+    {
+        return $this->belongsToMany(Student::class);
     }
 
     public function getCountry()

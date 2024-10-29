@@ -42,6 +42,7 @@ class CreateInternshipOffersTable extends Migration
             $table->enum('status', Enums\OfferStatus::getArray());
             $table->boolean('applyable')->nullable();
             $table->date('expire_at')->nullable();
+            $table->bigInteger('expertise_field_id')->unsigned()->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

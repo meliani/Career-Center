@@ -52,6 +52,7 @@ class InternshipOffer extends Model implements Viewable
         'applyable',
         'expire_at',
         'organization_id',
+        'expertise_field_id',
     ];
 
     protected $casts = [
@@ -94,6 +95,16 @@ class InternshipOffer extends Model implements Viewable
     public function organization()
     {
         return $this->belongsTo(Organization::class);
+    }
+
+    public function expertiseField()
+    {
+        return $this->belongsTo(ExpertiseField::class);
+    }
+
+    public function year()
+    {
+        return $this->belongsTo(Year::class);
     }
 
     // public function getInternshipDurationAttribute(): string

@@ -39,12 +39,9 @@ class FinalYearInternshipAgreementResource extends StudentBaseResource
 
     public static function canAccess(): bool
     {
-        if (env('APP_ENV') === 'production') {
-            return false;
-        }
         if (Auth::user() instanceof Student) {
             if (Auth::user()->level === Enums\StudentLevel::ThirdYear) {
-                return false;
+                return true;
             }
         }
 

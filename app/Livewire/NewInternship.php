@@ -102,11 +102,16 @@ class NewInternship extends Page implements HasForms
                                 Forms\Components\MarkdownEditor::make('project_details')
                                     ->columnSpanFull(),
 
+                                Forms\Components\Select::make('expertise_field_id')
+                                    ->relationship('expertiseField', 'name')
+                                    ->preload()
+                                    ->searchable()
+                                    ->columnSpan(2),
+
                                 Forms\Components\TagsInput::make('tags')
                                     ->placeholder(__('Add keywords'))
                                     ->splitKeys(['Tab', ',', ';'])
-
-                                    ->columnSpanFull(),
+                                    ->columnSpan(2),
                                 // Forms\Components\SpatieTagsInput::make('tags')
                                 //     ->placeholder(__('Add keywords'))
                                 //     ->splitKeys(['Tab', ',', ';'])
