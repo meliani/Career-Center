@@ -17,6 +17,42 @@ class FinalYearInternshipAgreement extends Model
 
     // protected $table = 'final_year_internships';
 
+    protected $fillable = [
+        'student_id',
+        'year_id',
+        'project_id',
+        'status',
+        'announced_at',
+        'validated_at',
+        'assigned_department',
+        'received_at',
+        'signed_at',
+        'observations',
+        'organization_id',
+        'office_location',
+        'title',
+        'description',
+        'starting_at',
+        'ending_at',
+        'remuneration',
+        'currency',
+        'workload',
+        'parrain_id',
+        'external_supervisor_id',
+        'internal_supervisor_id',
+        'pdf_path',
+        'pdf_file_name',
+        'cancelled_at',
+        'cancellation_reason',
+        'is_signed_by_student',
+        'is_signed_by_organization',
+        'is_signed_by_administration',
+        'signed_by_student_at',
+        'signed_by_organization_at',
+        'signed_by_administration_at',
+        'verification_document_url',
+    ];
+
     protected $appends = [
         // 'duration_in_weeks',
         // 'verification_string',
@@ -72,7 +108,7 @@ class FinalYearInternshipAgreement extends Model
         return $this->belongsTo(Organization::class);
     }
 
-    public function ActiveOrganizations()
+    public function activeOrganizations()
     {
         return $this->belongsTo(Organization::class)->active();
     }
@@ -82,9 +118,14 @@ class FinalYearInternshipAgreement extends Model
         return $this->belongsTo(ApprenticeshipAgreementContact::class, 'parrain_id', 'id');
     }
 
-    public function supervisor()
+    public function externalSupervisor()
     {
         return $this->belongsTo(ApprenticeshipAgreementContact::class, 'external_supervisor_id', 'id');
+    }
+
+    public function internalSupervisor()
+    {
+        return $this->belongsTo(Professor::class, 'internal_supervisor_id', 'id');
     }
 
     public function setInternshipPeriodAttribute($value)

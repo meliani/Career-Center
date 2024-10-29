@@ -41,7 +41,7 @@ class FinalYearInternshipAgreementResource extends StudentBaseResource
     {
         if (Auth::user() instanceof Student) {
             if (Auth::user()->level === Enums\StudentLevel::ThirdYear) {
-                return true;
+                return false;
             }
         }
 
