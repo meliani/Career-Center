@@ -1617,11 +1617,11 @@
                             de
                             l’entreprise et de l’élève et que ceux-ci en ont approuvé expressément toutes les clauses.
                         </p>
-                        <p class="mt-2">
+                        <p class="mt-8 mb-8">
                             <strong>Document établi en quatre exemplaires</strong>
                         </p>
                     </div>
-                    <div class="flex flex-row justify-between items-center mt-4 space-x-4 text-xs text-center mb-auto">
+                    <div class="flex flex-row justify-between items-center mt-8 space-x-4 text-xs text-center mb-8">
                         <div class="border-2 border-gray-800 w-full p-0 flex flex-col items-center min-h-[250px]">
                             <div class="min-h-[100px] px-2 pt-2 text-gray-900">Date et signature du Chef d’Entreprise
                                 (Cachet de
@@ -1647,7 +1647,7 @@
                     </div>
                     {{--
                 </div> --}}
-                <div class="flex justify-center items-center mt-4">
+                <div class="flex justify-center items-center mt-20">
                     {!! $qrCodeSvg !!}
                 </div>
                 {{-- <div class="text-center text-[0.60rem] italic mb-52">
