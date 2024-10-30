@@ -88,7 +88,9 @@ class FinalYearInternshipAgreement extends Model
             $finalYearInternship->status = Enums\Status::Announced;
             $finalYearInternship->announced_at = now();
         });
-
+        static::created(function (FinalYearInternshipAgreement $finalYearInternship) {
+            $finalYearInternship->generateVerificationLink();
+        });
     }
 
     public function student()
@@ -118,12 +120,12 @@ class FinalYearInternshipAgreement extends Model
 
     public function parrain()
     {
-        return $this->belongsTo(ApprenticeshipAgreementContact::class, 'parrain_id', 'id');
+        return $this->belongsTo(FinalYearInternshipContact::class, 'parrain_id', 'id');
     }
 
     public function externalSupervisor()
     {
-        return $this->belongsTo(ApprenticeshipAgreementContact::class, 'external_supervisor_id', 'id');
+        return $this->belongsTo(FinalYearInternshipContact::class, 'external_supervisor_id', 'id');
     }
 
     public function internalSupervisor()
@@ -179,8 +181,8 @@ class FinalYearInternshipAgreement extends Model
     public function generateVerificationLink()
     {
 
-        $verification_string = \App\Services\UrlService::encodeShortUrl($this->attributes[env('INTERNSHIPS_ENCRYPTION_FIELD', 'hey')]);
-        $verification_url = route('diploma.verify', $verification_string);
+        $verification_string = \App\Services\UrlService::encodeShortUrl($this->attributes[env('INTERNSHIPS_ENCRYPTION_FIELD', 'id')]);
+        $verification_url = route('internship-agreement.verify', $verification_string);
 
         $this->verification_string = $verification_string;
         $this->save();

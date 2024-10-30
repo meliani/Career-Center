@@ -31,13 +31,10 @@ class GenerateInternshipAgreementAction extends Action
                 File::makeDirectory($pdf_path, 0755, true);
             }
 
-            // Générer l'URL de vérification
-            $verificationString = $FinalYearInternship->student->id . '-' . $FinalYearInternship->id;
-            $encodedUrl = UrlService::encodeUrl($verificationString);
-            $verificationUrl = URL::to('/verify-agreement?x=' . $encodedUrl);
-
+            $veriication_link = $FinalYearInternship->generateVerificationLink();
+            // dd($veriication_link);
             // Générer le QR code
-            $qrCodeSvg = UrlService::getQrCodeSvg($verificationUrl);
+            $qrCodeSvg = UrlService::getQrCodeSvg($veriication_link);
 
             $chromePath = env('BROWSERSHOT_CHROME_PATH');
             pdf()

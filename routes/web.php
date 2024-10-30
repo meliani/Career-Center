@@ -2,6 +2,7 @@
 
 use App\Facades\GlobalDefenseCalendarConnector;
 use App\Filament\Org\Pages;
+use App\Http\Controllers\AgreementVerificationController;
 use App\Http\Controllers\DiplomaVerificationController;
 use App\Http\Controllers\PVVerificationController;
 use App\Http\Controllers\QrUrlDecoder;
@@ -43,7 +44,7 @@ Route::get('/verify-diploma/{verification_code}', DiplomaVerificationController:
 Route::get('/verify-diploma/', DiplomaVerificationController::class);
 Route::get('/verify-deliberation-pv/{verification_code}', PVVerificationController::class)->name('deliberation-pv.verify');
 // Route::get('/qr-response', Pages\QrResponse::class)->name('qr-response');
-
+Route::get('/verify-agreement/{verification_code}', AgreementVerificationController::class)->name('internship-agreement.verify');
 // Route::get('/mail-preview/{email}', 'App\Http\Controllers\MailPreviewController@show');
 
 // Route::get('/public-internship-offer-form', \App\Livewire\PublicInternshipOfferForm::class);

@@ -611,5 +611,19 @@
     "Final Project": "PFE",
     "Adress": "Adresse",
     "Final Year Internship Agreements": "Conventions de stage de fin d'études",
-    "Internship Period": "Période de stage"
+    "Internship Period": "Période de stage",
+    "Organization Name": "Nom de l'organisation",
+    "The organization that will host the internship": "L'organisation qui accueillera le stage",
+    "Select an existing organization or create a new one": "Sélectionner une organisation existante ou en créer une nouvelle",
+    "Please select an organization": "Veuillez sélectionner une organisation",
+    "Select or create an organization": "Sélectionner ou créer une organisation",
+    "This will be visible on the internship agreement": "Ceci sera visible sur la convention de stage",
+    "Organization representative & Supervisors": "Représentant de l'organisation & Encadrants",
+    "Organization Representative": "Représentant de l'organisation",
+    "Select or create the organization representatives": "Sélectionner ou créer les représentants de l'organisation",
+    "The person who will sign the agreement on behalf of the organization": "La personne qui signera la convention au nom de l'organisation",
+    "Your internship supervisor from the organization": "Votre encadrant de stage de l'organisation",
+    "Internal supervisor": "Encadrant interne",
+    "You can suggest a supervisor from the academic institution": "Vous pouvez dès maintenant suggérer un encadrant de l'INPT",
+    "Internship Agreement information": "Information sur la convention de stage"
 }
