@@ -194,4 +194,9 @@ class FinalYearInternshipAgreement extends Model
     {
         return asset($this->pdf_path) . '/' . $this->pdf_file_name;
     }
+
+    public function appliedCancellation()
+    {
+        return $this->status === Enums\Status::PendingCancellation;
+    }
 }

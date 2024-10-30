@@ -360,7 +360,7 @@ class FinalYearInternshipAgreementResource extends StudentBaseResource
             'index' => Pages\ListFinalYearInternshipAgreements::route('/'),
             'create' => Pages\CreateFinalYearInternshipAgreement::route('/create'),
             'view' => Pages\ViewFinalYearInternshipAgreement::route('/{record}'),
-            'edit' => Pages\EditFinalYearInternshipAgreement::route('/{record}/edit'),
+            // 'edit' => Pages\EditFinalYearInternshipAgreement::route('/{record}/edit'),
         ];
     }
 

@@ -122,14 +122,14 @@ class CreateFinalYearInternshipAgreement extends CreateRecord
                                     if ($get('organization_id')) {
                                         $info = $get('organization_info');
                                         $htmlContent = '
-            <div class="organization-info">
-                <p><strong>Organization Name:</strong> ' . e($info['name']) . '</p>
-                <p><strong>Country:</strong> ' . e($info['country']) . '</p>
-                <p><strong>City:</strong> ' . e($info['city']) . '</p>
-                <p><strong>Address:</strong> ' . e($info['address']) . '</p>
-                <p><strong>Website:</strong> <a href="' . e($info['website']) . '" target="_blank">' . e($info['website']) . '</a></p>
-            </div>
-        ';
+                                            <div class="organization-info">
+                                                <p><strong>Organization Name:</strong> ' . e($info['name']) . '</p>
+                                                <p><strong>Country:</strong> ' . e($info['country']) . '</p>
+                                                <p><strong>City:</strong> ' . e($info['city']) . '</p>
+                                                <p><strong>Address:</strong> ' . e($info['address']) . '</p>
+                                                <p><strong>Website:</strong> <a href="' . e($info['website']) . '" target="_blank">' . e($info['website']) . '</a></p>
+                                            </div>
+                                        ';
 
                                         return new HtmlString($htmlContent);
                                     } else {
