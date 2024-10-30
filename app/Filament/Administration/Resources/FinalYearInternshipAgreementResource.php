@@ -36,6 +36,16 @@ class FinalYearInternshipAgreementResource extends BaseResource
 
     protected static ?string $title = 'Final Year Internship Agreements';
 
+    public static function canAccess(): bool
+    {
+        return auth()->user()->isAdministrator();
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
     public static function form(Form $form): Form
     {
         return $form

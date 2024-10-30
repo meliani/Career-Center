@@ -230,7 +230,9 @@ class AppServiceProvider extends ServiceProvider
                 NavigationGroup::make()
                     ->label('Internship offers'),
                 NavigationGroup::make()
-                    ->label('Settings'),
+                    ->label('Settings')
+                    ->icon('heroicon-s-cog')
+                    ->collapsed(),
                 NavigationGroup::make()
                     ->label('System'),
                 // NavigationGroup::make()
