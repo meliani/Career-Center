@@ -1617,7 +1617,9 @@
                             de
                             l’entreprise et de l’élève et que ceux-ci en ont approuvé expressément toutes les clauses.
                         </p>
-                        <strong>Document établi en quatre exemplaires</strong>
+                        <p class="mt-2">
+                            <strong>Document établi en quatre exemplaires</strong>
+                        </p>
                     </div>
                     <div class="flex flex-row justify-between items-center mt-4 space-x-4 text-xs text-center mb-auto">
                         <div class="border-2 border-gray-800 w-full p-0 flex flex-col items-center min-h-[250px]">
