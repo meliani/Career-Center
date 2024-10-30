@@ -248,8 +248,8 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
 
     public function getProgramCoordinator()
     {
-        return User::where('role', Role::ProgramCoordinator)
-            ->where('program', $this->program)
+        return Professor::where('role', Role::ProgramCoordinator)
+            ->where('assigned_program', $this->program)
             ->first();
     }
 

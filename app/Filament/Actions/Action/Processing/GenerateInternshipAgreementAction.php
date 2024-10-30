@@ -1,0 +1,69 @@
+<?php
+
+namespace App\Filament\Actions\Action\Processing;
+
+use App\Models\FinalYearInternshipAgreement;
+use App\Services\UrlService;
+// use Filament\Forms\Components\Actions\Action;
+use Filament\Notifications\Notification;
+use Filament\Tables\Actions\Action;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Str; // Ajouter ce use
+
+use function Spatie\LaravelPdf\Support\pdf;
+
+class GenerateInternshipAgreementAction extends Action
+{
+    public static function make(?string $name = null): static
+    {
+        $static = app(static::class, [
+            'name' => $name ?? static::getDefaultName(),
+        ]);
+
+        $static->configure()->action(function (array $data, FinalYearInternshipAgreement $FinalYearInternship): void {
+            $FinalYearInternship = $FinalYearInternship->load('student', 'organization');
+            $template_view = 'pdf.templates.' . $FinalYearInternship->student->level->value . '.agreement_template';
+            $pdf_path = 'storage/pdf/apprenticeship_agreements/' . $FinalYearInternship->student->level->value;
+            $pdf_file_name = 'convention-de-stage-' . Str::slug($FinalYearInternship->student->full_name) . '-' . time() . '.pdf';
+
+            if (! File::exists($pdf_path)) {
+                File::makeDirectory($pdf_path, 0755, true);
+            }
+
+            // Générer l'URL de vérification
+            $verificationString = $FinalYearInternship->student->id . '-' . $FinalYearInternship->id;
+            $encodedUrl = UrlService::encodeUrl($verificationString);
+            $verificationUrl = URL::to('/verify-agreement?x=' . $encodedUrl);
+
+            // Générer le QR code
+            $qrCodeSvg = UrlService::getQrCodeSvg($verificationUrl);
+
+            $chromePath = env('BROWSERSHOT_CHROME_PATH');
+            pdf()
+                ->view($template_view, [
+                    'internship' => $FinalYearInternship,
+                    'qrCodeSvg' => $qrCodeSvg, // Ajouter le QR code à la vue
+                ])
+                ->save(
+                    $pdf_path . '/' . $pdf_file_name
+                )
+                ->name($pdf_file_name);
+
+            $FinalYearInternship->pdf_path = $pdf_path;
+            $FinalYearInternship->pdf_file_name = $pdf_file_name;
+            $FinalYearInternship->save();
+
+            Notification::make()
+                ->title('Internship Agreement has been generated successfully')
+                ->success()
+                ->actions([
+                    \Filament\Notifications\Actions\Action::make('Download')
+                        ->url(URL::to($pdf_path . '/' . $pdf_file_name), shouldOpenInNewTab: true),
+                ])
+                ->send();
+        });
+
+        return $static;
+    }
+}

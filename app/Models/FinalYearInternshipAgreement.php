@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\Enums;
+use App\Models\Scopes\StudentRelatedScope;
 use Carbon\Carbon;
+use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -78,6 +80,7 @@ class FinalYearInternshipAgreement extends Model
 
     protected static function booted(): void
     {
+        static::addGlobalScope(new StudentRelatedScope);
 
         static::creating(function (FinalYearInternshipAgreement $finalYearInternship) {
             $finalYearInternship->student_id = auth()->id();
@@ -139,6 +142,49 @@ class FinalYearInternshipAgreement extends Model
 
     public function getInternshipPeriodAttribute()
     {
-        return $this->starting_at->format('d/m/Y') . ' - ' . $this->ending_at->format('d/m/Y');
+        try {
+            if ($this->starting_at && $this->ending_at) {
+                return $this->starting_at->format('d/m/Y') . ' - ' . $this->ending_at->format('d/m/Y');
+            } else {
+                return null;
+            }
+        } catch (\Exception $e) {
+            Notification::make()
+                ->title('Error: ' . $e->getMessage())
+                ->danger()
+                ->send();
+
+            return null;
+        }
+    }
+
+    public function applyForCancellation($reason, $verificationDocumentUrl)
+    {
+        $this->status = Enums\Status::PendingCancellation;
+        $this->cancelled_at = now();
+        $this->cancellation_reason = $reason;
+        $this->verification_document_url = $verificationDocumentUrl;
+        $this->save();
+    }
+
+    public function undoCancellation()
+    {
+        $this->status = Enums\Status::Announced;
+        $this->cancelled_at = null;
+        $this->cancellation_reason = null;
+        $this->verification_document_url = null;
+        $this->save();
+    }
+
+    public function generateVerificationLink()
+    {
+
+        $verification_string = \App\Services\UrlService::encodeShortUrl($this->attributes[env('INTERNSHIPS_ENCRYPTION_FIELD', 'hey')]);
+        $verification_url = route('diploma.verify', $verification_string);
+
+        $this->verification_string = $verification_string;
+        $this->save();
+
+        return $verification_url;
     }
 }

@@ -2,9 +2,11 @@
 
 namespace App\Models\Scopes;
 
+use App\Models\Student;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
+use Illuminate\Support\Facades\Auth;
 
 class ProfessorScope implements Scope
 {
@@ -14,8 +16,11 @@ class ProfessorScope implements Scope
     public function apply(Builder $builder, Model $model): void
     {
         if (auth()->check()) {
+            if (Auth::user() instanceof Student) {
+                // $builder->select('first_name', 'last_name', 'department');
 
-            if (auth()->user()->isSuperAdministrator() || auth()->user()->isAdministrator() || auth()->user()->isDirection() || auth()->user()->isAdministrativeSupervisor()) {
+                return;
+            } elseif (auth()->user()->isSuperAdministrator() || auth()->user()->isAdministrator() || auth()->user()->isDirection() || auth()->user()->isAdministrativeSupervisor()) {
                 return;
             } elseif (auth()->user()->isProgramCoordinator()) {
                 $builder
