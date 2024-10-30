@@ -19,6 +19,7 @@ use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
+use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -245,41 +246,65 @@ class FinalYearInternshipAgreementResource extends StudentBaseResource
             )
             ->columns([
                 Tables\Columns\Layout\Split::make([
-                    Tables\Columns\TextColumn::make('title')
-                        ->searchable()
-                        ->sortable()
-                        ->label('Title')
-                        ->toggleable(false)
-                        ->sortable(false),
 
-                    Tables\Columns\TextColumn::make('organization.name')
-                        ->searchable()
-                        ->sortable()
-                        ->label('Organization')
-                        ->toggleable(false)
-                        ->sortable(false),
+                    Tables\Columns\Layout\Split::make([
+                        Tables\Columns\TextColumn::make('organization.name')
+                            ->weight(FontWeight::Bold)
+                            ->description(__('Organization'), position: 'above')
+                            ->toggleable(false)
+                            ->label('Organization')
+                            ->numeric()
+                            ->sortable(false),
+                        Tables\Columns\TextColumn::make('title')
+                            ->toggleable(false)
+                            ->sortable(false)
+                            ->description(__('Subject'), position: 'above')
+                            ->weight(FontWeight::Bold),
+                    ]),
 
-                    Tables\Columns\TextColumn::make('internship_period')
-                        ->searchable()
-                        ->sortable()
-                        ->label('Internship Period')
-                        ->toggleable(false)
-                        ->sortable(false),
+                    Tables\Columns\Layout\Split::make([
+                        Tables\Columns\TextColumn::make('status')
+                            // ->description(__('Status'), position: 'above')
+                            ->toggleable(false)
+                            ->sortable(false)
+                            ->grow(true)
+                            ->badge()
+                            ->columnSpan(1),
+                        Tables\Columns\Layout\Stack::make([
+                            Tables\Columns\TextColumn::make('starting_at')
+                                ->toggleable(false)
+                                ->description(__('Starting from'), position: 'above')
+                                ->date()
+                                ->sortable(false),
+                            Tables\Columns\TextColumn::make('ending_at')
+                                ->toggleable(false)
+                                ->description(__('to'), position: 'above')
+                                ->date()
+                                ->sortable(false),
+                        ]),
+                    ]),
 
-                    Tables\Columns\TextColumn::make('status')
-                        ->searchable()
-                        ->sortable()
-                        ->label('Status')
-                        ->toggleable(false)
-                        ->sortable(false),
+                ]),
+                Tables\Columns\TextColumn::make('title')
+                    ->searchable()
+                    ->sortable()
+                    ->label('Title')
+                    ->toggleable(false)
+                    ->sortable(false)
+                    ->description(__('Subject'), position: 'above')
+                    ->weight(FontWeight::Bold),
+                Tables\Columns\Layout\Panel::make([
 
-                    Tables\Columns\TextColumn::make('created_at')
-                        ->searchable()
-                        ->sortable()
-                        ->label('Created At')
+                    Tables\Columns\TextColumn::make('agreement_pdf_url')
                         ->toggleable(false)
-                        ->sortable(false),
-
+                        // ->description(__('Agreement PDF'), position: 'before')
+                        ->label('Agreement PDF')
+                        ->placeholder(__('No PDF generated yet'))
+                        // ->limit(20)
+                        ->formatStateUsing(fn ($record) => $record->agreement_pdf_url ? _('Download agreement PDF') : _('No PDF generated yet'))
+                        ->columnSpan(3)
+                        ->sortable(false)
+                        ->url(fn ($record) => $record->agreement_pdf_url, shouldOpenInNewTab: true),
                 ]),
             ])
             ->filters([

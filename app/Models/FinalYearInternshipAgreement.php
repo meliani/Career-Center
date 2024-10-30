@@ -189,4 +189,9 @@ class FinalYearInternshipAgreement extends Model
 
         return $verification_url;
     }
+
+    public function getAgreementPdfUrlAttribute()
+    {
+        return asset($this->pdf_path) . '/' . $this->pdf_file_name;
+    }
 }

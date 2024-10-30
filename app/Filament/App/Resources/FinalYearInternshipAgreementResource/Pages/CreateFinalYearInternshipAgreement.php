@@ -341,6 +341,10 @@ class CreateFinalYearInternshipAgreement extends CreateRecord
         ];
     }
 
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
     // public function create(bool $another = false): void
     // {
     //     $data = $this->form->getState();
