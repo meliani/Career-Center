@@ -10,6 +10,7 @@ use Croustibat\FilamentJobsMonitor\FilamentJobsMonitorPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationGroup;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -44,22 +45,23 @@ class AdminPanelProvider extends PanelProvider
         try {
             // Check database connection by attempting a simple query
             \DB::connection()->getPdo();
-    
+
             // Fetch rooms from the database
             $rooms = Room::available()->orderBy('order')->get();
-    
+
             // Transform the rooms into the desired format
             $resources = $rooms->map(function ($room) {
                 return [
-                    'id' => (string) $room->id, 
-                    'title' => $room->name, 
+                    'id' => (string) $room->id,
+                    'title' => $room->name,
                 ];
             })->toArray();
-    
+
             return $resources;
         } catch (\Exception $e) {
             // Handle the database connection error
-            \Log::error("Database connection failed: " . $e->getMessage());
+            \Log::error('Database connection failed: ' . $e->getMessage());
+
             return []; // Return an empty array or handle as necessary
         }
     }
@@ -282,6 +284,50 @@ class AdminPanelProvider extends PanelProvider
             // ->defaultAvatarProvider(
             //     // \LaraZeus\Boredom\BoringAvatarsProvider::class
             // )
+
+            // ->navigationGroups([
+            //     NavigationGroup::make('Dashboards')
+            //         ->icon('heroicon-o-home')
+            //         ->label(__('Dashboards')),
+            //     NavigationGroup::make()
+            //         ->label(__('Students and projects')),
+            //     NavigationGroup::make()
+            //         ->label(__('Internships and Projects')),
+            //     NavigationGroup::make()
+            //         ->label(__('Planning')),
+            //     NavigationGroup::make()
+            //         ->label(__('Juries and professors')),
+            //     NavigationGroup::make()
+            //         ->label(__('Entreprises')),
+            //     NavigationGroup::make()
+            //         ->label(__('Emails')),
+            //     NavigationGroup::make()
+            //         ->label(__('Internship offers')),
+            //     NavigationGroup::make()
+            //         ->label(__('Juries')),
+            //     NavigationGroup::make()
+            //         ->label(__('System')),
+            //     NavigationGroup::make()
+            //         ->label(__('Calendars')),
+            //     NavigationGroup::make()
+            //         ->icon('heroicon-o-home')
+            //         ->label(__('Alumni')),
+            //     NavigationGroup::make()
+            //         ->label(__('Support')),
+            //     NavigationGroup::make()
+            //         ->icon('heroicon-o-home')
+            //         ->label(__('Midweek Pro')),
+            //     // ->extraSidebarAttributes(['class' => 'featured-sidebar-group']),
+            //     NavigationGroup::make()
+            //         ->label(__('Administration')),
+            //     NavigationGroup::make()
+            //         ->label(__('Settings'))
+            //         ->icon('heroicon-s-cog')
+            //         ->collapsed(),
+            //     NavigationGroup::make()
+            //         ->label(__('INPT')),
+
+            // ])
             ->navigationGroups([
                 'Dashboards',
                 'Students and projects',
@@ -300,5 +346,6 @@ class AdminPanelProvider extends PanelProvider
                 'System',
                 'Système',
             ]);
+
     }
 }

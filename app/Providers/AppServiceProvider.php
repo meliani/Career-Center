@@ -216,30 +216,6 @@ class AppServiceProvider extends ServiceProvider
         //         ->sortable();
         // });
 
-        Filament::serving(function () {
-            Filament::registerNavigationGroups([
-
-                NavigationGroup::make()
-                    ->label(__('Students and projects')),
-                NavigationGroup::make()
-                    ->label('Planning'),
-                NavigationGroup::make()
-                    ->label('Juries and professors'),
-                NavigationGroup::make()
-                    ->label('Emails'),
-                NavigationGroup::make()
-                    ->label('Internship offers'),
-                NavigationGroup::make()
-                    ->label('Settings')
-                    ->icon('heroicon-s-cog')
-                    ->collapsed(),
-                NavigationGroup::make()
-                    ->label('System'),
-                // NavigationGroup::make()
-                //     ->label(fn () => __('Settings')),
-
-            ]);
-        });
         Column::macro('sortableMany', function () {
             return $this->sortable(query: function (\Illuminate\Database\Eloquent\Builder $query, string $direction, $column): \Illuminate\Database\Eloquent\Builder {
                 [$table, $field] = explode('.', $column->getName());
