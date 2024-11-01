@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Visualbuilder\EmailTemplates\Models\EmailTemplateTheme;
 
-class EmailTemplateThemeSeeder extends Seeder
+class CareerCenterEmailTemplateThemeSeeder extends Seeder
 {
     public function run()
     {
@@ -13,7 +13,7 @@ class EmailTemplateThemeSeeder extends Seeder
             [
                 'name' => 'Professional White',
                 'colours' => [
-                    'header_bg_color' => '#FFFFFF',
+                    'header_bg_color' => '#F8F9FA',
                     'content_bg_color' => '#FFFFFF',
                     'body_bg_color' => '#F8F9FA',
                     'body_color' => '#212529',

@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Visualbuilder\EmailTemplates\Models\EmailTemplate;
 
-class EmailTemplateSeeder extends Seeder
+class CareerCenterEmailTemplateSeeder extends Seeder
 {
     public function run()
     {

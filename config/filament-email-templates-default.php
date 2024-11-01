@@ -4,13 +4,14 @@ return [
     /**
      * If you wish to customise the table name change this before migration
      */
-    'table_name' => 'email_templates',
-    'theme_table_name' => 'email_templates_themes',
+    'table_name' => 'vb_email_templates',
+    'theme_table_name' => 'vb_email_templates_themes',
+
 
     /**
      * Mail Classes will be generated into this directory
      */
-    'mailable_directory' => 'Mail/Visualbuilder/EmailTemplates',
+    "mailable_directory" => 'Mail/Visualbuilder/EmailTemplates',
 
     /**
      * If you want to use your own token helper replace this class
@@ -29,7 +30,9 @@ return [
      *      }
      *  }
      */
+
     'tokenHelperClass' => \Visualbuilder\EmailTemplates\DefaultTokenHelper::class,
+
 
     /**
      * Some tokens don't belong to a model.  These $models->token will be checked
@@ -37,7 +40,7 @@ return [
     'known_tokens' => [
         'tokenUrl',
         'verificationUrl',
-        'message',
+        'message'
     ],
 
     /**
@@ -50,7 +53,7 @@ return [
             'icon' => 'heroicon-o-envelope',
             'group' => 'Content',
             'cluster' => false,
-            'position' => \Filament\Pages\SubNavigationPosition::Top,
+            'position' => \Filament\Pages\SubNavigationPosition::Top
         ],
         'themes' => [
             'sort' => 20,
@@ -58,26 +61,24 @@ return [
             'icon' => 'heroicon-o-paint-brush',
             'group' => 'Content',
             'cluster' => false,
-            'position' => \Filament\Pages\SubNavigationPosition::Top,
+            'position' => \Filament\Pages\SubNavigationPosition::Top
         ],
     ],
 
     //Email templates will be copied to resources/views/vendor/vb-email-templates/email
     //default.blade.php is base view that can be customised below
-    'default_view' => 'default_minimal',
+    'default_view' => 'default',
 
     'template_view_path' => 'vb-email-templates::email',
 
     'template_keys' => [
-        'user-welcome' => 'Email de bienvenue',
-        'user-request-reset' => 'Demande de réinitialisation du mot de passe',
-        'user-password-reset-success' => 'Confirmation de réinitialisation du mot de passe',
-        'user-locked-out' => 'Compte bloqué',
-        'user-verify-email' => 'Vérification d\'email',
-        'user-verified' => 'Email vérifié',
-        'user-login' => 'Connexion utilisateur',
-        'student-application' => 'Candidature étudiant',
-        'professor-notification' => 'Notification enseignant',
+            'user-welcome'=>'User Welcome Email',
+            'user-request-reset'=>'User Request Password Reset',
+            'user-password-reset-success'=>'User Password Reset',
+            'user-locked-out'=>'User Account Locked Out',
+            'user-verify-email'=>'User Verify Email',
+            'user-verified'=>'User Verified',
+            'user-login'=>'User Logged In',
     ],
 
     //Default Logo
@@ -94,38 +95,33 @@ return [
     'content_width' => '600',
 
     //Contact details included in default email templates
-    'enterprise-relations' => [
-        'email' => 'entreprises@inpt.ac.ma',
-        'phone' => '+212 538 002 700',
-    ],
+    'customer-services' => ['email' => 'support@yourcompany.com',
+        'phone' => '+441273 455702'],
 
     //Footer Links
     'links' => [
-        ['name' => 'Plateforme Carrières', 'url' => 'https://carriere.inpt.ac.ma', 'title' => 'Aller sur la plateforme carrières'],
-        ['name' => 'Site Web INPT', 'url' => 'https://www.inpt.ac.ma', 'title' => 'Aller sur le site web'],
+        ['name' => 'Website', 'url' => 'https://yourwebsite.com', 'title' => 'Goto website'],
+        ['name' => 'Privacy Policy', 'url' => 'https://yourwebsite.com/privacy-policy', 'title' => 'View Privacy Policy'],
     ],
 
     //Options for alternative languages
     //Note that Laravel default locale is just 'en' you can use this but
     //we are being more specific to cater for English vs USA languages
-    'default_locale' => 'fr',
+    'default_locale' => 'en_GB',
 
     //These will be included in the language picker when editing an email template
     'languages' => [
-        // 'en_GB' => ['display' => 'British', 'flag-icon' => 'gb'],
+        'en_GB' => ['display' => 'British', 'flag-icon' => 'gb'],
         'en_US' => ['display' => 'USA', 'flag-icon' => 'us'],
-        // 'es' => ['display' => 'Español', 'flag-icon' => 'es'],
+        'es' => ['display' => 'Español', 'flag-icon' => 'es'],
         'fr' => ['display' => 'Français', 'flag-icon' => 'fr'],
-        // 'pt' => ['display' => 'Brasileiro', 'flag-icon' => 'br'],
-        // 'in' => ['display' => 'Hindi', 'flag-icon' => 'in'],
+        'pt' => ['display' => 'Brasileiro', 'flag-icon' => 'br'],
+        'in' => ['display' => 'Hindi', 'flag-icon' => 'in'],
     ],
 
     //Notifiable Models who can receive emails
     'recipients' => [
         App\Models\User::class,
-        App\Models\Student::class,
-        App\Models\Alumni::class,
-        // App\Models\Professor::class,
     ],
 
     /**
@@ -135,10 +131,9 @@ return [
     'config_keys' => [
         'app.name',
         'app.url',
-        'email-templates.enterprise-relations',
-        'app.timezone',
-        'mail.from.address',
-        'mail.from.name',
+        'email-templates.customer-services'
+        // Add other safe config keys here.
+        // We don't want to allow all config keys they may contain secret keys or credentials
     ],
 
     //Most built-in emails can be automatically sent with minimal setup,
