@@ -229,4 +229,11 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName
 
         return $adminSupervisor;
     }
+
+    public function sendPasswordResetNotification($token)
+    {
+        $url = \Illuminate\Support\Facades\URL::secure(route('password.reset', ['token' => $token, 'email' => $this->email]));
+
+        $this->notify(new \Visualbuilder\EmailTemplates\Notifications\UserResetPasswordRequestNotification($url));
+    }
 }
