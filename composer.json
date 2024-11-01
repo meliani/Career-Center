@@ -65,6 +65,7 @@
         "stechstudio/filament-impersonate": "^3.5",
         "symfony/process": "^6.4",
         "vinkla/hashids": "^11.0",
+        "visualbuilder/email-templates": "^3.0",
         "webklex/laravel-imap": "^5.3",
         "willvincent/laravel-rateable": "^3.3",
         "z3d0x/filament-logger": "^0.6.2"
