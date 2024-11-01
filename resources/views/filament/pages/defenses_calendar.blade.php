@@ -1,3 +1,3 @@
 <x-filament-panels::page>
-    @livewire(\App\Filament\Widgets\DefensesCalendarWidget::class)
+    @livewire(\App\Filament\Administration\Widgets\DefensesCalendarWidget::class)
 </x-filament-panels::page>

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Widgets;
+namespace App\Filament\Administration\Widgets;
 
 use App\Models\MidweekEvent;
 use Filament\Forms;

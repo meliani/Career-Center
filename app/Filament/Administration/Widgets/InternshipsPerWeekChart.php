@@ -1,39 +1,42 @@
 <?php
 
-namespace App\Filament\Widgets;
+namespace App\Filament\Administration\Widgets;
 
+// use Filament\Widgets\ChartWidget;
 use App\Filament\Core\Widgets\FilamentChartsParentWidget as ChartWidget;
 use App\Models\InternshipAgreement;
 use Flowframe\Trend\Trend;
 use Flowframe\Trend\TrendValue;
 
-class InternshipsPerMonthChart extends ChartWidget
+class InternshipsPerWeekChart extends ChartWidget
 {
-    protected static ?int $sort = 13;
+    protected static ?int $sort = 10;
 
-    protected static ?string $heading = 'Announced Internships per month';
+    protected static ?string $heading = 'Daily Announced Internships';
 
     protected static ?string $type = 'bar';
 
     public static function canView(): bool
     {
-        return auth()->user()->isSuperAdministrator() || auth()->user()->isAdministrator() || auth()->user()->isDirection() || auth()->user()->isProgramCoordinator() || auth()->user()->isDepartmentHead();
+        return true;
     }
 
     public function getDescription(): ?string
     {
-        return __('An overview of the announced internships per month.');
+        return __('An overview of the daily announced internships.');
     }
 
     protected function getData(): array
     {
-        $data = Trend::query(InternshipAgreement::query())/* ->groupBy('country') */
+        $data = Trend::model(InternshipAgreement::class)
             ->between(
-                start: now()->subMonths(6)->startOfMonth(),
-                end: now()->endOfMonth(),
+                // start: now()->startOfYear(),
+                start: now()->subMonths(5)->startOfWeek(),
+                end: now()->endOfWeek(),
+                // end: now()->endOfYear(), ===
             )
-            ->perMonth()
-            ->aggregate('country', 'count');
+            ->perDay()
+            ->count();
 
         return [
             'datasets' => [
@@ -44,6 +47,5 @@ class InternshipsPerMonthChart extends ChartWidget
             ],
             'labels' => $data->map(fn (TrendValue $value) => $value->date),
         ];
-        $data = $this->filter;
     }
 }

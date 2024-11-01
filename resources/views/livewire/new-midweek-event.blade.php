@@ -25,5 +25,5 @@
             </div>
         </x-filament-panels::form>
     </x-filament::card>
-    @livewire(\App\Filament\Widgets\MidweekEventsCalendarWidget::class)
+    @livewire(\App\Filament\Administration\Widgets\MidweekEventsCalendarWidget::class)
 </div>

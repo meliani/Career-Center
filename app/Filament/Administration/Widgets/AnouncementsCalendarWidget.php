@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Widgets;
+namespace App\Filament\Administration\Widgets;
 
 use App\Filament\Administration\Resources\InternshipResource;
 use App\Models\InternshipAgreement;

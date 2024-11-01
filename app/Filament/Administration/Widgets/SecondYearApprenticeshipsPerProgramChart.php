@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Filament\Widgets;
+namespace App\Filament\Administration\Widgets;
 
 use App\Filament\Core\Widgets\ApexChartsParentWidget;
 
-class FirstYearApprenticeshipsPerProgramChart extends ApexChartsParentWidget
+class SecondYearApprenticeshipsPerProgramChart extends ApexChartsParentWidget
 {
     protected static ?int $sort = 1;
 
@@ -13,12 +13,12 @@ class FirstYearApprenticeshipsPerProgramChart extends ApexChartsParentWidget
     /**
      * Chart Id
      */
-    protected static ?string $chartId = 'FirstYearApprenticeshipsPerProgramChart';
+    protected static ?string $chartId = 'SecondYearApprenticeshipsPerProgramChart';
 
     /**
      * Widget Title
      */
-    protected static ?string $heading = 'First year internships per program';
+    protected static ?string $heading = 'Second year internships per program';
 
     public static function canView(): bool
     {
@@ -27,7 +27,7 @@ class FirstYearApprenticeshipsPerProgramChart extends ApexChartsParentWidget
 
     public function getDescription(): ?string
     {
-        return __('This chart shows the number of internships done by first-year students per program.');
+        return __('This chart shows the number of internships done by second-year students per program.');
     }
 
     /**
@@ -50,7 +50,7 @@ class FirstYearApprenticeshipsPerProgramChart extends ApexChartsParentWidget
     {
         $apprenticeships = \DB::table('apprenticeships')
             ->leftJoin('students', 'apprenticeships.student_id', '=', 'students.id')
-            ->where('students.level', 'FirstYear')
+            ->where('students.level', 'SecondYear')
             ->groupBy('program')
             ->select(
                 'program',

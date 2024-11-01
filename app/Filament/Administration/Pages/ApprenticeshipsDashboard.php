@@ -39,8 +39,8 @@ class ApprenticeshipsDashboard extends \Filament\Pages\Dashboard
     public function getWidgets(): array
     {
         return [
-            \App\Filament\Widgets\FirstYearApprenticeshipsPerProgramChart::class,
-            \App\Filament\Widgets\SecondYearApprenticeshipsPerProgramChart::class,
+            \App\Filament\Administration\Widgets\FirstYearApprenticeshipsPerProgramChart::class,
+            \App\Filament\Administration\Widgets\SecondYearApprenticeshipsPerProgramChart::class,
         ];
     }
 }

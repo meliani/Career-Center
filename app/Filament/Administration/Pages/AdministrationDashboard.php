@@ -38,16 +38,16 @@ class AdministrationDashboard extends \Filament\Pages\Dashboard
     public function getWidgets(): array
     {
         return [
-            \App\Filament\Widgets\Dashboards\GettingStartedWidget::class,
+            \App\Filament\Administration\Widgets\Dashboards\GettingStartedWidget::class,
 
-            // \App\Filament\Widgets\AssignedSupervisorsChart::class,
-            // \App\Filament\Widgets\ProfessorsParticipationTable::class,
-            // \App\Filament\Widgets\DefensesCalendarWidget::class,
+            // \App\Filament\Administration\Widgets\AssignedSupervisorsChart::class,
+            // \App\Filament\Administration\Widgets\ProfessorsParticipationTable::class,
+            // \App\Filament\Administration\Widgets\DefensesCalendarWidget::class,
 
-            // \App\Filament\Widgets\ProgressionTimelineChart::class,
-            // \App\Filament\Widgets\TimetableOverviewChart::class,
-            // \App\Filament\Widgets\EntrepriseContactsChart::class,
-            // \App\Filament\Widgets\AnouncementsCalendarWidget::class,
+            // \App\Filament\Administration\Widgets\ProgressionTimelineChart::class,
+            // \App\Filament\Administration\Widgets\TimetableOverviewChart::class,
+            // \App\Filament\Administration\Widgets\EntrepriseContactsChart::class,
+            // \App\Filament\Administration\Widgets\AnouncementsCalendarWidget::class,
         ];
     }
 

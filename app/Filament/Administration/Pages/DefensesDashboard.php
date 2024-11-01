@@ -19,12 +19,12 @@ class DefensesDashboard extends \Filament\Pages\Dashboard
     public function getWidgets(): array
     {
         return [
-            // \App\Filament\Widgets\InternshipsWordCloudWidget::class,
-            \App\Filament\Widgets\CompletedDefensesRatioChart::class,
-            \App\Filament\Widgets\DefensesPerProgramChart::class,
-            \App\Filament\Widgets\AssignedSupervisorsReviewersChart::class,
-            \App\Filament\Widgets\TimetableOverviewChart::class,
-            \App\Filament\Widgets\ProfessorsParticipationTable::class,
+            // \App\Filament\Administration\Widgets\InternshipsWordCloudWidget::class,
+            \App\Filament\Administration\Widgets\CompletedDefensesRatioChart::class,
+            \App\Filament\Administration\Widgets\DefensesPerProgramChart::class,
+            \App\Filament\Administration\Widgets\AssignedSupervisorsReviewersChart::class,
+            \App\Filament\Administration\Widgets\TimetableOverviewChart::class,
+            \App\Filament\Administration\Widgets\ProfessorsParticipationTable::class,
         ];
     }
 
