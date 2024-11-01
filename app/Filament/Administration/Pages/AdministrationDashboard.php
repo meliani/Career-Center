@@ -38,10 +38,12 @@ class AdministrationDashboard extends \Filament\Pages\Dashboard
     public function getWidgets(): array
     {
         return [
+            \App\Filament\Widgets\Dashboards\GettingStartedWidget::class,
 
-            \App\Filament\Widgets\AssignedSupervisorsChart::class,
-            \App\Filament\Widgets\ProfessorsParticipationTable::class,
-            \App\Filament\Widgets\DefensesCalendarWidget::class,
+            // \App\Filament\Widgets\AssignedSupervisorsChart::class,
+            // \App\Filament\Widgets\ProfessorsParticipationTable::class,
+            // \App\Filament\Widgets\DefensesCalendarWidget::class,
+
             // \App\Filament\Widgets\ProgressionTimelineChart::class,
             // \App\Filament\Widgets\TimetableOverviewChart::class,
             // \App\Filament\Widgets\EntrepriseContactsChart::class,

@@ -12,7 +12,7 @@ return [
     | theme_folder : 'build'
     |
     */
-    'theme_builder' => 'mix',
+    'theme_builder' => 'vite',
     'theme_file' => null,
     'theme_folder' => 'build',
 
@@ -68,7 +68,7 @@ return [
     |
     */
     'media_action' => FilamentTiptapEditor\Actions\MediaAction::class,
-//    'media_action' => Awcodes\Curator\Actions\MediaAction::class,
+    //    'media_action' => Awcodes\Curator\Actions\MediaAction::class,
     'link_action' => FilamentTiptapEditor\Actions\LinkAction::class,
 
     /*
