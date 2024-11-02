@@ -4,9 +4,9 @@ namespace App\Filament\App\Widgets\Dashboards;
 
 use Filament\Widgets\Widget;
 
-class GettingStartedWidget extends Widget
+class StudentGettingStartedWidget extends Widget
 {
-    protected static string $view = 'filament.app.widgets.getting-started-widget';
+    protected static string $view = 'filament.app.widgets.student-getting-started-widget';
 
     protected static ?int $sort = 1;
 

@@ -35,10 +35,10 @@ class WelcomeDashboard extends \Filament\Pages\Dashboard
     public function getWidgets(): array
     {
         return [
-            \App\Filament\App\Widgets\Dashboards\GettingStartedWidget::class,
+            \App\Filament\App\Widgets\Dashboards\StudentGettingStartedWidget::class,
             // \App\Filament\Administration\Widgets\DefensesPerProgramChart::class,
-            \App\Filament\Administration\Widgets\FirstYearApprenticeshipsPerProgramChart::class,
-            \App\Filament\Administration\Widgets\SecondYearApprenticeshipsPerProgramChart::class,
+            // \App\Filament\Administration\Widgets\FirstYearApprenticeshipsPerProgramChart::class,
+            // \App\Filament\Administration\Widgets\SecondYearApprenticeshipsPerProgramChart::class,
         ];
     }
 }

@@ -2,11 +2,11 @@
 
 namespace App\Filament\Administration\Pages;
 
-class AdministrationDashboard extends \Filament\Pages\Dashboard
+class WelcomeDashboard extends \Filament\Pages\Dashboard
 {
     // use \JibayMcs\FilamentTour\Tour\HasTour;
 
-    protected static string $routePath = 'administrationDashboard';
+    protected static string $routePath = 'welcome-dashboard';
 
     protected static ?string $title = 'Welcome dashboard';
 
@@ -38,7 +38,7 @@ class AdministrationDashboard extends \Filament\Pages\Dashboard
     public function getWidgets(): array
     {
         return [
-            \App\Filament\Administration\Widgets\Dashboards\GettingStartedWidget::class,
+            \App\Filament\Administration\Widgets\Dashboards\AdminGettingStartedWidget::class,
 
             // \App\Filament\Administration\Widgets\AssignedSupervisorsChart::class,
             // \App\Filament\Administration\Widgets\ProfessorsParticipationTable::class,
