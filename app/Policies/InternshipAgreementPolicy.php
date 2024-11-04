@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\FinalYearInternshipAgreement;
 use App\Models\InternshipAgreement;
 use App\Models\Student;
 use App\Models\User;
@@ -18,7 +19,7 @@ class InternshipAgreementPolicy extends CorePolicy
         return false;
     }
 
-    public function view(User | Student $user, InternshipAgreement $internship)
+    public function view(User | Student $user, InternshipAgreement | FinalYearInternshipAgreement $internship)
     {
         if ($user->isAdministrator() || $user->isDirection() || $user->isProfessor() || $user->isDepartmentHead()) {
             return true;
@@ -32,7 +33,7 @@ class InternshipAgreementPolicy extends CorePolicy
         return false;
     }
 
-    public function update(User | Student $user, InternshipAgreement $internship)
+    public function update(User | Student $user, InternshipAgreement | FinalYearInternshipAgreement $internship)
     {
         if ($user->isAdministrator()) {
             return true;
@@ -46,12 +47,12 @@ class InternshipAgreementPolicy extends CorePolicy
         return false;
     }
 
-    public function delete(User | Student $user, InternshipAgreement $internship)
+    public function delete(User | Student $user, InternshipAgreement | FinalYearInternshipAgreement $internship)
     {
         return $user->isAdministrator();
     }
 
-    public function forceDelete(User | Student $user, InternshipAgreement $internship)
+    public function forceDelete(User | Student $user, InternshipAgreement | FinalYearInternshipAgreement $internship)
     {
         return $user->isAdministrator();
     }

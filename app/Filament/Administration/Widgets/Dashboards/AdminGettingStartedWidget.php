@@ -32,7 +32,7 @@ class AdminGettingStartedWidget extends Widget
                 ->count(),
             'new_offers' => InternshipOffer::active()->count(),
             'applications' => Application::count(),
-            'active_users' => User::whereDate('last_login_at', '>=', now()->subDays(7))->count(),
+            'active_users' => User::whereDate('last_login_at', '>=', now()->subDays(7))->count() + Student::whereDate('last_login_at', '>=', now()->subDays(7))->count(),
         ];
     }
 

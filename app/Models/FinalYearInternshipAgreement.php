@@ -6,9 +6,11 @@ use App\Enums;
 use App\Models\Scopes\StudentRelatedScope;
 use Carbon\Carbon;
 use Filament\Notifications\Notification;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Gate;
 use Spatie\Tags\HasTags;
 
 class FinalYearInternshipAgreement extends Model
@@ -198,5 +200,102 @@ class FinalYearInternshipAgreement extends Model
     public function appliedCancellation()
     {
         return $this->status === Enums\Status::PendingCancellation;
+    }
+
+    public function validate(?string $department = null)
+    {
+        try {
+            if (Gate::denies('validate-internship', $this)) {
+                throw new AuthorizationException;
+            }
+
+            $this->validated_at = now();
+            $this->status = Enums\Status::Validated;
+            $this->assigned_department = $department;
+            $this->save();
+            \Filament\Notifications\Notification::make()
+                ->title('Saved successfully')
+                ->success()
+                ->send();
+        } catch (AuthorizationException $e) {
+
+            \Filament\Notifications\Notification::make()
+                ->title('Sorry You must be a Program Coordinator.')
+                ->danger()
+                ->send();
+
+            return response()->json(['error' => 'This action is unauthorized.'], 403);
+        }
+    }
+
+    public function sign()
+    {
+        try {
+            if (Gate::denies('sign-internship', $this)) {
+                throw new AuthorizationException;
+            }
+            $this->signed_at = now();
+            $this->status = Enums\Status::Signed;
+            $this->save();
+            \Filament\Notifications\Notification::make()
+                ->title('Signed successfully')
+                ->success()
+                ->send();
+        } catch (AuthorizationException $e) {
+
+            \Filament\Notifications\Notification::make()
+                ->title('Sorry You must be an Administrator.')
+                ->danger()
+                ->send();
+
+            return response()->json(['error' => 'This action is unauthorized.'], 403);
+        }
+    }
+
+    public function receive()
+    {
+        try {
+            if (Gate::denies('sign-internship', $this)) {
+                throw new AuthorizationException;
+            }
+            $this->received_at = now();
+            $this->status = Enums\Status::Completed;
+            $this->save();
+            \Filament\Notifications\Notification::make()
+                ->title('Achieved successfully')
+                ->success()
+                ->send();
+        } catch (AuthorizationException $e) {
+
+            \Filament\Notifications\Notification::make()
+                ->title('Sorry You must be an Administrator.')
+                ->danger()
+                ->send();
+
+            return response()->json(['error' => 'This action is unauthorized.'], 403);
+        }
+    }
+
+    public function assignDepartment($department)
+    {
+        try {
+            if (Gate::denies('validate-internship', $this)) {
+                throw new AuthorizationException;
+            }
+            $this->assigned_department = $department;
+            $this->save();
+            \Filament\Notifications\Notification::make()
+                ->title('Assigned successfully')
+                ->success()
+                ->send();
+        } catch (AuthorizationException $e) {
+
+            \Filament\Notifications\Notification::make()
+                ->title('Sorry You must be a Program Coordinator.')
+                ->danger()
+                ->send();
+
+            return response()->json(['error' => 'This action is unauthorized.'], 403);
+        }
     }
 }

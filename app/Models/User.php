@@ -58,7 +58,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName
         'last_login_at',
     ];
 
-    protected $connection = '';
+    protected $connection;
 
     public function __construct(array $attributes = [])
     {

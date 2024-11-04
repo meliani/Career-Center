@@ -2,6 +2,7 @@
 
 namespace App\Filament\Actions\Action;
 
+use App\Models\FinalYearInternshipAgreement;
 use App\Models\InternshipAgreement;
 use Filament\Tables\Actions\Action;
 
@@ -22,7 +23,7 @@ class ReceiveAction extends Action
         $static = app(static::class, [
             'name' => $name ?? static::getDefaultName(),
         ]);
-        $static->configure()->action(function (array $data, InternshipAgreement $record): void {
+        $static->configure()->action(function (array $data, InternshipAgreement | FinalYearInternshipAgreement $record): void {
             $record->withoutTimestamps(fn () => $record->receive());
         });
 

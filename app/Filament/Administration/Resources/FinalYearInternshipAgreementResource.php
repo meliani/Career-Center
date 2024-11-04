@@ -6,6 +6,7 @@ use App\Enums;
 use App\Filament\Administration\Resources\FinalYearInternshipAgreementResource\Pages;
 use App\Filament\Core\BaseResource;
 use App\Models\FinalYearInternshipAgreement;
+use Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists;
@@ -189,15 +190,53 @@ class FinalYearInternshipAgreementResource extends BaseResource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-            ])
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\DeleteAction::make()->hidden(fn () => auth()->user()->isAdministrator() === false),
+                    // ->disabled(! auth()->user()->can('delete', $this->post)),
+                    Tables\Actions\ForceDeleteAction::make(),
+                    Tables\Actions\RestoreAction::make(),
+
+                ])
+                    ->hidden((auth()->user()->isAdministrator() || auth()->user()->isPowerProfessor()) === false)
+                    ->hidden(true)
+                    ->label('')
+                    ->icon('heroicon-o-ellipsis-vertical')
+                    ->size(Filament\Support\Enums\ActionSize::ExtraLarge)
+                    ->tooltip(__('View, edit, or delete this internship agreement')),
+                Tables\Actions\ActionGroup::make([
+                    \App\Filament\Actions\Action\SignAction::make()
+                        ->disabled(fn ($record): bool => $record['signed_at'] !== null),
+                    \App\Filament\Actions\Action\ReceiveAction::make()
+                        ->disabled(fn ($record): bool => $record['received_at'] !== null),
+                    Tables\Actions\ActionGroup::make([
+                        \App\Filament\Actions\Action\ValidateAction::make()
+                            ->disabled(fn ($record): bool => $record['validated_at'] !== null),
+                        \App\Filament\Actions\Action\AssignDepartmentAction::make()
+                            ->disabled(fn ($record): bool => $record['assigned_department'] !== null),
+                    ])
+                        ->dropdown(false),
+                ])
+                    ->dropdownWidth(Filament\Support\Enums\MaxWidth::ExtraSmall)
+                    ->label('')
+                    ->icon('heroicon-o-bars-3')
+                    ->size(Filament\Support\Enums\ActionSize::ExtraLarge)
+                    ->tooltip(__('Validate, sign, or assign department'))
+                    ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isPowerProfessor()) === false),
+
+            ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
+            ])
+            ->headerActions([
+                \pxlrbt\FilamentExcel\Actions\Tables\ExportAction::make()
+                    ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isDepartmentHead() || auth()->user()->isProgramCoordinator()) === false)
+                    ->outlined(),
             ]);
     }
 
