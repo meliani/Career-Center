@@ -88,8 +88,7 @@ class FinalYearInternshipAgreementResource extends BaseResource
             ->columns([
                 Tables\Columns\TextColumn::make('student.full_name')
                     ->searchable(['first_name', 'last_name']),
-                Tables\Columns\TextColumn::make('student.level')
-                    ->label('Level'),
+
                 Tables\Columns\TextColumn::make('student.program')
                     ->label('Program'),
                 Tables\Columns\TextColumn::make('organization.name'),
@@ -107,6 +106,9 @@ class FinalYearInternshipAgreementResource extends BaseResource
                 Tables\Columns\TextColumn::make('ending_at')
                     ->date()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('student.level')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->label('Level'),
                 Tables\Columns\TextColumn::make('remuneration')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->numeric()
