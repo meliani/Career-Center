@@ -5,6 +5,7 @@ namespace App\Filament\Administration\Resources;
 use App\Filament\Administration\Resources\InternshipOfferResource\Pages;
 use App\Filament\Core\BaseResource;
 use App\Models\InternshipOffer;
+use App\Models\Year;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists;
@@ -270,7 +271,8 @@ class InternshipOfferResource extends BaseResource
         return parent::getEloquentQuery()
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
-            ]);
+            ])
+            ->where('year_id', Year::current()->id);
     }
 
     public static function infolist(Infolist $infolist): Infolist

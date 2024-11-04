@@ -5,6 +5,7 @@ namespace App\Filament\Administration\Resources\InternshipOfferResource\Pages;
 use App\Enums\InternshipLevel;
 use App\Filament\Administration\Resources\InternshipOfferResource;
 use App\Models\InternshipOffer;
+use App\Models\Year;
 use Filament\Actions;
 use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
@@ -20,6 +21,7 @@ class ListInternshipOffers extends ListRecords
         // Populate the property with the count of internship offers for each level
         $this->InternshipOffersByInternshipLevel = InternshipOffer::query()
             ->selectRaw('internship_level, COUNT(*) as count')
+            ->where('year_id', Year::current()->id)
             ->groupBy('internship_level')
             ->pluck('count', 'internship_level')
             ->toArray();
