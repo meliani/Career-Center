@@ -18,11 +18,11 @@ class SentEmailResource extends Core\BaseResource
 
     protected static ?string $navigationIcon = 'heroicon-o-envelope-open';
 
-    protected static ?string $navigationGroup = 'Emails';
+    protected static ?string $navigationGroup = 'Mailing';
 
-    protected static ?string $modelLabel = 'Opened Email';
+    protected static ?string $modelLabel = 'Sent Email';
 
-    protected static ?string $pluralModelLabel = 'Opened Emails';
+    protected static ?string $pluralModelLabel = 'Sent Emails';
 
     public static function canViewAny(): bool
     {

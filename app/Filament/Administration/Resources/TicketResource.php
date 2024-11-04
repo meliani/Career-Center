@@ -25,9 +25,11 @@ class TicketResource extends Core\BaseResource
 
     protected static ?string $title = 'Support Tickets';
 
-    protected static ?string $navigationGroup = 'Support';
+    protected static ?string $navigationGroup = 'Administration';
 
-    protected static ?int $sort = 9;
+    // protected static ?string $navigationParentGroup = 'Administration';
+
+    protected static ?int $navigationSort = 6;
 
     public static function canAccess(): bool
     {

@@ -16,11 +16,13 @@ class SentEmailUrlClickedResource extends Core\BaseResource
 
     protected static ?string $navigationIcon = 'heroicon-o-cursor-arrow-ripple';
 
-    protected static ?string $navigationGroup = 'Emails';
+    protected static ?string $navigationGroup = 'Mailing';
 
     protected static ?string $modelLabel = 'Sent Email URL Clicked';
 
     protected static ?string $pluralModelLabel = 'Sent Emails URLs Clicked';
+
+    protected static ?string $navigationParentItem = 'Sent Emails';
 
     public static function canViewAny(): bool
     {

@@ -15,13 +15,17 @@ class AlumniReferenceResource extends BaseResource
 {
     protected static ?string $model = AlumniReference::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    // protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $modelLabel = 'Alumni Reference';
 
     protected static ?string $pluralModelLabel = 'Alumni References';
 
-    protected static ?string $navigationGroup = 'Alumni';
+    protected static ?string $navigationParentItem = 'Alumni Accounts';
+
+    protected static ?string $navigationGroup = 'Administration';
+
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {

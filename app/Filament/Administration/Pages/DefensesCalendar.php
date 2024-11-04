@@ -6,17 +6,19 @@ use Filament\Pages\Page;
 
 class DefensesCalendar extends Page
 {
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    // protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     protected static string $view = 'filament.pages.defenses_calendar';
 
-    // protected static ?string $navigationGroup = 'Students and projects';
+    // protected static ?string $navigationGroup = 'Internships and Projects';
 
     protected static ?string $title = 'Calendrier des soutenances de PFE';
 
     protected static ?string $navigationLabel = 'Defenses Calendar';
 
-    protected static ?string $navigationGroup = 'Calendars';
+    protected static ?string $navigationGroup = 'Internships and Projects';
+
+    protected static ?int $navigationSort = 5;
 
     /* Authorizations */
     public static function canAccess(): bool

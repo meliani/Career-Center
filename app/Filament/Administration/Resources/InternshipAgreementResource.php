@@ -27,11 +27,11 @@ class InternshipAgreementResource extends Core\BaseResource
 
     protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
 
-    protected static ?int $sort = 1;
+    protected static ?int $sort = 7;
 
     protected static ?string $navigationBadgeTooltip = 'Announced internships';
 
-    protected static ?string $navigationGroup = 'Students and projects';
+    protected static ?string $navigationGroup = 'Internships and Projects';
 
     protected static ?string $modelLabel = 'Internship Agreement';
 
@@ -66,7 +66,7 @@ class InternshipAgreementResource extends Core\BaseResource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::count('id');
+        return '2024: ' . static::getModel()::count('id');
     }
 
     public static function form(Form $form): Form

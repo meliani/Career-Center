@@ -33,13 +33,18 @@ class StudentResource extends Core\BaseResource
 
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
 
-    protected static ?int $sort = 3;
-
     protected static ?string $recordFirstNameAttribute = 'first_name';
 
-    protected static ?string $navigationGroup = 'System';
+    protected static ?string $navigationGroup = 'Administration';
+
+    protected static ?int $navigationSort = 3;
 
     public static $User;
+
+    public static function getPolicy(): string
+    {
+        return \App\Policies\YourModelPolicy::class;
+    }
 
     public static function canAccess(): bool
     {
@@ -58,11 +63,6 @@ class StudentResource extends Core\BaseResource
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::where('level', 'ThirdYear')->count();
-    }
-
-    public static function getnavigationGroup(): string
-    {
-        return __(self::$navigationGroup);
     }
 
     public static function getGloballySearchableAttributes(): array

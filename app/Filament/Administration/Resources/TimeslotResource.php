@@ -18,24 +18,20 @@ class TimeslotResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Timeslots';
 
-    protected static ?string $title = 'Manage Students';
+    protected static ?string $title = 'Manage Timeslots';
 
     // protected static ?string $recordTitleAttribute = '';
-    protected static ?string $navigationGroup = 'Planning';
+    protected static ?string $navigationParentItem = 'Defenses Timetable';
 
-    // protected static ?string $navigationParentItem = '';
+    protected static ?string $navigationGroup = 'Internships and Projects';
+
     protected static ?string $navigationIcon = 'heroicon-o-clock';
 
-    protected static ?int $sort = 6;
+    protected static ?int $navigationSort = 800;
 
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
-    }
-
-    public static function getnavigationGroup(): string
-    {
-        return __('Planning');
     }
 
     public static function form(Form $form): Form

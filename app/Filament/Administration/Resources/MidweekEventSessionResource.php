@@ -21,7 +21,9 @@ class MidweekEventSessionResource extends BaseResource
 
     protected static ?string $pluralModelLabel = 'Midweek Event Sessions';
 
-    protected static ?string $navigationGroup = 'Midweek Pro';
+    protected static ?string $navigationGroup = 'Administration';
+
+    protected static ?string $navigationParentItem = 'Organization Accounts';
 
     public static function form(Form $form): Form
     {

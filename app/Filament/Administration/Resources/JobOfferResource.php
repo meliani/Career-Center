@@ -22,7 +22,9 @@ class JobOfferResource extends BaseResource
 
     protected static ?string $pluralModelLabel = 'Job offers';
 
-    protected static ?string $navigationGroup = 'Entreprises';
+    protected static ?string $navigationGroup = 'Administration';
+
+    protected static ?string $navigationParentItem = 'Organization Accounts';
 
     public static function form(Form $form): Form
     {

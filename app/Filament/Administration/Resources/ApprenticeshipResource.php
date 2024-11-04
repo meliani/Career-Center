@@ -25,11 +25,11 @@ class ApprenticeshipResource extends BaseResource
 
     protected static ?string $navigationIcon = 'heroicon-o-building-storefront';
 
-    protected static ?int $sort = 1;
+    protected static ?int $navigationSort = 8;
 
     protected static ?string $navigationBadgeTooltip = 'Announced apprenticeships';
 
-    protected static ?string $navigationGroup = 'Students and projects';
+    protected static ?string $navigationGroup = 'Internships and Projects';
 
     protected static ?string $modelLabel = 'Apprenticeship';
 

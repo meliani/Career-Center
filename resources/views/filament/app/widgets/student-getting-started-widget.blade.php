@@ -8,7 +8,7 @@
                         <x-heroicon-o-academic-cap class="w-6 h-6 text-primary-500" />
                     </div>
                     <h2 class="text-xl font-bold text-gray-900">
-                        {{ __('Getting Started Guide') }}
+                        {{ __('Your Internship Journey') }}
                     </h2>
                 </div>
                 <x-filament::badge color="success">
@@ -20,20 +20,21 @@
             <div class="space-y-2">
                 <div class="flex justify-between text-sm">
                     <span class="text-gray-500">{{ __('Completion Progress') }}</span>
-                    <span class="font-medium text-primary-600">25%</span>
+                    <span class="font-medium text-primary-600">30%</span>
                 </div>
                 <div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
-                    <div class="h-full bg-primary-500 rounded-full" style="width: 25%"></div>
+                    <div class="h-full bg-primary-500 rounded-full" style="width: 30%"></div>
                 </div>
             </div>
 
             <!-- Steps Section -->
             <div class="space-y-4">
                 @foreach ([
-                ['title' => __('Overview of the Dashboard'), 'status' => 'completed'],
-                ['title' => __('Managing Students'), 'status' => 'current'],
-                ['title' => __('Handling Applications'), 'status' => 'pending'],
-                ['title' => __('Reviewing Reports'), 'status' => 'pending'],
+                ['title' => __('Complete Profile'), 'status' => 'completed'],
+                ['title' => __('Check Internship Offers'), 'status' => 'current'],
+                ['title' => __('Apply to Offers'), 'status' => 'pending'],
+                ['title' => __('Announce Internship'), 'status' => 'pending'],
+                ['title' => __('Get your Internship Agreement'), 'status' => 'pending'],
                 ] as $step)
                 <div class="flex items-center space-x-3">
                     @if($step['status'] === 'completed')
@@ -59,12 +60,21 @@
 
             <!-- Action Buttons -->
             <div class="flex space-x-3">
-                <x-filament::button size="sm" color="primary">
-                    {{ __('Continue Learning') }}
-                </x-filament::button>
-                <x-filament::button size="sm" color="gray">
-                    {{ __('View All Guides') }}
-                </x-filament::button>
+    <x-filament::link
+        size="sm"
+        color="primary"
+        href="{{ \App\Filament\App\Resources\InternshipOfferResource::getUrl('index') }}"
+    >
+        {{ __('View Offers') }}
+    </x-filament::link>
+
+    <x-filament::link
+        size="sm"
+        color="gray"
+        href="{{ \App\Filament\App\Resources\FinalYearInternshipAgreementResource::getUrl('create') }}"
+    >
+        {{ __('Announce Internship') }}
+    </x-filament::link>
             </div>
         </div>
     </x-filament::card>

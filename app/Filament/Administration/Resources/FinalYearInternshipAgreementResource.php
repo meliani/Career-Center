@@ -24,7 +24,7 @@ class FinalYearInternshipAgreementResource extends BaseResource
 
     protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
 
-    protected static ?int $sort = 1;
+    protected static ?int $navigationSort = 4;
 
     protected static ?string $navigationBadgeTooltip = 'Announced final year internships';
 
@@ -43,7 +43,7 @@ class FinalYearInternshipAgreementResource extends BaseResource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::count();
+        return '2025: ' . static::getModel()::count();
     }
 
     public static function form(Form $form): Form

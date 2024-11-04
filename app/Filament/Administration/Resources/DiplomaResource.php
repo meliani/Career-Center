@@ -34,7 +34,9 @@ class DiplomaResource extends BaseResource
 
     protected static ?string $pluralModelLabel = 'Diplomas';
 
-    protected static ?string $navigationGroup = 'INPT';
+    protected static ?string $navigationGroup = 'Administration';
+
+    protected static ?string $navigationLabel = 'Diplomas';
 
     public static function canAccess(): bool
     {

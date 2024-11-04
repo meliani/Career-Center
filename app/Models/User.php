@@ -94,6 +94,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName
         'department' => Enums\Department::class,
         'assigned_program' => Enums\Program::class,
         'title' => Enums\Title::class,
+        'getting_started_steps' => 'array',
     ];
 
     protected $appends = [

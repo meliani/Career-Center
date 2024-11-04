@@ -23,7 +23,7 @@ class OrganizationAccountResource extends BaseResource
 
     protected static ?string $pluralModelLabel = 'Organization Accounts';
 
-    protected static ?string $navigationGroup = 'Midweek Pro';
+    protected static ?string $navigationGroup = 'Administration';
 
     public static function form(Form $form): Form
     {

@@ -31,11 +31,11 @@ class InternshipOfferResource extends BaseResource
 
     protected static ?string $recordTitleAttribute = 'organization_name';
 
-    protected static ?string $navigationGroup = 'Entreprises';
+    protected static ?string $navigationGroup = 'Internships and Projects';
 
     protected static ?string $navigationIcon = 'heroicon-o-briefcase';
 
-    protected static ?int $sort = 2;
+    protected static ?int $navigationSort = 1;
 
     protected static ?string $navigationBadgeTooltip = 'Internship offers';
 

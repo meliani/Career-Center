@@ -173,4 +173,10 @@ class InternshipOffer extends Model implements Viewable
 
         return $formatter->format($number);
     }
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', Enums\OfferStatus::Published)
+            ->where('year_id', Year::current()->id);
+    }
 }

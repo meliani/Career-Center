@@ -25,12 +25,12 @@ class UserResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    protected static ?string $navigationGroup = 'System';
+    protected static ?string $navigationGroup = 'Administration';
 
     // protected static ?string $navigationParentItem = '';
     protected static ?string $navigationIcon = 'heroicon-o-shield-check';
 
-    protected static ?int $sort = 10;
+    protected static ?int $navigationSort = 4;
 
     public static function getnavigationGroup(): string
     {

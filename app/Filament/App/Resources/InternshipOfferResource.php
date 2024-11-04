@@ -35,7 +35,7 @@ class InternshipOfferResource extends StudentBaseResource
 
     protected static ?string $navigationGroup = 'Internship Offers';
 
-    // protected static ?string $navigationGroup = 'Students and projects';
+    // protected static ?string $navigationGroup = 'Internships and Projects';
 
     public static function form(Form $form): Form
     {

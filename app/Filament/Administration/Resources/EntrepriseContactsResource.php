@@ -6,22 +6,28 @@ use App\Enums\EntrepriseContactCategory;
 use App\Enums\Title;
 use App\Filament\Actions\BulkAction;
 use App\Filament\Administration\Resources\EntrepriseContactsResource\Pages;
+use App\Filament\Core\BaseResource;
 use App\Models\EntrepriseContacts;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class EntrepriseContactsResource extends Resource
+class EntrepriseContactsResource extends BaseResource
 {
     protected static ?string $model = EntrepriseContacts::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
-    protected static ?string $navigationGroup = 'Entreprises';
+    protected static ?string $modelLabel = 'Entreprise Contact';
+
+    protected static ?string $pluralModelLabel = 'Entreprise Contacts';
+
+    protected static ?string $navigationGroup = 'Mailing';
+
+    // protected static ?string $navigationParentItem = 'Internships and Projects';
 
     public static function canAccess(): bool
     {

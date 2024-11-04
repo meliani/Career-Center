@@ -72,6 +72,8 @@ class AdminPanelProvider extends PanelProvider
         $resources = $this->getRoomResources();
 
         return $panel
+            ->viteTheme('resources/css/filament/app/theme.css')
+
             // ->topbar(false)
             // ->topNavigation()
             // ->sidebarFullyCollapsibleOnDesktop()
@@ -289,9 +291,9 @@ class AdminPanelProvider extends PanelProvider
             // ->navigationGroups([
             //     NavigationGroup::make('Dashboards')
             //         ->icon('heroicon-o-home')
-            //         ->label(__('Dashboards')),
+            // ->label(fn (): string => __('Dashboards')),
             //     NavigationGroup::make()
-            //         ->label(__('Students and projects')),
+            //         ->label(__('Internships and Projects')),
             //     NavigationGroup::make()
             //         ->label(__('Internships and Projects')),
             //     NavigationGroup::make()
@@ -307,7 +309,7 @@ class AdminPanelProvider extends PanelProvider
             //     NavigationGroup::make()
             //         ->label(__('Juries')),
             //     NavigationGroup::make()
-            //         ->label(__('System')),
+            //         ->label(__('Administration')),
             //     NavigationGroup::make()
             //         ->label(__('Calendars')),
             //     NavigationGroup::make()
@@ -331,7 +333,7 @@ class AdminPanelProvider extends PanelProvider
             // ])
             ->navigationGroups([
                 'Dashboards',
-                'Students and projects',
+                'Internships and Projects',
                 'Étudiants et projets',
                 'Juries',
                 'Calendars',
@@ -344,7 +346,7 @@ class AdminPanelProvider extends PanelProvider
                 'Emails',
                 'Settings',
                 'Paramètres',
-                'System',
+                'Administration',
                 'Système',
             ]);
 

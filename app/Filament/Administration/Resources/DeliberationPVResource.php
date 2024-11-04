@@ -20,7 +20,9 @@ class DeliberationPVResource extends BaseResource
 
     protected static ?string $pluralModelLabel = 'Deliberation PVs';
 
-    protected static ?string $navigationGroup = 'INPT';
+    protected static ?string $navigationGroup = 'Administration';
+
+    protected static ?string $navigationParentItem = 'Diplomas';
 
     public static function form(Form $form): Form
     {

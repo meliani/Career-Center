@@ -1,69 +1,61 @@
 <x-filament-widgets::widget>
-    <x-filament::card>
+    <x-filament::card class="transition-transform transform hover:scale-105 duration-300">
         <div class="space-y-6">
-            <!-- Header Section with Icon -->
+            <!-- Header -->
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-3">
-                    <div class="p-2 bg-primary-100 rounded-lg">
-                        <x-heroicon-o-academic-cap class="w-6 h-6 text-primary-500" />
+                    <div class="p-3 bg-gradient-to-br from-primary-100 to-primary-200 rounded-xl shadow">
+                        <x-heroicon-o-chart-bar class="w-6 h-6 text-primary-600" />
                     </div>
-                    <h2 class="text-xl font-bold text-gray-900">
-                        {{ __('Getting Started Guide') }}
+                    <h2 class="text-2xl font-bold text-gray-900">
+                        {{ __('System Overview') }}
                     </h2>
                 </div>
-                <x-filament::badge color="success">
-                    {{ __('New') }}
-                </x-filament::badge>
             </div>
 
-            <!-- Progress Section -->
-            <div class="space-y-2">
-                <div class="flex justify-between text-sm">
-                    <span class="text-gray-500">{{ __('Completion Progress') }}</span>
-                    <span class="font-medium text-primary-600">25%</span>
+            <!-- Statistics Grid -->
+            <div class="grid grid-cols-2 gap-4">
+                <div class="bg-white p-4 rounded-lg shadow-sm border">
+                    <div class="text-sm text-gray-500">{{ __('Total platform Users') }}</div>
+                    <div class="text-2xl font-bold text-primary-600">{{ $statistics['total_users'] }}</div>
                 </div>
-                <div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
-                    <div class="h-full bg-primary-500 rounded-full" style="width: 25%"></div>
+                <div class="bg-white p-4 rounded-lg shadow-sm border">
+                    <div class="text-sm text-gray-500">{{ __('New Internship Offers') }}</div>
+                    <div class="text-2xl font-bold text-success-600">{{ $statistics['new_offers'] }}</div>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-sm border">
+                    <div class="text-sm text-gray-500">{{ __('Applications') }}</div>
+                    <div class="text-2xl font-bold text-warning-600">{{ $statistics['applications'] }}</div>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-sm border">
+                    <div class="text-sm text-gray-500">{{ __('Active Users') }}</div>
+                    <div class="text-2xl font-bold text-info-600">{{ $statistics['active_users'] }}</div>
                 </div>
             </div>
 
-            <!-- Steps Section -->
-            <div class="space-y-4">
-                @foreach ([
-                ['title' => __('Overview of the Dashboard'), 'status' => 'completed'],
-                ['title' => __('Managing Students'), 'status' => 'current'],
-                ['title' => __('Handling Applications'), 'status' => 'pending'],
-                ['title' => __('Reviewing Reports'), 'status' => 'pending'],
-                ] as $step)
-                <div class="flex items-center space-x-3">
-                    @if($step['status'] === 'completed')
-                    <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-success-500">
-                        <x-heroicon-o-check class="w-5 h-5 text-white" />
+            <!-- Recent Activities -->
+            <div class="space-y-3">
+                <h3 class="text-lg font-semibold text-gray-900">{{ __('Recent Activities') }}</h3>
+                @foreach($recentActivities as $activity)
+                    <div class="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
+                        <div class="flex items-center space-x-3">
+                            <x-heroicon-o-clock class="w-5 h-5 text-gray-400" />
+                            <span class="text-sm text-gray-700">{{ $activity['title'] }}</span>
+                        </div>
+                        <x-filament::badge color="primary">
+                            {{ $activity['time'] }}
+                        </x-filament::badge>
                     </div>
-                    @elseif($step['status'] === 'current')
-                    <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-primary-500">
-                        <span class="text-sm font-medium text-white">2</span>
-                    </div>
-                    @else
-                    <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-gray-200">
-                        <span class="text-sm font-medium text-gray-600">•</span>
-                    </div>
-                    @endif
-                    <span
-                        class="text-sm {{ $step['status'] === 'completed' ? 'text-gray-500 line-through' : 'text-gray-700' }}">
-                        {{ $step['title'] }}
-                    </span>
-                </div>
                 @endforeach
             </div>
 
-            <!-- Action Buttons -->
+            <!-- Quick Actions -->
             <div class="flex space-x-3">
-                <x-filament::button size="sm" color="primary">
-                    {{ __('Continue Learning') }}
+                <x-filament::button size="sm" color="primary" icon="heroicon-o-plus">
+                    {{ __('New Application') }}
                 </x-filament::button>
-                <x-filament::button size="sm" color="gray">
-                    {{ __('View All Guides') }}
+                <x-filament::button size="sm" color="secondary" icon="heroicon-o-user-group">
+                    {{ __('Manage Users') }}
                 </x-filament::button>
             </div>
         </div>

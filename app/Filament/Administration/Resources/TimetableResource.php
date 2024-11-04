@@ -28,19 +28,11 @@ class TimetableResource extends BaseResource
 
     protected static ?int $navigationSort = 10;
 
-    protected static ?string $navigationGroup = 'Planning';
-
     protected static ?string $navigationLabel = 'Defenses Timetable';
 
-    public static function getNavigationLabel(): string
-    {
-        return __(self::$navigationLabel);
-    }
+    protected static ?string $navigationGroup = 'Internships and Projects';
 
-    public static function getnavigationGroup(): string
-    {
-        return __(self::$navigationGroup);
-    }
+    protected static ?string $navigationParentItem = 'Final Projects Defenses';
 
     public static function canViewAny(): bool
     {

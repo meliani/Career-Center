@@ -19,11 +19,13 @@ class AlumniResource extends BaseResource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $modelLabel = 'Alumni';
+    protected static ?string $modelLabel = 'Alumni Account';
 
-    protected static ?string $pluralModelLabel = 'Alumni';
+    protected static ?string $pluralModelLabel = 'Alumni Accounts';
 
-    protected static ?string $navigationGroup = 'System';
+    protected static ?string $navigationGroup = 'Administration';
+
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {

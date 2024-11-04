@@ -33,7 +33,7 @@ class ProfessorResource extends Core\BaseResource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    protected static ?string $navigationGroup = 'Juries';
+    protected static ?string $navigationGroup = 'Administration';
 
     // protected static ?string $navigationParentItem = '';
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
