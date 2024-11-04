@@ -142,6 +142,7 @@ class InternshipOfferResource extends BaseResource
                     ->wrap()
                     ->wrapHeader(false),
                 Tables\Columns\TextColumn::make('views_count')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->label('Views')
                     ->numeric()
                     ->sortable(),
@@ -272,7 +273,7 @@ class InternshipOfferResource extends BaseResource
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ])
-            ->where('year_id', Year::current()->id);
+            ->active();
     }
 
     public static function infolist(Infolist $infolist): Infolist
