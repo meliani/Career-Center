@@ -55,6 +55,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName
         'avatar',
         'dark_mode',
         'messenger_color',
+        'last_login_at',
     ];
 
     protected $connection = '';
@@ -95,6 +96,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName
         'assigned_program' => Enums\Program::class,
         'title' => Enums\Title::class,
         'getting_started_steps' => 'array',
+        'last_login_at' => 'datetime',
     ];
 
     protected $appends = [
