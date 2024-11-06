@@ -20,7 +20,9 @@ class NewInternship extends Page implements HasForms
 
     protected ?string $heading = 'New Internship Offer';
 
-    public ?array $data = [];
+    public InternshipOffer $internshipOffer;
+
+    public array $data = [];
 
     public bool $confirming = false;
 
@@ -28,6 +30,7 @@ class NewInternship extends Page implements HasForms
 
     public function mount(): void
     {
+        $this->internshipOffer = new InternshipOffer;
         $this->form->fill();
     }
 
@@ -64,6 +67,7 @@ class NewInternship extends Page implements HasForms
                             ->live(),
 
                         Forms\Components\Fieldset::make('Organization Responsible Information')
+                            ->label('Organization Responsible Information (reserved for school administration)')
                             ->columns(2)
                             ->schema([
                                 Forms\Components\TextInput::make('responsible_name')
@@ -219,30 +223,29 @@ class NewInternship extends Page implements HasForms
 
     public function confirm(): void
     {
-        $this->data = $this->form->getState();
+        // $this->data = $this->form->getState();
+
+        // $internshipOffer = $this->form->getModel()->fill($this->form->getState());
+        $this->internshipOffer->fill($this->form->getState());
+
+        // dd($this->internshipOffer);
+
         $this->confirming = true;
     }
 
     public function create(): void
     {
-
-        $data = $this->form->getState();
-        // Attach the current year
-        $data['year_id'] = Year::current()->id;
-
-        // Update the status to "submitted"
-        $data['status'] = 'Submitted';
-
-        $record = InternshipOffer::create($data);
-        $this->form->model($record)->saveRelationships();
-
+        $this->internshipOffer->fill($this->form->getState());
+        $this->internshipOffer->year_id = Year::current()->id;
+        $this->internshipOffer->status = 'Submitted';
+        $this->internshipOffer->save();
+        $this->form->model($this->internshipOffer)->saveRelationships();
         $this->submitted = true;
-
     }
 
     public function resetForm(): void
     {
-        $this->data = [];
+        $this->internshipOffer = new InternshipOffer;
         $this->confirming = false;
         $this->submitted = false;
         $this->form->fill();
@@ -253,7 +256,8 @@ class NewInternship extends Page implements HasForms
         return view('livewire.new-internship', [
             'confirming' => $this->confirming,
             'submitted' => $this->submitted,
-            'data' => new InternshipOffer($this->data),
+            'internshipOffer' => $this->internshipOffer,
+            // 'data' => $this->data,
         ]);
     }
 }

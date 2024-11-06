@@ -275,9 +275,9 @@ class AdminPanelProvider extends PanelProvider
                             condition: true,
                             permissions: [
                                 'view',
-                                'create',
-                                'update',
-                                'delete',
+                                // 'create',
+                                // 'update',
+                                // 'delete',
                             ] // customize the permissions (default = ["create", "view", "update", "delete"])
                         ),
                     // \Visualbuilder\EmailTemplates\EmailTemplatesPlugin::make(),
