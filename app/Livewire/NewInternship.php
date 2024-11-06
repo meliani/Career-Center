@@ -149,40 +149,45 @@ class NewInternship extends Page implements HasForms
                     ]),
                 // Forms\Components\TextInput::make('status'),
                 // Forms\Components\Toggle::make('is_active'),
-                Forms\Components\Fieldset::make('Application management')
-                    ->columns(3)
-                    ->columnSpanfull()
+                Forms\Components\Fieldset::make('Internship application details')
+                    ->columns(4)
+                    ->columnSpan(4)
                     ->schema([
                         Forms\Components\ToggleButtons::make('recruting_type')
                             ->label('')
                             ->inline()
-                            ->options([
-                                'SchoolManaged' => __('School Managed'),
-                                'RecruiterManaged' => __('Recruiter Managed'),
-                            ])
+                            ->options(Enums\RecrutingType::class)
                             ->default('RecruiterManaged')
                             ->live(),
-                        Forms\Components\Fieldset::make(__('Internship application details'))
-                            ->columns(8)
+                        Forms\Components\Group::make()
+                            ->columns(1)
                             ->schema([
-
+                                Forms\Components\DatePicker::make('expire_at')
+                                    // ->columnSpan(2)
+                                    ->default(now()->addMonth())
+                                    ->label('Application deadline'),
                                 Forms\Components\TextInput::make('application_link')
-                                    ->url()
-                                    // ->prefix('https://')
-                                    // ->mask('https://example.com')
+                                    // ->url()
+                                    ->dehydrateStateUsing(function ($state) {
+                                        if ($state && ! preg_match('/^https?:\/\//', $state)) {
+                                            return 'https://' . $state;
+                                        }
+
+                                        return $state;
+                                    })
                                     ->suffixIcon('heroicon-m-globe-alt')
                                     ->hidden(fn (Get $get) => $get('recruting_type') != 'RecruiterManaged')
-                                    ->columnSpan(2)
+                                    // ->columnSpan(2)
                                     ->maxLength(191),
                                 Forms\Components\TextInput::make('application_email')
-                                    ->columnSpan(2)
+                                    // ->columnSpan(2)
                                     ->hidden(fn (Get $get) => $get('recruting_type') != 'RecruiterManaged')
                                     ->email()
                                     ->maxLength(191),
 
-                                Forms\Components\Select::make('currency')
+                                Forms\Components\ToggleButtons::make('currency')
                                     ->hidden(fn (Get $get) => $get('recruting_type') != 'SchoolManaged')
-                                    // ->default(Enums\Currency::MDH->getSymbol())
+                                    ->default(Enums\Currency::MDH->value)
                                     ->options([
                                         Enums\Currency::EUR->value => Enums\Currency::EUR->getSymbol(),
                                         Enums\Currency::USD->value => Enums\Currency::USD->getSymbol(),
@@ -192,10 +197,11 @@ class NewInternship extends Page implements HasForms
                                         Enums\Currency::MDH->getSymbol() => Enums\Currency::MDH->value, */
                                     ])
                                     // ->options(Enums\Currency::class)
+                                    ->inline()
                                     ->live()
                                     ->id('currency'),
                                 Forms\Components\TextInput::make('remuneration')
-                                    ->columnSpan(2)
+                                    // ->columnSpan(3)
                                     ->hidden(fn (Get $get) => $get('recruting_type') != 'SchoolManaged')
                                     ->label('Monthly remuneration')
                                     ->numeric()
@@ -205,13 +211,11 @@ class NewInternship extends Page implements HasForms
                                     ->live(),
 
                                 Forms\Components\TextInput::make('workload')
+                                    // ->columnSpan(2)
                                     ->placeholder('Hours / Week')
                                     ->numeric()
                                     ->visible(fn (Get $get): bool => $get('remuneration') !== null && $get('remuneration') > 0),
 
-                                Forms\Components\DatePicker::make('expire_at')
-                                    ->columnSpan(2)
-                                    ->label('Application deadline'),
                                 // Forms\Components\FileUpload::make('attached_file')
                                 //     ->columnSpanFull(),
                             ]),
@@ -225,10 +229,7 @@ class NewInternship extends Page implements HasForms
     {
         // $this->data = $this->form->getState();
 
-        // $internshipOffer = $this->form->getModel()->fill($this->form->getState());
         $this->internshipOffer->fill($this->form->getState());
-
-        // dd($this->internshipOffer);
 
         $this->confirming = true;
     }

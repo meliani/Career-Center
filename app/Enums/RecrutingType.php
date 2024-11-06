@@ -24,7 +24,10 @@ enum RecrutingType: string implements HasColor, HasIcon, HasLabel
 
     public function getLabel(): ?string
     {
-        return __($this->name);
+        return match ($this) {
+            self::SchoolManaged => __('School Managed'),
+            self::RecruiterManaged => __('Recruiter Managed'),
+        };
     }
 
     public function getColor(): ?string

@@ -27,7 +27,7 @@
                 {{ __('Internship Offer Submitted Successfully') }}
             </h2>
             <p class="text-gray-600 text-lg">
-                {{ __('Your internship offer has been successfully submitted and is now visible to students.') }}
+                {{ __('Your internship offer has been successfully submitted and will be reviewed by the administration.') }}
             </p>
         </div>
 
@@ -219,7 +219,7 @@
                     <div class="space-y-2">
                         <p class="flex items-center">
                             <span class="font-medium mr-2">{{ __('Deadline') }}:</span>
-                            {{ $internshipOffer->expire_at ?? __('Application deadline needed') }}
+                            {{ $internshipOffer->expire_at?->format('d/m/Y') ?? __('Application deadline needed') }}
                         </p>
 
                     </div>
