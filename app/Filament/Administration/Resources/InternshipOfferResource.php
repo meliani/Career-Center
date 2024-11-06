@@ -141,6 +141,8 @@ class InternshipOfferResource extends BaseResource
                     ->tooltip(fn (InternshipOffer $record) => $record->project_title)
                     ->wrap()
                     ->wrapHeader(false),
+                Tables\Columns\TextColumn::make('expertiseField.name')
+                    ->searchable(false),
                 Tables\Columns\TextColumn::make('views_count')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->label('Views')

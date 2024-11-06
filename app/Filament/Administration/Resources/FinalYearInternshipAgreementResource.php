@@ -44,7 +44,7 @@ class FinalYearInternshipAgreementResource extends BaseResource
 
     public static function getNavigationBadge(): ?string
     {
-        return '2025: ' . static::getModel()::count();
+        return static::getModel()::count();
     }
 
     public static function form(Form $form): Form
