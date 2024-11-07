@@ -43,15 +43,6 @@
                 @endforelse
             </div>
 
-            <!-- Quick Actions -->
-            <div class="flex space-x-3">
-                <x-filament::button size="sm" color="primary" icon="heroicon-o-plus">
-                    {{ __('Add New') }}
-                </x-filament::button>
-                <x-filament::button size="sm" color="secondary" icon="heroicon-o-user-group">
-                    {{ __('Manage Users') }}
-                </x-filament::button>
-            </div>
         </div>
     </x-filament::card>
 </x-filament-widgets::widget>
