@@ -100,6 +100,7 @@ class AppPanelProvider extends PanelProvider
                 'PFE',
                 'Settings',
             ])
-            ->breadcrumbs(false);
+            ->breadcrumbs(false)
+            ->globalSearch(false);
     }
 }
