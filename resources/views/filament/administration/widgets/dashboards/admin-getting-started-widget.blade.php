@@ -15,28 +15,18 @@
 
             <!-- Statistics Grid -->
             <div class="grid grid-cols-2 gap-4">
+                @foreach($statistics as $stat)
                 <div class="bg-white p-4 rounded-lg shadow-sm border">
-                    <div class="text-sm text-gray-500">{{ __('Total platform Users') }}</div>
-                    <div class="text-2xl font-bold text-primary-600">{{ $statistics['total_users'] }}</div>
+                    <div class="text-sm text-gray-500">{{ $stat['label'] }}</div>
+                    <div class="text-2xl font-bold text-primary-600">{{ $stat['value'] }}</div>
                 </div>
-                <div class="bg-white p-4 rounded-lg shadow-sm border">
-                    <div class="text-sm text-gray-500">{{ __('New Internship Offers') }}</div>
-                    <div class="text-2xl font-bold text-success-600">{{ $statistics['new_offers'] }}</div>
-                </div>
-                <div class="bg-white p-4 rounded-lg shadow-sm border">
-                    <div class="text-sm text-gray-500">{{ __('Applications') }}</div>
-                    <div class="text-2xl font-bold text-warning-600">{{ $statistics['applications'] }}</div>
-                </div>
-                <div class="bg-white p-4 rounded-lg shadow-sm border">
-                    <div class="text-sm text-gray-500">{{ __('Active Users') }}</div>
-                    <div class="text-2xl font-bold text-info-600">{{ $statistics['active_users'] }}</div>
-                </div>
+                @endforeach
             </div>
 
             <!-- Recent Activities -->
             <div class="space-y-3">
                 <h3 class="text-lg font-semibold text-gray-900">{{ __('Recent Activities') }}</h3>
-                @foreach($recentActivities as $activity)
+                @forelse($recentActivities as $activity)
                     <div class="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
                         <div class="flex items-center space-x-3">
                             <x-heroicon-o-clock class="w-5 h-5 text-gray-400" />
@@ -46,13 +36,17 @@
                             {{ $activity['time'] }}
                         </x-filament::badge>
                     </div>
-                @endforeach
+                @empty
+                    <div class="text-sm text-gray-500 text-center py-4">
+                        {{ __('No recent activities') }}
+                    </div>
+                @endforelse
             </div>
 
             <!-- Quick Actions -->
             <div class="flex space-x-3">
                 <x-filament::button size="sm" color="primary" icon="heroicon-o-plus">
-                    {{ __('New Application') }}
+                    {{ __('Add New') }}
                 </x-filament::button>
                 <x-filament::button size="sm" color="secondary" icon="heroicon-o-user-group">
                     {{ __('Manage Users') }}

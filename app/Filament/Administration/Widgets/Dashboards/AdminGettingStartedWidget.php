@@ -27,12 +27,30 @@ class AdminGettingStartedWidget extends Widget
     protected function loadStatistics()
     {
         $this->statistics = [
-            'total_users' => User::count() + Student::count(),
-            'new_applications' => Application::whereDate('created_at', today())
-                ->count(),
-            'new_offers' => InternshipOffer::active()->count(),
-            'applications' => Application::count(),
-            'active_users' => User::whereDate('last_login_at', '>=', now()->subDays(7))->count() + Student::whereDate('last_login_at', '>=', now()->subDays(7))->count(),
+            'total_users' => [
+                'label' => __('Total platform Users'),
+                'value' => User::count() + Student::count(),
+            ],
+            'new_applications' => [
+                'label' => __('New Applications') . ' (' . __('Today') . ')',
+                'value' => Application::whereDate('created_at', today())->count(),
+            ],
+            'new_offers' => [
+                'label' => __('New Internship Offers'),
+                'value' => InternshipOffer::published()->count(),
+            ],
+            'pending_offers' => [
+                'label' => __('Internship Offers Pending Approval'),
+                'value' => InternshipOffer::submitted()->count(),
+            ],
+            'applications' => [
+                'label' => __('Applications'),
+                'value' => Application::count(),
+            ],
+            'active_users' => [
+                'label' => __('Active Users') . ' (' . __('Last 7 days') . ')',
+                'value' => User::whereDate('last_login_at', '>=', now()->subDays(7))->count() + Student::whereDate('last_login_at', '>=', now()->subDays(7))->count(),
+            ],
         ];
     }
 
@@ -42,7 +60,7 @@ class AdminGettingStartedWidget extends Widget
             ->take(5)
             ->get()
             ->map(fn ($item) => [
-                'title' => "New application from {$item->student?->name}",
+                'title' => __(' New application from') . " {$item->student?->name}",
                 'time' => $item->created_at->diffForHumans(),
                 'status' => $item->status,
             ])
