@@ -27,7 +27,11 @@ enum InternshipLevel: string implements HasColor, HasLabel
 
     public function getLabel(): ?string
     {
-        return __($this->name);
+        return match ($this) {
+            self::FinalYearInternship => __('Final year internship'),
+            self::IntroductoryInternship => __('Introductory internship'),
+            self::TechnicalInternship => __('Technical internship'),
+        };
     }
 
     public function getColor(): ?string

@@ -183,8 +183,22 @@ class InternshipOfferResource extends BaseResource
                 //     ->sortable()
                 //     ->suffix(__(' months')),
                 Tables\Columns\TextColumn::make('recruting_type')
+                    ->label('Recruiting')
                     ->toggleable(isToggledHiddenByDefault: true)
-                    ->searchable(),
+                    ->searchable()
+                    ->description(function (InternshipOffer $record) {
+                        $studentsRequested = $record->number_of_students_requested
+                            ? $record->number_of_students_requested . ' ' . __('students requested')
+                            : null;
+
+                        $applicationsCount = $record->applications_count > 0
+                            ? $record->applications_count . ' ' . __('applications')
+                            : __('No applications');
+
+                        // Combine the descriptions, filtering out any null values
+                        return implode(' • ', array_filter([$studentsRequested, $applicationsCount]));
+                    })
+                    ->badge(),
 
                 Tables\Columns\TextColumn::make('remuneration')
                     ->toggleable(isToggledHiddenByDefault: true)
@@ -255,7 +269,7 @@ class InternshipOfferResource extends BaseResource
     public static function getRelations(): array
     {
         return [
-            //
+            'applications' => \App\Filament\Administration\Resources\InternshipOfferResource\RelationManagers\ApplicationsRelationManager::class,
         ];
     }
 
@@ -275,7 +289,8 @@ class InternshipOfferResource extends BaseResource
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ])
-            ->active();
+            ->active()
+            ->withCount('applications');
     }
 
     public static function infolist(Infolist $infolist): Infolist
