@@ -39,7 +39,7 @@ class Offer extends Core\FrontendBaseModel
     //     'internship_duration',
     //     'remuneration',
     //     'currency',
-    //     'recruting_type',
+    //     'recruiting_type',
     //     'application_email',
     //     'event_id',
     //     'event_date',
@@ -74,7 +74,7 @@ class Offer extends Core\FrontendBaseModel
         //     'attached_file' => 'string',
         //     'link' => 'string',
         //     'remuneration' => 'string',
-        'recruting_type' => 'string',
+        'recruiting_type' => 'string',
         'internship_duration' => 'string',
 
         //     'event_id' => 'string',
@@ -159,7 +159,7 @@ class Offer extends Core\FrontendBaseModel
             $elapse = $expired_at->diffInDays();
             if (\Carbon\Carbon::now() < $expired_at) {
                 //if expiring diffInHours ->diffForHumans()
-                return 'Expire '.$expired_at->diffForHumans();
+                return 'Expire ' . $expired_at->diffForHumans();
             } elseif (\Carbon\Carbon::now() > $expired_at) {
                 return 'Expiré';
             }

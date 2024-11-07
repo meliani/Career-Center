@@ -33,7 +33,7 @@ return new class extends Migration
             $table->string('remuneration')->nullable();
             $table->string('currency')->nullable();
             $table->unsignedInteger('workload')->nullable();
-            $table->enum('recruting_type', ['SchoolManaged', 'RecruiterManaged'])->nullable();
+            $table->enum('recruiting_type', ['SchoolManaged', 'RecruiterManaged'])->nullable();
             $table->string('application_email')->nullable();
             $table->enum('status', Enums\OfferStatus::getArray());
             $table->boolean('applyable')->nullable();

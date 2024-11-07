@@ -70,7 +70,7 @@ class JobOfferResource extends BaseResource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('workload')
                     ->numeric(),
-                Forms\Components\TextInput::make('recruting_type'),
+                Forms\Components\TextInput::make('recruiting_type'),
                 Forms\Components\TextInput::make('application_email')
                     ->email()
                     ->maxLength(255),
@@ -119,7 +119,7 @@ class JobOfferResource extends BaseResource
                 Tables\Columns\TextColumn::make('workload')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('recruting_type'),
+                Tables\Columns\TextColumn::make('recruiting_type'),
                 Tables\Columns\TextColumn::make('application_email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status'),

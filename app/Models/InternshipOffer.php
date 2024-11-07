@@ -44,7 +44,7 @@ class InternshipOffer extends Model implements Viewable
         'internship_duration',
         'remuneration',
         'currency',
-        'recruting_type',
+        'recruiting_type',
         'application_email',
         'application_link',
         'number_of_students_requested',
@@ -56,7 +56,7 @@ class InternshipOffer extends Model implements Viewable
     ];
 
     protected $casts = [
-        'recruting_type' => Enums\RecrutingType::class,
+        'recruiting_type' => Enums\RecruitingType::class,
         'status' => Enums\OfferStatus::class,
         'internship_level' => Enums\InternshipLevel::class,
         'applyable' => 'boolean',

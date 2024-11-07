@@ -61,7 +61,7 @@ class JobOfferResource extends AlumniBaseResource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('workload')
                     ->numeric(),
-                Forms\Components\TextInput::make('recruting_type'),
+                Forms\Components\TextInput::make('recruiting_type'),
                 Forms\Components\TextInput::make('application_email')
                     ->email()
                     ->maxLength(255),
@@ -146,7 +146,7 @@ class JobOfferResource extends AlumniBaseResource
                     ->toggleable(false)
                     ->sortable(false)
                     ->numeric(),
-                Tables\Columns\TextColumn::make('recruting_type')
+                Tables\Columns\TextColumn::make('recruiting_type')
                     ->toggleable(false)
                     ->sortable(false),
                 Tables\Columns\TextColumn::make('application_email')

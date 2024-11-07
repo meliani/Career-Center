@@ -7,7 +7,7 @@ use Filament\Support\Contracts\HasIcon;
 // use Mokhosh\FilamentKanban\Concerns\IsKanbanStatus;
 use Filament\Support\Contracts\HasLabel;
 
-enum RecrutingType: string implements HasColor, HasIcon, HasLabel
+enum RecruitingType: string implements HasColor, HasIcon, HasLabel
 {
     // use IsKanbanStatus;
 

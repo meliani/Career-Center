@@ -189,14 +189,14 @@
                     {{ __('Application Information') }}
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    @if ($internshipOffer->recruting_type == \App\Enums\RecrutingType::RecruiterManaged)
+                    @if ($internshipOffer->recruiting_type == \App\Enums\RecruitingType::RecruiterManaged)
                         <div class="space-y-2">
                             <p class="flex items-center">
                                 <span class="font-medium mr-2">{{ __('Apply via') }}:</span>
                                 {{ $internshipOffer->application_link ?? $internshipOffer->application_email ?? __('Application method required') }}
                             </p>
                         </div>
-                    @elseif ($internshipOffer->recruting_type == \App\Enums\RecrutingType::SchoolManaged)
+                    @elseif ($internshipOffer->recruiting_type == \App\Enums\RecruitingType::SchoolManaged)
                         <div class="space-y-2">
                             <p class="flex items-center">
                                 <span class="font-medium mr-2">{{ __('Remuneration') }}:</span>

@@ -153,10 +153,10 @@ class NewInternship extends Page implements HasForms
                     ->columns(4)
                     ->columnSpan(4)
                     ->schema([
-                        Forms\Components\ToggleButtons::make('recruting_type')
+                        Forms\Components\ToggleButtons::make('recruiting_type')
                             ->label('')
                             ->inline()
-                            ->options(Enums\RecrutingType::class)
+                            ->options(Enums\RecruitingType::class)
                             ->default('RecruiterManaged')
                             ->live(),
                         Forms\Components\Group::make()
@@ -176,17 +176,17 @@ class NewInternship extends Page implements HasForms
                                         return $state;
                                     })
                                     ->suffixIcon('heroicon-m-globe-alt')
-                                    ->hidden(fn (Get $get) => $get('recruting_type') != 'RecruiterManaged')
+                                    ->hidden(fn (Get $get) => $get('recruiting_type') != 'RecruiterManaged')
                                     // ->columnSpan(2)
                                     ->maxLength(191),
                                 Forms\Components\TextInput::make('application_email')
                                     // ->columnSpan(2)
-                                    ->hidden(fn (Get $get) => $get('recruting_type') != 'RecruiterManaged')
+                                    ->hidden(fn (Get $get) => $get('recruiting_type') != 'RecruiterManaged')
                                     ->email()
                                     ->maxLength(191),
 
                                 Forms\Components\ToggleButtons::make('currency')
-                                    ->hidden(fn (Get $get) => $get('recruting_type') != 'SchoolManaged')
+                                    ->hidden(fn (Get $get) => $get('recruiting_type') != 'SchoolManaged')
                                     ->default(Enums\Currency::MDH->value)
                                     ->options([
                                         Enums\Currency::EUR->value => Enums\Currency::EUR->getSymbol(),
@@ -202,7 +202,7 @@ class NewInternship extends Page implements HasForms
                                     ->id('currency'),
                                 Forms\Components\TextInput::make('remuneration')
                                     // ->columnSpan(3)
-                                    ->hidden(fn (Get $get) => $get('recruting_type') != 'SchoolManaged')
+                                    ->hidden(fn (Get $get) => $get('recruiting_type') != 'SchoolManaged')
                                     ->label('Monthly remuneration')
                                     ->numeric()
                                     // get prefix from crrency value

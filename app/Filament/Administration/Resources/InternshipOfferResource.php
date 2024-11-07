@@ -97,7 +97,7 @@ class InternshipOfferResource extends BaseResource
                     ->maxLength(191),
                 Forms\Components\TextInput::make('currency')
                     ->maxLength(10),
-                Forms\Components\TextInput::make('recruting_type'),
+                Forms\Components\TextInput::make('recruiting_type'),
                 Forms\Components\TextInput::make('application_email')
                     ->email()
                     ->maxLength(191),
@@ -182,7 +182,7 @@ class InternshipOfferResource extends BaseResource
                 //     ->numeric()
                 //     ->sortable()
                 //     ->suffix(__(' months')),
-                Tables\Columns\TextColumn::make('recruting_type')
+                Tables\Columns\TextColumn::make('recruiting_type')
                     ->label('Recruiting')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable()
@@ -211,7 +211,7 @@ class InternshipOfferResource extends BaseResource
                 // ->toggleable(isToggledHiddenByDefault: true)
                 //     ->numeric()
                 //     ->sortable(),
-                // Tables\Columns\TextColumn::make('recruting_type'),
+                // Tables\Columns\TextColumn::make('recruiting_type'),
                 Tables\Columns\TextColumn::make('application_email')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
@@ -352,7 +352,7 @@ class InternshipOfferResource extends BaseResource
                         Infolists\Components\TextEntry::make('workload')
                             ->suffix(__(' hours'))
                             ->placeholder(__('No workload specified')),
-                        Infolists\Components\TextEntry::make('recruting_type')
+                        Infolists\Components\TextEntry::make('recruiting_type')
                             ->placeholder('No recruiting type specified'),
                         Infolists\Components\TextEntry::make('application_email')
                             ->placeholder('No application email specified'),

@@ -81,7 +81,7 @@ class InternshipOfferResource extends StudentBaseResource
                     ->maxLength(10),
                 Forms\Components\TextInput::make('workload')
                     ->numeric(),
-                Forms\Components\TextInput::make('recruting_type'),
+                Forms\Components\TextInput::make('recruiting_type'),
                 Forms\Components\TextInput::make('application_email')
                     ->email()
                     ->maxLength(191),
@@ -157,7 +157,7 @@ class InternshipOfferResource extends StudentBaseResource
                     ->icon('heroicon-o-check')
                     ->color('primary')
                     ->disabled(fn ($record) => auth()->user()->hasAppliedToInternshipOffer($record))
-                    ->visible(fn ($record) => $record->recruting_type === Enums\RecrutingType::SchoolManaged)
+                    ->visible(fn ($record) => $record->recruiting_type === Enums\RecruitingType::SchoolManaged)
                     ->requiresConfirmation()
                     ->modalIconColor('success')
                     ->modalIcon('heroicon-o-check')
@@ -225,7 +225,7 @@ class InternshipOfferResource extends StudentBaseResource
                                 ->color('primary')
 
                                 ->disabled(fn ($record) => auth()->user()->hasAppliedToInternshipOffer($record))
-                                ->visible(fn ($record) => $record->recruting_type === Enums\RecrutingType::SchoolManaged)
+                                ->visible(fn ($record) => $record->recruiting_type === Enums\RecruitingType::SchoolManaged)
                                 ->requiresConfirmation()
                                 ->modalIconColor('success')
                                 ->modalIcon('heroicon-o-check')
@@ -287,7 +287,7 @@ class InternshipOfferResource extends StudentBaseResource
                         Infolists\Components\TextEntry::make('workload')
                             ->suffix(__(' hours'))
                             ->placeholder(__('No workload specified')),
-                        Infolists\Components\TextEntry::make('recruting_type')
+                        Infolists\Components\TextEntry::make('recruiting_type')
                             ->placeholder('No recruiting type specified'),
                         Infolists\Components\TextEntry::make('application_email')
                             ->placeholder('No application email specified'),
