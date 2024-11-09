@@ -2,6 +2,7 @@
 
 namespace App\Filament\Administration\Resources;
 
+use App\Enums;
 use App\Filament\Administration\Resources\InternshipOfferResource\Pages;
 use App\Filament\Core\BaseResource;
 use App\Models\InternshipOffer;
@@ -296,71 +297,122 @@ class InternshipOfferResource extends BaseResource
     public static function infolist(Infolist $infolist): Infolist
     {
         return $infolist
+            ->columns(1)
             ->schema([
-                Infolists\Components\Group::make([
-                    Infolists\Components\Section::make(__('Organization Information'))
-                        ->columns(3)
-                        ->columnSpan(1)
-                        ->schema([
-                            Infolists\Components\TextEntry::make('organization_name'),
-                            Infolists\Components\TextEntry::make('organization_type'),
-                            Infolists\Components\TextEntry::make('country'),
-                        ]),
-                ]),
-                Infolists\Components\Group::make([
-                    Infolists\Components\Section::make(__('Responsible Information'))
-                        ->columnSpan(1)
-                        ->columns(2)
-                        ->schema([
-                            Infolists\Components\TextEntry::make('responsible_name'),
-                            Infolists\Components\TextEntry::make('responsible_occupation'),
-                            // Infolists\Components\TextEntry::make('responsible_phone'),
-                            // Infolists\Components\TextEntry::make('responsible_email'),
-                        ]),
-                ]),
-
-                Infolists\Components\Section::make(__('Internship Information'))
-                    ->columnSpan(1)
-                    ->columns(4)
+                Infolists\Components\Group::make()
+                    ->columns(5)
                     ->schema([
-                        Infolists\Components\TextEntry::make('project_title')
-                            ->columnSpanFull(),
+                        Infolists\Components\Group::make()
+                            ->columns(1)
+                            ->columnSpan(1)
+                            ->schema([
+                                Infolists\Components\TextEntry::make('recruiting_type')
+                                    ->label(false),
+                                Infolists\Components\TextEntry::make('expire_at')
+                                    ->label(false)
+                                    ->placeholder('No expiration date specified')
+                                    ->since()
+                                    ->badge()
+                                    ->prefix(__('Expires') . ' '),
+                                Infolists\Components\TextEntry::make('created_at')
+                                    ->label(false)
+                                    ->since()
+                                    ->prefix(__('Published') . ' '),
+                            ]),
+                        Infolists\Components\Section::make(__('Organization Information'))
+                            ->columnSpan(2)
+                            ->columns(3)
+                            ->schema([
+                                Infolists\Components\TextEntry::make('organization_type')
+                                    ->label(false),
+                                Infolists\Components\TextEntry::make('organization_name')
+                                    ->label(false),
+                                Infolists\Components\TextEntry::make('country')
+                                    ->label(false),
+                                Infolists\Components\TextEntry::make('responsible_name')
+                                    ->label(__('Responsible Information'))
+                                    ->formatStateUsing(function (InternshipOffer $record) {
+                                        $details = [];
 
-                        Infolists\Components\TextEntry::make('project_details')
-                            ->columnSpanFull(),
-                    ]),
+                                        if ($record->responsible_name) {
+                                            $details[] = $record->responsible_name;
+                                        }
 
-                Infolists\Components\Section::make(__('Internship Details'))
-                    ->columnSpan(1)
-                    ->columns(2)
-                    ->schema([
-                        Infolists\Components\TextEntry::make('internship_type'),
-                        Infolists\Components\TextEntry::make('internship_location'),
-                        // Infolists\Components\TextEntry::make('keywords')
-                        //     ->badge(),
-                        // ->url(fn (InternshipOffer $record) => Storage::url($record->attached_file), shouldOpenInNewTab: true),
-                        Infolists\Components\TextEntry::make('attached_file')
-                            ->url(fn ($record) => Storage::url($record->attached_file)),
-                        Infolists\Components\TextEntry::make('internship_duration')
-                            ->suffix(__(' months'))
-                            ->placeholder('No duration specified'),
-                        Infolists\Components\TextEntry::make('remuneration')
-                            ->money(fn ($record) => $record->currency->getLabel())
-                            ->placeholder(__('No remuneration specified')),
-                        // Infolists\Components\TextEntry::make('currency')
-                        //     ->placeholder('No currency specified'),
-                        Infolists\Components\TextEntry::make('workload')
-                            ->suffix(__(' hours'))
-                            ->placeholder(__('No workload specified')),
-                        Infolists\Components\TextEntry::make('recruiting_type')
-                            ->placeholder('No recruiting type specified'),
-                        Infolists\Components\TextEntry::make('application_email')
-                            ->placeholder('No application email specified'),
-                        // Infolists\Components\TextEntry::make('status'),
-                        // Infolists\Components\TextEntry::make('applyable'),
-                        Infolists\Components\TextEntry::make('expire_at')
-                            ->date()
-                            ->placeholder('No expiration date specified'),
+                                        if ($record->responsible_occupation) {
+                                            $details[] = $record->responsible_occupation;
+                                        }
+
+                                        if ($record->responsible_phone) {
+                                            $details[] = $record->responsible_phone;
+                                        }
+
+                                        if ($record->responsible_email) {
+                                            $details[] = $record->responsible_email;
+                                        }
+
+                                        return implode(' - ', $details);
+                                    })
+                                    ->columnSpanFull(),
+                            ]),
+                        // Infolists\Components\Section::make(__('Responsible Information'))
+                        //     ->columnSpan(2)
+                        //     ->columns(1)
+                        //     ->schema([
+
+                        //         // Infolists\Components\TextEntry::make('responsible_occupation'),
+                        //         // Infolists\Components\TextEntry::make('responsible_phone'),
+                        //         // Infolists\Components\TextEntry::make('responsible_email'),
+                        //     ]),
+
+                        Infolists\Components\Section::make(__('Internship Details'))
+                            ->columnSpan(2)
+                            ->columns(2)
+                            ->schema([
+                                Infolists\Components\TextEntry::make('internship_duration')
+                                    ->label(false)
+                                    ->suffix(__(' months'))
+                                    ->placeholder('No duration specified'),
+                                Infolists\Components\TextEntry::make('internship_type')
+                                    ->label(false),
+                                Infolists\Components\TextEntry::make('internship_location'),
+                                // Infolists\Components\TextEntry::make('keywords')
+                                //     ->badge(),
+                                // ->url(fn (InternshipOffer $record) => Storage::url($record->attached_file), shouldOpenInNewTab: true),
+                                // Infolists\Components\TextEntry::make('attached_file')
+                                //     ->url(fn ($record) => Storage::url($record->attached_file)),
+
+                                Infolists\Components\TextEntry::make('remuneration')
+                                    ->money(fn ($record) => $record->currency->value)
+                                    ->hidden(fn ($record) => ! ($record->recruiting_type === Enums\RecruitingType::SchoolManaged))
+                                    ->placeholder(__('No remuneration specified')),
+                                // Infolists\Components\TextEntry::make('currency')
+                                //     ->placeholder('No currency specified'),
+                                Infolists\Components\TextEntry::make('workload')
+                                    ->suffix(__(' hours'))
+                                    ->placeholder(__('No workload specified'))
+                                    ->hidden(fn ($record) => ! ($record->recruiting_type === Enums\RecruitingType::SchoolManaged)),
+
+                                Infolists\Components\TextEntry::make('application_email')
+                                    ->placeholder('No application email specified')
+                                    ->hidden(fn ($record) => ! ($record->recruiting_type === Enums\RecruitingType::RecruiterManaged)),                        // Infolists\Components\TextEntry::make('status'),
+                                // Infolists\Components\TextEntry::make('applyable'),
+
+                            ]),
+
+                        Infolists\Components\Section::make(fn (InternshipOffer $record) => $record->project_title ?? __('Project Details'))
+                            // ->label(fn (InternshipOffer $record) => $record->project_title)
+                            ->columnSpan(5)
+                            // ->columns(6)
+                            ->collapsible()
+                            ->collapsed()
+                            ->schema([
+                                Infolists\Components\TextEntry::make('project_title')
+                                    ->columnSpanFull(),
+
+                                Infolists\Components\TextEntry::make('project_details')
+                                    ->columnSpanFull()
+                                    ->markdown(),
+                            ]),
                     ]),
             ]);
     }

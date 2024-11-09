@@ -2,11 +2,13 @@
 
 namespace App\Filament\Administration\Resources\InternshipOfferResource\RelationManagers;
 
+use App\Filament\Administration\Resources\StudentResource;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 class ApplicationsRelationManager extends RelationManager
 {
@@ -21,12 +23,14 @@ class ApplicationsRelationManager extends RelationManager
 
     public function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                // Forms\Components\TextInput::make('student.name')
-                //     ->required()
-                //     ->maxLength(255),
-            ]);
+        // return $form
+        //     ->schema([
+        //         // Forms\Components\TextInput::make('student.name')
+        //         //     ->required()
+        //         //     ->maxLength(255),
+        //     ]);
+        return StudentResource::form($form);
+
     }
 
     public function table(Table $table): Table
@@ -67,5 +71,15 @@ class ApplicationsRelationManager extends RelationManager
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public static function canViewForRecord(Model $ownerRecord, string $pageClass): bool
+    {
+        return $ownerRecord->recruiting_type === \App\Enums\RecruitingType::SchoolManaged;
+    }
+
+    public function hasCombinedRelationManagerTabsWithContent(): bool
+    {
+        return true;
     }
 }

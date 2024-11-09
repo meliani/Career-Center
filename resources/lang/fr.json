@@ -344,7 +344,6 @@
     "Application email": "Email de candidature",
     "Application link": "Lien de candidature",
     "Internship application details": "Détails de candidature",
-    "Recruting type": "Type de recrutement",
     "Recruiting": "Recrutement",
     "Attached file": "Fichier joint",
     "Project details": "Détails du projet",
@@ -443,14 +442,13 @@
     "Internship Title": "Titre du stage",
     "Starts At": "Commence le",
     "Ends At": "Finit le",
-    "Recruting Information": "Information de recrutement",
     "Pending cancellation": "Annulation en attente",
     "Internship Office location if different than organization address.": "Lieu de stage si différent de l'adresse de l'organisation.",
     "Defenses from": "Soutenances du",
     "Defenses until": "Soutenances jusqu'au",
     "Defenses until :date": "Soutenances jusqu'au :date",
     "Defenses from :date": "Soutenances du :date",
-    "MDH": "Dirham marocain",
+    "MDH": "DH",
     "EUR": "Euro",
     "USD": "Dollar américain",
     "No remuneration specified": "Aucune rémunération spécifiée",
@@ -692,5 +690,7 @@
     "Today": "Aujourd'hui",
     "New Applications": "Nouvelles candidatures",
     "Internship Offers Pending Approval": "Offres de stage en attente d'approbation",
-    "Last 7 days": "Les 7 derniers jours"
+    "Last 7 days": "Les 7 derniers jours",
+    "Expires": "Expire",
+    "Recruiting type": "Type de recrutement"
 }
