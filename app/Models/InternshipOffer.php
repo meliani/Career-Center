@@ -177,9 +177,9 @@ class InternshipOffer extends Model implements Viewable
     public function scopeActive($query)
     {
         return $query->withoutTrashed()
+            ->where('year_id', Year::current()->id)
             ->where('status', Enums\OfferStatus::Published)
-            ->orWhere('status', Enums\OfferStatus::Submitted)
-            ->where('year_id', Year::current()->id);
+            ->orWhere('status', Enums\OfferStatus::Submitted);
     }
 
     public function scopePublished($query)
