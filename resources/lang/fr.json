@@ -700,5 +700,13 @@
     "This link will expire on :date": "Ce lien expirera le :date",
     "Technical internship": "Stage technique",
     "Introductory internship": "Stage ouvrier",
-    "Final year internship": "PFE"
+    "Final year internship": "PFE",
+    "Hello": "Bonjour",
+    "You can access the applications for the internship offer \":title\" using the following link:": "Vous pouvez accéder aux candidatures pour l'offre de stage \":title\" en utilisant le lien suivant :",
+    "This link will expire on :date.": "Ce lien expirera le :date.",
+    "Best regards": "Cordialement",
+    "Share Applications": "Partager les candidatures",
+    "Email Content": "Contenu de l'email",
+    "Emails": "Emails",
+    "Applications for :title": "Candidatures pour :title"
 }
