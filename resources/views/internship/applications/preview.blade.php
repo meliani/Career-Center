@@ -47,12 +47,12 @@
                                 <td class="px-6 py-4 whitespace-nowrap">{{ $application->student->phone }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     @if($application->student->cv)
-                                        <a href="{{ Storage::url($application->student->cv) }}" target="_blank" class="text-blue-600 hover:text-blue-800">{{ __('View CV') }}</a>
+                                        <a href="{{ $application->student->cv }}" target="_blank" class="text-blue-600 hover:text-blue-800">{{ __('View CV') }}</a>
                                     @endif
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     @if($application->student->lm)
-                                        <a href="{{ Storage::url($application->student->lm) }}" target="_blank" class="text-blue-600 hover:text-blue-800">{{ __('View Cover Letter') }}</a>
+                                        <a href="{{ $application->student->lm }}" target="_blank" class="text-blue-600 hover:text-blue-800">{{ __('View Cover Letter') }}</a>
                                     @endif
                                 </td>
                             </tr>
