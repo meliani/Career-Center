@@ -27,6 +27,9 @@ class EntrepriseContactsResource extends BaseResource
 
     protected static ?string $navigationGroup = 'Mailing';
 
+    // Use the correct records per page option
+    protected static ?int $defaultTableRecordsPerPageSelectOption = 25;
+
     // protected static ?string $navigationParentItem = 'Internships and Projects';
 
     public static function canAccess(): bool
@@ -94,56 +97,67 @@ class EntrepriseContactsResource extends BaseResource
     {
         return $table
             ->columns([
+                // Primary Information Group
                 Tables\Columns\TextColumn::make('long_full_name')
                     ->label('Full Name')
-                    ->searchable(false),
+                    ->searchable(['first_name', 'last_name'])
+                    ->sortable()
+                    ->weight('bold'),
                 Tables\Columns\TextColumn::make('email')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('title')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('first_name')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('last_name')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->searchable(),
+                    ->searchable()
+                    ->copyable(),
                 Tables\Columns\TextColumn::make('company')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('position')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('category')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('years_of_interactions_with_students')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('alumni_promotion')
-                    ->searchable(),
+
+                // Contact Status Group
+                Tables\Columns\IconColumn::make('is_account_disabled')
+                    ->label('Disabled')
+                    ->boolean()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('number_of_bounces')
-                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->badge()
+                    ->color(fn ($state) => $state > 0 ? 'danger' : 'success')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\IconColumn::make('is_account_disabled')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->boolean(),
-                Tables\Columns\TextColumn::make('year.title')
-                    ->searchable(false)
-                    ->label('Last Year Supervised a student'),
+
+                // Interaction Details Group
+                Tables\Columns\TextColumn::make('category')
+                    ->badge()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('interactions_count')
+                    ->label('Interactions')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('last_time_contacted')
-                    ->dateTime()
-                    ->sortable()
+                    ->label('Last Contact')
+                    ->dateTime('Y-m-d')
+                    ->sortable(),
+
+                // Additional Information (Hidden by Default)
+                Tables\Columns\TextColumn::make('title')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('alumni_promotion')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('years_of_interactions_with_students')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('year.title')
+                    ->label('Last Year Supervised')
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->dateTime(),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->dateTime(),
             ])
+            ->defaultSort('created_at', 'desc')
+            ->striped()
+            // Remove the ->condensed() call as it doesn't exist
+            ->paginated([10, 25, 50, 100])
             ->filters([
                 Tables\Filters\SelectFilter::make('category')
                     ->options(EntrepriseContactCategory::class),
