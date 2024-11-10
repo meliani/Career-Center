@@ -190,11 +190,13 @@ class EntrepriseContactsResource extends BaseResource
                 Tables\Columns\TextColumn::make('interactions_count')
                     ->label('Interactions')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('last_time_contacted')
                     ->label('Last Contact')
                     ->dateTime('Y-m-d')
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
 
                 // Additional Information (Hidden by Default)
                 // Contact Status Group
