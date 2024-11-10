@@ -95,6 +95,7 @@ class EntrepriseContactsResource extends BaseResource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('long_full_name')
+                    ->label('Full Name')
                     ->searchable(false),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
