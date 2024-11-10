@@ -42,10 +42,10 @@ class ListInternshipOffers extends ListRecords
         $tabs['all'] = Tab::make('All');
 
         foreach (InternshipLevel::getArray() as $level) {
-            $levelLabel = $level; // Convert enum instance to string
-            $tabs[$levelLabel] = Tab::make($level)
-                ->badge($this->InternshipOffersByInternshipLevel[$levelLabel] ?? 0)
-                ->modifyQueryUsing(fn ($query) => $query->where('internship_level', $levelLabel));
+            $levelLabel = $level->getLabel();
+            $tabs[$levelLabel] = Tab::make(__($levelLabel))
+                ->badge($this->InternshipOffersByInternshipLevel[$level->value] ?? 0)
+                ->modifyQueryUsing(fn ($query) => $query->where('internship_level', $level));
         }
 
         return $tabs;

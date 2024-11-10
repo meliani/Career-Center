@@ -112,6 +112,8 @@ class InternshipOfferResource extends BaseResource
     public static function table(Table $table): Table
     {
         return $table
+            ->filtersLayout(\Filament\Tables\Enums\FiltersLayout::AboveContentCollapsible)
+
             ->columns([
                 Tables\Columns\TextColumn::make('status')
                     ->sortable()
@@ -192,9 +194,12 @@ class InternshipOfferResource extends BaseResource
                             ? $record->number_of_students_requested . ' ' . __('students requested')
                             : null;
 
-                        $applicationsCount = $record->applications_count > 0
-                            ? $record->applications_count . ' ' . __('applications')
-                            : __('No applications');
+                        $applicationsCount = null;
+                        if ($record->recruiting_type === \App\Enums\RecruitingType::SchoolManaged) {
+                            $applicationsCount = $record->applications_count > 0
+                                ? $record->applications_count . ' ' . __('applications')
+                                : __('No applications');
+                        }
 
                         // Combine the descriptions, filtering out any null values
                         return implode(' • ', array_filter([$studentsRequested, $applicationsCount]));
@@ -237,7 +242,13 @@ class InternshipOfferResource extends BaseResource
                 //     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
+                Tables\Filters\TrashedFilter::make()
+                    ->hidden(fn () => ! auth()->user()->isAdministrator())
+                    ->label('Status'),
+                Tables\Filters\SelectFilter::make('recruiting_type')
+                    ->multiple()
+                    ->options(Enums\RecruitingType::class)
+                    ->label('Recruiting type'),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

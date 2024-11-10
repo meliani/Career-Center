@@ -80,3 +80,11 @@ Route::get('/soutenances', function () {
 
     return view('livewire.defense-calendar', ['data' => $data]);
 })->name('globalDefenseCalendar');
+
+Route::get('/internship/{internship}/applications/preview', [\App\Http\Controllers\InternshipApplicationPreviewController::class, 'preview'])
+    ->name('internship.applications.preview')
+    ->middleware('signed');
+
+Route::get('/internship/{internship}/applications/export', [\App\Http\Controllers\InternshipApplicationPreviewController::class, 'export'])
+    ->name('internship.applications.export')
+    ->middleware('signed');

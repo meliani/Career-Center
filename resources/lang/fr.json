@@ -692,5 +692,13 @@
     "Internship Offers Pending Approval": "Offres de stage en attente d'approbation",
     "Last 7 days": "Les 7 derniers jours",
     "Expires": "Expire",
-    "Recruiting type": "Type de recrutement"
+    "Recruiting type": "Type de recrutement",
+    "Applications for": "Candidatures pour",
+    "Export to Excel": "Exporter vers Excel",
+    "View CV": "Voir le CV",
+    "View Cover Letter": "Voir la lettre de motivation",
+    "This link will expire on :date": "Ce lien expirera le :date",
+    "Technical internship": "Stage technique",
+    "Introductory internship": "Stage ouvrier",
+    "Final year internship": "PFE"
 }
