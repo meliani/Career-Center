@@ -183,17 +183,6 @@ class EntrepriseContactsResource extends BaseResource
                 Tables\Columns\TextColumn::make('position')
                     ->searchable(),
 
-                // Contact Status Group
-                Tables\Columns\IconColumn::make('is_account_disabled')
-                    ->label('Disabled')
-                    ->boolean()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('number_of_bounces')
-                    ->badge()
-                    ->color(fn ($state) => $state > 0 ? 'danger' : 'success')
-                    ->numeric()
-                    ->sortable(),
-
                 // Interaction Details Group
                 Tables\Columns\TextColumn::make('category')
                     ->badge()
@@ -208,8 +197,19 @@ class EntrepriseContactsResource extends BaseResource
                     ->sortable(),
 
                 // Additional Information (Hidden by Default)
-                Tables\Columns\TextColumn::make('title')
+                // Contact Status Group
+                Tables\Columns\IconColumn::make('is_account_disabled')
+                    ->label('Disabled')
+                    ->boolean()
+                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('number_of_bounces')
+                    ->badge()
+                    ->color(fn ($state) => $state > 0 ? 'danger' : 'success')
+                    ->numeric()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+
                 Tables\Columns\TextColumn::make('alumni_promotion')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
