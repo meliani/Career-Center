@@ -3,7 +3,6 @@
 namespace App\Exports;
 
 use App\Models\InternshipOffer;
-use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
@@ -26,8 +25,8 @@ class InternshipApplicationsExport implements FromCollection, WithHeadings
                     'email' => $application->student->email,
                     'phone' => $application->student->phone,
                     'personal_email' => $application->student->email_perso,
-                    'cv' => $application->student->cv ? url(Storage::url($application->student->cv)) : '',
-                    'cover_letter' => $application->student->lm ? url(Storage::url($application->student->lm)) : '',
+                    'cv' => $application->student->cv ?? '',
+                    'cover_letter' => $application->student->lm ?? '',
                 ];
             });
     }
