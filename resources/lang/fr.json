@@ -708,5 +708,7 @@
     "Share Applications": "Partager les candidatures",
     "Email Content": "Contenu de l'email",
     "Emails": "Emails",
-    "Applications for :title": "Candidatures pour :title"
+    "Applications for : :title": "Candidatures pour : :title",
+    "Please note that the applications list may be updated until the expiration date.": "Veuillez noter que la liste des candidatures peut être mise à jour jusqu'à la date d'expiration.",
+    "Email Subject": "Objet de l'email"
 }

@@ -12,7 +12,8 @@ class SendApplicationsNotification extends Notification
 
     public function __construct(
         protected $internship,
-        protected $emailBody
+        protected $emailBody,
+        protected $subject = null
     ) {}
 
     public function via($notifiable): array
@@ -23,7 +24,7 @@ class SendApplicationsNotification extends Notification
     public function toMail($notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject(__('Applications for :title', ['title' => $this->internship->project_title]))
+            ->subject($this->subject ?? __('Applications for :title', ['title' => $this->internship->project_title]))
             ->view('emails.raw', ['content' => $this->emailBody]);
     }
 }

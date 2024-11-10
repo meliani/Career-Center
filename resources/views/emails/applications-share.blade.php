@@ -7,6 +7,8 @@
 
     <p>{{ __('This link will expire on :date.', ['date' => ($internship->expire_at ?? now()->addDays(30))->format('d/m/Y')]) }}</p>
 
+    <p>{{ __('Please note that the applications list may be updated until the expiration date.') }}</p>
+
     <p>{{ __('Best regards') }},<br>
     {{ config('app.name') }}</p>
 </div>

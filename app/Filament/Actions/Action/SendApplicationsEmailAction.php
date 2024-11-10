@@ -22,6 +22,7 @@ class SendApplicationsEmailAction extends Action
         ]);
 
         $static->configure()
+            ->slideOver()
             ->icon('heroicon-o-share')
             ->action(function (array $data, $livewire): void {
                 $internship = $livewire->getOwnerRecord();
@@ -31,7 +32,8 @@ class SendApplicationsEmailAction extends Action
                     Notification::route('mail', $email)
                         ->notify(new SendApplicationsNotification(
                             $internship,
-                            $data['email_body']
+                            $data['email_body'],
+                            $data['subject']
                         ));
                 }
 
@@ -66,6 +68,10 @@ class SendApplicationsEmailAction extends Action
                         ->label(__('Preview'))
                         ->description(__('Preview email'))
                         ->schema([
+                            \Filament\Forms\Components\TextInput::make('subject')
+                                ->label('Email Subject')
+                                ->required()
+                                ->default(__('Applications for : :title', ['title' => $internship->project_title])),
                             \Filament\Forms\Components\RichEditor::make('email_body')
                                 ->label('Email Content')
                                 ->default($emailBody)
