@@ -35,10 +35,9 @@ class OrganizationResource extends BaseResource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('city')
                     ->maxLength(255),
-                Forms\Components\TextInput::make('country')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('central_organization')
-                    ->numeric(),
+                \Parfaitementweb\FilamentCountryField\Forms\Components\Country::make('country')
+                    ->searchable(),
+                Forms\Components\TextInput::make('central_organization'),
             ]);
     }
 
@@ -52,7 +51,7 @@ class OrganizationResource extends BaseResource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('city')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('country')
+                \Parfaitementweb\FilamentCountryField\Tables\Columns\CountryColumn::make('country')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('central_organization')
                     ->numeric()

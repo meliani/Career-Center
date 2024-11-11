@@ -13,7 +13,7 @@ class AdminGettingStartedWidget extends Widget
 {
     protected static string $view = 'filament.administration.widgets.dashboards.admin-getting-started-widget';
 
-    protected static ?int $sort = 1;
+    protected static ?int $sort = -1;
 
     public array $statistics = [];
 
