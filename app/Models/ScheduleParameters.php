@@ -6,7 +6,6 @@ use Carbon\Carbon;
 
 class ScheduleParameters extends Core\BackendBaseModel
 {
-
     protected $fillable = [
         'schedule_starting_at',
         'schedule_ending_at',
@@ -17,6 +16,7 @@ class ScheduleParameters extends Core\BackendBaseModel
         'max_rooms',
         'minutes_per_slot',
     ];
+
     protected $casts = [
         'schedule_starting_at' => 'datetime',
         'schedule_ending_at' => 'datetime',
