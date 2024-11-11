@@ -120,6 +120,14 @@ class FinalInternshipsPerProgramChart extends ApexChartsParentWidget
             ],
             'xaxis' => [
                 'categories' => $internshipData->pluck('program')->toArray(),
+                'title' => [
+                    'text' => __('Programs'),
+                    'style' => [
+                        'fontSize' => '12px',
+                        'fontWeight' => 600,
+                        'color' => '#4B5563',
+                    ],
+                ],
                 'labels' => [
                     'style' => [
                         'fontSize' => '12px',
