@@ -115,10 +115,10 @@ class InternshipOfferResource extends BaseResource
             ->filtersLayout(\Filament\Tables\Enums\FiltersLayout::AboveContentCollapsible)
 
             ->columns([
-                Tables\Columns\TextColumn::make('year.title')
-                    ->searchable()
-                    ->label('Year')
-                    ->sortable(),
+                // Tables\Columns\TextColumn::make('year.title')
+                //     ->searchable()
+                //     ->label('Year')
+                //     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->sortable()
                     ->badge(),
@@ -149,6 +149,7 @@ class InternshipOfferResource extends BaseResource
                     ->wrap()
                     ->wrapHeader(false),
                 Tables\Columns\TextColumn::make('expertiseField.name')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(false),
                 Tables\Columns\TextColumn::make('views_count')
                     ->toggleable(isToggledHiddenByDefault: true)
