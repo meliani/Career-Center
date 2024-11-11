@@ -6,6 +6,7 @@ use App\Enums;
 use App\Filament\Administration\Resources\FinalYearInternshipAgreementResource\Pages;
 use App\Filament\Core\BaseResource;
 use App\Models\FinalYearInternshipAgreement;
+use App\Models\Year;
 use Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -62,7 +63,10 @@ class FinalYearInternshipAgreementResource extends BaseResource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('title')
                     ->maxLength(255),
-                Forms\Components\TagsInput::make('keywords'),
+                Forms\Components\SpatieTagsInput::make('tags')
+                    ->type('internships')
+                    ->splitKeys(['Tab', ',', ' '])
+                    ->columnSpanFull(),
                 Forms\Components\DateTimePicker::make('starting_at'),
                 Forms\Components\DateTimePicker::make('ending_at'),
                 Forms\Components\ToggleButtons::make('status')
@@ -130,6 +134,8 @@ class FinalYearInternshipAgreementResource extends BaseResource
                 Tables\Columns\TextColumn::make('externalSupervisor.full_name')
                     ->searchable(false)
                     ->sortable(),
+                Tables\Columns\SpatieTagsColumn::make('tags')
+                    ->searchable(false),
                 // Tables\Columns\TextColumn::make('tutor_id')
                 //     ->toggleable(isToggledHiddenByDefault: true)
                 //     ->numeric()
@@ -271,7 +277,7 @@ class FinalYearInternshipAgreementResource extends BaseResource
 
         return $infolist
             ->schema([
-                Infolists\Components\Section::make('Apprenticeship Agreement')
+                Infolists\Components\Section::make('Internship Agreement')
                     ->columns(3) // Adjust the number of columns as needed
                     ->schema([
                         Infolists\Components\Fieldset::make('Basic Information')
@@ -357,6 +363,10 @@ class FinalYearInternshipAgreementResource extends BaseResource
                                     // ->visibility('private')
                                     ->visible(fn ($record) => $record->appliedCancellation())
                                     ->simpleLightbox($verification_document_url),
+                                Infolists\Components\SpatieTagsEntry::make('tags')
+                                    ->label('Tags')
+                                    ->type('internships')
+                                    ->visible(fn ($record) => $record->tags->isNotEmpty()),
                             ]),
                         Infolists\Components\Fieldset::make('Dates')
                             ->columnSpan(2)

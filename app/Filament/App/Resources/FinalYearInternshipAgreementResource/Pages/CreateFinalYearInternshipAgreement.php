@@ -333,7 +333,7 @@ class CreateFinalYearInternshipAgreement extends CreateRecord
                         ->schema([
                             SpatieTagsInput::make('tags')
                                 // ->suggestion()
-                                ->type('FinalYearInternship-' . Year::current())
+                                ->type('internships')
                                 ->splitKeys(['Tab', ',', ' '])
                                 ->columnSpanFull(),
                         ]),
