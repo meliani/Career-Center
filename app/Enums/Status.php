@@ -18,6 +18,7 @@ enum Status: string implements HasColor, HasLabel
     case Completed = 'Completed';
     case Signed = 'Signed';
     case PendingCancellation = 'PendingCancellation';
+    case Canceled = 'Canceled';
 
     // case Approved = "Approved";
     // case Declined = "Declined";
@@ -32,6 +33,7 @@ enum Status: string implements HasColor, HasLabel
             self::Completed,
             self::Signed,
             self::PendingCancellation,
+            self::Canceled,
             // self::Approved,
             // self::Declined,
             // self::Started,
@@ -40,7 +42,20 @@ enum Status: string implements HasColor, HasLabel
 
     public function getLabel(): ?string
     {
-        return __($this->value);
+        return match ($this) {
+            self::Draft => __('Draft'),
+            self::Announced => __('Announced'),
+            self::Rejected => __('Rejected'),
+            self::Validated => __('Validated'),
+            self::Completed => __('Completed'),
+            self::Signed => __('Signed'),
+            self::PendingCancellation => __('Pending Cancellation'),
+            self::Canceled => __('Canceled'),
+            // self::Approved => __('Approved'),
+            // self::Declined => __('Declined'),
+            // self::Started => __('Started'),
+
+        };
     }
 
     public function getColor(): ?string
@@ -56,6 +71,7 @@ enum Status: string implements HasColor, HasLabel
             // self::Started => 'success',
             self::Completed => 'success',
             self::PendingCancellation => 'danger',
+            self::Canceled => 'danger',
         };
     }
 }

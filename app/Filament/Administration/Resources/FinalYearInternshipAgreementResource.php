@@ -77,9 +77,24 @@ class FinalYearInternshipAgreementResource extends BaseResource
                     ->columns(2)
                     ->schema([
                         // Forms\Components\DateTimePicker::make('announced_at'),
-                        Forms\Components\DateTimePicker::make('validated_at'),
-                        Forms\Components\DateTimePicker::make('received_at'),
-                        Forms\Components\DateTimePicker::make('signed_at'),
+                        Forms\Components\DateTimePicker::make('validated_at')
+                            ->seconds(false)
+                            ->native(false)
+                            ->minutesStep(15)
+                            ->displayFormat('d/m/Y H:i')
+                            ->timezone('Africa/Casablanca'),
+                        Forms\Components\DateTimePicker::make('received_at')
+                            ->seconds(false)
+                            ->native(false)
+                            ->minutesStep(15)
+                            ->displayFormat('d/m/Y H:i')
+                            ->timezone('Africa/Casablanca'),
+                        Forms\Components\DateTimePicker::make('signed_at')
+                            ->seconds(false)
+                            ->native(false)
+                            ->minutesStep(15)
+                            ->displayFormat('d/m/Y H:i')
+                            ->timezone('Africa/Casablanca'),
                     ]),
                 Forms\Components\RichEditor::make('description')
                     ->label('Internship description')
