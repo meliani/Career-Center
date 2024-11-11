@@ -250,6 +250,9 @@ class InternshipOfferResource extends BaseResource
                 Tables\Filters\TrashedFilter::make()
                     ->hidden(fn () => ! auth()->user()->isAdministrator())
                     ->label('Status'),
+                Tables\Filters\SelectFilter::make('status')
+                    ->multiple()
+                    ->options(Enums\OfferStatus::class),
                 Tables\Filters\SelectFilter::make('recruiting_type')
                     ->multiple()
                     ->options(Enums\RecruitingType::class)

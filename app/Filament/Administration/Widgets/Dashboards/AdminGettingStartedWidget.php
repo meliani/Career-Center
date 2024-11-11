@@ -124,7 +124,7 @@ class AdminGettingStartedWidget extends Widget
                 'value' => InternshipOffer::submitted()->count(),
                 'color' => 'warning',
                 'description' => __('Internship offers awaiting approval'),
-                'route' => route('filament.Administration.resources.internship-offers.index', ['tableFilters[status][value]' => 'submitted']),
+                'route' => route('filament.Administration.resources.internship-offers.index', ['tableFilters[status][values][0]' => 'Submitted']),
             ],
             'applications' => [
                 'key' => 'applications',

@@ -743,5 +743,8 @@
     "Success Rate (%)": "Taux de réalisation (%)",
     "Number of Students": "Nombre d'étudiants",
     "No Data Available": "Aucune donnée disponible",
-    "No data available for the selected period": "Aucune donnée disponible pour la période sélectionnée"
+    "No data available for the selected period": "Aucune donnée disponible pour la période sélectionnée",
+    "Submitted": "Soumis",
+    "Disabled": "Désactivé",
+    "Expired": "Expiré"
 }
