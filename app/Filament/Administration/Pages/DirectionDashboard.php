@@ -60,6 +60,7 @@ class DirectionDashboard extends \Filament\Pages\Dashboard
     {
         return [
             \App\Filament\Administration\Widgets\Dashboards\AdminGettingStartedWidget::class,
+            \App\Filament\Administration\Widgets\FinalInternshipsPerProgramChart::class,
             \App\Filament\Administration\Widgets\ProfessorsParticipationTable::class,
             // \App\Filament\Administration\Widgets\InternshipsStatusChart::class,
             // \App\Filament\Administration\Widgets\InternshipsPerProgramChart::class,
@@ -68,7 +69,6 @@ class DirectionDashboard extends \Filament\Pages\Dashboard
             // \App\Filament\Administration\Widgets\CompletedDefensesRatioChart::class,
             // \App\Filament\Administration\Widgets\DefensesPerProgramChart::class,
             // \App\Filament\Administration\Widgets\AssignedSupervisorsReviewersChart::class,
-            \App\Filament\Administration\Widgets\FinalInternshipsPerProgramChart::class,
         ];
     }
 }

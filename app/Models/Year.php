@@ -2,15 +2,21 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\Cache;
+
 class Year extends Core\BackendBaseModel
 {
+    public const CACHE_DURATION = 86400; // 24 hours
+
+    protected const CACHE_KEY_PREFIX = 'years_';
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'id', 'title',
+        'id', 'title', 'is_current',
     ];
 
     /**
@@ -26,6 +32,7 @@ class Year extends Core\BackendBaseModel
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'date' => 'datetime',
+        'is_current' => 'boolean',
     ];
 
     public function actual()
@@ -35,19 +42,47 @@ class Year extends Core\BackendBaseModel
 
     public static function current()
     {
-        return self::where('is_current', true)->first();
+        return Cache::remember(
+            self::CACHE_KEY_PREFIX . 'current',
+            self::CACHE_DURATION,
+            fn () => self::where('is_current', true)->first()
+        );
+    }
+
+    protected static function booted()
+    {
+        // Clear related caches when a year is updated
+        static::updated(function ($year) {
+            Cache::forget(self::CACHE_KEY_PREFIX . 'current');
+            // Clear all select caches
+            for ($i = 0; $i < 10; $i++) {
+                Cache::forget(self::CACHE_KEY_PREFIX . "select_{$i}");
+            }
+        });
+
+        static::created(function ($year) {
+            Cache::forget(self::CACHE_KEY_PREFIX . 'current');
+            // Clear all select caches
+            for ($i = 0; $i < 10; $i++) {
+                Cache::forget(self::CACHE_KEY_PREFIX . "select_{$i}");
+            }
+        });
     }
 
     public static function getYearsForSelect($number = 2)
     {
-        $years = [];
+        return Cache::remember(
+            self::CACHE_KEY_PREFIX . "select_{$number}",
+            self::CACHE_DURATION,
+            function () use ($number) {
+                $currentYearId = self::current()->id;
 
-        $currentYearId = Year::current()->id;
-
-        $years = Year::whereBetween('id', [$currentYearId - $number - 1, $currentYearId + 1])->pluck('title', 'id');
-
-        return $years;
-
+                return self::whereBetween('id', [
+                    $currentYearId - $number - 1,
+                    $currentYearId + 1,
+                ])->pluck('title', 'id');
+            }
+        );
     }
 
     /**

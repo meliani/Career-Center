@@ -6,7 +6,6 @@ use App\Enums;
 use App\Filament\Administration\Resources\InternshipOfferResource\Pages;
 use App\Filament\Core\BaseResource;
 use App\Models\InternshipOffer;
-use App\Models\Year;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists;
@@ -64,8 +63,9 @@ class InternshipOfferResource extends BaseResource
     {
         return $form
             ->schema([
-                // Forms\Components\Select::make('year_id')
-                //     ->relationship('year'),
+                Forms\Components\Select::make('year_id')
+                    ->relationship('year'),
+                Forms\Components\TextInput::make('year_id'),
                 Forms\Components\TextInput::make('organization_name')
                     ->maxLength(191),
                 Country::make('country')
@@ -115,6 +115,10 @@ class InternshipOfferResource extends BaseResource
             ->filtersLayout(\Filament\Tables\Enums\FiltersLayout::AboveContentCollapsible)
 
             ->columns([
+                Tables\Columns\TextColumn::make('year.title')
+                    ->searchable()
+                    ->label('Year')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->sortable()
                     ->badge(),

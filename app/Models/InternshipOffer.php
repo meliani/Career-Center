@@ -5,9 +5,11 @@ namespace App\Models;
 use App\Enums;
 use CyrildeWit\EloquentViewable\Contracts\Viewable;
 use CyrildeWit\EloquentViewable\InteractsWithViews;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Cache;
 use NumberFormatter;
 use Parfaitementweb\FilamentCountryField\Traits\HasData;
 use Spatie\Tags\HasTags;
@@ -102,15 +104,27 @@ class InternshipOffer extends Model implements Viewable
         return $this->belongsTo(ExpertiseField::class);
     }
 
+    // Cache year relationship
     public function year()
     {
         return $this->belongsTo(Year::class);
     }
 
-    // public function getInternshipDurationAttribute(): string
-    // {
-    //     return $this->internship_duration . ' ' . __('months');
-    // }
+    public function getYearAttribute()
+    {
+        return Cache::remember(
+            'internship_offer_year_' . $this->year_id,
+            Year::CACHE_DURATION,
+            fn () => $this->year()->first()
+        );
+    }
+
+    // Add scope for current year
+    public function scopeCurrentYear(Builder $query): Builder
+    {
+        return $query->where('year_id', Year::current()->id);
+    }
+
     public function getCountry()
     {
         return $this->attributes['country'] ?? null; // Example logic
@@ -178,8 +192,10 @@ class InternshipOffer extends Model implements Viewable
     {
         return $query->withoutTrashed()
             ->where('year_id', Year::current()->id)
-            ->where('status', Enums\OfferStatus::Published)
-            ->orWhere('status', Enums\OfferStatus::Submitted);
+            ->where(function ($query) {
+                $query->where('status', Enums\OfferStatus::Published)
+                    ->orWhere('status', Enums\OfferStatus::Submitted);
+            });
     }
 
     public function scopePublished($query)
