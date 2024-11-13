@@ -14,6 +14,11 @@ class YearlyTimelineWidget extends Widget
 
     public bool $showAll = false;
 
+    public static function canView(): bool
+    {
+        return auth()->user()->isAdministrator();
+    }
+
     public function getTimelines()
     {
         return YearlyTimeline::with('year')
