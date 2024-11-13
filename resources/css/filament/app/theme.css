@@ -1,7 +1,6 @@
-@import '/vendor/filament/filament/resources/css/theme.css';
+@import "/vendor/filament/filament/resources/css/theme.css";
 
 @config 'tailwind.config.js';
-
 
 /* .fi-simple-layout {
     @apply bg-cyan-100/50;
@@ -10,3 +9,7 @@
 .fi-simple-main {
     @apply bg-emerald-100/50;
 } */
+
+.scale-102 {
+    transform: scale(1.02);
+}

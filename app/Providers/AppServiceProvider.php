@@ -7,6 +7,7 @@ use App\Enums\Role;
 use BezhanSalleh\FilamentLanguageSwitch\Enums\Placement;
 // use BezhanSalleh\PanelSwitch\PanelSwitch;
 use BezhanSalleh\FilamentLanguageSwitch\LanguageSwitch;
+use Carbon\Carbon;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\StringType;
 use Doctrine\DBAL\Types\Type;
@@ -60,6 +61,9 @@ class AppServiceProvider extends ServiceProvider
         $this->configureRateLimiter();
         $this->autoTranslateLabels();
         $this->configurePdf();
+
+        Carbon::setLocale(config('app.locale'));
+        setlocale(LC_TIME, 'fr_FR.utf8', 'fr_FR.UTF-8', 'fr_FR', 'fr');
 
         require_once app_path('Helpers/SystemHelper.php');
 

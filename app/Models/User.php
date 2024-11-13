@@ -137,6 +137,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName
     public function getFilamentAvatarUrl(): ?string
     {
         return $this->avatar_url ? Storage::url($this->avatar_url) : null;
+        // return $this->avatar_url ? Storage::url($this->avatar_url) : asset('/svg/logo_entreprises_round.svg');
     }
 
     // add scoop for administrators role

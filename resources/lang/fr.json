@@ -752,15 +752,12 @@
     "Timeline Events": "Événements chronologiques",
     "Highlight": "En vedette",
     "Highlight Event": "Événement en vedette",
-
     "Administrative": "Administratif",
     "Event": "Événement",
-
     "Low": "Faible",
     "Medium": "Moyen",
     "High": "Élevé",
     "Critical": "Critique",
-
     "Category": "Catégorie",
     "Priority": "Priorité",
     "Status": "Statut",
@@ -769,5 +766,8 @@
     "End Date": "Date de fin",
     "Description": "Description",
     "Color": "Couleur",
-    "Icon": "Icône"
+    "Icon": "Icône",
+    "Yearly Timeline": "Chronologie annuelle",
+    "All Months": "Tous les mois",
+    "items": "éléments"
 }
