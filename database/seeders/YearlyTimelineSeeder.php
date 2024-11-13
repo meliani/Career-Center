@@ -69,19 +69,6 @@ class YearlyTimelineSeeder extends Seeder
                 'assigned_users' => [1],
             ],
 
-            // October: Axe 4 - PFE 2025 Campaign
-            [
-                'title' => 'Campagne stages PFE 2025',
-                'description' => 'Lancement de la campagne de stages PFE 2025, envoi du mailing et suivi des offres',
-                'start_date' => '2024-10-01',
-                'end_date' => '2024-10-31',
-                'category' => TimelineCategory::Event,
-                'priority' => TimelinePriority::Critical,
-                'status' => $this->calculateStatus('2024-10-01', '2024-10-31'),
-                'is_highlight' => false,
-                'assigned_users' => [1, 4, 6],
-            ],
-
             // October - December: Axe 3 - Student-Company Meetings
             [
                 'title' => 'Rencontres étudiants-entreprises',
@@ -158,8 +145,8 @@ class YearlyTimelineSeeder extends Seeder
                 'assigned_users' => [1, 4, 5, 6, 10, 11, 12, 13, 14, 15, 16],
             ],
             [
-                'title' => 'Campagne Mailing des stages PFE',
-                'description' => 'Envoi des mails pour les stages PFE',
+                'title' => 'Campagne Mailing des stages PFE Phase I',
+                'description' => 'Lancement de la campagne de stages PFE 2025, envoi du mailing et suivi des offres',
                 'start_date' => '2024-10-03',
                 'end_date' => '2024-10-18',
                 'category' => TimelineCategory::Communication,
