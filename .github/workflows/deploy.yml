@@ -41,7 +41,11 @@ jobs:
 
       - name: Sync files to server
         run: |
-          rsync -avz --delete-after \
+          rsync -rltDz --delete-after \
+          --omit-dir-times \
+          --no-perms \
+          --no-owner \
+          --no-group \
           --exclude='.git*' \
           --exclude='storage/app/*' \
           --exclude='storage/framework/cache/*' \
