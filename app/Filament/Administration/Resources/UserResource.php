@@ -86,12 +86,12 @@ class UserResource extends Resource
                 Tables\Columns\ImageColumn::make('avatar_url')
                     ->label('Avatar')
                     ->circular(),
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('long_full_name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('first_name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('last_name')
-                    ->searchable(),
+                // Tables\Columns\TextColumn::make('first_name')
+                //     ->searchable(),
+                // Tables\Columns\TextColumn::make('last_name')
+                //     ->searchable(),
                 Tables\Columns\TextColumn::make('role')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
@@ -113,20 +113,25 @@ class UserResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\IconColumn::make('active_status')
                     ->boolean(),
-                Tables\Columns\TextColumn::make('avatar')
-                    ->searchable(),
-                Tables\Columns\IconColumn::make('dark_mode')
-                    ->boolean(),
-                Tables\Columns\TextColumn::make('messenger_color')
-                    ->searchable(),
+                // Tables\Columns\TextColumn::make('avatar')
+                //     ->searchable(),
+                // Tables\Columns\IconColumn::make('dark_mode')
+                //     ->boolean(),
+                // Tables\Columns\TextColumn::make('messenger_color')
+                //     ->searchable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ViewAction::make()
+                    ->label(false),
+                Tables\Actions\EditAction::make()
+                    ->label(false)
+                    ->visible(fn (User $record) => auth()->user()->can('update', $record)),
+                Tables\Actions\DeleteAction::make()
+                    ->label(false)
+                    ->visible(fn (User $record) => auth()->user()->can('delete', $record)),
                 \STS\FilamentImpersonate\Tables\Actions\Impersonate::make()
                     ->hidden(fn ($record) => ! $record->canBeImpersonated()),
             ], position: Tables\Enums\ActionsPosition::BeforeColumns)

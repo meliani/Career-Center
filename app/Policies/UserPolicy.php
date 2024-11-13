@@ -36,7 +36,7 @@ class UserPolicy extends CorePolicy
      */
     public function update(User $user, User $model): bool
     {
-        return $user->hasRole(Role::SuperAdministrator);
+        return $user->hasAnyRole(Role::getAdministratorRoles()) || $user->id === $model->id;
     }
 
     /**
