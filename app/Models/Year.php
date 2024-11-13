@@ -35,11 +35,6 @@ class Year extends Core\BackendBaseModel
         'is_current' => 'boolean',
     ];
 
-    public function actual()
-    {
-        return 7;
-    }
-
     public static function current()
     {
         return Cache::remember(

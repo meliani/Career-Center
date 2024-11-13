@@ -746,5 +746,28 @@
     "No data available for the selected period": "Aucune donnée disponible pour la période sélectionnée",
     "Submitted": "Soumis",
     "Disabled": "Désactivé",
-    "Expired": "Expiré"
+    "Expired": "Expiré",
+    "Timeline": "Chronologie",
+    "Timeline Event": "Événement chronologique",
+    "Timeline Events": "Événements chronologiques",
+    "Highlight": "En vedette",
+    "Highlight Event": "Événement en vedette",
+
+    "Administrative": "Administratif",
+    "Event": "Événement",
+
+    "Low": "Faible",
+    "Medium": "Moyen",
+    "High": "Élevé",
+    "Critical": "Critique",
+
+    "Category": "Catégorie",
+    "Priority": "Priorité",
+    "Status": "Statut",
+    "Assigned Users": "Utilisateurs assignés",
+    "Start Date": "Date de début",
+    "End Date": "Date de fin",
+    "Description": "Description",
+    "Color": "Couleur",
+    "Icon": "Icône"
 }
