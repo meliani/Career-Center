@@ -18,7 +18,7 @@ class InternshipOfferPolicy extends CorePolicy
             return true;
         }
 
-        return $user->hasRole(Role::SuperAdministrator);
+        return $user->hasRole(Role::Administrator);
     }
 
     /**
@@ -30,7 +30,7 @@ class InternshipOfferPolicy extends CorePolicy
             return true;
         }
 
-        return $user->hasRole(Role::SuperAdministrator);
+        return $user->hasRole(Role::Administrator);
     }
 
     /**
@@ -42,7 +42,7 @@ class InternshipOfferPolicy extends CorePolicy
             return false;
         }
 
-        return $user->hasRole(Role::SuperAdministrator);
+        return $user->hasRole(Role::Administrator);
     }
 
     /**
@@ -54,7 +54,7 @@ class InternshipOfferPolicy extends CorePolicy
             return false;
         }
 
-        return $user->hasRole(Role::SuperAdministrator);
+        return $user->hasRole(Role::Administrator);
     }
 
     /**
@@ -66,7 +66,7 @@ class InternshipOfferPolicy extends CorePolicy
             return false;
         }
 
-        return $user->hasRole(Role::SuperAdministrator);
+        return $user->hasRole(Role::Administrator);
     }
 
     /**
@@ -78,7 +78,7 @@ class InternshipOfferPolicy extends CorePolicy
             return false;
         }
 
-        return $user->hasRole(Role::SuperAdministrator);
+        return $user->hasRole(Role::Administrator);
 
     }
 
@@ -91,6 +91,6 @@ class InternshipOfferPolicy extends CorePolicy
             return false;
         }
 
-        return $user->hasRole(Role::SuperAdministrator);
+        return $user->hasRole(Role::Administrator);
     }
 }

@@ -59,6 +59,11 @@ class InternshipOfferResource extends BaseResource
         return self::canViewAny();
     }
 
+    public static function canDelete(Model $record): bool
+    {
+        return auth()->user()->isAdministrator();
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -192,7 +197,6 @@ class InternshipOfferResource extends BaseResource
                 //     ->suffix(__(' months')),
                 Tables\Columns\TextColumn::make('recruiting_type')
                     ->label('Recruiting')
-                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable()
                     ->description(function (InternshipOffer $record) {
                         $studentsRequested = $record->number_of_students_requested
@@ -264,12 +268,16 @@ class InternshipOfferResource extends BaseResource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->visible(fn () => auth()->user()->isAdministrator()),
+                    Tables\Actions\ForceDeleteBulkAction::make()
+                        ->visible(fn () => auth()->user()->isAdministrator()),
+                    Tables\Actions\RestoreBulkAction::make()
+                        ->visible(fn () => auth()->user()->isAdministrator()),
                 ])
                     ->label(__('Delete')),
                 Tables\Actions\BulkAction::make('Publish')
+                    ->visible(fn () => auth()->user()->isAdministrator())
                     ->label('Publish selection')
                     ->icon('heroicon-o-check')
                     ->color('success')
