@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('projects:detect-completed-defenses')
             // ->everySecond();
             ->dailyAt('15:40');
+        $schedule->command(\Spatie\Health\Commands\RunHealthChecksCommand::class)->everyMinute();
     }
 
     /**

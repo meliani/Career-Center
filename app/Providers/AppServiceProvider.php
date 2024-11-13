@@ -46,7 +46,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        \Spatie\Health\Facades\Health::checks([
+            \Spatie\Health\Checks\Checks\UsedDiskSpaceCheck::new(),
+            // \Spatie\Health\Checks\Checks\DatabaseCheck::new(),
+        ]);
     }
 
     /**
@@ -54,6 +57,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(UrlGenerator $url): void
     {
+
         // $this->turnOnSslIfProduction($url);
         $this->configureFilament();
         // $this->addEnumTypeToDoctrine();

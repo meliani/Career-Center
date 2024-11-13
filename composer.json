@@ -59,6 +59,7 @@
         "saade/filament-fullcalendar": "^3.1",
         "solution-forest/filament-simplelightbox": "^0.0.7",
         "spatie/laravel-data": "^4.2",
+        "spatie/laravel-health": "^1.30",
         "spatie/laravel-pdf": "^1.4",
         "spatie/period": "^2.4",
         "stechstudio/filament-impersonate": "^3.5",
