@@ -8,34 +8,23 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: production # Adds deployment protection
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1 # Shallow clone for faster checkout
-          submodules: true
+          submodules: true # Clone submodules
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: "8.2"
           extensions: mbstring, xml, ctype, iconv, intl, pdo_mysql, bcmath, zip
-          coverage: none # Speeds up setup
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "22"
-          cache: "npm" # Enable npm caching
-
-      - name: Cache Composer dependencies
-        uses: actions/cache@v3
-        with:
-          path: vendor
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
 
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.9.0
@@ -43,27 +32,20 @@ jobs:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Install PHP Dependencies
-        run: composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction
+        run: composer install --no-dev --optimize-autoloader --no-interaction
 
       - name: Install Node Dependencies & Build
         run: |
           npm ci
           npm run build
 
-      - name: Prepare for deployment
-        run: |
-          echo "DEPLOY_START_TIME=$(date +%s)" >> $GITHUB_ENV
-          echo "RELEASE_PATH=releases/$(date +%Y%m%d_%H%M%S)" >> $GITHUB_ENV
-
       - name: Sync files to server
         run: |
-          rsync -rlz --delete-after \
-          --no-times \
+          rsync -rltDz --delete-after \
+          --omit-dir-times \
           --no-perms \
           --no-owner \
           --no-group \
-          --checksum \
-          --compress-level=9 \
           --exclude='.git*' \
           --exclude='storage/app/*' \
           --exclude='storage/framework/cache/*' \
@@ -73,55 +55,27 @@ jobs:
           --exclude='.env' \
           --exclude='node_modules' \
           --exclude='tests' \
-          --exclude='.github' \
-          --exclude='phpunit.xml' \
-          --exclude='team_docs' \
-          -e "ssh -o StrictHostKeyChecking=no -o ServerAliveInterval=60" \
+          -e "ssh -o StrictHostKeyChecking=no" \
           ./ elmeliani@carrieres.inpt.ac.ma:/var/www/html/careers_backend/
-
-      - name: Set proper permissions after sync
-        run: |
-          ssh -o StrictHostKeyChecking=no elmeliani@carrieres.inpt.ac.ma "bash -s" << 'ENDSSH'
-            cd /var/www/html/careers_backend
-            find . -type f -exec chmod 644 {} \;
-            find . -type d -exec chmod 755 {} \;
-            chmod -R 775 storage bootstrap/cache
-            sudo chown -R caddy:caddy .
-          ENDSSH
 
       - name: Execute deployment commands
         run: |
-          ssh -o StrictHostKeyChecking=no elmeliani@carrieres.inpt.ac.ma "bash -s" << 'ENDSSH'
-            cd /var/www/html/careers_backend
-            echo "Starting deployment..."
-
-            # Quick maintenance mode
-            php artisan down --render="errors::maintenance" --retry=60
-
-            # Optimize cache clearing and regeneration
-            php artisan optimize:clear
-            php artisan icons:clear
-
-            # Run migrations
-            php artisan migrate --force
-
-            # Regenerate caches
-            php artisan optimize
-            php artisan icons:cache
-            php artisan filament:cache-components
-            php artisan storage:link
-
-            # Set permissions
-            sudo chmod -R 775 storage bootstrap/cache
-            sudo chown -R caddy:caddy .
-
-            # Health check before going live
+          ssh -o StrictHostKeyChecking=no elmeliani@carrieres.inpt.ac.ma '
+            cd /var/www/html/careers_backend && \
+            php artisan down --message="We are updating" && \
+            php artisan config:clear && \
+            php artisan cache:clear && \
+            php artisan view:clear && \
+            php artisan route:clear && \
+            php artisan icons:clear && \
+            php artisan config:cache && \
+            php artisan route:cache && \
+            php artisan view:cache && \
+            php artisan icons:cache && \
+            php artisan filament:cache-components && \
+            php artisan migrate --force && \
+            php artisan storage:link && \
+            sudo chmod -R 775 storage bootstrap/cache && \
+            sudo chown -R caddy:caddy . && \
             php artisan up
-          ENDSSH
-
-      - name: Deployment notification
-        if: always()
-        run: |
-          DEPLOY_END_TIME=$(date +%s)
-          DEPLOY_DURATION=$((DEPLOY_END_TIME - ${{ env.DEPLOY_START_TIME }}))
-          echo "Deployment completed in ${DEPLOY_DURATION} seconds"
+          '
