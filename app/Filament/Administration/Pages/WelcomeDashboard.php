@@ -59,21 +59,4 @@ class WelcomeDashboard extends \Filament\Pages\Dashboard
             // \App\Filament\Administration\Widgets\AnouncementsCalendarWidget::class,
         ];
     }
-
-    // public function tours(): array
-    // {
-    //     return [
-    //         \JibayMcs\FilamentTour\Tour\Tour::make('dashboard')
-    //             ->steps(
-    //                 \JibayMcs\FilamentTour\Tour\Step::class
-    //                     ->title('Welcome to Career Center Dashboard !')
-    //                     ->description('This is your dashboard, you can see all the important information here.'),
-    //                 \JibayMcs\FilamentTour\Tour\Step::make('.fi-avatar')
-    //                     ->title('Here is your avatar and your app notification !')
-    //                     ->description('You can edit your profile information and check your app notification here.')
-    //                     ->icon('heroicon-o-user-circle')
-    //                     ->iconColor('primary'),
-    //             ),
-    //     ];
-    // }
 }

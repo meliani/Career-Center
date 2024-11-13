@@ -136,9 +136,11 @@ class StudentResource extends Core\BaseResource
                 // Tables\Columns\TextColumn::make('pin')
                 //     ->numeric()
                 //     ->sortable(),
-                Tables\Columns\ToggleColumn::make('is_verified'),
-                Tables\Columns\TextColumn::make('email_verified_at')
-                    ->dateTime(),
+
+                Tables\Columns\ImageColumn::make('avatar_url')
+                    ->label('Avatar')
+                    // ->url(fn (Student $record): ?string => $record->photo, true)
+                    ->rounded(),
                 Tables\Columns\TextColumn::make('name')
                     ->formatStateUsing(function ($record) {
                         return $record->long_full_name;
@@ -158,6 +160,11 @@ class StudentResource extends Core\BaseResource
                     ->badge(),
                 // Tables\Columns\TextColumn::make('email_perso')
                 //     ->searchable(),
+                Tables\Columns\ToggleColumn::make('is_verified')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('email_verified_at')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->dateTime(),
                 Tables\Columns\TextColumn::make('phone'),
                 Tables\Columns\TextColumn::make('cv')
                     ->label('Curriculum vitae')
