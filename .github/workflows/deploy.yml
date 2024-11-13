@@ -62,7 +62,7 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no elmeliani@carrieres.inpt.ac.ma '
             cd /var/www/html/careers_backend && \
-            php artisan down --message="We are updating" && \
+            php artisan down && \
             php artisan config:clear && \
             php artisan cache:clear && \
             php artisan view:clear && \
