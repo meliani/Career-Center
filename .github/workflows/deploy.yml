@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          submodules: true # Clone submodules
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
