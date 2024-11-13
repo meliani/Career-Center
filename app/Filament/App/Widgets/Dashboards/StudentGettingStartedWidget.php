@@ -33,6 +33,11 @@ class StudentGettingStartedWidget extends Widget
         $hasContactInfo = ! empty($student->email_perso) && ! empty($student->phone);
         $hasDocuments = ! empty($student->cv) && ! empty($student->lm);
 
+        // Get offers view statistics
+        $viewedOffersCount = $student->getViewedOffersCount();
+        $minimumOffersToView = 3; // You can adjust this number
+        $hasViewedEnoughOffers = $viewedOffersCount >= $minimumOffersToView;
+
         $hasCompleteProfile = $hasBasicProfile && $hasAvatar && $hasContactInfo && $hasDocuments;
 
         $hasApplications = InternshipApplication::where('student_id', $student->id)->exists();
@@ -51,11 +56,26 @@ class StudentGettingStartedWidget extends Widget
             ],
             [
                 'title' => __('Check Internship Offers'),
-                'status' => $hasCompleteProfile ? 'current' : 'pending',
+                'status' => $hasViewedEnoughOffers ? 'completed' : ($hasCompleteProfile ? 'current' : 'pending'),
+                'details' => [
+                    'viewed' => [
+                        'status' => $viewedOffersCount > 0,
+                        'label' => __(':count/:required Offers Viewed', [
+                            'count' => $viewedOffersCount,
+                            'required' => $minimumOffersToView,
+                        ]),
+                    ],
+                    'progress' => [
+                        'status' => $hasViewedEnoughOffers,
+                        'label' => $hasViewedEnoughOffers
+                            ? __('Enough offers viewed')
+                            : __('View :more more offers', ['more' => $minimumOffersToView - $viewedOffersCount]),
+                    ],
+                ],
             ],
             [
                 'title' => __('Apply to Offers'),
-                'status' => $hasApplications ? 'completed' : ($hasCompleteProfile ? 'current' : 'pending'),
+                'status' => $hasApplications ? 'completed' : ($hasViewedEnoughOffers ? 'current' : 'pending'),
             ],
             [
                 'title' => __('Announce Internship'),
@@ -67,8 +87,8 @@ class StudentGettingStartedWidget extends Widget
             ],
         ];
 
-        // Calculate progress including sub-items
-        $totalSteps = count($this->steps) + 3; // +3 for the sub-items of profile
+        // Calculate progress including sub-items and viewed offers
+        $totalSteps = count($this->steps) + 5; // +5 for profile sub-items and viewed offers requirements
         $completed = collect($this->steps)->where('status', 'completed')->count();
         if ($hasAvatar) {
             $completed++;
@@ -78,6 +98,15 @@ class StudentGettingStartedWidget extends Widget
         }
         if ($hasDocuments) {
             $completed++;
+        }
+
+        // Add partial progress for viewed offers
+        if ($viewedOffersCount > 0) {
+            if ($hasViewedEnoughOffers) {
+                $completed += 2; // Full credit for viewing enough offers
+            } else {
+                $completed += ($viewedOffersCount / $minimumOffersToView); // Partial credit based on progress
+            }
         }
 
         $this->progress = ($completed / $totalSteps) * 100;

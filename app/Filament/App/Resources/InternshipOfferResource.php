@@ -147,6 +147,12 @@ class InternshipOfferResource extends StudentBaseResource
                     //     ->color('primary')
                     //     ->theme(\Mokhosh\FilamentRating\RatingTheme::HalfStars),
                 ]),
+                Tables\Columns\IconColumn::make('viewed')
+                    ->label(__('Viewed'))
+                    ->boolean()
+                    ->getStateUsing(fn ($record) => auth()->user()->hasViewedOffer($record->id))
+                    ->icon(fn ($state) => $state ? 'heroicon-o-eye' : 'heroicon-o-eye-slash')
+                    ->color(fn ($state) => $state ? 'success' : 'gray'),
             ])
             ->filters([
                 // Tables\Filters\TrashedFilter::make(),
@@ -174,7 +180,7 @@ class InternshipOfferResource extends StudentBaseResource
                             ->send();
                     }),
                 Tables\Actions\ViewAction::make(),
-            ]);
+            ], position: Tables\Enums\ActionsPosition::BeforeColumns);
     }
 
     public static function getRelations(): array
@@ -204,7 +210,12 @@ class InternshipOfferResource extends StudentBaseResource
 
     public static function infolist(Infolist $infolist): Infolist
     {
-        // dd($infolist->record);
+        // Track the view
+        if (auth()->check()) {
+            auth()->user()->markOfferAsViewed($infolist->record->id);
+        }
+
+        // Existing view counting
         views($infolist->record)->record();
 
         return $infolist

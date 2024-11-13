@@ -35,6 +35,7 @@ return new class extends Migration
             $table->string('abroad_school', 191)->nullable();
             $table->foreignId('year_id')->nullable();
             $table->tinyInteger('is_active')->nullable()->default(0);
+            $table->json('offers_viewed')->nullable();
             $table->date('graduated_at')->nullable();
             $table->tinyInteger('is_verified')->nullable();
             $table->timestamps();

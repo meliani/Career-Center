@@ -769,5 +769,14 @@
     "Icon": "Icône",
     "Yearly Timeline": "Chronologie annuelle",
     "All Months": "Tous les mois",
-    "items": "éléments"
+    "items": "éléments",
+    "In Progress": "En cours",
+    "Profile Picture": "Photo de profil",
+    "Contact Information": "Informations de contact",
+    "CV & Cover Letter": "CV & Lettre de motivation",
+    ":count/:required Offers Viewed": ":count/:required offres consultées",
+    "Enough offers viewed": "Suffisamment d'offres consultées",
+    "View :more more offers": "Consulter :more offres supplémentaires",
+    "Offers Viewed": "Offres consultées",
+    "Statistics": "Statistiques"
 }

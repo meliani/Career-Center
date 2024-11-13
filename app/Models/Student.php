@@ -61,6 +61,7 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
         'avatar_url',
         'is_verified',
         'email_verified_at',
+        'offers_viewed',
     ];
 
     protected $casts = [
@@ -75,6 +76,7 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
         'is_verified' => 'boolean',
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'offers_viewed' => 'array',
     ];
 
     public function canAccessPanel(Panel $panel): bool
@@ -298,6 +300,56 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
     public function changeLevel($level)
     {
         $this->level = $level;
+        $this->save();
+    }
+
+    /**
+     * Check if student has viewed a specific offer
+     *
+     * @param  int  $offerId
+     */
+    public function hasViewedOffer($offerId): bool
+    {
+        return in_array($offerId, $this->offers_viewed ?? []);
+    }
+
+    /**
+     * Mark an offer as viewed by the student
+     *
+     * @param  int  $offerId
+     */
+    public function markOfferAsViewed($offerId): void
+    {
+        if (! $this->hasViewedOffer($offerId)) {
+            $viewedOffers = $this->offers_viewed ?? [];
+            $viewedOffers[] = $offerId;
+            $this->offers_viewed = array_unique($viewedOffers);
+            $this->save();
+        }
+    }
+
+    /**
+     * Get count of viewed offers
+     */
+    public function getViewedOffersCount(): int
+    {
+        return count($this->offers_viewed ?? []);
+    }
+
+    /**
+     * Get all viewed offers IDs
+     */
+    public function getViewedOffersIds(): array
+    {
+        return $this->offers_viewed ?? [];
+    }
+
+    /**
+     * Clear viewed offers history
+     */
+    public function clearViewedOffers(): void
+    {
+        $this->offers_viewed = [];
         $this->save();
     }
 }
