@@ -60,20 +60,22 @@ jobs:
 
       - name: Execute deployment commands
         run: |
-          ssh -o StrictHostKeyChecking=no elmeliani@carrieres.inpt.ac.ma 'cd /var/www/html/careers_backend && \
-          php artisan down && \
-          php artisan config:clear && \
-          php artisan cache:clear && \
-          php artisan view:clear && \
-          php artisan route:clear && \
-          php artisan icons:clear && \
-          php artisan config:cache && \
-          php artisan route:cache && \
-          php artisan view:cache && \
-          php artisan icons:cache && \
-          php artisan filament:cache-components && \
-          php artisan migrate --force && \
-          php artisan storage:link && \
-          chmod -R 775 storage bootstrap/cache && \
-          chown -R caddy:caddy . && \
-          php artisan up'
+          ssh -o StrictHostKeyChecking=no elmeliani@carrieres.inpt.ac.ma '
+            cd /var/www/html/careers_backend && \
+            php artisan down && \
+            php artisan config:clear && \
+            php artisan cache:clear && \
+            php artisan view:clear && \
+            php artisan route:clear && \
+            php artisan icons:clear && \
+            php artisan config:cache && \
+            php artisan route:cache && \
+            php artisan view:cache && \
+            php artisan icons:cache && \
+            php artisan filament:cache-components && \
+            php artisan migrate --force && \
+            php artisan storage:link && \
+            sudo chmod -R 775 storage bootstrap/cache && \
+            sudo chown -R caddy:caddy . && \
+            php artisan up
+          '
