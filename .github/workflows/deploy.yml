@@ -57,8 +57,11 @@ jobs:
 
       - name: Sync files to server
         run: |
-          rsync -rltDz --delete-after \
-          --omit-dir-times \
+          rsync -rlz --delete-after \
+          --no-times \
+          --no-perms \
+          --no-owner \
+          --no-group \
           --checksum \
           --compress-level=9 \
           --exclude='.git*' \
@@ -72,8 +75,19 @@ jobs:
           --exclude='tests' \
           --exclude='.github' \
           --exclude='phpunit.xml' \
+          --exclude='team_docs' \
           -e "ssh -o StrictHostKeyChecking=no -o ServerAliveInterval=60" \
           ./ elmeliani@carrieres.inpt.ac.ma:/var/www/html/careers_backend/
+
+      - name: Set proper permissions after sync
+        run: |
+          ssh -o StrictHostKeyChecking=no elmeliani@carrieres.inpt.ac.ma "bash -s" << 'ENDSSH'
+            cd /var/www/html/careers_backend
+            find . -type f -exec chmod 644 {} \;
+            find . -type d -exec chmod 755 {} \;
+            chmod -R 775 storage bootstrap/cache
+            sudo chown -R caddy:caddy .
+          ENDSSH
 
       - name: Execute deployment commands
         run: |
