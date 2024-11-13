@@ -33,26 +33,44 @@
                 </div>
             </div>
 
-            <!-- Steps Section -->
+            <!-- Steps Section with Details -->
             <div class="space-y-4">
                 @foreach ($steps as $index => $step)
-                <div class="flex items-center space-x-3">
-                    @if($step['status'] === 'completed')
-                    <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-success-500">
-                        <x-heroicon-o-check class="w-5 h-5 text-white" />
+                <div class="space-y-2">
+                    <div class="flex items-center space-x-3">
+                        @if($step['status'] === 'completed')
+                            <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-success-500">
+                                <x-heroicon-o-check class="w-5 h-5 text-white" />
+                            </div>
+                        @elseif($step['status'] === 'current')
+                            <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-primary-500">
+                                <span class="text-sm font-medium text-white">{{ $index + 1 }}</span>
+                            </div>
+                        @else
+                            <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-gray-200">
+                                <span class="text-sm font-medium text-gray-600">{{ $index + 1 }}</span>
+                            </div>
+                        @endif
+                        <span class="text-sm {{ $step['status'] === 'completed' ? 'text-gray-500 line-through' : ($step['status'] === 'current' ? 'text-primary-600 font-medium' : 'text-gray-700') }}">
+                            {{ $step['title'] }}
+                        </span>
                     </div>
-                    @elseif($step['status'] === 'current')
-                    <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-primary-500">
-                        <span class="text-sm font-medium text-white">{{ $index + 1 }}</span>
-                    </div>
-                    @else
-                    <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-gray-200">
-                        <span class="text-sm font-medium text-gray-600">{{ $index + 1 }}</span>
-                    </div>
+
+                    @if(isset($step['details']))
+                        <div class="ml-11 space-y-2">
+                            @foreach($step['details'] as $detail)
+                                <div class="flex items-center space-x-2 text-xs">
+                                    @if($detail['status'])
+                                        <x-heroicon-o-check-circle class="w-4 h-4 text-success-500" />
+                                        <span class="text-gray-500 line-through">{{ $detail['label'] }}</span>
+                                    @else
+                                        <x-heroicon-o-exclamation-circle class="w-4 h-4 text-warning-500" />
+                                        <span class="text-gray-700">{{ $detail['label'] }}</span>
+                                    @endif
+                                </div>
+                            @endforeach
+                        </div>
                     @endif
-                    <span class="text-sm {{ $step['status'] === 'completed' ? 'text-gray-500 line-through' : ($step['status'] === 'current' ? 'text-primary-600 font-medium' : 'text-gray-700') }}">
-                        {{ $step['title'] }}
-                    </span>
                 </div>
                 @endforeach
             </div>

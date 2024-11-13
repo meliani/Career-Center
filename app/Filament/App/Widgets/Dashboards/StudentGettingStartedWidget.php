@@ -26,7 +26,15 @@ class StudentGettingStartedWidget extends Widget
     protected function loadStudentProgress()
     {
         $student = auth()->user();
-        $hasProfile = $student->is_verified;
+
+        // Check for required profile fields
+        $hasBasicProfile = $student->is_verified;
+        $hasAvatar = ! empty($student->avatar_url);
+        $hasContactInfo = ! empty($student->email_perso) && ! empty($student->phone);
+        $hasDocuments = ! empty($student->cv) && ! empty($student->lm);
+
+        $hasCompleteProfile = $hasBasicProfile && $hasAvatar && $hasContactInfo && $hasDocuments;
+
         $hasApplications = InternshipApplication::where('student_id', $student->id)->exists();
         $hasAgreement = FinalYearInternshipAgreement::where('student_id', $student->id)->exists();
         $this->hasAgreement = $hasAgreement;
@@ -34,15 +42,20 @@ class StudentGettingStartedWidget extends Widget
         $this->steps = [
             [
                 'title' => __('Complete Profile'),
-                'status' => $hasProfile ? 'completed' : 'current',
+                'status' => $hasCompleteProfile ? 'completed' : 'current',
+                'details' => [
+                    'avatar' => ['status' => $hasAvatar, 'label' => __('Profile Picture')],
+                    'contact' => ['status' => $hasContactInfo, 'label' => __('Contact Information')],
+                    'documents' => ['status' => $hasDocuments, 'label' => __('CV & Cover Letter')],
+                ],
             ],
             [
                 'title' => __('Check Internship Offers'),
-                'status' => $hasProfile ? 'current' : 'pending',
+                'status' => $hasCompleteProfile ? 'current' : 'pending',
             ],
             [
                 'title' => __('Apply to Offers'),
-                'status' => $hasApplications ? 'completed' : ($hasProfile ? 'current' : 'pending'),
+                'status' => $hasApplications ? 'completed' : ($hasCompleteProfile ? 'current' : 'pending'),
             ],
             [
                 'title' => __('Announce Internship'),
@@ -54,9 +67,20 @@ class StudentGettingStartedWidget extends Widget
             ],
         ];
 
-        // Calculate progress
+        // Calculate progress including sub-items
+        $totalSteps = count($this->steps) + 3; // +3 for the sub-items of profile
         $completed = collect($this->steps)->where('status', 'completed')->count();
-        $this->progress = ($completed / count($this->steps)) * 100;
+        if ($hasAvatar) {
+            $completed++;
+        }
+        if ($hasContactInfo) {
+            $completed++;
+        }
+        if ($hasDocuments) {
+            $completed++;
+        }
+
+        $this->progress = ($completed / $totalSteps) * 100;
     }
 
     /**
