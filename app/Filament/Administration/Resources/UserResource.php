@@ -124,8 +124,8 @@ class UserResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make()
-                    ->label(false),
+                // Tables\Actions\ViewAction::make()
+                //     ->label(false),
                 Tables\Actions\EditAction::make()
                     ->label(false)
                     ->visible(fn (User $record) => auth()->user()->can('update', $record)),
