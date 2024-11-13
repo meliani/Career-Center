@@ -26,22 +26,25 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.9.0
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-ansi --no-interaction --no-scripts --no-progress --optimize-autoloader
 
-      - name: Install PHP Dependencies
-        run: composer install --no-dev --optimize-autoloader --no-interaction
+      - name: Install NPM dependencies
+        run: npm install
 
-      - name: Install Node Dependencies & Build
+      - name: Build assets
+        run: npm run prod
+
+      - name: Set correct permissions on server
         run: |
-          npm ci
-          npm run build
+          ssh -o StrictHostKeyChecking=no elmeliani@carrieres.inpt.ac.ma '
+            sudo chown -R elmeliani:elmeliani /var/www/html/careers_backend && \
+            sudo chmod -R 775 /var/www/html/careers_backend
+          '
 
       - name: Sync files to server
         run: |
-          rsync -rltDz --delete-after \
+          rsync -rlz --delete-after \
           --omit-dir-times \
           --no-perms \
           --no-owner \
