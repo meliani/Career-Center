@@ -778,5 +778,18 @@
     "Enough offers viewed": "Suffisamment d'offres consultées",
     "View :more more offers": "Consulter :more offres supplémentaires",
     "Offers Viewed": "Offres consultées",
-    "Statistics": "Statistiques"
+    "Statistics": "Statistiques",
+    "Basic Information": "Informations de base",
+    "Timeline Details": "Détails de la chronologie",
+    "Event Configuration": "Configuration de l'événement",
+    "Description & Assignment": "Description & Affectation",
+    "Event Details": "Détails de l'événement",
+    "Starts at": "Commence le",
+    "Ends at": "Se termine le",
+    "Academic Year": "Année académique",
+    "No end date set": "Aucune date de fin définie",
+    "Ends: :date": "Se termine le : :date",
+    "Until :date": "Jusqu'au :date",
+    "Total Assigned": "Total affecté",
+    "Highlighted events will be more prominent in the timeline view": "Les événements en vedette seront plus visibles dans la vue chronologique"
 }
