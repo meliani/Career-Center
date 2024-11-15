@@ -39,9 +39,15 @@ jobs:
           npm ci
           npm run build
 
+      - name: Set initial permissions on server
+        run: |
+          ssh -o StrictHostKeyChecking=no elmeliani@carrieres.inpt.ac.ma '
+            sudo chown -R elmeliani:caddy /var/www/html/careers_backend
+          '
+
       - name: Sync files to server
         run: |
-          rsync -rltDz --delete-after \
+          rsync -rltDz \
           --omit-dir-times \
           --no-perms \
           --no-owner \
@@ -55,8 +61,26 @@ jobs:
           --exclude='.env' \
           --exclude='node_modules' \
           --exclude='tests' \
+          --exclude='vendor/parfaitementweb/filament-country-field' \
           -e "ssh -o StrictHostKeyChecking=no" \
           ./ elmeliani@carrieres.inpt.ac.ma:/var/www/html/careers_backend/
+
+      - name: Update Git repository state
+        run: |
+          ssh -o StrictHostKeyChecking=no elmeliani@carrieres.inpt.ac.ma '
+            cd /var/www/html/careers_backend && \
+            git fetch && \
+            git reset --hard origin/main && \
+            git clean -fd
+          '
+
+      - name: Sync filament-country-field package
+        run: |
+          rsync -rltDz \
+          --omit-dir-times \
+          -e "ssh -o StrictHostKeyChecking=no" \
+          ./vendor/parfaitementweb/filament-country-field/ \
+          elmeliani@carrieres.inpt.ac.ma:/var/www/html/careers_backend/vendor/parfaitementweb/filament-country-field/
 
       - name: Execute deployment commands
         run: |
@@ -68,6 +92,10 @@ jobs:
             php artisan view:clear && \
             php artisan route:clear && \
             php artisan icons:clear && \
+            sudo find . -type f -exec chmod 664 {} \; && \
+            sudo find . -type d -exec chmod 775 {} \; && \
+            sudo chown -R caddy:caddy . && \
+            sudo chmod -R 775 storage bootstrap/cache && \
             php artisan config:cache && \
             php artisan route:cache && \
             php artisan view:cache && \
@@ -75,7 +103,5 @@ jobs:
             php artisan filament:cache-components && \
             php artisan migrate --force && \
             php artisan storage:link && \
-            sudo chmod -R 775 storage bootstrap/cache && \
-            sudo chown -R caddy:caddy . && \
             php artisan up
           '
