@@ -61,7 +61,7 @@ jobs:
           --exclude='.env' \
           --exclude='node_modules' \
           --exclude='tests' \
-          --exclude='vendor/parfaitementweb/filament-country-field' \
+          --exclude='packages/filament-country-region-fields' \
           -e "ssh -o StrictHostKeyChecking=no" \
           ./ elmeliani@carrieres.inpt.ac.ma:/var/www/html/careers_backend/
 
@@ -71,6 +71,7 @@ jobs:
             cd /var/www/html/careers_backend && \
             git fetch && \
             git reset --hard origin/main && \
+            git submodule update --init --recursive && \
             git clean -fd
           '
 
@@ -81,6 +82,14 @@ jobs:
           -e "ssh -o StrictHostKeyChecking=no" \
           ./vendor/parfaitementweb/filament-country-field/ \
           elmeliani@carrieres.inpt.ac.ma:/var/www/html/careers_backend/vendor/parfaitementweb/filament-country-field/
+
+      - name: Sync filament-country-region-fields package
+        run: |
+          rsync -rltDz \
+          --omit-dir-times \
+          -e "ssh -o StrictHostKeyChecking=no" \
+          ./packages/filament-country-region-fields/ \
+          elmeliani@carrieres.inpt.ac.ma:/var/www/html/careers_backend/packages/filament-country-region-fields/
 
       - name: Execute deployment commands
         run: |
