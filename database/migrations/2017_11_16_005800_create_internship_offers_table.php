@@ -16,9 +16,9 @@ class CreateInternshipOffersTable extends Migration
         Schema::create('internship_offers', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('year_id')->unsigned()->nullable();
-            $table->enum('internship_level', Enums\InternshipLevel::getArray());
+            $table->enum('InternshipLevel', array_map(fn($level) => $level->value, Enums\InternshipLevel::cases()));
             $table->string('organization_name')->nullable();
-            $table->enum('organization_type', Enums\OrganizationType::getArray());
+            $table->enum('organization_type', array_map(fn($type) => $type->value, Enums\OrganizationType::cases()));
             $table->bigInteger('organization_id')->nullable();
             $table->string('country')->nullable();
             $table->enum('internship_type', ['OnSite', 'Remote'])->nullable();
@@ -39,7 +39,7 @@ class CreateInternshipOffersTable extends Migration
             $table->enum('recruiting_type', ['SchoolManaged', 'RecruiterManaged'])->nullable();
             $table->string('application_email')->nullable();
             $table->unsignedInteger('number_of_students_requested')->nullable();
-            $table->enum('status', Enums\OfferStatus::getArray());
+            $table->enum('status', array_map(fn($status) => $status->value, Enums\OfferStatus::cases()));
             $table->boolean('applyable')->nullable();
             $table->date('expire_at')->nullable();
             $table->bigInteger('expertise_field_id')->unsigned()->nullable();

@@ -16,7 +16,7 @@ enum Department: string implements HasColor, HasIcon, HasLabel
     case MIR = 'MIR';
     case GLC = 'GLC';
     case SC = 'SC';
-    case NULL = '';
+    // case NULL = '';
 
     public static function toArray(): array
     {
@@ -25,7 +25,7 @@ enum Department: string implements HasColor, HasIcon, HasLabel
             Department::MIR->value,
             Department::GLC->value,
             Department::SC->value,
-            Department::NULL->value,
+            // Department::NULL->value,
 
         ];
     }
@@ -37,7 +37,7 @@ enum Department: string implements HasColor, HasIcon, HasLabel
             Department::MIR->value,
             Department::GLC->value,
             Department::SC->value,
-            Department::NULL->value,
+            // Department::NULL->value,
 
         ];
     }
@@ -49,7 +49,7 @@ enum Department: string implements HasColor, HasIcon, HasLabel
             self::MIR => 'MIR',
             self::GLC => 'GLC',
             self::SC => 'SC',
-            self::NULL => __('Undefined'),
+            // self::NULL => __('Undefined'),
         };
     }
 
@@ -60,7 +60,7 @@ enum Department: string implements HasColor, HasIcon, HasLabel
             self::MIR => 'Mathématiques, Informatique et Réseaux',
             self::GLC => 'Gestion, Langues et Communications',
             self::SC => 'Systèmes de Communications',
-            self::NULL => __('Undefined'),
+            // self::NULL => __('Undefined'),
         };
     }
 
@@ -71,7 +71,7 @@ enum Department: string implements HasColor, HasIcon, HasLabel
             self::MIR => 'success',
             self::GLC => 'warning',
             self::SC => 'danger',
-            self::NULL => 'secondary',
+            // self::NULL => 'secondary',
         };
     }
 
@@ -82,7 +82,7 @@ enum Department: string implements HasColor, HasIcon, HasLabel
             self::MIR => 'heroicon-o-calculator',
             self::GLC => 'heroicon-o-language',
             self::SC => 'heroicon-o-cpu-chip',
-            self::NULL => 'heroicon-o-no-symbol',
+            // self::NULL => 'heroicon-o-no-symbol',
         };
     }
 }

@@ -20,10 +20,10 @@ return new class extends Migration
             $table->string('name');
             $table->string('first_name');
             $table->string('last_name');
-            $table->enum('department', array_map(fn ($case) => $case->name, Department::cases()))->nullable();
-            $table->enum('role', array_map(fn ($case) => $case->name, Role::cases()))->default('Professor');
+            $table->enum('department', Department::getArray())->nullable();
+            $table->enum('role', Role::getArray());
             $table->string('email')->unique();
-            $table->enum('assigned_program', array_map(fn ($case) => $case->name, Program::cases()))->nullable();
+            $table->enum('assigned_program', Program::getArray())->nullable();
             $table->integer('is_enabled')->default('0');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
