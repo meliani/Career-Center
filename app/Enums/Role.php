@@ -2,10 +2,13 @@
 
 namespace App\Enums;
 
+use App\Enums\Concerns\HasBaseEnumFeatures;
 use Filament\Support\Contracts\HasLabel;
 
 enum Role: string implements HasLabel
 {
+    use HasBaseEnumFeatures;
+
     case ProgramCoordinator = 'ProgramCoordinator';
     case Professor = 'Professor';
     case InternshipSupervisor = 'InternshipSupervisor';
@@ -73,38 +76,6 @@ enum Role: string implements HasLabel
             Role::AdministrativeSupervisor,
             Role::Direction,
             Role::System,
-        ];
-    }
-
-    public static function toArray(): array
-    {
-        return [
-            Role::ProgramCoordinator->value,
-            Role::Professor->value,
-            Role::InternshipSupervisor->value,
-            Role::DepartmentHead->value,
-            Role::Administrator->value,
-            Role::SuperAdministrator->value,
-            Role::AdministrativeSupervisor->value,
-            Role::Direction->value,
-            Role::System->value,
-
-        ];
-    }
-
-    public static function getArray(): array
-    {
-        return [
-            Role::ProgramCoordinator->value,
-            Role::Professor->value,
-            Role::InternshipSupervisor->value,
-            Role::DepartmentHead->value,
-            Role::Administrator->value,
-            Role::SuperAdministrator->value,
-            Role::AdministrativeSupervisor->value,
-            Role::Direction->value,
-            Role::System->value,
-
         ];
     }
 

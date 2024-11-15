@@ -3,33 +3,22 @@
 namespace App\Enums;
 
 use Filament\Support\Contracts\HasColor;
+use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
+use App\Enums\Concerns\HasBaseEnumFeatures;
 
-enum EntrepriseContactCategory: string implements HasColor, HasLabel
+enum EntrepriseContactCategory: string implements HasColor, HasIcon, HasLabel
 {
+    use HasBaseEnumFeatures;
+
     case Alumni = 'Alumni';
     case Supervisor = 'Supervisor';
     case DirectContact = 'DirectContact';
     case Parrain = 'Parrain';
 
-    public static function getArray(): array
-    {
-        return [
-            self::Alumni->value,
-            self::Supervisor->value,
-            self::DirectContact->value,
-            self::Parrain->value,
-        ];
-    }
-
     public function getLabel(): ?string
     {
-        return match ($this) {
-            EntrepriseContactCategory::Alumni => __(EntrepriseContactCategory::Alumni->value),
-            EntrepriseContactCategory::Supervisor => __(EntrepriseContactCategory::Supervisor->value),
-            EntrepriseContactCategory::DirectContact => __(EntrepriseContactCategory::DirectContact->value),
-            EntrepriseContactCategory::Parrain => __(EntrepriseContactCategory::Parrain->value),
-        };
+        return __($this->value);
     }
 
     public function getColor(): ?string
@@ -45,11 +34,10 @@ enum EntrepriseContactCategory: string implements HasColor, HasLabel
     public function getIcon(): ?string
     {
         return match ($this) {
-            self::Alumni => 'user-tie',
-            self::Supervisor => 'user-tie',
-            self::DirectContact => 'user',
-            self::Parrain => 'user',
+            self::Alumni => 'heroicon-o-user',
+            self::Supervisor => 'heroicon-o-user',
+            self::DirectContact => 'heroicon-o-user',
+            self::Parrain => 'heroicon-o-user',
         };
-
     }
 }

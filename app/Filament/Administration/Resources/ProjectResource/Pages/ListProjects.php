@@ -2,7 +2,7 @@
 
 namespace App\Filament\Administration\Resources\ProjectResource\Pages;
 
-use App\Enums;
+use App\Enums\Program;
 use App\Filament\Administration\Resources\ProjectResource;
 use App\Models\Student;
 use Filament\Actions;
@@ -41,15 +41,25 @@ class ListProjects extends ListRecords
     public function getTabs(): array
     {
         $tabs = [];
-        foreach (Enums\Program::getArray() as $program) {
-            // $program = $program_enum->getLabel();
-            $tabs[$program] = Tab::make($program)
-                ->badge($this->ProjectsByProgram[$program] ?? 0)
-                ->modifyQueryUsing(fn ($query) => $query->whereHas('students', fn ($q) => $q->where('program', $program)));
+
+        foreach (Program::cases() as $program) {
+            $label = $program->getLabel(); // Assuming the enum has a label method
+            $value = $program->value;      // Enum value
+
+            $tabs[$value] = Tab::make($label)
+                ->badge($this->ProjectsByProgram[$value] ?? 0)
+                ->modifyQueryUsing(
+                    fn ($query) => $query->whereHas(
+                        'students',
+                        fn ($q) => $q->where('program', $value)
+                    )
+                );
         }
 
-        // merge tabs with all
-        $tabs = array_merge(['all' => Tab::make()], $tabs);
+        // Merge tabs with 'all' using Collection's sum method
+        $tabs = array_merge([
+            'all' => Tab::make('All')->badge($this->ProjectsByProgram->sum()),
+        ], $tabs);
 
         return $tabs;
     }

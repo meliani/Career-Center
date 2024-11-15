@@ -2,25 +2,18 @@
 
 namespace App\Enums;
 
+use App\Enums\Concerns\HasBaseEnumFeatures;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 
 enum Title: string implements HasColor, HasLabel
 {
+    use HasBaseEnumFeatures;
+
     case Mrs = 'Mrs';
     case Mr = 'Mr';
     case Dr = 'Dr';
     case NULL = '';
-
-    public static function getArray(): array
-    {
-        return [
-            Title::Mrs->value,
-            Title::Mr->value,
-            Title::Dr->value,
-            Title::NULL->value,
-        ];
-    }
 
     public function getLabel(): ?string
     {

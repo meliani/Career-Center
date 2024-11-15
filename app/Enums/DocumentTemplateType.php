@@ -5,10 +5,12 @@ namespace App\Enums;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
+use App\Enums\Concerns\HasBaseEnumFeatures;
 
 enum DocumentTemplateType: string implements HasColor, HasIcon, HasLabel
 {
-    // cases : sheet, agreement Agreement-Morocco	Agreement-France	Agreement-Others Agreement-Mob-France Agreement-Mob-Others
+    use HasBaseEnumFeatures;
+
     case Sheet = 'Sheet';
     case Agreement = 'Agreement';
     case AgreementMorocco = 'Agreement-Morocco';
@@ -20,19 +22,6 @@ enum DocumentTemplateType: string implements HasColor, HasIcon, HasLabel
     public function getLabel(): ?string
     {
         return __($this->value);
-    }
-
-    public static function getArray(): array
-    {
-        return [
-            self::Sheet->value,
-            self::Agreement->value,
-            self::AgreementMorocco->value,
-            self::AgreementFrance->value,
-            self::AgreementOthers->value,
-            self::AgreementMobFrance->value,
-            self::AgreementMobOthers->value,
-        ];
     }
 
     public function getColor(): ?string
@@ -50,14 +39,6 @@ enum DocumentTemplateType: string implements HasColor, HasIcon, HasLabel
 
     public function getIcon(): ?string
     {
-        return match ($this) {
-            self::Sheet => 'heroicon-o-academic-cap',
-            self::Agreement => 'heroicon-o-academic-cap',
-            self::AgreementMorocco => 'heroicon-o-academic-cap',
-            self::AgreementFrance => 'heroicon-o-academic-cap',
-            self::AgreementOthers => 'heroicon-o-academic-cap',
-            self::AgreementMobFrance => 'heroicon-o-academic-cap',
-            self::AgreementMobOthers => 'heroicon-o-academic-cap',
-        };
+        return 'heroicon-o-academic-cap';
     }
 }

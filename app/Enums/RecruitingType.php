@@ -2,25 +2,17 @@
 
 namespace App\Enums;
 
+use App\Enums\Concerns\HasBaseEnumFeatures;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
-// use Mokhosh\FilamentKanban\Concerns\IsKanbanStatus;
 use Filament\Support\Contracts\HasLabel;
 
 enum RecruitingType: string implements HasColor, HasIcon, HasLabel
 {
-    // use IsKanbanStatus;
+    use HasBaseEnumFeatures;
 
     case SchoolManaged = 'SchoolManaged';
     case RecruiterManaged = 'RecruiterManaged';
-
-    public static function getArray(): array
-    {
-        return [
-            self::SchoolManaged,
-            self::RecruiterManaged,
-        ];
-    }
 
     public function getLabel(): ?string
     {

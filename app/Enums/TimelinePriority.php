@@ -2,25 +2,18 @@
 
 namespace App\Enums;
 
+use App\Enums\Concerns\HasBaseEnumFeatures;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 
 enum TimelinePriority: int implements HasColor, HasLabel
 {
+    use HasBaseEnumFeatures;
+
     case Low = 0;
     case Medium = 1;
     case High = 2;
     case Critical = 3;
-
-    public static function getArray(): array
-    {
-        return [
-            self::Low,
-            self::Medium,
-            self::High,
-            self::Critical,
-        ];
-    }
 
     public function getLabel(): ?string
     {

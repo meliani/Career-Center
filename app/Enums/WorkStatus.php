@@ -2,12 +2,15 @@
 
 namespace App\Enums;
 
+use App\Enums\Concerns\HasBaseEnumFeatures;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
 
 enum WorkStatus: string implements HasColor, HasIcon, HasLabel
 {
+    use HasBaseEnumFeatures;
+
     case Employed = 'Employed';
     case Unemployed = 'Unemployed';
     case LookingForJob = 'Looking for job';
@@ -19,19 +22,6 @@ enum WorkStatus: string implements HasColor, HasIcon, HasLabel
     public function getLabel(): ?string
     {
         return __($this->value);
-    }
-
-    public static function getArray(): array
-    {
-        return [
-            self::Employed->value,
-            self::Unemployed->value,
-            self::LookingForJob->value,
-            self::SelfEmployed->value,
-            self::Student->value,
-            self::Retired->value,
-            self::Other->value,
-        ];
     }
 
     public function getColor(): ?string

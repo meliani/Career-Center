@@ -5,29 +5,17 @@ namespace App\Enums;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
-
-// use Mokhosh\FilamentKanban\Concerns\IsKanbanStatus;
+use App\Enums\Concerns\HasBaseEnumFeatures;
 
 enum DefenseStatus: string implements HasColor, HasIcon, HasLabel
 {
-    // use IsKanbanStatus;
+    use HasBaseEnumFeatures;
 
     case Authorized = 'Authorized';
     case Pending = 'Pending';
     case Rejected = 'Rejected';
     case Completed = 'Completed';
     case Postponed = 'Postponed';
-
-    public static function getArray(): array
-    {
-        return [
-            self::Authorized,
-            self::Pending,
-            self::Rejected,
-            self::Completed,
-            self::Postponed,
-        ];
-    }
 
     public function getLabel(): ?string
     {

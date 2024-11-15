@@ -5,10 +5,11 @@ namespace App\Enums;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
+use App\Enums\Concerns\HasBaseEnumFeatures;
 
 enum EventParticipationStatus: string implements HasColor, HasIcon, HasLabel
 {
-    // cases for entreprises participatiton status
+    use HasBaseEnumFeatures;
 
     case Pending = 'Pending';
     case Approved = 'Approved';
@@ -18,16 +19,6 @@ enum EventParticipationStatus: string implements HasColor, HasIcon, HasLabel
     public function getLabel(): ?string
     {
         return __($this->value);
-    }
-
-    public static function getArray(): array
-    {
-        return [
-            self::Pending->value,
-            self::Approved->value,
-            self::Rejected->value,
-            self::Cancelled->value,
-        ];
     }
 
     public function getColor(): ?string

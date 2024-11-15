@@ -2,25 +2,18 @@
 
 namespace App\Enums;
 
+use App\Enums\Concerns\HasBaseEnumFeatures;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 
 enum TimelineStatus: string implements HasColor, HasLabel
 {
+    use HasBaseEnumFeatures;
+
     case Pending = 'pending';
     case InProgress = 'in_progress';
     case Completed = 'completed';
     case Cancelled = 'cancelled';
-
-    public static function getArray(): array
-    {
-        return [
-            self::Pending,
-            self::InProgress,
-            self::Completed,
-            self::Cancelled,
-        ];
-    }
 
     public function getLabel(): ?string
     {

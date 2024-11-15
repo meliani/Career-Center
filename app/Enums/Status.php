@@ -2,14 +2,13 @@
 
 namespace App\Enums;
 
+use App\Enums\Concerns\HasBaseEnumFeatures;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 
-// use Mokhosh\FilamentKanban\Concerns\IsKanbanStatus;
-
 enum Status: string implements HasColor, HasLabel
 {
-    // use IsKanbanStatus;
+    use HasBaseEnumFeatures;
 
     case Draft = 'Draft';
     case Announced = 'Announced';
@@ -19,26 +18,6 @@ enum Status: string implements HasColor, HasLabel
     case Signed = 'Signed';
     case PendingCancellation = 'PendingCancellation';
     case Canceled = 'Canceled';
-
-    // case Approved = "Approved";
-    // case Declined = "Declined";
-    // case Started = "Started";
-    public static function getArray(): array
-    {
-        return [
-            self::Draft,
-            self::Announced,
-            self::Rejected,
-            self::Validated,
-            self::Completed,
-            self::Signed,
-            self::PendingCancellation,
-            self::Canceled,
-            // self::Approved,
-            // self::Declined,
-            // self::Started,
-        ];
-    }
 
     public function getLabel(): ?string
     {
@@ -51,10 +30,6 @@ enum Status: string implements HasColor, HasLabel
             self::Signed => __('Signed'),
             self::PendingCancellation => __('Pending Cancellation'),
             self::Canceled => __('Canceled'),
-            // self::Approved => __('Approved'),
-            // self::Declined => __('Declined'),
-            // self::Started => __('Started'),
-
         };
     }
 
@@ -65,10 +40,7 @@ enum Status: string implements HasColor, HasLabel
             self::Announced => 'info',
             self::Rejected => 'danger',
             self::Validated => 'success',
-            // self::Approved => 'success',
-            // self::Declined => 'danger',
             self::Signed => 'success',
-            // self::Started => 'success',
             self::Completed => 'success',
             self::PendingCancellation => 'danger',
             self::Canceled => 'danger',

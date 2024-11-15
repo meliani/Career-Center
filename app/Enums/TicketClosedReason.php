@@ -2,11 +2,14 @@
 
 namespace App\Enums;
 
+use App\Enums\Concerns\HasBaseEnumFeatures;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 
 enum TicketClosedReason: string implements HasColor, HasLabel
 {
+    use HasBaseEnumFeatures;
+
     case Resolved = 'Resolved';
     case Duplicate = 'Duplicate';
     case Invalid = 'Invalid';
@@ -24,18 +27,6 @@ enum TicketClosedReason: string implements HasColor, HasLabel
             self::unresolved => __('Unresolved'),
             self::NULL => __('Undefined'),
         };
-    }
-
-    public static function getArray(): array
-    {
-        return [
-            TicketClosedReason::Resolved->value,
-            TicketClosedReason::Duplicate->value,
-            TicketClosedReason::Invalid->value,
-            TicketClosedReason::Unrelated->value,
-            TicketClosedReason::unresolved->value,
-            TicketClosedReason::NULL->value,
-        ];
     }
 
     public function getColor(): ?string

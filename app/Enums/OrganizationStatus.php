@@ -4,25 +4,15 @@ namespace App\Enums;
 
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
-
-// use Mokhosh\FilamentKanban\Concerns\IsKanbanStatus;
+use App\Enums\Concerns\HasBaseEnumFeatures;
 
 enum OrganizationStatus: string implements HasColor, HasLabel
 {
-    // this gonna gelp classifying the organizations
+    use HasBaseEnumFeatures;
 
     case Active = 'Active';
     case Inactive = 'Inactive';
     case Published = 'Published';
-
-    public static function getArray(): array
-    {
-        return [
-            self::Active->value,
-            self::Inactive->value,
-            self::Published->value,
-        ];
-    }
 
     public function getLabel(): ?string
     {

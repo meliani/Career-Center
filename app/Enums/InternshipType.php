@@ -4,27 +4,19 @@ namespace App\Enums;
 
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
-// use Mokhosh\FilamentKanban\Concerns\IsKanbanStatus;
 use Filament\Support\Contracts\HasLabel;
+use App\Enums\Concerns\HasBaseEnumFeatures;
 
 enum InternshipType: string implements HasColor, HasIcon, HasLabel
 {
-    // use IsKanbanStatus;
+    use HasBaseEnumFeatures;
 
     case OnSite = 'OnSite';
     case Remote = 'Remote';
 
-    public static function getArray(): array
-    {
-        return [
-            self::OnSite,
-            self::Remote,
-        ];
-    }
-
     public function getLabel(): ?string
     {
-        return __($this->name);
+        return __($this->value);
     }
 
     public function getColor(): ?string

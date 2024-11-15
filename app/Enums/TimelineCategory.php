@@ -2,29 +2,20 @@
 
 namespace App\Enums;
 
+use App\Enums\Concerns\HasBaseEnumFeatures;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 
 enum TimelineCategory: string implements HasColor, HasLabel
 {
+    use HasBaseEnumFeatures;
+
     case Administrative = 'administrative';
     case Event = 'event';
     case Deadline = 'deadline';
     case Other = 'other';
     case Academic = 'academic';
     case Communication = 'communication';
-
-    public static function getArray(): array
-    {
-        return [
-            self::Administrative,
-            self::Event,
-            self::Deadline,
-            self::Other,
-            self::Academic,
-            self::Communication,
-        ];
-    }
 
     public function getLabel(): ?string
     {

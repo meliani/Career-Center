@@ -4,23 +4,16 @@ namespace App\Enums;
 
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
+use App\Enums\Concerns\HasBaseEnumFeatures;
 
 enum Language: string implements HasColor, HasLabel
 {
+    use HasBaseEnumFeatures;
+
     case Fr = 'fr';
     case En = 'en';
     case Ar = 'ar';
     case NULL = '';
-
-    public static function getArray(): array
-    {
-        return [
-            self::Fr->value,
-            self::En->value,
-            self::Ar->value,
-            self::NULL->value,
-        ];
-    }
 
     public function getLabel(): ?string
     {

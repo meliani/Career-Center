@@ -2,11 +2,14 @@
 
 namespace App\Enums;
 
+use App\Enums\Concerns\HasBaseEnumFeatures;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 
 enum TicketStatus: string implements HasColor, HasLabel
 {
+    use HasBaseEnumFeatures;
+
     case Open = 'Open';
     case InProgress = 'InProgress';
     case Closed = 'Closed';
@@ -14,15 +17,6 @@ enum TicketStatus: string implements HasColor, HasLabel
     public function getLabel(): ?string
     {
         return __($this->name);
-    }
-
-    public static function getArray(): array
-    {
-        return [
-            self::Open->value,
-            self::InProgress->value,
-            self::Closed->value,
-        ];
     }
 
     public function getColor(): ?string

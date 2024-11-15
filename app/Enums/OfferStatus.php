@@ -4,31 +4,21 @@ namespace App\Enums;
 
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
-// use Mokhosh\FilamentKanban\Concerns\IsKanbanStatus;
 use Filament\Support\Contracts\HasLabel;
+use App\Enums\Concerns\HasBaseEnumFeatures;
 
 enum OfferStatus: string implements HasColor, HasIcon, HasLabel
 {
-    // use IsKanbanStatus;
+    use HasBaseEnumFeatures;
 
     case Published = 'Published';
     case Submitted = 'Submitted';
     case Disabled = 'Disabled';
     case Expired = 'Expired';
 
-    public static function getArray()
-    {
-        return [
-            OfferStatus::Published->value,
-            OfferStatus::Submitted->value,
-            OfferStatus::Disabled->value,
-            OfferStatus::Expired->value,
-        ];
-    }
-
     public function getLabel(): ?string
     {
-        return __($this->name);
+        return __($this->value);
     }
 
     public function getColor(): ?string

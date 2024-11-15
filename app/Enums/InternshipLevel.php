@@ -3,35 +3,21 @@
 namespace App\Enums;
 
 use Filament\Support\Contracts\HasColor;
-// use Mokhosh\FilamentKanban\Concerns\IsKanbanStatus;
+use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
+use App\Enums\Concerns\HasBaseEnumFeatures;
 
-enum InternshipLevel: string implements HasColor, HasLabel
+enum InternshipLevel: string implements HasColor, HasIcon, HasLabel
 {
-    // use IsKanbanStatus;
+    use HasBaseEnumFeatures;
 
     case FinalYearInternship = 'FinalYearInternship';
     case TechnicalInternship = 'TechnicalInternship';
     case IntroductoryInternship = 'IntroductoryInternship';
-    // case MasterThesis = 'MasterThesis';
-    // case PhDThesis = 'PhDThesis';
-
-    public static function getArray(): array
-    {
-        return [
-            self::FinalYearInternship,
-            self::TechnicalInternship,
-            self::IntroductoryInternship,
-        ];
-    }
 
     public function getLabel(): ?string
     {
-        return match ($this) {
-            self::FinalYearInternship => __('Final year internship'),
-            self::IntroductoryInternship => __('Introductory internship'),
-            self::TechnicalInternship => __('Technical internship'),
-        };
+        return __($this->value);
     }
 
     public function getColor(): ?string
@@ -46,7 +32,7 @@ enum InternshipLevel: string implements HasColor, HasLabel
     public function getIcon(): ?string
     {
         return match ($this) {
-            self::FinalYearInternship => 'heroicon-o-graduation-cap',
+            self::FinalYearInternship => 'heroicon-o-academic-cap',
             self::IntroductoryInternship => 'heroicon-o-cog',
             self::TechnicalInternship => 'heroicon-o-cog',
         };

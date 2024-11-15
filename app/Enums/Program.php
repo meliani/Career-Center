@@ -2,12 +2,15 @@
 
 namespace App\Enums;
 
+use App\Enums\Concerns\HasBaseEnumFeatures;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
 
 enum Program: string implements HasColor, HasIcon, HasLabel
 {
+    use HasBaseEnumFeatures;
+
     case AMOA = 'AMOA';
     case ASEDS = 'ASEDS';
     case DATA = 'DATA';
@@ -45,20 +48,6 @@ enum Program: string implements HasColor, HasIcon, HasLabel
             // self::NULL => __('Other'),
             // default => 'Undefined',
         };
-    }
-
-    public static function getArray(): array
-    {
-        return [
-            Program::AMOA->value,
-            Program::ASEDS->value,
-            Program::DATA->value,
-            Program::ICCN->value,
-            Program::SESNUM->value,
-            Program::SMARTICT->value,
-            Program::SUD->value,
-            // Program::NULL->value,
-        ];
     }
 
     public function getColor(): string
