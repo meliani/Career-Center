@@ -33,6 +33,12 @@ class CreateProjectsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        Schema::table('projects', function (Blueprint $table) {
+            $table->index('defense_status');
+            $table->index('department');
+            $table->index(['start_date', 'end_date']);
+        });
     }
 
     /**
