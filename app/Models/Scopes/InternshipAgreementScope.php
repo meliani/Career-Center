@@ -13,37 +13,38 @@ class InternshipAgreementScope implements Scope
      */
     public function apply(Builder $builder, Model $model): void
     {
-        if (auth()->check()) {
-            if (auth()->user()->isSuperAdministrator() || auth()->user()->isAdministrator() || auth()->user()->isDirection()) {
-                return;
-            } elseif (auth()->user()->isProgramCoordinator()) {
-                $builder
-                    ->whereHas('student', function ($q) {
-                        $q->where('program', '=', auth()->user()->assigned_program);
-                    });
-
-                return;
-            } elseif (auth()->user()->isDepartmentHead()) {
-                $builder->where('assigned_department', '=', auth()->user()->department);
-
-                return;
-            } elseif (auth()->user()->isProfessor()) {
-                $builder
-                    ->whereHas('project', function ($q) {
-                        $q->whereHas('professors', function ($q) {
-                            $q->where('professor_id', '=', auth()->user()->id);
-                        });
-                    });
-
-                return;
-            } else {
-                // $builder->where('student_id', '=', auth()->user()->id);
-                return;
-            }
-        } else {
-            // $builder->where('id', '=', $model->id);
+        if (! auth()->check()) {
             return;
         }
 
+        $user = auth()->user();
+
+        if ($user->isSuperAdministrator() || $user->isAdministrator() || $user->isDirection()) {
+            return;
+        }
+
+        if ($user->isProgramCoordinator()) {
+            $builder->whereHas('student', function ($q) use ($user) {
+                $q->where('program', $user->assigned_program);
+            });
+
+            return;
+        }
+
+        if ($user->isDepartmentHead()) {
+            $builder->where('assigned_department', $user->department);
+
+            return;
+        }
+
+        if ($user->isProfessor()) {
+            $builder->whereHas('project', function ($q) use ($user) {
+                $q->whereHas('professors', function ($q) use ($user) {
+                    $q->where('professor_id', $user->id);
+                });
+            });
+
+            return;
+        }
     }
 }

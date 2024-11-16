@@ -20,7 +20,7 @@ class InternshipAgreement extends Core\BackendBaseModel
     protected static function boot()
     {
         parent::boot();
-        static::addGlobalScope(new Scopes\InternshipAgreementScope());
+        static::addGlobalScope(new Scopes\InternshipAgreementScope);
     }
 
     public function __construct(?\App\Settings\NotificationSettings $settings = null)
@@ -184,6 +184,11 @@ class InternshipAgreement extends Core\BackendBaseModel
         return $this->belongsTo(Project::class);
     }
 
+    public function year()
+    {
+        return $this->belongsTo(Year::class);
+    }
+
     // public function projects()
     // {
     //     return $this->belongsTo(Project::class);
@@ -193,7 +198,7 @@ class InternshipAgreement extends Core\BackendBaseModel
     {
         try {
             if (Gate::denies('validate-internship', $this)) {
-                throw new AuthorizationException();
+                throw new AuthorizationException;
             }
 
             $this->validated_at = now();
@@ -219,7 +224,7 @@ class InternshipAgreement extends Core\BackendBaseModel
     {
         try {
             if (Gate::denies('sign-internship', $this)) {
-                throw new AuthorizationException();
+                throw new AuthorizationException;
             }
             $this->signed_at = now();
             $this->status = Enums\Status::Signed;
@@ -243,7 +248,7 @@ class InternshipAgreement extends Core\BackendBaseModel
     {
         try {
             if (Gate::denies('sign-internship', $this)) {
-                throw new AuthorizationException();
+                throw new AuthorizationException;
             }
             $this->received_at = now();
             $this->status = Enums\Status::Completed;
@@ -267,7 +272,7 @@ class InternshipAgreement extends Core\BackendBaseModel
     {
         try {
             if (Gate::denies('validate-internship', $this)) {
-                throw new AuthorizationException();
+                throw new AuthorizationException;
             }
             $this->assigned_department = $department;
             $this->save();
@@ -290,7 +295,7 @@ class InternshipAgreement extends Core\BackendBaseModel
     {
         try {
             if (Gate::denies('validate-internship', $this)) {
-                throw new AuthorizationException();
+                throw new AuthorizationException;
             }
             $this->status = $status;
             $this->save();

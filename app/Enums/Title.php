@@ -13,7 +13,7 @@ enum Title: string implements HasColor, HasLabel
     case Mrs = 'Mrs';
     case Mr = 'Mr';
     case Dr = 'Dr';
-    case NULL = '';
+    // case NULL = '';
 
     public function getLabel(): ?string
     {
@@ -21,7 +21,7 @@ enum Title: string implements HasColor, HasLabel
             self::Mrs => __('Mrs.'),
             self::Mr => __('Mr.'),
             self::Dr => __('Dr.'),
-            self::NULL => __(''),
+            // self::NULL => __(''),
         };
     }
 
@@ -31,7 +31,7 @@ enum Title: string implements HasColor, HasLabel
             self::Mrs => __('Madam'),
             self::Mr => __('Mister'),
             self::Dr => __('Doctor'),
-            self::NULL => __(''),
+            // self::NULL => __(''),
         };
     }
 
@@ -41,7 +41,7 @@ enum Title: string implements HasColor, HasLabel
             self::Mrs => 'warning',
             self::Dr => 'success',
             self::Mr => 'info',
-            self::NULL => 'secondary',
+            // self::NULL => 'secondary',
         };
     }
 }

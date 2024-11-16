@@ -146,7 +146,7 @@ class InternshipAgreementResource extends Core\BaseResource
                 Tables\Filters\SelectFilter::make('assigned_department')
                     ->multiple()
                     ->options(Enums\Department::class),
-            ])
+            ], layout: \Filament\Tables\Enums\FiltersLayout::AboveContentCollapsible)
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\Action::make('Pdf from view')

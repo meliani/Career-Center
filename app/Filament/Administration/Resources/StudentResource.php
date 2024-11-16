@@ -8,6 +8,7 @@ use App\Filament\Administration\Resources\StudentResource\Pages;
 use App\Filament\Core;
 use App\Mail;
 use App\Models\Student;
+use App\Models\Year;
 use Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -17,6 +18,7 @@ use Filament\Notifications\Notification;
 use Filament\Tables;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades;
 
 class StudentResource extends Core\BaseResource
@@ -293,6 +295,14 @@ class StudentResource extends Core\BaseResource
                     ->hidden(fn () => auth()->user()->cannot('manage-students')),
 
             ]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->whereHas('year', function ($query) {
+                $query->where('id', Year::current()->id);
+            });
     }
 
     public static function getRelations(): array

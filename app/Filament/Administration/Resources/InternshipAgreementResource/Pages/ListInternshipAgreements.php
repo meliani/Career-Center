@@ -36,40 +36,45 @@ class ListInternshipAgreements extends ListRecords
 
     public function getTabs(): array
     {
+        $baseQuery = static::getResource()::getEloquentQuery();
+
         return [
             __('All') => Tab::make(),
-            // __('Draft') => Tab::make()
-            //     // ->badge(fn (Builder $query) => $query->where('status', Enums\Status::Draft)->count(), 'bg-blue-500 text-white')
-            //     ->badge($this->InternshipAgreementByStatus[Enums\Status::Draft->value] ?? 0, 'bg-blue-500 text-white')
-            //     ->modifyQueryUsing(fn (Builder $query) => $query->where('status', Enums\Status::Draft)),
-            //     __('Announced') => Tab::make()
-            //     ->badge($this->InternshipAgreementByStatus[Enums\Status::Announced->value] ?? 0)
-            //     ->modifyQueryUsing(fn (Builder $query) => $query->where('status', Enums\Status::Announced)),
-            // __('Validated') => Tab::make()
-            //     ->badge($this->InternshipAgreementByStatus[Enums\Status::Validated->value] ?? 0)
-            //     ->modifyQueryUsing(fn (Builder $query) => $query->where('status', Enums\Status::Validated)),
-            // __('Completed') => Tab::make()
-            //     ->badge($this->InternshipAgreementByStatus[Enums\Status::Completed->value] ?? 0)
-            //     ->modifyQueryUsing(fn (Builder $query) => $query->where('status', Enums\Status::Completed)),
-            // __('Signed') => Tab::make()
-            //     ->badge($this->InternshipAgreementByStatus[Enums\Status::Signed->value] ?? 0)
-            //     ->modifyQueryUsing(fn (Builder $query) => $query->where('status', Enums\Status::Signed)),
             __('Draft') => Tab::make()
-                ->badge(InternshipAgreement::where('status', Enums\Status::Draft->value)->count())
+                ->badge(
+                    $baseQuery->clone()
+                        ->where('status', Enums\Status::Draft->value)
+                        ->count()
+                )
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', Enums\Status::Draft->value)),
             __('Announced') => Tab::make()
-                ->badge(InternshipAgreement::where('status', Enums\Status::Announced->value)->count())
+                ->badge(
+                    $baseQuery->clone()
+                        ->where('status', Enums\Status::Announced->value)
+                        ->count()
+                )
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', Enums\Status::Announced->value)),
             __('Validated') => Tab::make()
-                ->badge(InternshipAgreement::where('status', Enums\Status::Validated->value)->count())
+                ->badge(
+                    $baseQuery->clone()
+                        ->where('status', Enums\Status::Validated->value)
+                        ->count()
+                )
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', Enums\Status::Validated->value)),
             __('Completed') => Tab::make()
-                ->badge(InternshipAgreement::where('status', Enums\Status::Completed->value)->count())
+                ->badge(
+                    $baseQuery->clone()
+                        ->where('status', Enums\Status::Completed->value)
+                        ->count()
+                )
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', Enums\Status::Completed->value)),
             __('Signed') => Tab::make()
-                ->badge(InternshipAgreement::where('status', Enums\Status::Signed->value)->count())
+                ->badge(
+                    $baseQuery->clone()
+                        ->where('status', Enums\Status::Signed->value)
+                        ->count()
+                )
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', Enums\Status::Signed->value)),
-
         ];
     }
 }

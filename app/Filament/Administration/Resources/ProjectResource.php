@@ -9,6 +9,7 @@ use App\Filament\Administration\Resources\ProjectResource\RelationManagers;
 use App\Filament\Administration\Widgets\DefensesPerProgramChart;
 use App\Filament\Core;
 use App\Models\Project;
+use App\Models\Year;
 use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -21,7 +22,7 @@ use Filament\Tables;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Table;
 use Hydrat\TableLayoutToggle\Facades\TableLayoutToggle;
-use Illuminate\Contracts\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Builder;
 use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 use Parallax\FilamentComments\Actions\CommentsAction;
 use Parallax\FilamentComments\Infolists\Components\CommentsEntry;
@@ -84,6 +85,16 @@ class ProjectResource extends Core\BaseResource
         }
 
         return false;
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->whereHas('internship_agreements', function ($query) {
+                $query->whereHas('year', function ($q) {
+                    $q->where('id', Year::current()->id);
+                });
+            });
     }
 
     public static function form(Form $form): Form

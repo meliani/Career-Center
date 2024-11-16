@@ -19,7 +19,7 @@ class Project extends Core\BackendBaseModel
     protected static function boot()
     {
         parent::boot();
-        static::addGlobalScope(new Scopes\ProjectScope());
+        static::addGlobalScope(new Scopes\ProjectScope);
     }
 
     protected static function booted(): void
@@ -174,6 +174,12 @@ class Project extends Core\BackendBaseModel
         return $this->hasOne(Timetable::class);
     }
 
+    /* Final internship agreement relationship */
+    public function final_internship_agreement()
+    {
+        return $this->hasOne(FinalYearInternshipAgreement::class);
+    }
+
     public function unplanned()
     {
         return $this->whereDoesntHave('timetable');
@@ -319,7 +325,7 @@ class Project extends Core\BackendBaseModel
     {
         try {
             if (Gate::denies('authorize-defense', $this)) {
-                throw new AuthorizationException();
+                throw new AuthorizationException;
             }
 
             $this->defense_authorized_at = now();
@@ -348,7 +354,7 @@ class Project extends Core\BackendBaseModel
     {
         try {
             if (Gate::denies('authorize-defense', $this)) {
-                throw new AuthorizationException();
+                throw new AuthorizationException;
             }
             $this->defense_status = Enums\DefenseStatus::Postponed;
             $this->save();
@@ -370,7 +376,7 @@ class Project extends Core\BackendBaseModel
     {
         try {
             if (Gate::denies('authorize-defense', $this)) {
-                throw new AuthorizationException();
+                throw new AuthorizationException;
             }
             $this->defense_status = Enums\DefenseStatus::Completed;
             $this->save();
@@ -399,7 +405,7 @@ class Project extends Core\BackendBaseModel
     {
         // we gonna use GenerateDefenseDocuments service and generateEvaluationSheet method to generate the evaluation sheet
 
-        $service = new Services\GenerateDefenseDocuments();
+        $service = new Services\GenerateDefenseDocuments;
         $service->generateEvaluationSheet($this);
 
         // event(new \App\Events\DefenseAuthorized($this));

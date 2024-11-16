@@ -3,6 +3,7 @@
 namespace App\Filament\Administration\Resources;
 
 use App\Enums;
+use App\Enums\Status;
 use App\Filament\Administration\Resources\FinalYearInternshipAgreementResource\Pages;
 use App\Filament\Core\BaseResource;
 use App\Models\FinalYearInternshipAgreement;
@@ -45,7 +46,7 @@ class FinalYearInternshipAgreementResource extends BaseResource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::count();
+        return static::getModel()::where('status', Status::Signed)->count();
     }
 
     public static function form(Form $form): Form
