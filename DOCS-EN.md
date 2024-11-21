@@ -22,9 +22,19 @@ The dashboard contains graphs to have an overview of the progress of the PFE, te
 
 #### 1 - Launch of a campaign for the search for internships (PFE / Technical / Worker)
 
-the school launches a mailing campaign for the search for internships, it can define the start and end dates of the campaign, the concerned fields, the types of internships (PFE, Technical, Worker), the concerned cities, the concerned companies, the internship search criteria.
+The campaign management is handled by system administrators and enterprise relations directors. They launch mailing campaigns for internship searches, defining:
+- Campaign duration (start/end dates)
+- Target fields of study
+- Internship types (PFE, Technical, Worker)
+- Geographical scope
+- Target companies
+- Search criteria
 
-The email database is fed, purified periodically thanks to an automated system for processing email returns (bounce) and unsubscribes.
+The email database maintenance and campaign execution are managed by authorized administrative staff, ensuring:
+- Regular database updates
+- Automated bounce processing
+- Unsubscribe management
+- Engagement tracking
 
 The email database is composed of companies, former supervisors, professors, former students, former supervisors, university partners.
 
