@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
             // ->everySecond();
             ->dailyAt('15:40');
         $schedule->command(\Spatie\Health\Commands\RunHealthChecksCommand::class)->everyMinute();
+        $schedule->command(\Spatie\Health\Commands\DispatchQueueCheckJobsCommand::class)->everyMinute();
     }
 
     /**

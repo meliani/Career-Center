@@ -35,6 +35,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
+use Spatie\Health\Facades\Health;
 use Spatie\LaravelPdf\Enums\Format;
 use Spatie\LaravelPdf\Enums\Unit;
 use Spatie\LaravelPdf\Facades\Pdf;
@@ -46,10 +47,27 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        \Spatie\Health\Facades\Health::checks([
+        Health::checks([
             \Spatie\Health\Checks\Checks\UsedDiskSpaceCheck::new(),
-            // \Spatie\Health\Checks\Checks\DatabaseCheck::new(),
+            \Spatie\Health\Checks\Checks\DatabaseCheck::new()
+                ->connectionName('backend_database'),
+            \Spatie\Health\Checks\Checks\ScheduleCheck::new(),
+            // \Spatie\CpuLoadHealthCheck\CpuLoadCheck::new()
+            //     ->failWhenLoadIsHigherInTheLast5Minutes(2.0)
+            //     ->failWhenLoadIsHigherInTheLast15Minutes(1.5),
+            \Spatie\Health\Checks\Checks\QueueCheck::new()
+                ->onQueue('emails'),
         ]);
+
+        if (App::environment('production')) {
+            Health::checks([
+                \Spatie\Health\Checks\Checks\UsedDiskSpaceCheck::new(),
+                \Spatie\Health\Checks\Checks\DatabaseCheck::new()
+                    ->connectionName('backend_database'),
+                \Spatie\Health\Checks\Checks\RedisMemoryUsageCheck::new()->failWhenAboveMb(1000),
+                \Spatie\Health\Checks\Checks\ScheduleCheck::new(),
+            ]);
+        }
     }
 
     /**
