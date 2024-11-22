@@ -48,6 +48,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         Health::checks([
+            // \Spatie\Health\Checks\Checks\DebugModeCheck::new()->unless(app()->environment('local')),
             \Spatie\Health\Checks\Checks\UsedDiskSpaceCheck::new(),
             \Spatie\Health\Checks\Checks\DatabaseCheck::new()
                 ->connectionName('backend_database'),
@@ -57,17 +58,9 @@ class AppServiceProvider extends ServiceProvider
             //     ->failWhenLoadIsHigherInTheLast15Minutes(1.5),
             \Spatie\Health\Checks\Checks\QueueCheck::new()
                 ->onQueue('emails'),
+            // \Spatie\Health\Checks\Checks\RedisMemoryUsageCheck::new()->unless(app()->environment('production'))->failWhenAboveMb(1000),
         ]);
 
-        if (App::environment('production')) {
-            Health::checks([
-                \Spatie\Health\Checks\Checks\UsedDiskSpaceCheck::new(),
-                \Spatie\Health\Checks\Checks\DatabaseCheck::new()
-                    ->connectionName('backend_database'),
-                \Spatie\Health\Checks\Checks\RedisMemoryUsageCheck::new()->failWhenAboveMb(1000),
-                \Spatie\Health\Checks\Checks\ScheduleCheck::new(),
-            ]);
-        }
     }
 
     /**
