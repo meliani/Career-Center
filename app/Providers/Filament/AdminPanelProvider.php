@@ -280,7 +280,7 @@ class AdminPanelProvider extends PanelProvider
                                 // 'delete',
                             ] // customize the permissions (default = ["create", "view", "update", "delete"])
                         ),
-                    \Visualbuilder\EmailTemplates\EmailTemplatesPlugin::make(),
+                    // \Visualbuilder\EmailTemplates\EmailTemplatesPlugin::make(),
 
                 ]
             )

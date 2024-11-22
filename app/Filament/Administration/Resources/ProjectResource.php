@@ -354,6 +354,11 @@ class ProjectResource extends Core\BaseResource
 
             ])
             ->actions([
+                \Guava\FilamentModalRelationManagers\Actions\RelationManagerAction::make('professors-relation-manager')
+                    ->label('Jury Members')
+                    ->icon('heroicon-o-users')
+                    ->relationManager(RelationManagers\ProfessorsRelationManager::class)
+                    ->hidden(fn () => auth()->user()->isAdministrator() === false),
                 Tables\Actions\ActionGroup::make([
                     \App\Filament\Actions\Action\SendDefenseEmailAction::make()
                         ->icon('heroicon-o-paper-airplane')

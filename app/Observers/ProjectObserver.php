@@ -21,9 +21,9 @@ class ProjectObserver
     {
         // dd('Project has no students');
         if ($project->students->isEmpty()) {
-            // 
-            // $project->delete();
-            // dd('Project has no students');
+            //
+            dd('Project has no students');
+            $project->delete();
         }
     }
 

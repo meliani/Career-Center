@@ -14,6 +14,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProfessorsRelationManager extends RelationManager
 {
+    use \Guava\FilamentModalRelationManagers\Concerns\CanBeEmbeddedInModals;
+
     protected static string $relationship = 'professors';
 
     protected static ?string $title = 'Jury';
