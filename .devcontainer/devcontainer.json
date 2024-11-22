@@ -1,0 +1,14 @@
+{
+  "name": "Careers Backend Dev Container",
+  "image": "mcr.microsoft.com/devcontainers/php:8.2-bullseye",
+  "features": {},
+  "forwardPorts": [8000],
+  "postCreateCommand": "composer install && npm install",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash"
+      }
+    }
+  }
+}
