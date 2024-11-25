@@ -150,6 +150,7 @@ class InternshipOfferResource extends StudentBaseResource
                 Tables\Columns\IconColumn::make('viewed')
                     ->label(__('Viewed'))
                     ->boolean()
+                    ->searchable(false)
                     ->getStateUsing(fn ($record) => auth()->user()->hasViewedOffer($record->id))
                     ->icon(fn ($state) => $state ? 'heroicon-o-eye' : 'heroicon-o-eye-slash')
                     ->color(fn ($state) => $state ? 'success' : 'gray'),
