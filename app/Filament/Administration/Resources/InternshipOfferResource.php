@@ -160,6 +160,7 @@ class InternshipOfferResource extends BaseResource
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->label('Views')
                     ->numeric()
+                    ->searchable(false)
                     ->sortable(),
                 // Tables\Columns\TextColumn::make('organization_type')
                 //     ->searchable(),
