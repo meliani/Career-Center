@@ -2,4 +2,5 @@ php artisan icons:cache &&
 php artisan view:cache &&
 php artisan route:cache &&
 php artisan config:cache &&
-php artisan filament:cache-components
+php artisan filament:cache-components &&
+composer dump-autoload -o
