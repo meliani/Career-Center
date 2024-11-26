@@ -464,6 +464,11 @@ class ProjectResource extends Core\BaseResource
             RelationGroup::make(__('Students and Internship Agreements'), [
                 RelationManagers\StudentsRelationManager::class,
                 RelationManagers\InternshipAgreementsRelationManager::class,
+                RelationManagers\FinalInternshipAgreementRelationManager::class,
+            ]),
+            RelationGroup::make(__('Defense Details'), [
+                RelationManagers\TimetableRelationManager::class,
+                RelationManagers\CommentsRelationManager::class,
             ]),
         ];
     }

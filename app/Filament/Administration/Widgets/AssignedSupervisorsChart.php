@@ -36,7 +36,7 @@ class AssignedSupervisorsChart extends ApexChartsParentWidget
         $projects = User::select(
             'users.department',
             \DB::raw('count(*) as count')
-        )->join('professor_project', 'users.id', '=', 'professor_project.professor_id')
+        )->join('professor_projects', 'users.id', '=', 'professor_projects.professor_id')
             // ->where('users.department', '!=', '')
             ->groupBy('department')
             ->get()

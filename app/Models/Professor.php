@@ -13,7 +13,7 @@ class Professor extends User
             $query
                 ->whereIn('role', Enums\Role::getProfessorRoles());
         });
-        static::addGlobalScope(new Scopes\ProfessorScope());
+        static::addGlobalScope(new Scopes\ProfessorScope);
 
     }
 
@@ -39,7 +39,8 @@ class Professor extends User
 
     public function projects()
     {
-        return $this->belongsToMany(Project::class)->withPivot('jury_role', 'created_by', 'updated_by', 'approved_by', 'is_president', 'votes')
+        return $this->belongsToMany(Project::class, 'professor_projects')
+            ->withPivot('jury_role', 'is_president', 'was_present')
             ->withTimestamps()
             ->using(ProfessorProject::class);
     }

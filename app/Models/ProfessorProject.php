@@ -11,6 +11,8 @@ class ProfessorProject extends Pivot
 {
     protected static $settings = true;
 
+    protected $table = 'professor_projects';
+
     // public function __construct(?\App\Settings\NotificationSettings $settings = null)
     // {
     //     self::$settings = $settings;
@@ -20,6 +22,9 @@ class ProfessorProject extends Pivot
         'jury_role' => Enums\JuryRole::class,
         'is_president' => 'boolean',
         'was_present' => 'boolean',
+        'supervision_status' => SupervisionStatus::class,
+        'last_meeting_date' => 'datetime',
+        'next_meeting_date' => 'datetime',
     ];
 
     protected $fillable = [
@@ -88,5 +93,15 @@ class ProfessorProject extends Pivot
     public function project()
     {
         return $this->belongsTo(Project::class);
+    }
+
+    public function meetings()
+    {
+        return $this->hasMany(SupervisionMeeting::class);
+    }
+
+    public function progress_reports()
+    {
+        return $this->hasMany(ProgressReport::class);
     }
 }

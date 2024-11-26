@@ -31,9 +31,9 @@ class AssignedSupervisorsReviewersChart extends ApexChartsParentWidget
      */
     public function getOptions(): array
     {
-        $data = \DB::table('professor_project')
-            ->join('projects', 'professor_project.project_id', '=', 'projects.id')
-            ->join('users', 'professor_project.professor_id', '=', 'users.id')
+        $data = \DB::table('professor_projects')
+            ->join('projects', 'professor_projects.project_id', '=', 'projects.id')
+            ->join('users', 'professor_projects.professor_id', '=', 'users.id')
             ->selectRaw("
             users.department as department_name,
             CASE
