@@ -1,29 +1,23 @@
 <x-mail::message>
-Cher Lauréat (lauréate) **{{ $name }}**,
+Cher(e) Lauréat(e)  **{{ $name }}**,
 
-J’ai le plaisir de vous écrire à nouveau pour vous demander d’étudier la possibilité de proposer des sujets de stage,
-pour cet été, au profit des élèves-ingénieurs de la première et de la deuxième année du cycle des ingénieurs de l’INPT.
+J’espère que ce message vous trouve en pleine forme et succès dans vos projets professionnels.
 
-Ces stages ont pour objectif de mettre en pratique les connaissances acquises au cours du cursus du cycle des Ingénieurs
-et de les transformer ainsi en compétences pour répondre à un sujet technique que le stagiaire doit réaliser au sein
-d’une entreprise.
+Cette année, votre école fait de nouveau appel à vous pour proposer des sujets de Projet de Fin d’Études (PFE) 2025 en faveur de nos élèves ingénieurs. En tant qu’Alumni, vous savez que le PFE est une étape décisive dans le parcours d’un ingénieur, et votre contribution peut jouer un rôle déterminant en accompagnant nos étudiants dans cette immersion professionnelle.
 
-Je suis convaincu que vous n’épargnerez aucun effort pour participer à la proposition de ces stages qui ont une durée de
-4 à 8 semaines et qui peuvent se dérouler durant les mois de Juillet et Aout.
+Les PFE de cette année débuteront exceptionnellement le 13 janvier 2025, pour une durée de 4 à 6 mois, incluant la rédaction d’un mémoire et une soutenance devant un jury. Votre engagement sera précieux pour enrichir la diversité et la qualité des thématiques proposées. Nous vous encourageons également à partager cette initiative avec d’autres diplômés ou partenaires susceptibles de collaborer avec nos étudiants.
 
-Pour plus d'informations sur les nouvelles filières d'ingénieur, veuillez visiter le [site web de l'INPT](https://www.inpt.ac.ma).
-Vous voudrez bien trouver sur le lien suivant le formulaire de demande :
+Pour en savoir plus sur la formation de nos ingénieurs, nous vous invitons à visiter notre site web : [https://www.inpt.ac.ma/](www.inpt.ac.ma). Vous pouvez soumettre vos propositions de sujets via le formulaire en ligne : [https://carrieres.inpt.ac.ma/publier-un-stage](https://carrieres.inpt.ac.ma/publier-un-stage)
 
-- [https://carrieres.inpt.ac.ma/publier-un-stage](https://carrieres.inpt.ac.ma/publier-un-stage) ( Voie unique pour les demandes de stagiaires INPT )
+Nous vous remercions chaleureusement pour votre engagement et votre soutien indéfectible envers nos futurs ingénieurs.
 
-N’hésitez pas non plus, de transférer cette demande aux autres lauréats et à d’autres entreprises susceptibles d’être
-intéressées par nos INE.
+Avec mes salutations les plus cordiales,
 
-Je vous remercie à l’avance et vous prie de croire à mes cordiales salutations.
-
-**Institut National des Postes et Télécommunications**\
-**Direction Adjointe des Stages et Relations Entreprises**\
-**Direct** : +(212) 538 002 860 / +(212) 0538 002 765
+**Ahmed KENSI**\
+**Directeur Adjoint des Stages et des Relations avec les Entreprises**  pi\
+**Institut National des Postes et Télécommunications- Rabat**\
+a.kensi@inpt.ac.ma\
+**Tél** : 05 38 00 28 60/ 06 63 46 17 39
 <x-slot:footer>
 
 </x-slot:footer>

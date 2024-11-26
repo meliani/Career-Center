@@ -49,7 +49,7 @@ class EntrepriseContacts extends Model
 
     public function getLongFullNameAttribute(): string
     {
-        return trim("{$this->title->getLongTitle()} {$this->first_name} {$this->last_name}");
+        return trim("{$this->title?->getLongTitle()} {$this->first_name} {$this->last_name}");
     }
 
     // year relationship
@@ -57,5 +57,12 @@ class EntrepriseContacts extends Model
     public function year()
     {
         return $this->belongsTo(Year::class, 'last_year_id_supervised', 'id');
+    }
+
+    public function trackInteraction(): void
+    {
+        $this->last_time_contacted = now();
+        $this->interactions_count = ($this->interactions_count ?? 0) + 1;
+        $this->save();
     }
 }
