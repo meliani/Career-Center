@@ -7,7 +7,7 @@ Cette année, votre école fait de nouveau appel à vous pour proposer des sujet
 
 Les PFE de cette année débuteront exceptionnellement le 13 janvier 2025, pour une durée de 4 à 6 mois, incluant la rédaction d’un mémoire et une soutenance devant un jury. Votre engagement sera précieux pour enrichir la diversité et la qualité des thématiques proposées. Nous vous encourageons également à partager cette initiative avec d’autres diplômés ou partenaires susceptibles de collaborer avec nos étudiants.
 
-Pour en savoir plus sur la formation de nos ingénieurs, nous vous invitons à visiter notre site web : [https://www.inpt.ac.ma/](www.inpt.ac.ma). Vous pouvez soumettre vos propositions de sujets via le formulaire en ligne : [https://carrieres.inpt.ac.ma/publier-un-stage](https://carrieres.inpt.ac.ma/publier-un-stage)
+Pour en savoir plus sur la formation de nos ingénieurs, nous vous invitons à visiter notre site web : [www.inpt.ac.ma](https://www.inpt.ac.ma/). Vous pouvez soumettre vos propositions de sujets via le formulaire en ligne : [carrieres.inpt.ac.ma/publier-un-stage](https://carrieres.inpt.ac.ma/publier-un-stage)
 
 Nous vous remercions chaleureusement pour votre engagement et votre soutien indéfectible envers nos futurs ingénieurs.
 
