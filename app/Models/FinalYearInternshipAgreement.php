@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums;
+use App\Enums\Status;
 use App\Models\Scopes\StudentRelatedScope;
 use Carbon\Carbon;
 use Filament\Notifications\Notification;
@@ -205,50 +206,69 @@ class FinalYearInternshipAgreement extends Model
     public function validate(?string $department = null)
     {
         try {
-            if (Gate::denies('validate-internship', $this)) {
+            if (! auth()->user()->can('validate', $this)) {
                 throw new AuthorizationException;
             }
 
             $this->validated_at = now();
-            $this->status = Enums\Status::Validated;
+            $this->status = Status::Validated;
             $this->assigned_department = $department;
             $this->save();
-            \Filament\Notifications\Notification::make()
-                ->title('Saved successfully')
+
+            Notification::make()
+                ->title('Validated successfully')
                 ->success()
                 ->send();
         } catch (AuthorizationException $e) {
-
-            \Filament\Notifications\Notification::make()
-                ->title('Sorry You must be a Program Coordinator.')
+            Notification::make()
+                ->title('Unauthorized action')
                 ->danger()
                 ->send();
-
-            return response()->json(['error' => 'This action is unauthorized.'], 403);
         }
     }
 
     public function sign()
     {
         try {
-            if (Gate::denies('sign-internship', $this)) {
+            if (! auth()->user()->can('sign', $this)) {
                 throw new AuthorizationException;
             }
+
+            $this->status = Status::Signed;
             $this->signed_at = now();
-            $this->status = Enums\Status::Signed;
             $this->save();
-            \Filament\Notifications\Notification::make()
-                ->title('Signed successfully')
+
+            Notification::make()
+                ->title('Agreement signed successfully')
                 ->success()
                 ->send();
         } catch (AuthorizationException $e) {
-
-            \Filament\Notifications\Notification::make()
-                ->title('Sorry You must be an Administrator.')
+            Notification::make()
+                ->title('Unauthorized action')
                 ->danger()
                 ->send();
+        }
+    }
 
-            return response()->json(['error' => 'This action is unauthorized.'], 403);
+    public function achieve()
+    {
+        try {
+            if (! auth()->user()->can('achieve', $this)) {
+                throw new AuthorizationException;
+            }
+
+            $this->status = Status::Completed;
+            $this->save();
+
+            Notification::make()
+                ->title('Agreement achieved successfully')
+                ->success()
+                ->send();
+        } catch (AuthorizationException $e) {
+            Notification::make()
+                ->title('Unauthorized action')
+                ->danger()
+                ->send();
         }
     }
 

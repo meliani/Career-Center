@@ -110,11 +110,11 @@ class TimetableResource extends BaseResource
                 Tables\Columns\TextColumn::make('project.title')
                     ->sortable()
                     ->limit(50),
-                Tables\Columns\TextColumn::make('project.internship_agreements.student.name')
+                Tables\Columns\TextColumn::make('project.final_year_internship_agreements.student.name')
                     ->sortable()
                     ->limit(50)
                     ->label('Student'),
-                Tables\Columns\TextColumn::make('project.internship_agreements.id_pfe')
+                Tables\Columns\TextColumn::make('project.final_year_internship_agreements.id_pfe')
                     ->sortable()
                     ->limit(50)
                     ->label('ID PFE'),
@@ -284,10 +284,10 @@ class TimetableResource extends BaseResource
 
                         Infolists\Components\Fieldset::make('Entreprise supervisor')
                             ->schema([
-                                Infolists\Components\TextEntry::make('project.internship_agreements.encadrant_ext_nom')
+                                Infolists\Components\TextEntry::make('project.final_year_internship_agreements.encadrant_ext_nom')
                                     ->label('')
                                     ->formatStateUsing(
-                                        fn ($record) => $record->project->internship_agreements->map(
+                                        fn ($record) => $record->project->final_year_internship_agreements->map(
                                             fn ($internship_agreement) => "**{$internship_agreement->encadrant_ext_name}**" . PHP_EOL . $internship_agreement->encadrant_ext_mail . PHP_EOL . $internship_agreement->encadrant_ext_tel
                                         )->join(', ')
                                     )

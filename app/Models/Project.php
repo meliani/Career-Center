@@ -174,12 +174,6 @@ class Project extends Core\BackendBaseModel
         return $this->hasOne(Timetable::class);
     }
 
-    /* Final internship agreement relationship */
-    public function final_internship_agreement()
-    {
-        return $this->hasOne(FinalYearInternshipAgreement::class);
-    }
-
     public function unplanned()
     {
         return $this->whereDoesntHave('timetable');

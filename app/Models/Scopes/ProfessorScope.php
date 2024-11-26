@@ -25,7 +25,7 @@ class ProfessorScope implements Scope
             } elseif (auth()->user()->isProgramCoordinator()) {
                 $builder
                     ->whereHas('projects', function ($q) {
-                        $q->whereHas('internship_agreements', function ($q) {
+                        $q->whereHas('final_year_internship_agreements', function ($q) {
                             $q->whereHas('student', function ($q) {
                                 $q->where('program', '=', auth()->user()->assigned_program);
                             });

@@ -51,7 +51,7 @@ class ProfessorsTable
                 ->inline()
                 ->columnSpan(3)
                 // ->formatStateUsing(function ($record) {
-                //     return $record->projects->pluck('internship_agreements')->flatten()->pluck('id_pfe')->implode(', ');
+                //     return $record->projects->pluck('final_year_internship_agreements')->flatten()->pluck('id_pfe')->implode(', ');
                 // })
                 // ->listWithLineBreaks()
                 // ->bulleted()

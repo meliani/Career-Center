@@ -31,7 +31,7 @@ class DefenseAuthorizedNotification extends Notification
             ->subject(__('The Defense :id has been authorized', ['id' => $this->project->id_pfe]))
             ->line(__('# The Defense :id has been authorized.', ['id' => $this->project->id_pfe]))
             // Include evaluation sheet data using ->line()
-            ->line(__('**Administrative supervisor:** ') . $this->project->administrative_supervisor)
+            ->line(__('**Administrative supervisor:** ') . $this->project->administrative_supervisor_name)
             ->line(__('**Defense Date:** ') . $this->project->defense_plan)
             ->line(__('## Student information'))
             ->line(__('**Name:** ') . $this->project->students->implode('full_name', ' & '))

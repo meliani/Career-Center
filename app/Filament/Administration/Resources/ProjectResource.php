@@ -44,7 +44,7 @@ class ProjectResource extends Core\BaseResource
 
     protected static ?string $navigationIcon = 'heroicon-o-command-line';
 
-    protected static ?string $navigationGroup = 'Internships and Projects';
+    protected static ?string $navigationGroup = 'Internships Archive';
 
     protected static ?int $navigationSort = 4;
 
@@ -87,15 +87,15 @@ class ProjectResource extends Core\BaseResource
         return false;
     }
 
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->whereHas('internship_agreements', function ($query) {
-                $query->whereHas('year', function ($q) {
-                    $q->where('id', Year::current()->id);
-                });
-            });
-    }
+    // public static function getEloquentQuery(): Builder
+    // {
+    //     // return parent::getEloquentQuery()
+    //     //     ->whereHas('internship_agreements', function ($query) {
+    //     //         $query->whereHas('year', function ($q) {
+    //     //             $q->where('id', Year::current()->id);
+    //     //         });
+    //     //     });
+    // }
 
     public static function form(Form $form): Form
     {
@@ -464,7 +464,6 @@ class ProjectResource extends Core\BaseResource
             RelationGroup::make(__('Students and Internship Agreements'), [
                 RelationManagers\StudentsRelationManager::class,
                 RelationManagers\InternshipAgreementsRelationManager::class,
-                RelationManagers\FinalInternshipAgreementRelationManager::class,
             ]),
             RelationGroup::make(__('Defense Details'), [
                 RelationManagers\TimetableRelationManager::class,

@@ -27,7 +27,7 @@ class TimetableScope implements Scope
             } elseif (auth()->user()->isDepartmentHead()) {
                 // $builder
                 //     ->whereHas('projects', function ($q) {
-                //         $q->whereHas('internship_agreements', function ($q) {
+                //         $q->whereHas('final_year_internship_agreements', function ($q) {
                 //             $q->where('assigned_department', '=', auth()->user()->department);
                 //         });
                 //     });
@@ -39,7 +39,7 @@ class TimetableScope implements Scope
 
             } elseif (auth()->user()->isAdministrativeSupervisor()) {
                 // $builder->whereHas('project', function ($q) {
-                //     $q->whereHas('internship_agreements', function ($q) {
+                //     $q->whereHas('final_year_internship_agreements', function ($q) {
                 //         $q->whereHas('student', function ($q) {
                 //             $q->where('program', '=', auth()->user()->assigned_program);
                 //         });

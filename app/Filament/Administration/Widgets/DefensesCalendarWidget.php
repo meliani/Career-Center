@@ -76,7 +76,7 @@ class DefensesCalendarWidget extends FullCalendarWidget
         $events = Project::withoutGlobalScopes()
             ->whereHas('timetable')
             ->withoutGlobalScopes()
-            ->with('timetable.timeslot', 'allStudents', 'internship_agreements')
+            ->with('timetable.timeslot', 'allStudents', 'final_year_internship_agreements')
             ->withoutGlobalScopes()
             ->get()
             ->map(
@@ -87,7 +87,7 @@ class DefensesCalendarWidget extends FullCalendarWidget
                     "\n\r" . ', ' .
                     $project->timetable->room?->name . ',' .
                     ' ID: ' .
-                    $project->internship_agreements->map(fn ($agreement) => $agreement->id_pfe)->join(' & ')
+                    $project->final_year_internship_agreements->map(fn ($agreement) => $agreement->id_pfe)->join(' & ')
                     )
                     ->start($project->timetable->timeslot->start_time ?? '')
                     ->end($project->timetable->timeslot->end_time ?? '')

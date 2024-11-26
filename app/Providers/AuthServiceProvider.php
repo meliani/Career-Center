@@ -3,13 +3,14 @@
 namespace App\Providers;
 
 use App\Enums\Role;
+use App\Models\FinalYearInternshipAgreement;
 use App\Models\InternshipAgreement;
 use App\Models\InternshipOffer;
 use App\Models\Professor;
 use App\Models\Project;
 use App\Models\User;
-// use Illuminate\Auth\Access\Response;
 use App\Policies\ActivityPolicy;
+use App\Policies\FinalYearInternshipAgreementPolicy;
 use App\Policies\InternshipAgreementPolicy;
 use App\Policies\InternshipOfferPolicy;
 use App\Policies\ProfessorPolicy;
@@ -35,7 +36,7 @@ class AuthServiceProvider extends ServiceProvider
         Professor::class => ProfessorPolicy::class,
         InternshipAgreement::class => InternshipAgreementPolicy::class,
         InternshipOffer::class => InternshipOfferPolicy::class,
-
+        FinalYearInternshipAgreement::class => FinalYearInternshipAgreementPolicy::class,
     ];
 
     /**
