@@ -40,7 +40,37 @@ class Professor extends User
     public function projects()
     {
         return $this->belongsToMany(Project::class, 'professor_projects')
-            ->withPivot('jury_role', 'is_president', 'was_present')
+            ->withPivot(
+                'jury_role',
+                'votes',
+                'is_president',
+                'was_present',
+                'created_by',
+                'updated_by',
+                'approved_by',
+                'supervision_status',
+                'last_meeting_date',
+                'next_meeting_date',
+            )
+            ->withTimestamps()
+            ->using(ProfessorProject::class);
+    }
+
+    public function finalProjects()
+    {
+        return $this->belongsToMany(FinalProject::class, 'final_project_professor')
+            ->withPivot(
+                'jury_role',
+                'votes',
+                'is_president',
+                'was_present',
+                'created_by',
+                'updated_by',
+                'approved_by',
+                'supervision_status',
+                'last_meeting_date',
+                'next_meeting_date',
+            )
             ->withTimestamps()
             ->using(ProfessorProject::class);
     }

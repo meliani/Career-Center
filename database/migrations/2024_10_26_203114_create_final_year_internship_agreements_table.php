@@ -16,7 +16,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('student_id');
             $table->unsignedInteger('year_id');
-            $table->unsignedInteger('project_id')->nullable();
+            $table->unsignedInteger('final_project_id')->nullable();
             $table->string('status', 255)->nullable();
             $table->dateTime('announced_at')->nullable();
             $table->dateTime('validated_at')->nullable();

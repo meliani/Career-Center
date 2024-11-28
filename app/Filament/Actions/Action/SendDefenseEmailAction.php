@@ -127,9 +127,9 @@ class SendDefenseEmailAction extends Action
     public static function getEmails($project): array
     {
         $administrators = \App\Models\User::administrators()->pluck('email');
-        $AdministrativeSupervisor = \App\Models\User::where('assigned_program', $project->internship_agreement->student->program->value)
-            ->where('role', \App\Enums\Role::AdministrativeSupervisor->value)
-            ->pluck('email');
+        $AdministrativeSupervisor = $project->administrative_supervisor->pluck('email');
+        // ->where('role', \App\Enums\Role::AdministrativeSupervisor->value)
+        // ->pluck('email');
         $jury = $project->professors->pluck('email');
         $externalJury = $project->external_supervisor_email;
         $extraEmails = ['entreprises@inpt.ac.ma'];

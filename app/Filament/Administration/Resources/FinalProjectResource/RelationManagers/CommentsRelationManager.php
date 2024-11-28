@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Administration\Resources\ProjectResource\RelationManagers;
+namespace App\Filament\Administration\Resources\FinalProjectResource\RelationManagers;
 
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -8,20 +8,19 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class FinalInternshipAgreementRelationManager extends RelationManager
+class CommentsRelationManager extends RelationManager
 {
-    protected static string $relationship = 'final_year_internship_agreements';
+    protected static string $relationship = 'filamentComments';
+
+    protected static ?string $title = 'Comments';
 
     public function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('title')
+                Forms\Components\RichEditor::make('comment')
                     ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('organization_name')
-                    ->required()
-                    ->maxLength(255),
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -29,8 +28,10 @@ class FinalInternshipAgreementRelationManager extends RelationManager
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('title'),
-                Tables\Columns\TextColumn::make('organization_name'),
+                Tables\Columns\TextColumn::make('user.name')
+                    ->label('Author'),
+                Tables\Columns\TextColumn::make('comment')
+                    ->html(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime(),
             ])

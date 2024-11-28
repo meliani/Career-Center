@@ -27,7 +27,7 @@ DASRE
 | Aucun projet n'est disponible |
 @else
 @foreach ($projects as $project)
-| **{{ $project->id_pfe }}** : @foreach ($project->students as $student) {{ $student->full_name }}, {{ str_replace(' ', '',$student->phone) }} @if (!$loop->last) / @endif @endforeach | {!! str_replace(["\r\n", "\n", "\r"], '<br>',$project->title) !!} | @foreach ($project->internship_agreements as $internship_agreement) **{{  $internship_agreement->encadrant_ext_name }}**: {{ $internship_agreement->encadrant_ext_mail }}, {{ str_replace(' ', '',$internship_agreement->encadrant_ext_tel) }} @if (!$loop->last) / @endif  @endforeach|
+| **{{ $project->id_pfe }}** : @foreach ($project->students as $student) {{ $student->full_name }}, {{ str_replace(' ', '',$student->phone) }} @if (!$loop->last) / @endif @endforeach | {!! str_replace(["\r\n", "\n", "\r"], '<br>',$project->title) !!} | @foreach ($project->final_year_internship_agreements as $internship_agreement) **{{  $internship_agreement->encadrant_ext_name }}**: {{ $internship_agreement->encadrant_ext_mail }}, {{ str_replace(' ', '',$internship_agreement->encadrant_ext_tel) }} @if (!$loop->last) / @endif  @endforeach|
 @endforeach
 @endif
 </x-mail::table>

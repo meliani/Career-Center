@@ -9,6 +9,9 @@ return new class extends Migration
 {
     public function up()
     {
+        // change table anme from professor_project to professor_projects
+        Schema::rename('professor_project', 'professor_projects');
+
         // Drop the existing primary key
         Schema::table('professor_projects', function (Blueprint $table) {
             $table->dropPrimary(['professor_id', 'project_id']);

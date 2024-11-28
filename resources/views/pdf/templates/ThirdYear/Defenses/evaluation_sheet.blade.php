@@ -703,7 +703,7 @@
     <div class="grid grid-cols-1 gap-4 text-xs">
         <fieldset class="border border-black p-2">
             <legend class="font-bold">Référent Administratif, Date & Lieu</legend>
-            <p class="mb-3"><strong>{{ $project->administrative_supervisor }}</strong></p>
+            <p class="mb-3"><strong>{{ $project->administrative_supervisor_name }}</strong></p>
             <p class="text-left">{{ $project->defense_plan}}</p>
         </fieldset>
         <fieldset class="border border-black p-2 min-w-[300px]">
@@ -713,7 +713,7 @@
                     {{ $project->students->first()->full_name }}
                 </strong>
             </p>
-            <p><strong>ID PFE:</strong> {{ $project->students->first()->active_internship_agreement->id_pfe }}</p>
+            <p><strong>ID PFE:</strong> {{ $project->students->first()?->active_internship_agreement?->id_pfe }}</p>
             <p><strong>Filière:</strong>
                 @php
                 $filiere = $project->students->first()->program->getLabel();
@@ -1533,7 +1533,7 @@
     <div class="grid grid-cols-1 gap-4 text-xs">
         <fieldset class="border border-black p-2">
             <legend class="font-bold">Référent Administratif, Date & Lieu</legend>
-            <p class="mb-3"><strong>{{ $project->administrative_supervisor }}</strong></p>
+            <p class="mb-3"><strong>{{ $project->administrative_supervisor_name }}</strong></p>
             <p class="text-left">{{ $project->defense_plan}}</p>
         </fieldset>
         <fieldset class="border border-black p-2 min-w-[300px]">

@@ -27,12 +27,14 @@ class Timetable extends Core\BackendBaseModel
         'deleted_by',
         'created_by',
         'updated_by',
+        'schedulable_type',
+        'schedulable_id',
     ];
 
     protected static function boot()
     {
         parent::boot();
-        static::addGlobalScope(new Scopes\TimetableScope());
+        static::addGlobalScope(new Scopes\TimetableScope);
 
         /*         static::updating(function ($timetable) {
                     $professorService = new \App\Services\ProfessorService;
@@ -172,5 +174,10 @@ class Timetable extends Core\BackendBaseModel
             'id' // Local key on the projects table...
         );
 
+    }
+
+    public function schedulable()
+    {
+        return $this->morphTo();
     }
 }

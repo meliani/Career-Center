@@ -2,8 +2,6 @@
 
 namespace App\Services;
 
-use App\Enums\Status;
-use App\Models\FinalYearInternshipAgreement;
 use App\Models\InternshipAgreement;
 use App\Models\Professor;
 use App\Models\Project;
@@ -95,56 +93,11 @@ class ProjectService extends Facade
             ->send();
     }
 
-    public static function AssignFinalInternshipsToProjects()
-    {
-        self::setForceOverwrite(false);
-        self::setOverwrittenProjects(0);
-        self::setCreatedProjects(0);
-        self::setDuplicateProjects(0);
-
-        try {
-            if (Gate::denies('batch-assign-internships-to-projects')) {
-                throw new AuthorizationException;
-            }
-
-            $signedInternships = FinalYearInternshipAgreement::where('status', Status::Signed)->get();
-
-            foreach ($signedInternships as $signedInternship) {
-                ProjectService::SyncFinalAgreementWithProjects($signedInternship);
-            }
-        } catch (AuthorizationException $e) {
-            Notification::make()
-                ->title('Sorry You must be an Administrator.')
-                ->danger()
-                ->send();
-
-            return response()->json(['error' => 'This action is unauthorized.'], 403);
-        }
-
-        Notification::make()
-            ->title(
-                __(
-                    ':x projects created, and :y projects were ignored.',
-                    [
-                        'x' => self::$createdProjects,
-                        'y' => self::$duplicateProjects,
-                    ]
-                )
-            )
-            ->success()
-            ->send();
-    }
-
     private static function SyncAgreementWithProjects(InternshipAgreement $internshipAgreement)
     {
 
         $project = ProjectService::CreateFromInternshipAgreement($internshipAgreement);
 
-    }
-
-    private static function SyncFinalAgreementWithProjects(FinalYearInternshipAgreement $internshipAgreement)
-    {
-        $project = ProjectService::CreateFromFinalInternshipAgreement($internshipAgreement);
     }
 
     private static function SyncStudentToProjectFromInternshipAgreement(InternshipAgreement $internshipAgreement, Project $project)
@@ -196,30 +149,6 @@ class ProjectService extends Facade
             return $project;
         }
 
-    }
-
-    private static function CreateFromFinalInternshipAgreement(FinalYearInternshipAgreement $internshipAgreement): Project
-    {
-        if ($internshipAgreement->project) {
-            $project = $internshipAgreement->project;
-            self::$duplicateProjects++;
-
-            return $project;
-        } else {
-            $project = Project::create([
-                'title' => $internshipAgreement->title,
-                'start_date' => $internshipAgreement->starting_at,
-                'end_date' => $internshipAgreement->ending_at,
-            ]);
-
-            $project->save();
-            $internshipAgreement->project_id = $project->id;
-            $internshipAgreement->save();
-            $project->students()->sync($internshipAgreement->student);
-            self::$createdProjects++;
-
-            return $project;
-        }
     }
 
     public static function ImportProfessorsFromInternshipAgreements()

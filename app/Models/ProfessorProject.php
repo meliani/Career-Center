@@ -35,6 +35,9 @@ class ProfessorProject extends Pivot
         'created_by',
         'updated_by',
         'approved_by',
+        'supervision_status',
+        'last_meeting_date',
+        'next_meeting_date',
     ];
 
     protected static function booted(): void
@@ -49,15 +52,13 @@ class ProfessorProject extends Pivot
             $professorProject->updated_by = auth()->id();
         });
 
-        /*
-            static::created(function ($professorProject) {
-                if ($professorProject->assigned_by) {
-                    $professorProject->assigned_by->notify(new Notifications\ProjectSupervisorCreated($professorProject));
-                }
-                $admins = \App\Models\User::administrators();
-                Notification::send($admins, new Notifications\ProjectSupervisorCreated($professorProject));
-            });
-        */
+        /* static::created(function ($professorProject) {
+            if ($professorProject->created_by) {
+                $professorProject->created_by->notify(new Notifications\ProjectSupervisorCreated($professorProject));
+            }
+            $admins = \App\Models\User::administrators();
+            Notification::send($admins, new Notifications\ProjectSupervisorCreated($professorProject));
+        }); */
 
     }
 

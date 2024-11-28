@@ -10,6 +10,7 @@ use Filament\Notifications\Notification;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Gate;
 use Spatie\Tags\HasTags;
@@ -25,7 +26,7 @@ class FinalYearInternshipAgreement extends Model
     protected $fillable = [
         'student_id',
         'year_id',
-        'project_id',
+        'final_project_id',
         'status',
         'announced_at',
         'validated_at',
@@ -106,9 +107,9 @@ class FinalYearInternshipAgreement extends Model
         return $this->belongsTo(Year::class);
     }
 
-    public function project()
+    public function project(): BelongsTo
     {
-        return $this->belongsTo(Project::class);
+        return $this->belongsTo(FinalProject::class);
     }
 
     public function organization()

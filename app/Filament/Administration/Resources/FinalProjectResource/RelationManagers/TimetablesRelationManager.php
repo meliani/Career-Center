@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Administration\Resources\ProjectResource\RelationManagers;
+namespace App\Filament\Administration\Resources\FinalProjectResource\RelationManagers;
 
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -8,20 +8,20 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class FinalInternshipAgreementRelationManager extends RelationManager
+class TimetablesRelationManager extends RelationManager
 {
-    protected static string $relationship = 'final_year_internship_agreements';
+    protected static string $relationship = 'timetables';
 
     public function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('title')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('organization_name')
-                    ->required()
-                    ->maxLength(255),
+                Forms\Components\Select::make('timeslot_id')
+                    ->relationship('timeslot', 'start_time')
+                    ->required(),
+                Forms\Components\Select::make('room_id')
+                    ->relationship('room', 'name')
+                    ->required(),
             ]);
     }
 
@@ -29,10 +29,11 @@ class FinalInternshipAgreementRelationManager extends RelationManager
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('title'),
-                Tables\Columns\TextColumn::make('organization_name'),
-                Tables\Columns\TextColumn::make('created_at')
+                Tables\Columns\TextColumn::make('timeslot.start_time')
                     ->dateTime(),
+                Tables\Columns\TextColumn::make('timeslot.end_time')
+                    ->dateTime(),
+                Tables\Columns\TextColumn::make('room.name'),
             ])
             ->filters([
                 //

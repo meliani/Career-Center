@@ -140,7 +140,18 @@ class Project extends Core\BackendBaseModel
     public function professors()
     {
         return $this->belongsToMany(Professor::class, 'professor_projects')
-            ->withPivot('jury_role', 'is_president', 'was_present')
+            ->withPivot(
+                'jury_role',
+                'votes',
+                'is_president',
+                'was_present',
+                'created_by',
+                'updated_by',
+                'approved_by',
+                'supervision_status',
+                'last_meeting_date',
+                'next_meeting_date',
+            )
             ->withTimestamps()
             ->using(ProfessorProject::class);
 
@@ -171,7 +182,12 @@ class Project extends Core\BackendBaseModel
 
     public function timetable()
     {
-        return $this->hasOne(Timetable::class);
+        return $this->morphOne(Timetable::class, 'schedulable');
+    }
+
+    public function timetables()
+    {
+        return $this->morphMany(Timetable::class, 'schedulable');
     }
 
     public function unplanned()

@@ -2,9 +2,9 @@
 
 namespace App\Enums;
 
+use App\Enums\Concerns\HasBaseEnumFeatures;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
-use App\Enums\Concerns\HasBaseEnumFeatures;
 
 enum JuryRole: string implements HasColor, HasLabel
 {

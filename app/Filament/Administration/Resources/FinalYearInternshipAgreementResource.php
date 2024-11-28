@@ -250,12 +250,36 @@ class FinalYearInternshipAgreementResource extends BaseResource
             ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
-                ]),
+                    Tables\Actions\BulkAction::make('sign')
+                        ->label('Sign selection')
+                        ->icon('heroicon-o-check')
+                        ->color('success')
+                        ->requiresConfirmation()
+                        ->hidden(fn () => ! auth()->user()->can('sign', new FinalYearInternshipAgreement))
+                        ->action(fn ($records) => $records->each->sign()),
+
+                    Tables\Actions\BulkAction::make('validate')
+                        ->label('Validate selection')
+                        ->icon('heroicon-o-check-circle')
+                        ->color('success')
+                        ->requiresConfirmation()
+                        ->hidden(fn () => ! auth()->user()->can('validate', new FinalYearInternshipAgreement))
+                        ->action(fn ($records) => $records->each->validate()),
+
+                    Tables\Actions\BulkAction::make('achieve')
+                        ->label('Achieve selection')
+                        ->icon('heroicon-o-archive-box')
+                        ->color('warning')
+                        ->requiresConfirmation()
+                        ->hidden(fn () => ! auth()->user()->can('achieve', new FinalYearInternshipAgreement))
+                        ->action(fn ($records) => $records->each->achieve()),
+                ])
+                    ->hidden(fn () => ! auth()->user()->can('manage', new FinalYearInternshipAgreement)),
             ])
             ->headerActions([
+                \App\Filament\Actions\Action\AssignFinalInternshipsToProjects::make('Assign to Projects')
+                    ->hidden(fn () => ! auth()->user()->can('assignToProject', FinalYearInternshipAgreement::class))
+                    ->outlined(),
                 \pxlrbt\FilamentExcel\Actions\Tables\ExportAction::make()
                     ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isDepartmentHead() || auth()->user()->isProgramCoordinator()) === false)
                     ->outlined(),
