@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use App\Enums;
+use App\Models\Traits\HasProject;
 
 class Professor extends User
 {
+    use HasProject;
+
     public static function boot(): void
     {
         parent::boot();
@@ -37,56 +40,9 @@ class Professor extends User
         'title' => Enums\Title::class,
     ];
 
-    public function projects()
-    {
-        return $this->belongsToMany(Project::class, 'professor_projects')
-            ->withPivot(
-                'jury_role',
-                'votes',
-                'is_president',
-                'was_present',
-                'created_by',
-                'updated_by',
-                'approved_by',
-                'supervision_status',
-                'last_meeting_date',
-                'next_meeting_date',
-            )
-            ->withTimestamps()
-            ->using(ProfessorProject::class);
-    }
-
-    public function finalProjects()
-    {
-        return $this->belongsToMany(FinalProject::class, 'final_project_professor')
-            ->withPivot(
-                'jury_role',
-                'votes',
-                'is_president',
-                'was_present',
-                'created_by',
-                'updated_by',
-                'approved_by',
-                'supervision_status',
-                'last_meeting_date',
-                'next_meeting_date',
-            )
-            ->withTimestamps()
-            ->using(ProfessorProject::class);
-    }
-
-    public function allProjects()
-    {
-        return $this->projects()->withoutGlobalScopes();
-    }
-
-    public function getProjectsCountAttribute()
-    {
-        return $this->projects()->withoutGlobalScopes()->count();
-    }
-
-    public function hasProjects()
-    {
-        return $this->projects()->exists();
-    }
+    // Remove these methods as they're now in the trait:
+    // - projects()
+    // - allProjects()
+    // - getProjectsCountAttribute()
+    // - hasProjects()
 }

@@ -68,18 +68,18 @@ class FinalProjectResource extends Resource
                     ->collapsible()
                     ->columns(2),
 
-                Forms\Components\Section::make('Defense information')
-                    ->columnSpan(1)
-                    ->relationship('timetables')
-                    ->schema([
-                        Forms\Components\Select::make('timeslot_id')
-                            ->relationship('timeslot', 'start_time')
-                            ->required(),
-                        Forms\Components\Select::make('room_id')
-                            ->relationship('room', 'name')
-                            ->required(),
-                    ])
-                    ->columns(2),
+                // Forms\Components\Section::make('Defense information')
+                //     ->columnSpan(1)
+                //     ->relationship('timetables')
+                //     ->schema([
+                //         Forms\Components\Select::make('timeslot_id')
+                //             ->relationship('timeslot', 'start_time')
+                //             ->required(),
+                //         Forms\Components\Select::make('room_id')
+                //             ->relationship('room', 'name')
+                //             ->required(),
+                //     ])
+                //     ->columns(2),
             ]);
     }
 

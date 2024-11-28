@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums;
 use App\Enums\Role;
+use App\Models\Traits\HasProject;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasAvatar;
 use Filament\Models\Contracts\HasName;
@@ -21,6 +22,7 @@ use Jeffgreco13\FilamentBreezy\Traits\TwoFactorAuthenticatable;
 
 class Student extends Authenticatable implements FilamentUser, HasAvatar, HasName
 {
+    use HasProject;
     use MustVerifyEmail;
     use Notifiable;
     use TwoFactorAuthenticatable;
@@ -185,18 +187,6 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
     public function internship()
     {
         return $this->hasOne(InternshipAgreement::class);
-    }
-
-    public function projects()
-    {
-        return $this->belongsToMany(Project::class);
-    }
-
-    public function project()
-    {
-        return Project::whereHas('students', function ($query) {
-            $query->where('students.id', $this->id);
-        })->first();
     }
 
     public function teammate()

@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Enums;
+use App\Models\Traits\HasProfessors;
+use App\Models\Traits\Projectable; // Updated trait name
 use App\Notifications;
 use App\Services;
 use Filament;
@@ -15,6 +17,9 @@ use Parallax\FilamentComments\Models\Traits\HasFilamentComments;
 class Project extends Core\BackendBaseModel
 {
     use HasFilamentComments;
+
+    // use HasProfessors;
+    use Projectable; // Updated trait
 
     protected static function boot()
     {
@@ -116,16 +121,6 @@ class Project extends Core\BackendBaseModel
         }
     }
 
-    public function students()
-    {
-        return $this->belongsToMany(Student::class);
-    }
-
-    public function allStudents()
-    {
-        return $this->belongsToMany(Student::class)->withoutGlobalScopes();
-    }
-
     public function internship_agreements()
     {
         return $this->hasMany(InternshipAgreement::class);
@@ -135,59 +130,6 @@ class Project extends Core\BackendBaseModel
     {
         // return $this->internship_agreements()->first();
         return $this->hasOne(InternshipAgreement::class);
-    }
-
-    public function professors()
-    {
-        return $this->belongsToMany(Professor::class, 'professor_projects')
-            ->withPivot(
-                'jury_role',
-                'votes',
-                'is_president',
-                'was_present',
-                'created_by',
-                'updated_by',
-                'approved_by',
-                'supervision_status',
-                'last_meeting_date',
-                'next_meeting_date',
-            )
-            ->withTimestamps()
-            ->using(ProfessorProject::class);
-
-    }
-
-    public function hasTeammate()
-    {
-        return $this->students()->count() > 1;
-    }
-
-    public function supervisor()
-    {
-        // dd($this->professors()
-        //     ->wherePivot('jury_role', Enums\JuryRole::Supervisor->value));
-
-        return $this->professors()
-            ->wherePivot('jury_role', Enums\JuryRole::Supervisor->value);
-    }
-
-    public function reviewers()
-    {
-
-        return $this->professors()
-            ->wherePivot('jury_role', Enums\JuryRole::Reviewer->value)
-            ->orWherePivot('jury_role', Enums\JuryRole::Reviewer1->value)
-            ->orWherePivot('jury_role', Enums\JuryRole::Reviewer2->value);
-    }
-
-    public function timetable()
-    {
-        return $this->morphOne(Timetable::class, 'schedulable');
-    }
-
-    public function timetables()
-    {
-        return $this->morphMany(Timetable::class, 'schedulable');
     }
 
     public function unplanned()
@@ -402,13 +344,6 @@ class Project extends Core\BackendBaseModel
 
             return response()->json(['error' => 'This action is unauthorized.'], 403);
         }
-    }
-
-    public function markAllProfessorsAsPresent()
-    {
-        $this->professors()->each(function ($professor) {
-            $this->professors()->updateExistingPivot($professor->id, ['was_present' => true]);
-        });
     }
 
     public function generateEvaluationSheet()

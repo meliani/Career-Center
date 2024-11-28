@@ -2,16 +2,21 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasProfessors;
+use App\Models\Traits\Projectable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Parallax\FilamentComments\Models\Traits\HasFilamentComments;
+use Parallax\FilamentComments\Models\Traits\HasFilamentComments; // Updated trait name
 
 class FinalProject extends Model
 {
     use HasFactory;
     use HasFilamentComments;
-    use SoftDeletes;
+
+    // use HasProfessors;
+    use Projectable;
+    use SoftDeletes; // Updated trait
 
     protected $fillable = [
         'title',
@@ -40,40 +45,6 @@ class FinalProject extends Model
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
     ];
-
-    public function students()
-    {
-        return $this->belongsToMany(Student::class);
-    }
-
-    public function professors()
-    {
-        return $this->belongsToMany(Professor::class, 'professor_projects', 'project_id', 'professor_id')
-            ->withPivot(
-                'jury_role',
-                'votes',
-                'is_president',
-                'was_present',
-                'created_by',
-                'updated_by',
-                'approved_by',
-                'supervision_status',
-                'last_meeting_date',
-                'next_meeting_date',
-            )->withTimestamps()
-            ->using(ProfessorProject::class);
-
-    }
-
-    public function timetable()
-    {
-        return $this->morphOne(Timetable::class, 'schedulable');
-    }
-
-    public function timetables()
-    {
-        return $this->morphOne(Timetable::class, 'schedulable');
-    }
 
     public function internship_agreements()
     {
