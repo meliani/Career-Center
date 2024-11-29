@@ -4,7 +4,8 @@ namespace App\Models;
 
 use App\Enums;
 use App\Enums\Role;
-use App\Models\Traits\HasProject;
+use App\Models\Traits\HasInternshipAgreements;
+use App\Models\Traits\HasStudentProjects;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasAvatar;
 use Filament\Models\Contracts\HasName;
@@ -12,7 +13,6 @@ use Filament\Notifications\Auth\ResetPassword;
 use Filament\Notifications\Auth\VerifyEmail;
 use Filament\Panel;
 use Illuminate\Auth\MustVerifyEmail;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
@@ -22,7 +22,8 @@ use Jeffgreco13\FilamentBreezy\Traits\TwoFactorAuthenticatable;
 
 class Student extends Authenticatable implements FilamentUser, HasAvatar, HasName
 {
-    use HasProject;
+    use HasInternshipAgreements;
+    use HasStudentProjects;
     use MustVerifyEmail;
     use Notifiable;
     use TwoFactorAuthenticatable;
@@ -184,43 +185,21 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
         $student->save();
     }
 
-    public function internship()
-    {
-        return $this->hasOne(InternshipAgreement::class);
-    }
-
     public function teammate()
     {
-        if (! $this->project()->hasTeammate()) {
+        if (! $this->currentProject()?->hasTeammate()) {
             return null;
         }
 
-        return Student::whereHas('projects', function ($query) {
-            $query->where('projects.id', $this->project()->id)
-                ->where('student_id', '!=', $this->id);
+        return static::whereHas('projects', function ($query) {
+            $query->where('project_student.project_id', $this->currentProject()->id)
+                ->where('project_student.student_id', '!=', $this->id);
         })->first();
     }
 
     public function year()
     {
         return $this->belongsTo(Year::class);
-    }
-
-    public function active_internship_agreement()
-    {
-        return $this->hasOne(InternshipAgreement::class);
-
-        // return $this->hasOne(InternshipAgreement::class)->ofMany([
-        //     'published_at' => 'max',
-        //     'id' => 'max',
-        // ], function (Builder $query) {
-        //     $query->where('active', '=', true);
-        // });
-    }
-
-    public function inactiveInternshipAgreements()
-    {
-        return $this->hasMany(InternshipAgreement::class)->where('active', false);
     }
 
     public function getFullNameAttribute()

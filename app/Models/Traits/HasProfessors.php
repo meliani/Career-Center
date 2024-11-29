@@ -2,28 +2,27 @@
 
 namespace App\Models\Traits;
 
+use App\Models\Professor;
+use App\Models\ProfessorProject;
+
 trait HasProfessors
 {
-    // ...existing code...
-
     public function professors()
     {
-        return $this->morphToMany(Professor::class, 'professor_projectable', 'professor_projects')
+        return $this->morphToMany(Professor::class, 'project', 'professor_projects', 'project_id', 'professor_id')
             ->withPivot(
                 'jury_role',
                 'votes',
                 'is_president',
                 'was_present',
-                'supervision_status',
-                'last_meeting_date',
-                'next_meeting_date',
                 'created_by',
                 'updated_by',
                 'approved_by',
+                'supervision_status',
+                'last_meeting_date',
+                'next_meeting_date',
             )
-            ->using(\App\Models\ProfessorProject::class)
+            ->using(ProfessorProject::class)
             ->withTimestamps();
     }
-
-    // ...existing code...
 }

@@ -3,11 +3,11 @@
 namespace App\Models;
 
 use App\Enums;
-use App\Models\Traits\HasProject;
+use App\Models\Traits\HasProjects;
 
 class Professor extends User
 {
-    use HasProject;
+    use HasProjects;
 
     public static function boot(): void
     {
@@ -39,10 +39,4 @@ class Professor extends User
         'assigned_program' => Enums\Program::class,
         'title' => Enums\Title::class,
     ];
-
-    // Remove these methods as they're now in the trait:
-    // - projects()
-    // - allProjects()
-    // - getProjectsCountAttribute()
-    // - hasProjects()
 }

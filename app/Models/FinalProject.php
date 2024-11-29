@@ -2,21 +2,22 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasInternshipAgreements;
+use App\Models\Traits\HasProfessorProjects;
 use App\Models\Traits\HasProfessors;
-use App\Models\Traits\Projectable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Traits\HasStudents; // Updated trait name
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Parallax\FilamentComments\Models\Traits\HasFilamentComments; // Updated trait name
+use Parallax\FilamentComments\Models\Traits\HasFilamentComments;
 
 class FinalProject extends Model
 {
-    use HasFactory;
     use HasFilamentComments;
-
-    // use HasProfessors;
-    use Projectable;
-    use SoftDeletes; // Updated trait
+    use HasInternshipAgreements;
+    use HasProfessorProjects;
+    use HasProfessors;
+    use HasStudents;
+    use SoftDeletes;
 
     protected $fillable = [
         'title',
@@ -45,16 +46,6 @@ class FinalProject extends Model
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
     ];
-
-    public function internship_agreements()
-    {
-        return $this->hasMany(FinalYearInternshipAgreement::class, 'project_id', 'id');
-    }
-
-    public function final_year_internship_agreements()
-    {
-        return $this->hasMany(FinalYearInternshipAgreement::class, 'project_id', 'id');
-    }
 
     public function organization()
     {

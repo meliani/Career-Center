@@ -3,8 +3,10 @@
 namespace App\Models;
 
 use App\Enums;
+use App\Models\Traits\HasInternshipAgreements;
+use App\Models\Traits\HasProfessorProjects; // Updated trait name
 use App\Models\Traits\HasProfessors;
-use App\Models\Traits\Projectable; // Updated trait name
+use App\Models\Traits\HasStudents;
 use App\Notifications;
 use App\Services;
 use Filament;
@@ -17,9 +19,10 @@ use Parallax\FilamentComments\Models\Traits\HasFilamentComments;
 class Project extends Core\BackendBaseModel
 {
     use HasFilamentComments;
-
-    // use HasProfessors;
-    use Projectable; // Updated trait
+    use HasInternshipAgreements;
+    use HasProfessorProjects;
+    use HasProfessors;
+    use HasStudents;
 
     protected static function boot()
     {
@@ -119,17 +122,6 @@ class Project extends Core\BackendBaseModel
         } else {
             return $this->internship_agreements()->first()?->assigned_department;
         }
-    }
-
-    public function internship_agreements()
-    {
-        return $this->hasMany(InternshipAgreement::class);
-    }
-
-    public function internship_agreement()
-    {
-        // return $this->internship_agreements()->first();
-        return $this->hasOne(InternshipAgreement::class);
     }
 
     public function unplanned()

@@ -18,6 +18,8 @@ class ProfessorsRelationManager extends RelationManager
 
     protected static string $relationship = 'professors';
 
+    // protected static ?string $inverseRelationship = 'projects';
+
     protected static ?string $title = 'Jury';
 
     protected static bool $isLazy = false;
@@ -27,24 +29,24 @@ class ProfessorsRelationManager extends RelationManager
         return __(self::$title);
     }
 
-    // public function form(Form $form): Form
-    // {
-    //     return $form
-    //         ->schema([
-    //             Forms\Components\TextInput::make('name')
-    //                 ->required()
-    //                 ->maxLength(255),
-    //             Forms\Components\Select::make('jury_role')
-    //                 ->required()
-    //                 ->options(Enums\JuryRole::class)
-    //                 ->default(Enums\JuryRole::Supervisor),
-    //         ])
-    //         ->mutateFormDataUsing(function (array $data): array {
-    //             $data['created_by'] = auth()->id();
+    public function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\TextInput::make('name')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\Select::make('jury_role')
+                    ->required()
+                    ->options(Enums\JuryRole::class)
+                    ->default(Enums\JuryRole::Supervisor),
+            ])
+            ->mutateFormDataUsing(function (array $data): array {
+                $data['created_by'] = auth()->id();
 
-    //             return $data;
-    //         });
-    // }
+                return $data;
+            });
+    }
 
     public function table(Table $table): Table
     {
@@ -97,8 +99,7 @@ class ProfessorsRelationManager extends RelationManager
                         $action->getRecordSelect(),
                         Forms\Components\Select::make('jury_role')->options(Enums\JuryRole::class)
                             ->required()
-                            ->default(Enums\JuryRole::Supervisor),
-                        Forms\Components\Select::make('is_president')->options([0 => 'No', 1 => 'Yes']),
+                            ->default(Enums\JuryRole::Reviewer),
                     ])
                     ->hidden(fn () => auth()->user()->isAdministrator() === false),
             ])

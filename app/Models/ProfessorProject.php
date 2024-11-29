@@ -50,10 +50,10 @@ class ProfessorProject extends MorphPivot
         return $this->belongsTo(Professor::class);
     }
 
-    public function projectable()
-    {
-        return $this->morphTo('professor_projectable');
-    }
+    // public function projectable()
+    // {
+    //     return $this->morphTo('professor_projectable');
+    // }
 
     public function approvedBy()
     {
@@ -75,8 +75,8 @@ class ProfessorProject extends MorphPivot
         return $this->hasMany(ProgressReport::class);
     }
 
-    public function professorProjectable()
-    {
-        return $this->morphTo();
-    }
+    // public function professorProjectable()
+    // {
+    //     return $this->morphTo();
+    // }
 }

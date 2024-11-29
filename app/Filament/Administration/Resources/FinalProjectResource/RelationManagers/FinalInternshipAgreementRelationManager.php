@@ -29,8 +29,8 @@ class FinalInternshipAgreementRelationManager extends RelationManager
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('title'),
-                Tables\Columns\TextColumn::make('organization_name'),
+                Tables\Columns\TextColumn::make('long_full_name'),
+                Tables\Columns\TextColumn::make('agreement.title'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime(),
             ])
@@ -38,7 +38,7 @@ class FinalInternshipAgreementRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                Tables\Actions\AttachAction::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

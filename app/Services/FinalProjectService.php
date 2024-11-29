@@ -61,16 +61,22 @@ class FinalProjectService
         self::$duplicateProjects = 0;
 
         $agreements = FinalYearInternshipAgreement::where('status', Status::Signed)
-            ->whereNull('project_id')
             ->get();
 
         foreach ($agreements as $agreement) {
-            // Check if project already exists
-            if ($agreement->final_project_id) {
+            // Check if project already exists using polymorphic relation
+            dd($agreement->project);
+            if ($agreement->project instanceof FinalProject) {
                 self::$duplicateProjects++;
 
                 continue;
             }
+
+            // if ($agreement->final_project_id) {
+            //     self::$duplicateProjects++;
+
+            //     continue;
+            // }
 
             $project = FinalProject::create([
                 'title' => $agreement->title,
@@ -82,10 +88,8 @@ class FinalProjectService
                 'defense_status' => 'pending',
             ]);
 
-            // Update agreement with project ID
-            $agreement->update([
-                'project_id' => $project->id,
-            ]);
+            // add polymorphic relation from agreement to project
+            $agreement->project()->associate($project);
 
             self::$createdProjects++;
         }
