@@ -22,10 +22,10 @@ class ProjectsTable
             // }),
             Tables\Columns\ColumnGroup::make(__('The student'))
                 ->columns([
-                    Tables\Columns\TextColumn::make('internship_agreements.id_pfe')
+                    Tables\Columns\TextColumn::make('agreements.agreeable.id_pfe')
                         ->label('ID PFE')
                         ->searchable(true),
-                    Tables\Columns\TextColumn::make('students.full_name')
+                    Tables\Columns\TextColumn::make('agreements.agreeable.student.full_name')
                         ->label('Student name')
                         ->searchable(
                             ['first_name', 'last_name']

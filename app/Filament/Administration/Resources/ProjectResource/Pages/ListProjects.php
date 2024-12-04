@@ -39,13 +39,17 @@ class ListProjects extends ListRecords
             $tabs[$value] = Tab::make($label)
                 ->badge(
                     $baseQuery->clone()
-                        ->whereHas('students', fn ($q) => $q->where('program', $value))
+                        // ->whereHas('agreements', fn ($q) => $q->whereHas('student', fn ($q) => $q->where('program', $value)))
+                        ->whereHas('agreements', fn ($q) => $q->whereHas('student'))
                         ->count()
                 )
                 ->modifyQueryUsing(
                     fn ($query) => $query->whereHas(
-                        'students',
-                        fn ($q) => $q->where('program', $value)
+                        'agreements',
+                        fn ($query) => $query->whereHas(
+                            'student',
+                            fn ($query) => $query->where('program', $value)
+                        )
                     )
                 );
         }

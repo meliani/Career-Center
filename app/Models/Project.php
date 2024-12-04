@@ -3,18 +3,19 @@
 namespace App\Models;
 
 use App\Enums;
+use App\Models\Traits\ProjectAttributes;
 use App\Notifications;
 use App\Services;
 use Filament;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Facades\Storage;
 use Parallax\FilamentComments\Models\Traits\HasFilamentComments;
 
 class Project extends Core\BackendBaseModel
 {
     use HasFilamentComments;
+    use ProjectAttributes;
 
     protected static function boot()
     {
@@ -75,58 +76,6 @@ class Project extends Core\BackendBaseModel
         'defense_status' => Enums\DefenseStatus::class,
     ];
 
-    public function getIdPfeAttribute()
-    {
-        if ($this->hasTeammate()) {
-            return ($this->internship_agreements()->first() ? $this->internship_agreements()->first()->id_pfe : 'Undefined ID') . ' ' . __('&') . ' ' . ($this->internship_agreements()->latest()->first() ? $this->internship_agreements()->latest()->first()->id_pfe : 'Undefined ID');
-        } else {
-            return $this->internship_agreements()->first() ? $this->internship_agreements()->first()->id_pfe : 'Undefined ID';
-        }
-    }
-
-    public function getStudentsNamesAttribute()
-    {
-        return $this->students()->implode('name', ' & ');
-    }
-
-    public function getStudentsProgramsAttribute()
-    {
-        return $this->students()->implode('program', ' & ');
-    }
-
-    public function getOrganizationAttribute()
-    {
-        return $this->internship_agreements()->first() ? $this->internship_agreements()->first()->organization_name : 'Undefined Organization';
-
-    }
-
-    public function getDescriptionAttribute()
-    {
-        return $this->internship_agreements()->first() ? $this->internship_agreements()->first()->description : 'Undefined Internship';
-    }
-
-    public function getAssignedDepartmentAttribute()
-    {
-
-        if ($this->hasTeammate()) {
-            return $this->internship_agreements()->first()?->assigned_department;
-
-            return $this->internship_agreements()->first()?->assigned_department . ' ' . __('&') . ' ' . $this->internship_agreements()->latest()->first()?->assigned_department;
-        } else {
-            return $this->internship_agreements()->first()?->assigned_department;
-        }
-    }
-
-    public function students()
-    {
-        return $this->belongsToMany(Student::class);
-    }
-
-    public function allStudents()
-    {
-        return $this->belongsToMany(Student::class)->withoutGlobalScopes();
-    }
-
     public function internship_agreements()
     {
         return $this->morphedByMany(InternshipAgreement::class, 'agreeable', 'project_agreements')
@@ -152,7 +101,7 @@ class Project extends Core\BackendBaseModel
 
     public function hasTeammate()
     {
-        return $this->students()->count() > 1;
+        return $this->internship_agreements()->count() > 1;
     }
 
     public function supervisor()
@@ -181,137 +130,6 @@ class Project extends Core\BackendBaseModel
     public function unplanned()
     {
         return $this->whereDoesntHave('timetable');
-    }
-
-    public function getDepartmentAttribute()
-    {
-        return $this->internship_agreements()->first() ? $this->internship_agreements()->first()->assigned_department : 'Undefined Department';
-    }
-
-    public function getAddressAttribute()
-    {
-        return $$this->internship_agreements()->first() ? "{$this->internship_agreements()->first()->city}, {$this->internship_agreements()->first()->country}" : 'Undefined Address';
-    }
-
-    public function getOrganizationNameAttribute()
-    {
-        return $this->internship_agreements()->first() ? $this->internship_agreements()->first()->organization_name : 'Undefined Organization';
-    }
-
-    public function getExternalSupervisorNameAttribute()
-    {
-        return ucwords(strtolower($this->internship_agreements()->first() ? "{$this->internship_agreements()->first()->encadrant_ext_name}" : 'Undefined External Supervisor'));
-    }
-
-    public function getExternalSupervisorAttribute()
-    {
-        return $this->internship_agreements()->first() ? "{$this->internship_agreements()->first()->encadrant_ext_name}, {$this->internship_agreements()->first()->encadrant_ext_fonction}" : 'Undefined External Supervisor';
-    }
-
-    public function getExternalSupervisorContactAttribute()
-    {
-        return $this->internship_agreements()->first() ? "{$this->internship_agreements()->first()->encadrant_ext_tel}, {$this->internship_agreements()->first()->encadrant_ext_mail}" : 'Undefined External Supervisor Contact';
-    }
-
-    public function getExternalSupervisorEmailAttribute()
-    {
-        return $this->internship_agreements()->first() ? "{$this->internship_agreements()->first()->encadrant_ext_mail}" : 'Undefined External Supervisor Email';
-    }
-
-    public function getParrainAttribute()
-    {
-        return $this->internship_agreements()->first() ? "{$this->internship_agreements()->first()->parrain_name}, {$this->internship_agreements()->first()->parrain_fonction}" : 'Undefined Parrain';
-    }
-
-    public function getParrainContactAttribute()
-    {
-        return $this->internship_agreements()->first() ? "{$this->internship_agreements()->first()->parrain_tel}, {$this->internship_agreements()->first()->parrain_mail}" : 'Undefined Parrain Contact';
-    }
-
-    public function getKeywordsAttribute()
-    {
-        return $this->internship_agreements()->first() ? $this->internship_agreements()->first()->keywords : 'Undefined Keywords';
-    }
-
-    public function getDefensePlanAttribute()
-    {
-        return $this->timetable()->exists() ? "{$this->timetable->timeslot->end_time->format('d M Y')} de {$this->timetable->timeslot->start_time->format('H:i')} à {$this->timetable->timeslot->end_time->format('H:i')}, {$this->timetable->room->name}" : __('Undefined Defense Date');
-    }
-
-    public function getProjectDatesAttribute()
-    {
-        return "Du {$this->start_date->format('d M')} au {$this->end_date->format('d M Y')}";
-    }
-
-    public function getAdministrativeSupervisorAttribute()
-    {
-        $AdministrativeSupervisor = User::administrativeSupervisor($this->internship_agreements()->first()->student->program->value);
-        // dd($AdministrativeSupervisor);
-
-        return $AdministrativeSupervisor ? $AdministrativeSupervisor->full_name : 'Undefined Administrative Supervisor';
-    }
-
-    public function getAcademicSupervisorAttribute()
-    {
-        $AcademicSupervisor = $this->professors()
-            ->wherePivot('jury_role', Enums\JuryRole::Supervisor->value)
-            ->first();
-        // dd($AcademicSupervisor);
-
-        return $AcademicSupervisor ? $AcademicSupervisor->full_name : 'Undefined Academic Supervisor';
-    }
-
-    public function getAcademicSupervisorPresenceAttribute()
-    {
-        $AcademicSupervisor = $this->professors()
-            ->wherePivot('jury_role', Enums\JuryRole::Supervisor)
-            ->wherePivot('was_present', true)
-            ->first();
-        // dd($AcademicSupervisor);
-
-        return $AcademicSupervisor ? '☀️' : '🌕';
-    }
-
-    public function getReviewer1Attribute()
-    {
-        $Reviewer1 = $this->professors()
-            ->wherePivot('jury_role', Enums\JuryRole::Reviewer1->value)
-            ->first();
-        // dd($Reviewer1);
-
-        return $Reviewer1 ? $Reviewer1->full_name : 'Undefined Reviewer 1';
-    }
-
-    public function getReviewer1PresenceAttribute()
-    {
-        $Reviewer2 = $this->professors()
-            ->wherePivot('jury_role', Enums\JuryRole::Reviewer1)
-            ->wherePivot('was_present', true)
-            ->first();
-        // dd($Reviewer2);
-
-        return $Reviewer2 ? '☀️' : '🌕';
-    }
-
-    public function getReviewer2Attribute()
-    {
-        $Reviewer2 = $this->professors()
-            ->wherePivot('jury_role', Enums\JuryRole::Reviewer2->value)
-            ->first();
-        // dd($Reviewer2);
-
-        return $Reviewer2 ? $Reviewer2->full_name : 'Undefined Reviewer 2';
-    }
-
-    public function getReviewer2PresenceAttribute()
-    {
-        $Reviewer2 = $this->professors()
-            ->wherePivot('jury_role', Enums\JuryRole::Reviewer2)
-            ->wherePivot('was_present', true)
-            ->first();
-        // dd($Reviewer2);
-
-        return $Reviewer2 ? '☀️' : '🌕';
     }
 
     public function defense_authorized_by_user()
@@ -408,20 +226,6 @@ class Project extends Core\BackendBaseModel
 
         // event(new \App\Events\DefenseAuthorized($this));
 
-    }
-
-    // public function getEvaluationSheetUrlAttribute()
-    // {
-    //     return Storage::url("document/evaluation_sheet/{$this->id}.pdf");
-    // }
-
-    public function getOrganizationEvaluationSheetUrlAttribute()
-    {
-        if ($this->attributes['organization_evaluation_sheet_url']) {
-            return Storage::url($this->attributes['organization_evaluation_sheet_url']);
-        }
-
-        return null;
     }
 
     public function isAuthorized()

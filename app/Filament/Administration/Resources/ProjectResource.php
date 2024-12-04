@@ -6,7 +6,6 @@ use App\Enums;
 use App\Filament\Actions\BulkAction;
 use App\Filament\Administration\Resources\ProjectResource\Pages;
 use App\Filament\Administration\Resources\ProjectResource\RelationManagers;
-use App\Filament\Administration\Widgets\DefensesPerProgramChart;
 use App\Filament\Core;
 use App\Models\Project;
 use App\Models\Year;
@@ -28,8 +27,6 @@ use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 use Parallax\FilamentComments\Actions\CommentsAction;
 use Parallax\FilamentComments\Infolists\Components\CommentsEntry;
 use pxlrbt\FilamentExcel;
-
-use function Spatie\LaravelPdf\Support\pdf;
 
 class ProjectResource extends Core\BaseResource
 {
@@ -97,6 +94,39 @@ class ProjectResource extends Core\BaseResource
     //     //         });
     //     //     });
     // }
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            RelationManagers\ProfessorsRelationManager::class,
+            RelationGroup::make(__('Students and Internship Agreements'), [
+                // RelationManagers\StudentsRelationManager::class,
+                RelationManagers\InternshipAgreementsRelationManager::class,
+            ]),
+            RelationGroup::make(__('Defense Details'), [
+                RelationManagers\TimetableRelationManager::class,
+                RelationManagers\CommentsRelationManager::class,
+            ]),
+        ];
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListProjects::route('/'),
+            // 'create' => Pages\CreateProject::route('/create'),
+            'edit' => Pages\EditProject::route('/{record}/edit'),
+            'view' => Pages\ViewProject::route('/{record}/view'),
+
+        ];
+    }
 
     public static function form(Form $form): Form
     {
@@ -166,7 +196,7 @@ class ProjectResource extends Core\BaseResource
             ->defaultPaginationPageOption(10)
             ->filtersLayout(FiltersLayout::AboveContentCollapsible)
             // ->striped()
-            ->deferLoading()
+            // ->deferLoading()
             ->defaultSort('timetable.timeslot.start_time')
             ->defaultGroup('timetable.timeslot.start_time')
             ->groups([
@@ -289,41 +319,7 @@ class ProjectResource extends Core\BaseResource
                     }),
             ])
             ->headerActions([
-                Tables\Actions\Action::make('Generate report')
-                    ->label('Generate report')
-                    ->icon('heroicon-o-document')
-                    ->color('primary')
-                    ->hidden(true)
-                    ->action(function () {
-                        $chartWidget = new DefensesPerProgramChart;
-                        $chartOptions = $chartWidget->getOptions();
-                        $chartWidget->dataURI();
-
-                        $html = '<h1>' . $chartOptions['chart']['type'] . ' Chart</h1>';
-                        $html .= '<table border="1">';
-                        $html .= '<tr><th>Program</th><th>Total Projects</th><th>Total Defenses</th><th>Percentage</th></tr>';
-
-                        foreach ($chartOptions['xaxis']['categories'] as $index => $program) {
-                            $html .= '<tr>';
-                            $html .= '<td>' . $program . '</td>';
-                            $html .= '<td>' . $chartOptions['series'][0]['data'][$index] . '</td>';
-                            $html .= '<td>' . $chartOptions['series'][1]['data'][$index] . '</td>';
-                            $html .= '<td>' . $chartOptions['series'][2]['data'][$index] . '%</td>';
-                            $html .= '</tr>';
-                        }
-
-                        $html .= '</table>';
-                        pdf()
-                            ->html($html)
-                            ->name('defenses_report.pdf')
-                            ->save('storage/pdf/defenses_report.pdf');
-
-                        return pdf()
-                            ->html($html)
-                            ->name('defenses_report.pdf')
-                            ->download();
-                    }),
-                Tables\Actions\Action::make('Check changed professors')
+                /*                 Tables\Actions\Action::make('Check changed professors')
                     ->label('Check changed professors')
                     ->tooltip('Check if professors have been changed after getting Authorization')
                     ->color('primary')
@@ -335,7 +331,7 @@ class ProjectResource extends Core\BaseResource
                 \App\Filament\Actions\Action\Processing\GoogleSheetSyncAction::make('Google Sheet Sync')
                     ->label('Google Sheet Sync')
                     ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()) === false),
-
+ */
                 FilamentExcel\Actions\Tables\ExportAction::make()
                     ->exports([
                         FilamentExcel\Exports\ExcelExport::make()
@@ -468,32 +464,6 @@ class ProjectResource extends Core\BaseResource
                     ->hidden(fn () => auth()->user()->isAdministrator() === false),
             ]);
 
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            RelationManagers\ProfessorsRelationManager::class,
-            RelationGroup::make(__('Students and Internship Agreements'), [
-                RelationManagers\StudentsRelationManager::class,
-                RelationManagers\InternshipAgreementsRelationManager::class,
-            ]),
-            RelationGroup::make(__('Defense Details'), [
-                RelationManagers\TimetableRelationManager::class,
-                RelationManagers\CommentsRelationManager::class,
-            ]),
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListProjects::route('/'),
-            // 'create' => Pages\CreateProject::route('/create'),
-            'edit' => Pages\EditProject::route('/{record}/edit'),
-            'view' => Pages\ViewProject::route('/{record}/view'),
-
-        ];
     }
 
     public static function infolist(Infolist $infolist): Infolist
