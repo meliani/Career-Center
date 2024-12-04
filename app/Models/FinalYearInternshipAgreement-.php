@@ -3,17 +3,19 @@
 namespace App\Models;
 
 use App\Enums;
+use App\Enums\Status;
 use App\Models\Scopes\StudentRelatedScope;
 use Carbon\Carbon;
 use Filament\Notifications\Notification;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Gate;
 use Spatie\Tags\HasTags;
 
-class FinalYearInternshipAgreement extends Model implements Agreement
+class FinalYearInternshipAgreement extends Model
 {
     use HasFactory;
     use HasTags;
@@ -24,7 +26,7 @@ class FinalYearInternshipAgreement extends Model implements Agreement
     protected $fillable = [
         'student_id',
         'year_id',
-        'project_id',
+        'final_project_id',
         'status',
         'announced_at',
         'validated_at',
@@ -105,11 +107,9 @@ class FinalYearInternshipAgreement extends Model implements Agreement
         return $this->belongsTo(Year::class);
     }
 
-    public function project()
+    public function project(): BelongsTo
     {
-        return $this->morphToMany(Project::class, 'agreeable', 'project_agreements')
-            ->using(ProjectAgreement::class)
-            ->withTimestamps();
+        return $this->belongsTo(FinalProject::class);
     }
 
     public function organization()
@@ -207,50 +207,69 @@ class FinalYearInternshipAgreement extends Model implements Agreement
     public function validate(?string $department = null)
     {
         try {
-            if (Gate::denies('validate-internship', $this)) {
+            if (! auth()->user()->can('validate', $this)) {
                 throw new AuthorizationException;
             }
 
             $this->validated_at = now();
-            $this->status = Enums\Status::Validated;
+            $this->status = Status::Validated;
             $this->assigned_department = $department;
             $this->save();
-            \Filament\Notifications\Notification::make()
-                ->title('Saved successfully')
+
+            Notification::make()
+                ->title('Validated successfully')
                 ->success()
                 ->send();
         } catch (AuthorizationException $e) {
-
-            \Filament\Notifications\Notification::make()
-                ->title('Sorry You must be a Program Coordinator.')
+            Notification::make()
+                ->title('Unauthorized action')
                 ->danger()
                 ->send();
-
-            return response()->json(['error' => 'This action is unauthorized.'], 403);
         }
     }
 
     public function sign()
     {
         try {
-            if (Gate::denies('sign-internship', $this)) {
+            if (! auth()->user()->can('sign', $this)) {
                 throw new AuthorizationException;
             }
+
+            $this->status = Status::Signed;
             $this->signed_at = now();
-            $this->status = Enums\Status::Signed;
             $this->save();
-            \Filament\Notifications\Notification::make()
-                ->title('Signed successfully')
+
+            Notification::make()
+                ->title('Agreement signed successfully')
                 ->success()
                 ->send();
         } catch (AuthorizationException $e) {
-
-            \Filament\Notifications\Notification::make()
-                ->title('Sorry You must be an Administrator.')
+            Notification::make()
+                ->title('Unauthorized action')
                 ->danger()
                 ->send();
+        }
+    }
 
-            return response()->json(['error' => 'This action is unauthorized.'], 403);
+    public function achieve()
+    {
+        try {
+            if (! auth()->user()->can('achieve', $this)) {
+                throw new AuthorizationException;
+            }
+
+            $this->status = Status::Completed;
+            $this->save();
+
+            Notification::make()
+                ->title('Agreement achieved successfully')
+                ->success()
+                ->send();
+        } catch (AuthorizationException $e) {
+            Notification::make()
+                ->title('Unauthorized action')
+                ->danger()
+                ->send();
         }
     }
 
@@ -299,41 +318,5 @@ class FinalYearInternshipAgreement extends Model implements Agreement
 
             return response()->json(['error' => 'This action is unauthorized.'], 403);
         }
-    }
-
-    // Implement Agreement Interface methods
-    public function getTitle(): string
-    {
-        return $this->title;
-    }
-
-    public function getDescription(): string
-    {
-        return $this->description;
-    }
-
-    public function getAssignedDepartment(): ?string
-    {
-        return $this->assigned_department->value ?? null;
-    }
-
-    public function getOrganizationName(): string
-    {
-        return $this->organization->name ?? 'Undefined Organization';
-    }
-
-    public function getStudentName(): string
-    {
-        return $this->student->full_name;
-    }
-
-    public function getStartDate(): ?\Carbon\Carbon
-    {
-        return $this->starting_at;
-    }
-
-    public function getEndDate(): ?\Carbon\Carbon
-    {
-        return $this->ending_at;
     }
 }

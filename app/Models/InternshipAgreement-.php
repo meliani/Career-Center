@@ -9,7 +9,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Gate;
 
-class InternshipAgreement extends Core\BackendBaseModel implements Agreement
+class InternshipAgreement extends Core\BackendBaseModel
 {
     use SoftDeletes;
 
@@ -181,9 +181,7 @@ class InternshipAgreement extends Core\BackendBaseModel implements Agreement
 
     public function project()
     {
-        return $this->morphToMany(Project::class, 'agreeable', 'project_agreements')
-            ->using(ProjectAgreement::class)
-            ->withTimestamps();
+        return $this->belongsTo(Project::class);
     }
 
     public function year()
@@ -362,41 +360,5 @@ class InternshipAgreement extends Core\BackendBaseModel implements Agreement
 
         $this->tags = $tags; // Assuming the new column is named `tags`
         $this->save();
-    }
-
-    // Implement Agreement Interface methods
-    public function getTitle(): string
-    {
-        return $this->title;
-    }
-
-    public function getDescription(): string
-    {
-        return $this->description;
-    }
-
-    public function getAssignedDepartment(): ?string
-    {
-        return $this->assigned_department->value ?? null;
-    }
-
-    public function getOrganizationName(): string
-    {
-        return $this->organization_name;
-    }
-
-    public function getStudentName(): string
-    {
-        return $this->student->full_name;
-    }
-
-    public function getStartDate(): ?\Carbon\Carbon
-    {
-        return $this->starting_at;
-    }
-
-    public function getEndDate(): ?\Carbon\Carbon
-    {
-        return $this->ending_at;
     }
 }

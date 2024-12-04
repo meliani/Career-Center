@@ -4,8 +4,8 @@ namespace App\Services;
 
 use App\Enums\DefenseStatus;
 use App\Enums\Status;
-use App\Models\FinalProject;
 use App\Models\FinalYearInternshipAgreement;
+use App\Models\Project as FinalProject;
 use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -61,11 +61,13 @@ class FinalProjectService
         self::$duplicateProjects = 0;
 
         $agreements = FinalYearInternshipAgreement::where('status', Status::Signed)
+        // not having a project polymorphic using ProjectAgreement
+            ->doesntHave('project')
             ->get();
 
         foreach ($agreements as $agreement) {
             // Check if project already exists using polymorphic relation
-            dd($agreement->project);
+            // dd($agreement->project);
             if ($agreement->project instanceof FinalProject) {
                 self::$duplicateProjects++;
 
@@ -83,13 +85,15 @@ class FinalProjectService
                 'language' => 'fr', // Set default or get from agreement if available
                 'start_date' => $agreement->starting_at,
                 'end_date' => $agreement->ending_at,
-                'organization_id' => $agreement->organization_id,
-                'external_supervisor_id' => $agreement->external_supervisor_id,
-                'defense_status' => 'pending',
+                // 'organization_id' => $agreement->organization_id,
+                // 'external_supervisor_id' => $agreement->external_supervisor_id,
+                'defense_status' => 'Pending',
             ]);
 
             // add polymorphic relation from agreement to project
-            $agreement->project()->associate($project);
+            $agreement->project()->attach($project);
+            // attach project to student
+            $project->students()->attach($agreement->student_id);
 
             self::$createdProjects++;
         }

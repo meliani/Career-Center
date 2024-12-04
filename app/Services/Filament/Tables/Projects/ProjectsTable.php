@@ -15,6 +15,11 @@ class ProjectsTable
         // dd($closures['evaluation_sheet_url']($record));
 
         return [
+            Tables\Columns\TextColumn::make('agreement_types')
+                ->label('Agreement Type'),
+            // ->formatStateUsing(function ($state) {
+            //     return implode(', ', $state);
+            // }),
             Tables\Columns\ColumnGroup::make(__('The student'))
                 ->columns([
                     Tables\Columns\TextColumn::make('internship_agreements.id_pfe')

@@ -22,11 +22,12 @@ return new class extends Migration
     public function down()
     {
         Schema::table('final_year_internship_agreements', function (Blueprint $table) {
-            $table->foreignId('project_id')->nullable()->constrained('final_projects')->nullOnDelete();
+            $table->foreignId('project_id')->nullable()->constrained();
         });
 
-        Schema::table('internship_agreements', function (Blueprint $table) {
-            $table->foreignId('project_id')->nullable()->constrained('projects')->nullOnDelete();
+        Schema::table('internships', function (Blueprint $table) {
+            $table->foreignId('project_id')->nullable()->constrained();
         });
+
     }
 };

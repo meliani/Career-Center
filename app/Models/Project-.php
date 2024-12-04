@@ -3,6 +3,10 @@
 namespace App\Models;
 
 use App\Enums;
+use App\Models\Traits\HasInternshipAgreements;
+use App\Models\Traits\HasProfessorProjects; // Updated trait name
+use App\Models\Traits\HasProfessors;
+use App\Models\Traits\HasStudents;
 use App\Notifications;
 use App\Services;
 use Filament;
@@ -15,6 +19,10 @@ use Parallax\FilamentComments\Models\Traits\HasFilamentComments;
 class Project extends Core\BackendBaseModel
 {
     use HasFilamentComments;
+    use HasInternshipAgreements;
+    use HasProfessorProjects;
+    use HasProfessors;
+    use HasStudents;
 
     protected static function boot()
     {
@@ -65,7 +73,6 @@ class Project extends Core\BackendBaseModel
         'organization',
         'description',
         'assigned_department',
-        'agreement_types',
     ];
 
     protected $casts = [
@@ -117,67 +124,6 @@ class Project extends Core\BackendBaseModel
         }
     }
 
-    public function students()
-    {
-        return $this->belongsToMany(Student::class);
-    }
-
-    public function allStudents()
-    {
-        return $this->belongsToMany(Student::class)->withoutGlobalScopes();
-    }
-
-    public function internship_agreements()
-    {
-        return $this->morphedByMany(InternshipAgreement::class, 'agreeable', 'project_agreements')
-            ->using(ProjectAgreement::class)
-            ->withTimestamps();
-    }
-
-    public function final_internship_agreement()
-    {
-        return $this->morphedByMany(FinalYearInternshipAgreement::class, 'agreeable', 'project_agreements')
-            ->using(ProjectAgreement::class)
-            ->withTimestamps();
-    }
-
-    public function professors()
-    {
-        return $this->belongsToMany(Professor::class, 'professor_projects')
-            ->withPivot('jury_role', 'created_by', 'updated_by', 'approved_by', 'is_president', 'votes', 'was_present')
-            ->withTimestamps()
-            ->using(ProfessorProject::class);
-
-    }
-
-    public function hasTeammate()
-    {
-        return $this->students()->count() > 1;
-    }
-
-    public function supervisor()
-    {
-        // dd($this->professors()
-        //     ->wherePivot('jury_role', Enums\JuryRole::Supervisor->value));
-
-        return $this->professors()
-            ->wherePivot('jury_role', Enums\JuryRole::Supervisor->value);
-    }
-
-    public function reviewers()
-    {
-
-        return $this->professors()
-            ->wherePivot('jury_role', Enums\JuryRole::Reviewer->value)
-            ->orWherePivot('jury_role', Enums\JuryRole::Reviewer1->value)
-            ->orWherePivot('jury_role', Enums\JuryRole::Reviewer2->value);
-    }
-
-    public function timetable()
-    {
-        return $this->hasOne(Timetable::class);
-    }
-
     public function unplanned()
     {
         return $this->whereDoesntHave('timetable');
@@ -190,7 +136,7 @@ class Project extends Core\BackendBaseModel
 
     public function getAddressAttribute()
     {
-        return $$this->internship_agreements()->first() ? "{$this->internship_agreements()->first()->city}, {$this->internship_agreements()->first()->country}" : 'Undefined Address';
+        return $this->internship_agreements()->first() ? "{$this->internship_agreements()->first()->city}, {$this->internship_agreements()->first()->country}" : 'Undefined Address';
     }
 
     public function getOrganizationNameAttribute()
@@ -392,13 +338,6 @@ class Project extends Core\BackendBaseModel
         }
     }
 
-    public function markAllProfessorsAsPresent()
-    {
-        $this->professors()->each(function ($professor) {
-            $this->professors()->updateExistingPivot($professor->id, ['was_present' => true]);
-        });
-    }
-
     public function generateEvaluationSheet()
     {
         // we gonna use GenerateDefenseDocuments service and generateEvaluationSheet method to generate the evaluation sheet
@@ -427,22 +366,5 @@ class Project extends Core\BackendBaseModel
     public function isAuthorized()
     {
         return $this->defense_status == Enums\DefenseStatus::Authorized;
-    }
-
-    public function agreements()
-    {
-        return $this->hasMany(ProjectAgreement::class)->with('agreeable');
-    }
-
-    public function getAgreementTypesAttribute()
-    {
-        return $this->agreements
-            ->pluck('agreeable_type')
-            ->map(function ($type) {
-                return class_basename($type);
-            })
-            ->unique()
-            ->values()
-            ->toArray();
     }
 }

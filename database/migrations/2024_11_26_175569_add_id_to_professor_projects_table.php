@@ -10,10 +10,6 @@ return new class extends Migration
 {
     public function up()
     {
-        // change table anme from professor_project to professor_projects
-        if (Schema::hasTable('professor_project')) {
-            Schema::rename('professor_project', 'professor_projects');
-        }
 
         // Drop the existing primary key
         Schema::table('professor_projects', function (Blueprint $table) {
@@ -33,11 +29,6 @@ return new class extends Migration
         // Add id column and make it primary key
         Schema::table('professor_projects', function (Blueprint $table) {
             $table->id()->first();
-            // $table->unique(['professor_id', 'project_id']);
-            /* add other pivot
-            'supervision_status',
-                'last_meeting_date',
-                'next_meeting_date', */
             $table->enum('supervision_status', SupervisionStatus::getValues())->nullable()->after('votes');
             $table->date('last_meeting_date')->nullable()->after('supervision_status');
             $table->date('next_meeting_date')->nullable()->after('last_meeting_date');

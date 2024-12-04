@@ -28,19 +28,19 @@ class InternshipAgreementsRelationManager extends RelationManager
         return $table
             ->paginated(false)
             ->searchable(false)
-            ->recordTitleAttribute('title', 'long_full_name')
+            ->recordTitleAttribute('title', 'student.long_full_name')
             ->columns([
                 Tables\Columns\TextColumn::make('id_pfe'),
-                Tables\Columns\TextColumn::make('long_full_name'),
-                Tables\Columns\TextColumn::make('internship_agreement.title'),
+                Tables\Columns\TextColumn::make('student.long_full_name'),
+                Tables\Columns\TextColumn::make('title'),
             ])
             ->filters([
                 //
             ])
             ->headerActions([
-                Tables\Actions\AssociateAction::make()
+                Tables\Actions\AttachAction::make()
                     // ->recordTitleAttribute('title', 'student.long_full_name')
-                    ->recordTitle(fn ($record): string => "{$record->title->getLabel()} ({$record->student->long_full_name})")
+                    ->recordTitle(fn ($record): string => "{$record->title} ({$record->student->long_full_name})")
                     // ->recordSelectSearchColumns(['student.name'])
                     ->preloadRecordSelect()
                     // ->recordSelectSearchColumns(['title', 'id_pfe'])
@@ -55,7 +55,7 @@ class InternshipAgreementsRelationManager extends RelationManager
 
             ])
             ->actions([
-                Tables\Actions\DissociateAction::make(),
+                Tables\Actions\DetachAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

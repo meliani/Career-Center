@@ -20,6 +20,7 @@ use Filament\Resources\RelationManagers\RelationGroup;
 use Filament\Support\Enums as FilamentEnums;
 use Filament\Tables;
 use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Hydrat\TableLayoutToggle\Facades\TableLayoutToggle;
 use Illuminate\Database\Eloquent\Builder;
@@ -273,7 +274,19 @@ class ProjectResource extends Core\BaseResource
                             fn (Builder $query) => $query->whereDoesntHave('students', fn ($query) => $query->select('project_id')->groupBy('project_id')->havingRaw('COUNT(*) <= 1'))
                         ),
                     ),
-
+                SelectFilter::make('agreement_type')
+                    ->label('Agreement Type')
+                    ->options([
+                        'InternshipAgreement' => 'Internship Agreement',
+                        'FinalYearInternshipAgreement' => 'Final Year Internship Agreement',
+                    ])
+                    ->query(function (Builder $query, array $data) {
+                        if ($data['value']) {
+                            $query->whereHas('agreements', function (Builder $q) use ($data) {
+                                $q->where('agreeable_type', 'App\\Models\\' . $data['value']);
+                            });
+                        }
+                    }),
             ])
             ->headerActions([
                 Tables\Actions\Action::make('Generate report')
