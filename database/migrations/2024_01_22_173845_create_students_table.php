@@ -19,7 +19,7 @@ return new class extends Migration
         Schema::create('students', function (Blueprint $table) {
             $table->id();
             $table->string('title', 5)->nullable();
-            $table->unsignedInteger('pin')->nullable();
+            $table->unsignedInteger('id_pfe')->nullable();
             $table->string('full_name', 191)->nullable();
             $table->string('first_name', 191)->nullable();
             $table->string('last_name', 191)->nullable();

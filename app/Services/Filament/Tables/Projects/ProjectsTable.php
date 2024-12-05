@@ -16,13 +16,14 @@ class ProjectsTable
 
         return [
             Tables\Columns\TextColumn::make('agreement_types')
-                ->label('Agreement Type'),
+                ->label('Agreement Type')
+                ->searchable(false),
             // ->formatStateUsing(function ($state) {
             //     return implode(', ', $state);
             // }),
             Tables\Columns\ColumnGroup::make(__('The student'))
                 ->columns([
-                    Tables\Columns\TextColumn::make('agreements.agreeable.id_pfe')
+                    Tables\Columns\TextColumn::make('agreements.agreeable.student.id_pfe')
                         ->label('ID PFE')
                         ->searchable(true),
                     Tables\Columns\TextColumn::make('agreements.agreeable.student.full_name')
@@ -31,7 +32,7 @@ class ProjectsTable
                             ['first_name', 'last_name']
                         )
                         ->limit(20),
-                    Tables\Columns\TextColumn::make('students.program')
+                    Tables\Columns\TextColumn::make('agreements.agreeable.student.program')
                         ->toggleable(isToggledHiddenByDefault: true)
                         ->label('Program')
                         ->searchable(false)
@@ -114,7 +115,7 @@ class ProjectsTable
                     //     ->searchable(
                     //         ['first_name', 'last_name']
                     //     ),
-                    Tables\Columns\TextColumn::make('external_supervisor_name')
+                    Tables\Columns\TextColumn::make('externalSupervisor.name')
                         ->label('External Supervisor')
                         ->limit(30)
                         ->searchable(false),
@@ -173,31 +174,35 @@ class ProjectsTable
 
             Tables\Columns\ColumnGroup::make(__('Entreprise information'))
                 ->columns([
-                    Tables\Columns\TextColumn::make('organization_name')
+                    Tables\Columns\TextColumn::make('agreements.agreeable.organization.name')
                         ->label('Organization')
                         ->searchable(false)
                         ->sortable(false),
-                    Tables\Columns\TextColumn::make('address')
-                        ->toggleable(isToggledHiddenByDefault: true)
-                        ->label('Address')
-                        ->searchable(false)
-                        ->sortable(false),
-                    Tables\Columns\TextColumn::make('parrain')
+                    // Tables\Columns\TextColumn::make('organization_name')
+                    //     ->label('Organization')
+                    //     ->searchable(false)
+                    //     ->sortable(false),
+                    // Tables\Columns\TextColumn::make('agreements.agreeable.organization.address')
+                    //     ->toggleable(isToggledHiddenByDefault: true)
+                    //     ->label('Address')
+                    //     ->searchable(false)
+                    //     ->sortable(false),
+                    Tables\Columns\TextColumn::make('agreements.agreeable.parrain.full_name')
                         ->label('Le Parrain')
                         ->searchable(false)
                         ->sortable(false),
-                    Tables\Columns\TextColumn::make('parrain_contact')
-                        ->toggleable(isToggledHiddenByDefault: true)
-                        ->label('Contacts Parrain')
-                        ->searchable(false)
-                        ->sortable(false),
+                    // Tables\Columns\TextColumn::make('parrain_contact')
+                    //     ->toggleable(isToggledHiddenByDefault: true)
+                    //     ->label('Contacts Parrain')
+                    //     ->searchable(false)
+                    //     ->sortable(false),
 
-                    Tables\Columns\TextColumn::make('keywords')
-                        ->toggleable(isToggledHiddenByDefault: true)
-                        ->label('Keywords')
-                        ->searchable(false)
-                        ->sortable(false)
-                        ->limit(50),
+                    // Tables\Columns\TextColumn::make('keywords')
+                    //     ->toggleable(isToggledHiddenByDefault: true)
+                    //     ->label('Keywords')
+                    //     ->searchable(false)
+                    //     ->sortable(false)
+                    //     ->limit(50),
                 ]),
 
             Tables\Columns\TextColumn::make('created_at')

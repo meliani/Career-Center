@@ -41,7 +41,7 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
 
     protected $fillable = [
         'title',
-        'pin',
+        'id_pfe',
         'email',
         'first_name',
         'last_name',

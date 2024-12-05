@@ -33,4 +33,9 @@ class ProjectAgreement extends MorphPivot
     {
         return $this->belongsTo(Student::class, 'agreeable_id');
     }
+
+    public function organization()
+    {
+        return $this->belongsTo(Organization::class, 'agreeable_id');
+    }
 }

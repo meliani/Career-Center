@@ -57,10 +57,10 @@ class InternshipAgreementResource extends Core\BaseResource
     {
         return [
             'title',
-            'organization_name',
+            'organization.name',
             'student.first_name',
             'student.last_name',
-            'id_pfe',
+            'student.id_pfe',
         ];
     }
 

@@ -62,10 +62,10 @@ class ProjectResource extends Core\BaseResource
     {
         return [
             'title',
-            'internship_agreements.organization_name',
-            'students.first_name',
-            'students.last_name',
-            'internship_agreements.id_pfe',
+            'agreements.agreeable.organization.name',
+            'agreements.agreeable.student.first_name',
+            'agreements.agreeable.student.last_name',
+            'agreements.agreeable.student.id_pfe',
             'professors.first_name',
             'professors.last_name',
         ];

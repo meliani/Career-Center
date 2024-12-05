@@ -13,7 +13,7 @@ class InternshipAgreement extends Core\BackendBaseModel implements Agreement
 {
     use SoftDeletes;
 
-    protected $table = 'internships';
+    // protected $table = 'internships';
 
     protected static $settings;
 
@@ -191,6 +191,20 @@ class InternshipAgreement extends Core\BackendBaseModel implements Agreement
         return $this->belongsTo(Year::class);
     }
 
+    public function organization()
+    {
+        return $this->belongsTo(Organization::class);
+    }
+
+    public function parrain()
+    {
+        return $this->belongsTo(FinalYearInternshipContact::class, 'parrain_id', 'id');
+    }
+
+    public function externalSupervisor()
+    {
+        return $this->belongsTo(FinalYearInternshipContact::class, 'external_supervisor_id', 'id');
+    }
     // public function projects()
     // {
     //     return $this->belongsTo(Project::class);

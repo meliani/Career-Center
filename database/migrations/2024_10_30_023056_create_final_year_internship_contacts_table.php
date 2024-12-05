@@ -22,7 +22,6 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->enum('role', Enums\OrganizationContactRole::getArray());
             $table->foreignId('organization_id')->constrained()->onDelete('restrict');
-            $table->foreignId('apprenticeship_id')->nullable()->default(null);
             $table->timestamps();
             $table->softDeletes();
         });
