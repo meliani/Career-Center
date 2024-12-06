@@ -352,4 +352,11 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
         $this->offers_viewed = [];
         $this->save();
     }
+
+    public function getAdministrativeSupervisorAttribute()
+    {
+        return User::where('role', Role::AdministrativeSupervisor)
+            ->where('assigned_program', $this->program)
+            ->first();
+    }
 }

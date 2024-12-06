@@ -2,17 +2,18 @@
 
 namespace App\Enums;
 
+use App\Enums\Concerns\HasBaseEnumFeatures;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
-use App\Enums\Concerns\HasBaseEnumFeatures;
 
 enum OrganizationContactRole: string implements HasColor, HasLabel
 {
     use HasBaseEnumFeatures;
 
-    case Mentor = 'Mentor';
+    case Supervisor = 'Supervisor';
     case Contact = 'Contact';
     case Parrain = 'Parrain';
+    case Mentor = 'Mentor';
 
     public function getLabel(): ?string
     {
@@ -25,15 +26,7 @@ enum OrganizationContactRole: string implements HasColor, HasLabel
             self::Mentor => 'success',
             self::Contact => 'info',
             self::Parrain => 'warning',
-        };
-    }
-
-    public function getIcon(): ?string
-    {
-        return match ($this) {
-            self::Mentor => 'user-tie',
-            self::Contact => 'user',
-            self::Parrain => 'user'
+            self::Supervisor => 'danger'
         };
     }
 }

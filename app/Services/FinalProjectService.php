@@ -72,8 +72,9 @@ class FinalProjectService
                 'language' => null, // Set default or get from agreement if available
                 'start_date' => $agreement->starting_at,
                 'end_date' => $agreement->ending_at,
-                // 'organization_id' => $agreement->organization_id,
-                // 'external_supervisor_id' => $agreement->external_supervisor_id,
+                'organization_id' => $agreement->organization_id,
+                'external_supervisor_id' => $agreement->external_supervisor_id,
+                'parrain_id' => $agreement->parrain_id,
                 'defense_status' => 'Pending',
             ]);
 

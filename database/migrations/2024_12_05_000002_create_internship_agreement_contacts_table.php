@@ -11,15 +11,16 @@ return new class extends Migration
     {
         Schema::create('internship_agreement_contacts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('organization_id')->constrained()->onDelete('cascade');
-            $table->enum('contact_type', Enums\EntrepriseContactCategory::getValues());
             $table->enum('title', Enums\Title::getValues());
             $table->string('first_name');
             $table->string('last_name');
             $table->string('function')->nullable();
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
+            $table->enum('role', Enums\OrganizationContactRole::getValues())->nullable();
+            $table->foreignId('organization_id')->constrained()->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

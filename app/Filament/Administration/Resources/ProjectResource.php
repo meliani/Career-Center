@@ -99,7 +99,8 @@ class ProjectResource extends Core\BaseResource
         return parent::getEloquentQuery()
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
-            ]);
+            ])
+            ->with(['agreements.agreeable.student']);
     }
 
     public static function getRelations(): array
@@ -560,11 +561,11 @@ class ProjectResource extends Core\BaseResource
                     ->schema([
                         Infolists\Components\TextEntry::make('id_pfe')
                             ->label('PFE ID'),
-                        Infolists\Components\TextEntry::make('students.long_full_name')
+                        Infolists\Components\TextEntry::make('students_names')
                             ->label('Student'),
-                        Infolists\Components\TextEntry::make('students.program')
+                        Infolists\Components\TextEntry::make('students_programs')
                             ->label('Program'),
-                        Infolists\Components\TextEntry::make('organization')
+                        Infolists\Components\TextEntry::make('organization_name')
                             ->label('Organization'),
 
                         Infolists\Components\TextEntry::make('title')
@@ -589,12 +590,13 @@ class ProjectResource extends Core\BaseResource
 
                         Infolists\Components\Fieldset::make('Entreprise supervisor')
                             ->schema([
-                                Infolists\Components\TextEntry::make('internship_agreements.encadrant_ext_nom')
-                                    ->label('')
+                                Infolists\Components\TextEntry::make('externalSupervisor.full_name')
+                                    ->label(fn ($record) => $record->externalSupervisor->full_name)
                                     ->formatStateUsing(
-                                        fn ($record) => $record->internship_agreements->map(
-                                            fn ($internship_agreement) => "**{$internship_agreement->encadrant_ext_name}**" . PHP_EOL . $internship_agreement->encadrant_ext_mail . PHP_EOL . $internship_agreement->encadrant_ext_tel
-                                        )->join(', ')
+                                        fn ($record) => $record->externalSupervisor->email ? "[{$record->externalSupervisor->email}](mailto:{$record->externalSupervisor->email})" : null
+                                    )
+                                    ->tooltip(
+                                        fn ($record) => $record->externalSupervisor->phone ? __('Phone') . ': ' . $record->externalSupervisor->phone : null
                                     )
                                     ->markdown(),
 

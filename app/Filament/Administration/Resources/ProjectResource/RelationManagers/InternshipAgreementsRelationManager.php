@@ -26,14 +26,20 @@ class InternshipAgreementsRelationManager extends RelationManager
 
     public function table(Table $table): Table
     {
+
         return $table
             ->paginated(false)
             ->searchable(false)
             ->recordTitleAttribute('agreeable.title', 'agreeable.student.long_full_name')
             ->columns([
-                Tables\Columns\TextColumn::make('id_pfe'),
-                Tables\Columns\TextColumn::make('agreeable.student.long_full_name'),
-                Tables\Columns\TextColumn::make('agreeable.title'),
+                Tables\Columns\TextColumn::make('agreeable.student.id_pfe')
+                    ->label(__('ID PFE')),
+                Tables\Columns\TextColumn::make('agreeable.student.long_full_name')
+                    ->label(__('Student name')),
+                Tables\Columns\TextColumn::make('agreeable.title')
+                    ->label(__('Title')),
+                Tables\Columns\TextColumn::make('agreeable.organization.name')
+                    ->label(__('Organization')),
             ])
             ->filters([
                 //

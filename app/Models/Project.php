@@ -63,9 +63,9 @@ class Project extends Core\BackendBaseModel
 
     protected $appends = [
         'id_pfe',
-        'organization',
-        'description',
-        'assigned_department',
+        // 'organization',
+        // 'description',
+        // 'assigned_department',
         'agreement_types',
     ];
 
@@ -76,19 +76,19 @@ class Project extends Core\BackendBaseModel
         'defense_status' => Enums\DefenseStatus::class,
     ];
 
-    public function internship_agreements()
-    {
-        return $this->morphedByMany(InternshipAgreement::class, 'agreeable', 'project_agreements')
-            ->using(ProjectAgreement::class)
-            ->withTimestamps();
-    }
+    // public function internship_agreements()
+    // {
+    //     return $this->morphedByMany(InternshipAgreement::class, 'agreeable', 'project_agreements')
+    //         ->using(ProjectAgreement::class)
+    //         ->withTimestamps();
+    // }
 
-    public function final_internship_agreement()
-    {
-        return $this->morphedByMany(FinalYearInternshipAgreement::class, 'agreeable', 'project_agreements')
-            ->using(ProjectAgreement::class)
-            ->withTimestamps();
-    }
+    // public function final_internship_agreement()
+    // {
+    //     return $this->morphedByMany(FinalYearInternshipAgreement::class, 'agreeable', 'project_agreements')
+    //         ->using(ProjectAgreement::class)
+    //         ->withTimestamps();
+    // }
 
     public function professors()
     {
@@ -106,8 +106,6 @@ class Project extends Core\BackendBaseModel
 
     public function supervisor()
     {
-        // dd($this->professors()
-        //     ->wherePivot('jury_role', Enums\JuryRole::Supervisor->value));
 
         return $this->professors()
             ->wherePivot('jury_role', Enums\JuryRole::Supervisor->value);
@@ -248,5 +246,20 @@ class Project extends Core\BackendBaseModel
             ->unique()
             ->values()
             ->toArray();
+    }
+
+    public function organization()
+    {
+        return $this->belongsTo(Organization::class);
+    }
+
+    public function externalSupervisor()
+    {
+        return $this->belongsTo(InternshipAgreementContact::class, 'external_supervisor_id');
+    }
+
+    public function parrain()
+    {
+        return $this->belongsTo(InternshipAgreementContact::class, 'parrain_id');
     }
 }

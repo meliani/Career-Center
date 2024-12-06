@@ -198,12 +198,12 @@ class InternshipAgreement extends Core\BackendBaseModel implements Agreement
 
     public function parrain()
     {
-        return $this->belongsTo(FinalYearInternshipContact::class, 'parrain_id', 'id');
+        return $this->belongsTo(InternshipAgreementContact::class, 'parrain_id', 'id');
     }
 
     public function externalSupervisor()
     {
-        return $this->belongsTo(FinalYearInternshipContact::class, 'external_supervisor_id', 'id');
+        return $this->belongsTo(InternshipAgreementContact::class, 'external_supervisor_id', 'id');
     }
     // public function projects()
     // {

@@ -18,5 +18,11 @@ interface Agreement
 
     public function getEndDate(): ?\Carbon\Carbon;
 
-    // ...other common methods...
+    // public function getSupervisorName(): string;
+
+    // public function getSupervisorEmail(): string;
+
+    // public function getSupervisorPhone(): string;
+
+    // public function getSupervisorFunction(): string;
 }

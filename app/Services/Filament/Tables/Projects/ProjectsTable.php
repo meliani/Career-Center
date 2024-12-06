@@ -3,7 +3,10 @@
 namespace App\Services\Filament\Tables\Projects;
 
 use App\Filament\Actions\Action\AddOrganizationEvaluationSheetAction;
+use App\Models\FinalYearInternshipAgreement;
+use App\Models\InternshipAgreement;
 use Filament\Tables;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Storage;
 
 class ProjectsTable
@@ -23,14 +26,27 @@ class ProjectsTable
             // }),
             Tables\Columns\ColumnGroup::make(__('The student'))
                 ->columns([
-                    Tables\Columns\TextColumn::make('agreements.agreeable.student.id_pfe')
-                        ->label('ID PFE')
-                        ->searchable(true),
+                    Tables\Columns\TextColumn::make('id_pfe')
+                        ->searchable(
+                            query: fn (Builder $query, string $search): Builder => $query
+                                ->whereHas('agreements', function (Builder $query) use ($search) {
+                                    $query->whereMorphRelation(
+                                        'agreeable',
+                                        [InternshipAgreement::class, FinalYearInternshipAgreement::class],
+                                        function (Builder $query) use ($search) {
+                                            $query->whereHas('student', function (Builder $query) use ($search) {
+                                                $query->where('id_pfe', 'like', "%{$search}%")
+                                                    ->orWhere('first_name', 'like', "%{$search}%")
+                                                    ->orWhere('last_name', 'like', "%{$search}%");
+                                            });
+                                        }
+                                    );
+                                })
+                        )
+                        ->label('ID PFE'),
                     Tables\Columns\TextColumn::make('agreements.agreeable.student.full_name')
                         ->label('Student name')
-                        ->searchable(
-                            ['first_name', 'last_name']
-                        )
+                        ->searchable(false)
                         ->limit(20),
                     Tables\Columns\TextColumn::make('agreements.agreeable.student.program')
                         ->toggleable(isToggledHiddenByDefault: true)
@@ -42,8 +58,9 @@ class ProjectsTable
                     //     // ->sortable(false)
                     //     ->sortableMany()
                     //     ->searchable(),
-                    Tables\Columns\TextColumn::make('department')
+                    Tables\Columns\TextColumn::make('Department')
                         ->toggleable(isToggledHiddenByDefault: true)
+                        ->formatStateUsing(fn ($record) => $record->agreements->agreeable->student->department)
                         ->label('Assigned department')
                         ->searchable(false)
                         ->sortableMany(),
@@ -102,10 +119,10 @@ class ProjectsTable
                         ->url(fn ($record) => $record->evaluation_sheet_url, shouldOpenInNewTab: true),
                     // ->simpleLightbox(Storage::disk('public')->url($closures['evaluation_sheet_url'](fn ($record) => $record->evaluation_sheet_url))),
                     // ->simpleLightbox(fn ($record) => $record->evaluation_sheet_url),
-                    Tables\Columns\TextColumn::make('defense_authorized_by_user.name')
-                        ->toggleable(isToggledHiddenByDefault: true)
-                        ->label('Authorized by')
-                        ->badge(),
+                    // Tables\Columns\TextColumn::make('defense_authorized_by_user.name')
+                    //     ->toggleable(isToggledHiddenByDefault: true)
+                    //     ->label('Authorized by')
+                    //     ->badge(),
                 ]),
 
             Tables\Columns\ColumnGroup::make(__('Defense information'))
@@ -115,7 +132,7 @@ class ProjectsTable
                     //     ->searchable(
                     //         ['first_name', 'last_name']
                     //     ),
-                    Tables\Columns\TextColumn::make('externalSupervisor.name')
+                    Tables\Columns\TextColumn::make('externalSupervisor.full_name')
                         ->label('External Supervisor')
                         ->limit(30)
                         ->searchable(false),
@@ -174,20 +191,17 @@ class ProjectsTable
 
             Tables\Columns\ColumnGroup::make(__('Entreprise information'))
                 ->columns([
-                    Tables\Columns\TextColumn::make('agreements.agreeable.organization.name')
+                    Tables\Columns\TextColumn::make('organization.name')
                         ->label('Organization')
                         ->searchable(false)
                         ->sortable(false),
-                    // Tables\Columns\TextColumn::make('organization_name')
-                    //     ->label('Organization')
-                    //     ->searchable(false)
-                    //     ->sortable(false),
-                    // Tables\Columns\TextColumn::make('agreements.agreeable.organization.address')
-                    //     ->toggleable(isToggledHiddenByDefault: true)
-                    //     ->label('Address')
-                    //     ->searchable(false)
-                    //     ->sortable(false),
-                    Tables\Columns\TextColumn::make('agreements.agreeable.parrain.full_name')
+                    Tables\Columns\TextColumn::make('organization.address')
+                        ->toggleable(isToggledHiddenByDefault: true)
+                        ->label('Address')
+                        ->searchable(false)
+                        ->sortable(false),
+                    Tables\Columns\TextColumn::make('parrain.full_name')
+                        // ->description(fn ($record) => $record->agreements->agreeable->parrain->phone . ' - ' . $record->agreements->agreeable->parrain->email)
                         ->label('Le Parrain')
                         ->searchable(false)
                         ->sortable(false),

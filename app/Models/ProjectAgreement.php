@@ -38,4 +38,14 @@ class ProjectAgreement extends MorphPivot
     {
         return $this->belongsTo(Organization::class, 'agreeable_id');
     }
+
+    public function parrain()
+    {
+        return $this->belongsTo(InternshipAgreementContact::class, 'parrain_id', 'id');
+    }
+
+    public function externalSupervisor()
+    {
+        return $this->belongsTo(InternshipAgreementContact::class, 'external_supervisor_id', 'id');
+    }
 }

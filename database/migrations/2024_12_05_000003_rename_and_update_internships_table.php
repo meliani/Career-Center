@@ -58,9 +58,10 @@ return new class extends Migration
 
             // Create or find organization
             DB::table('organizations')->updateOrInsert(
-                ['name' => $agreement->organization_name],
+                ['slug' => Str::slug($agreement->central_organization)],
                 [
-                    'slug' => Str::slug($agreement->organization_name),
+                    'name' => $agreement->central_organization,
+                    'slug' => Str::slug($agreement->central_organization),
                     'address' => $agreement->adresse,
                     'city' => $agreement->city,
                     'country' => $countryCode,
@@ -69,18 +70,14 @@ return new class extends Migration
                 ]
             );
 
-            // Get the organization's ID
-            $organization = DB::table('organizations')->where('name', $agreement->organization_name)->first();
-
-            // Update agreement with organization_id
-            DB::table('internship_agreements')
-                ->where('id', $agreement->id)
-                ->update(['organization_id' => $organization->id]);
+            $organization = DB::table('organizations')
+                ->where('slug', Str::slug($agreement->central_organization))
+                ->first();
 
             // Create parrain contact
-            DB::table('internship_agreement_contacts')->insert([
+            $parrainId = DB::table('internship_agreement_contacts')->insertGetId([
                 'organization_id' => $organization->id,
-                'contact_type' => 'Parrain',
+                'role' => 'Parrain',
                 'title' => $agreement->parrain_titre,
                 'first_name' => $agreement->parrain_prenom,
                 'last_name' => $agreement->parrain_nom,
@@ -92,9 +89,9 @@ return new class extends Migration
             ]);
 
             // Create external supervisor contact
-            DB::table('internship_agreement_contacts')->insert([
+            $supervisorId = DB::table('internship_agreement_contacts')->insertGetId([
                 'organization_id' => $organization->id,
-                'contact_type' => 'Supervisor',
+                'role' => 'Supervisor',
                 'title' => $agreement->encadrant_ext_titre,
                 'first_name' => $agreement->encadrant_ext_prenom,
                 'last_name' => $agreement->encadrant_ext_nom,
@@ -104,6 +101,15 @@ return new class extends Migration
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
+
+            // Update agreement with organization_id and contact IDs
+            DB::table('internship_agreements')
+                ->where('id', $agreement->id)
+                ->update([
+                    'organization_id' => $organization->id,
+                    'parrain_id' => $parrainId,
+                    'external_supervisor_id' => $supervisorId,
+                ]);
 
             // Copy 'id_pfe' from 'internship_agreements' to 'students'
             DB::table('students')
@@ -116,6 +122,7 @@ return new class extends Migration
             // Remove organization-related columns
             $table->dropColumn([
                 'organization_name',
+                'central_organization',
                 'adresse',
                 'city',
                 'country',
