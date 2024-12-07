@@ -31,16 +31,47 @@ class OrganizationResource extends BaseResource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('address')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('city')
-                    ->maxLength(255),
-                \Parfaitementweb\FilamentCountryField\Forms\Components\Country::make('country')
-                    ->searchable(),
-                Forms\Components\TextInput::make('central_organization'),
+                Forms\Components\Section::make('Basic Information')
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('slug')
+                            ->required()
+                            ->maxLength(255)
+                            ->unique(ignoreRecord: true),
+                        Forms\Components\TextInput::make('website')
+                            ->url()
+                            ->prefix('https://')
+                            ->maxLength(255),
+                        Forms\Components\Select::make('status')
+                            ->enum(Enums\OrganizationStatus::class)
+                            ->required(),
+                    ])->columns(2),
+
+                Forms\Components\Section::make('Location')
+                    ->schema([
+                        Forms\Components\TextInput::make('address')
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('city')
+                            ->maxLength(255),
+                        \Parfaitementweb\FilamentCountryField\Forms\Components\Country::make('country')
+                            ->searchable(),
+                    ])->columns(2),
+
+                Forms\Components\Section::make('Relationships')
+                    ->schema([
+                        Forms\Components\Select::make('parent_organization')
+                            ->relationship('parentOrganization', 'name')
+                            ->searchable(),
+                        Forms\Components\Select::make('industry_information_id')
+                            ->relationship('industryInformation', 'name')
+                            ->searchable()
+                            ->createOptionForm([
+                                Forms\Components\TextInput::make('name')
+                                    ->required(),
+                            ]),
+                    ])->columns(2),
             ]);
     }
 
@@ -49,16 +80,24 @@ class OrganizationResource extends BaseResource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('address')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('website')
+                    ->url(fn ($record) => $record->website_url)
+                    ->openUrlInNewTab(),
                 Tables\Columns\TextColumn::make('city')
                     ->searchable(),
                 \Parfaitementweb\FilamentCountryField\Tables\Columns\CountryColumn::make('country')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('central_organization')
-                    ->numeric()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('status')
+                    ->badge()
+                    ->color(fn ($record) => $record->status->getColor()),
+                Tables\Columns\TextColumn::make('parentOrganization.name')
+                    ->label('Parent Organization')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('industryInformation.name')
+                    ->label('Industry')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -125,6 +164,9 @@ class OrganizationResource extends BaseResource
                                         ->update(['organization_id' => $targetOrg->id]);
 
                                     $org->projects()
+                                        ->update(['organization_id' => $targetOrg->id]);
+
+                                    $org->internshipAgreementContacts()
                                         ->update(['organization_id' => $targetOrg->id]);
 
                                     // Delete the merged organization
