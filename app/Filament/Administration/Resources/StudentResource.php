@@ -135,9 +135,6 @@ class StudentResource extends Core\BaseResource
             ->columns([
                 // Tables\Columns\TextColumn::make('title')
                 //     ->searchable(),
-                // Tables\Columns\TextColumn::make('pin')
-                //     ->numeric()
-                //     ->sortable(),
 
                 Tables\Columns\ImageColumn::make('avatar_url')
                     ->label('Avatar')
@@ -145,7 +142,7 @@ class StudentResource extends Core\BaseResource
                     ->rounded(),
                 Tables\Columns\TextColumn::make('name')
                     ->formatStateUsing(function ($record) {
-                        return $record->long_full_name;
+                        return $record->full_name;
                     })
                     ->wrap(),
                 Tables\Columns\TextColumn::make('email')
@@ -202,6 +199,11 @@ class StudentResource extends Core\BaseResource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                Tables\Filters\SelectFilter::make('year_id')
+                    ->options(Year::getYearsForSelect(2))
+                    ->label(__('Academic year'))
+                    ->default(Year::current()->id)
+                    ->placeholder(__('All years')),
                 Tables\Filters\SelectFilter::make('level')
                     ->options(Enums\StudentLevel::class)
                     ->label(__('Level'))
@@ -301,7 +303,7 @@ class StudentResource extends Core\BaseResource
     {
         return parent::getEloquentQuery()
             ->whereHas('year', function ($query) {
-                $query->where('id', Year::current()->id);
+                // $query->where('id', Year::current()->id);
             });
     }
 

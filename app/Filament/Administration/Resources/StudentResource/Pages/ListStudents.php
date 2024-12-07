@@ -74,7 +74,7 @@ class ListStudents extends ListRecords
                             $students[$email]->update([
                                 'level' => $data['level'],
                                 'year_id' => $data['year_id'],
-                                'pin' => $ids[$index], // Update the pin with the corresponding ID
+                                'id_pfe' => $ids[$index], // Update the pin with the corresponding ID
                             ]);
                         }
                     }

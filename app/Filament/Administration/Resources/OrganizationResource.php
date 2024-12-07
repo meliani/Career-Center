@@ -7,10 +7,13 @@ use App\Filament\Core\BaseResource;
 use App\Models\Organization;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
+use Filament\Support\Enums\ActionSize;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\DB;
 
 class OrganizationResource extends BaseResource
 {
@@ -81,6 +84,70 @@ class OrganizationResource extends BaseResource
                     Tables\Actions\DeleteBulkAction::make(),
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
+                    Tables\Actions\BulkAction::make('merge')
+                        ->label('Merge Organizations')
+                        ->icon('heroicon-o-arrow-path')
+                        ->size(ActionSize::Large)
+                        ->requiresConfirmation()
+                        ->form(function (Tables\Actions\BulkAction $action): array {
+                            return [
+                                Forms\Components\Select::make('target_organization')
+                                    ->label('Merge into Organization')
+                                    ->options(
+                                        fn () => Organization::query()
+                                            ->whereIn('id', $action->getRecords()->pluck('id'))
+                                            ->pluck('name', 'id')
+                                            ->toArray()
+                                    )
+                                    ->required()
+                                    ->helperText('All selected organizations will be merged into this one. This action cannot be undone.'),
+                            ];
+                        })
+                        ->action(function ($records, array $data): void {
+                            DB::beginTransaction();
+
+                            try {
+                                $targetOrg = Organization::find($data['target_organization']);
+                                $orgsToMerge = Organization::query()
+                                    ->whereIn('id', collect($records)->pluck('id'))
+                                    ->where('id', '!=', $targetOrg->id)
+                                    ->get();
+
+                                foreach ($orgsToMerge as $org) {
+                                    // Update all related models using relationships
+                                    $org->internshipAgreementContacts()
+                                        ->update(['organization_id' => $targetOrg->id]);
+
+                                    $org->finalYearInternshipAgreements()
+                                        ->update(['organization_id' => $targetOrg->id]);
+
+                                    $org->apprenticeshipAgreements()
+                                        ->update(['organization_id' => $targetOrg->id]);
+
+                                    $org->projects()
+                                        ->update(['organization_id' => $targetOrg->id]);
+
+                                    // Delete the merged organization
+                                    $org->delete();
+                                }
+
+                                DB::commit();
+
+                                Notification::make()
+                                    ->success()
+                                    ->title('Organizations Merged')
+                                    ->body('Selected organizations and all related data have been merged successfully.')
+                                    ->send();
+                            } catch (\Exception $e) {
+                                DB::rollBack();
+
+                                Notification::make()
+                                    ->danger()
+                                    ->title('Merge Failed')
+                                    ->body('An error occurred while merging organizations: ' . $e->getMessage())
+                                    ->send();
+                            }
+                        }),
                 ]),
             ]);
     }

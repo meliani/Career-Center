@@ -26,7 +26,7 @@ class ProjectAgreement extends MorphPivot
      */
     public function agreeable()
     {
-        return $this->morphTo();
+        return $this->morphTo()->with('student');
     }
 
     public function student()

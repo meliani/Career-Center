@@ -233,7 +233,7 @@ class Project extends Core\BackendBaseModel
 
     public function agreements()
     {
-        return $this->hasMany(ProjectAgreement::class)->with('agreeable');
+        return $this->hasMany(ProjectAgreement::class)->with('agreeable.student');
     }
 
     public function getAgreementTypesAttribute()

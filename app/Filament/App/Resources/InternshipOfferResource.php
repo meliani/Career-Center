@@ -272,11 +272,16 @@ class InternshipOfferResource extends StudentBaseResource
                     ->columnSpan(1)
                     ->columns(4)
                     ->schema([
-                        Infolists\Components\TextEntry::make('project_title')
+                        // Infolists\Components\TextEntry::make('project_title')
+                        // ->label(fn ($record) => $record->expertiseField->name)
+                        //     ->columnSpanFull(),
+                        Infolists\Components\TextEntry::make('expertiseField.name')
+                            ->badge()
+                            ->label(fn ($record) => $record->project_title)
                             ->columnSpanFull(),
-
                         Infolists\Components\TextEntry::make('project_details')
-                            ->columnSpanFull(),
+                            ->columnSpanFull()
+                            ->markdown(),
                     ]),
 
                 Infolists\Components\Section::make(__('Internship Details'))

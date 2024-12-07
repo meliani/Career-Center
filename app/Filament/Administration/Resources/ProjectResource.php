@@ -224,6 +224,39 @@ class ProjectResource extends Core\BaseResource
                     ] : null
             )
             ->filters([
+                SelectFilter::make('agreement_type')
+                    ->label('Internship Type')
+                    ->options([
+                        'internship' => 'Introductory/Technical Internship',
+                        'final_year' => 'Final Year Internship',
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query->when(
+                            $data['value'],
+                            function (Builder $query, string $value): Builder {
+                                return $query->whereHas('agreements', function (Builder $query) use ($value) {
+                                    if ($value === 'internship') {
+                                        $query->where('agreeable_type', InternshipAgreement::class);
+                                    } elseif ($value === 'final_year') {
+                                        $query->where('agreeable_type', FinalYearInternshipAgreement::class);
+                                    }
+                                });
+                            }
+                        );
+                    })
+                    ->indicateUsing(function (array $data): ?string {
+                        if (! $data['value']) {
+                            return null;
+                        }
+
+                        return 'Type: ' . (
+                            $data['value'] === 'internship'
+                            ? 'Introductory/Technical'
+                            : 'Final Year'
+                        );
+                    })
+                    ->columnSpanFull(), // Makes the filter span the full width
+
                 // DateRangeFilter::make('timetable.timeslot.start_time')
                 // ->label('Defense date')
                 // ->defaultToday()
@@ -321,17 +354,17 @@ class ProjectResource extends Core\BaseResource
             ])
             ->headerActions([
                 /*                 Tables\Actions\Action::make('Check changed professors')
-                    ->label('Check changed professors')
-                    ->tooltip('Check if professors have been changed after getting Authorization')
-                    ->color('primary')
-                    ->hidden(fn () => auth()->user()->isAdministrator() === false)
-                    ->action(function () {
-                        $googleServices = new \App\Services\GoogleServices;
-                        $googleServices->checkChangedProfessors();
-                    }),
+                        ->label('Check changed professors')
+                        ->tooltip('Check if professors have been changed after getting Authorization')
+                        ->color('primary')
+                        ->hidden(fn () => auth()->user()->isAdministrator() === false)
+                        ->action(function () {
+                            $googleServices = new \App\Services\GoogleServices;
+                            $googleServices->checkChangedProfessors();
+                        }),
                 \App\Filament\Actions\Action\Processing\GoogleSheetSyncAction::make('Google Sheet Sync')
-                    ->label('Google Sheet Sync')
-                    ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()) === false),
+                        ->label('Google Sheet Sync')
+                        ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()) === false),
  */
                 FilamentExcel\Actions\Tables\ExportAction::make()
                     ->exports([
@@ -357,10 +390,10 @@ class ProjectResource extends Core\BaseResource
                             ]),
                     ]),
                 TableLayoutToggle::getToggleViewTableAction(compact: true),
-                Tables\Actions\ActionGroup::make([
-                    \App\Filament\Actions\Action\Processing\ImportProfessorsFromInternshipAgreements::make('Import Professors From Internship Agreements')
-                        ->hidden(fn () => auth()->user()->isAdministrator() === false),
-                ]),
+                // Tables\Actions\ActionGroup::make([
+                //     \App\Filament\Actions\Action\Processing\ImportProfessorsFromInternshipAgreements::make('Import Professors From Internship Agreements')
+                //         ->hidden(fn () => auth()->user()->isAdministrator() === false),
+                // ]),
 
             ])
             ->actions([

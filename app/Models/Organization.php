@@ -16,10 +16,12 @@ class Organization extends Model
 
     protected $fillable = [
         'name',
+        'slug',
+        'website',
         'address',
         'city',
         'country',
-        'central_organization',
+        'parent_organization',
         'status',
         'created_by_student_id',
         'industry_information_id',
@@ -34,19 +36,24 @@ class Organization extends Model
 
         static::creating(function (Organization $organization) {
             $organization->status = Enums\OrganizationStatus::Published;
-            $organization->created_by_student_id = auth()->id();
+            $organization->created_by_student = auth()->id();
 
         });
     }
 
-    public function centralOrganization()
+    public function parentOrganization()
     {
-        return $this->belongsTo(Organization::class, 'central_organization');
+        return $this->belongsTo(Organization::class, 'parent_organization');
     }
 
-    public function organizations()
+    public function childOrganizations()
     {
-        return $this->hasMany(Organization::class, 'central_organization');
+        return $this->hasMany(Organization::class, 'parent_organization');
+    }
+
+    public function createdByStudent()
+    {
+        return $this->belongsTo(Student::class, 'created_by_student_id');
     }
 
     public function industryInformation()
@@ -54,19 +61,29 @@ class Organization extends Model
         return $this->belongsTo(IndustryInformation::class);
     }
 
-    public function expertiseFields()
-    {
-        return $this->belongsToMany(ExpertiseField::class);
-    }
-
     public function internshipOffers()
     {
         return $this->hasMany(InternshipOffer::class);
     }
 
-    public function students()
+    public function internshipAgreementContacts()
     {
-        return $this->belongsToMany(Student::class);
+        return $this->hasMany(InternshipAgreementContact::class);
+    }
+
+    public function finalYearInternshipAgreements()
+    {
+        return $this->hasMany(FinalYearInternshipAgreement::class);
+    }
+
+    public function apprenticeshipAgreements()
+    {
+        return $this->hasMany(Apprenticeship::class);
+    }
+
+    public function projects()
+    {
+        return $this->hasMany(Project::class);
     }
 
     public function getCountry()
@@ -83,5 +100,14 @@ class Organization extends Model
     {
         return $query->where('status', Enums\OrganizationStatus::Active)
             ->orWhere('status', Enums\OrganizationStatus::Published);
+    }
+
+    public function getWebsiteUrlAttribute()
+    {
+        if (! $this->website) {
+            return null;
+        }
+
+        return str_starts_with($this->website, 'http') ? $this->website : "https://{$this->website}";
     }
 }

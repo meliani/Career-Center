@@ -43,11 +43,13 @@ class ProjectsTable
                                     );
                                 })
                         )
+                        ->wrap()
                         ->label('ID PFE'),
                     Tables\Columns\TextColumn::make('agreements.agreeable.student.full_name')
                         ->label('Student name')
                         ->searchable(false)
-                        ->limit(20),
+                        // ->limit(20)
+                        ->wrap(),
                     Tables\Columns\TextColumn::make('agreements.agreeable.student.program')
                         ->toggleable(isToggledHiddenByDefault: true)
                         ->label('Program')
