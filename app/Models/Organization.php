@@ -93,7 +93,12 @@ class Organization extends Model
 
     public function getCountryAttribute()
     {
-        return $this->getCountriesList()[$this->getCountry()];
+        return $this->getCountriesList()[$this->getCountry()] ?? null;
+    }
+
+    public function setCountryAttribute($value)
+    {
+        $this->attributes['country'] = is_array($value) ? ($value['value'] ?? $value) : $value;
     }
 
     public function scopeActive($query)

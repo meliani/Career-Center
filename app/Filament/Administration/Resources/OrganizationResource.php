@@ -127,19 +127,114 @@ class OrganizationResource extends BaseResource
                         ->label('Merge Organizations')
                         ->icon('heroicon-o-arrow-path')
                         ->size(ActionSize::Large)
-                        ->requiresConfirmation()
+                        ->modalHeading('Merge Organizations')
+                        ->modalDescription('Select which organization to keep as the primary and choose which fields to retain from each organization.')
                         ->form(function (Tables\Actions\BulkAction $action): array {
+                            $organizations = Organization::query()
+                                ->whereIn('id', $action->getRecords()->pluck('id'))
+                                ->get();
+
                             return [
                                 Forms\Components\Select::make('target_organization')
-                                    ->label('Merge into Organization')
-                                    ->options(
-                                        fn () => Organization::query()
-                                            ->whereIn('id', $action->getRecords()->pluck('id'))
-                                            ->pluck('name', 'id')
-                                            ->toArray()
-                                    )
+                                    ->label('Primary Organization')
+                                    ->options($organizations->pluck('name', 'id'))
                                     ->required()
-                                    ->helperText('All selected organizations will be merged into this one. This action cannot be undone.'),
+                                    ->live()
+                                    ->helperText('This organization will be kept while others will be merged into it.'),
+
+                                Forms\Components\Section::make('Field Selection')
+                                    ->description('Choose which organization to take each field from')
+                                    ->schema([
+                                        Forms\Components\Select::make('fields.name')
+                                            ->label('Organization Name')
+                                            ->options(function (Forms\Get $get) use ($organizations) {
+                                                $targetId = $get('target_organization');
+
+                                                return $organizations->mapWithKeys(fn ($org) => [
+                                                    $org->id => "{$org->name} ({$org->id})",
+                                                ]);
+                                            })
+                                            ->required(),
+
+                                        Forms\Components\Select::make('fields.website')
+                                            ->label('Website')
+                                            ->options(function (Forms\Get $get) use ($organizations) {
+                                                return $organizations->mapWithKeys(fn ($org) => [
+                                                    $org->id => $org->website
+                                                        ? "{$org->website} ({$org->id})"
+                                                        : "No website ({$org->id})",
+                                                ]);
+                                            }),
+
+                                        Forms\Components\Select::make('fields.address')
+                                            ->label('Address')
+                                            ->options(function (Forms\Get $get) use ($organizations) {
+                                                return $organizations->mapWithKeys(fn ($org) => [
+                                                    $org->id => "{$org->address}, {$org->city} ({$org->id})",
+                                                ]);
+                                            }),
+
+                                        Forms\Components\Select::make('fields.industry')
+                                            ->label('Industry')
+                                            ->options(function (Forms\Get $get) use ($organizations) {
+                                                return $organizations->mapWithKeys(fn ($org) => [
+                                                    $org->id => $org->industryInformation
+                                                        ? "{$org->industryInformation->name} ({$org->id})"
+                                                        : "No industry ({$org->id})",
+                                                ]);
+                                            }),
+
+                                        Forms\Components\Select::make('fields.country')
+                                            ->label('Country')
+                                            ->options(function (Forms\Get $get) use ($organizations) {
+                                                return $organizations->mapWithKeys(fn ($org) => [
+                                                    $org->id => $org->country
+                                                        ? "{$org->country} ({$org->id})"
+                                                        : "No country ({$org->id})",
+                                                ]);
+                                            }),
+                                    ])->columns(2),
+
+                                Forms\Components\Section::make('Preview')
+                                    ->description('Review the final organization details')
+                                    ->schema([
+                                        Forms\Components\Placeholder::make('preview')
+                                            ->content(function (Forms\Get $get) use ($organizations) {
+                                                $targetId = $get('target_organization');
+                                                if (! $targetId) {
+                                                    return 'Select a primary organization to see preview';
+                                                }
+
+                                                $fields = $get('fields');
+                                                if (! $fields) {
+                                                    return 'Select fields to see preview';
+                                                }
+
+                                                $preview = "Final Organization Details:\n";
+                                                foreach ($fields as $field => $orgId) {
+                                                    $org = $organizations->find($orgId);
+                                                    if (! $org) {
+                                                        continue;
+                                                    }
+
+                                                    $value = match ($field) {
+                                                        'name' => $org->name ?? 'No name',
+                                                        'website' => $org->website ?? 'No website',
+                                                        'address' => ($org->address || $org->city)
+                                                            ? trim("{$org->address}, {$org->city}", ', ')
+                                                            : 'No address',
+                                                        'country' => $org->country ?? 'No country',
+                                                        'industry' => $org->industryInformation?->name ?? 'No industry',
+                                                        default => ''
+                                                    };
+                                                    $preview .= "\n- {$field}: {$value}";
+                                                }
+
+                                                return $preview;
+                                            })
+                                            ->live() // Make preview reactive
+                                            ->afterStateUpdated(fn ($state) => $state), // Force refresh on state change
+                                    ]),
                             ];
                         })
                         ->action(function ($records, array $data): void {
@@ -152,24 +247,34 @@ class OrganizationResource extends BaseResource
                                     ->where('id', '!=', $targetOrg->id)
                                     ->get();
 
+                                // Update target organization with selected fields
+                                foreach ($data['fields'] as $field => $sourceOrgId) {
+                                    $sourceOrg = Organization::find($sourceOrgId);
+                                    match ($field) {
+                                        'name' => $targetOrg->name = $sourceOrg->name,
+                                        'website' => $targetOrg->website = $sourceOrg->website,
+                                        'address' => [
+                                            $targetOrg->address = $sourceOrg->address,
+                                            $targetOrg->city = $sourceOrg->city,
+                                            $targetOrg->country = $sourceOrg->country,
+                                        ],
+                                        'country' => $targetOrg->country = $sourceOrg->country,
+                                        'industry' => $targetOrg->industry_information_id = $sourceOrg->industry_information_id,
+                                        default => null
+                                    };
+                                }
+                                $targetOrg->save();
+
+                                // Update related records
                                 foreach ($orgsToMerge as $org) {
-                                    // Update all related models using relationships
                                     $org->internshipAgreementContacts()
                                         ->update(['organization_id' => $targetOrg->id]);
-
                                     $org->finalYearInternshipAgreements()
                                         ->update(['organization_id' => $targetOrg->id]);
-
                                     $org->apprenticeshipAgreements()
                                         ->update(['organization_id' => $targetOrg->id]);
-
                                     $org->projects()
                                         ->update(['organization_id' => $targetOrg->id]);
-
-                                    $org->internshipAgreementContacts()
-                                        ->update(['organization_id' => $targetOrg->id]);
-
-                                    // Delete the merged organization
                                     $org->delete();
                                 }
 
@@ -177,8 +282,14 @@ class OrganizationResource extends BaseResource
 
                                 Notification::make()
                                     ->success()
-                                    ->title('Organizations Merged')
-                                    ->body('Selected organizations and all related data have been merged successfully.')
+                                    ->title('Organizations Merged Successfully')
+                                    ->body("All organizations have been merged into '{$targetOrg->name}'")
+                                    ->actions([
+                                        \Filament\Notifications\Actions\Action::make('view')
+                                            ->label('View Organization')
+                                            ->url(OrganizationResource::getUrl('view', ['record' => $targetOrg]))
+                                            ->button(),
+                                    ])
                                     ->send();
                             } catch (\Exception $e) {
                                 DB::rollBack();
