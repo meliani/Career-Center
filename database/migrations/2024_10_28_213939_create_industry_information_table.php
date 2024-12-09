@@ -13,12 +13,15 @@ return new class extends Migration
     {
         Schema::create('industry_information', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('slug'); //->unique();
-            $table->text('description')->nullable();
+            $table->string('name_en');
+            $table->string('name_fr');
+            $table->string('name_ar')->nullable();
+            $table->string('slug')->unique();
+            $table->text('description_en')->nullable();
+            $table->text('description_fr')->nullable();
+            $table->text('description_ar')->nullable();
             $table->foreignId('parent_id')->nullable()->constrained('industry_information');
             $table->string('icon')->nullable();
-            $table->enum('locale', ['en', 'fr', 'ar'])->nullable();
             $table->timestamps();
         });
     }

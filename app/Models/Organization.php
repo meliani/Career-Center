@@ -36,7 +36,7 @@ class Organization extends Model
 
         static::creating(function (Organization $organization) {
             $organization->status = Enums\OrganizationStatus::Published;
-            $organization->created_by_student = auth()->id();
+            $organization->created_by_student_id = auth()->id();
 
         });
     }
@@ -81,6 +81,11 @@ class Organization extends Model
         return $this->hasMany(Apprenticeship::class);
     }
 
+    public function internshipAgreements()
+    {
+        return $this->hasMany(InternshipAgreement::class);
+    }
+
     public function projects()
     {
         return $this->hasMany(Project::class);
@@ -98,7 +103,16 @@ class Organization extends Model
 
     public function setCountryAttribute($value)
     {
-        $this->attributes['country'] = is_array($value) ? ($value['value'] ?? $value) : $value;
+        // If already a country code, store it directly
+        if (array_key_exists($value, $this->getCountriesList())) {
+            $this->attributes['country'] = $value;
+
+            return;
+        }
+
+        // Find the country code by name
+        $countryCode = array_search($value, $this->getCountriesList());
+        $this->attributes['country'] = $countryCode ?: $value;
     }
 
     public function scopeActive($query)
@@ -114,5 +128,22 @@ class Organization extends Model
         }
 
         return str_starts_with($this->website, 'http') ? $this->website : "https://{$this->website}";
+    }
+
+    public function getTotalAgreementsCountAttribute()
+    {
+        return $this->internshipAgreements()->count()
+            + $this->finalYearInternshipAgreements()->count()
+            + $this->apprenticeshipAgreements()->count();
+    }
+
+    public function getTotalContactsCountAttribute()
+    {
+        return $this->internshipAgreementContacts()->count();
+    }
+
+    public function getTotalRelatedCountAttribute()
+    {
+        return $this->total_agreements_count + $this->total_contacts_count;
     }
 }

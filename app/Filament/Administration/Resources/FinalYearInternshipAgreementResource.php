@@ -383,7 +383,7 @@ class FinalYearInternshipAgreementResource extends BaseResource
                             ->schema([
                                 Infolists\Components\TextEntry::make('parrain.full_name')
                                     ->label('Parrain'),
-                                Infolists\Components\TextEntry::make('supervisor.full_name')
+                                Infolists\Components\TextEntry::make('externalSupervisor.full_name')
                                     ->label('Supervisor'),
                             ]),
                         Infolists\Components\Fieldset::make('Status')
