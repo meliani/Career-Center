@@ -758,7 +758,7 @@
                 </p>
 <p>Un avenant à la convention pourra éventuellement être établi en cas de prolongation de stage faite à la demande de l’entreprise et de l’étudiant stagiaire. Toutes prolongations seront soumises aux obligations du programme concerné.</p>
 <p class="text-xs mt-1"><strong>Déroulement du stage</strong></p>
-<p>La durée hebdomadaire maximale de présence du stagiaire dans l’entreprise sera de {{ $internship->workload }} heures/semaine.</p>
+<p>La durée hebdomadaire maximale de présence du stagiaire dans l’entreprise sera de <strong>{{ $internship->workload }} heures/semaine<strong>.</p>
             </p>
         </div>
         <h2 class="text-base font-semibold mt-2 mb-0">ARTICLE 4 : Statut du stagiaire - Encadrement</h2>
@@ -1577,7 +1577,7 @@
                     <div class="text-xs mt-2 mb-2">
                         <p>L’étudiant stagiaire ne perçoit aucune rémunération. Toutefois il peut lui être alloué une gratification.
 Lorsque la durée du  stage est supérieure à trois mois consécutifs, celui-ci fait l’objet d’une gratification
-Cette dernière est fixée à {{ $internship->remuneration }} {{ $internship->currency->getSymbol() }} par mois.
+Cette dernière est fixée à <strong>{{ $internship->remuneration }} {{ $internship->currency->getSymbol() }}</strong> par mois.
                         </p>
                         <p><strong>Modalités de versement de la gratification</strong> : virement</p>
                         <p>Si le stagiaire bénéficie d’avantages en nature (gratuité des repas par exemple), le montant représentant la valeur de ces avantages sera ajouté au montant de la gratification  mensuelle avant comparaison au produit de 12.5% du plafond horaire de la sécurité sociale par le nombre d’heures de stage effectuées au cours du mois considéré.
