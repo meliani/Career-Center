@@ -746,8 +746,8 @@
         Conformément au règlement intérieur de l’Institut National des Postes et Télécommunications (INPT), l’élève ingénieur est appelé à effectuer un stage de PFE obligatoire pour l’obtention du diplôme d'ingénieur en télécommunications. L'objectif poursuivi du stage de PFE est de donner à chaque étudiant l'occasion d'effectuer une recherche personnelle et approfondie sur un sujet proposé par une entreprise afin de s'immerger dans le monde du travail. Il portera sur le sujet suivant :
             <strong>{{$internship->title}}</strong>
         </div>
-        <h5 class="text-base font-semibold mt-2 mb-0">Contenu détaillé du stage</h4>
-        <div class="text-xs mt-2">
+        <p class="text-xs mt-1"><strong>Contenu détaillé du stage</strong></p>
+        <div class="text-xs mt-0">
             {{$internship->description}}
         </div>
 
@@ -757,7 +757,7 @@
                 <strong>Période de stage</strong>: Le stage aura lieu du <strong>{{$internship->starting_at->format('d/m/Y')}}</strong> au <strong>{{$internship->ending_at->format('d/m/Y')}}</strong>.
                 </p>
 <p>Un avenant à la convention pourra éventuellement être établi en cas de prolongation de stage faite à la demande de l’entreprise et de l’étudiant stagiaire. Toutes prolongations seront soumises aux obligations du programme concerné.</p>
-<p><strong>Déroulement du stage</strong></p>
+<p class="text-xs mt-1"><strong>Déroulement du stage</strong></p>
 <p>La durée hebdomadaire maximale de présence du stagiaire dans l’entreprise sera de {{ $internship->workload }} heures/semaine.</p>
             </p>
         </div>
@@ -769,10 +769,10 @@
             <p>
             Le règlement de l’INPT prévoit l'encadrement du stagiaire au cours de sa période de stage en entreprise. Cet encadrement doit être assuré par un enseignant de l’INPT et par un membre de l'entreprise chargé d'accueillir et d'accompagner le stagiaire.
             </p>
-            <p><strong>L’encadrement sera assuré par:</strong></p>
+            <p class="text-xs mt-1"><strong>L’encadrement sera assuré par:</strong></p>
             <p><strong>Maître de stage :</strong> <strong>{{$internship->externalSupervisor->formal_name}}</strong>, {{$internship->externalSupervisor->phone}}, {{$internship->externalSupervisor->email}}</p>
             <p><strong>Tuteur pédagogique / Conseiller de stage :</strong> <strong>{{$internship->internalSupervisor->formal_name}}</strong>, {{$internship->internalSupervisor->email}}</p>
-            <p>Lieu du stage (adresse précise, si différente de l’adresse de l’entreprise indiquée ci dessus): {{$internship->office_location}}</p>
+            <p class="text-xs mt-1">Lieu du stage (adresse précise, si différente de l’adresse de l’entreprise indiquée ci dessus): {{$internship->office_location}}</p>
         </div>
 
 
@@ -1590,13 +1590,13 @@ Cette dernière est fixée à {{ $internship->remuneration }} {{ $internship->cu
     <p>Pendant la durée du stage et sous réserve des dispositions de l'article 7.2 de la présente convention, l'étudiant stagiaire continue à percevoir les prestations du régime social étudiant.</p>
     <p>Quel que soit le montant de la gratification versée, l'étudiant stagiaire conserve son statut d'étudiant ; il ne compte pas dans les effectifs salariés de l'Entreprise et ne peut prétendre bénéficier des avantages particuliers valables pour le personnel de l'Entreprise.</p>
 
-    <p><strong>7.1 : En cas de gratification inférieure ou égale à 15% du plafond horaire de la sécurité sociale</strong></p>
+    <p class="text-xs mt-2"><strong>7.1 : En cas de gratification inférieure ou égale à 15% du plafond horaire de la sécurité sociale</strong></p>
     <p>(soit 554.40 euros en 2016 pour une durée légale de travail hebdomadaire de 35 heures) avantages en nature inclus:</p>
     <p>Dans ce cas, conformément à la législation en vigueur, la gratification de stage n'est pas soumise à cotisation sociale.</p>
     <p>L'étudiant stagiaire continue à bénéficier de la législation sur les accidents du travail au titre de l'article L 412-8-2 du code de la Sécurité Sociale, régime étudiant.</p>
     <p>En cas d'accident survenant à l'étudiant stagiaire, soit au cours des travaux dans l'Entreprise, soit au cours du trajet, soit sur des lieux rendus utiles pour les besoins de son stage, l'Entreprise s'engage à faire parvenir sous 48 heures toutes les informations utiles à l'Ecole pour que cette dernière puisse établir la déclaration d'accident.</p>
 
-    <p><strong>7.2 : En cas de gratification supérieure à 15% du plafond horaire de la sécurité sociale</strong></p>
+    <p class="text-xs mt-2"><strong>7.2 : En cas de gratification supérieure à 15% du plafond horaire de la sécurité sociale</strong></p>
     <p>(soit 554.40 euros en 2016 pour une durée légale de travail hebdomadaire de 35 heures) :</p>
     <p>Les sommes versées prennent alors le caractère d'une rémunération.</p>
     <p>Les cotisations sociales sont calculées sur le différentiel entre le montant de la gratification et 15% du plafond horaire de la sécurité sociale multipliée par le nombre d'heure de stage effectué dans le mois.</p>
@@ -2387,7 +2387,7 @@ Cette dernière est fixée à {{ $internship->remuneration }} {{ $internship->cu
                     </g>
                 </svg>
 
-    <p><strong>7.3 : Déplacements</strong></p>
+    <p class="text-xs mt-2"><strong>7.3 : Déplacements</strong></p>
     <p>En cas de déplacement, il appartient à l'entreprise d'établir, dans tous les cas, un descriptif nominatif de la nature du déplacement et d'en informer l'Ecole.</p>
     <p>De plus, en cas de déplacements à l'étranger, ceux-ci doivent impérativement être signalés par écrit à l'école au moins quinze jours avant la date prévue de départ. L'école doit signaler ces déplacements à la sécurité sociale.</p>
     <p>Lorsque ces conditions ne sont pas remplies, l'entreprise s'engage à cotiser pour la protection de l'élève stagiaire et à faire les déclarations nécessaires en cas d'accident du travail.</p>
