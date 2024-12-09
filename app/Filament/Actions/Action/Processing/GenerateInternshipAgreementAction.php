@@ -23,7 +23,15 @@ class GenerateInternshipAgreementAction extends Action
 
         $static->configure()->action(function (array $data, FinalYearInternshipAgreement $FinalYearInternship): void {
             $FinalYearInternship = $FinalYearInternship->load('student', 'organization');
-            $template_view = 'pdf.templates.' . $FinalYearInternship->student->level->value . '.agreement_template';
+
+            // Determine template based on organization's country
+            $template_view = 'pdf.templates.' . $FinalYearInternship->student->level->value . '/';
+            if ($FinalYearInternship->organization->country === 'France') {
+                $template_view .= 'france_agreement_template';
+            } else {
+                $template_view .= $FinalYearInternship->student->level->value . '.agreement_template';
+            }
+
             $pdf_path = 'storage/pdf/apprenticeship_agreements/' . $FinalYearInternship->student->level->value;
             $pdf_file_name = 'convention-de-stage-' . Str::slug($FinalYearInternship->student->full_name) . '-' . time() . '.pdf';
 
