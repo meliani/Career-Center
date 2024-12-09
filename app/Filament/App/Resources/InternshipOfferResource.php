@@ -6,7 +6,6 @@ use App\Enums;
 use App\Filament\App\Resources\InternshipOfferResource\Pages;
 use App\Filament\Core\StudentBaseResource;
 use App\Models\InternshipOffer;
-use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
@@ -41,54 +40,7 @@ class InternshipOfferResource extends StudentBaseResource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('year_id')
-                    ->numeric(),
-                Forms\Components\TextInput::make('organization_name')
-                    ->maxLength(191),
-                Forms\Components\TextInput::make('organization_type')
-                    ->maxLength(191),
-                Forms\Components\TextInput::make('organization_id')
-                    ->numeric(),
-                Country::make('country'),
-                Forms\Components\TextInput::make('internship_type'),
-                Forms\Components\TextInput::make('responsible_name')
-                    ->maxLength(191),
-                Forms\Components\TextInput::make('responsible_occupation')
-                    ->maxLength(191),
-                Forms\Components\TextInput::make('responsible_phone')
-                    ->tel()
-                    ->maxLength(191),
-                Forms\Components\TextInput::make('responsible_email')
-                    ->email()
-                    ->maxLength(191),
-                Forms\Components\Textarea::make('project_title')
-                    ->columnSpanFull(),
-                Forms\Components\Textarea::make('project_details')
-                    ->columnSpanFull(),
-                Forms\Components\TextInput::make('internship_location')
-                    ->maxLength(191),
-                Forms\Components\TextInput::make('keywords')
-                    ->maxLength(191),
-                Forms\Components\TextInput::make('attached_file')
-                    ->maxLength(191),
-                Forms\Components\Textarea::make('application_link')
-                    ->columnSpanFull(),
-                Forms\Components\TextInput::make('internship_duration')
-                    ->numeric(),
-                Forms\Components\TextInput::make('remuneration')
-                    ->maxLength(191),
-                Forms\Components\TextInput::make('currency')
-                    ->maxLength(10),
-                Forms\Components\TextInput::make('workload')
-                    ->numeric(),
-                Forms\Components\TextInput::make('recruiting_type'),
-                Forms\Components\TextInput::make('application_email')
-                    ->email()
-                    ->maxLength(191),
-                Forms\Components\TextInput::make('status'),
-                Forms\Components\TextInput::make('applyable')
-                    ->maxLength(1),
-                Forms\Components\DatePicker::make('expire_at'),
+
             ]);
     }
 
@@ -151,6 +103,7 @@ class InternshipOfferResource extends StudentBaseResource
                     ->label(__('Viewed'))
                     ->boolean()
                     ->searchable(false)
+                    ->sortable(false)
                     ->getStateUsing(fn ($record) => auth()->user()->hasViewedOffer($record->id))
                     ->icon(fn ($state) => $state ? 'heroicon-o-eye' : 'heroicon-o-eye-slash')
                     ->color(fn ($state) => $state ? 'success' : 'gray'),

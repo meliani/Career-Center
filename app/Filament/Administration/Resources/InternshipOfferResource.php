@@ -172,7 +172,7 @@ class InternshipOfferResource extends BaseResource
                 // Tables\Columns\TextColumn::make('internship_type'),
                 Tables\Columns\TagsColumn::make('tags')
                     ->toggleable(isToggledHiddenByDefault: true)
-                    ->searchable(),
+                    ->searchable(false),
 
                 // Tables\Columns\TextColumn::make('responsible_name')
                 //     ->toggleable(isToggledHiddenByDefault: true)
