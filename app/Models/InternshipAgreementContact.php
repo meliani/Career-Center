@@ -49,71 +49,127 @@ class InternshipAgreementContact extends Model
 
     public static function createOrUpdate(array $attributes)
     {
-        $mainFields = ['first_name', 'last_name', 'email', 'organization_id'];
-
         $query = self::query();
-        foreach ($mainFields as $field) {
-            if (isset($attributes[$field])) {
-                $query->where($field, $attributes[$field]);
-            }
+
+        // Case insensitive email match
+        if (isset($attributes['email'])) {
+            $query->where('email', 'LIKE', $attributes['email']);
         }
 
-        $existingContact = $query->first();
+        // Name matching with various patterns
+        if (isset($attributes['first_name'], $attributes['last_name'])) {
+            $query->where(function ($q) use ($attributes) {
+                // Exact match (case insensitive)
+                $q->where(function ($q) use ($attributes) {
+                    $q->whereRaw('LOWER(first_name) = ?', [strtolower($attributes['first_name'])])
+                        ->whereRaw('LOWER(last_name) = ?', [strtolower($attributes['last_name'])]);
+                })
+                // Initial with last name (e.g., "J. Smith" matches "John Smith")
+                    ->orWhere(function ($q) use ($attributes) {
+                        $q->whereRaw('LOWER(LEFT(first_name, 1)) = ?', [strtolower(substr($attributes['first_name'], 0, 1))])
+                            ->whereRaw('LOWER(last_name) = ?', [strtolower($attributes['last_name'])]);
+                    })
+                // Handle possible swapped first/last names
+                    ->orWhere(function ($q) use ($attributes) {
+                        $q->whereRaw('LOWER(first_name) = ?', [strtolower($attributes['last_name'])])
+                            ->whereRaw('LOWER(last_name) = ?', [strtolower($attributes['first_name'])]);
+                    });
+            });
+        }
 
-        if ($existingContact) {
-            // Calculate completeness scores
-            $existingScore = collect($existingContact->getAttributes())
-                ->except(['id', 'created_at', 'updated_at', 'deleted_at'])
-                ->filter()
-                ->count();
+        // Organization match
+        if (isset($attributes['organization_id'])) {
+            $query->where('organization_id', $attributes['organization_id']);
+        }
 
-            $newScore = collect($attributes)
-                ->except(['id', 'created_at', 'updated_at', 'deleted_at'])
-                ->filter()
-                ->count();
+        // Find best matching contact
+        $existingContacts = $query->get();
 
-            // Merge attributes, preferring:
-            // 1. Non-null values
-            // 2. Newer record's value if both are filled
-            // 3. Keeping the earliest created_at
-            $mergedAttributes = collect($existingContact->getAttributes())
+        if ($existingContacts->isNotEmpty()) {
+            // Score each contact for best match
+            $scoredContacts = $existingContacts->map(function ($contact) use ($attributes) {
+                $score = 0;
+
+                // Email exact match (highest weight)
+                if (isset($attributes['email']) && strtolower($contact->email) === strtolower($attributes['email'])) {
+                    $score += 100;
+                }
+
+                // Name matching score
+                if (isset($attributes['first_name'], $attributes['last_name'])) {
+                    // Exact name match
+                    if (strtolower($contact->first_name) === strtolower($attributes['first_name']) &&
+                        strtolower($contact->last_name) === strtolower($attributes['last_name'])) {
+                        $score += 50;
+                    }
+                    // Initial match
+                    elseif (strtolower(substr($contact->first_name, 0, 1)) === strtolower(substr($attributes['first_name'], 0, 1)) &&
+                            strtolower($contact->last_name) === strtolower($attributes['last_name'])) {
+                        $score += 30;
+                    }
+                }
+
+                // Phone number match (normalized)
+                if (isset($attributes['phone']) && $contact->phone) {
+                    $normalizedPhone1 = preg_replace('/[^0-9+]/', '', $contact->phone);
+                    $normalizedPhone2 = preg_replace('/[^0-9+]/', '', $attributes['phone']);
+                    if ($normalizedPhone1 === $normalizedPhone2) {
+                        $score += 40;
+                    }
+                }
+
+                // Organization match
+                if (isset($attributes['organization_id']) && $contact->organization_id === $attributes['organization_id']) {
+                    $score += 20;
+                }
+
+                // Data completeness score
+                $score += collect($contact->getAttributes())
+                    ->except(['id', 'created_at', 'updated_at', 'deleted_at'])
+                    ->filter()
+                    ->count() * 2;
+
+                return [
+                    'contact' => $contact,
+                    'score' => $score,
+                ];
+            });
+
+            // Get the contact with highest match score
+            $bestMatch = $scoredContacts->sortByDesc('score')->first()['contact'];
+
+            // Merge attributes, preferring more complete/newer data
+            $mergedAttributes = collect($bestMatch->getAttributes())
                 ->except(['id', 'updated_at', 'deleted_at'])
-                ->map(function ($value, $key) use ($attributes, $newScore, $existingScore) {
-                    // Skip if key doesn't exist in new attributes
+                ->map(function ($value, $key) use ($attributes) {
                     if (! array_key_exists($key, $attributes)) {
                         return $value;
                     }
-
-                    $newValue = $attributes[$key];
 
                     // Special handling for created_at
                     if ($key === 'created_at') {
                         return min($value, $attributes[$key] ?? $value);
                     }
 
-                    // If one value is null, take the non-null value
+                    // Prefer non-null values
                     if ($value === null) {
-                        return $newValue;
+                        return $attributes[$key];
                     }
-                    if ($newValue === null) {
+                    if (! isset($attributes[$key]) || $attributes[$key] === null) {
                         return $value;
                     }
 
-                    // If both values are different, prefer the record with higher completeness
-                    if ($value !== $newValue) {
-                        return $newScore > $existingScore ? $newValue : $value;
-                    }
-
-                    return $value;
+                    // For other fields, prefer the newer value
+                    return $attributes[$key];
                 })
                 ->toArray();
 
-            $existingContact->fill($mergedAttributes);
-            if ($existingContact->isDirty()) {
-                $existingContact->save();
+            $bestMatch->fill($mergedAttributes);
+            if ($bestMatch->isDirty()) {
+                $bestMatch->save();
             }
 
-            return $existingContact;
+            return $bestMatch;
         }
 
         return self::create($attributes);

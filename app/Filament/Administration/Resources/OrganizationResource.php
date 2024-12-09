@@ -4,6 +4,7 @@ namespace App\Filament\Administration\Resources;
 
 use App\Enums;
 use App\Filament\Administration\Resources\OrganizationResource\Pages;
+use App\Filament\Administration\Resources\OrganizationResource\RelationManagers;
 use App\Filament\Core\BaseResource;
 use App\Models\InternshipAgreementContact;
 use App\Models\Organization;
@@ -424,7 +425,7 @@ class OrganizationResource extends BaseResource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\ContactsRelationManager::class,
         ];
     }
 
