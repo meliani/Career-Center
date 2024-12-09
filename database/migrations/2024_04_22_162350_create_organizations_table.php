@@ -15,12 +15,22 @@ class CreateOrganizationsTable extends Migration
             $table->string('address', 255)->nullable();
             $table->string('city')->nullable();
             $table->string('country')->nullable();
-            $table->unsignedBigInteger('central_organization')->nullable();
-            $table->foreign('central_organization')
+            $table->unsignedBigInteger('parent_organization')->nullable();
+            $table->foreign('parent_organization')
                 ->references('id')
                 ->on('organizations')
                 ->onDelete('set null')->nullable();
             $table->enum('status', OrganizationStatus::getArray())->nullable();
+            $table->unsignedBigInteger('created_by_student_id')->nullable();
+            $table->foreign('created_by_student_id')
+                ->references('id')
+                ->on('students')
+                ->onDelete('set null')->nullable();
+            $table->unsignedBigInteger('industry_information_id')->nullable();
+            $table->foreign('industry_information_id')
+                ->references('id')
+                ->on('industry_informations')
+                ->onDelete('set null')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

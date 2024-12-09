@@ -10,9 +10,12 @@ trait HasStudentProjects
 {
     public function projects()
     {
-        return $this->morphedByMany(Project::class, 'project', 'project_student', 'student_id', 'project_id')
-            ->using(ProjectStudent::class)
-            ->withTimestamps();
+        // return $this->morphedByMany(Project::class, 'project', 'project_student', 'student_id', 'project_id')
+        //     ->using(ProjectStudent::class)
+        //     ->withTimestamps();
+
+        return $this->hasMany(ProjectStudent::class, 'student_id');
+
     }
 
     public function project()

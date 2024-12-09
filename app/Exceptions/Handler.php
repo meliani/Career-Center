@@ -37,12 +37,12 @@ class Handler extends ExceptionHandler
             Log::info($e->getMessage());
         });
 
-        $this->renderable(function (QueryException $e, Request $request) {
-            $this->handleDuplicateEntryException($e);
+        // $this->renderable(function (QueryException $e, Request $request) {
+        //     $this->handleDuplicateEntryException($e);
 
-            //  continu browsing normally and return http response
-            // return $request;
-        });
+        //     //  continu browsing normally and return http response
+        //     // return $request;
+        // });
 
     }
 

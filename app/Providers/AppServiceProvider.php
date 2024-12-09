@@ -213,11 +213,19 @@ class AppServiceProvider extends ServiceProvider
         Model::unguard();
         LanguageSwitch::configureUsing(function (LanguageSwitch $switch) {
             $switch
+                ->circular()
                 ->visible(outsidePanels: true)
                 ->locales(['ar', 'en', 'fr']) // also accepts a closure
                 ->displayLocale('fr')
                 ->outsidePanelRoutes([
-                    'home',                ])
+                    'auth.login',
+                    'auth.register',
+                    // 'home',
+                    // 'welcome',
+                    // 'new-internship',
+                    // 'new-internship-fr',
+                    // 'publish-internship',
+                ])
                 ->outsidePanelPlacement(Placement::TopRight);
         });
         // PanelSwitch::configureUsing(function (PanelSwitch $panelSwitch) {

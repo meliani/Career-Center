@@ -4,8 +4,8 @@ namespace App\Services;
 
 use App\Enums\DefenseStatus;
 use App\Enums\Status;
-use App\Models\FinalProject;
 use App\Models\FinalYearInternshipAgreement;
+use App\Models\Project as FinalProject;
 use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -61,45 +61,33 @@ class FinalProjectService
         self::$duplicateProjects = 0;
 
         $agreements = FinalYearInternshipAgreement::where('status', Status::Signed)
+        // not having a project polymorphic using ProjectAgreement
+            ->doesntHave('project')
             ->get();
 
         foreach ($agreements as $agreement) {
-            // Check if project already exists using polymorphic relation
-            dd($agreement->project);
-            if ($agreement->project instanceof FinalProject) {
-                self::$duplicateProjects++;
-
-                continue;
-            }
-
-            // if ($agreement->final_project_id) {
-            //     self::$duplicateProjects++;
-
-            //     continue;
-            // }
 
             $project = FinalProject::create([
                 'title' => $agreement->title,
-                'language' => 'fr', // Set default or get from agreement if available
+                'language' => null, // Set default or get from agreement if available
                 'start_date' => $agreement->starting_at,
                 'end_date' => $agreement->ending_at,
                 'organization_id' => $agreement->organization_id,
                 'external_supervisor_id' => $agreement->external_supervisor_id,
-                'defense_status' => 'pending',
+                'parrain_id' => $agreement->parrain_id,
+                'defense_status' => 'Pending',
             ]);
 
-            // add polymorphic relation from agreement to project
-            $agreement->project()->associate($project);
+            $agreement->project()->attach($project);
 
             self::$createdProjects++;
         }
 
         // Show notification with results
         Notification::make()
-            ->title('Projects Assignment Complete')
+            ->title(__('Projects Assignment Complete'))
             ->success()
-            ->body('Created ' . self::$createdProjects . ' new projects. Found ' . self::$duplicateProjects . ' existing projects.')
-            ->send();
+            ->body(self::$createdProjects ? __(':count new project created.', ['count' => self::$createdProjects]) : __('No new projects created'))->send();
     }
 
     private static function createFromAgreement(FinalYearInternshipAgreement $internshipAgreement): FinalProject

@@ -3,7 +3,10 @@
 namespace App\Services\Filament\Tables\Projects;
 
 use App\Filament\Actions\Action\AddOrganizationEvaluationSheetAction;
+use App\Models\FinalYearInternshipAgreement;
+use App\Models\InternshipAgreement;
 use Filament\Tables;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Storage;
 
 class ProjectsTable
@@ -15,18 +18,39 @@ class ProjectsTable
         // dd($closures['evaluation_sheet_url']($record));
 
         return [
+            Tables\Columns\TextColumn::make('agreement_types')
+                ->label('Agreement Type')
+                ->searchable(false),
+            // ->formatStateUsing(function ($state) {
+            //     return implode(', ', $state);
+            // }),
             Tables\Columns\ColumnGroup::make(__('The student'))
                 ->columns([
-                    Tables\Columns\TextColumn::make('internship_agreements.id_pfe')
-                        ->label('ID PFE')
-                        ->searchable(true),
-                    Tables\Columns\TextColumn::make('students.full_name')
-                        ->label('Student name')
+                    Tables\Columns\TextColumn::make('id_pfe')
                         ->searchable(
-                            ['first_name', 'last_name']
+                            query: fn (Builder $query, string $search): Builder => $query
+                                ->whereHas('agreements', function (Builder $query) use ($search) {
+                                    $query->whereMorphRelation(
+                                        'agreeable',
+                                        [InternshipAgreement::class, FinalYearInternshipAgreement::class],
+                                        function (Builder $query) use ($search) {
+                                            $query->whereHas('student', function (Builder $query) use ($search) {
+                                                $query->where('id_pfe', 'like', "%{$search}%")
+                                                    ->orWhere('first_name', 'like', "%{$search}%")
+                                                    ->orWhere('last_name', 'like', "%{$search}%");
+                                            });
+                                        }
+                                    );
+                                })
                         )
-                        ->limit(20),
-                    Tables\Columns\TextColumn::make('students.program')
+                        ->wrap()
+                        ->label('ID PFE'),
+                    Tables\Columns\TextColumn::make('agreements.agreeable.student.full_name')
+                        ->label('Student name')
+                        ->searchable(false)
+                        // ->limit(20)
+                        ->wrap(),
+                    Tables\Columns\TextColumn::make('agreements.agreeable.student.program')
                         ->toggleable(isToggledHiddenByDefault: true)
                         ->label('Program')
                         ->searchable(false)
@@ -36,8 +60,9 @@ class ProjectsTable
                     //     // ->sortable(false)
                     //     ->sortableMany()
                     //     ->searchable(),
-                    Tables\Columns\TextColumn::make('department')
+                    Tables\Columns\TextColumn::make('Department')
                         ->toggleable(isToggledHiddenByDefault: true)
+                        ->formatStateUsing(fn ($record) => $record->agreements->agreeable->student->department)
                         ->label('Assigned department')
                         ->searchable(false)
                         ->sortableMany(),
@@ -96,10 +121,10 @@ class ProjectsTable
                         ->url(fn ($record) => $record->evaluation_sheet_url, shouldOpenInNewTab: true),
                     // ->simpleLightbox(Storage::disk('public')->url($closures['evaluation_sheet_url'](fn ($record) => $record->evaluation_sheet_url))),
                     // ->simpleLightbox(fn ($record) => $record->evaluation_sheet_url),
-                    Tables\Columns\TextColumn::make('defense_authorized_by_user.name')
-                        ->toggleable(isToggledHiddenByDefault: true)
-                        ->label('Authorized by')
-                        ->badge(),
+                    // Tables\Columns\TextColumn::make('defense_authorized_by_user.name')
+                    //     ->toggleable(isToggledHiddenByDefault: true)
+                    //     ->label('Authorized by')
+                    //     ->badge(),
                 ]),
 
             Tables\Columns\ColumnGroup::make(__('Defense information'))
@@ -109,7 +134,7 @@ class ProjectsTable
                     //     ->searchable(
                     //         ['first_name', 'last_name']
                     //     ),
-                    Tables\Columns\TextColumn::make('external_supervisor_name')
+                    Tables\Columns\TextColumn::make('externalSupervisor.full_name')
                         ->label('External Supervisor')
                         ->limit(30)
                         ->searchable(false),
@@ -168,31 +193,32 @@ class ProjectsTable
 
             Tables\Columns\ColumnGroup::make(__('Entreprise information'))
                 ->columns([
-                    Tables\Columns\TextColumn::make('organization_name')
+                    Tables\Columns\TextColumn::make('organization.name')
                         ->label('Organization')
                         ->searchable(false)
                         ->sortable(false),
-                    Tables\Columns\TextColumn::make('address')
+                    Tables\Columns\TextColumn::make('organization.address')
                         ->toggleable(isToggledHiddenByDefault: true)
                         ->label('Address')
                         ->searchable(false)
                         ->sortable(false),
-                    Tables\Columns\TextColumn::make('parrain')
+                    Tables\Columns\TextColumn::make('parrain.full_name')
+                        // ->description(fn ($record) => $record->agreements->agreeable->parrain->phone . ' - ' . $record->agreements->agreeable->parrain->email)
                         ->label('Le Parrain')
                         ->searchable(false)
                         ->sortable(false),
-                    Tables\Columns\TextColumn::make('parrain_contact')
-                        ->toggleable(isToggledHiddenByDefault: true)
-                        ->label('Contacts Parrain')
-                        ->searchable(false)
-                        ->sortable(false),
+                    // Tables\Columns\TextColumn::make('parrain_contact')
+                    //     ->toggleable(isToggledHiddenByDefault: true)
+                    //     ->label('Contacts Parrain')
+                    //     ->searchable(false)
+                    //     ->sortable(false),
 
-                    Tables\Columns\TextColumn::make('keywords')
-                        ->toggleable(isToggledHiddenByDefault: true)
-                        ->label('Keywords')
-                        ->searchable(false)
-                        ->sortable(false)
-                        ->limit(50),
+                    // Tables\Columns\TextColumn::make('keywords')
+                    //     ->toggleable(isToggledHiddenByDefault: true)
+                    //     ->label('Keywords')
+                    //     ->searchable(false)
+                    //     ->sortable(false)
+                    //     ->limit(50),
                 ]),
 
             Tables\Columns\TextColumn::make('created_at')

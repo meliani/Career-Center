@@ -6,7 +6,6 @@ use App\Enums;
 use App\Filament\Actions\BulkAction;
 use App\Filament\Administration\Resources\ProjectResource\Pages;
 use App\Filament\Administration\Resources\ProjectResource\RelationManagers;
-use App\Filament\Administration\Widgets\DefensesPerProgramChart;
 use App\Filament\Core;
 use App\Models\Project;
 use App\Models\Year;
@@ -20,6 +19,7 @@ use Filament\Resources\RelationManagers\RelationGroup;
 use Filament\Support\Enums as FilamentEnums;
 use Filament\Tables;
 use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Hydrat\TableLayoutToggle\Facades\TableLayoutToggle;
 use Illuminate\Database\Eloquent\Builder;
@@ -27,8 +27,6 @@ use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 use Parallax\FilamentComments\Actions\CommentsAction;
 use Parallax\FilamentComments\Infolists\Components\CommentsEntry;
 use pxlrbt\FilamentExcel;
-
-use function Spatie\LaravelPdf\Support\pdf;
 
 class ProjectResource extends Core\BaseResource
 {
@@ -64,10 +62,10 @@ class ProjectResource extends Core\BaseResource
     {
         return [
             'title',
-            'internship_agreements.organization_name',
-            'students.first_name',
-            'students.last_name',
-            'internship_agreements.id_pfe',
+            'agreements.agreeable.organization.name',
+            'agreements.agreeable.student.first_name',
+            'agreements.agreeable.student.last_name',
+            'agreements.agreeable.student.id_pfe',
             'professors.first_name',
             'professors.last_name',
         ];
@@ -96,6 +94,40 @@ class ProjectResource extends Core\BaseResource
     //     //         });
     //     //     });
     // }
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ])
+            ->with(['agreements.agreeable.student']);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            RelationManagers\ProfessorsRelationManager::class,
+            RelationGroup::make(__('Students and Internship Agreements'), [
+                // RelationManagers\StudentsRelationManager::class,
+                RelationManagers\InternshipAgreementsRelationManager::class,
+            ]),
+            RelationGroup::make(__('Defense Details'), [
+                RelationManagers\TimetableRelationManager::class,
+                RelationManagers\CommentsRelationManager::class,
+            ]),
+        ];
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListProjects::route('/'),
+            // 'create' => Pages\CreateProject::route('/create'),
+            'edit' => Pages\EditProject::route('/{record}/edit'),
+            'view' => Pages\ViewProject::route('/{record}/view'),
+
+        ];
+    }
 
     public static function form(Form $form): Form
     {
@@ -165,7 +197,7 @@ class ProjectResource extends Core\BaseResource
             ->defaultPaginationPageOption(10)
             ->filtersLayout(FiltersLayout::AboveContentCollapsible)
             // ->striped()
-            ->deferLoading()
+            // ->deferLoading()
             ->defaultSort('timetable.timeslot.start_time')
             ->defaultGroup('timetable.timeslot.start_time')
             ->groups([
@@ -192,6 +224,39 @@ class ProjectResource extends Core\BaseResource
                     ] : null
             )
             ->filters([
+                SelectFilter::make('agreement_type')
+                    ->label('Internship Type')
+                    ->options([
+                        'internship' => 'Introductory/Technical Internship',
+                        'final_year' => 'Final Year Internship',
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query->when(
+                            $data['value'],
+                            function (Builder $query, string $value): Builder {
+                                return $query->whereHas('agreements', function (Builder $query) use ($value) {
+                                    if ($value === 'internship') {
+                                        $query->where('agreeable_type', InternshipAgreement::class);
+                                    } elseif ($value === 'final_year') {
+                                        $query->where('agreeable_type', FinalYearInternshipAgreement::class);
+                                    }
+                                });
+                            }
+                        );
+                    })
+                    ->indicateUsing(function (array $data): ?string {
+                        if (! $data['value']) {
+                            return null;
+                        }
+
+                        return 'Type: ' . (
+                            $data['value'] === 'internship'
+                            ? 'Introductory/Technical'
+                            : 'Final Year'
+                        );
+                    })
+                    ->columnSpanFull(), // Makes the filter span the full width
+
                 // DateRangeFilter::make('timetable.timeslot.start_time')
                 // ->label('Defense date')
                 // ->defaultToday()
@@ -273,56 +338,34 @@ class ProjectResource extends Core\BaseResource
                             fn (Builder $query) => $query->whereDoesntHave('students', fn ($query) => $query->select('project_id')->groupBy('project_id')->havingRaw('COUNT(*) <= 1'))
                         ),
                     ),
-
+                SelectFilter::make('agreement_type')
+                    ->label('Agreement Type')
+                    ->options([
+                        'InternshipAgreement' => 'Internship Agreement',
+                        'FinalYearInternshipAgreement' => 'Final Year Internship Agreement',
+                    ])
+                    ->query(function (Builder $query, array $data) {
+                        if ($data['value']) {
+                            $query->whereHas('agreements', function (Builder $q) use ($data) {
+                                $q->where('agreeable_type', 'App\\Models\\' . $data['value']);
+                            });
+                        }
+                    }),
             ])
             ->headerActions([
-                Tables\Actions\Action::make('Generate report')
-                    ->label('Generate report')
-                    ->icon('heroicon-o-document')
-                    ->color('primary')
-                    ->hidden(true)
-                    ->action(function () {
-                        $chartWidget = new DefensesPerProgramChart;
-                        $chartOptions = $chartWidget->getOptions();
-                        $chartWidget->dataURI();
-
-                        $html = '<h1>' . $chartOptions['chart']['type'] . ' Chart</h1>';
-                        $html .= '<table border="1">';
-                        $html .= '<tr><th>Program</th><th>Total Projects</th><th>Total Defenses</th><th>Percentage</th></tr>';
-
-                        foreach ($chartOptions['xaxis']['categories'] as $index => $program) {
-                            $html .= '<tr>';
-                            $html .= '<td>' . $program . '</td>';
-                            $html .= '<td>' . $chartOptions['series'][0]['data'][$index] . '</td>';
-                            $html .= '<td>' . $chartOptions['series'][1]['data'][$index] . '</td>';
-                            $html .= '<td>' . $chartOptions['series'][2]['data'][$index] . '%</td>';
-                            $html .= '</tr>';
-                        }
-
-                        $html .= '</table>';
-                        pdf()
-                            ->html($html)
-                            ->name('defenses_report.pdf')
-                            ->save('storage/pdf/defenses_report.pdf');
-
-                        return pdf()
-                            ->html($html)
-                            ->name('defenses_report.pdf')
-                            ->download();
-                    }),
-                Tables\Actions\Action::make('Check changed professors')
-                    ->label('Check changed professors')
-                    ->tooltip('Check if professors have been changed after getting Authorization')
-                    ->color('primary')
-                    ->hidden(fn () => auth()->user()->isAdministrator() === false)
-                    ->action(function () {
-                        $googleServices = new \App\Services\GoogleServices;
-                        $googleServices->checkChangedProfessors();
-                    }),
+                /*                 Tables\Actions\Action::make('Check changed professors')
+                        ->label('Check changed professors')
+                        ->tooltip('Check if professors have been changed after getting Authorization')
+                        ->color('primary')
+                        ->hidden(fn () => auth()->user()->isAdministrator() === false)
+                        ->action(function () {
+                            $googleServices = new \App\Services\GoogleServices;
+                            $googleServices->checkChangedProfessors();
+                        }),
                 \App\Filament\Actions\Action\Processing\GoogleSheetSyncAction::make('Google Sheet Sync')
-                    ->label('Google Sheet Sync')
-                    ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()) === false),
-
+                        ->label('Google Sheet Sync')
+                        ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()) === false),
+ */
                 FilamentExcel\Actions\Tables\ExportAction::make()
                     ->exports([
                         FilamentExcel\Exports\ExcelExport::make()
@@ -347,10 +390,10 @@ class ProjectResource extends Core\BaseResource
                             ]),
                     ]),
                 TableLayoutToggle::getToggleViewTableAction(compact: true),
-                Tables\Actions\ActionGroup::make([
-                    \App\Filament\Actions\Action\Processing\ImportProfessorsFromInternshipAgreements::make('Import Professors From Internship Agreements')
-                        ->hidden(fn () => auth()->user()->isAdministrator() === false),
-                ]),
+                // Tables\Actions\ActionGroup::make([
+                //     \App\Filament\Actions\Action\Processing\ImportProfessorsFromInternshipAgreements::make('Import Professors From Internship Agreements')
+                //         ->hidden(fn () => auth()->user()->isAdministrator() === false),
+                // ]),
 
             ])
             ->actions([
@@ -457,32 +500,6 @@ class ProjectResource extends Core\BaseResource
 
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            RelationManagers\ProfessorsRelationManager::class,
-            RelationGroup::make(__('Students and Internship Agreements'), [
-                RelationManagers\StudentsRelationManager::class,
-                RelationManagers\InternshipAgreementsRelationManager::class,
-            ]),
-            RelationGroup::make(__('Defense Details'), [
-                RelationManagers\TimetableRelationManager::class,
-                RelationManagers\CommentsRelationManager::class,
-            ]),
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListProjects::route('/'),
-            // 'create' => Pages\CreateProject::route('/create'),
-            'edit' => Pages\EditProject::route('/{record}/edit'),
-            'view' => Pages\ViewProject::route('/{record}/view'),
-
-        ];
-    }
-
     public static function infolist(Infolist $infolist): Infolist
     {
         $organization_evaluation_sheet_url = $infolist->getRecord()->organization_evaluation_sheet_url ? url($infolist->getRecord()->organization_evaluation_sheet_url) : null;
@@ -577,11 +594,11 @@ class ProjectResource extends Core\BaseResource
                     ->schema([
                         Infolists\Components\TextEntry::make('id_pfe')
                             ->label('PFE ID'),
-                        Infolists\Components\TextEntry::make('students.long_full_name')
+                        Infolists\Components\TextEntry::make('students_names')
                             ->label('Student'),
-                        Infolists\Components\TextEntry::make('students.program')
+                        Infolists\Components\TextEntry::make('students_programs')
                             ->label('Program'),
-                        Infolists\Components\TextEntry::make('organization')
+                        Infolists\Components\TextEntry::make('organization_name')
                             ->label('Organization'),
 
                         Infolists\Components\TextEntry::make('title')
@@ -606,12 +623,13 @@ class ProjectResource extends Core\BaseResource
 
                         Infolists\Components\Fieldset::make('Entreprise supervisor')
                             ->schema([
-                                Infolists\Components\TextEntry::make('internship_agreements.encadrant_ext_nom')
-                                    ->label('')
+                                Infolists\Components\TextEntry::make('externalSupervisor.full_name')
+                                    ->label(fn ($record) => $record->externalSupervisor->full_name)
                                     ->formatStateUsing(
-                                        fn ($record) => $record->internship_agreements->map(
-                                            fn ($internship_agreement) => "**{$internship_agreement->encadrant_ext_name}**" . PHP_EOL . $internship_agreement->encadrant_ext_mail . PHP_EOL . $internship_agreement->encadrant_ext_tel
-                                        )->join(', ')
+                                        fn ($record) => $record->externalSupervisor->email ? "[{$record->externalSupervisor->email}](mailto:{$record->externalSupervisor->email})" : null
+                                    )
+                                    ->tooltip(
+                                        fn ($record) => $record->externalSupervisor->phone ? __('Phone') . ': ' . $record->externalSupervisor->phone : null
                                     )
                                     ->markdown(),
 

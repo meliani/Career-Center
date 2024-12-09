@@ -26,7 +26,7 @@ return new class extends Migration
             $table->text('observations')->nullable();
             $table->unsignedBigInteger('organization_id');
             $table->string('office_location')->nullable();
-            $table->string('title')->nullable();
+            $table->text('title')->nullable();
             $table->text('description')->nullable();
             $table->dateTime('starting_at')->nullable();
             $table->dateTime('ending_at')->nullable();

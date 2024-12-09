@@ -1,10 +1,8 @@
 <?php
 
-namespace App\Filament\Administration\Resources\FinalProjectResource\RelationManagers;
+namespace App\Filament\Administration\Resources\ProjectResource\RelationManagers;
 
-use Filament\Forms;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -25,36 +23,24 @@ class InternshipAgreementsRelationManager extends RelationManager
         return __(self::$title);
     }
 
-    public function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('title')
-                    // ->relationship('student', 'full_name')
-                    ->required(),
-                Forms\Components\TextInput::make('student.long_full_name')
-                    ->required(),
-            ]);
-    }
-
     public function table(Table $table): Table
     {
         return $table
             ->paginated(false)
             ->searchable(false)
-            ->recordTitleAttribute('title', 'student.long_full_name')
+            ->recordTitleAttribute('title', 'long_full_name')
             ->columns([
                 Tables\Columns\TextColumn::make('id_pfe'),
-                Tables\Columns\TextColumn::make('student.long_full_name'),
-                Tables\Columns\TextColumn::make('title'),
+                Tables\Columns\TextColumn::make('long_full_name'),
+                Tables\Columns\TextColumn::make('internship_agreement.title'),
             ])
             ->filters([
                 //
             ])
             ->headerActions([
-                Tables\Actions\AssociateAction::make()
+                Tables\Actions\AttachAction::make()
                     // ->recordTitleAttribute('title', 'student.long_full_name')
-                    ->recordTitle(fn ($record): string => "{$record->title} ({$record->student->long_full_name})")
+                    ->recordTitle(fn ($record): string => "{$record->organization_name} ({$record->student->long_full_name})")
                     // ->recordSelectSearchColumns(['student.name'])
                     ->preloadRecordSelect()
                     // ->recordSelectSearchColumns(['title', 'id_pfe'])
@@ -69,7 +55,7 @@ class InternshipAgreementsRelationManager extends RelationManager
 
             ])
             ->actions([
-                Tables\Actions\DissociateAction::make(),
+                Tables\Actions\DetachAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

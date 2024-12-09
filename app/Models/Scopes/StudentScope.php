@@ -28,7 +28,7 @@ class StudentScope implements Scope
                 return;
             } elseif (Auth::guard('web')->check()) {
                 if (auth()->user()->isSuperAdministrator() || auth()->user()->isAdministrator() || auth()->user()->isDirection()) {
-                    $builder->where('year_id', '=', Year::current()->id);
+                    // $builder->where('year_id', '=', Year::current()->id);
 
                     return;
                 } elseif (auth()->user()->isProgramCoordinator()) {

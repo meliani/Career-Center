@@ -3,31 +3,18 @@
 namespace App\Filament\App\Resources;
 
 use App\Enums;
-use App\Enums\Currency;
 use App\Filament\Actions\Action\ApplyForCancelInternshipAction;
 use App\Filament\Actions\Action\Processing\GenerateInternshipAgreementAction;
 use App\Filament\App\Resources\FinalYearInternshipAgreementResource\Pages;
 use App\Filament\Core\StudentBaseResource;
 use App\Models\FinalYearInternshipAgreement;
-use App\Models\Organization;
 use App\Models\Student;
-use App\Models\Year;
-use Filament\Forms;
-use Filament\Forms\Components\SpatieTagsInput;
-use Filament\Forms\Components\Wizard\Step;
-use Filament\Forms\Form;
-use Filament\Forms\Get;
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
 use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\HtmlString;
-use Malzariey\FilamentDaterangepickerFilter\Fields\DateRangePicker;
 
 class FinalYearInternshipAgreementResource extends StudentBaseResource
 {
@@ -56,168 +43,6 @@ class FinalYearInternshipAgreementResource extends StudentBaseResource
     {
         return false;
     }
-
-    /*     public static function form(Form $form): Form
-        {
-            // $organization_id = null;
-            // $organization = null;
-
-            return $form
-                ->schema([
-                    Forms\Components\Wizard::make([
-
-                        Forms\Components\Wizard\Step::make('Company representative & Supervisors')
-                            ->icon('heroicon-o-users')
-                            ->description(__('Select or create the organization representatives'))
-                            ->schema([
-
-                                Forms\Components\Grid::make(2)
-                                    ->schema([
-
-                                        Forms\Components\Section::make('External Supervisor')
-                                            ->description('The supervisor from the academic institution')
-                                            ->schema([
-                                                Forms\Components\Select::make('external_supervisor_id')
-                                                    ->preload()
-                                                    ->relationship(
-                                                        name: 'externalSupervisor',
-                                                        titleAttribute: 'full_name',
-                                                        modifyQueryUsing: fn (Builder $query, Get $get) => $query->where('organization_id', $get('organization_id'))
-                                                    )
-                                                    ->getOptionLabelFromRecordUsing(
-                                                        fn (Model $record) => "{$record->full_name} - {$record->function}"
-                                                    )
-                                                    ->searchable(['first_name', 'last_name'])
-                                                    ->required()
-                                                    ->createOptionForm([
-                                                        Forms\Components\TextInput::make('first_name')
-                                                            ->required()
-                                                            ->formatStateUsing(fn (?string $state): ?string => ucwords($state)),
-                                                        Forms\Components\TextInput::make('last_name')
-                                                            ->required()
-                                                            ->formatStateUsing(fn (?string $state): ?string => ucwords($state)),
-                                                        Forms\Components\TextInput::make('email')
-                                                            ->email()
-                                                            ->required()
-                                                            ->unique('apprenticeship_agreement_contacts', 'email'),
-                                                        Forms\Components\TextInput::make('phone')->tel(),
-                                                        Forms\Components\TextInput::make('function')->required(),
-                                                        Forms\Components\TextInput::make('organization_id')
-                                                            ->default(fn (Get $get) => $get('../organization_id')),
-                                                        Forms\Components\Placeholder::make('organization_name')
-                                                            ->label('')
-                                                            // ->content(fn (Get $get) => $get('../../organization_id') ?? 'No organization selected'),
-                                                            ->content(fn (Get $get) => dd($get)),
-
-                                                    ]),
-                                            ]),
-
-                                        Forms\Components\Section::make('Internal Supervisor')
-                                            ->description('The supervisor from the academic institution')
-                                            ->schema([
-                                                    Forms\Components\Select::make('internal_supervisor_id')
-                                                    ->preload()
-                                                    ->relationship(
-                                                        name: 'internalSupervisor',
-                                                        titleAttribute: 'name',
-                                                    )
-                                                    ->getOptionLabelFromRecordUsing(
-                                                        fn (Model $record) => "{$record->name}"
-                                                    )
-                                                    ->searchable(),
-                                                ]),
-                                    ]),
-                            ]),
-
-                        // Step 4: Internship Details
-                        Forms\Components\Wizard\Step::make('Internship Details')
-                            ->icon('heroicon-o-document-text')
-                            ->description('Define the internship specifics')
-                            ->schema([
-                                    Forms\Components\Section::make('Basic Information')
-                                        ->schema([
-                                            Forms\Components\TextInput::make('title')
-                                                ->required()
-                                                ->maxLength(255)
-                                                ->columnSpanFull(),
-
-                                            DateRangePicker::make('internship_period')
-                                                ->required()
-                                                ->columnSpanFull(),
-
-                                            Forms\Components\RichEditor::make('description')
-                                                ->required()
-                                                ->columnSpanFull(),
-
-                                            Forms\Components\TextInput::make('office_location')
-                                                ->label('Office Location (if different from organization address)')
-                                                ->maxLength(255)
-                                                ->columnSpanFull(),
-                                        ]),
-
-                                    Forms\Components\Section::make('Terms')
-                                        ->schema([
-                                            Forms\Components\Grid::make(3)
-                                                ->schema([
-                                                    Forms\Components\Select::make('currency')
-                                                    // ->options(Currency::class)
-                                                    ->options([
-                                                        Enums\Currency::EUR->value => Enums\Currency::EUR->getSymbol(),
-                                                        Enums\Currency::USD->value => Enums\Currency::USD->getSymbol(),
-                                                        Enums\Currency::MDH->value => Enums\Currency::MDH->getSymbol(),
-                                                    ])
-                                                    ->required()
-                                                    ->live(),
-
-                                                    Forms\Components\TextInput::make('remuneration')
-                                                    ->label('Monthly Remuneration')
-                                                    ->numeric()
-                                                    ->prefix(fn (Get $get) => Currency::tryFrom($get('currency'))?->getSymbol())
-                                                    ->required(),
-
-                                                    Forms\Components\TextInput::make('workload')
-                                                    ->label('Weekly Hours')
-                                                    ->numeric()
-                                                    ->suffix('hours')
-                                                    ->required(),
-                                                ]),
-                                        ]),
-
-                                    Forms\Components\Section::make('Keywords')
-                                        ->schema([
-                                            SpatieTagsInput::make('tags')
-                                                // ->suggestion()
-                                                ->type('FinalYearInternship-' . Year::current())
-                                                ->splitKeys(['Tab', ',', ' '])
-                                                ->columnSpanFull(),
-                                        ]),
-                                ]),
-
-                    ])
-                        // ->skippable()
-                        ->persistStepInQueryString()
-                        ->startOnStep(1)
-                        ->columnSpanFull()
-                        ->submitAction(new HtmlString(Blade::render(<<<'BLADE'
-                            <x-filament::button
-                                type="submit"
-                                size="sm"
-                            >
-                                Submit
-                            </x-filament::button>
-                        BLADE))),
-                    // ->submitAction(
-                    //     \Filament\Actions\Action::make('create')
-                    //         ->label('Create Internship')
-                    //         ->icon('heroicon-o-check')
-                    // ),
-                    // ->submitAction(
-                    //     \Filament\Actions\Action::make('create')
-                    //         ->label('Create Internship')
-                    //         ->icon('heroicon-o-check')
-                    // ),
-                ]);
-        } */
 
     public static function table(Table $table): Table
     {
