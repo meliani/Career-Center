@@ -5,6 +5,7 @@ namespace App\Filament\Administration\Resources;
 use App\Enums;
 use App\Filament\Administration\Resources\OrganizationResource\Pages;
 use App\Filament\Core\BaseResource;
+use App\Models\InternshipAgreementContact;
 use App\Models\Organization;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -68,7 +69,7 @@ class OrganizationResource extends BaseResource
                             ->relationship('parentOrganization', 'name')
                             ->searchable(),
                         Forms\Components\Select::make('industry_information_id')
-                            ->relationship('industryInformation', 'name')
+                            ->relationship('industryInformation', 'name_' . app()->getLocale())
                             ->searchable()
                             ->createOptionForm([
                                 Forms\Components\TextInput::make('name_' . app()->getLocale())
@@ -310,8 +311,16 @@ class OrganizationResource extends BaseResource
 
                                 // Update related records
                                 foreach ($orgsToMerge as $org) {
-                                    $org->internshipAgreementContacts()
-                                        ->update(['organization_id' => $targetOrg->id]);
+                                    // Merge contacts using createOrUpdate
+                                    foreach ($org->internshipAgreementContacts as $contact) {
+                                        // Exclude 'id' and timestamps from attributes
+                                        $attributes = $contact->getAttributes();
+                                        unset($attributes['id'], $attributes['created_at'], $attributes['updated_at']);
+
+                                        $attributes['organization_id'] = $targetOrg->id;
+                                        InternshipAgreementContact::createOrUpdate($attributes);
+                                    }
+
                                     $org->internshipAgreements()
                                         ->update(['organization_id' => $targetOrg->id]);
                                     $org->finalYearInternshipAgreements()
