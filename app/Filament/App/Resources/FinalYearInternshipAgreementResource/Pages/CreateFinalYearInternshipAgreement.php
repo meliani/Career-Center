@@ -180,24 +180,20 @@ class CreateFinalYearInternshipAgreement extends CreateRecord
                                             Forms\Components\Grid::make(2)
                                                 ->schema([
                                                     Forms\Components\Select::make('title')
-                                                        ->options([
-                                                            Enums\Title::Mr->value => Enums\Title::Mr->getLongTitle(),
-                                                            Enums\Title::Mrs->value => Enums\Title::Mrs->getLongTitle(),
-                                                            Enums\Title::Dr->value => Enums\Title::Dr->getLongTitle(),
-                                                        ]),
+                                                        ->options(Enums\Title::class),
                                                     Forms\Components\TextInput::make('first_name')->required(),
                                                     Forms\Components\TextInput::make('last_name')->required(),
                                                     Forms\Components\TextInput::make('email')
                                                         ->email()
                                                         ->required()
-                                                        ->unique('final_year_internship_contacts', 'email'),
+                                                        ->unique('internship_agreement_contacts', 'email'),
                                                     Forms\Components\TextInput::make('phone')->tel()->required(),
                                                     Forms\Components\TextInput::make('function')->required(),
                                                 ]),
                                         ])
                                         ->createOptionUsing(function ($data, Get $get) {
 
-                                            $parrain = new \App\Models\FinalYearInternshipContact;
+                                            $parrain = new \App\Models\InternshipAgreementContact;
                                             $parrain->fill($data);
                                             $parrain->role = Enums\OrganizationContactRole::Parrain;
                                             $parrain->organization_id = $get('organization_id');
@@ -227,11 +223,7 @@ class CreateFinalYearInternshipAgreement extends CreateRecord
                                             Forms\Components\Grid::make(2)
                                                 ->schema([
                                                     Forms\Components\Select::make('title')
-                                                        ->options([
-                                                            Enums\Title::Mr->value => Enums\Title::Mr->getLongTitle(),
-                                                            Enums\Title::Mrs->value => Enums\Title::Mrs->getLongTitle(),
-                                                            Enums\Title::Dr->value => Enums\Title::Dr->getLongTitle(),
-                                                        ]),
+                                                        ->options(Enums\Title::class),
 
                                                     Forms\Components\TextInput::make('first_name')
                                                         ->required()
@@ -242,14 +234,14 @@ class CreateFinalYearInternshipAgreement extends CreateRecord
                                                     Forms\Components\TextInput::make('email')
                                                         ->email()
                                                         ->required()
-                                                        ->unique('final_year_internship_contacts', 'email'),
+                                                        ->unique('internship_agreement_contacts', 'email'),
                                                     Forms\Components\TextInput::make('phone')->tel()->required(),
                                                     Forms\Components\TextInput::make('function')->required(),
                                                 ]),
                                         ])
                                         ->createOptionUsing(function ($data, Get $get) {
 
-                                            $parrain = new \App\Models\FinalYearInternshipContact;
+                                            $parrain = new \App\Models\InternshipAgreementContact;
                                             $parrain->fill($data);
                                             $parrain->role = Enums\OrganizationContactRole::Mentor;
                                             $parrain->organization_id = $get('organization_id');
