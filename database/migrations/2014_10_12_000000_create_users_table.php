@@ -20,10 +20,10 @@ return new class extends Migration
             $table->string('name');
             $table->string('first_name');
             $table->string('last_name');
-            $table->enum('department', Department::getArray())->nullable();
-            $table->enum('role', Role::getArray());
+            $table->enum('department', Department::getValues())->nullable();
+            $table->enum('role', Role::getValues());
             $table->string('email')->unique();
-            $table->enum('assigned_program', Program::getArray())->nullable();
+            $table->enum('assigned_program', Program::getValues())->nullable();
             $table->integer('is_enabled')->default('0');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

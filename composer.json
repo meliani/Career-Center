@@ -32,6 +32,7 @@
         "filament/tables": "^3.1",
         "filament/widgets": "^3.1",
         "flowframe/laravel-trend": "^0.1.5",
+        "guava/filament-icon-select-column": "^1.1",
         "guava/filament-modal-relation-managers": "^1.0",
         "guzzlehttp/guzzle": "^7.2",
         "hydrat/filament-table-layout-toggle": "^1.0",
