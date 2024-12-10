@@ -10,6 +10,8 @@ use Filament\Tables\Table;
 
 class TimetableRelationManager extends RelationManager
 {
+    use \Guava\FilamentModalRelationManagers\Concerns\CanBeEmbeddedInModals;
+
     protected static string $relationship = 'timetable';
 
     protected static bool $isLazy = false;
@@ -30,6 +32,13 @@ class TimetableRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
+            ->heading(false)
+            // ->recordTitleAttribute('name')
+            ->paginated(false)
+            ->searchable(false)
+            ->emptyStateHeading('')
+            ->emptyStateDescription('')
+            ->emptyStateIcon('heroicon-o-clock')
             ->columns([
                 Tables\Columns\TextColumn::make('timeslot.start_time')
                     ->dateTime(),

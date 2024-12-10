@@ -791,5 +791,12 @@
     "Until :date": "Jusqu'au :date",
     "Total Assigned": "Total affecté",
     "Highlighted events will be more prominent in the timeline view": "Les événements en vedette seront plus visibles dans la vue chronologique",
-    "Defense Details": "Détails de la soutenance"
+    "Defense Details": "Détails de la soutenance",
+    "First Reviewer": "Premier examinateur",
+    "Second Reviewer": "Deuxième examinateur",
+    "Edit timetable": "Modifier le planning",
+    "Edit jury members": "Modifier les membres du jury",
+    "Defense Schedule": "Planning de soutenance",
+    "Schedule": "Planning",
+    "Project Details": "Détails du projet"
 }

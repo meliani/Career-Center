@@ -13,7 +13,6 @@ use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists;
-use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Infolist;
 use Filament\Resources\RelationManagers\RelationGroup;
 use Filament\Support\Enums as FilamentEnums;
@@ -21,12 +20,11 @@ use Filament\Tables;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Guava\FilamentModalRelationManagers\Actions\Infolist\RelationManagerAction as InfolistRelationManagerAction;
 use Guava\FilamentModalRelationManagers\Actions\Table\RelationManagerAction;
 use Hydrat\TableLayoutToggle\Facades\TableLayoutToggle;
 use Illuminate\Database\Eloquent\Builder;
 use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
-use Parallax\FilamentComments\Actions\CommentsAction;
-use Parallax\FilamentComments\Infolists\Components\CommentsEntry;
 use pxlrbt\FilamentExcel;
 
 class ProjectResource extends Core\BaseResource
@@ -107,15 +105,15 @@ class ProjectResource extends Core\BaseResource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\ProfessorsRelationManager::class,
-            RelationGroup::make(__('Students'), [
-                // RelationManagers\StudentsRelationManager::class,
-                RelationManagers\InternshipAgreementsRelationManager::class,
-                // RelationManagers\CommentsRelationManager::class,
-            ]),
-            RelationGroup::make(__('Defense Details'), [
-                RelationManagers\TimetableRelationManager::class,
-            ]),
+            // RelationManagers\ProfessorsRelationManager::class,
+            // RelationGroup::make(__('Students'), [
+            //     // RelationManagers\StudentsRelationManager::class,
+            //     RelationManagers\InternshipAgreementsRelationManager::class,
+            //     // RelationManagers\CommentsRelationManager::class,
+            // ]),
+            // RelationGroup::make(__('Defense Details'), [
+            //     RelationManagers\TimetableRelationManager::class,
+            // ]),
         ];
     }
 
@@ -153,7 +151,7 @@ class ProjectResource extends Core\BaseResource
                     ->collapsible()
                     ->columns(2),
                 Forms\Components\Section::make('Defense information')
-                    ->label('Defense information')
+                    ->label(__('Defense information'))
                     ->columnSpan(1)
                     ->hidden(fn () => auth()->user()->isAdministrator() === false)
                     ->relationship('timetable')
@@ -411,7 +409,10 @@ class ProjectResource extends Core\BaseResource
                         ->label('Timetable')
                         ->icon('heroicon-o-clock')
                         ->relationManager(RelationManagers\TimetableRelationManager::class)
-                        ->hidden(fn () => auth()->user()->isAdministrator() === false),
+                        ->hidden(fn () => auth()->user()->isAdministrator() === false)
+                        ->modalSubmitAction(false)
+                        ->modalCancelAction(false),
+
                 ])
                     ->icon('heroicon-o-ellipsis-horizontal-circle')
                     ->color('primary')
@@ -519,143 +520,191 @@ class ProjectResource extends Core\BaseResource
 
     public static function infolist(Infolist $infolist): Infolist
     {
-        $organization_evaluation_sheet_url = $infolist->getRecord()->organization_evaluation_sheet_url ? url($infolist->getRecord()->organization_evaluation_sheet_url) : __('No file uploaded');
-        $evaluation_sheet_url = $infolist->getRecord()->evaluation_sheet_url ? url($infolist->getRecord()->evaluation_sheet_url) : __('Not generated yet');
-
         return $infolist
             ->schema([
                 Infolists\Components\Section::make(__('Defense documents'))
-                    // ->hidden(fn () => auth()->user()->isAdministrator() === false)
-                    ->columns(3)
+                    ->icon('heroicon-o-document-text')
+                    ->columnSpanFull()
+                    ->columns(2)
                     ->schema([
                         Infolists\Components\TextEntry::make('evaluation_sheet_url')
                             ->label('Jury evaluation sheet')
-                            ->formatStateUsing(
-                                fn ($record) => $record->evaluation_sheet_url ? '[' . __('Preview file') . "]({$record->evaluation_sheet_url})" : null
-                            )
-                            ->tooltip(
-                                fn ($record) => $record->evaluation_sheet_url ? __('To open the file, right click -> open in a new tab') : null
-                            )
-                            ->simpleLightbox($evaluation_sheet_url)
-                            ->markdown(),
+                            ->icon('heroicon-o-clipboard-document-check')
+                            ->color(fn ($state) => $state ? 'success' : 'danger')
+                            ->formatStateUsing(fn ($state) => $state
+                                ? '[' . __('View evaluation sheet') . "]({$state})"
+                                : __('Not generated yet'))
+                            ->markdown()
+                            ->copyable(fn ($state) => (bool) $state)
+                            ->copyMessage('Link copied!')
+                            ->copyMessageDuration(1500),
+
                         Infolists\Components\TextEntry::make('organization_evaluation_sheet_url')
                             ->label('Organization evaluation sheet')
-                            ->formatStateUsing(
-                                fn ($record) => $record->organization_evaluation_sheet_url ? '[' . __('Preview file') . "]({$record->organization_evaluation_sheet_url})" : null
-                            )
-                            ->tooltip(
-                                fn ($record) => $record->organization_evaluation_sheet_url ? __('To open the file, right click -> open in a new tab') : null
-                            )
-                            ->simpleLightbox($organization_evaluation_sheet_url)
-                            ->markdown(),
+                            ->icon('heroicon-o-building-office')
+                            ->color(fn ($state) => $state ? 'success' : 'danger')
+                            ->formatStateUsing(fn ($state) => $state
+                                ? '[' . __('View organization sheet') . "]({$state})"
+                                : __('No file uploaded'))
+                            ->markdown()
+                            ->copyable(fn ($state) => (bool) $state)
+                            ->copyMessage('Link copied!')
+                            ->copyMessageDuration(1500),
                     ]),
 
-                Infolists\Components\Section::make(__('Defense information'))
-                    // ->hidden(fn () => auth()->user()->isAdministrator() === false)
+                Infolists\Components\Section::make(__('Defense status'))
+                    ->icon('heroicon-o-academic-cap')
                     ->columns(3)
                     ->schema([
                         Infolists\Components\TextEntry::make('defense_status')
-                            ->label('Defense status'),
-                        Infolists\Components\TextEntry::make('defense_authorized_at')
-                            ->label('Defense authorized at')
-                            ->dateTime(),
-                        Infolists\Components\TextEntry::make('defense_authorized_by_user.name')
-                            ->label('Defense authorized by'),
-                        Infolists\Components\TextEntry::make('timetable.timeslot.start_time')
-                            ->label('Defense start time')
-                            ->dateTime(),
-                        Infolists\Components\TextEntry::make('timetable.timeslot.end_time')
-                            ->label('Defense end time')
-                            ->dateTime(),
-                        Infolists\Components\TextEntry::make('timetable.room.name')
-                            ->label('Room'),
-                        Infolists\Components\Fieldset::make('Jury')
-                            ->columns(3)
-                            ->schema([
-                                // RepeatableEntry::make('supervisor')
-                                //     ->label('')
-                                //     ->schema([
-                                //         Infolists\Components\TextEntry::make('name')
-                                //             ->label(__('Supervisor')),
-                                //     ])
-                                //     ->contained(false),
-                                // RepeatableEntry::make('reviewers')
-                                //     ->label('')
-                                //     ->schema([
-                                //         Infolists\Components\TextEntry::make('name')
-                                //             ->label(__('Reviewer')),
-                                //     ])
-                                //     ->contained(false),
-                                // Infolists\Components\TextEntry::make('professors.name')
-                                //     ->label('')
-                                //     ->formatStateUsing(
-                                //         fn ($record) => $record->professors->map(
-                                //             fn ($professor) => $professor->pivot->jury_role->getLabel() . ': ' . $professor->name
-                                //         )->join(', ')
-                                //     ),
+                            ->badge()
+                            ->icon(fn ($state) => $state?->getIcon())
+                            ->color(fn ($state) => $state?->getColor()),
 
-                                Infolists\Components\TextEntry::make('academic_supervisor')
-                                    ->label('Academic supervisor'),
-                                Infolists\Components\TextEntry::make('reviewer1')
-                                    ->label('Reviewer 1'),
-                                Infolists\Components\TextEntry::make('reviewer2')
-                                    ->label('Reviewer 2'),
+                        Infolists\Components\Grid::make(3)
+                            ->schema([
+                                Infolists\Components\TextEntry::make('defense_authorized_at')
+                                    ->icon('heroicon-o-check-circle')
+                                    ->dateTime()
+                                    ->color('success'),
+
+                                Infolists\Components\TextEntry::make('defense_authorized_by_user.name')
+                                    ->icon('heroicon-o-user')
+                                    ->color('info'),
                             ]),
                     ]),
 
-                Infolists\Components\Section::make(__('Project information'))
-                    ->headerActions([
-                        // CommentsAction::make(),
+                Infolists\Components\Tabs::make('Relations')
+                    ->tabs([
+                        Infolists\Components\Tabs\Tab::make(__('Jury Members'))
+                            ->icon('heroicon-o-users')
+                            ->schema([
+                                Infolists\Components\Section::make(__('Jury Members'))
+                                    ->icon('heroicon-o-users')
+                                    ->columns(3)
+                                    ->headerActions([
+                                        InfolistRelationManagerAction::make('professors-relation-manager')
+                                            ->label(__('Edit jury members'))
+                                            ->relationManager(RelationManagers\ProfessorsRelationManager::class)
+                                            ->hidden(fn () => auth()->user()->isAdministrator() === false)
+                                            ->modalSubmitAction(false)
+                                            ->modalCancelAction(false),
+                                    ])
+                                    ->schema([
+                                        Infolists\Components\TextEntry::make('academic_supervisor')
+                                            ->label(__('Academic supervisor'))
+                                            ->icon('heroicon-o-academic-cap')
+                                            ->badge()
+                                            ->color('info'),
+
+                                        Infolists\Components\TextEntry::make('reviewer1')
+                                            ->label(__('First Reviewer'))
+                                            ->icon('heroicon-o-user')
+                                            ->badge()
+                                            ->color('success'),
+
+                                        Infolists\Components\TextEntry::make('reviewer2')
+                                            ->label(__('Second Reviewer'))
+                                            ->icon('heroicon-o-user')
+                                            ->badge()
+                                            ->color('success'),
+                                    ]),
+                            ]),
+
+                        Infolists\Components\Tabs\Tab::make(__('Schedule'))
+                            ->icon('heroicon-o-calendar')
+                            ->schema([
+                                Infolists\Components\Section::make(__('Defense Schedule'))
+                                    ->icon('heroicon-o-calendar')
+                                    ->columns(3)
+                                    ->headerActions([
+                                        InfolistRelationManagerAction::make('timetable-relation-manager')
+                                            ->label(__('Edit timetable'))
+                                            ->relationManager(RelationManagers\TimetableRelationManager::class)
+                                            ->hidden(fn () => auth()->user()->isAdministrator() === false)
+                                            ->modalSubmitAction(false)
+                                            ->modalCancelAction(false),
+
+                                    ])
+                                    ->schema([
+                                        Infolists\Components\TextEntry::make('timetable.timeslot.start_time')
+                                            ->label('Start time')
+                                            ->icon('heroicon-o-clock')
+                                            ->dateTime(),
+
+                                        Infolists\Components\TextEntry::make('timetable.timeslot.end_time')
+                                            ->label('End time')
+                                            ->icon('heroicon-o-clock')
+                                            ->dateTime(),
+
+                                        Infolists\Components\TextEntry::make('timetable.room.name')
+                                            ->label('Room')
+                                            ->icon('heroicon-o-building-office-2')
+                                            ->badge(),
+                                    ]),
+                            ]),
                     ])
-                    ->columns(3)
+                    ->columnSpanFull(),
+
+                Infolists\Components\Section::make(__('Project Details'))
+                    ->icon('heroicon-o-document-text')
+                    ->columnSpanFull()
                     ->schema([
-                        Infolists\Components\TextEntry::make('id_pfe')
-                            ->label('PFE ID'),
-                        Infolists\Components\TextEntry::make('students_names')
-                            ->label('Student'),
-                        Infolists\Components\TextEntry::make('students_programs')
-                            ->label('Program'),
-                        Infolists\Components\TextEntry::make('organization_name')
-                            ->label('Organization'),
+                        Infolists\Components\Grid::make(3)
+                            ->schema([
+                                Infolists\Components\TextEntry::make('id_pfe')
+                                    ->label('PFE ID')
+                                    ->icon('heroicon-o-identification')
+                                    ->badge()
+                                    ->color('info'),
+
+                                Infolists\Components\TextEntry::make('students_names')
+                                    ->icon('heroicon-o-users')
+                                    ->badge(),
+
+                                Infolists\Components\TextEntry::make('students_programs')
+                                    ->icon('heroicon-o-academic-cap')
+                                    ->badge(),
+
+                                Infolists\Components\TextEntry::make('organization_name')
+                                    ->icon('heroicon-o-building-office')
+                                    ->badge()
+                                    ->color('success'),
+                            ]),
 
                         Infolists\Components\TextEntry::make('title')
-                            ->label('Project title'),
+                            ->columnSpanFull()
+                            ->markdown()
+                            ->icon('heroicon-o-document-text'),
 
-                        Infolists\Components\TextEntry::make('description')
-                            ->label('Project description')
-                            ->formatStateUsing(
-                                fn ($record) => "{$record->description}"
-                            )
-                            ->html()
-                            ->columnSpanFull(),
-                        Infolists\Components\Fieldset::make('Dates')
+                        Infolists\Components\Grid::make(2)
                             ->schema([
                                 Infolists\Components\TextEntry::make('start_date')
-                                    ->label('Project start date')
+                                    ->icon('heroicon-o-calendar')
                                     ->date(),
                                 Infolists\Components\TextEntry::make('end_date')
-                                    ->label('Project end date')
+                                    ->icon('heroicon-o-calendar')
                                     ->date(),
                             ]),
-
-                        Infolists\Components\Fieldset::make('Entreprise supervisor')
-                            ->schema([
-                                Infolists\Components\TextEntry::make('externalSupervisor.full_name')
-                                    ->label(fn ($record) => $record->externalSupervisor->full_name)
-                                    ->formatStateUsing(
-                                        fn ($record) => $record->externalSupervisor->email ? "[{$record->externalSupervisor->email}](mailto:{$record->externalSupervisor->email})" : null
-                                    )
-                                    ->tooltip(
-                                        fn ($record) => $record->externalSupervisor->phone ? __('Phone') . ': ' . $record->externalSupervisor->phone : null
-                                    )
-                                    ->markdown(),
-
-                            ]),
-                        // CommentsEntry::make('Comments')
-                        //     ->columnSpanFull(),
                     ]),
 
+                Infolists\Components\Section::make(__('External Supervisor'))
+                    ->icon('heroicon-o-user')
+                    ->schema([
+                        Infolists\Components\TextEntry::make('externalSupervisor.full_name')
+                            ->label(fn ($record) => $record->externalSupervisor->full_name)
+                            ->formatStateUsing(fn ($record) => $record->externalSupervisor->email
+                                    ? "[{$record->externalSupervisor->email}](mailto:{$record->externalSupervisor->email})"
+                                    : null)
+                            ->tooltip(fn ($record) => $record->externalSupervisor->phone
+                                    ? __('Phone') . ': ' . $record->externalSupervisor->phone
+                                    : null)
+                            ->icon('heroicon-o-envelope')
+                            ->markdown()
+                            ->copyable(fn ($record) => (bool) $record->externalSupervisor->email)
+                            ->copyMessage('Email copied!')
+                            ->copyMessageDuration(1500),
+                    ]),
             ]);
-
     }
 }

@@ -104,20 +104,19 @@ class Project extends Core\BackendBaseModel
         return $this->internship_agreements()->count() > 1;
     }
 
-    public function supervisor()
-    {
+    // public function AcademicSupervisor()
+    // {
 
-        return $this->professors()
-            ->wherePivot('jury_role', Enums\JuryRole::Supervisor->value);
-    }
+    //     return $this->professors()
+    //         ->wherePivot('jury_role', Enums\JuryRole::Supervisor->value);
+    // }
 
     public function reviewers()
     {
 
         return $this->professors()
-            ->wherePivot('jury_role', Enums\JuryRole::Reviewer->value)
-            ->orWherePivot('jury_role', Enums\JuryRole::Reviewer1->value)
-            ->orWherePivot('jury_role', Enums\JuryRole::Reviewer2->value);
+            ->wherePivot('jury_role', Enums\JuryRole::FirstReviewer->value)
+            ->orWherePivot('jury_role', Enums\JuryRole::SecondReviewer->value);
     }
 
     public function timetable()
@@ -262,4 +261,16 @@ class Project extends Core\BackendBaseModel
     {
         return $this->belongsTo(InternshipAgreementContact::class, 'parrain_id');
     }
+
+    // public function FirstReviewer()
+    // {
+    //     return $this->professors()
+    //         ->wherePivot('jury_role', Enums\JuryRole::FirstReviewer->value);
+    // }
+
+    // public function SecondReviewer()
+    // {
+    //     return $this->professors()
+    //         ->wherePivot('jury_role', Enums\JuryRole::SecondReviewer->value);
+    // }
 }

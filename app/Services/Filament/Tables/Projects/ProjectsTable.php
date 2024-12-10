@@ -143,12 +143,13 @@ class ProjectsTable
                         ->label('Contacts External Supervisor')
                         ->searchable(false)
                         ->sortable(false),
-                    Tables\Columns\TextColumn::make('supervisor.name')
+                    Tables\Columns\TextColumn::make('academic_supervisor_name')
                         ->label('Academic Supervisor')
                         // ->searchable(
                         //     ['first_name', 'last_name']
                         // )
-                        ->sortable(false),
+                        ->sortable(false)
+                        ->searchable(false),
                     Tables\Columns\TextColumn::make('reviewers.name')
                         ->label('Reviewers')
                         ->searchable(false)
