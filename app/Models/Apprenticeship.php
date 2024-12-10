@@ -121,12 +121,12 @@ class Apprenticeship extends Model
 
     public function parrain()
     {
-        return $this->belongsTo(ApprenticeshipAgreementContact::class, 'parrain_id', 'id');
+        return $this->belongsTo(InternshipAgreementContact::class, 'parrain_id', 'id');
     }
 
     public function supervisor()
     {
-        return $this->belongsTo(ApprenticeshipAgreementContact::class, 'supervisor_id', 'id');
+        return $this->belongsTo(InternshipAgreementContact::class, 'supervisor_id', 'id');
     }
 
     public function getDurationInWeeksAttribute()
