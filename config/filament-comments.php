@@ -25,7 +25,7 @@ return [
      *
      * Set to null if no comments should be deleted.
      */
-    'prune_after_days' => 30,
+    'prune_after_days' => null,
 
     /*
      * The rich editor toolbar buttons that are available to users.
