@@ -12,6 +12,8 @@ class TimetableRelationManager extends RelationManager
 {
     protected static string $relationship = 'timetable';
 
+    protected static bool $isLazy = false;
+
     public function form(Form $form): Form
     {
         return $form

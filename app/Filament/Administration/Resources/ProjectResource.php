@@ -21,6 +21,7 @@ use Filament\Tables;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Guava\FilamentModalRelationManagers\Actions\Table\RelationManagerAction;
 use Hydrat\TableLayoutToggle\Facades\TableLayoutToggle;
 use Illuminate\Database\Eloquent\Builder;
 use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
@@ -107,13 +108,13 @@ class ProjectResource extends Core\BaseResource
     {
         return [
             RelationManagers\ProfessorsRelationManager::class,
-            RelationGroup::make(__('Students and Internship Agreements'), [
+            RelationGroup::make(__('Students'), [
                 // RelationManagers\StudentsRelationManager::class,
                 RelationManagers\InternshipAgreementsRelationManager::class,
+                // RelationManagers\CommentsRelationManager::class,
             ]),
             RelationGroup::make(__('Defense Details'), [
                 RelationManagers\TimetableRelationManager::class,
-                RelationManagers\CommentsRelationManager::class,
             ]),
         ];
     }
@@ -397,10 +398,26 @@ class ProjectResource extends Core\BaseResource
 
             ])
             ->actions([
-                \Guava\FilamentModalRelationManagers\Actions\RelationManagerAction::make('professors-relation-manager')
-                    ->label('Jury Members')
-                    ->icon('heroicon-o-users')
-                    ->relationManager(RelationManagers\ProfessorsRelationManager::class)
+                Tables\Actions\ActionGroup::make([
+                    RelationManagerAction::make('professors-relation-manager')
+                        ->label('Jury Members')
+                        ->icon('heroicon-o-users')
+                        ->relationManager(RelationManagers\ProfessorsRelationManager::class)
+                        ->hidden(fn () => auth()->user()->isAdministrator() === false)
+                        ->modalSubmitAction(false)
+                        ->modalCancelAction(false),
+
+                    RelationManagerAction::make('timetable-relation-manager')
+                        ->label('Timetable')
+                        ->icon('heroicon-o-clock')
+                        ->relationManager(RelationManagers\TimetableRelationManager::class)
+                        ->hidden(fn () => auth()->user()->isAdministrator() === false),
+                ])
+                    ->icon('heroicon-o-ellipsis-horizontal-circle')
+                    ->color('primary')
+                    ->size(\Filament\Support\Enums\ActionSize::Small)
+                    ->outlined()
+                    ->label(__('Relation Managers'))
                     ->hidden(fn () => auth()->user()->isAdministrator() === false),
                 Tables\Actions\ActionGroup::make([
                     \App\Filament\Actions\Action\SendDefenseEmailAction::make()
@@ -502,8 +519,8 @@ class ProjectResource extends Core\BaseResource
 
     public static function infolist(Infolist $infolist): Infolist
     {
-        $organization_evaluation_sheet_url = $infolist->getRecord()->organization_evaluation_sheet_url ? url($infolist->getRecord()->organization_evaluation_sheet_url) : null;
-        $evaluation_sheet_url = $infolist->getRecord()->evaluation_sheet_url ? url($infolist->getRecord()->evaluation_sheet_url) : null;
+        $organization_evaluation_sheet_url = $infolist->getRecord()->organization_evaluation_sheet_url ? url($infolist->getRecord()->organization_evaluation_sheet_url) : __('No file uploaded');
+        $evaluation_sheet_url = $infolist->getRecord()->evaluation_sheet_url ? url($infolist->getRecord()->evaluation_sheet_url) : __('Not generated yet');
 
         return $infolist
             ->schema([

@@ -249,7 +249,6 @@
     "Mass Notification Emails": "Emails de notification en masse",
     "Write mass emails to students": "Ecrire emails en masse aux étudiants",
     "Send customized generic mass emails to students": "Envoyer des emails génériques personnalisés en masse aux étudiants",
-    "Students and Internship Agreements": "Étudiants et Conventions de Stage",
     "Search by title or id_pfe...": "Rechercher par titre ou id_pfe...",
     "Not approved yet.": "Pas encore approuvé.",
     "Jury Members": "Membres du jury",
@@ -791,5 +790,6 @@
     "Ends: :date": "Se termine le : :date",
     "Until :date": "Jusqu'au :date",
     "Total Assigned": "Total affecté",
-    "Highlighted events will be more prominent in the timeline view": "Les événements en vedette seront plus visibles dans la vue chronologique"
+    "Highlighted events will be more prominent in the timeline view": "Les événements en vedette seront plus visibles dans la vue chronologique",
+    "Defense Details": "Détails de la soutenance"
 }

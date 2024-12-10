@@ -170,7 +170,7 @@ class InternshipOfferResource extends BaseResource
                 // CountryColumn::make('country')
                 //     ->searchable(),
                 // Tables\Columns\TextColumn::make('internship_type'),
-                Tables\Columns\TagsColumn::make('tags')
+                Tables\Columns\SpatieTagsColumn::make('tags')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(false),
 

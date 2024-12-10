@@ -31,23 +31,26 @@ class ProfessorsRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Select::make('jury_role')
-                    ->required()
-                    ->options(Enums\JuryRole::class)
-                    ->default(Enums\JuryRole::Reviewer),
+                // Forms\Components\TextInput::make('full_name')
+                //     ->required()
+                //     ->maxLength(255),
+                // Forms\Components\Select::make('jury_role')
+                //     ->required()
+                //     ->options(Enums\JuryRole::class)
+                //     ->default(Enums\JuryRole::Reviewer),
             ]);
     }
 
     public function table(Table $table): Table
     {
         return $table
-            ->heading(__('Jury Members'))
+            ->heading(false)
             ->recordTitleAttribute('name')
             ->paginated(false)
             ->searchable(false)
+            ->emptyStateHeading('')
+            ->emptyStateDescription('')
+            ->emptyStateIcon('heroicon-o-users')
             ->columns([
                 Tables\Columns\TextColumn::make('long_full_name')
                     // ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
@@ -82,7 +85,7 @@ class ProfessorsRelationManager extends RelationManager
 
                 Tables\Actions\AttachAction::make()
                     ->preloadRecordSelect()
-                    ->recordSelectSearchColumns(['name', 'department'])
+                    ->recordSelectSearchColumns(['full_name', 'department'])
                     ->recordSelect(
                         fn (Select $select) => $select->placeholder(__('Search by name or department...')),
                     )

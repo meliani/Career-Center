@@ -15,7 +15,7 @@ class InternshipAgreementsRelationManager extends RelationManager
 
     protected static ?string $inverseRelationship = 'project';
 
-    protected static ?string $title = 'Internship agreements';
+    protected static ?string $title = 'Students';
 
     protected static bool $isLazy = false;
 
@@ -31,15 +31,25 @@ class InternshipAgreementsRelationManager extends RelationManager
             ->paginated(false)
             ->searchable(false)
             ->recordTitleAttribute('agreeable.title', 'agreeable.student.long_full_name')
+            ->heading(false)
+            ->recordTitleAttribute('title')
+            ->paginated(false)
+            ->searchable(false)
+            ->emptyStateHeading('')
+            ->emptyStateDescription('')
+            ->emptyStateIcon('heroicon-o-users')
             ->columns([
                 Tables\Columns\TextColumn::make('agreeable.student.id_pfe')
                     ->label(__('ID PFE')),
                 Tables\Columns\TextColumn::make('agreeable.student.long_full_name')
                     ->label(__('Student name')),
-                Tables\Columns\TextColumn::make('agreeable.title')
-                    ->label(__('Title')),
-                Tables\Columns\TextColumn::make('agreeable.organization.name')
-                    ->label(__('Organization')),
+                Tables\Columns\TextColumn::make('agreeable.student.email')
+                    ->label(__('Student email')),
+                Tables\Columns\TextColumn::make('agreeable.student.phone')
+                    ->label(__('Student phone')),
+                Tables\Columns\ImageColumn::make('agreeable.student.avatar_url')
+                    ->label(__('Student photo'))
+                    ->rounded(),
             ])
             ->filters([
                 //
