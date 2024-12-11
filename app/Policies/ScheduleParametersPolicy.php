@@ -8,6 +8,6 @@ class ScheduleParametersPolicy extends CorePolicy
 {
     public function viewAny(User $user): bool
     {
-        return $user->hasAnyRole($this->administrators);
+        return $user->isAdministrator();
     }
 }

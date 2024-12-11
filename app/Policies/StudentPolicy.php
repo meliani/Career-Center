@@ -2,7 +2,6 @@
 
 namespace App\Policies;
 
-use App\Enums;
 use App\Models\Student;
 use App\Models\User;
 
@@ -13,11 +12,7 @@ class StudentPolicy extends CorePolicy
      */
     public function viewAny(User $user): bool
     {
-        if ($user->hasAnyRole(Enums\Role::getAll())) {
-            return true;
-        }
-
-        return false;
+        return $user->isAdministrator() || $user->isDirection() || $user->isProfessor() || $user->isProgramCoordinator() || $user->isDepartmentHead();
 
     }
 

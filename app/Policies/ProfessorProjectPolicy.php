@@ -12,7 +12,7 @@ class ProfessorProjectPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return $user->isAdministrator() || $user->isDirection() || $user->isProfessor() || $user->isProgramCoordinator() || $user->isDepartmentHead();
     }
 
     /**

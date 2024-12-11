@@ -2,26 +2,17 @@
 
 namespace App\Policies;
 
-use App\Enums;
 use App\Models\FinalYearInternshipAgreement;
 use App\Models\InternshipAgreement;
 use App\Models\Project;
 use App\Models\User;
-use Illuminate\Support\Facades\Gate;
 
 class ProjectPolicy extends CorePolicy
 {
     public function viewAny(User $user): bool
     {
-        // Check if the user is an administrator
-        // if (! Gate::allows('view-internship', $project)) {
-        //     return true;
-        // }
-        if ($user->hasAnyRole(Enums\Role::getAll())) {
-            return true;
-        }
+        return $user->isAdministrator() || $user->isDirection() || $user->isProfessor() || $user->isProgramCoordinator() || $user->isDepartmentHead();
 
-        return false;
     }
 
     public function view(User $user, Project $project): bool

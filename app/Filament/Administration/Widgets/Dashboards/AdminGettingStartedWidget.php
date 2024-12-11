@@ -28,6 +28,8 @@ class AdminGettingStartedWidget extends Widget
     // Change visibility to public for the trend periods
     public array $trendPeriods = [
         'week' => 'Past 7 days',
+        'twoweeks' => 'Past 14 days',
+        'threeweeks' => 'Past 21 days',
         'month' => 'Past 30 days',
         'quarter' => 'Past 3 months',
         'year' => 'Past 12 months',
@@ -56,6 +58,14 @@ class AdminGettingStartedWidget extends Widget
                 'current' => now()->startOfWeek(),
                 'previous' => now()->subWeek()->startOfWeek(),
             ],
+            'twoweeks' => [
+                'current' => now()->startOfWeek(),
+                'previous' => now()->subWeeks(2)->startOfWeek(),
+            ],
+            'threeweeks' => [
+                'current' => now()->startOfWeek(),
+                'previous' => now()->subWeeks(3)->startOfWeek(),
+            ],
             'month' => [
                 'current' => now()->startOfMonth(),
                 'previous' => now()->subMonth()->startOfMonth(),
@@ -75,6 +85,8 @@ class AdminGettingStartedWidget extends Widget
     {
         return match ($this->selectedTrendPeriod) {
             'week' => __('vs previous week'),
+            'twoweeks' => __('vs previous 2 weeks'),
+            'threeweeks' => __('vs previous 3 weeks'),
             'month' => __('vs previous month'),
             'quarter' => __('vs previous quarter'),
             'year' => __('vs previous year'),

@@ -19,7 +19,7 @@ class ApprenticeshipPolicy
             return $user->id === $apprenticeship->student_id;
         }
 
-        return $user->isAdministrator();
+        return $user->isAdministrator() || $user->isDirection() || $user->isProfessor() || $user->isProgramCoordinator() || $user->isDepartmentHead();
     }
 
     /**

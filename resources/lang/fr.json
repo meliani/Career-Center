@@ -801,5 +801,9 @@
     "Project Details": "Détails du projet",
     "Year": "Année",
     "View evaluation sheet": "Voir la fiche d'évaluation",
-    "View organization sheet": "Voir la fiche d'évaluation de l'organisation"
+    "View organization sheet": "Voir la fiche d'évaluation de l'organisation",
+    "Past 14 days": "14 derniers jours",
+    "Past 21 days": "21 derniers jours",
+    "vs previous 2 weeks": "vs 2 dernières semaines",
+    "vs previous 3 weeks": "vs 3 dernières semaines"
 }

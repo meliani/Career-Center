@@ -18,7 +18,7 @@ class InternshipOfferPolicy extends CorePolicy
             return true;
         }
 
-        return $user->hasAnyRole([Role::Administrator, Role::Direction, Role::Professor, Role::ProgramCoordinator, Role::DepartmentHead]);
+        return $user->isAdministrator() || $user->isDirection() || $user->isProfessor() || $user->isProgramCoordinator() || $user->isDepartmentHead();
     }
 
     /**
