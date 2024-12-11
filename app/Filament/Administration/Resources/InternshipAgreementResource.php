@@ -41,7 +41,8 @@ class InternshipAgreementResource extends Core\BaseResource
 
     public static function canAccess(): bool
     {
-        return auth()->user()->isAdministrator() || auth()->user()->isProfessor() || auth()->user()->isDepartmentHead() || auth()->user()->isProgramCoordinator() || auth()->user()->isDirection();
+        return auth()->user()->isAdministrator();
+        // || auth()->user()->isProfessor() || auth()->user()->isDepartmentHead() || auth()->user()->isProgramCoordinator() || auth()->user()->isDirection();
     }
 
     public static function canViewAny(): bool

@@ -47,7 +47,6 @@ class WelcomeDashboard extends \Filament\Pages\Dashboard
         return [
             \App\Filament\Administration\Widgets\Dashboards\AdminGettingStartedWidget::class,
             \App\Filament\Administration\Widgets\Dashboards\YearlyTimelineWidget::class,
-            \App\Filament\Administration\Widgets\FinalInternshipsPerProgramChart::class,
 
             // \App\Filament\Administration\Widgets\AssignedSupervisorsChart::class,
             // \App\Filament\Administration\Widgets\ProfessorsParticipationTable::class,

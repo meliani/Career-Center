@@ -32,9 +32,9 @@ class ProjectResource extends Core\BaseResource
 {
     protected static ?string $model = Project::class;
 
-    protected static ?string $modelLabel = 'Final project defense';
+    protected static ?string $modelLabel = 'Final project';
 
-    protected static ?string $pluralModelLabel = 'Final projects defenses';
+    protected static ?string $pluralModelLabel = 'Final projects';
 
     protected static ?string $title = 'title';
 
@@ -42,7 +42,7 @@ class ProjectResource extends Core\BaseResource
 
     protected static ?string $navigationIcon = 'heroicon-o-command-line';
 
-    protected static ?string $navigationGroup = 'Internships Archive';
+    protected static ?string $navigationGroup = 'Internships and Projects';
 
     protected static ?int $navigationSort = 4;
 

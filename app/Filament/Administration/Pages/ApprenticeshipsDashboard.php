@@ -23,7 +23,16 @@ class ApprenticeshipsDashboard extends \Filament\Pages\Dashboard
 
     public static function canAccess(): bool
     {
-        return true;
+        if (auth()->check()) {
+            return auth()->user()->isSuperAdministrator();
+            // || auth()->user()->isAdministrator()
+            // || auth()->user()->isProfessor()
+            // || auth()->user()->isDepartmentHead()
+            // || auth()->user()->isProgramCoordinator()
+            // || auth()->user()->isAdministrativeSupervisor();
+        } else {
+            return false;
+        }
     }
 
     public function getTitle(): string

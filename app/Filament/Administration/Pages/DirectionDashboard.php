@@ -28,7 +28,7 @@ class DirectionDashboard extends \Filament\Pages\Dashboard
     public static function canAccess(): bool
     {
         if (auth()->check()) {
-            return auth()->user()->isDirection();
+            return auth()->user()->isDirection() || auth()->user()->isSuperAdministrator();
         } else {
             return false;
         }
