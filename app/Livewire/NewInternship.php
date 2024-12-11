@@ -56,11 +56,7 @@ class NewInternship extends Page implements HasForms
                             ->default('MA'),
 
                         Forms\Components\ToggleButtons::make('organization_type')
-                            ->options([
-                                'Company' => __('Company'),
-                                'NGO' => __('NGO'),
-                                'Public' => __('Public Institution'),
-                            ])
+                            ->options(Enums\OrganizationType::class)
                             ->columnSpan(2)
                             ->inline()
                             ->default('Company')
