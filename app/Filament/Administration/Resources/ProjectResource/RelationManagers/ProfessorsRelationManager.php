@@ -97,7 +97,7 @@ class ProfessorsRelationManager extends RelationManager
                             ->required()
                             ->default(Enums\JuryRole::Supervisor),
                     ])
-                    ->hidden(fn () => auth()->user()->isAdministrator() === false),
+                    ->hidden(fn () => auth()->user()->can('manage-supervison', $this->ownerRecord)),
             ])
             ->actions([
                 Tables\Actions\Action::make('approve')
@@ -111,7 +111,13 @@ class ProfessorsRelationManager extends RelationManager
                     ->label('')
                     ->icon('heroicon-o-trash')
                     ->tooltip(__('Remove Jury Member'))
-                    ->disabled(fn () => auth()->user()->isAdministrator() === false),
+                    ->disabled(function ($record) {
+                        if (auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()) {
+                            return false;
+                        }
+
+                        return $record->pivot->approved_by !== null;
+                    }),
                 // Tables\Actions\DeleteAction::make(),
             ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
