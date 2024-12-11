@@ -7,6 +7,8 @@ use App\Filament\Actions\BulkAction;
 use App\Filament\Administration\Resources\ProjectResource\Pages;
 use App\Filament\Administration\Resources\ProjectResource\RelationManagers;
 use App\Filament\Core;
+use App\Models\FinalYearInternshipAgreement;
+use App\Models\InternshipAgreement;
 use App\Models\Project;
 use App\Models\Year;
 use Carbon\Carbon;
@@ -323,34 +325,37 @@ class ProjectResource extends Core\BaseResource
                         ),
                     ),
 
-                Tables\Filters\SelectFilter::make('hasTeammate')
-                    ->label('Has teammate')
-                    ->options([
-                        'yes' => __('With teammate'),
-                        'no' => __('Without teammate'),
-                    ])
-                    ->query(
-                        fn (Builder $query, array $data) => $query->when(
-                            $data['value'] === 'yes',
-                            fn (Builder $query) => $query->whereHas('students', fn ($query) => $query->select('project_id')->groupBy('project_id')->havingRaw('COUNT(*) > 1'))
-                        )->when(
-                            $data['value'] === 'no',
-                            fn (Builder $query) => $query->whereDoesntHave('students', fn ($query) => $query->select('project_id')->groupBy('project_id')->havingRaw('COUNT(*) <= 1'))
-                        ),
-                    ),
-                SelectFilter::make('agreement_type')
-                    ->label('Agreement Type')
-                    ->options([
-                        'InternshipAgreement' => 'Internship Agreement',
-                        'FinalYearInternshipAgreement' => 'Final Year Internship Agreement',
-                    ])
-                    ->query(function (Builder $query, array $data) {
-                        if ($data['value']) {
-                            $query->whereHas('agreements', function (Builder $q) use ($data) {
-                                $q->where('agreeable_type', 'App\\Models\\' . $data['value']);
-                            });
-                        }
-                    }),
+                // SelectFilter::make('agreement_type')
+                //     ->label('Agreement Type')
+                //     ->options([
+                //         'InternshipAgreement' => 'Internship Agreement',
+                //         'FinalYearInternshipAgreement' => 'Final Year Internship Agreement',
+                //     ])
+                //     ->query(function (Builder $query, array $data) {
+                //         if ($data['value']) {
+                //             $query->whereHas('agreements', function (Builder $q) use ($data) {
+                //                 $q->where('agreeable_type', 'App\\Models\\' . $data['value']);
+                //             });
+                //         }
+                //     }),
+                Tables\Filters\SelectFilter::make('year')
+                    ->label('Year')
+                    ->options(Year::getYearsForSelect(1))
+                    ->default(Year::current()->id)
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query->when(
+                            $data['value'],
+                            fn (Builder $query, $value) => $query->whereHas('agreements', function (Builder $query) use ($value) {
+                                $query->whereHasMorph('agreeable', [InternshipAgreement::class, FinalYearInternshipAgreement::class], function (Builder $query) use ($value) {
+                                    // $query->whereHas('student', function (Builder $query) use ($value) {
+                                    $query->where('year_id', $value);
+                                    // });
+                                });
+                            })
+                        );
+                    })
+                    ->indicateUsing(fn (array $data): ?string => $data['value'] ? __('Year') . ': ' . Year::find($data['value'])->title : null)
+                    ->columnSpanFull(),
             ])
             ->headerActions([
                 /*                 Tables\Actions\Action::make('Check changed professors')

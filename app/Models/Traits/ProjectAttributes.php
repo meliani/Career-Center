@@ -147,7 +147,7 @@ trait ProjectAttributes
     public function getEvaluationSheetUrlAttribute()
     {
         if ($this->attributes['evaluation_sheet_url']) {
-            return Storage::url($this->attributes['evaluation_sheet_url']);
+            return $this->attributes['evaluation_sheet_url'];
         }
         // return Storage::url("document/evaluation_sheet/{$this->id}.pdf");
 

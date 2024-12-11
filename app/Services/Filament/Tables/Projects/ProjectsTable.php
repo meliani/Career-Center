@@ -18,9 +18,9 @@ class ProjectsTable
         // dd($closures['evaluation_sheet_url']($record));
 
         return [
-            Tables\Columns\TextColumn::make('agreement_types')
-                ->label('Agreement Type')
-                ->searchable(false),
+            // Tables\Columns\TextColumn::make('agreement_types')
+            //     ->label('Agreement Type')
+            //     ->searchable(false),
             // ->formatStateUsing(function ($state) {
             //     return implode(', ', $state);
             // }),
