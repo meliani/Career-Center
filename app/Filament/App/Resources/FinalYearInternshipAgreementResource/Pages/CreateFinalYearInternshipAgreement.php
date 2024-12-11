@@ -327,7 +327,12 @@ class CreateFinalYearInternshipAgreement extends CreateRecord
                                 // ->suggestion()
                                 ->type('internships')
                                 ->splitKeys(['Tab', ',', ' '])
-                                ->columnSpanFull(),
+                                ->columnSpanFull()
+                                ->suggestions(
+                                    function () {
+                                        return \Spatie\Tags\Tag::withType('internships')->pluck('name');
+                                    },
+                                ),
                         ]),
                 ]),
         ];

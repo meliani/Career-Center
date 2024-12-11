@@ -108,15 +108,20 @@ class NewInternship extends Page implements HasForms
                                     ->searchable()
                                     ->columnSpan(2),
 
-                                Forms\Components\TagsInput::make('tags')
-                                    ->placeholder(__('Add keywords'))
-                                    ->splitKeys(['Tab', ',', ';'])
-                                    ->columnSpan(2),
-                                // Forms\Components\SpatieTagsInput::make('tags')
+                                // Forms\Components\TagsInput::make('tags')
                                 //     ->placeholder(__('Add keywords'))
                                 //     ->splitKeys(['Tab', ',', ';'])
-                                //     ->columnSpanFull(),
-                                // ->type('InternshipOfferTags'),
+                                //     ->columnSpan(2),
+                                Forms\Components\SpatieTagsInput::make('tags')
+                                    ->placeholder(__('Add keywords'))
+                                    ->splitKeys(['Tab', ',', ';'])
+                                    ->columnSpan(2)
+                                    ->type('InternshipOffer')
+                                    ->suggestions(
+                                        function () {
+                                            return \Spatie\Tags\Tag::withType('InternshipOffer')->pluck('name');
+                                        },
+                                    ),
 
                             ]),
                         Forms\Components\Fieldset::make('Internship location and duration')

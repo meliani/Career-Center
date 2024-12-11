@@ -170,15 +170,7 @@
                             {{ $internshipOffer->workload ?? __('Workload not specified') }}
                         </p>
                     </div>
-                    @if(isset($internshipOffer->tags) && count($internshipOffer->tags))
-                        <div class="flex flex-wrap gap-2 mt-2">
-                            @foreach($internshipOffer->tags as $tag)
-                                <span class="px-3 py-1 bg-primary-100 text-primary-700 dark:bg-primary-900 dark:text-primary-300 rounded-full text-sm">{{ $tag }}</span>
-                            @endforeach
-                        </div>
-                    @else
-                        <p class="text-warning-600 italic">{{ __('Consider adding relevant tags') }}</p>
-                    @endif
+
                 </div>
             </div>
 
