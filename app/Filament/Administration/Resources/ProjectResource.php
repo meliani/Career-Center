@@ -24,6 +24,7 @@ use Guava\FilamentModalRelationManagers\Actions\Infolist\RelationManagerAction a
 use Guava\FilamentModalRelationManagers\Actions\Table\RelationManagerAction;
 use Hydrat\TableLayoutToggle\Facades\TableLayoutToggle;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
 use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 use pxlrbt\FilamentExcel;
 
@@ -396,6 +397,14 @@ class ProjectResource extends Core\BaseResource
 
             ])
             ->actions([
+                \Parallax\FilamentComments\Tables\Actions\CommentsAction::make()
+                    ->label(false)
+                    ->tooltip(
+                        fn ($record) => "{$record->filamentComments()->count()} " . __('Comments')
+                    )
+                        // ->visible(fn () => true)
+                    ->badge(fn ($record) => $record->filamentComments()->count() ? $record->filamentComments()->count() : null),
+
                 Tables\Actions\ActionGroup::make([
                     RelationManagerAction::make('professors-relation-manager')
                         ->label('Jury Members')
@@ -438,13 +447,6 @@ class ProjectResource extends Core\BaseResource
                         ->color('warning')
                         ->hidden(fn ($record) => auth()->user()->can('authorize-defense', $record) === false)
                         ->action(fn ($record) => $record->postponeDefense()),
-                    \Parallax\FilamentComments\Tables\Actions\CommentsAction::make()
-                        ->label('Comment')
-                        ->tooltip(
-                            fn ($record) => "{$record->filamentComments()->count()} " . __('Comments')
-                        )
-                        // ->visible(fn () => true)
-                        ->badge(fn ($record) => $record->filamentComments()->count() ? $record->filamentComments()->count() : null),
 
                     // Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
@@ -621,9 +623,7 @@ class ProjectResource extends Core\BaseResource
                                         InfolistRelationManagerAction::make('timetable-relation-manager')
                                             ->label(__('Edit timetable'))
                                             ->relationManager(RelationManagers\TimetableRelationManager::class)
-                                            ->hidden(fn () => auth()->user()->isAdministrator() === false)
-                                            ->modalSubmitAction(false)
-                                            ->modalCancelAction(false),
+                                            ->hidden(fn (Request $request, $record) => (auth()->user()->can('manage-planning', $record->timetable)) === false)->modalCancelAction(false),
 
                                     ])
                                     ->schema([

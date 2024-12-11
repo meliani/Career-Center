@@ -12,7 +12,7 @@ class UserPolicy extends CorePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->isAdministrator() || $user->isSuperAdministrator();
+        return $user->hasAnyRole([Role::Administrator, Role::Direction]);
     }
 
     /**

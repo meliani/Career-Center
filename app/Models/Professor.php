@@ -13,7 +13,7 @@ class Professor extends User
             $query
                 ->whereIn('role', Enums\Role::getProfessorRoles());
         });
-        static::addGlobalScope(new Scopes\ProfessorScope);
+        // static::addGlobalScope(new Scopes\ProfessorScope);
 
     }
 

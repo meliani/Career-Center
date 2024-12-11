@@ -105,7 +105,7 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
     public static function boot()
     {
         parent::boot();
-        static::addGlobalScope(new Scopes\StudentScope);
+        // static::addGlobalScope(new Scopes\StudentScope);
 
         // static::addGlobalScope(function ($query) {
         //     if (auth()->check()) {

@@ -36,7 +36,7 @@ class TimetablePolicy extends CorePolicy
      */
     public function update(User $user, Timetable $timetable): bool
     {
-        return $user->isAdministrator() || $user->isDirection() || $user->isProgramCoordinator() || $user->isDepartmentHead() || $user->isProfessor() || $user->isAdministrativeSupervisor();
+        return $user->isAdministrator() || $user->isDirection() || $user->isProgramCoordinator() || $user->isDepartmentHead() || $user->isAdministrativeSupervisor();
     }
 
     /**

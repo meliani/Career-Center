@@ -25,71 +25,73 @@
             <!-- Statistics Grid -->
             <div class="grid grid-cols-2 gap-4">
                 @foreach($statistics as $stat)
-                <div class="group relative">
-                    @if($stat['route'] ?? false)
-                        <a href="{{ $stat['route'] }}" class="block">
-                    @endif
-                    <div class="bg-white p-4 rounded-lg shadow-sm border group-hover:bg-{{ $stat['color'] }}-50 group-hover:border-{{ $stat['color'] }}-200 transition-all duration-300 ease-in-out relative">
-                        <div class="flex justify-between items-start">
-                            <div class="space-y-2">
-                                <div class="text-sm text-gray-500 group-hover:text-{{ $stat['color'] }}-600">{{ $stat['label'] }}</div>
-                                <div class="flex items-center space-x-2">
-                                    <div class="text-3xl font-bold text-{{ $stat['color'] }}-600">{{ $stat['value'] }}</div>
-                                    @if(isset($stat['trend']))
-                                        @if($stat['trend'] > 0)
-                                            <div class="flex items-center text-success-500" title="{{ __('Increase from previous period') }}">
-                                                <x-heroicon-s-arrow-trending-up class="w-5 h-5" />
-                                                <span class="text-xs ml-1">+{{ $stat['trend'] }}%</span>
-                                            </div>
-                                        @elseif($stat['trend'] < 0)
-                                            <div class="flex items-center text-danger-500" title="{{ __('Decrease from previous period') }}">
-                                                <x-heroicon-s-arrow-trending-down class="w-5 h-5" />
-                                                <span class="text-xs ml-1">{{ $stat['trend'] }}%</span>
-                                            </div>
-                                        @else
-                                            <div class="flex items-center text-gray-500" title="{{ __('No change from previous period') }}">
-                                                <x-heroicon-s-minus class="w-5 h-5" />
-                                                <span class="text-xs ml-1">0%</span>
-                                            </div>
-                                        @endif
-                                    @endif
+                    @if(auth()->user()->can('viewAny', $stat['model_class']))
+                        <div class="group relative">
+                            @if($stat['route'] ?? false)
+                                <a href="{{ $stat['route'] }}" class="block">
+                            @endif
+                            <div class="bg-white p-4 rounded-lg shadow-sm border group-hover:bg-{{ $stat['color'] }}-50 group-hover:border-{{ $stat['color'] }}-200 transition-all duration-300 ease-in-out relative">
+                                <div class="flex justify-between items-start">
+                                    <div class="space-y-2">
+                                        <div class="text-sm text-gray-500 group-hover:text-{{ $stat['color'] }}-600">{{ $stat['label'] }}</div>
+                                        <div class="flex items-center space-x-2">
+                                            <div class="text-3xl font-bold text-{{ $stat['color'] }}-600">{{ $stat['value'] }}</div>
+                                            @if(isset($stat['trend']))
+                                                @if($stat['trend'] > 0)
+                                                    <div class="flex items-center text-success-500" title="{{ __('Increase from previous period') }}">
+                                                        <x-heroicon-s-arrow-trending-up class="w-5 h-5" />
+                                                        <span class="text-xs ml-1">+{{ $stat['trend'] }}%</span>
+                                                    </div>
+                                                @elseif($stat['trend'] < 0)
+                                                    <div class="flex items-center text-danger-500" title="{{ __('Decrease from previous period') }}">
+                                                        <x-heroicon-s-arrow-trending-down class="w-5 h-5" />
+                                                        <span class="text-xs ml-1">{{ $stat['trend'] }}%</span>
+                                                    </div>
+                                                @else
+                                                    <div class="flex items-center text-gray-500" title="{{ __('No change from previous period') }}">
+                                                        <x-heroicon-s-minus class="w-5 h-5" />
+                                                        <span class="text-xs ml-1">0%</span>
+                                                    </div>
+                                                @endif
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="p-2 rounded-lg bg-{{ $stat['color'] }}-100/50 group-hover:bg-{{ $stat['color'] }}-100">
+                                        @switch($stat['key'] ?? '')
+                                            @case('new_offers')
+                                                <x-heroicon-o-briefcase class="w-5 h-5 text-{{ $stat['color'] }}-500" />
+                                                @break
+                                            @case('pending_offers')
+                                                <x-heroicon-o-clock class="w-5 h-5 text-{{ $stat['color'] }}-500" />
+                                                @break
+                                            @case('applications')
+                                                <x-heroicon-o-document-text class="w-5 h-5 text-{{ $stat['color'] }}-500" />
+                                                @break
+                                            @case('active_users')
+                                                <x-heroicon-o-users class="w-5 h-5 text-{{ $stat['color'] }}-500" />
+                                                @break
+                                            @case('agreements')
+                                                <x-heroicon-o-document-check class="w-5 h-5 text-{{ $stat['color'] }}-500" />
+                                                @break
+                                            @default
+                                                <x-heroicon-o-chart-bar class="w-5 h-5 text-{{ $stat['color'] }}-500" />
+                                        @endswitch
+                                    </div>
                                 </div>
+                                @if(isset($stat['description']))
+                                    <p class="mt-2 text-xs text-gray-500 group-hover:text-{{ $stat['color'] }}-600">{{ $stat['description'] }}</p>
+                                @endif
+                                @if($stat['route'] ?? false)
+                                    <div class="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <x-heroicon-o-arrow-top-right-on-square class="w-4 h-4 text-{{ $stat['color'] }}-500" />
+                                    </div>
+                                @endif
                             </div>
-                            <div class="p-2 rounded-lg bg-{{ $stat['color'] }}-100/50 group-hover:bg-{{ $stat['color'] }}-100">
-                                @switch($stat['key'] ?? '')
-                                    @case('new_offers')
-                                        <x-heroicon-o-briefcase class="w-5 h-5 text-{{ $stat['color'] }}-500" />
-                                        @break
-                                    @case('pending_offers')
-                                        <x-heroicon-o-clock class="w-5 h-5 text-{{ $stat['color'] }}-500" />
-                                        @break
-                                    @case('applications')
-                                        <x-heroicon-o-document-text class="w-5 h-5 text-{{ $stat['color'] }}-500" />
-                                        @break
-                                    @case('active_users')
-                                        <x-heroicon-o-users class="w-5 h-5 text-{{ $stat['color'] }}-500" />
-                                        @break
-                                    @case('agreements')
-                                        <x-heroicon-o-document-check class="w-5 h-5 text-{{ $stat['color'] }}-500" />
-                                        @break
-                                    @default
-                                        <x-heroicon-o-chart-bar class="w-5 h-5 text-{{ $stat['color'] }}-500" />
-                                @endswitch
-                            </div>
+                            @if($stat['route'] ?? false)
+                                </a>
+                            @endif
                         </div>
-                        @if(isset($stat['description']))
-                            <p class="mt-2 text-xs text-gray-500 group-hover:text-{{ $stat['color'] }}-600">{{ $stat['description'] }}</p>
-                        @endif
-                        @if($stat['route'] ?? false)
-                            <div class="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                <x-heroicon-o-arrow-top-right-on-square class="w-4 h-4 text-{{ $stat['color'] }}-500" />
-                            </div>
-                        @endif
-                    </div>
-                    @if($stat['route'] ?? false)
-                        </a>
                     @endif
-                </div>
                 @endforeach
             </div>
 

@@ -8,6 +8,7 @@ use App\Models\InternshipAgreement;
 use App\Models\InternshipOffer;
 use App\Models\Professor;
 use App\Models\Project;
+use App\Models\TimeTable;
 use App\Models\User;
 use App\Policies\ActivityPolicy;
 use App\Policies\FinalYearInternshipAgreementPolicy;
@@ -15,13 +16,14 @@ use App\Policies\InternshipAgreementPolicy;
 use App\Policies\InternshipOfferPolicy;
 use App\Policies\ProfessorPolicy;
 use App\Policies\ProjectPolicy;
+use App\Policies\TimetablePolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Spatie\Activitylog\Models\Activity;
 
 class AuthServiceProvider extends ServiceProvider
 {
-    protected $administrators = [Role::SuperAdministrator, Role::Administrator];
+    protected $administrators = [Role::SuperAdministrator, Role::Administrator, Role::Direction];
 
     protected $professors = [Role::Professor, Role::ProgramCoordinator, Role::DepartmentHead];
 
@@ -37,6 +39,7 @@ class AuthServiceProvider extends ServiceProvider
         InternshipAgreement::class => InternshipAgreementPolicy::class,
         InternshipOffer::class => InternshipOfferPolicy::class,
         FinalYearInternshipAgreement::class => FinalYearInternshipAgreementPolicy::class,
+        TimeTable::class => TimeTablePolicy::class,
     ];
 
     /**
@@ -54,6 +57,23 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         $this->registerProjectPolicies();
+
+        // Remove the custom Gates for statistics
+        // Gate::define('view-statistics', function (User $user) {
+        //     return $user->hasAnyRole(array_merge($this->administrators, $this->professors));
+        // });
+        // Gate::define('view-offers-statistics', function (User $user) {
+        //     return $user->hasAnyRole(array_merge($this->administrators, $this->professors));
+        // });
+        // Gate::define('view-applications-statistics', function (User $user) {
+        //     return $user->hasAnyRole(array_merge($this->administrators, $this->professors));
+        // });
+        // Gate::define('view-agreements-statistics', function (User $user) {
+        //     return $user->hasAnyRole(array_merge($this->administrators, $this->professors));
+        // });
+        // Gate::define('view-users-statistics', function (User $user) {
+        //     return $user->hasAnyRole($this->administrators);
+        // });
     }
 
     private function registerInternshipAgreementPolicies()
@@ -111,10 +131,29 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('validate-project', [ProjectPolicy::class, 'update']);
         Gate::define('authorize-defense', [ProjectPolicy::class, 'update']);
         Gate::define('send-defense-email', [ProjectPolicy::class, 'update']);
+        Gate::define('manage-planning', [TimetablePolicy::class, 'update']);
 
         Gate::define('manage-projects', fn (User $user) => ($user->isAdministrator() || $user->isAdministrativeSupervisor()));
         Gate::define('manage-students', fn (User $user) => ($user->isAdministrator()));
         Gate::define('create-token', fn (User $user) => $user->isSuperAdministrator());
+        Gate::define('view-statistics', function (User $user) {
+            return $user->hasAnyRole(array_merge($this->administrators, $this->professors));
+        });
 
+        Gate::define('view-offers-statistics', function (User $user) {
+            return $user->hasAnyRole(array_merge($this->administrators, $this->professors));
+        });
+
+        Gate::define('view-applications-statistics', function (User $user) {
+            return $user->hasAnyRole(array_merge($this->administrators, $this->professors));
+        });
+
+        Gate::define('view-agreements-statistics', function (User $user) {
+            return $user->hasAnyRole(array_merge($this->administrators, $this->professors));
+        });
+
+        Gate::define('view-users-statistics', function (User $user) {
+            return $user->hasAnyRole($this->administrators);
+        });
     }
 }

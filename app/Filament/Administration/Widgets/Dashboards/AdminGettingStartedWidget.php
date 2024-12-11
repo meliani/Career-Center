@@ -8,6 +8,7 @@ use App\Models\InternshipOffer;
 use App\Models\Student;
 use App\Models\User;
 use Filament\Widgets\Widget;
+use Illuminate\Support\Facades\Auth;
 
 class AdminGettingStartedWidget extends Widget
 {
@@ -82,6 +83,7 @@ class AdminGettingStartedWidget extends Widget
 
     protected function loadStatistics()
     {
+        $user = Auth::user();
         $period = $this->getTrendPeriodDates();
         $currentPeriodStart = $period['current'];
         $previousPeriodStart = $period['previous'];
@@ -111,62 +113,74 @@ class AdminGettingStartedWidget extends Widget
         $this->statistics = [
             'new_offers' => [
                 'key' => 'new_offers',
+                'model_class' => InternshipOffer::class,
                 'label' => __('Active Internship Offers'),
                 'value' => InternshipOffer::active()->count(),
                 'color' => 'success',
                 'description' => __('Currently available positions') . " ({$comparisonLabel})",
                 'trend' => $this->calculateTrend($currentOffers, $previousOffers),
-                'route' => route('filament.Administration.resources.internship-offers.index'),
+                'route' => $user->can('viewAny', InternshipOffer::class) ? route('filament.Administration.resources.internship-offers.index') : null,
             ],
             'pending_offers' => [
                 'key' => 'pending_offers',
+                'model_class' => InternshipOffer::class,
+                'can' => 'view-offers-statistics',
                 'label' => __('Pending Review'),
                 'value' => InternshipOffer::submitted()->count(),
                 'color' => 'warning',
                 'description' => __('Internship offers awaiting approval'),
-                'route' => route('filament.Administration.resources.internship-offers.index', ['tableFilters[status][values][0]' => 'Submitted']),
+                'route' => $user->can('viewAny', InternshipOffer::class) ? route('filament.Administration.resources.internship-offers.index', ['tableFilters[status][values][0]' => 'Submitted']) : null,
             ],
             'applications' => [
                 'key' => 'applications',
+                'model_class' => Application::class,
                 'label' => __('Student Applications'),
                 'value' => Application::count(),
                 'color' => 'info',
                 'description' => __('Total submitted applications') . " ({$comparisonLabel})",
                 'trend' => $this->calculateTrend($currentApplications, $previousApplications),
+                'route' => $user->can('viewAny', Application::class) ? route('filament.Administration.resources.applications.index') : null,
             ],
             'agreements' => [
                 'key' => 'agreements',
+                'model_class' => FinalYearInternshipAgreement::class,
                 'label' => __('Active Agreements'),
                 'value' => FinalYearInternshipAgreement::count(),
                 'color' => 'success',
                 'description' => __('Total internship agreements in process') . " ({$comparisonLabel})",
                 'trend' => $this->calculateTrend($currentAgreements, $previousAgreements),
-                'route' => route('filament.Administration.resources.final-year-internship-agreements.index'),
+                'route' => $user->can('viewAny', FinalYearInternshipAgreement::class) ? route('filament.Administration.resources.final-year-internship-agreements.index') : null,
             ],
             'signed_agreements' => [
                 'key' => 'signed_agreements',
+                'model_class' => FinalYearInternshipAgreement::class,
+                'can' => 'view-agreements-statistics',
                 'label' => __('Completed Agreements'),
                 'value' => FinalYearInternshipAgreement::where('status', 'Signed')->count(),
                 'color' => 'primary',
                 'description' => __('Fully signed and processed agreements') . " ({$comparisonLabel})",
                 'trend' => $this->calculateTrend($currentSignedAgreements, $previousSignedAgreements),
-                'route' => route('filament.Administration.resources.final-year-internship-agreements.index', ['tableFilters[status][value]' => 'Signed']),
+                'route' => $user->can('viewAny', FinalYearInternshipAgreement::class) ? route('filament.Administration.resources.final-year-internship-agreements.index', ['tableFilters[status][value]' => 'Signed']) : null,
             ],
             'active_users' => [
                 'key' => 'active_users',
+                'model_class' => User::class,
+                'can' => 'view-users-statistics',
                 'label' => __('Active Platform Users'),
                 'value' => User::whereDate('last_login_at', '>=', now()->subDays(7))->count() + Student::whereDate('last_login_at', '>=', now()->subDays(7))->count(),
                 'color' => 'primary',
                 'description' => __('Users who logged in during the last 7 days'),
-                'route' => route('filament.Administration.resources.students.index'),
+                'route' => $user->can('viewAny', User::class) ? route('filament.Administration.resources.students.index') : null,
             ],
             'total_users' => [
                 'key' => 'total_users',
+                'model_class' => User::class,
+                'can' => 'view-users-statistics',
                 'label' => __('Total Users'),
                 'value' => User::count() + Student::count(),
                 'color' => 'secondary',
                 'description' => __('All registered students, professors, and administrators'),
-                'route' => route('filament.Administration.resources.users.index'),
+                'route' => $user->can('viewAny', User::class) ? route('filament.Administration.resources.users.index') : null,
             ],
         ];
     }

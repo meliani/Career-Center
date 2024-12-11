@@ -36,7 +36,18 @@ class ProjectPolicy extends CorePolicy
             return true;
         }
 
-        return false;
+        return $project->agreements->contains('student_id', $user->id);
+        foreach ($project->agreements as $agreement) {
+            if ($agreement->student_id === $user->id) {
+                return true;
+            }
+            if ($user->isAdministrator() || $user->isAdministrativeSupervisor()) {
+                return true;
+            } elseif ($user->isProfessor() && $project->professors === $user->id) {
+                return false;
+            } elseif ($user->isProgramCoordinator() && $project->students->each(fn ($student, $key) => $student->program === $user->assigned_program)) {
+            }
+        }
     }
 
     public function update(User $user, Project $project)
@@ -45,10 +56,18 @@ class ProjectPolicy extends CorePolicy
             return true;
         } elseif ($user->isProfessor() && $project->professors === $user->id) {
             return false;
-        } elseif ($user->isProgramCoordinator() && $project->students->each(fn ($student, $key) => $student->program === $user->assigned_program)) {
-            return true;
-        } elseif ($user->isDepartmentHead() && $project->students->each(fn ($student, $key) => $student->department === $user->department)) {
-            return false;
+        } elseif ($user->isProgramCoordinator()) {
+            foreach ($project->agreements as $agreement) {
+                if ($agreement->student_id === $user->id) {
+                    return true;
+                }
+            }
+        } elseif ($user->isDepartmentHead()) {
+            foreach ($project->agreements as $agreement) {
+                if ($agreement->student_id === $user->id) {
+                    return false;
+                }
+            }
         }
 
         return false;

@@ -20,7 +20,7 @@ class Project extends Core\BackendBaseModel
     protected static function boot()
     {
         parent::boot();
-        static::addGlobalScope(new Scopes\ProjectScope);
+        // static::addGlobalScope(new Scopes\ProjectScope);
     }
 
     protected static function booted(): void

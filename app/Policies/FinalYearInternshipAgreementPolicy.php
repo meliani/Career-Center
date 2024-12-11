@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\Role;
 use App\Models\FinalYearInternshipAgreement;
 use App\Models\Student;
 use App\Models\User;
@@ -12,15 +13,9 @@ class FinalYearInternshipAgreementPolicy extends CorePolicy
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User | Student $user): bool
+    public function viewAny(User $user): bool
     {
-        if ($user instanceof Student) {
-            return $user->level === \App\Enums\StudentLevel::ThirdYear;
-        }
-
-        return $user->isAdministrator() ||
-               $user->isProgramCoordinator() ||
-               $user->isDepartmentHead();
+        return $user->hasAnyRole([Role::Administrator, Role::Direction, Role::Professor, Role::ProgramCoordinator, Role::DepartmentHead]);
     }
 
     /**
