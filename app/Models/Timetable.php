@@ -3,12 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Timetable extends Core\BackendBaseModel
 {
-    use SoftDeletes;
-
     protected $fillable = [
         // Primary fields
         'timeslot_id',
