@@ -2,33 +2,37 @@
 
 namespace App\Models;
 
-use Filament\Notifications\Notification;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Timetable extends Core\BackendBaseModel
 {
+    use SoftDeletes;
+
     protected $fillable = [
+        // Primary fields
         'timeslot_id',
         'room_id',
         'project_id',
         'user_id',
-        'is_enabled',
-        'is_taken',
-        'is_confirmed',
-        'is_cancelled',
-        'is_rescheduled',
-        'is_deleted',
+
+        // Action timestamps
         'confirmed_at',
         'cancelled_at',
         'rescheduled_at',
-        'deleted_at',
+
+        // Action performers
         'confirmed_by',
         'cancelled_by',
         'rescheduled_by',
-        'deleted_by',
         'created_by',
         'updated_by',
-        'schedulable_type',
-        'schedulable_id',
+    ];
+
+    protected $casts = [
+        'confirmed_at' => 'datetime',
+        'cancelled_at' => 'datetime',
+        'rescheduled_at' => 'datetime',
     ];
 
     protected static function boot()
@@ -108,7 +112,7 @@ class Timetable extends Core\BackendBaseModel
     public function setProjectIdAttribute($projectId)
     {
         // remove the project_id from previous timetable
-        // $this->where('project_id', $projectId)->update(['project_id' => null]);
+        $this->where('project_id', $projectId)->update(['project_id' => null]);
         $this->attributes['project_id'] = $projectId;
 
     }
@@ -119,9 +123,78 @@ class Timetable extends Core\BackendBaseModel
         $this->attributes['timeslot_id'] = $timeslotId;
     }
 
-    public function timeslot()
+    // Add status accessors
+    public function getIsEnabledAttribute(): bool
+    {
+        return ! is_null($this->confirmed_at);
+    }
+
+    // Status accessors
+    public function getIsTakenAttribute(): bool
+    {
+        return ! is_null($this->project_id);
+    }
+
+    public function getIsConfirmedAttribute(): bool
+    {
+        return ! is_null($this->confirmed_at);
+    }
+
+    public function getIsCancelledAttribute(): bool
+    {
+        return ! is_null($this->cancelled_at);
+    }
+
+    public function getIsRescheduledAttribute(): bool
+    {
+        return ! is_null($this->rescheduled_at);
+    }
+
+    // Relationships
+    public function timeslot(): BelongsTo
     {
         return $this->belongsTo(Timeslot::class)->orderBy('start_time', 'asc');
+    }
+
+    public function room(): BelongsTo
+    {
+        return $this->belongsTo(Room::class)->available();
+    }
+
+    public function project(): BelongsTo
+    {
+        return $this->belongsTo(Project::class);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    // Action performer relationships
+    public function confirmedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'confirmed_by');
+    }
+
+    public function cancelledBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'cancelled_by');
+    }
+
+    public function rescheduledBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'rescheduled_by');
+    }
+
+    public function createdBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function updatedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'updated_by');
     }
 
     public function available_timeslots()
@@ -134,6 +207,7 @@ class Timetable extends Core\BackendBaseModel
     //     return $this->whereDoesntHave('project');
     // }
 
+    // Scopes
     public function scopeUnplanned($query)
     {
         // return $query->whereDoesntHave('project');
@@ -143,16 +217,6 @@ class Timetable extends Core\BackendBaseModel
     public function scopePlanned($query)
     {
         return $query->whereNotNull('project_id');
-    }
-
-    public function room()
-    {
-        return $this->belongsTo(Room::class)->available();
-    }
-
-    public function project()
-    {
-        return $this->belongsTo(Project::class);
     }
 
     public function professors()

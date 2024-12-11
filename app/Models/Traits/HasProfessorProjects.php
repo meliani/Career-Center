@@ -26,9 +26,8 @@ trait HasProfessorProjects
     public function reviewers()
     {
         return $this->professors()
-            ->wherePivot('jury_role', JuryRole::Reviewer->value)
-            ->orWherePivot('jury_role', JuryRole::Reviewer1->value)
-            ->orWherePivot('jury_role', JuryRole::Reviewer2->value);
+            ->wherePivot('jury_role', JuryRole::FirstReviewer->value)
+            ->orWherePivot('jury_role', JuryRole::SecondReviewer->value);
     }
 
     public function markAllProfessorsAsPresent()

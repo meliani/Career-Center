@@ -60,22 +60,18 @@ class ProjectsTable
                     //     // ->sortable(false)
                     //     ->sortableMany()
                     //     ->searchable(),
-                    Tables\Columns\TextColumn::make('Department')
+                    Tables\Columns\TextColumn::make('title')
+                        ->label('Title')
+                        ->searchable(true)
+                        ->sortable(false)
+                        ->description(fn ($record) => 'From ' . $record->start_date->format('d/m/Y') . ' to ' . $record->end_date->format('d/m/Y'))
+                        ->limit(50),
+                    Tables\Columns\TextColumn::make('assigned_departments')
                         ->toggleable(isToggledHiddenByDefault: true)
-                        ->formatStateUsing(fn ($record) => $record->agreements->agreeable->student->department)
+                        // ->formatStateUsing(fn ($record) => $record->assigned_departments)
                         ->label('Assigned department')
                         ->searchable(false)
-                        ->sortableMany(),
-                    Tables\Columns\TextColumn::make('start_date')
-                        ->searchable(false)
-                        ->toggleable(isToggledHiddenByDefault: true)
-                        ->label('Project start date')
-                        ->date('d/m/Y'),
-                    Tables\Columns\TextColumn::make('end_date')
-                        ->searchable(false)
-                        ->toggleable(isToggledHiddenByDefault: true)
-                        ->label('Project end date')
-                        ->date('d/m/Y'),
+                        ->sortable(false),
                 ]),
 
             Tables\Columns\ColumnGroup::make(__('Defense authorization'))

@@ -95,7 +95,7 @@ class ProfessorsRelationManager extends RelationManager
                         $action->getRecordSelect(),
                         Forms\Components\Select::make('jury_role')->options(Enums\JuryRole::class)
                             ->required()
-                            ->default(Enums\JuryRole::Reviewer),
+                            ->default(Enums\JuryRole::Supervisor),
                     ])
                     ->hidden(fn () => auth()->user()->isAdministrator() === false),
             ])

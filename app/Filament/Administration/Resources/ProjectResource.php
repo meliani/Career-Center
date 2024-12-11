@@ -593,7 +593,7 @@ class ProjectResource extends Core\BaseResource
                                         InfolistRelationManagerAction::make('professors-relation-manager')
                                             ->label(__('Edit jury members'))
                                             ->relationManager(RelationManagers\ProfessorsRelationManager::class)
-                                            ->hidden(fn () => auth()->user()->isAdministrator() === false)
+                                            ->hidden(fn (Request $request, $record) => (auth()->user()->can('manage-projects', $record)) === false)
                                             ->modalSubmitAction(false)
                                             ->modalCancelAction(false),
                                     ])
@@ -628,8 +628,9 @@ class ProjectResource extends Core\BaseResource
                                         InfolistRelationManagerAction::make('timetable-relation-manager')
                                             ->label(__('Edit timetable'))
                                             ->relationManager(RelationManagers\TimetableRelationManager::class)
-                                            ->hidden(fn (Request $request, $record) => (auth()->user()->can('manage-planning', $record->timetable)) === false)->modalCancelAction(false),
-
+                                            ->hidden(fn (Request $request, $record) => (auth()->user()->can('manage-planning', $record->timetable)) === false)
+                                            ->modalSubmitAction(false)
+                                            ->modalCancelAction(false),
                                     ])
                                     ->schema([
                                         Infolists\Components\TextEntry::make('timetable.timeslot.start_time')

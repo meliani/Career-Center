@@ -65,7 +65,7 @@ class Project extends Core\BackendBaseModel
         'id_pfe',
         // 'organization',
         // 'description',
-        // 'assigned_department',
+        'assigned_departments',
         'agreement_types',
     ];
 

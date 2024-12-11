@@ -163,4 +163,16 @@ trait ProjectAttributes
 
         // return __('Not Uploaded Yet');
     }
+
+    /**
+     * Get the assigned departments for the project.
+     *
+     * @return string
+     */
+    public function getAssignedDepartmentsAttribute()
+    {
+        return $this->agreements->map(function ($agreement) {
+            return $agreement->agreeable->assigned_department?->getLabel();
+        })->unique()->implode(' & ');
+    }
 }
