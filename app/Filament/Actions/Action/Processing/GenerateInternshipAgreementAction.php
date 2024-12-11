@@ -25,11 +25,11 @@ class GenerateInternshipAgreementAction extends Action
             $FinalYearInternship = $FinalYearInternship->load('student', 'organization');
 
             // Determine template based on organization's country
-            $template_view = 'pdf.templates.' . $FinalYearInternship->student->level->value . '/';
+            $template_view = 'pdf.templates.' . $FinalYearInternship->student->level->value . '.';
             if ($FinalYearInternship->organization->country === 'France') {
                 $template_view .= 'france_agreement_template';
             } else {
-                $template_view .= $FinalYearInternship->student->level->value . '.agreement_template';
+                $template_view .= 'agreement_template';
             }
 
             $pdf_path = 'storage/pdf/apprenticeship_agreements/' . $FinalYearInternship->student->level->value;
