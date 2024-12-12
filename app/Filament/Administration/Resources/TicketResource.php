@@ -33,6 +33,7 @@ class TicketResource extends Core\BaseResource
 
     public static function canAccess(): bool
     {
+        return false;
         if (auth()->check()) {
             return auth()->user()->isAdministrator() || auth()->user()->isSuperAdministrator() || auth()->user()->isProgramCoordinator() || auth()->user()->isDepartmentHead() || auth()->user()->isProfessor();
         }

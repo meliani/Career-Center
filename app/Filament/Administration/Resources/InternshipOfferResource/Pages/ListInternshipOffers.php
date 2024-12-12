@@ -31,6 +31,9 @@ class ListInternshipOffers extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+            Actions\Action::make(__('Create Internship Offer'))
+                ->icon('heroicon-o-plus')
+                ->url('/publish-internship', shouldOpenInNewTab: true),
         ];
     }
 

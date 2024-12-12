@@ -48,7 +48,7 @@ class InternshipOfferResource extends BaseResource
     public static function canViewAny(): bool
     {
         if (auth()->check()) {
-            return auth()->user()->isAdministrator() || auth()->user()->isDirection();
+            return auth()->user()->isAdministrator() || auth()->user()->isDirection() || auth()->user()->isProgramCoordinator() || auth()->user()->isDepartmentHead() || auth()->user()->isProfessor();
         }
 
         return false;
