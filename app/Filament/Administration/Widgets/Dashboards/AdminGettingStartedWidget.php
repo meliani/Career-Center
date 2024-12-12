@@ -5,6 +5,7 @@ namespace App\Filament\Administration\Widgets\Dashboards;
 use App\Models\FinalYearInternshipAgreement;
 use App\Models\InternshipApplication as Application;
 use App\Models\InternshipOffer;
+use App\Models\Project;
 use App\Models\Student;
 use App\Models\User;
 use Filament\Widgets\Widget;
@@ -120,6 +121,10 @@ class AdminGettingStartedWidget extends Widget
             ->whereBetween('signed_at', [$previousPeriodStart, $currentPeriodStart])
             ->count();
 
+        // Calculate projects trend
+        $currentProjects = Project::where('created_at', '>=', $currentPeriodStart)->count();
+        $previousProjects = Project::whereBetween('created_at', [$previousPeriodStart, $currentPeriodStart])->count();
+
         $comparisonLabel = $this->getPeriodLabel();
 
         $this->statistics = [
@@ -193,6 +198,16 @@ class AdminGettingStartedWidget extends Widget
                 'color' => 'secondary',
                 'description' => __('All registered students, professors, and administrators'),
                 'route' => $user->can('viewAny', User::class) ? route('filament.Administration.resources.users.index') : null,
+            ],
+            'projects' => [
+                'key' => 'projects',
+                'model_class' => Project::class,
+                'label' => __('Active Projects'),
+                'value' => Project::active()->count(),
+                'color' => 'success',
+                'description' => __('Currently active projects') . " ({$comparisonLabel})",
+                'trend' => $this->calculateTrend($currentProjects, $previousProjects),
+                'route' => $user->can('viewAny', Project::class) ? route('filament.Administration.resources.projects.index') : null,
             ],
         ];
     }

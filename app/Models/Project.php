@@ -262,6 +262,20 @@ class Project extends Core\BackendBaseModel
         return $this->belongsTo(InternshipAgreementContact::class, 'parrain_id');
     }
 
+    // active scope
+    public function scopeActive($query)
+    {
+        return $query->whereNot('defense_status', Enums\DefenseStatus::Completed)
+            ->whereHas('agreements', function ($query) {
+                $query->whereMorphRelation(
+                    'agreeable',
+                    [InternshipAgreement::class, FinalYearInternshipAgreement::class],
+                    'year_id',
+                    Year::current()->id
+                );
+            });
+    }
+
     // public function FirstReviewer()
     // {
     //     return $this->professors()

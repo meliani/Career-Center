@@ -34,7 +34,7 @@ class TimetablePolicy extends CorePolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user): bool
+    public function update(User $user, Timetable $timetable): bool
     {
         return $user->isAdministrator() || $user->isDirection() || $user->isProgramCoordinator() || $user->isDepartmentHead() || $user->isAdministrativeSupervisor();
     }

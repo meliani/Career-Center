@@ -84,7 +84,7 @@ trait ProjectAttributes
             ->wherePivot('jury_role', Enums\JuryRole::Supervisor->value)
             ->first();
 
-        return $AcademicSupervisor ? $AcademicSupervisor->full_name : 'Undefined Academic Supervisor';
+        return $AcademicSupervisor ? $AcademicSupervisor->full_name : __('Undefined Academic Supervisor');
     }
 
     public function getAcademicSupervisorNameAttribute()
@@ -93,7 +93,7 @@ trait ProjectAttributes
             ->wherePivot('jury_role', Enums\JuryRole::Supervisor->value)
             ->first();
 
-        return $AcademicSupervisor ? $AcademicSupervisor->full_name : 'Undefined Academic Supervisor';
+        return $AcademicSupervisor ? $AcademicSupervisor->full_name : __('Undefined Academic Supervisor');
     }
 
     public function getAcademicSupervisorPresenceAttribute()
@@ -112,7 +112,7 @@ trait ProjectAttributes
             ->wherePivot('jury_role', Enums\JuryRole::FirstReviewer->value)
             ->first();
 
-        return $Reviewer1 ? $Reviewer1->full_name : 'Undefined Reviewer 1';
+        return $Reviewer1 ? $Reviewer1->full_name : __('Undefined First Reviewer');
     }
 
     public function getReviewer1PresenceAttribute()
@@ -131,7 +131,7 @@ trait ProjectAttributes
             ->wherePivot('jury_role', Enums\JuryRole::SecondReviewer->value)
             ->first();
 
-        return $Reviewer2 ? $Reviewer2->full_name : 'Undefined Reviewer 2';
+        return $Reviewer2 ? $Reviewer2->full_name : __('Undefined Second Reviewer');
     }
 
     public function getReviewer2PresenceAttribute()

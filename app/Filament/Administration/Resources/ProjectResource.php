@@ -434,6 +434,11 @@ class ProjectResource extends Core\BaseResource
                     ->outlined()
                     ->label(__('Relation Managers'))
                     ->hidden(fn () => auth()->user()->isAdministrator() === false),
+                Tables\Actions\ViewAction::make()
+                    ->icon('heroicon-o-eye')
+                    ->label(false)
+                    ->hidden(fn ($record) => auth()->user()->can('manage-project', $record) === true),
+
                 Tables\Actions\ActionGroup::make([
                     \App\Filament\Actions\Action\SendDefenseEmailAction::make()
                         ->icon('heroicon-o-paper-airplane')
@@ -454,10 +459,10 @@ class ProjectResource extends Core\BaseResource
                         ->action(fn ($record) => $record->postponeDefense()),
 
                     // Tables\Actions\ActionGroup::make([
-                    Tables\Actions\EditAction::make(),
+                    // Tables\Actions\EditAction::make(),
                     Tables\Actions\ViewAction::make(),
-                ])
-                    ->icon('heroicon-o-bars-3'),
+                ])->icon('heroicon-o-bars-3')
+                    ->hidden(fn ($record) => auth()->user()->can('manage-project', $record) === false),
                 // ])->dropdown(false)
                 // ->tooltip(__('Edit or view this project')),
                 // ->hidden(true),
@@ -628,7 +633,10 @@ class ProjectResource extends Core\BaseResource
                                         InfolistRelationManagerAction::make('timetable-relation-manager')
                                             ->label(__('Edit timetable'))
                                             ->relationManager(RelationManagers\TimetableRelationManager::class)
-                                            ->hidden(fn (Request $request, $record) => (auth()->user()->can('manage-planning', $record->timetable)) === false)
+                                            ->hidden(fn (Request $request, $record) => (auth()->user()->can('manage-project', [
+                                                $record,  // The model as first element
+                                                auth()->user(),       // The user as second element
+                                            ])) === false)
                                             ->modalSubmitAction(false)
                                             ->modalCancelAction(false),
                                     ])

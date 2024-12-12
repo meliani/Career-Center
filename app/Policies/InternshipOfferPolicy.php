@@ -30,7 +30,7 @@ class InternshipOfferPolicy extends CorePolicy
             return true;
         }
 
-        return $user->hasRole(Role::Administrator);
+        return $user->isAdministrator() || $user->isDirection() || $user->isProfessor() || $user->isProgramCoordinator() || $user->isDepartmentHead();
     }
 
     /**

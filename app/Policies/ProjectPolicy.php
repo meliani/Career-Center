@@ -2,8 +2,6 @@
 
 namespace App\Policies;
 
-use App\Models\FinalYearInternshipAgreement;
-use App\Models\InternshipAgreement;
 use App\Models\Project;
 use App\Models\User;
 
@@ -11,77 +9,36 @@ class ProjectPolicy extends CorePolicy
 {
     public function viewAny(User $user): bool
     {
-        return $user->isAdministrator() || $user->isDirection() || $user->isProfessor() || $user->isProgramCoordinator() || $user->isDepartmentHead();
+        return $user->isAdministrator() || $user->isDirection() || $user->isProfessor() || $user->isProgramCoordinator() || $user->isDepartmentHead() || $user->isAdministrativeSupervisor();
 
     }
 
     public function view(User $user, Project $project): bool
     {
-        if ($user->isAdministrator() || $user->isAdministrativeSupervisor()) {
-            return true;
-        } elseif ($user->isProfessor() && $project->professors->each(fn ($professor, $key) => $professor->id === $user->id)) {
-            return true;
-        } elseif ($user->isProgramCoordinator() && $project->students->each(fn ($student, $key) => $student->program === $user->assigned_program)) {
-            return true;
-        } elseif ($user->isDirection()) {
-            return true;
-        } elseif ($user->isDepartmentHead() && $project->students->each(fn ($student, $key) => $student->department === $user->department)) {
-            return true;
-        }
-
-        return $project->agreements->contains('student_id', $user->id);
-        foreach ($project->agreements as $agreement) {
-            if ($agreement->student_id === $user->id) {
-                return true;
-            }
-            if ($user->isAdministrator() || $user->isAdministrativeSupervisor()) {
-                return true;
-            } elseif ($user->isProfessor() && $project->professors === $user->id) {
-                return false;
-            } elseif ($user->isProgramCoordinator() && $project->students->each(fn ($student, $key) => $student->program === $user->assigned_program)) {
-            }
-        }
+        return $user->isAdministrator() || $user->isDirection() || $user->isProfessor() || $user->isProgramCoordinator() || $user->isDepartmentHead() || $user->isAdministrativeSupervisor();
     }
 
     public function update(User $user, Project $project)
     {
-        // Administrators and Administrative Supervisors always have access
         if ($user->isAdministrator() || $user->isAdministrativeSupervisor()) {
-
             return true;
         }
 
-        // Program Coordinators can update projects for their assigned program
+        // Program Coordinators can update projects having students with same assigned program
         if ($user->isProgramCoordinator()) {
 
-            return $project
-                ->whereHas('agreements', function ($query) use ($user) {
-                    $query->whereMorphRelation(
-                        'agreeable',
-                        [InternshipAgreement::class, FinalYearInternshipAgreement::class],
-                        function ($query) use ($user) {
-                            $query->whereHas('student', function ($query) use ($user) {
-                                $query->where('program', $user->assigned_program->value);
-                            });
-                        }
-                    );
-                })
-                ->exists();
+            return $project->agreements->some(function ($agreement) use ($user) {
+                return $agreement->agreeable->student->program === $user->assigned_program;
+            });
         }
 
-        // Department Heads can update projects in their department
+        // Department Heads can update projects with internships in their department
         if ($user->isDepartmentHead()) {
             return $project
-                ->whereHas('agreements', function ($query) use ($user) {
-                    $query->whereMorphRelation(
-                        'agreeable',
-                        [InternshipAgreement::class, FinalYearInternshipAgreement::class],
-                        function ($query) use ($user) {
-                            $query->where('assigned_department', $user->department->value);
-                        }
-                    );
-                })
-                ->exists();
+                ->agreements
+                ->some(function ($agreement) use ($user) {
+                    return $agreement->agreeable->assigned_department === $user->department;
+                });
         }
         // Professor can update their own projects
         if ($user->isProfessor()) {
@@ -99,6 +56,11 @@ class ProjectPolicy extends CorePolicy
     public function create(User | Student $user): bool
     {
 
+        return $user->isAdministrator();
+    }
+
+    public function sendDefenseEmail(User $user, Project $project)
+    {
         return $user->isAdministrator();
     }
     // public function viewSome(User $user, Project $project)

@@ -14,7 +14,7 @@ class FinalYearInternshipAgreementPolicy extends CorePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->isAdministrator() || $user->isDirection() || $user->isProfessor() || $user->isProgramCoordinator() || $user->isDepartmentHead();
+        return $user->isAdministrator();
     }
 
     /**
@@ -26,9 +26,7 @@ class FinalYearInternshipAgreementPolicy extends CorePolicy
             return $user->id === $agreement->student_id;
         }
 
-        return $user->isAdministrator() ||
-               $user->isProgramCoordinator() ||
-               $user->isDepartmentHead();
+        return $user->isAdministrator();
     }
 
     /**

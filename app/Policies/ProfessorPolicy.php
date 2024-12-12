@@ -15,14 +15,6 @@ class ProfessorPolicy extends CorePolicy
 
     public function view(User $user, Professor $professor)
     {
-        if ($user->isDepartmentHead() && $professor->department === $user->department) {
-            return $user->id === $professor->id;
-            // return true;
-        } elseif ($user->isProfessor() && $professor->projects->each(fn ($project, $key) => $project->professors->each(fn ($professor, $key) => $professor->id === $user->id))) {
-            return $user->id === $professor->id;
-            // return true;
-        }
-
         return $user->isAdministrator() || $user->isDirection();
     }
 

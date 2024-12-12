@@ -25,7 +25,7 @@ class TicketResource extends Core\BaseResource
 
     protected static ?string $title = 'Support Tickets';
 
-    protected static ?string $navigationGroup = 'Administration';
+    protected static ?string $navigationGroup = 'Help';
 
     // protected static ?string $navigationParentGroup = 'Administration';
 
