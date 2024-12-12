@@ -52,7 +52,7 @@ class ProjectResource extends Core\BaseResource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::count();
+        return static::getModel()::active()->count();
     }
 
     public static function getnavigationGroup(): string

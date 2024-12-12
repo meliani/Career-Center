@@ -4,6 +4,9 @@ namespace App\Filament\Administration\Resources\ProjectResource\Pages;
 
 use App\Enums\Program;
 use App\Filament\Administration\Resources\ProjectResource;
+use App\Models\FinalYearInternshipAgreement;
+use App\Models\InternshipAgreement;
+use App\Models\Year;
 use Filament\Actions;
 use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
@@ -29,9 +32,24 @@ class ListProjects extends ListRecords
 
     public function getTabs(): array
     {
-        $baseQuery = static::getResource()::getEloquentQuery();
+        $baseQuery = static::getResource()::getEloquentQuery()->active();
         $tabs = [];
 
+        // All Projects tab
+        $tabs['all'] = Tab::make('All Projects')
+            ->badge(
+                $baseQuery->clone()
+                    ->whereHas('agreements', function ($query) {
+                        $query->whereMorphRelation(
+                            'agreeable',
+                            [InternshipAgreement::class, FinalYearInternshipAgreement::class],
+                            'year_id',
+                            Year::current()->id
+                        );
+                    })->count()
+            );
+
+        // Program specific tabs
         foreach (Program::cases() as $program) {
             $label = $program->getLabel();
             $value = $program->value;
@@ -39,25 +57,20 @@ class ListProjects extends ListRecords
             $tabs[$value] = Tab::make($label)
                 ->badge(
                     $baseQuery->clone()
-                        // ->whereHas('agreements', fn ($q) => $q->whereHas('student', fn ($q) => $q->where('program', $value)))
-                        ->whereHas('agreements', fn ($q) => $q->whereHas('student'))
-                        ->count()
+                        ->whereHas('agreements', function ($query) use ($value) {
+                            $query->whereHas('agreeable', function ($q) use ($value) {
+                                $q->whereHas('student', fn ($q) => $q->where('program', $value));
+                            });
+                        })->count()
                 )
                 ->modifyQueryUsing(
-                    fn ($query) => $query->whereHas(
-                        'agreements',
-                        fn ($query) => $query->whereHas(
-                            'student',
-                            fn ($query) => $query->where('program', $value)
-                        )
-                    )
+                    fn ($query) => $query->whereHas('agreements', function ($q) use ($value) {
+                        $q->whereHas('agreeable', function ($q) use ($value) {
+                            $q->whereHas('student', fn ($q) => $q->where('program', $value));
+                        });
+                    })
                 );
         }
-
-        // Add 'all' tab with total count from base query
-        $tabs = array_merge([
-            'all' => Tab::make('All')->badge($baseQuery->count()),
-        ], $tabs);
 
         return $tabs;
     }

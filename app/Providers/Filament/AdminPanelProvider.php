@@ -334,7 +334,7 @@ class AdminPanelProvider extends PanelProvider
             ->navigationGroups([
                 'Dashboards',
                 'Internships and Projects',
-                'Étudiants et projets',
+                'Stages et Projets',
                 'Juries',
                 'Calendars',
                 'Calendriers',
