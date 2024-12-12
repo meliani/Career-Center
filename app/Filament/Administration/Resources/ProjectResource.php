@@ -534,46 +534,19 @@ class ProjectResource extends Core\BaseResource
     {
         return $infolist
             ->schema([
-                Infolists\Components\Section::make(__('Defense documents'))
-                    ->icon('heroicon-o-document-text')
-                    ->columnSpanFull()
-                    ->columns(2)
-                    ->schema([
-                        Infolists\Components\TextEntry::make('evaluation_sheet_url')
-                            ->label('Jury evaluation sheet')
-                            ->icon('heroicon-o-clipboard-document-check')
-                            ->color(fn ($state) => $state ? 'success' : 'danger')
-                            ->formatStateUsing(fn ($state) => $state
-                                ? '[' . __('View evaluation sheet') . "]({$state})"
-                                : __('Not generated yet'))
-                            ->markdown()
-                            ->copyable(fn ($state) => (bool) $state)
-                            ->copyMessage('Link copied!')
-                            ->copyMessageDuration(1500),
-
-                        Infolists\Components\TextEntry::make('organization_evaluation_sheet_url')
-                            ->label('Organization evaluation sheet')
-                            ->icon('heroicon-o-building-office')
-                            ->color(fn ($state) => $state ? 'success' : 'danger')
-                            ->formatStateUsing(fn ($state) => $state
-                                ? '[' . __('View organization sheet') . "]({$state})"
-                                : __('No file uploaded'))
-                            ->markdown()
-                            ->copyable(fn ($state) => (bool) $state)
-                            ->copyMessage('Link copied!')
-                            ->copyMessageDuration(1500),
-                    ]),
 
                 Infolists\Components\Section::make(__('Defense status'))
                     ->icon('heroicon-o-academic-cap')
                     ->columns(3)
                     ->schema([
                         Infolists\Components\TextEntry::make('defense_status')
+                            ->label(false)
                             ->badge()
                             ->icon(fn ($state) => $state?->getIcon())
                             ->color(fn ($state) => $state?->getColor()),
 
                         Infolists\Components\Grid::make(3)
+                            ->hidden(fn ($record) => $record->defense_status !== Enums\DefenseStatus::Authorized)
                             ->schema([
                                 Infolists\Components\TextEntry::make('defense_authorized_at')
                                     ->icon('heroicon-o-check-circle')
@@ -581,7 +554,9 @@ class ProjectResource extends Core\BaseResource
                                     ->color('success'),
 
                                 Infolists\Components\TextEntry::make('defense_authorized_by_user.name')
+                                    ->label('Authorized by')
                                     ->icon('heroicon-o-user')
+                                    ->badge()
                                     ->color('info'),
                             ]),
                     ]),
@@ -717,6 +692,37 @@ class ProjectResource extends Core\BaseResource
                             ->markdown()
                             ->copyable(fn ($record) => (bool) $record->externalSupervisor->email)
                             ->copyMessage('Email copied!')
+                            ->copyMessageDuration(1500),
+                    ]),
+
+                Infolists\Components\Section::make(__('Defense documents'))
+                    ->icon('heroicon-o-document-text')
+                    ->columnSpanFull()
+                    ->columns(2)
+                    ->hidden(fn ($record) => $record->defense_status !== Enums\DefenseStatus::Authorized)
+                    ->schema([
+                        Infolists\Components\TextEntry::make('evaluation_sheet_url')
+                            ->label('Jury evaluation sheet')
+                            ->icon('heroicon-o-clipboard-document-check')
+                            ->color(fn ($state) => $state ? 'success' : 'danger')
+                            ->formatStateUsing(fn ($state) => $state
+                                ? '[' . __('View evaluation sheet') . "]({$state})"
+                                : __('Not generated yet'))
+                            ->markdown()
+                            ->copyable(fn ($state) => (bool) $state)
+                            ->copyMessage('Link copied!')
+                            ->copyMessageDuration(1500),
+
+                        Infolists\Components\TextEntry::make('organization_evaluation_sheet_url')
+                            ->label('Organization evaluation sheet')
+                            ->icon('heroicon-o-building-office')
+                            ->color(fn ($state) => $state ? 'success' : 'danger')
+                            ->formatStateUsing(fn ($state) => $state
+                                ? '[' . __('View organization sheet') . "]({$state})"
+                                : __('No file uploaded'))
+                            ->markdown()
+                            ->copyable(fn ($state) => (bool) $state)
+                            ->copyMessage('Link copied!')
                             ->copyMessageDuration(1500),
                     ]),
             ]);
