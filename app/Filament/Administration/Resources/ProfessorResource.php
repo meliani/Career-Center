@@ -43,7 +43,7 @@ class ProfessorResource extends Core\BaseResource
     public static function canAccess(): bool
     {
         if (auth()->check()) {
-            return auth()->user()->isSuperAdministrator() || auth()->user()->isAdministrator() || auth()->user()->isDirection() || auth()->user()->isProgramCoordinator() || auth()->user()->isDepartmentHead() || auth()->user()->isProfessor();
+            return auth()->user()->isAdministrator() || auth()->user()->isDirection();
         } else {
             return false;
         }
