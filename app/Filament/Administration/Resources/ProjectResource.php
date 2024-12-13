@@ -64,10 +64,10 @@ class ProjectResource extends Core\BaseResource
     {
         return [
             'title',
-            'agreements.agreeable.organization.name',
-            'agreements.agreeable.student.first_name',
-            'agreements.agreeable.student.last_name',
-            'agreements.agreeable.student.id_pfe',
+            'agreements.organization.name',
+            // 'agreements.agreeable.student.first_name',
+            // 'agreements.agreeable.student.last_name',
+            // 'agreements.agreeable.student.id_pfe',
             'professors.first_name',
             'professors.last_name',
         ];
@@ -358,7 +358,7 @@ class ProjectResource extends Core\BaseResource
                     ->columnSpanFull(),
             ])
             ->headerActions([
-                /*                 Tables\Actions\Action::make('Check changed professors')
+                /*  Tables\Actions\Action::make('Check changed professors')
                         ->label('Check changed professors')
                         ->tooltip('Check if professors have been changed after getting Authorization')
                         ->color('primary')
@@ -370,7 +370,7 @@ class ProjectResource extends Core\BaseResource
                 \App\Filament\Actions\Action\Processing\GoogleSheetSyncAction::make('Google Sheet Sync')
                         ->label('Google Sheet Sync')
                         ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()) === false),
- */
+                    */
                 FilamentExcel\Actions\Tables\ExportAction::make()
                     ->exports([
                         FilamentExcel\Exports\ExcelExport::make()
@@ -533,87 +533,19 @@ class ProjectResource extends Core\BaseResource
     public static function infolist(Infolist $infolist): Infolist
     {
         return $infolist
+            ->columns(12)
             ->schema([
-
-                Infolists\Components\Section::make(__('Project Details'))
-                    ->icon('heroicon-o-document-text')
-                    ->columnSpanFull()
-                    ->schema([
-                        Infolists\Components\Grid::make(3)
-                            ->schema([
-                                Infolists\Components\TextEntry::make('id_pfe')
-                                    ->label('PFE ID')
-                                    ->icon('heroicon-o-identification')
-                                    ->badge()
-                                    ->color('info'),
-
-                                Infolists\Components\TextEntry::make('students_names')
-                                    ->icon('heroicon-o-users')
-                                    ->badge(),
-
-                                Infolists\Components\TextEntry::make('students_programs')
-                                    ->icon('heroicon-o-academic-cap')
-                                    ->badge(),
-
-                                Infolists\Components\TextEntry::make('organization_name')
-                                    ->icon('heroicon-o-building-office')
-                                    ->badge()
-                                    ->color('success'),
-                            ]),
-
-                        Infolists\Components\TextEntry::make('title')
-                            ->columnSpanFull()
-                            ->markdown()
-                            ->icon('heroicon-o-document-text'),
-                        Infolists\Components\TextEntry::make('description')
-                            ->columnSpanFull()
-                            ->markdown()
-                            ->icon('heroicon-o-document-text'),
-                        Infolists\Components\Grid::make(2)
-                            ->schema([
-                                Infolists\Components\TextEntry::make('start_date')
-                                    ->icon('heroicon-o-calendar')
-                                    ->date(),
-                                Infolists\Components\TextEntry::make('end_date')
-                                    ->icon('heroicon-o-calendar')
-                                    ->date(),
-                            ]),
-                    ]),
-
-                Infolists\Components\Section::make(__('Defense status'))
-                    ->icon('heroicon-o-academic-cap')
-                    ->columns(3)
-                    ->schema([
-                        Infolists\Components\TextEntry::make('defense_status')
-                            ->label(false)
-                            ->badge()
-                            ->icon(fn ($state) => $state?->getIcon())
-                            ->color(fn ($state) => $state?->getColor()),
-
-                        Infolists\Components\Grid::make(3)
-                            ->hidden(fn ($record) => $record->defense_status !== Enums\DefenseStatus::Authorized)
-                            ->schema([
-                                Infolists\Components\TextEntry::make('defense_authorized_at')
-                                    ->icon('heroicon-o-check-circle')
-                                    ->dateTime()
-                                    ->color('success'),
-
-                                Infolists\Components\TextEntry::make('defense_authorized_by_user.name')
-                                    ->label('Authorized by')
-                                    ->icon('heroicon-o-user')
-                                    ->badge()
-                                    ->color('info'),
-                            ]),
-                    ]),
-
                 Infolists\Components\Tabs::make('Relations')
+                    ->columns(4)
+                    ->columnSpan(8)
                     ->tabs([
                         Infolists\Components\Tabs\Tab::make(__('Jury Members'))
+                            ->columnSpan(4)
                             ->icon('heroicon-o-users')
                             ->schema([
                                 Infolists\Components\Section::make(__('Jury Members'))
-                                    ->icon('heroicon-o-users')
                                     ->columns(3)
+                                    ->icon('heroicon-o-users')
                                     ->headerActions([
                                         InfolistRelationManagerAction::make('professors-relation-manager')
                                             ->label(__('Edit jury members'))
@@ -644,6 +576,7 @@ class ProjectResource extends Core\BaseResource
                             ]),
 
                         Infolists\Components\Tabs\Tab::make(__('Schedule'))
+                            ->columnSpan(4)
                             ->icon('heroicon-o-calendar')
                             ->schema([
                                 Infolists\Components\Section::make(__('Defense Schedule'))
@@ -677,57 +610,134 @@ class ProjectResource extends Core\BaseResource
                                             ->badge(),
                                     ]),
                             ]),
-                    ])
-                    ->columnSpanFull(),
-
-                Infolists\Components\Section::make(__('External Supervisor'))
-                    ->icon('heroicon-o-user')
-                    ->schema([
-                        Infolists\Components\TextEntry::make('externalSupervisor.full_name')
-                            ->label(fn ($record) => $record->externalSupervisor->full_name)
-                            ->formatStateUsing(fn ($record) => $record->externalSupervisor->email
-                                    ? "[{$record->externalSupervisor->email}](mailto:{$record->externalSupervisor->email})"
-                                    : null)
-                            ->tooltip(fn ($record) => $record->externalSupervisor->phone
-                                    ? __('Phone') . ': ' . $record->externalSupervisor->phone
-                                    : null)
-                            ->icon('heroicon-o-envelope')
-                            ->markdown()
-                            ->copyable(fn ($record) => (bool) $record->externalSupervisor->email)
-                            ->copyMessage('Email copied!')
-                            ->copyMessageDuration(1500),
                     ]),
-
-                Infolists\Components\Section::make(__('Defense documents'))
-                    ->icon('heroicon-o-document-text')
-                    ->columnSpanFull()
+                Infolists\Components\Grid::make(4)
+                    ->columnSpan(4)
                     ->columns(2)
-                    ->hidden(fn ($record) => $record->defense_status !== Enums\DefenseStatus::Authorized)
                     ->schema([
-                        Infolists\Components\TextEntry::make('evaluation_sheet_url')
-                            ->label('Jury evaluation sheet')
-                            ->icon('heroicon-o-clipboard-document-check')
-                            ->color(fn ($state) => $state ? 'success' : 'danger')
-                            ->formatStateUsing(fn ($state) => $state
-                                ? '[' . __('View evaluation sheet') . "]({$state})"
-                                : __('Not generated yet'))
-                            ->markdown()
-                            ->copyable(fn ($state) => (bool) $state)
-                            ->copyMessage('Link copied!')
-                            ->copyMessageDuration(1500),
+                        Infolists\Components\TextEntry::make('id_pfe')
+                            ->label('PFE ID')
+                            ->icon('heroicon-o-identification')
+                            ->badge()
+                            ->color('info'),
 
-                        Infolists\Components\TextEntry::make('organization_evaluation_sheet_url')
-                            ->label('Organization evaluation sheet')
+                        Infolists\Components\TextEntry::make('students_names')
+                            ->icon('heroicon-o-users')
+                            ->badge(),
+
+                        Infolists\Components\TextEntry::make('students_programs')
+                            ->icon('heroicon-o-academic-cap')
+                            ->badge(),
+
+                        Infolists\Components\TextEntry::make('organization_name')
                             ->icon('heroicon-o-building-office')
-                            ->color(fn ($state) => $state ? 'success' : 'danger')
-                            ->formatStateUsing(fn ($state) => $state
-                                ? '[' . __('View organization sheet') . "]({$state})"
-                                : __('No file uploaded'))
-                            ->markdown()
-                            ->copyable(fn ($state) => (bool) $state)
-                            ->copyMessage('Link copied!')
-                            ->copyMessageDuration(1500),
+                            ->badge()
+                            ->color('success'),
                     ]),
+                Infolists\Components\Section::make(__('Project Details'))
+                    ->icon('heroicon-o-document-text')
+                    ->columns(3)
+                    ->columnSpan(8)
+                    ->schema([
+
+                        Infolists\Components\TextEntry::make('title')
+                            ->columnSpanFull()
+                            ->markdown()
+                            ->icon('heroicon-o-document-text'),
+                        Infolists\Components\TextEntry::make('description')
+                            ->columnSpanFull()
+                            ->markdown()
+                            ->icon('heroicon-o-document-text'),
+                        Infolists\Components\Grid::make(2)
+                            ->schema([
+                                Infolists\Components\TextEntry::make('start_date')
+                                    ->icon('heroicon-o-calendar')
+                                    ->date(),
+                                Infolists\Components\TextEntry::make('end_date')
+                                    ->icon('heroicon-o-calendar')
+                                    ->date(),
+                            ]),
+                    ]),
+                Infolists\Components\Grid::make(4)
+                    ->columnSpan(4)
+                    ->schema([
+
+                        Infolists\Components\Section::make(__('Defense status'))
+                            ->icon('heroicon-o-academic-cap')
+                            ->columns(2)
+                            ->columnSpan(4)
+                            ->schema([
+                                Infolists\Components\TextEntry::make('defense_status')
+                                    ->label(false)
+                                    ->badge()
+                                    ->icon(fn ($state) => $state?->getIcon())
+                                    ->color(fn ($state) => $state?->getColor()),
+
+                                Infolists\Components\Grid::make(3)
+                                    ->hidden(fn ($record) => $record->defense_status !== Enums\DefenseStatus::Authorized)
+                                    ->schema([
+                                        Infolists\Components\TextEntry::make('defense_authorized_at')
+                                            ->icon('heroicon-o-check-circle')
+                                            ->dateTime()
+                                            ->color('success'),
+
+                                        Infolists\Components\TextEntry::make('defense_authorized_by_user.name')
+                                            ->label('Authorized by')
+                                            ->icon('heroicon-o-user')
+                                            ->badge()
+                                            ->color('info'),
+                                    ]),
+                            ]),
+                        Infolists\Components\Section::make(__('External Supervisor'))
+                            ->columnSpan(4)
+                            ->icon('heroicon-o-user')
+                            ->schema([
+                                Infolists\Components\TextEntry::make('externalSupervisor.full_name')
+                                    ->label(fn ($record) => $record->externalSupervisor->full_name)
+                                    ->formatStateUsing(fn ($record) => $record->externalSupervisor->email
+                                            ? "[{$record->externalSupervisor->email}](mailto:{$record->externalSupervisor->email})"
+                                            : null)
+                                    ->tooltip(fn ($record) => $record->externalSupervisor->phone
+                                            ? __('Phone') . ': ' . $record->externalSupervisor->phone
+                                            : null)
+                                    ->icon('heroicon-o-envelope')
+                                    ->markdown()
+                                    ->copyable(fn ($record) => (bool) $record->externalSupervisor->email)
+                                    ->copyMessage('Email copied!')
+                                    ->copyMessageDuration(1500),
+                            ]),
+                        Infolists\Components\Section::make(__('Defense documents'))
+                            ->icon('heroicon-o-document-text')
+                            // ->columnSpan(4)
+                            // ->columns(2)
+                            ->hidden(fn ($record) => $record->defense_status !== Enums\DefenseStatus::Authorized)
+                            ->schema([
+                                Infolists\Components\TextEntry::make('evaluation_sheet_url')
+                                    ->label('Jury evaluation sheet')
+                                    ->icon('heroicon-o-clipboard-document-check')
+                                    ->color(fn ($state) => $state ? 'success' : 'danger')
+                                    ->formatStateUsing(fn ($state) => $state
+                                        ? '[' . __('View evaluation sheet') . "]({$state})"
+                                        : __('Not generated yet'))
+                                    ->markdown()
+                                    ->copyable(fn ($state) => (bool) $state)
+                                    ->copyMessage('Link copied!')
+                                    ->copyMessageDuration(1500),
+
+                                Infolists\Components\TextEntry::make('organization_evaluation_sheet_url')
+                                    ->label('Organization evaluation sheet')
+                                    ->icon('heroicon-o-building-office')
+                                    ->color(fn ($state) => $state ? 'success' : 'danger')
+                                    ->formatStateUsing(fn ($state) => $state
+                                        ? '[' . __('View organization sheet') . "]({$state})"
+                                        : __('No file uploaded'))
+                                    ->markdown()
+                                    ->copyable(fn ($state) => (bool) $state)
+                                    ->copyMessage('Link copied!')
+                                    ->copyMessageDuration(1500),
+                            ]),
+                    ]),
+
             ]);
     }
 }

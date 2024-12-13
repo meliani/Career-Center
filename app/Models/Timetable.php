@@ -12,6 +12,7 @@ class Timetable extends Core\BackendBaseModel
         'room_id',
         'project_id',
         'user_id',
+        'year_id',
 
         // Action timestamps
         'confirmed_at',
@@ -240,5 +241,10 @@ class Timetable extends Core\BackendBaseModel
     public function schedulable()
     {
         return $this->morphTo();
+    }
+
+    public function year()
+    {
+        return $this->belongsTo(Year::class);
     }
 }

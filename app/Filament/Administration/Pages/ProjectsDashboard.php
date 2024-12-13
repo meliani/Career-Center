@@ -47,11 +47,13 @@ class ProjectsDashboard extends \Filament\Pages\Dashboard
         $widgets = [];
 
         if (auth()->user()->isProfessor()) {
-            $widgets[] = \App\Filament\Administration\Widgets\ProfessorProjectsWidget::class;
+            // $widgets[] = \App\Filament\Administration\Widgets\ProfessorProjectsWidget::class;
         }
-
+        if (auth()->user()->isAdministrator()) {
+            $widgets[] = \App\Filament\Administration\Widgets\AdministratorProjectsWidget::class;
+        }
         $widgets = array_merge($widgets, [
-            \App\Filament\Administration\Widgets\Dashboards\YearlyTimelineWidget::class,
+            // \App\Filament\Administration\Widgets\Dashboards\YearlyTimelineWidget::class,
         ]);
 
         return $widgets;

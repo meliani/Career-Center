@@ -39,8 +39,6 @@ class ScheduleParametersResource extends Resource
 
     public $number_of_rooms;
 
-    public $max_defenses_per_professor;
-
     public $max_rooms;
 
     public $minutes_per_slot;
@@ -66,9 +64,6 @@ class ScheduleParametersResource extends Resource
                     ->required(),
                 Forms\Components\TimePicker::make('lunch_ending_at')
                     ->required(),
-                Forms\Components\TextInput::make('max_defenses_per_professor')
-                    ->required()
-                    ->numeric(),
                 Forms\Components\TextInput::make('minutes_per_slot')
                     ->required()
                     ->numeric(),

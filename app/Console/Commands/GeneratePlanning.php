@@ -134,7 +134,7 @@ class GeneratePlanning extends Command implements PromptsForMissingInput
 
         foreach ($timeslots as $timeslot) {
             foreach ($this->rooms as $room) {
-                if ($this->isRoomAvailable($timeslot, $room) && Services\ProfessorService::checkJuryAvailability($timeslot, $room, $project)) {
+                if ($this->isRoomAvailable($timeslot, $room) && Services\ProfessorService::checkJuryAvailability($timeslot, $project)) {
                     $difference = abs($projectEndDate->diffInDays($timeslot->start_time));
 
                     if ($difference < $bestDifference) {
@@ -166,7 +166,7 @@ class GeneratePlanning extends Command implements PromptsForMissingInput
 
     public function createTimetable($project, $timeslot, $room)
     {
-        $timetable = new Timetable();
+        $timetable = new Timetable;
         $timetable->project_id = $project->id;
         $timetable->timeslot_id = $timeslot->id;
         $timetable->room_id = $room->id;

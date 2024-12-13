@@ -14,7 +14,7 @@ trait ProjectAttributes
         })->filter()->implode(' & ');
     }
 
-    public function getStudentsCollectionAttribute()
+    public function getStudentsCollection()
     {
         return $this->agreements->map(function ($agreement) {
             return $agreement->agreeable->student;
