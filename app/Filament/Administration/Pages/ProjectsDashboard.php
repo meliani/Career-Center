@@ -29,6 +29,8 @@ class ProjectsDashboard extends \Filament\Pages\Dashboard
     public static function canAccess(): bool
     {
         if (auth()->check()) {
+            return auth()->user()->isSuperAdministrator();
+
             return auth()->user()->can('viewAny', \App\Models\Project::class);
         } else {
             return false;

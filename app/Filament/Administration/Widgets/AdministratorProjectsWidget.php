@@ -32,16 +32,18 @@ class AdministratorProjectsWidget extends Widget
     public function scheduleDefense(): void
     {
         // dd('scheduleDefense');
-        $this->mountAction('scheduleDefense');
+        // $this->mountAction('scheduleDefense');
     }
 
     public function changeStatus(): void
     {
-        $this->mountAction('changeStatus');
+        // $this->mountAction('changeStatus');
     }
 
     protected function getScheduleDefenseAction(): Action
     {
+        return null;
+
         return Action::make('scheduleDefense')
             ->record(fn (array $arguments) => Project::find($arguments['projectId']))
             ->form([
