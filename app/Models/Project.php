@@ -67,6 +67,7 @@ class Project extends Core\BackendBaseModel
         // 'description',
         'assigned_departments',
         'agreement_types',
+        'students_names',
     ];
 
     protected $casts = [
@@ -144,23 +145,24 @@ class Project extends Core\BackendBaseModel
             $this->defense_authorized_at = now();
             $this->defense_authorized_by = auth()->id();
             $this->defense_status = Enums\DefenseStatus::Authorized;
-            // if (! $this->evaluation_sheet_url) {
+
             $this->generateEvaluationSheet();
-            // }
             $this->save();
+
             Filament\Notifications\Notification::make()
                 ->title('Defense has been authorized successfully.')
                 ->success()
                 ->send();
+
+            return $this;
         } catch (AuthorizationException $e) {
             Filament\Notifications\Notification::make()
                 ->title('Sorry You dont have the permission to do this action.')
                 ->danger()
                 ->send();
 
-            return response()->json(['error' => 'This action is unauthorized.'], 403);
+            throw $e;
         }
-
     }
 
     public function postponeDefense()

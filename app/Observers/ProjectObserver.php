@@ -20,10 +20,11 @@ class ProjectObserver
     public function updated(Project $project)
     {
         // dd('Project has no students');
-        if ($project->agreeable->isEmpty()) {
+        if ($project->agreements->isEmpty()) {
             //
-            dd('Project has no students');
             $project->delete();
+
+            dd('Project : ' . $project?->title . ' has no students and has been deleted');
         }
     }
 

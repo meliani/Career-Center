@@ -535,6 +535,51 @@ class ProjectResource extends Core\BaseResource
         return $infolist
             ->schema([
 
+                Infolists\Components\Section::make(__('Project Details'))
+                    ->icon('heroicon-o-document-text')
+                    ->columnSpanFull()
+                    ->schema([
+                        Infolists\Components\Grid::make(3)
+                            ->schema([
+                                Infolists\Components\TextEntry::make('id_pfe')
+                                    ->label('PFE ID')
+                                    ->icon('heroicon-o-identification')
+                                    ->badge()
+                                    ->color('info'),
+
+                                Infolists\Components\TextEntry::make('students_names')
+                                    ->icon('heroicon-o-users')
+                                    ->badge(),
+
+                                Infolists\Components\TextEntry::make('students_programs')
+                                    ->icon('heroicon-o-academic-cap')
+                                    ->badge(),
+
+                                Infolists\Components\TextEntry::make('organization_name')
+                                    ->icon('heroicon-o-building-office')
+                                    ->badge()
+                                    ->color('success'),
+                            ]),
+
+                        Infolists\Components\TextEntry::make('title')
+                            ->columnSpanFull()
+                            ->markdown()
+                            ->icon('heroicon-o-document-text'),
+                        Infolists\Components\TextEntry::make('description')
+                            ->columnSpanFull()
+                            ->markdown()
+                            ->icon('heroicon-o-document-text'),
+                        Infolists\Components\Grid::make(2)
+                            ->schema([
+                                Infolists\Components\TextEntry::make('start_date')
+                                    ->icon('heroicon-o-calendar')
+                                    ->date(),
+                                Infolists\Components\TextEntry::make('end_date')
+                                    ->icon('heroicon-o-calendar')
+                                    ->date(),
+                            ]),
+                    ]),
+
                 Infolists\Components\Section::make(__('Defense status'))
                     ->icon('heroicon-o-academic-cap')
                     ->columns(3)
@@ -634,48 +679,6 @@ class ProjectResource extends Core\BaseResource
                             ]),
                     ])
                     ->columnSpanFull(),
-
-                Infolists\Components\Section::make(__('Project Details'))
-                    ->icon('heroicon-o-document-text')
-                    ->columnSpanFull()
-                    ->schema([
-                        Infolists\Components\Grid::make(3)
-                            ->schema([
-                                Infolists\Components\TextEntry::make('id_pfe')
-                                    ->label('PFE ID')
-                                    ->icon('heroicon-o-identification')
-                                    ->badge()
-                                    ->color('info'),
-
-                                Infolists\Components\TextEntry::make('students_names')
-                                    ->icon('heroicon-o-users')
-                                    ->badge(),
-
-                                Infolists\Components\TextEntry::make('students_programs')
-                                    ->icon('heroicon-o-academic-cap')
-                                    ->badge(),
-
-                                Infolists\Components\TextEntry::make('organization_name')
-                                    ->icon('heroicon-o-building-office')
-                                    ->badge()
-                                    ->color('success'),
-                            ]),
-
-                        Infolists\Components\TextEntry::make('title')
-                            ->columnSpanFull()
-                            ->markdown()
-                            ->icon('heroicon-o-document-text'),
-
-                        Infolists\Components\Grid::make(2)
-                            ->schema([
-                                Infolists\Components\TextEntry::make('start_date')
-                                    ->icon('heroicon-o-calendar')
-                                    ->date(),
-                                Infolists\Components\TextEntry::make('end_date')
-                                    ->icon('heroicon-o-calendar')
-                                    ->date(),
-                            ]),
-                    ]),
 
                 Infolists\Components\Section::make(__('External Supervisor'))
                     ->icon('heroicon-o-user')

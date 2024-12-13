@@ -39,6 +39,13 @@ trait ProjectAttributes
             ->unique()->implode('name', ' & ');
     }
 
+    public function getDescriptionAttribute()
+    {
+        $agreement = $this->agreements()->with('agreeable')->first();
+
+        return $agreement ? $agreement->agreeable->description : 'Undefined Description';
+    }
+
     public function getStudentsProgramsAttribute()
     {
         return $this->agreements()

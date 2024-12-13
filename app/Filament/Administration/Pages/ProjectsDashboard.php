@@ -2,17 +2,17 @@
 
 namespace App\Filament\Administration\Pages;
 
-class WelcomeDashboard extends \Filament\Pages\Dashboard
+class ProjectsDashboard extends \Filament\Pages\Dashboard
 {
     // use \JibayMcs\FilamentTour\Tour\HasTour;
 
-    protected static string $routePath = 'welcome-dashboard';
+    protected static string $routePath = 'projects-dashboard';
 
-    protected static ?string $title = 'Welcome dashboard';
+    protected static ?string $title = 'projects-dashboard';
 
     protected static ?int $navigationSort = 1;
 
-    protected static ?string $navigationLabel = 'Welcome dashboard';
+    protected static ?string $navigationLabel = 'Projects Dashboard';
 
     protected static ?string $navigationGroup = 'Dashboards';
 
@@ -46,12 +46,8 @@ class WelcomeDashboard extends \Filament\Pages\Dashboard
     {
         $widgets = [];
 
-        // if (auth()->user()->isProfessor()) {
-        //     $widgets[] = \App\Filament\Administration\Widgets\ProfessorProjectsWidget::class;
-        // }
-
-        if (auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor() || auth()->user()->isDirection()) {
-            $widgets[] = \App\Filament\Administration\Widgets\Dashboards\AdminGettingStartedWidget::class;
+        if (auth()->user()->isProfessor()) {
+            $widgets[] = \App\Filament\Administration\Widgets\ProfessorProjectsWidget::class;
         }
 
         $widgets = array_merge($widgets, [

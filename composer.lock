@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "763bfcf8e6058a3835086ec546e8bae5",
+    "content-hash": "28174cdcb7d9381e353b3ebb3d7f8eb8",
     "packages": [
         {
             "name": "amphp/amp",
@@ -3157,6 +3157,85 @@
                 "source": "https://github.com/ezyang/htmlpurifier/tree/v4.18.0"
             },
             "time": "2024-11-01T03:51:45+00:00"
+        },
+        {
+            "name": "fauzie811/filament-list-entry",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fauzie811/filament-list-entry.git",
+                "reference": "b96c9af7dbe74e9a7c9729e7d7e483b79c813eaa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fauzie811/filament-list-entry/zipball/b96c9af7dbe74e9a7c9729e7d7e483b79c813eaa",
+                "reference": "b96c9af7dbe74e9a7c9729e7d7e483b79c813eaa",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.0",
+                "php": "^8.1",
+                "spatie/laravel-package-tools": "^1.15.0"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.0",
+                "nunomaduro/larastan": "^2.0.1",
+                "orchestra/testbench": "^8.0",
+                "pestphp/pest": "^2.0",
+                "pestphp/pest-plugin-arch": "^2.0",
+                "pestphp/pest-plugin-laravel": "^2.0",
+                "phpstan/extension-installer": "^1.1",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-phpunit": "^1.0",
+                "spatie/laravel-ray": "^1.26"
+            },
+            "type": "project",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Fauzie811\\FilamentListEntry\\FilamentListEntryServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Fauzie811\\FilamentListEntry\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Georges OLIVARES",
+                    "email": "georges.olivares@gmail.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Fauzie",
+                    "email": "fauzie811@yahoo.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "List Entry for Filament Infolist",
+            "homepage": "https://github.com/fauzie811/filament-list-entry",
+            "keywords": [
+                "filament",
+                "filament-plugin",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/fauzie811/filament-list-entry/issues",
+                "source": "https://github.com/fauzie811/filament-list-entry"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/fauzie811",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-11-11T08:33:23+00:00"
         },
         {
             "name": "filament/actions",
