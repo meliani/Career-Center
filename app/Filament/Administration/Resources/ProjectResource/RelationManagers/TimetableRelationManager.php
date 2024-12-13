@@ -38,28 +38,36 @@ class TimetableRelationManager extends RelationManager
             ->searchable(false)
             ->emptyStateHeading('')
             ->emptyStateDescription('')
+            ->emptyStateActions([
+                Tables\Actions\CreateAction::make()
+                    ->label('Arrange a schedule'),
+            ])
             ->emptyStateIcon('heroicon-o-clock')
             ->columns([
                 Tables\Columns\TextColumn::make('timeslot.start_time')
-                    ->dateTime(),
+                    ->dateTime()
+                    ->toggleable(false),
                 Tables\Columns\TextColumn::make('timeslot.end_time')
-                    ->dateTime(),
-                Tables\Columns\TextColumn::make('room.name'),
+                    ->dateTime()
+                    ->toggleable(false),
+                Tables\Columns\TextColumn::make('room.name')
+                    ->toggleable(false),
             ])
             ->filters([
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                // Tables\Actions\CreateAction::make()
+                //     ->label('Schedule'),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->label(false),
+                Tables\Actions\DeleteAction::make()
+                    ->label('Unschedule')
+                    ->icon('heroicon-o-clock'),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
             ]);
     }
 }

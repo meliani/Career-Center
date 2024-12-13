@@ -54,24 +54,30 @@ class ProfessorsRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('long_full_name')
                     // ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
+                    ->toggleable(false)
                     ->label('Full Name'),
                 Tables\Columns\TextColumn::make('jury_role')
                     ->label('Jury role')
+                    ->toggleable(false)
                     ->badge(),
                 Tables\Columns\CheckboxColumn::make('was_present')
                     ->label('Was present')
+                    ->toggleable(false)
                     ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()) === false),
                 Tables\Columns\TextColumn::make('pivot.CreatedBy.full_name')
+                    ->toggleable(false)
                     ->badge()
                     ->label('Assigned by'),
                 Tables\Columns\TextColumn::make('role')
                     ->label('Professor role in school')
+                    ->toggleable(false)
                     // ->size(Tables\Columns\TextColumn\TextColumnSize::ExtraSmall)
                     ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isDirection()) === false),
 
                 Tables\Columns\TextColumn::make('pivot.ApprovedBy.full_name')
                     ->label('Approval done by')
                     ->placeholder(__('Not approved yet.'))
+                    ->toggleable(false)
                     // ->default(__('Not approved yet.'))
                     ->badge()
                     ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isDirection()) === false),
