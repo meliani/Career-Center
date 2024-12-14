@@ -3,18 +3,28 @@
 namespace App\Policies;
 
 use App\Models\Project;
+use App\Models\Student;
 use App\Models\User;
 
 class ProjectPolicy extends CorePolicy
 {
-    public function viewAny(User $user): bool
+    public function viewAny(User | Student $user): bool
     {
+        if ($user instanceof Student) {
+            return true;
+
+        }
+
         return $user->isAdministrator() || $user->isDirection() || $user->isProfessor() || $user->isProgramCoordinator() || $user->isDepartmentHead() || $user->isAdministrativeSupervisor();
 
     }
 
-    public function view(User $user, Project $project): bool
+    public function view(User | Student $user, Project $project): bool
     {
+        if ($user instanceof Student) {
+            return true;
+        }
+
         return $user->isAdministrator() || $user->isDirection() || $user->isProfessor() || $user->isProgramCoordinator() || $user->isDepartmentHead() || $user->isAdministrativeSupervisor();
     }
 

@@ -36,7 +36,7 @@ class Timetable extends Core\BackendBaseModel
     protected static function boot()
     {
         parent::boot();
-        static::addGlobalScope(new Scopes\TimetableScope);
+        // static::addGlobalScope(new Scopes\TimetableScope);
 
         /*         static::updating(function ($timetable) {
                     $professorService = new \App\Services\ProfessorService;

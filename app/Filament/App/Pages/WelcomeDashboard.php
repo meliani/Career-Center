@@ -36,9 +36,7 @@ class WelcomeDashboard extends \Filament\Pages\Dashboard
     {
         return [
             \App\Filament\App\Widgets\Dashboards\StudentGettingStartedWidget::class,
-            // \App\Filament\Administration\Widgets\DefensesPerProgramChart::class,
-            // \App\Filament\Administration\Widgets\FirstYearApprenticeshipsPerProgramChart::class,
-            // \App\Filament\Administration\Widgets\SecondYearApprenticeshipsPerProgramChart::class,
+            \App\Filament\App\Widgets\StudentProjectWidget::class,
         ];
     }
 }
