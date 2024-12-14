@@ -3,7 +3,10 @@
 namespace App\Filament\App\Widgets;
 
 use App\Models\CollaborationRequest;
+use App\Models\FinalYearInternshipAgreement;
 use App\Models\Project;
+use App\Models\ProjectAgreement;
+use App\Models\Student;
 use App\Models\Year;
 use App\Notifications\CollaborationRequestAccepted;
 use Filament\Forms;
@@ -90,15 +93,20 @@ class StudentProjectWidget extends Widget implements Forms\Contracts\HasForms
                 ->options(function () {
                     $currentStudent = auth()->user();
 
+                    // dd($currentStudent->finalYearInternship);
+
                     return \App\Models\Student::query()
                         ->where('id', '!=', auth()->id())
-                        ->where('level', $currentStudent->level)
-                        ->whereDoesntHave('projects', function ($query) {
-                            $query->where('year_id', Year::current()->id);
+                        ->where('level', $currentStudent->level->value)
+                        ->whereHas('finalYearInternship', function ($agreementQuery) {
+                            $agreementQuery->where('year_id', Year::current()->id)
+                                ->whereHas('project');
                         })
                         ->orderBy('name')
                         ->get()
-                        ->mapWithKeys(fn ($student) => [$student->id => "{$student->name} ({$student->id_pfe})"]);
+                        ->mapWithKeys(function ($student) {
+                            return [$student->id => "{$student->first_name} {$student->last_name} ({$student->id_pfe})"];
+                        });
                 })
                 ->searchable()
                 ->required()
@@ -263,40 +271,70 @@ class StudentProjectWidget extends Widget implements Forms\Contracts\HasForms
         DB::beginTransaction();
 
         try {
-            // Update request status
-            $request->update(['status' => 'accepted']);
-
-            // Get the project of the sender
-            $senderProject = Project::query()
-                ->whereHas('agreements', function (Builder $query) use ($request) {
-                    $query->whereHas('agreeable', function (Builder $query) use ($request) {
-                        $query->where('student_id', $request->sender_id)
-                            ->where('year_id', Year::current()->id);
-                    });
-                })
+            // 1. Get both students' final year agreements
+            $senderAgreement = FinalYearInternshipAgreement::where('student_id', $request->sender_id)
+                ->where('year_id', Year::current()->id)
                 ->first();
 
-            // Add receiver as collaborator to the project
-            if ($senderProject) {
-                $senderProject->addCollaborator($request->receiver);
+            $receiverAgreement = FinalYearInternshipAgreement::where('student_id', $request->receiver_id)
+                ->where('year_id', Year::current()->id)
+                ->first();
+
+            if (! $senderAgreement || ! $receiverAgreement) {
+                throw new \Exception('Required agreements not found');
             }
+
+            // 2. Get both projects if they exist
+            $senderProject = $senderAgreement->project;
+            $receiverProject = $receiverAgreement->project;
+
+            if (! $senderProject) {
+                throw new \Exception('Sender project not found');
+            }
+
+            // 3. Move receiver's agreement to sender's project
+            ProjectAgreement::updateOrCreate(
+                [
+                    'agreeable_id' => $receiverAgreement->id,
+                    'agreeable_type' => FinalYearInternshipAgreement::class,
+                ],
+                ['project_id' => $senderProject->id]
+            );
+
+            // 4. Delete receiver's project if it exists (observer will handle cleanup)
+            if ($receiverProject && $receiverProject->id !== $senderProject->id) {
+                $receiverProject->delete();
+            }
+
+            // 5. Update collaboration request status
+            $request->update(['status' => 'accepted']);
 
             DB::commit();
 
+            // 6. Send notifications
             Notification::make()
                 ->title('Collaboration request accepted')
                 ->success()
                 ->send();
 
-            // Notify the sender
             $request->sender->notify(new CollaborationRequestAccepted($request));
 
         } catch (\Exception $e) {
             DB::rollBack();
 
+            \Log::error('Collaboration acceptance failed', [
+                'error' => $e->getMessage(),
+                'request_id' => $requestId,
+                'sender_id' => $request->sender_id,
+                'receiver_id' => $request->receiver_id,
+                'trace' => $e->getTraceAsString(),
+            ]);
+
             Notification::make()
                 ->title('Error accepting collaboration request')
+                ->body($e->getMessage())
                 ->danger()
+                ->duration(5000)
                 ->send();
         }
     }

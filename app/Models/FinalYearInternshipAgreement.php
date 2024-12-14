@@ -82,7 +82,7 @@ class FinalYearInternshipAgreement extends Model implements Agreement
 
     protected static function booted(): void
     {
-        static::addGlobalScope(new StudentRelatedScope);
+        // static::addGlobalScope(new StudentRelatedScope);
 
         static::creating(function (FinalYearInternshipAgreement $finalYearInternship) {
             $finalYearInternship->student_id = auth()->id();
@@ -110,6 +110,11 @@ class FinalYearInternshipAgreement extends Model implements Agreement
         return $this->morphToMany(Project::class, 'agreeable', 'project_agreements')
             ->using(ProjectAgreement::class)
             ->withTimestamps();
+    }
+
+    public function getProjectAttribute()
+    {
+        return $this->project()->first();
     }
 
     public function organization()

@@ -17,13 +17,18 @@ class ProjectObserver
     /**
      * Handle the Project "updated" event.
      */
-    public function updated(Project $project)
+    public function updated(Project $project): void
     {
+        dd($project);
         if ($project->agreements->isEmpty()) {
-            //
+            // Project has no agreements, so we can safely delete it
             $project->delete();
 
-            dd('Project : ' . $project?->title . ' has no students and has been deleted');
+            Filament\Notifications\Notification::make()
+                ->title('Empty project removed')
+                ->info()
+                ->send()
+                ->toDatabase();
         }
     }
 
@@ -32,7 +37,12 @@ class ProjectObserver
      */
     public function deleted(Project $project): void
     {
-        //
+        // detach timetable
+        /*     public function timetable()
+    {
+        return $this->hasOne(Timetable::class);
+    } */
+        $project->timetable()->delete();
     }
 
     /**

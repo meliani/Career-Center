@@ -187,17 +187,22 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
         return $this->hasOne(InternshipAgreement::class);
     }
 
-    public function projects()
+    public function finalYearInternship()
     {
-        return $this->belongsToMany(Project::class);
+        return $this->hasOne(FinalYearInternshipAgreement::class);
     }
 
-    public function project()
-    {
-        return Project::whereHas('students', function ($query) {
-            $query->where('students.id', $this->id);
-        })->first();
-    }
+    // public function projects()
+    // {
+    //     return $this->belongsToMany(Project::class);
+    // }
+
+    // public function project()
+    // {
+    //     return Project::whereHas('students', function ($query) {
+    //         $query->where('students.id', $this->id);
+    //     })->first();
+    // }
 
     public function teammate()
     {

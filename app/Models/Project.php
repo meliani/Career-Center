@@ -8,14 +8,17 @@ use App\Notifications;
 use App\Services;
 use Filament;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Notification;
+// soft delete
 use Parallax\FilamentComments\Models\Traits\HasFilamentComments;
 
 class Project extends Core\BackendBaseModel
 {
     use HasFilamentComments;
     use ProjectAttributes;
+    use SoftDeletes;
 
     protected static function boot()
     {
@@ -237,6 +240,11 @@ class Project extends Core\BackendBaseModel
         return $this->hasMany(ProjectAgreement::class)->with('agreeable.student');
     }
 
+    public function final_internship_agreement()
+    {
+        return $this->morphedByOne(FinalYearInternshipAgreement::class, 'agreeable', 'project_agreements');
+    }
+
     public function getAgreementTypesAttribute()
     {
         return $this->agreements
@@ -290,18 +298,18 @@ class Project extends Core\BackendBaseModel
             throw new \Exception('This project already has the maximum number of collaborators.');
         }
 
-        // Create a new Final Year Internship Agreement for the collaborator
-        $agreement = new FinalYearInternshipAgreement;
-        $agreement->student_id = $student->id;
-        $agreement->year_id = Year::current()->id;
-        $agreement->save();
+        $agreement = $student->finalYearInternship;
 
         // Link the agreement to this project
-        ProjectAgreement::create([
-            'project_id' => $this->id,
-            'agreeable_type' => FinalYearInternshipAgreement::class,
-            'agreeable_id' => $agreement->id,
-        ]);
+        ProjectAgreement::updateOrCreate(
+            [
+                'agreeable_id' => $agreement->id,
+                'agreeable_type' => FinalYearInternshipAgreement::class,
+            ],
+            [
+                'project_id' => $this->id,
+            ]
+        );
     }
 
     // public function FirstReviewer()

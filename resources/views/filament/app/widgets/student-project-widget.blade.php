@@ -25,7 +25,7 @@
                             icon="{{ $project->defense_status?->getIcon() }}"
                             class="mt-1"
                         >
-                            {{ $project->defense_status?->getLabel() }}
+                         {{ __('Defense'). ' '. $project->defense_status?->getLabel() }}
                         </x-filament::badge>
                     </div>
                 </div>
@@ -225,7 +225,7 @@
                             </x-filament::button>
                         </form>
                     </div>
-                @elseif($this->hasCollaborationRequest())
+                @elseif($this->hasCollaborationRequest() && !$this->hasActiveCollaboration())
                     <div class="border-t pt-4">
                         <div class="bg-primary-50 dark:bg-primary-900/50 rounded-lg p-4">
                             <div class="flex items-center space-x-3">

@@ -355,7 +355,10 @@ class ProjectResource extends Core\BaseResource
                         );
                     })
                     ->indicateUsing(fn (array $data): ?string => $data['value'] ? __('Year') . ': ' . Year::find($data['value'])->title : null)
-                    ->columnSpanFull(),
+                    ->columnSpan(2),
+                // trashed filter visible by admins
+                Tables\Filters\TrashedFilter::make(),
+
             ])
             ->headerActions([
                 /*  Tables\Actions\Action::make('Check changed professors')
