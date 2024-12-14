@@ -15,6 +15,7 @@ class EditStudent extends EditRecord
         return [
             Actions\ViewAction::make(),
             Actions\DeleteAction::make(),
+            \STS\FilamentImpersonate\Pages\Actions\Impersonate::make($this->getRecord()),
         ];
     }
 }

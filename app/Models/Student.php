@@ -359,4 +359,22 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
             ->where('assigned_program', $this->program)
             ->first();
     }
+
+    // Add these relationships to your Student model
+
+    public function collaborationRequests()
+    {
+        return $this->hasMany(CollaborationRequest::class, 'sender_id')
+            ->orWhere('receiver_id', $this->id);
+    }
+
+    public function sentCollaborationRequests()
+    {
+        return $this->hasMany(CollaborationRequest::class, 'sender_id');
+    }
+
+    public function receivedCollaborationRequests()
+    {
+        return $this->hasMany(CollaborationRequest::class, 'receiver_id');
+    }
 }

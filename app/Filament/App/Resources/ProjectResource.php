@@ -6,6 +6,7 @@ use App\Enums;
 use App\Filament\App\Resources\ProjectResource\Pages;
 use App\Models\Project;
 use App\Models\Year;
+use Filament\Forms\Components\Select;
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
@@ -90,6 +91,40 @@ class ProjectResource extends Resource
             ->defaultSort('timetable.timeslot.start_time', 'desc')
             ->actions([
                 Tables\Actions\ViewAction::make(),
+                Tables\Actions\Action::make('addCollaborator')
+                    ->label('Add Collaborator')
+                    ->icon('heroicon-m-user-plus')
+                    ->color('success')
+                    ->visible(fn ($record) => $record->canAddCollaborator())
+                    ->form([
+                        Select::make('student_id')
+                            ->label('Select Student')
+                            ->options(function ($record) {
+                                return \App\Models\Student::query()
+                                    ->where('id', '!=', auth()->id())
+                                    ->where('level', auth()->user()->level)
+                                    ->whereDoesntHave('projects', function ($query) {
+                                        $query->where('year_id', Year::current()->id);
+                                    })
+                                    ->orderBy('name')
+                                    ->get()
+                                    ->mapWithKeys(function ($student) {
+                                        return [$student->id => "{$student->name} ({$student->id_pfe})"];
+                                    });
+                            })
+                            ->searchable()
+                            ->required()
+                            ->helperText('Only showing students from your level without projects'),
+                    ])
+                    ->action(function ($record, array $data): void {
+                        $student = \App\Models\Student::find($data['student_id']);
+                        $record->addCollaborator($student);
+
+                        Notification::make()
+                            ->title('Collaborator added successfully')
+                            ->success()
+                            ->send();
+                    }),
             ])
             ->filters([])
             ->bulkActions([]);

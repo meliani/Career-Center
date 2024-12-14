@@ -14,6 +14,8 @@ class ViewStudent extends ViewRecord
     {
         return [
             Actions\EditAction::make(),
+            \STS\FilamentImpersonate\Pages\Actions\Impersonate::make($this->getRecord()),
+
         ];
     }
 }

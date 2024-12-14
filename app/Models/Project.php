@@ -278,6 +278,32 @@ class Project extends Core\BackendBaseModel
             });
     }
 
+    public function canAddCollaborator()
+    {
+        return $this->agreements->count() < 2;
+    }
+
+    public function addCollaborator(Student $student): void
+    {
+        // Check if we can add more collaborators
+        if (! $this->canAddCollaborator()) {
+            throw new \Exception('This project already has the maximum number of collaborators.');
+        }
+
+        // Create a new Final Year Internship Agreement for the collaborator
+        $agreement = new FinalYearInternshipAgreement;
+        $agreement->student_id = $student->id;
+        $agreement->year_id = Year::current()->id;
+        $agreement->save();
+
+        // Link the agreement to this project
+        ProjectAgreement::create([
+            'project_id' => $this->id,
+            'agreeable_type' => FinalYearInternshipAgreement::class,
+            'agreeable_id' => $agreement->id,
+        ]);
+    }
+
     // public function FirstReviewer()
     // {
     //     return $this->professors()

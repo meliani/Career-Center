@@ -19,7 +19,6 @@ class ProjectObserver
      */
     public function updated(Project $project)
     {
-        // dd('Project has no students');
         if ($project->agreements->isEmpty()) {
             //
             $project->delete();
