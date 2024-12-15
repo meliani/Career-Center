@@ -147,6 +147,8 @@
                             <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">
                                 {{ __('Project Collaboration') }}
                             </h3>
+                            @if(!$showCollaboratorForm && !$this->hasCollaborationRequest())
+
                             <x-filament::button
                                 type="button"
                                 color="success"
@@ -156,6 +158,7 @@
                             >
                                 {{ __('Add Collaborator') }}
                             </x-filament::button>
+                            @endif
                         </div>
 
                         @if($showCollaboratorForm)
@@ -170,35 +173,12 @@
                                             icon="heroicon-m-user-plus"
                                             wire:loading.attr="disabled"
                                         >
-                                            {{ __('Add Collaborator') }}
+                                            {{ __('Send Collaboration Request') }}
                                         </x-filament::button>
                                     </div>
                                 </form>
                             </div>
                         @endif
-                    </div>
-                @endif
-
-                {{-- Documents Section --}}
-                @if($project->defense_status?->value === 'authorized')
-                    <div class="border-t pt-4 space-y-4">
-                        <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">
-                            {{ __('Available Documents') }}
-                        </h3>
-                        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                            @if($project->evaluation_sheet_url)
-                                <x-filament::button
-                                    color="primary"
-                                    icon="heroicon-m-document"
-                                    class="w-full transition-transform duration-300 hover:scale-105"
-                                    tag="a"
-                                    href="{{ $project->evaluation_sheet_url }}"
-                                    target="_blank"
-                                >
-                                    {{ __('View Evaluation Sheet') }}
-                                </x-filament::button>
-                            @endif
-                        </div>
                     </div>
                 @endif
 
@@ -289,6 +269,7 @@
                                         {{ $collaborationRequest->status->getLabel() }}
                                     </x-filament::badge>
                                 </div>
+
                                 @if($collaborationRequest->status->value === 'pending')
                                     <div class="flex space-x-2">
                                         <x-filament::button
@@ -312,6 +293,17 @@
                                     </div>
                                 @endif
                             @endif
+                        </div>
+                    </div>
+                    <div class="bg-primary-50 dark:bg-primary-900/50 rounded-lg p-4 space-y-4">
+                        <div class="flex items-center space-x-3">
+                        <x-filament::icon
+                            icon="heroicon-m-information-circle"
+                            class="w-5 h-5 text-primary-500"
+                        />
+                        <span class="text-sm text-primary-700 dark:text-primary-300">
+                            {{ __('Notice : if you want to stop this collaboration you must contact Administration') }}
+                        </span>
                         </div>
                     </div>
                 @endif
@@ -346,71 +338,6 @@
                         {{ __('You haven\'t been assigned to any project for this academic year.') }}
                     </p>
                 </div>
-
-                {{-- Collaboration Section --}}
-                @if(!$project && !$this->hasCollaborationRequest())
-                    <div class="max-w-sm mx-auto">
-                        <div class="relative">
-                            <div class="absolute inset-0 flex items-center" aria-hidden="true">
-                                <div class="w-full border-t border-gray-200 dark:border-gray-700"></div>
-                            </div>
-                            <div class="relative flex justify-center">
-                                <span class="bg-white dark:bg-gray-800 px-3 text-sm text-gray-500 dark:text-gray-400">
-                                    {{ __('Looking for a teammate?') }}
-                                </span>
-                            </div>
-                        </div>
-
-                        @if($this->hasExistingProject())
-                            <div class="mt-6 flex flex-col items-center space-y-4">
-                                <form wire:submit="sendCollaborationRequest" class="w-full space-y-4">
-                                    {{ $this->form }}
-
-                                    <x-filament::button
-                                        type="submit"
-                                        color="primary"
-                                        icon="heroicon-m-user-plus"
-                                        class="w-full"
-                                        wire:loading.attr="disabled"
-                                    >
-                                        {{ __('Send Collaboration Request') }}
-                                    </x-filament::button>
-                                </form>
-                            </div>
-                        @else
-                            <div class="mt-6">
-                                <div class="bg-warning-50 dark:bg-warning-900/50 rounded-xl p-4">
-                                    <div class="flex items-center space-x-3">
-                                        <x-filament::icon
-                                            icon="heroicon-m-exclamation-triangle"
-                                            class="w-5 h-5 text-warning-500 shrink-0"
-                                        />
-                                        <p class="text-sm text-warning-700 dark:text-warning-300">
-                                            {{ __('You need to have an existing project or internship agreement before you can send collaboration requests.') }}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-                    </div>
-                @endif
-
-                {{-- Pending/Active Request Status --}}
-                @if($this->hasCollaborationRequest())
-                    <div class="max-w-sm mx-auto">
-                        <div class="bg-primary-50 dark:bg-primary-900/50 rounded-xl p-4">
-                            <div class="flex items-center space-x-3">
-                                <x-filament::icon
-                                    icon="heroicon-m-information-circle"
-                                    class="w-5 h-5 text-primary-500 shrink-0"
-                                />
-                                <p class="text-sm text-primary-700 dark:text-primary-300">
-                                    {{ __('You have a pending or active collaboration request.') }}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                @endif
             </div>
         @endif
     </div>

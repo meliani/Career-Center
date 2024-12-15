@@ -2,14 +2,16 @@
 
 namespace App\Providers;
 
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Auth\Events\Login;
 use App\Listeners\UpdateUserLastLoginAt;
+use App\Models\FinalYearInternshipAgreement;
+use App\Models\Project;
+use App\Observers\AgreementObserver;
+use App\Observers\ProjectObserver;
+use Illuminate\Auth\Events\Login;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
-use App\Models\Project;
-use App\Observers\ProjectObserver;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -29,6 +31,7 @@ class EventServiceProvider extends ServiceProvider
 
     protected $observers = [
         Project::class => [ProjectObserver::class],
+        FinalYearInternshipAgreement::class => [AgreementObserver::class],
     ];
 
     /**
@@ -36,7 +39,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Project::observe(ProjectObserver::class);
+        // Project::observe(ProjectObserver::class);
     }
 
     /**

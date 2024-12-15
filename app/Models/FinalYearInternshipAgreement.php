@@ -24,7 +24,6 @@ class FinalYearInternshipAgreement extends Model implements Agreement
     protected $fillable = [
         'student_id',
         'year_id',
-        'project_id',
         'status',
         'announced_at',
         'validated_at',

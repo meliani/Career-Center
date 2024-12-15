@@ -2,15 +2,20 @@
 
 namespace App\Filament\App\Widgets;
 
+use App\Enums\CollaborationStatus;
+use App\Enums\Role;
 use App\Models\CollaborationRequest;
 use App\Models\FinalYearInternshipAgreement;
 use App\Models\Project;
 use App\Models\ProjectAgreement;
 use App\Models\Student;
+use App\Models\User;
 use App\Models\Year;
+use App\Notifications\AdminCollaborationNotification;
 use App\Notifications\CollaborationRequestAccepted;
+use App\Notifications\CollaborationRequestReceived;
+use App\Notifications\CollaborationRequestRejected;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Widgets\Widget;
 use Illuminate\Database\Eloquent\Builder;
@@ -32,56 +37,16 @@ class StudentProjectWidget extends Widget implements Forms\Contracts\HasForms
 
     public bool $showCollaboratorForm = false;
 
-    protected $listeners = ['closeModal'];
-
     public function mount(): void
     {
-        $this->form->fill();
         $this->collaboratorForm->fill();
     }
 
     protected function getForms(): array
     {
         return [
-            'form' => $this->makeForm()
-                ->schema($this->getFormSchema()),
             'collaboratorForm' => $this->makeForm()
                 ->schema($this->getCollaboratorFormSchema()),
-        ];
-    }
-
-    protected function getFormSchema(): array
-    {
-        return [
-            Forms\Components\Select::make('selectedStudent')
-                ->label('Select Student')
-                ->options(function () {
-                    $currentStudent = auth()->user();
-
-                    return \App\Models\Student::query()
-                        ->where('id', '!=', auth()->id())
-                        ->where('level', $currentStudent->level)
-                        ->whereDoesntHave('projects', function ($query) {
-                            $query->where('year_id', Year::current()->id);
-                        })
-                        ->whereDoesntHave('collaborationRequests', function ($query) {
-                            $query->where('year_id', Year::current()->id)
-                                ->whereIn('status', ['pending', 'accepted']);
-                        })
-                        ->orderBy('name')
-                        ->get()
-                        ->mapWithKeys(fn ($student) => [$student->id => "{$student->name} ({$student->id_pfe})"]);
-                })
-                ->searchable()
-                ->placeholder('Choose a student to collaborate with')
-                ->helperText('Only showing students from your level without projects')
-                ->required(),
-            Forms\Components\Textarea::make('message')
-                ->label('Collaboration Message')
-                ->placeholder('Example: I would like to collaborate with you on our final year project.')
-                ->required()
-                ->maxLength(255)
-                ->helperText('Write a brief message explaining why you want to collaborate'),
         ];
     }
 
@@ -100,7 +65,11 @@ class StudentProjectWidget extends Widget implements Forms\Contracts\HasForms
                         ->where('level', $currentStudent->level->value)
                         ->whereHas('finalYearInternship', function ($agreementQuery) {
                             $agreementQuery->where('year_id', Year::current()->id)
-                                ->whereHas('project');
+                                ->whereHas('project', function ($projectQuery) {
+                                    $projectQuery->whereHas('agreements', function ($agreementsQuery) {
+                                        $agreementsQuery->where('agreeable_type', FinalYearInternshipAgreement::class);
+                                    }, '<', 2);
+                                });
                         })
                         ->orderBy('name')
                         ->get()
@@ -111,51 +80,22 @@ class StudentProjectWidget extends Widget implements Forms\Contracts\HasForms
                 ->searchable()
                 ->required()
                 ->helperText('Only showing students from your level without projects'),
+            Forms\Components\Textarea::make('message')
+                ->label('Collaboration Message')
+                ->placeholder('Example: I would like to collaborate with you on our final year project.')
+                ->required()
+                ->maxLength(255)
+                ->helperText('Write a brief message explaining why you want to collaborate'),
         ];
     }
 
-    public function sendCollaborationRequest(): void
+    protected function notifyAdministrators(CollaborationRequest $request, string $type = 'request'): void
     {
-        if (! $this->hasExistingProject()) {
-            Notification::make()
-                ->title('You must have an existing project or internship agreement before sending collaboration requests')
-                ->danger()
-                ->send();
+        $administrators = User::where('role', Role::getAdministratorRoles())->get();
 
-            return;
+        foreach ($administrators as $admin) {
+            $admin->notify(new AdminCollaborationNotification($request, $type));
         }
-
-        $this->validate([
-            'selectedStudent' => 'required|exists:students,id',
-            'message' => 'required|string|max:255',
-        ]);
-
-        // Clean up any old rejected/cancelled requests
-        $this->cleanupOldRequests();
-
-        // Create new collaboration request
-        CollaborationRequest::create([
-            'sender_id' => auth()->id(),
-            'receiver_id' => $this->selectedStudent,
-            'message' => $this->message,
-            'status' => 'pending',
-            'year_id' => Year::current()->id,
-        ]);
-
-        // Reset form
-        $this->reset(['selectedStudent', 'message']);
-
-        Notification::make()
-            ->title('Collaboration request sent successfully')
-            ->success()
-            ->send();
-    }
-
-    public function openCollaborationModal(): void
-    {
-        $this->dispatch('open-modal', [
-            'id' => 'collaboration-modal',
-        ]);
     }
 
     public function toggleCollaboratorForm(): void
@@ -181,23 +121,39 @@ class StudentProjectWidget extends Widget implements Forms\Contracts\HasForms
         $student = \App\Models\Student::find($this->selectedCollaborator);
 
         try {
-            // Clean up any old rejected/cancelled requests
-            $this->cleanupOldRequests();
+            DB::transaction(function () use ($student) {
+                // Clean up any old rejected/cancelled requests
+                $this->cleanupOldRequests();
 
-            // Create collaboration request
-            CollaborationRequest::create([
-                'sender_id' => auth()->id(),
-                'receiver_id' => $student->id,
-                'message' => 'Would you like to collaborate on my project?',
-                'status' => 'pending',
-                'year_id' => Year::current()->id,
-            ]);
+                // Create collaboration request
+                $request = CollaborationRequest::create([
+                    'sender_id' => auth()->id(),
+                    'receiver_id' => $student->id,
+                    'message' => $this->message,
+                    'status' => 'pending',
+                    'year_id' => Year::current()->id,
+                ]);
+
+                // Notify the receiver
+                $student->notify(new CollaborationRequestReceived($request));
+
+                // Notify administrators with type 'request'
+                $this->notifyAdministrators($request, 'request');
+            });
 
             $this->reset(['selectedCollaborator', 'showCollaboratorForm']);
 
             Notification::make()
-                ->title('Collaboration request sent successfully')
+                ->title(
+                    'A collaboration request has been sent to ' . $student->full_name .
+                    ' ' . 'from ' . auth()->user()->full_name . '.'
+                )
                 ->success()
+                ->send()
+                ->sendToDatabase([
+                    $student,
+                    auth()->user(),
+                ])
                 ->send();
 
         } catch (\Exception $e) {
@@ -318,6 +274,8 @@ class StudentProjectWidget extends Widget implements Forms\Contracts\HasForms
                 ->send();
 
             $request->sender->notify(new CollaborationRequestAccepted($request));
+            // Notify administrators with type 'accepted'
+            $this->notifyAdministrators($request, 'accepted');
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -347,12 +305,20 @@ class StudentProjectWidget extends Widget implements Forms\Contracts\HasForms
             return;
         }
 
-        $request->update(['status' => 'rejected']);
+        DB::transaction(function () use ($request) {
+            $request->update(['status' => 'rejected']);
 
-        Notification::make()
-            ->title('Collaboration request rejected')
-            ->warning()
-            ->send();
+            // Notify the sender
+            $request->sender->notify(new CollaborationRequestRejected($request));
+
+            // Notify administrators with type 'rejected'
+            $this->notifyAdministrators($request, 'rejected');
+
+            Notification::make()
+                ->title('Collaboration request rejected')
+                ->warning()
+                ->send();
+        });
     }
 
     public function cancelCollaborationRequest($requestId): void
@@ -360,6 +326,16 @@ class StudentProjectWidget extends Widget implements Forms\Contracts\HasForms
         $request = CollaborationRequest::findOrFail($requestId);
 
         if ($request->sender_id !== auth()->id()) {
+            return;
+        }
+
+        // check if the request is not accepted
+        if ($request->status === CollaborationStatus::Accepted) {
+            Notification::make()
+                ->title('You cannot cancel an accepted collaboration request')
+                ->danger()
+                ->send();
+
             return;
         }
 

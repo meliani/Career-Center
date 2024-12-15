@@ -240,9 +240,9 @@ class Project extends Core\BackendBaseModel
         return $this->hasMany(ProjectAgreement::class)->with('agreeable.student');
     }
 
-    public function final_internship_agreement()
+    public function final_internship_agreements()
     {
-        return $this->morphedByOne(FinalYearInternshipAgreement::class, 'agreeable', 'project_agreements');
+        return $this->morphedByMany(FinalYearInternshipAgreement::class, 'agreeable', 'project_agreements');
     }
 
     public function getAgreementTypesAttribute()

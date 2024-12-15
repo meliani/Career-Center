@@ -25,10 +25,13 @@ class ProjectObserver
             $project->delete();
 
             Filament\Notifications\Notification::make()
-                ->title('Empty project removed')
+                ->title('Empty project :organiazation - :title deleted', [
+                    'organization' => $project->organization->name,
+                    'title' => $project->title,
+                ])
                 ->info()
                 ->send()
-                ->toDatabase();
+                ->sendToDatabase();
         }
     }
 
@@ -37,11 +40,6 @@ class ProjectObserver
      */
     public function deleted(Project $project): void
     {
-        // detach timetable
-        /*     public function timetable()
-    {
-        return $this->hasOne(Timetable::class);
-    } */
         $project->timetable()->delete();
     }
 
