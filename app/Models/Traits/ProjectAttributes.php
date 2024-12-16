@@ -85,15 +85,6 @@ trait ProjectAttributes
         return $AdministrativeSupervisor ? $AdministrativeSupervisor->full_name : 'Undefined Administrative Supervisor';
     }
 
-    public function getAcademicSupervisorAttribute()
-    {
-        $AcademicSupervisor = $this->professors()
-            ->wherePivot('jury_role', Enums\JuryRole::Supervisor->value)
-            ->first();
-
-        return $AcademicSupervisor ? $AcademicSupervisor->full_name : __('Undefined Academic Supervisor');
-    }
-
     public function getAcademicSupervisorNameAttribute()
     {
         $AcademicSupervisor = $this->professors()

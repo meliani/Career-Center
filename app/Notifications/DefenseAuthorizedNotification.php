@@ -43,7 +43,7 @@ class DefenseAuthorizedNotification extends Notification
             ->line(__('## Project information'))
             ->line(__('**Title:** ') . $this->project->title)
             ->line(__('## Supervisors'))
-            ->line(__('**Academic supervisor:** ') . $this->project->academic_supervisor)
+            ->line(__('**Academic supervisor:** ') . $this->project->academic_supervisor_name)
             ->line(__('**External supervisor:** ') . $this->project->external_supervisor_name)
             ->line(__('## Reviewers'))
             ->line(__('**Reviewer 1:** ') . $this->project->reviewer1)

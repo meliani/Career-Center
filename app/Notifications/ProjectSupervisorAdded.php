@@ -47,11 +47,11 @@ class ProjectSupervisorAdded extends Notification implements ShouldQueue
         return (new MailMessage)
             ->subject("L'encadrant de votre stage de Projet de Fin d'Études")
             ->greeting("Bonjour {$this->student->long_full_name},")
-            ->lineIf($this->project->supervisor(), "Nous vous informons que votre encadrant de stage PFE est **Pr. {$this->project->supervisor()?->full_name}**")
+            ->lineIf($this->project->academic_supervisor(), "Nous vous informons que votre encadrant de stage PFE est **Pr. {$this->project->academic_supervisor?->name}**")
             // ->action(__('Voir le projet'), url('/'))
-            ->lineIf($this->project->supervisor(), "N'hésitez pas à contacter votre encadrant par mail ({$this->project->supervisor()?->email}) pour convenir d'un premier rendez-vous et établir ensemble
+            ->lineIf($this->project->academic_supervisor(), "N'hésitez pas à contacter votre encadrant par mail ({$this->project->academic_supervisor?->email}) pour convenir d'un premier rendez-vous et établir ensemble
             les modalités de travail.")
-            ->lineIf(! $this->project->supervisor(), "Nous vous informons que votre encadrant pour votre stage de Projet de Fin d'Études n'a pas encore été désigné. Nous vous tiendrons informé dès que cela sera fait.")
+            ->lineIf(! $this->project->academic_supervisor(), "Nous vous informons que votre encadrant pour votre stage de Projet de Fin d'Études n'a pas encore été désigné. Nous vous tiendrons informé dès que cela sera fait.")
             ->line('Pour rappel, voici les information relatives à votre stage :')
             ->line("Organisation : **{$this->project->organization}**")
             ->line("Titre du PFE : **{$this->project->title}**")

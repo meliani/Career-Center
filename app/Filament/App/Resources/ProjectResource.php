@@ -173,7 +173,7 @@ class ProjectResource extends Resource
 
                 Infolists\Components\Section::make('Supervisors')
                     ->schema([
-                        Infolists\Components\TextEntry::make('academic_supervisor')
+                        Infolists\Components\TextEntry::make('academic_supervisor_name')
                             ->label('Academic Supervisor'),
                         Infolists\Components\TextEntry::make('externalSupervisor.full_name')
                             ->label('Company Supervisor'),

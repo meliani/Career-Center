@@ -11,6 +11,7 @@ use App\Models\FinalYearInternshipAgreement;
 use App\Models\InternshipAgreement;
 use App\Models\Project;
 use App\Models\Year;
+use App\Notifications\CollaborationReminderNotification;
 use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -27,6 +28,7 @@ use Guava\FilamentModalRelationManagers\Actions\Table\RelationManagerAction;
 use Hydrat\TableLayoutToggle\Facades\TableLayoutToggle;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 use pxlrbt\FilamentExcel;
 
@@ -529,6 +531,16 @@ class ProjectResource extends Core\BaseResource
                     ->size(\Filament\Support\Enums\ActionSize::Small)
                     ->outlined()
                     ->hidden(fn () => auth()->user()->isAdministrator() === false),
+                Tables\Actions\BulkAction::make('sendCollaborationReminder')
+                    ->label(__('Send Collaboration Reminder'))
+                    ->action(function (Collection $records) {
+                        foreach ($records as $project) {
+                            foreach ($project->getStudentsCollection() as $student) {
+                                $student->notify(new CollaborationReminderNotification($project));
+                            }
+                        }
+                    })
+                    ->requiresConfirmation(),
             ]);
 
     }
@@ -558,7 +570,7 @@ class ProjectResource extends Core\BaseResource
                                             ->modalCancelAction(false),
                                     ])
                                     ->schema([
-                                        Infolists\Components\TextEntry::make('academic_supervisor')
+                                        Infolists\Components\TextEntry::make('academic_supervisor_name')
                                             ->label(__('Academic supervisor'))
                                             ->icon('heroicon-o-academic-cap')
                                             ->badge()

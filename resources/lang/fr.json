@@ -832,7 +832,6 @@
     "Accept": "Accepter",
     "Reject": "Rejeter",
     "View Request": "Voir la demande",
-    "Find Collaborators": "Trouver des collaborateurs",
     "Find Another Collaborator": "Trouver un autre collaborateur",
     "Send Collaboration Request": "Envoyer une demande de collaboration",
     "Message": "Message",
@@ -887,5 +886,9 @@
     "You cannot cancel an accepted collaboration request": "Vous ne pouvez pas annuler une demande de collaboration acceptée",
     "Accepted": "Acceptée",
     "Defense Date": "Date de soutenance",
-    "Project Title": "Titre du projet"
+    "Project Title": "Titre du projet",
+    "Choose Your Collaborator": "Choisissez votre binôme",
+    "Please check the collaboration feature and choose your collaborator for the final year project.": "Veuillez consulter la fonctionnalité de collaboration et choisir votre binôme pour le projet de fin d'études.",
+    "Find Collaborators": "Trouver des binômes",
+    "Thank you.": "Merci."
 }

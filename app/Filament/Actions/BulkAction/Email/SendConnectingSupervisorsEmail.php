@@ -18,7 +18,7 @@ class SendConnectingSupervisorsEmail extends BulkAction
         $static->configure()->action(function ($records): void {
             foreach ($records as $record) {
                 // dd($record->students->first()->email_perso);
-                $record->students->each(function (Student $student) use ($record) {
+                $record->getStudentsCollection()->each(function (Student $student) use ($record) {
                     $student->notify(new \App\Notifications\ProjectSupervisorAdded($record, $student));
                 });
                 // dispatch(function () use ($record) {

@@ -733,7 +733,7 @@
             <legend class="font-bold">Jury</legend>
             <div class="grid grid-cols-2 gap-4">
                 <div>
-                    <p class="mb-16"><strong>Encadrant:</strong> {{ $project->academic_supervisor }}</p>
+                    <p class="mb-16"><strong>Encadrant:</strong> {{ $project->academic_supervisor_name }}</p>
                     <p class="mb-16"><strong>Examinateur 1:</strong> {{ $project->reviewer1 }}</p>
                 </div>
                 <div>

@@ -9,6 +9,7 @@ use App\Filament\Core;
 use App\Mail;
 use App\Models\Student;
 use App\Models\Year;
+use App\Notifications\CollaborationReminderNotification;
 use Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -19,6 +20,7 @@ use Filament\Tables;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades;
 
 class StudentResource extends Core\BaseResource
@@ -295,7 +297,14 @@ class StudentResource extends Core\BaseResource
                     ->icon('heroicon-o-document')
                     ->color('primary')
                     ->hidden(fn () => auth()->user()->cannot('manage-students')),
-
+                Tables\Actions\BulkAction::make('sendCollaborationReminder')
+                    ->label(__('Send Collaboration Reminder'))
+                    ->action(function (Collection $records) {
+                        foreach ($records as $record) {
+                            $record->notify(new CollaborationReminderNotification);
+                        }
+                    })
+                    ->requiresConfirmation(),
             ]);
     }
 

@@ -110,7 +110,7 @@
                     @foreach([
                         'academic' => [
                             'title' => __('Academic Supervisor'),
-                            'name' => $project->academic_supervisor,
+                            'name' => $project->academic_supervisor_name,
                             'icon' => 'heroicon-o-academic-cap'
                         ],
                         'company' => [

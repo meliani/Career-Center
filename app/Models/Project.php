@@ -108,12 +108,11 @@ class Project extends Core\BackendBaseModel
         return $this->internship_agreements()->count() > 1;
     }
 
-    // public function AcademicSupervisor()
-    // {
-
-    //     return $this->professors()
-    //         ->wherePivot('jury_role', Enums\JuryRole::Supervisor->value);
-    // }
+    public function academic_supervisor()
+    {
+        return $this->professors()
+            ->wherePivot('jury_role', Enums\JuryRole::Supervisor->value);
+    }
 
     public function reviewers()
     {
