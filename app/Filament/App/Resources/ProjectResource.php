@@ -4,27 +4,27 @@ namespace App\Filament\App\Resources;
 
 use App\Enums;
 use App\Filament\App\Resources\ProjectResource\Pages;
+use App\Filament\Core\StudentBaseResource;
 use App\Models\Project;
 use App\Models\Year;
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
-use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
-class ProjectResource extends Resource
+class ProjectResource extends StudentBaseResource
 {
     protected static ?string $model = Project::class;
 
     protected static ?string $modelLabel = 'My Project';
 
-    protected static ?string $pluralModelLabel = 'My Projects';
+    protected static ?string $pluralModelLabel = 'My Project';
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
-    // protected static ?string $navigationGroup = 'My Internship';
+    protected static ?string $navigationGroup = 'PFE';
 
     protected static ?int $navigationSort = 4;
 
