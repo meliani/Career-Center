@@ -44,6 +44,14 @@ class FinalYearInternshipAgreementResource extends StudentBaseResource
         return false;
     }
 
+    // eloquent query
+
+    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    {
+        return parent::getEloquentQuery()
+            ->where('student_id', Auth::id());
+    }
+
     public static function table(Table $table): Table
     {
         return $table
