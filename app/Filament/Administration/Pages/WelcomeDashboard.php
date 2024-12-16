@@ -46,9 +46,10 @@ class WelcomeDashboard extends \Filament\Pages\Dashboard
     {
         $widgets = [];
 
-        // if (auth()->user()->isProfessor()) {
-        //     $widgets[] = \App\Filament\Administration\Widgets\ProfessorProjectsWidget::class;
-        // }
+        if (auth()->user()->isProfessor()) {
+            $widgets[] = \App\Filament\Administration\Widgets\Dashboards\AdminGettingStartedWidget::class;
+            // $widgets[] = \App\Filament\Administration\Widgets\ProfessorProjectsWidget::class;
+        }
 
         if (auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor() || auth()->user()->isDirection()) {
             $widgets[] = \App\Filament\Administration\Widgets\Dashboards\AdminGettingStartedWidget::class;
