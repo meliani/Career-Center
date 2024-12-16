@@ -25,9 +25,9 @@ class ProjectResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
-    protected static ?string $navigationGroup = 'My Internship';
+    // protected static ?string $navigationGroup = 'My Internship';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 4;
 
     // public static function shouldRegisterNavigation(): bool
     // {
