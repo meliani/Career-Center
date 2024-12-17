@@ -168,6 +168,7 @@ class NewInternship extends Page implements HasForms
                                     ->default(now()->addMonth())
                                     ->label('Application deadline'),
                                 Forms\Components\TextInput::make('application_link')
+                                    ->helperText(__('Leave empty if not applicable'))
                                     // ->url()
                                     ->dehydrateStateUsing(function ($state) {
                                         if ($state && ! preg_match('/^https?:\/\//', $state)) {
@@ -181,14 +182,25 @@ class NewInternship extends Page implements HasForms
                                     // ->columnSpan(2)
                                     ->maxLength(191),
                                 Forms\Components\TextInput::make('application_email')
+                                    ->helperText(__('Leave empty if not applicable'))
                                     // ->columnSpan(2)
                                     ->hidden(fn (Get $get) => $get('recruiting_type') != 'RecruiterManaged')
                                     ->email()
                                     ->maxLength(191),
 
-                                Forms\Components\ToggleButtons::make('currency')
+                                Forms\Components\TextInput::make('remuneration')
+                                    // ->columnSpan(3)
                                     ->hidden(fn (Get $get) => $get('recruiting_type') != 'SchoolManaged')
-                                    ->default(Enums\Currency::MDH->value)
+                                    ->label('Monthly remuneration')
+                                    ->numeric()
+                                    // get prefix from crrency value
+                                    ->id('remuneration')
+                                    ->prefix(fn (Get $get) => $get('currency'))
+                                    ->helperText(__('Leave empty if not applicable'))
+                                    ->live(),
+                                Forms\Components\ToggleButtons::make('currency')
+                                    ->hidden(fn (Get $get) => (($get('recruiting_type') != 'SchoolManaged') || ($get('remuneration') <= 0)))
+                                    ->default(null)
                                     ->options([
                                         Enums\Currency::EUR->value => Enums\Currency::EUR->getSymbol(),
                                         Enums\Currency::USD->value => Enums\Currency::USD->getSymbol(),
@@ -201,19 +213,10 @@ class NewInternship extends Page implements HasForms
                                     ->inline()
                                     ->live()
                                     ->id('currency'),
-                                Forms\Components\TextInput::make('remuneration')
-                                    // ->columnSpan(3)
-                                    ->hidden(fn (Get $get) => $get('recruiting_type') != 'SchoolManaged')
-                                    ->label('Monthly remuneration')
-                                    ->numeric()
-                                    // get prefix from crrency value
-                                    ->id('remuneration')
-                                    ->prefix(fn (Get $get) => $get('currency'))
-                                    ->live(),
-
                                 Forms\Components\TextInput::make('workload')
                                     // ->columnSpan(2)
                                     ->placeholder('Hours / Week')
+                                    ->helperText(__('Leave empty if not applicable'))
                                     ->numeric()
                                     ->visible(fn (Get $get): bool => $get('remuneration') !== null && $get('remuneration') > 0),
 

@@ -36,6 +36,13 @@ class InternshipOfferResource extends StudentBaseResource
 
     // protected static ?string $navigationGroup = 'Internships and Projects';
 
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->where('expire_at', '>', now())
+            ->where('status', Enums\OfferStatus::Published);
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -132,7 +139,8 @@ class InternshipOfferResource extends StudentBaseResource
                             ->success()
                             ->icon('heroicon-s-check-circle')
                             ->send();
-                    }),
+                    })
+                    ->button(),
                 Tables\Actions\ViewAction::make(),
             ], position: Tables\Enums\ActionsPosition::BeforeColumns);
     }

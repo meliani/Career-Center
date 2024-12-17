@@ -30,6 +30,7 @@ class InternshipAgreementContact extends Model
 
     protected $appends = [
         'full_name',
+        'formal_name',
     ];
 
     public function organization()

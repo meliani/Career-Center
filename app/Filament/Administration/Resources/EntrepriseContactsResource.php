@@ -172,7 +172,7 @@ class EntrepriseContactsResource extends BaseResource
                 Tables\Columns\TextColumn::make('long_full_name')
                     ->label('Full Name')
                     ->searchable(['first_name', 'last_name'])
-                    ->sortable()
+                    ->sortable(false)
                     ->weight('bold'),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable()

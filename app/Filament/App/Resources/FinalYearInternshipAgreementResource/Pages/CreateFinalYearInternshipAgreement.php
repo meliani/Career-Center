@@ -180,6 +180,7 @@ class CreateFinalYearInternshipAgreement extends CreateRecord
                                             Forms\Components\Grid::make(2)
                                                 ->schema([
                                                     Forms\Components\Select::make('title')
+                                                        ->required()
                                                         ->options(Enums\Title::class),
                                                     Forms\Components\TextInput::make('first_name')->required(),
                                                     Forms\Components\TextInput::make('last_name')->required(),
