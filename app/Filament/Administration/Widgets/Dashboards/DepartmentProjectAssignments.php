@@ -21,6 +21,8 @@ class DepartmentProjectAssignments extends Widget
 
     public $departmentProfessors;
 
+    public $activeFilter = 'all'; // Default filter
+
     protected static ?int $sort = 2;
 
     protected int | string | array $columnSpan = 'full';
@@ -31,14 +33,54 @@ class DepartmentProjectAssignments extends Widget
         $this->loadProfessors();
     }
 
+    public function setFilter($filter)
+    {
+        $this->activeFilter = $filter;
+        $this->loadProjects();
+    }
+
     protected function loadProjects()
     {
-        $this->projects = Project::query()
+        $query = Project::query()
             ->whereHas('final_internship_agreements', function ($query) {
                 $query->where('assigned_department', auth()->user()->department);
-            })
-            ->with(['professors', 'final_internship_agreements.organization'])
-            ->get();
+            });
+
+        // Apply filters
+        switch ($this->activeFilter) {
+            case 'pendingSupervisor':
+                $query->whereDoesntHave('professors', function ($q) {
+                    $q->where('jury_role', Enums\JuryRole::Supervisor);
+                });
+
+                break;
+
+            case 'pendingReviewers':
+                $query->whereHas('professors', function ($q) {
+                    $q->where('jury_role', Enums\JuryRole::Supervisor);
+                })->where(function ($query) {
+                    $query->whereDoesntHave('professors', function ($q) {
+                        $q->where('jury_role', Enums\JuryRole::FirstReviewer);
+                    })->orWhereDoesntHave('professors', function ($q) {
+                        $q->where('jury_role', Enums\JuryRole::SecondReviewer);
+                    });
+                });
+
+                break;
+
+            case 'assigned':
+                $query->whereHas('professors', function ($q) {
+                    $q->where('jury_role', Enums\JuryRole::Supervisor);
+                })->whereHas('professors', function ($q) {
+                    $q->where('jury_role', Enums\JuryRole::FirstReviewer);
+                })->whereHas('professors', function ($q) {
+                    $q->where('jury_role', Enums\JuryRole::SecondReviewer);
+                });
+
+                break;
+        }
+
+        $this->projects = $query->with(['professors', 'final_internship_agreements.organization'])->get();
     }
 
     protected function loadProfessors()
@@ -132,23 +174,30 @@ class DepartmentProjectAssignments extends Widget
 
         return [
             'total' => $baseQuery->count(),
-            'pending' => $baseQuery
-                ->whereDoesntHave('professors', function ($query) {
-                    $query->whereIn('jury_role', [
-                        Enums\JuryRole::Supervisor,
-                        Enums\JuryRole::FirstReviewer,
-                        Enums\JuryRole::SecondReviewer,
-                    ]);
+            'pendingSupervisor' => (clone $baseQuery)
+                ->whereDoesntHave('professors', function ($q) {
+                    $q->where('jury_role', Enums\JuryRole::Supervisor);
                 })->count(),
-            'assigned' => $baseQuery
-                ->whereHas('professors', function ($query) {
-                    $query->where('jury_role', Enums\JuryRole::Supervisor);
+            'pendingReviewers' => (clone $baseQuery)
+                ->whereHas('professors', function ($q) {
+                    $q->where('jury_role', Enums\JuryRole::Supervisor);
                 })
-                ->whereHas('professors', function ($query) {
-                    $query->whereIn('jury_role', [
-                        Enums\JuryRole::FirstReviewer,
-                        Enums\JuryRole::SecondReviewer,
-                    ]);
+                ->where(function ($query) {
+                    $query->whereDoesntHave('professors', function ($q) {
+                        $q->where('jury_role', Enums\JuryRole::FirstReviewer);
+                    })->orWhereDoesntHave('professors', function ($q) {
+                        $q->where('jury_role', Enums\JuryRole::SecondReviewer);
+                    });
+                })->count(),
+            'assigned' => (clone $baseQuery)
+                ->whereHas('professors', function ($q) {
+                    $q->where('jury_role', Enums\JuryRole::Supervisor);
+                })
+                ->whereHas('professors', function ($q) {
+                    $q->where('jury_role', Enums\JuryRole::FirstReviewer);
+                })
+                ->whereHas('professors', function ($q) {
+                    $q->where('jury_role', Enums\JuryRole::SecondReviewer);
                 })->count(),
         ];
     }
