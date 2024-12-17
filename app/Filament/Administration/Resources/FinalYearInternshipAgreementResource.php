@@ -41,7 +41,7 @@ class FinalYearInternshipAgreementResource extends BaseResource
 
     public static function canAccess(): bool
     {
-        return auth()->user()->isAdministrator();
+        return auth()->user()->can('viewAny', static::getModel());
     }
 
     public static function getNavigationBadge(): ?string

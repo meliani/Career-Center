@@ -14,7 +14,9 @@ class FinalYearInternshipAgreementPolicy extends CorePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->isAdministrator();
+        return $user->isAdministrator() ||
+               $user->isProgramCoordinator() ||
+               $user->isDepartmentHead();
     }
 
     /**
@@ -26,7 +28,9 @@ class FinalYearInternshipAgreementPolicy extends CorePolicy
             return $user->id === $agreement->student_id;
         }
 
-        return $user->isAdministrator();
+        return $user->isAdministrator() ||
+               $user->isProgramCoordinator() ||
+               $user->isDepartmentHead();
     }
 
     /**
@@ -89,17 +93,19 @@ class FinalYearInternshipAgreementPolicy extends CorePolicy
     /**
      * Determine whether the user can validate agreements.
      */
-    public function validate(User | Student $user, ?FinalYearInternshipAgreement $agreement = null): bool
+    public function validate(User | Student $user, ?FinalYearInternshipAgreement $agreement): bool
     {
         if ($user instanceof Student) {
             return false;
         }
 
         if ($agreement && $user->isProgramCoordinator()) {
-            return $agreement->student->program === $user->assigned_program;
+            // dd($agreement);
+
+            return $agreement?->student?->program === $user->assigned_program;
         }
 
-        return $user->isAdministrator() || $user->isProgramCoordinator();
+        return $user->isAdministrator();
     }
 
     /**

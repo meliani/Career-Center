@@ -16,6 +16,11 @@ class WelcomeDashboard extends \Filament\Pages\Dashboard
 
     protected static ?string $navigationGroup = 'Dashboards';
 
+    // public function getColumns(): int | string | array
+    // {
+    //     return 1;
+    // }
+
     public function getTitle(): string
     {
         return __(static::$title);
@@ -47,7 +52,7 @@ class WelcomeDashboard extends \Filament\Pages\Dashboard
         $widgets = [];
 
         if (auth()->user()->isProfessor()) {
-            $widgets[] = \App\Filament\Administration\Widgets\Dashboards\AdminGettingStartedWidget::class;
+            // $widgets[] = \App\Filament\Administration\Widgets\Dashboards\AdminGettingStartedWidget::class;
             // $widgets[] = \App\Filament\Administration\Widgets\ProfessorProjectsWidget::class;
         }
 
