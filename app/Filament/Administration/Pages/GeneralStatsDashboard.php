@@ -2,24 +2,31 @@
 
 namespace App\Filament\Administration\Pages;
 
-class WelcomeDashboard extends \Filament\Pages\Dashboard
+class GeneralStatsDashboard extends \Filament\Pages\Dashboard
 {
     // use \JibayMcs\FilamentTour\Tour\HasTour;
 
-    protected static string $routePath = 'welcome-dashboard';
+    protected static string $routePath = 'general-stats-dashboard';
 
-    protected static ?string $title = 'Welcome dashboard';
+    protected static ?string $title = 'General Statistics Dashboard';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 2;
 
-    protected static ?string $navigationLabel = 'Welcome dashboard';
+    protected static ?string $navigationLabel = 'General Statistics Dashboard';
 
     protected static ?string $navigationGroup = 'Dashboards';
 
-    // public function getColumns(): int | string | array
-    // {
-    //     return 1;
-    // }
+    // columns
+
+    protected int | string | array $columnSpan = [
+        'md' => 2,
+        'xl' => 2,
+    ];
+
+    public function getColumns(): int | string | array
+    {
+        return 1;
+    }
 
     public function getTitle(): string
     {
@@ -34,7 +41,7 @@ class WelcomeDashboard extends \Filament\Pages\Dashboard
     public static function canAccess(): bool
     {
         if (auth()->check()) {
-            return auth()->user()->isAdministrator();
+            // return auth()->user()->isAdministrator();
 
             return auth()->user()->can('viewAny', \App\Models\Project::class);
         } else {
@@ -62,7 +69,6 @@ class WelcomeDashboard extends \Filament\Pages\Dashboard
 
         if (auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor() || auth()->user()->isDirection()) {
             $widgets[] = \App\Filament\Administration\Widgets\Dashboards\AdminGettingStartedWidget::class;
-            $widgets[] = \App\Filament\Administration\Widgets\FinalInternshipsPerProgramChart::class;
 
         }
 
