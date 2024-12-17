@@ -4,14 +4,14 @@
     x-data="{
         showHelp: false,
         tooltips: {
-            supervisor: @js(__('Select a supervisor for this project')),
-            firstReviewer: @js(__('First reviewer can be assigned after selecting a supervisor')),
-            secondReviewer: @js(__('Second reviewer can be assigned after selecting first reviewer')),
+            supervisor: '{{ __("Select a supervisor for this project") }}',
+            firstReviewer: '{{ __("First reviewer can be assigned after selecting a supervisor") }}',
+            secondReviewer: '{{ __("Second reviewer can be assigned after selecting first reviewer") }}',
             status: {
-                pending: @js(__('No assignments yet')),
-                supervisor: @js(__('Supervisor assigned, waiting for reviewers')),
-                firstReviewer: @js(__('First reviewer assigned, needs second reviewer')),
-                complete: @js(__('All assignments complete'))
+                pending: '{{ __("No assignments yet") }}',
+                supervisor: '{{ __("Supervisor assigned, waiting for reviewers") }}',
+                firstReviewer: '{{ __("First reviewer assigned, needs second reviewer") }}',
+                complete: '{{ __("All assignments complete") }}'
             }
         }
     }"
@@ -94,43 +94,18 @@
     </div>
 
     {{-- Projects Grid --}}
-    <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3" wire:loading.class="opacity-50">
         @foreach($projects as $project)
         <div
-            class="group bg-white dark:bg-gray-800 overflow-hidden shadow-sm rounded-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative"
+            class="group bg-white dark:bg-gray-800 overflow-hidden shadow-sm rounded-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
             wire:key="project-{{ $project->id }}"
             x-data="{
                 showDetails: false,
-                savingProject: false,
+                saving: false,
                 flash: false,
-                hasSupervisor: @js($project->professors()->wherePivot('jury_role', \App\Enums\JuryRole::Supervisor)->exists()),
-                hasFirstReviewer: @js($project->professors()->wherePivot('jury_role', \App\Enums\JuryRole::FirstReviewer)->exists()),
-                init() {
-                    this.$watch('hasSupervisor', value => {
-                        if (!value) {
-                            this.hasFirstReviewer = false;
-                        }
-                    });
-                },
-                updateSupervisorState(exists) {
-                    this.hasSupervisor = exists;
-                    this.savingProject = false;
-                    if (!exists) {
-                        this.hasFirstReviewer = false;
-                    }
-                },
-                updateFirstReviewerState(exists) {
-                    this.hasFirstReviewer = exists;
-                    this.savingProject = false;
-                }
-            }"
-            wire:loading.class="opacity-25 pointer-events-none"
-            wire:target="assignSupervisor.{{ $project->id }},assignFirstReviewer.{{ $project->id }},assignSecondReviewer.{{ $project->id }}"
-            @supervisor-assigned.window="if ($event.detail.projectId === {{ $project->id }}) {
-                updateSupervisorState($event.detail.exists);
-            }"
-            @reviewer-assigned.window="if ($event.detail.projectId === {{ $project->id }}) {
-                updateFirstReviewerState($event.detail.exists);
+                supervisorSelected: @js($project->professors()->wherePivot('jury_role', \App\Enums\JuryRole::Supervisor)->exists()),
+                firstReviewerSelected: @js($project->professors()->wherePivot('jury_role', \App\Enums\JuryRole::FirstReviewer)->exists()),
+                secondReviewerSelected: @js($project->professors()->wherePivot('jury_role', \App\Enums\JuryRole::SecondReviewer)->exists())
             }"
         >
             {{-- Project Header with Status Info --}}
@@ -182,13 +157,13 @@
                 <div class="relative" x-tooltip.raw="tooltips.supervisor">
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center space-x-2">
                         <span>{{ __('Supervisor') }}</span>
-                        <span x-show="@js($project->professors()->wherePivot('jury_role', \App\Enums\JuryRole::Supervisor)->exists())" class="text-success-500">
+                        <span x-show="supervisorSelected" class="text-success-500">
                             <x-heroicon-o-check-circle class="w-4 h-4" />
                         </span>
                     </label>
                     <select
                         wire:change="assignSupervisor({{ $project->id }}, $event.target.value)"
-                        x-on:change="savingProject = true"
+                        x-on:change="saving = true; supervisorSelected = $event.target.value !== ''"
                         class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md dark:bg-gray-700 dark:border-gray-600 transition-colors duration-200"
                     >
                         <option value="">{{ __('Select Supervisor') }}</option>
@@ -205,24 +180,16 @@
 
                 {{-- First Reviewer Selection --}}
                 <div
-                    x-cloak
-                    x-show="hasSupervisor"
-                    x-transition:enter="transition ease-out duration-300"
-                    x-transition:enter-start="opacity-0 transform scale-95"
-                    x-transition:enter-end="opacity-100 transform scale-100"
+                    x-show="supervisorSelected"
                     class="relative"
-                    wire:key="first-reviewer-{{ $project->id }}"
                     x-tooltip.raw="tooltips.firstReviewer"
                 >
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center space-x-2">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                         {{ __('First Reviewer') }}
-                        <span x-show="@js($project->professors()->wherePivot('jury_role', \App\Enums\JuryRole::FirstReviewer)->exists())" class="text-success-500">
-                            <x-heroicon-o-check-circle class="w-4 h-4" />
-                        </span>
                     </label>
                     <select
                         wire:change="assignFirstReviewer({{ $project->id }}, $event.target.value)"
-                         x-on:change="savingProject = true"
+                        x-on:change="saving = true; firstReviewerSelected = $event.target.value !== ''"
                         class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md dark:bg-gray-700 dark:border-gray-600"
                     >
                         <option value="">{{ __('Select First Reviewer') }}</option>
@@ -239,20 +206,17 @@
 
                 {{-- Second Reviewer Selection --}}
                 <div
-                    x-show="hasFirstReviewer"
+                    x-show="firstReviewerSelected"
                     x-transition
                     class="relative"
                     x-tooltip.raw="tooltips.secondReviewer"
                 >
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center space-x-2">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                         {{ __('Second Reviewer') }}
-                        <span x-show="@js($project->professors()->wherePivot('jury_role', \App\Enums\JuryRole::SecondReviewer)->exists())" class="text-success-500">
-                            <x-heroicon-o-check-circle class="w-4 h-4" />
-                        </span>
                     </label>
                     <select
                         wire:change="assignSecondReviewer({{ $project->id }}, $event.target.value)"
-                         x-on:change="savingProject = true"
+                        x-on:change="saving = true; secondReviewerSelected = $event.target.value !== ''"
                         class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md dark:bg-gray-700 dark:border-gray-600"
                     >
                         <option value="">{{ __('Select Second Reviewer') }}</option>
@@ -271,14 +235,10 @@
                 <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                     <div class="flex justify-between text-sm text-gray-500 dark:text-gray-400">
                         <span>{{ __('Assignment Progress') }}</span>
-                         <span x-text="(() => {
-                             const supervisor = @js($project->professors()->wherePivot('jury_role', \App\Enums\JuryRole::Supervisor)->exists());
-                             const firstReviewer = @js($project->professors()->wherePivot('jury_role', \App\Enums\JuryRole::FirstReviewer)->exists());
-                             const secondReviewer = @js($project->professors()->wherePivot('jury_role', \App\Enums\JuryRole::SecondReviewer)->exists());
-
-                            if (secondReviewer) return '100%';
-                            if (firstReviewer) return '66%';
-                            if (supervisor) return '33%';
+                        <span x-text="(() => {
+                            if (secondReviewerSelected) return '100%';
+                            if (firstReviewerSelected) return '66%';
+                            if (supervisorSelected) return '33%';
                             return '0%';
                         })()"></span>
                     </div>
@@ -286,13 +246,9 @@
                         <div
                             class="h-full bg-primary-500 transition-all duration-500"
                             :style="{ width: (() => {
-                                 const supervisor = @js($project->professors()->wherePivot('jury_role', \App\Enums\JuryRole::Supervisor)->exists());
-                                 const firstReviewer = @js($project->professors()->wherePivot('jury_role', \App\Enums\JuryRole::FirstReviewer)->exists());
-                                 const secondReviewer = @js($project->professors()->wherePivot('jury_role', \App\Enums\JuryRole::SecondReviewer)->exists());
-
-                                if (secondReviewer) return '100%';
-                                if (firstReviewer) return '66%';
-                                if (supervisor) return '33%';
+                                if (secondReviewerSelected) return '100%';
+                                if (firstReviewerSelected) return '66%';
+                                if (supervisorSelected) return '33%';
                                 return '0%';
                             })() }"
                         ></div>
@@ -303,16 +259,16 @@
 
             {{-- Loading Overlay with Improved Animation --}}
             <div
-                wire:loading.delay
-                wire:target="assignSupervisor.{{ $project->id }},assignFirstReviewer.{{ $project->id }},assignSecondReviewer.{{ $project->id }}"
-                x-show="savingProject"
+                wire:loading
+                wire:target="assignSupervisor, assignFirstReviewer, assignSecondReviewer"
+                x-show="saving"
                 x-transition:enter="transition-opacity ease-out duration-300"
                 x-transition:enter-start="opacity-0"
                 x-transition:enter-end="opacity-100"
                 x-transition:leave="transition-opacity ease-in duration-150"
                 x-transition:leave-start="opacity-100"
                 x-transition:leave-end="opacity-0"
-                class="absolute inset-0 bg-gray-100/80 dark:bg-gray-800/80 backdrop-blur flex items-center justify-center z-20"
+                class="absolute inset-0 bg-gray-200/50 dark:bg-gray-700/50 backdrop-blur-sm flex items-center justify-center"
             >
                 <div class="flex flex-col items-center space-y-2">
                     <svg class="animate-spin h-8 w-8 text-primary-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

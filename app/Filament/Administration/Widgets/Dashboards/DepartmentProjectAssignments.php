@@ -60,13 +60,16 @@ class DepartmentProjectAssignments extends Widget
                     'created_by' => auth()->id(),
                 ]);
             } else {
-                // If professorId is empty, just detach the supervisor
                 $project->professors()->wherePivot('jury_role', Enums\JuryRole::Supervisor)->detach();
-                // Also detach reviewers since they can't exist without a supervisor
                 $project->professors()->wherePivot('jury_role', Enums\JuryRole::FirstReviewer)->detach();
                 $project->professors()->wherePivot('jury_role', Enums\JuryRole::SecondReviewer)->detach();
             }
-            $this->loadProjects();
+
+            $this->loadProjects(); // Load fresh data first
+
+            // Dispatch event with current state
+            $hasSupervisor = $project->professors()->wherePivot('jury_role', Enums\JuryRole::Supervisor)->exists();
+            $this->dispatch('supervisor-assigned', projectId: $projectId, exists: $hasSupervisor);
         }
     }
 
@@ -80,12 +83,15 @@ class DepartmentProjectAssignments extends Widget
                     'jury_role' => Enums\JuryRole::FirstReviewer,
                     'created_by' => auth()->id(),
                 ]);
+                // Modified dispatch format to match supervisor-assigned format
+                $this->dispatch('reviewer-assigned', projectId: $projectId, exists: true);
             } else {
-                // If professorId is empty, just detach the first reviewer
                 $project->professors()->wherePivot('jury_role', Enums\JuryRole::FirstReviewer)->detach();
-                // Also detach second reviewer since it can't exist without a first reviewer
                 $project->professors()->wherePivot('jury_role', Enums\JuryRole::SecondReviewer)->detach();
+                // Modified dispatch format to match supervisor-assigned format
+                $this->dispatch('reviewer-assigned', projectId: $projectId, exists: false);
             }
+
             $this->loadProjects();
         }
     }
@@ -100,10 +106,18 @@ class DepartmentProjectAssignments extends Widget
                     'jury_role' => Enums\JuryRole::SecondReviewer,
                     'created_by' => auth()->id(),
                 ]);
+                $this->dispatch('reviewer-assigned', [
+                    'projectId' => $projectId,
+                    'exists' => true,
+                ]);
             } else {
-                // If professorId is empty, just detach the second reviewer
                 $project->professors()->wherePivot('jury_role', Enums\JuryRole::SecondReviewer)->detach();
+                $this->dispatch('reviewer-assigned', [
+                    'projectId' => $projectId,
+                    'exists' => false,
+                ]);
             }
+
             $this->loadProjects();
         }
     }
