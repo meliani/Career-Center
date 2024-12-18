@@ -100,11 +100,35 @@ class ProjectResource extends Core\BaseResource
     // }
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()
+        $query = parent::getEloquentQuery()
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ])
             ->with(['agreements.agreeable.student']);
+
+        if (auth()->user()->isProfessor()) {
+            $query->whereHas('professors', function (Builder $query) {
+                $query->where('professor_id', auth()->user()->id);
+            });
+        }
+
+        if (auth()->user()->isDepartmentHead()) {
+            $query->whereHas('final_internship_agreements', function (Builder $query) {
+                $query->where('assigned_department', auth()->user()->department->value);
+            });
+        }
+
+        if (auth()->user()->isProgramCoordinator()) {
+            $query->whereHas('final_internship_agreements', function (Builder $query) {
+                $query->whereHas('student', function (Builder $query) {
+                    $query->where('program', auth()->user()->assigned_program);
+                    dd($query->get());
+                });
+            });
+        }
+
+        return $query;
+
     }
 
     public static function getRelations(): array

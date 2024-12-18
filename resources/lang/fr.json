@@ -950,5 +950,14 @@
     "Supervision": "Supervision",
     "Cancellation Details": "Détails de l'annulation",
     "Agreement Details": "Détails de la convention",
-    "Location & Schedule": "Lieu & Planning"
+    "Location & Schedule": "Lieu & Planning",
+    "Total Agreements": "Total des conventions",
+    "Pending Department Assignment": "Affectation de département en attente",
+    "Department Assigned": "Département assigné",
+    "final year internship agreement": "convention de stage de fin d'études",
+    "Quick Guide": "Guide rapide",
+    "Click on the stats cards above to filter agreements": "Cliquez sur les cartes statistiques ci-dessus pour filtrer les conventions",
+    "Assign departments using the dropdown in each row": "Assignez les départements en utilisant le menu déroulant dans chaque ligne",
+    "Click on View": "Cliquez sur Voir",
+    "to view the full agreement details": "pour voir les détails complets de la convention"
 }

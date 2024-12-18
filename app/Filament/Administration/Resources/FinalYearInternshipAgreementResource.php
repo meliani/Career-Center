@@ -235,8 +235,7 @@ class FinalYearInternshipAgreementResource extends BaseResource
                     Tables\Actions\ActionGroup::make([
                         \App\Filament\Actions\Action\ValidateAction::make()
                             ->disabled(fn ($record): bool => $record['validated_at'] !== null),
-                        \App\Filament\Actions\Action\AssignDepartmentAction::make()
-                            ->disabled(fn ($record): bool => $record['assigned_department'] !== null),
+
                     ])
                         ->dropdown(false),
                 ])
@@ -245,8 +244,10 @@ class FinalYearInternshipAgreementResource extends BaseResource
                     ->icon('heroicon-o-bars-3')
                     ->size(Filament\Support\Enums\ActionSize::ExtraLarge)
                     ->tooltip(__('Validate, sign, or assign department'))
-                    ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isPowerProfessor()) === false),
-
+                    ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isPowerProfessor()) === false)
+                    ->visible(false),
+                \App\Filament\Actions\Action\AssignDepartmentAction::make()
+                    ->disabled(fn ($record): bool => $record['assigned_department'] !== null),
             ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -305,10 +306,22 @@ class FinalYearInternshipAgreementResource extends BaseResource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()
+        $query = parent::getEloquentQuery()
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);
+
+        if (auth()->user()->isProgramCoordinator()) {
+            $query->whereHas('student', function (Builder $query) {
+                $query->where('program', auth()->user()->assigned_program->value);
+            });
+        }
+
+        if (auth()->user()->isDepartmentHead()) {
+            $query->where('assigned_department', auth()->user()->department->value);
+        }
+
+        return $query;
     }
 
     public static function infolist(Infolist $infolist): Infolist
