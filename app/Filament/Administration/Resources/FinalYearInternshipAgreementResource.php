@@ -313,139 +313,186 @@ class FinalYearInternshipAgreementResource extends BaseResource
 
     public static function infolist(Infolist $infolist): Infolist
     {
-        $verification_document_url = Storage::disk('cancellation_verification')->url($infolist->getRecord()->verification_document_url);
-
         return $infolist
+            ->columns(12)
             ->schema([
-                Infolists\Components\Section::make('Internship Agreement')
-                    ->columns(3) // Adjust the number of columns as needed
+                Infolists\Components\Tabs::make('Relations')
+                    ->columns(4)
+                    ->columnSpan(8)
+                    ->tabs([
+                        Infolists\Components\Tabs\Tab::make(__('Agreement Details'))
+                            ->icon('heroicon-o-document-text')
+                            ->schema([
+                                Infolists\Components\Section::make(__('Basic Information'))
+                                    ->icon('heroicon-o-information-circle')
+                                    ->columns(3)
+                                    ->schema([
+                                        Infolists\Components\TextEntry::make('student.long_full_name')
+                                            ->label(__('Student'))
+                                            ->icon('heroicon-o-user')
+                                            ->badge()
+                                            ->color('info'),
+
+                                        Infolists\Components\TextEntry::make('student.program')
+                                            ->label(__('Program'))
+                                            ->icon('heroicon-o-academic-cap')
+                                            ->badge(),
+
+                                        Infolists\Components\TextEntry::make('organization.name')
+                                            ->label(__('Organization'))
+                                            ->icon('heroicon-o-building-office')
+                                            ->badge()
+                                            ->color('success'),
+                                    ]),
+
+                                Infolists\Components\Section::make(__('Internship Details'))
+                                    ->icon('heroicon-o-briefcase')
+                                    ->columns(2)
+                                    ->schema([
+                                        Infolists\Components\TextEntry::make('title')
+                                            ->label(__('Title'))
+                                            ->columnSpanFull()
+                                            ->markdown(),
+
+                                        Infolists\Components\TextEntry::make('description')
+                                            ->label(__('Description'))
+                                            ->columnSpanFull()
+                                            ->markdown(),
+                                    ]),
+                            ]),
+
+                        Infolists\Components\Tabs\Tab::make(__('Location & Schedule'))
+                            ->icon('heroicon-o-map-pin')
+                            ->schema([
+                                Infolists\Components\Section::make(__('Location'))
+                                    ->icon('heroicon-o-building-office-2')
+                                    ->columns(3)
+                                    ->schema([
+                                        Infolists\Components\TextEntry::make('organization.city')
+                                            ->label(__('City'))
+                                            ->badge(),
+                                        Infolists\Components\TextEntry::make('organization.country')
+                                            ->label(__('Country'))
+                                            ->badge(),
+                                        Infolists\Components\TextEntry::make('office_location')
+                                            ->label(__('Office Location'))
+                                            ->badge()
+                                            ->visible(fn ($record) => $record->office_location),
+                                    ]),
+
+                                Infolists\Components\Section::make(__('Schedule & Compensation'))
+                                    ->icon('heroicon-o-calendar')
+                                    ->columns(3)
+                                    ->schema([
+                                        Infolists\Components\TextEntry::make('starting_at')
+                                            ->label(__('Start Date'))
+                                            ->icon('heroicon-o-calendar')
+                                            ->date(),
+                                        Infolists\Components\TextEntry::make('ending_at')
+                                            ->label(__('End Date'))
+                                            ->icon('heroicon-o-calendar')
+                                            ->date(),
+                                        Infolists\Components\TextEntry::make('workload')
+                                            ->label(__('Workload'))
+                                            ->icon('heroicon-o-clock')
+                                            ->placeholder(__('No workload specified')),
+                                        Infolists\Components\TextEntry::make('remuneration')
+                                            ->label(__('Remuneration'))
+                                            ->icon('heroicon-o-banknotes')
+                                            ->money(fn ($record) => ($record->currency->value))
+                                            ->placeholder(__('No remuneration specified'))
+                                            ->visible(fn ($record) => $record->remuneration),
+                                    ]),
+                            ]),
+
+                        Infolists\Components\Tabs\Tab::make(__('Supervision'))
+                            ->icon('heroicon-o-users')
+                            ->schema([
+                                Infolists\Components\Section::make(__('Supervisors'))
+                                    ->icon('heroicon-o-user-group')
+                                    ->columns(3)
+                                    ->schema([
+                                        Infolists\Components\TextEntry::make('externalSupervisor.full_name')
+                                            ->label(__('External Supervisor'))
+                                            ->icon('heroicon-o-user')
+                                            ->badge()
+                                            ->color('info'),
+                                        Infolists\Components\TextEntry::make('parrain.full_name')
+                                            ->label(__('Organization Representative'))
+                                            ->icon('heroicon-o-user')
+                                            ->badge()
+                                            ->color('success'),
+                                        Infolists\Components\TextEntry::make('assigned_department')
+                                            ->label(__('Assigned Department'))
+                                            ->icon('heroicon-o-building-library')
+                                            ->badge()
+                                            ->visible(fn ($record) => $record->assigned_department),
+                                    ]),
+                            ]),
+                    ]),
+
+                Infolists\Components\Grid::make(4)
+                    ->columnSpan(4)
                     ->schema([
-                        Infolists\Components\Fieldset::make('Basic Information')
-                            ->columns(3) // Adjust for each Fieldset as needed
-                            ->columnSpan(2)
-                            ->schema([
-                                Infolists\Components\TextEntry::make('student.long_full_name')
-                                    ->label('Student'),
-                                Infolists\Components\TextEntry::make('title')
-                                    ->label('Title'),
-                                Infolists\Components\TextEntry::make('organization.name')
-                                    ->label('Organization'),
-                                Infolists\Components\TextEntry::make('agreement_pdf_url')
-                                    ->label('Agreement PDF')
-                                    // ->simpleLightbox($infolist->getRecord()->agreement_pdf_url)
-                                    ->visible(fn ($record) => $record->agreement_pdf_url)
-                                    ->formatStateUsing(fn ($record) => $record->agreement_pdf_url ? __('Download agreement PDF') : __('Not generated yet!'))
-
-                                    ->url(fn ($record) => $record->agreement_pdf_url, shouldOpenInNewTab: true),
-                            ]),
-                        Infolists\Components\Fieldset::make('Organization details')
-                            ->columnSpan(1)
-                            ->columns(3) // Adjust for each Fieldset as needed
-                            ->schema([
-                                Infolists\Components\TextEntry::make('organization.city')
-                                    ->label('City'),
-                                Infolists\Components\TextEntry::make('organization.country')
-                                    ->label('Country'),
-                                Infolists\Components\TextEntry::make('office_location')
-                                    ->label('Office Location')
-                                    ->visible(fn ($record) => $record->office_location),
-
-                            ]),
-                        Infolists\Components\Fieldset::make('Dates')
-                            ->columnSpan(1)
-                            ->columns(3) // Adjust for each Fieldset as needed
-                            ->schema([
-                                Infolists\Components\TextEntry::make('starting_at')
-                                    ->label('Starting at')
-                                    ->date(),
-                                Infolists\Components\TextEntry::make('ending_at')
-                                    ->label('Ending at')
-                                    ->date(),
-                            ]),
-                        Infolists\Components\Fieldset::make('Remuneration')
-                            ->columnSpan(1)
-                            ->columns(3) // Adjust for each Fieldset as needed
-                            ->schema([
-                                // Infolists\Components\TextEntry::make('remuneration')
-                                //     ->label('Amount'),
-                                // Infolists\Components\TextEntry::make('currency')
-                                //     ->label('Currency'),
-                                Infolists\Components\TextEntry::make('remuneration')
-                                    ->money(fn ($record) => $record->currency->getLabel())
-                                    ->placeholder(__('No remuneration specified')),
-
-                                Infolists\Components\TextEntry::make('workload')
-                                    ->placeholder(__('No workload specified')),
-                            ]),
-                        Infolists\Components\Fieldset::make('Supervisors')
-                            ->columnSpan(1)
-                            ->columns(3) // Adjust for each Fieldset as needed
-                            ->schema([
-                                Infolists\Components\TextEntry::make('parrain.full_name')
-                                    ->label('Parrain'),
-                                Infolists\Components\TextEntry::make('externalSupervisor.full_name')
-                                    ->label('Supervisor'),
-                            ]),
-                        Infolists\Components\Fieldset::make('Status')
-                            ->columns(3) // Adjust for each Fieldset as needed
+                        Infolists\Components\Section::make(__('Status & Documents'))
+                            ->icon('heroicon-o-document-check')
+                            ->collapsible()
                             ->schema([
                                 Infolists\Components\TextEntry::make('status')
-                                    ->label('Status'),
-                                Infolists\Components\TextEntry::make('assigned_department')
-                                    ->label('Assigned Department')
-                                    ->visible(fn ($record) => $record->assigned_department),
-                                Infolists\Components\TextEntry::make('cancellation_reason')
-                                    ->label('Cancellation Reason')
-                                    ->visible(fn ($record) => $record->appliedCancellation()),
-                                Infolists\Components\TextEntry::make('verification_document_url')
-                                    ->label('Verification Document')
-                                    // ->disk('cancellation_verification')
-                                    // ->visibility('private')
-                                    ->visible(fn ($record) => $record->appliedCancellation())
-                                    ->simpleLightbox($verification_document_url),
+                                    ->badge(),
+
+                                Infolists\Components\TextEntry::make('agreement_pdf_url')
+                                    ->label(__('Agreement PDF'))
+                                    ->icon('heroicon-o-document')
+                                    ->visible(fn ($record) => $record->agreement_pdf_url)
+                                    ->url(fn ($record) => $record->agreement_pdf_url, shouldOpenInNewTab: true)
+                                    ->badge()
+                                    ->color('success'),
+
                                 Infolists\Components\SpatieTagsEntry::make('tags')
-                                    ->label('Tags')
                                     ->type('internships')
                                     ->visible(fn ($record) => $record->tags->isNotEmpty()),
                             ]),
-                        Infolists\Components\Fieldset::make('Dates')
-                            ->columnSpan(2)
-                            ->visible(fn ($record) => ($record->announced_at || $record->validated_at || $record->received_at || $record->signed_at))
-                            ->columns(3) // Adjust for each Fieldset as needed
+
+                        Infolists\Components\Section::make(__('Important Dates'))
+                            ->icon('heroicon-o-calendar')
+                            ->collapsible()
                             ->schema([
                                 Infolists\Components\TextEntry::make('announced_at')
-                                    ->label('Announced at')
+                                    ->icon('heroicon-o-megaphone')
                                     ->date()
                                     ->visible(fn ($record) => $record->announced_at),
+
                                 Infolists\Components\TextEntry::make('validated_at')
-                                    ->label('Validated at')
+                                    ->icon('heroicon-o-check-circle')
                                     ->date()
                                     ->visible(fn ($record) => $record->validated_at),
 
                                 Infolists\Components\TextEntry::make('received_at')
-                                    ->label('Received at')
+                                    ->icon('heroicon-o-inbox')
                                     ->date()
                                     ->visible(fn ($record) => $record->received_at),
+
                                 Infolists\Components\TextEntry::make('signed_at')
-                                    ->label('Signed at')
+                                    ->icon('heroicon-o-pencil-square')
                                     ->date()
                                     ->visible(fn ($record) => $record->signed_at),
-
                             ]),
-                        Infolists\Components\Fieldset::make('System Dates')
-                            ->columnSpan(1)
-                            ->columns(3) // Adjust for each Fieldset as needed
+
+                        // Only show if cancelled
+                        Infolists\Components\Section::make(__('Cancellation Details'))
+                            ->icon('heroicon-o-x-circle')
+                            ->collapsible()
+                            ->visible(fn ($record) => $record->appliedCancellation())
                             ->schema([
-                                Infolists\Components\TextEntry::make('created_at')
-                                    ->label('Created at'),
-                                Infolists\Components\TextEntry::make('updated_at')
-                                    ->label('Updated at'),
-                                Infolists\Components\TextEntry::make('deleted_at')
-                                    ->label('Deleted at')
-                                    ->visible(fn ($record) => $record->trashed()),
+                                Infolists\Components\TextEntry::make('cancellation_reason')
+                                    ->icon('heroicon-o-exclamation-triangle'),
+                                Infolists\Components\TextEntry::make('verification_document_url')
+                                    ->label(__('Verification Document'))
+                                    ->url(fn ($record) => Storage::disk('cancellation_verification')->url($record->verification_document_url))
+                                    ->openUrlInNewTab(),
                             ]),
                     ]),
             ]);
-
     }
 }

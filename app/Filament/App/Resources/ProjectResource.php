@@ -104,7 +104,7 @@ class ProjectResource extends StudentBaseResource
     {
         return $infolist
             ->schema([
-                Infolists\Components\Section::make('Project Details')
+                Infolists\Components\Section::make(__('Project Details'))
                     ->schema([
                         Infolists\Components\TextEntry::make('title')
                             ->label('Project Title')
@@ -122,7 +122,7 @@ class ProjectResource extends StudentBaseResource
                             ]),
                     ]),
 
-                Infolists\Components\Section::make('Defense Information')
+                Infolists\Components\Section::make(__('Defense information'))
                     ->schema([
                         Infolists\Components\TextEntry::make('defense_status')
                             ->badge()
@@ -141,12 +141,12 @@ class ProjectResource extends StudentBaseResource
                             ]),
                     ]),
 
-                Infolists\Components\Section::make('Supervisors')
+                Infolists\Components\Section::make(__('Supervisors'))
                     ->schema([
                         Infolists\Components\TextEntry::make('academic_supervisor_name')
                             ->label('Academic Supervisor'),
                         Infolists\Components\TextEntry::make('externalSupervisor.full_name')
-                            ->label('Company Supervisor'),
+                            ->label('External Supervisor'),
                     ]),
 
                 Infolists\Components\Section::make('Documents')

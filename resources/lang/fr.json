@@ -936,5 +936,19 @@
     "Projects by Program": "Projets par filière",
     "Professor Assignments": "Affectations des enseignants",
     "Assignment Statistics": "Statistiques d'affectation",
-    "General Statistics Dashboard": "Statistiques générales"
+    "General Statistics Dashboard": "Statistiques générales",
+    "Not generated yet!": "Pas encore généré !",
+    "View, edit, or delete this internship agreement": "Voir, modifier ou supprimer cette convention de stage",
+    "Validate, sign, or assign department": "Valider, signer ou assigner un département",
+    "Sign selection": "Signer la sélection",
+    "Validate selection": "Valider la sélection",
+    "Achieve selection": "Marquer la sélection comme achevée",
+    "Assign to Projects": "Assigner aux projets",
+    "Status & Documents": "Statut & Documents",
+    "Important Dates": "Dates importantes",
+    "Schedule & Compensation": "Planning & Rémunération",
+    "Supervision": "Supervision",
+    "Cancellation Details": "Détails de l'annulation",
+    "Agreement Details": "Détails de la convention",
+    "Location & Schedule": "Lieu & Planning"
 }
