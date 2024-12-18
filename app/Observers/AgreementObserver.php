@@ -2,24 +2,58 @@
 
 namespace App\Observers;
 
+use App\Enums;
+use App\Enums\Role;
 use App\Models\FinalYearInternshipAgreement;
+use App\Models\User;
+use App\Notifications\AgreementAssignedNotification;
+use App\Notifications\AgreementCreatedNotification;
 
 class AgreementObserver
 {
     /**
      * Handle the Agreement "created" event.
      */
-    public function created(FinalYearInternshipAgreement $agreement): void
-    {
-        //
-    }
+    public function created(FinalYearInternshipAgreement $agreement): void {}
 
     /**
      * Handle the Agreement "updated" event.
      */
     public function updated(FinalYearInternshipAgreement $agreement): void
     {
-        // dd($agreement);
+        // Check if status changed to Signed or if department was assigned for already Signed agreements
+        if (($agreement->wasChanged('status') && $agreement->status === Enums\Status::Signed)
+            || ($agreement->wasChanged('assigned_department') && $agreement->assigned_department && $agreement->status === Enums\Status::Signed)) {
+
+            // For status change to Signed, notify program coordinators
+            if ($agreement->wasChanged('status')) {
+                $programCoordinators = User::query()
+                    ->where('role', Role::ProgramCoordinator)
+                    ->where('assigned_program', $agreement->student->program)
+                    ->get();
+
+                foreach ($programCoordinators as $coordinator) {
+                    $coordinator->notify(new AgreementCreatedNotification($agreement));
+                }
+            }
+
+            // For department assignment on Signed agreements, notify department heads and admins
+            if ($agreement->wasChanged('assigned_department')) {
+                $recipients = User::query()
+                    ->where(function ($query) use ($agreement) {
+                        $query->whereIn('role', [Role::Administrator, Role::SuperAdministrator])
+                            ->orWhere(function ($query) use ($agreement) {
+                                $query->where('role', Role::DepartmentHead)
+                                    ->where('department', $agreement->assigned_department);
+                            });
+                    })
+                    ->get();
+
+                foreach ($recipients as $recipient) {
+                    $recipient->notify(new AgreementAssignedNotification($agreement));
+                }
+            }
+        }
     }
 
     /**
