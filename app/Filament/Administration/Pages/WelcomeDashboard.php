@@ -34,6 +34,8 @@ class WelcomeDashboard extends \Filament\Pages\Dashboard
     public static function canAccess(): bool
     {
         if (auth()->check()) {
+            return false;
+
             return auth()->user()->isAdministrator();
 
             return auth()->user()->can('viewAny', \App\Models\Project::class);
@@ -62,12 +64,12 @@ class WelcomeDashboard extends \Filament\Pages\Dashboard
 
         if (auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor() || auth()->user()->isDirection()) {
             $widgets[] = \App\Filament\Administration\Widgets\Dashboards\AdminGettingStartedWidget::class;
+            $widgets[] = \App\Filament\Administration\Widgets\Dashboards\YearlyTimelineWidget::class;
             $widgets[] = \App\Filament\Administration\Widgets\FinalInternshipsPerProgramChart::class;
 
         }
 
         $widgets = array_merge($widgets, [
-            \App\Filament\Administration\Widgets\Dashboards\YearlyTimelineWidget::class,
         ]);
 
         return $widgets;

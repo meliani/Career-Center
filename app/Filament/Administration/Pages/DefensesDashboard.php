@@ -46,6 +46,8 @@ class DefensesDashboard extends \Filament\Pages\Dashboard
     public static function canAccess(): bool
     {
         if (auth()->check()) {
+            return false;
+
             return auth()->user()->isSuperAdministrator();
             // || auth()->user()->isAdministrator()
             // || auth()->user()->isProfessor()
