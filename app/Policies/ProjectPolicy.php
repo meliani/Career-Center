@@ -52,7 +52,8 @@ class ProjectPolicy extends CorePolicy
         }
         // Professor can update their own projects
         if ($user->isProfessor()) {
-            return $project->professors->contains($user->id);
+            // return $project->professors->contains($user->id);
+            return false;
         }
 
         return false;
