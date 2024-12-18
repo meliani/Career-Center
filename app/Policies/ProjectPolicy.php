@@ -36,10 +36,10 @@ class ProjectPolicy extends CorePolicy
 
         // Program Coordinators can update projects having students with same assigned program
         if ($user->isProgramCoordinator()) {
-
-            return $project->agreements->some(function ($agreement) use ($user) {
-                return $agreement->agreeable->student->program === $user->assigned_program;
-            });
+            return false;
+            // return $project->agreements->some(function ($agreement) use ($user) {
+            //     return $agreement->agreeable->student->program === $user->assigned_program;
+            // });
         }
 
         // Department Heads can update projects with internships in their department

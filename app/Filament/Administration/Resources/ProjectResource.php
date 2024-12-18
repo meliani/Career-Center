@@ -282,7 +282,7 @@ class ProjectResource extends Core\BaseResource
                             : 'Final Year'
                         );
                     })
-                    ->columnSpanFull(), // Makes the filter span the full width
+                    ->visible(fn () => auth()->user()->isAdministrator() === true),
 
                 // DateRangeFilter::make('timetable.timeslot.start_time')
                 // ->label('Defense date')
@@ -380,9 +380,10 @@ class ProjectResource extends Core\BaseResource
                         );
                     })
                     ->indicateUsing(fn (array $data): ?string => $data['value'] ? __('Year') . ': ' . Year::find($data['value'])->title : null)
-                    ->columnSpan(2),
+                    ->visible(fn () => auth()->user()->isAdministrator() === true),
                 // trashed filter visible by admins
-                Tables\Filters\TrashedFilter::make(),
+                Tables\Filters\TrashedFilter::make()
+                    ->visible(fn () => auth()->user()->isAdministrator() === true),
 
             ])
             ->headerActions([
@@ -434,6 +435,7 @@ class ProjectResource extends Core\BaseResource
                     ->label(false)
                     ->tooltip(
                         fn ($record) => "{$record->filamentComments()->count()} " . __('Comments')
+                        . ' (' . __('Will be visible only to professors and administrators') . ')'
                     )
                         // ->visible(fn () => true)
                     ->badge(fn ($record) => $record->filamentComments()->count() ? $record->filamentComments()->count() : null),

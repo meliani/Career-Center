@@ -313,12 +313,12 @@ class FinalYearInternshipAgreementResource extends BaseResource
 
         if (auth()->user()->isProgramCoordinator()) {
             $query->whereHas('student', function (Builder $query) {
-                $query->where('program', auth()->user()->assigned_program->value);
+                $query->where('program', auth()->user()->assigned_program);
             });
         }
 
         if (auth()->user()->isDepartmentHead()) {
-            $query->where('assigned_department', auth()->user()->department->value);
+            $query->where('assigned_department', auth()->user()->department);
         }
 
         return $query;
@@ -344,18 +344,20 @@ class FinalYearInternshipAgreementResource extends BaseResource
                                             ->label(__('Student'))
                                             ->icon('heroicon-o-user')
                                             ->badge()
-                                            ->color('info'),
+                                            ->tooltip(fn ($record) => $record->student->long_full_name),
 
                                         Infolists\Components\TextEntry::make('student.program')
                                             ->label(__('Program'))
                                             ->icon('heroicon-o-academic-cap')
-                                            ->badge(),
+                                            ->badge()
+                                            ->tooltip(fn ($record) => $record->student->program->getDescription()),
 
                                         Infolists\Components\TextEntry::make('organization.name')
                                             ->label(__('Organization'))
                                             ->icon('heroicon-o-building-office')
                                             ->badge()
-                                            ->color('success'),
+                                            ->color('success')
+                                            ->tooltip(fn ($record) => $record->organization->name),
                                     ]),
 
                                 Infolists\Components\Section::make(__('Internship Details'))
@@ -430,17 +432,22 @@ class FinalYearInternshipAgreementResource extends BaseResource
                                             ->label(__('External Supervisor'))
                                             ->icon('heroicon-o-user')
                                             ->badge()
-                                            ->color('info'),
+                                            ->color('info')
+                                            ->tooltip(fn ($record) => $record->externalSupervisor->full_name),
+
                                         Infolists\Components\TextEntry::make('parrain.full_name')
                                             ->label(__('Organization Representative'))
                                             ->icon('heroicon-o-user')
                                             ->badge()
-                                            ->color('success'),
+                                            ->color('success')
+                                            ->tooltip(fn ($record) => $record->parrain->full_name),
+
                                         Infolists\Components\TextEntry::make('assigned_department')
                                             ->label(__('Assigned Department'))
                                             ->icon('heroicon-o-building-library')
                                             ->badge()
-                                            ->visible(fn ($record) => $record->assigned_department),
+                                            ->visible(fn ($record) => $record->assigned_department)
+                                            ->tooltip(fn ($record) => $record->assigned_department->getDescription()),
                                     ]),
                             ]),
                     ]),
@@ -453,7 +460,8 @@ class FinalYearInternshipAgreementResource extends BaseResource
                             ->collapsible()
                             ->schema([
                                 Infolists\Components\TextEntry::make('status')
-                                    ->badge(),
+                                    ->badge()
+                                    ->tooltip(fn ($record) => $record->status->value),
 
                                 Infolists\Components\TextEntry::make('agreement_pdf_url')
                                     ->label(__('Agreement PDF'))

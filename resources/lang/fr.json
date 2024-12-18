@@ -952,14 +952,15 @@
     "Agreement Details": "Détails de la convention",
     "Location & Schedule": "Lieu & Planning",
     "Total Agreements": "Total des conventions",
+    "Assigned Department": "Département assigné",
     "Pending Department Assignment": "Affectation de département en attente",
     "Department Assigned": "Département assigné",
     "final year internship agreement": "convention de stage de fin d'études",
     "Quick Guide": "Guide rapide",
     "Click on the stats cards above to filter agreements": "Cliquez sur les cartes statistiques ci-dessus pour filtrer les conventions",
     "Assign departments using the dropdown in each row": "Assignez les départements en utilisant le menu déroulant dans chaque ligne",
-    "Click on View": "Cliquez sur Voir",
-    "to view the full agreement details": "pour voir les détails complets de la convention",
+    "Click on Preview": "Cliquez sur Aperçu",
+    "or the agreement to view details": "ou la convention pour voir les détails",
     "New Agreement Assignment": "Nouvelle affectation de convention",
     "An agreement for :name has been assigned to :department department.": "Une convention pour :name a été affectée au département :department.",
     "View Agreement": "Voir la convention",
@@ -990,5 +991,6 @@
     "A new internship agreement has been created by **:name** (:program).": "Une nouvelle convention de stage a été créée par **:name** (:program).",
     "A new internship agreement has been created by :name (:program).": "Une nouvelle convention de stage a été créée par :name (:program).",
     "Please review and assign a department to this internship agreement.": "Veuillez examiner et affecter un département à cette convention de stage.",
-    "You are receiving this notification because you are a program coordinator.": "Vous recevez cette notification car vous êtes coordonnateur de filière."
+    "You are receiving this notification because you are a program coordinator.": "Vous recevez cette notification car vous êtes coordonnateur de filière.",
+    "Will be visible only to professors and administrators": "Sera visible uniquement par les enseignants et les administrateurs"
 }

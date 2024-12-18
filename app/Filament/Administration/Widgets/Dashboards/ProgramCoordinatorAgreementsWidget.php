@@ -110,6 +110,7 @@ class ProgramCoordinatorAgreementsWidget extends BaseWidget
             ])
             ->actions([
                 Tables\Actions\ViewAction::make()
+                    ->label('Preview')
                     ->icon('heroicon-o-magnifying-glass')
                     ->modalContent(fn (Agreement $record): View => view(
                         'filament.resources.final-year-internship-agreement-resource.modal.view',

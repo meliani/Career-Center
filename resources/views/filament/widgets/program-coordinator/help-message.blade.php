@@ -45,9 +45,9 @@
                         <li class="relative pl-2 flex items-start gap-2 before:absolute before:w-1.5 before:h-1.5 before:bg-primary-400 before:rounded-full before:left-0 before:top-2 before:-translate-x-[4.5px]">
                             <span class="text-primary-400 inline-block w-4">•</span>
                             <span class="flex items-center gap-1.5">
-                                {{ __('Click on View') }}
+                                {{ __('Click on Preview') }}
                                 <x-heroicon-o-magnifying-glass class="h-4 w-4 text-primary-400" />
-                                {{ __('to view the full agreement details') }}
+                                {{ __('or the agreement to view details') }}
                             </span>
                         </li>
                     </ul>

@@ -36,7 +36,31 @@ class ProfessorProjectPolicy
      */
     public function update(User $user, ProfessorProject $professorProject): bool
     {
-        //
+        if ($user->isAdministrator() || $user->isAdministrativeSupervisor()) {
+            return true;
+        }
+
+        // Program Coordinators can update projects having students with same assigned program
+        if ($user->isProgramCoordinator()) {
+
+            return false;
+        }
+
+        // Department Heads can update projects with internships in their department
+        if ($user->isDepartmentHead()) {
+            return $project
+                ->agreements
+                ->some(function ($agreement) use ($user) {
+                    return $agreement->agreeable->assigned_department === $user->department;
+                });
+        }
+        // Professor can update their own projects
+        if ($user->isProfessor()) {
+            // return $project->professors->contains($user->id);
+            return false;
+        }
+
+        return false;
     }
 
     /**
