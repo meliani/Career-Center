@@ -89,15 +89,6 @@ class ProjectResource extends Core\BaseResource
         return false;
     }
 
-    // public static function getEloquentQuery(): Builder
-    // {
-    //     // return parent::getEloquentQuery()
-    //     //     ->whereHas('internship_agreements', function ($query) {
-    //     //         $query->whereHas('year', function ($q) {
-    //     //             $q->where('id', Year::current()->id);
-    //     //         });
-    //     //     });
-    // }
     public static function getEloquentQuery(): Builder
     {
         $query = parent::getEloquentQuery()
@@ -106,29 +97,37 @@ class ProjectResource extends Core\BaseResource
             ])
             ->with(['agreements.agreeable.student']);
 
-        if (auth()->user()->isProfessor()) {
-            $query->whereHas('professors', function (Builder $query) {
-                $query->where('professor_id', auth()->user()->id);
-            });
+        $user = auth()->user();
+
+        // Administrators and Administrative Supervisors can see all projects
+        if ($user->isAdministrator() || $user->isAdministrativeSupervisor()) {
+            return $query;
         }
 
-        if (auth()->user()->isDepartmentHead()) {
-            $query->whereHas('final_internship_agreements', function (Builder $query) {
-                $query->where('assigned_department', auth()->user()->department->value);
-            });
-        }
-
-        if (auth()->user()->isProgramCoordinator()) {
-            $query->whereHas('final_internship_agreements', function (Builder $query) {
-                $query->whereHas('student', function (Builder $query) {
-                    $query->where('program', auth()->user()->assigned_program);
-                    dd($query->get());
+        // Program Coordinators can see projects in their assigned program
+        if ($user->isProgramCoordinator()) {
+            return $query->whereHas('final_internship_agreements', function ($query) use ($user) {
+                $query->whereHas('student', function ($query) use ($user) {
+                    $query->where('program', $user->assigned_program);
                 });
             });
         }
 
-        return $query;
+        // Department Heads can see projects in their department
+        if ($user->isDepartmentHead()) {
+            return $query->whereHas('final_internship_agreements', function ($query) use ($user) {
+                $query->where('assigned_department', $user->department);
+            });
+        }
 
+        // Professors can see their own projects
+        if ($user->isProfessor()) {
+            return $query->whereHas('professors', function ($query) use ($user) {
+                $query->where('professor_id', $user->id);
+            });
+        }
+
+        return $query;
     }
 
     public static function getRelations(): array
@@ -491,7 +490,8 @@ class ProjectResource extends Core\BaseResource
                     // Tables\Actions\EditAction::make(),
                     Tables\Actions\ViewAction::make(),
                 ])->icon('heroicon-o-bars-3')
-                    ->hidden(fn ($record) => auth()->user()->can('manage-project', $record) === false),
+                    ->hidden(fn ($record) => auth()->user()->can('manage-project', $record) === false)
+                    ->visible(false),
                 // ])->dropdown(false)
                 // ->tooltip(__('Edit or view this project')),
                 // ->hidden(true),
@@ -564,7 +564,8 @@ class ProjectResource extends Core\BaseResource
                             }
                         }
                     })
-                    ->requiresConfirmation(),
+                    ->requiresConfirmation()
+                    ->hidden(fn () => auth()->user()->isAdministrator() === false),
             ]);
 
     }
