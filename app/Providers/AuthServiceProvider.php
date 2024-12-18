@@ -134,6 +134,7 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('manage-planning', [TimetablePolicy::class, 'update']);
         Gate::define('manage-supervision', [ProjectPolicy::class, 'update']);
         Gate::define('manage-project', [ProjectPolicy::class, 'update']);
+        Gate::define('manage-timetables', fn (User $user) => ($user->isAdministrator()));
 
         Gate::define('manage-projects', fn (User $user) => ($user->isAdministrator() || $user->isAdministrativeSupervisor()));
         Gate::define('manage-students', fn (User $user) => ($user->isAdministrator()));

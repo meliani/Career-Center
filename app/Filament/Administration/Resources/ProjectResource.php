@@ -626,7 +626,7 @@ class ProjectResource extends Core\BaseResource
                                         InfolistRelationManagerAction::make('timetable-relation-manager')
                                             ->label(__('Edit timetable'))
                                             ->relationManager(RelationManagers\TimetableRelationManager::class)
-                                            ->hidden(fn (Request $request, $record) => (auth()->user()->can('manage-project', [
+                                            ->hidden(fn (Request $request, $record) => (auth()->user()->can('manage-timetables', [
                                                 $record,  // The model as first element
                                                 auth()->user(),       // The user as second element
                                             ])) === false)

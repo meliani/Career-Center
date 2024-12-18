@@ -19,7 +19,12 @@ class CreateTimeslotsTable extends Migration
             $table->timestamp('end_time');
             $table->boolean('is_enabled')->default(true);
             $table->boolean('is_available')->default(false);
+            $table->bigInteger('year_id')->unsigned();
             $table->timestamps();
+        });
+
+        Schema::table('timeslots', function (Blueprint $table) {
+            $table->foreign('year_id')->references('id')->on('years')->onDelete('cascade');
         });
     }
 

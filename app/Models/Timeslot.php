@@ -19,6 +19,7 @@ class Timeslot extends Core\BackendBaseModel
         'start_time',
         'end_time',
         'is_enabled',
+        'year_id',
     ];
 
     protected $casts = [
@@ -42,5 +43,15 @@ class Timeslot extends Core\BackendBaseModel
     public function timetable()
     {
         return $this->hasOne(Timetable::class);
+    }
+
+    public function year()
+    {
+        return $this->belongsTo(Year::class);
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('year_id', Year::current()->id);
     }
 }

@@ -21,7 +21,8 @@ class TimetableRelationManager extends RelationManager
         return $form
             ->schema([
                 Forms\Components\Select::make('timeslot_id')
-                    ->relationship('timeslot', 'start_time')
+                    ->relationship('timeslot', 'start_time', fn ($query) => $query->active())
+
                     ->required(),
                 Forms\Components\Select::make('room_id')
                     ->relationship('room', 'name')
