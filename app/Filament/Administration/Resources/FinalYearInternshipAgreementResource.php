@@ -408,7 +408,8 @@ class FinalYearInternshipAgreementResource extends BaseResource
                                         Infolists\Components\TextEntry::make('workload')
                                             ->label(__('Workload'))
                                             ->icon('heroicon-o-clock')
-                                            ->placeholder(__('No workload specified')),
+                                            ->placeholder(__('No workload specified'))
+                                            ->visible(fn ($record) => $record->workload),
                                         Infolists\Components\TextEntry::make('remuneration')
                                             ->label(__('Remuneration'))
                                             ->icon('heroicon-o-banknotes')
