@@ -49,6 +49,8 @@ class FinalYearInternshipAgreementResource extends BaseResource
         if (auth()->user()->isAdministrator()) {
             return static::getModel()::where('status', Status::Signed)->count();
         }
+
+        return null;
     }
 
     public static function form(Form $form): Form

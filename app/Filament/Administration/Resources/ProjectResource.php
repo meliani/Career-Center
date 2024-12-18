@@ -57,6 +57,8 @@ class ProjectResource extends Core\BaseResource
         if (auth()->user()->isAdministrator()) {
             return static::getModel()::active()->count();
         }
+
+        return null;
     }
 
     public static function getnavigationGroup(): string
