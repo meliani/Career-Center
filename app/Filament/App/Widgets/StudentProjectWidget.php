@@ -91,8 +91,7 @@ class StudentProjectWidget extends Widget implements Forms\Contracts\HasForms
 
     protected function notifyAdministrators(CollaborationRequest $request, string $type = 'request'): void
     {
-        $administrators = User::where('role', Role::getAdministratorRoles())->get();
-
+        $administrators = User::whereIN('role', Role::getAdministratorRoles())->get();
         foreach ($administrators as $admin) {
             $admin->notify(new AdminCollaborationNotification($request, $type));
         }
