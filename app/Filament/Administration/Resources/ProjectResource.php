@@ -126,7 +126,7 @@ class ProjectResource extends Core\BaseResource
 
         // Professors can see their own projects
         if ($user->isProfessor()) {
-            return $query->whereHas('professors', function ($query) use ($user) {
+            return $query->active()->whereHas('professors', function ($query) use ($user) {
                 $query->where('professor_id', $user->id);
             });
         }
