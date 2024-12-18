@@ -54,7 +54,9 @@ class ProjectResource extends Core\BaseResource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::active()->count();
+        if (auth()->user()->isAdministrator()) {
+            return static::getModel()::active()->count();
+        }
     }
 
     public static function getnavigationGroup(): string

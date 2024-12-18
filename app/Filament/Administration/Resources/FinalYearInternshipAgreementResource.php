@@ -46,7 +46,9 @@ class FinalYearInternshipAgreementResource extends BaseResource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::where('status', Status::Signed)->count();
+        if (auth()->user()->isAdministrator()) {
+            return static::getModel()::where('status', Status::Signed)->count();
+        }
     }
 
     public static function form(Form $form): Form
