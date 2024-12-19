@@ -62,6 +62,11 @@ class AgreementObserver
      */
     public function deleted(FinalYearInternshipAgreement $agreement): void
     {
+
+        // detach agreement from project polymorphically
+        $agreement->project()->detach();
+        $agreement->save();
+
         // check if project exists
         if ($agreement->project && $agreement->project->exists && ! $agreement->project->final_internship_agreements()->exists()) {
             $agreement->project->delete();
