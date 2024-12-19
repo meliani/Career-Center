@@ -44,12 +44,13 @@ class ProjectsTable
                                 })
                         )
                         ->wrap()
-                        ->label('ID PFE'),
+                        ->label('ID PFE')
+                        ->toggleable(isToggledHiddenByDefault: true),
                     Tables\Columns\TextColumn::make('agreements.agreeable.student.full_name')
                         ->label('Student name')
                         ->searchable(false)
                         // ->limit(20)
-                        ->wrap(),
+                        ->description(fn ($record) => $record->id_pfe),
                     Tables\Columns\TextColumn::make('agreements.agreeable.student.program')
                         ->toggleable(isToggledHiddenByDefault: false)
                         ->label('Program')
@@ -135,7 +136,8 @@ class ProjectsTable
                     Tables\Columns\TextColumn::make('externalSupervisor.full_name')
                         ->label('External Supervisor')
                         ->limit(30)
-                        ->searchable(false),
+                        ->searchable(false)
+                        ->sortable(false),
                     Tables\Columns\TextColumn::make('external_supervisor_contact')
                         ->toggleable(isToggledHiddenByDefault: true)
                         ->label('Contacts External Supervisor')
@@ -195,14 +197,17 @@ class ProjectsTable
                     Tables\Columns\TextColumn::make('organization.name')
                         ->label('Organization')
                         ->searchable(false)
-                        ->sortable(false),
-                    Tables\Columns\TextColumn::make('organization.address')
-                        ->toggleable(isToggledHiddenByDefault: true)
-                        ->label('Address')
-                        ->searchable(false)
-                        ->sortable(false),
+                        ->sortable(false)
+                        ->description(fn ($record) => $record->organization->city . ', ' . $record->organization->country)
+                        ->tooltip(fn ($record) => __('Organization Representative') . ': ' . $record->parrain->full_name),
+                    // Tables\Columns\TextColumn::make('organization.address')
+                    //     ->toggleable(isToggledHiddenByDefault: true)
+                    //     ->label('Address')
+                    //     ->searchable(false)
+                    //     ->sortable(false),
                     Tables\Columns\TextColumn::make('parrain.full_name')
                         // ->description(fn ($record) => $record->agreements->agreeable->parrain->phone . ' - ' . $record->agreements->agreeable->parrain->email)
+                        ->toggleable(isToggledHiddenByDefault: true)
                         ->label('Le Parrain')
                         ->searchable(false)
                         ->sortable(false),

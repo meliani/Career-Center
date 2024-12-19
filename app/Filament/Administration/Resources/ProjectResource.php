@@ -421,9 +421,11 @@ class ProjectResource extends Core\BaseResource
                             ])
                             ->withColumns([
                                 FilamentExcel\Columns\Column::make('title')->width(10),
-                                FilamentExcel\Columns\Column::make('description')->width(10),
-                                FilamentExcel\Columns\Column::make('organization')->width(10),
-                                FilamentExcel\Columns\Column::make('keywords')->width(6),
+                                // FilamentExcel\Columns\Column::make('description')->width(10),
+                                FilamentExcel\Columns\Column::make('organization.name')->width(10)->heading(__('Organization')),
+                                FilamentExcel\Columns\Column::make('academic_supervisor_name')->width(10)->heading(__('Academic Supervisor')),
+                                FilamentExcel\Columns\Column::make('reviewer1')->width(10)->heading(__('First Reviewer')),
+                                FilamentExcel\Columns\Column::make('reviewer2')->width(10)->heading(__('Second Reviewer')),
 
                             ]),
                     ]),
