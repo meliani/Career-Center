@@ -24,7 +24,7 @@ class ProjectsTable
             // ->formatStateUsing(function ($state) {
             //     return implode(', ', $state);
             // }),
-            Tables\Columns\ColumnGroup::make(__('The student'))
+            Tables\Columns\ColumnGroup::make(__('Student information'))
                 ->columns([
                     Tables\Columns\TextColumn::make('id_pfe')
                         ->searchable(
@@ -51,7 +51,7 @@ class ProjectsTable
                         // ->limit(20)
                         ->wrap(),
                     Tables\Columns\TextColumn::make('agreements.agreeable.student.program')
-                        ->toggleable(isToggledHiddenByDefault: true)
+                        ->toggleable(isToggledHiddenByDefault: false)
                         ->label('Program')
                         ->searchable(false)
                         ->badge(),
@@ -79,10 +79,11 @@ class ProjectsTable
                     Tables\Columns\TextColumn::make('defense_status')
                         ->label('Status')
                         ->searchable(false)
-
+                        ->toggleable(isToggledHiddenByDefault: true)
                         ->badge(),
                     Tables\Columns\TextColumn::make('organization_evaluation_sheet_url')
                         // ->disabled(true)
+                        ->toggleable(isToggledHiddenByDefault: true)
                         ->searchable(false)
                         ->sortable(false)
                         ->label('Organization Evaluation Sheet')
@@ -105,6 +106,7 @@ class ProjectsTable
                     ->limit(20)
                     ->url(fn (Apprenticeship $record) => URL::to($record->pdf_path . '/' . $record->pdf_file_name), shouldOpenInNewTab: true), */
                     Tables\Columns\TextColumn::make('evaluation_sheet_url')
+                        ->toggleable(isToggledHiddenByDefault: true)
                         ->searchable(false)
                         ->sortable(false)
                         ->label('Evaluation Sheet')
@@ -123,7 +125,7 @@ class ProjectsTable
                     //     ->badge(),
                 ]),
 
-            Tables\Columns\ColumnGroup::make(__('Defense information'))
+            Tables\Columns\ColumnGroup::make(__('Supervision & Defense'))
                 ->columns([
                     // Tables\Columns\TextColumn::make('supervisor.name')
                     //     ->label('Supervisor')
@@ -163,7 +165,7 @@ class ProjectsTable
                         ->sortable(false),
                     Tables\Columns\TextColumn::make('defense_plan')
                         ->label('Defense plan')
-                        ->toggleable(isToggledHiddenByDefault: false)
+                        ->toggleable(isToggledHiddenByDefault: true)
                         ->sortable(false)
                         ->searchable(false),
                     Tables\Columns\TextColumn::make('timetable.timeslot.start_time')

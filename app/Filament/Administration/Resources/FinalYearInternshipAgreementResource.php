@@ -149,6 +149,7 @@ class FinalYearInternshipAgreementResource extends BaseResource
                     ->sortable()
                     ->searchable(false),
                 Tables\Columns\TextColumn::make('internalSupervisor.full_name')
+                    ->label('Internal Supervisor (student suggested)')
                     ->searchable(false)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('externalSupervisor.full_name')

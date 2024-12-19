@@ -40,6 +40,9 @@ class ListFinalYearInternshipAgreements extends ListRecords
             __('Signed') => Tab::make()
                 ->badge(FinalYearInternshipAgreement::where('status', Enums\Status::Signed->value)->count())
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', Enums\Status::Signed->value)),
+            __('Pending Cancellation') => Tab::make()
+                ->badge(FinalYearInternshipAgreement::where('status', Enums\Status::PendingCancellation->value)->count())
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', Enums\Status::PendingCancellation->value)),
         ];
     }
 }
