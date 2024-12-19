@@ -29,8 +29,7 @@ class DepartmentProjectAssignments extends Widget
 
     public function mount()
     {
-        $this->loadProjects();
-        $this->loadProfessors();
+        // Empty mount or other initialization if needed
     }
 
     public function setFilter($filter)
@@ -89,16 +88,13 @@ class DepartmentProjectAssignments extends Widget
 
         $this->departmentProfessors = Professor::query()
             ->where('department', auth()->user()->department)
-            ->withCount(['projects as supervisor_count' => function ($query) use ($currentYearId) {
-                $query->whereHas('final_internship_agreements', function ($q) use ($currentYearId) {
-                    $q->where('year_id', $currentYearId);
-                })->where('jury_role', Enums\JuryRole::Supervisor);
+            ->withCount(['activeProjects as supervisor_count' => function ($query) {
+                $query->where('jury_role', Enums\JuryRole::Supervisor);
             }])
-            ->withCount(['projects as reviewer_count' => function ($query) use ($currentYearId) {
-                $query->whereHas('final_internship_agreements', function ($q) use ($currentYearId) {
-                    $q->where('year_id', $currentYearId);
-                })->where('jury_role', Enums\JuryRole::FirstReviewer)
-                    ->where('jury_role', Enums\JuryRole::SecondReviewer);
+            ->withCount(['activeProjects as reviewer_count' => function ($query) {
+                $query
+                    ->where('jury_role', Enums\JuryRole::FirstReviewer)
+                    ->orWhere('jury_role', Enums\JuryRole::SecondReviewer);
             }])
             ->orderBy('name')
             ->get();
@@ -120,9 +116,9 @@ class DepartmentProjectAssignments extends Widget
                 $project->professors()->wherePivot('jury_role', Enums\JuryRole::SecondReviewer)->detach();
             }
 
-            $this->loadProjects(); // Load fresh data first
+            $this->loadProjects(); // Load fresh project data
+            $this->loadProfessors(); // Add this line to reload professor counts
 
-            // Dispatch event with current state
             $hasSupervisor = $project->professors()->wherePivot('jury_role', Enums\JuryRole::Supervisor)->exists();
             $this->dispatch('supervisor-assigned', projectId: $projectId, exists: $hasSupervisor);
         }
@@ -138,16 +134,15 @@ class DepartmentProjectAssignments extends Widget
                     'jury_role' => Enums\JuryRole::FirstReviewer,
                     'created_by' => auth()->id(),
                 ]);
-                // Modified dispatch format to match supervisor-assigned format
                 $this->dispatch('reviewer-assigned', projectId: $projectId, exists: true);
             } else {
                 $project->professors()->wherePivot('jury_role', Enums\JuryRole::FirstReviewer)->detach();
                 $project->professors()->wherePivot('jury_role', Enums\JuryRole::SecondReviewer)->detach();
-                // Modified dispatch format to match supervisor-assigned format
                 $this->dispatch('reviewer-assigned', projectId: $projectId, exists: false);
             }
 
             $this->loadProjects();
+            $this->loadProfessors(); // Add this line to reload professor counts
         }
     }
 
@@ -174,6 +169,7 @@ class DepartmentProjectAssignments extends Widget
             }
 
             $this->loadProjects();
+            $this->loadProfessors(); // Add this line to reload professor counts
         }
     }
 
@@ -222,6 +218,9 @@ class DepartmentProjectAssignments extends Widget
 
     public function render(): \Illuminate\View\View
     {
+        $this->loadProjects();  // Move loading to render
+        $this->loadProfessors(); // Move loading to render
+
         return view('livewire.department-project-assignments');
     }
 }
