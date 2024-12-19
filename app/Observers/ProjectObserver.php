@@ -17,23 +17,7 @@ class ProjectObserver
     /**
      * Handle the Project "updated" event.
      */
-    public function updated(Project $project): void
-    {
-        dd($project);
-        if ($project->agreements->isEmpty()) {
-            // Project has no agreements, so we can safely delete it
-            $project->delete();
-
-            Filament\Notifications\Notification::make()
-                ->title('Empty project :organiazation - :title deleted', [
-                    'organization' => $project->organization->name,
-                    'title' => $project->title,
-                ])
-                ->info()
-                ->send()
-                ->sendToDatabase();
-        }
-    }
+    public function updated(Project $project): void {}
 
     /**
      * Handle the Project "deleted" event.
@@ -41,6 +25,7 @@ class ProjectObserver
     public function deleted(Project $project): void
     {
         $project->timetable()->delete();
+        $project->professors()->detach();
     }
 
     /**
