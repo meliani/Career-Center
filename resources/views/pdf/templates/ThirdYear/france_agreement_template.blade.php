@@ -771,7 +771,7 @@
             </p>
             <p class="text-xs mt-1"><strong>L’encadrement sera assuré par:</strong></p>
             <p><strong>Maître de stage :</strong> <strong>{{$internship->externalSupervisor->formal_name}}</strong>, {{$internship->externalSupervisor->phone}}, {{$internship->externalSupervisor->email}}</p>
-            <p><strong>Tuteur pédagogique / Conseiller de stage :</strong> <strong>{{$internship->internalSupervisor->formal_name}}</strong>, {{$internship->internalSupervisor->email}}</p>
+            <p><strong>Tuteur pédagogique / Conseiller de stage :</strong> <strong>{{$internship->suggestedInternalSupervisor->formal_name}}</strong>, {{$internship->suggestedInternalSupervisor->email}}</p>
             <p class="text-xs mt-1">Lieu du stage (adresse précise, si différente de l’adresse de l’entreprise indiquée ci dessus): {{$internship->office_location}}</p>
         </div>
 

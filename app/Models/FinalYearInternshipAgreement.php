@@ -136,7 +136,7 @@ class FinalYearInternshipAgreement extends Model implements Agreement
         return $this->belongsTo(InternshipAgreementContact::class, 'external_supervisor_id', 'id');
     }
 
-    public function internalSupervisor()
+    public function suggestedInternalSupervisor()
     {
         return $this->belongsTo(Professor::class, 'internal_supervisor_id', 'id');
     }

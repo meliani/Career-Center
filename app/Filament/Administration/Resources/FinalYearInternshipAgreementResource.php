@@ -148,7 +148,7 @@ class FinalYearInternshipAgreementResource extends BaseResource
                 Tables\Columns\TextColumn::make('parrain.full_name')
                     ->sortable()
                     ->searchable(false),
-                Tables\Columns\TextColumn::make('internalSupervisor.full_name')
+                Tables\Columns\TextColumn::make('suggestedInternalSupervisor.full_name')
                     ->label('Internal Supervisor (student suggested)')
                     ->searchable(false)
                     ->sortable(),

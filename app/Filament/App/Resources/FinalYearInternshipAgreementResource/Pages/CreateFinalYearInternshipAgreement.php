@@ -259,7 +259,7 @@ class CreateFinalYearInternshipAgreement extends CreateRecord
                                         ->hint(__('You can suggest a supervisor from the academic institution'))
                                         ->preload()
                                         ->relationship(
-                                            name: 'internalSupervisor',
+                                            name: 'suggestedInternalSupervisor',
                                             titleAttribute: 'full_name',
                                             // modifyQueryUsing: fn (Builder $query) => $query->select('first_name', 'last_name', 'department')->where('role', Enums\Role::Professor)
                                         )
