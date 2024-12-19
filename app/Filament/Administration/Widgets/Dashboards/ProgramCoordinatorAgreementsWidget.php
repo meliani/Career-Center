@@ -74,17 +74,20 @@ class ProgramCoordinatorAgreementsWidget extends BaseWidget
                     ->label(__('Student'))
                     ->searchable()
                     ->sortable()
-                    ->description(fn ($record) => $record->student->student_id)
+                    ->description(fn ($record) => $record->organization->name)
                     ->extraAttributes([
                         'class' => 'animate-fade-in',
                         'wire:loading.class' => 'opacity-50',
-                    ]),
+                    ])
+                    ->tooltip(fn ($record) => __('Project title') . ': ' . $record->title),
 
-                Tables\Columns\TextColumn::make('organization.name')
-                    ->label(__('Organization'))
-                    ->searchable()
-                    ->sortable()
-                    ->extraAttributes(['class' => 'animate-slide-in-right']),
+                // Tables\Columns\TextColumn::make('organization.name')
+                //     ->label(__('Organization'))
+                //     ->searchable()
+                //     ->sortable()
+                //     ->extraAttributes(['class' => 'animate-slide-in-right']),
+                Tables\Columns\TextColumn::make('suggestedInternalSupervisor.name')
+                    ->label(__('Internal Supervisor (student suggested)')),
 
                 Tables\Columns\SelectColumn::make('assigned_department')
                     ->label(__('Department'))
