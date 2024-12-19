@@ -63,7 +63,7 @@ class AgreementObserver
     public function deleted(FinalYearInternshipAgreement $agreement): void
     {
         // check if project exists
-        if ($agreement->project) {
+        if ($agreement->project && $agreement->project->exists && ! $agreement->project->final_internship_agreements()->exists()) {
             $agreement->project->delete();
         }
 
