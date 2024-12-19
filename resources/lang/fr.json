@@ -993,5 +993,9 @@
     "You are receiving this notification because you are a program coordinator.": "Vous recevez cette notification car vous êtes coordonnateur de filière.",
     "Will be visible only to professors and administrators": "Sera visible uniquement par les enseignants et les administrateurs",
     "Internal Supervisor (student suggested)": "Encadrant interne (suggéré par l'étudiant)",
-    "Supervision & Defense": "Supervision & Soutenance"
+    "Supervision & Defense": "Supervision & Soutenance",
+    "Internship Agreement Cancelled": "Convention de stage annulée",
+    "Your internship agreement has been cancelled.": "Votre convention de stage a été annulée.",
+    "Reason: ": "Raison : ",
+    "No reason provided.": "Aucune raison fournie."
 }
