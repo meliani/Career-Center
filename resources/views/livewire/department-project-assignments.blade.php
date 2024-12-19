@@ -202,12 +202,29 @@
                 x-tooltip.raw="{{ __('Click to expand/collapse assignment options') }}"
             >
                 <div class="group-hover:translate-x-2 transition-transform duration-300">
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400">
-                        {{ $project->students_names }}
-                    </h3>
+                    <div class="flex items-center gap-2">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400">
+                            {{ $project->students_names }}
+                        </h3>
+                        <a 
+                            href="{{ route('filament.Administration.resources.projects.view', $project) }}"
+                            class="text-gray-400 hover:text-primary-500 transition-colors"
+                            @click.stop
+                            x-tooltip.raw="{{ __('View project details') }}"
+                            target="_blank"
+                        >
+                            <x-heroicon-o-eye class="w-5 h-5" />
+                        </a>
+                    </div>
                     <p class="text-sm text-gray-500 dark:text-gray-400">
                         {{ $project->final_internship_agreements->first()?->organization?->name }}
                     </p>
+                    @if($project->suggestedInternalSupervisor())
+                        <p class="mt-1 text-sm text-primary-600 dark:text-primary-400 flex items-center gap-1">
+                            <x-heroicon-o-user-circle class="w-4 h-4" />
+                            <span>{{ __('Student suggested:') }} {{ $project->suggestedInternalSupervisor()->name }}</span>
+                        </p>
+                    @endif
                 </div>
                 <div
                     class="flex-shrink-0"

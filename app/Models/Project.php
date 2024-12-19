@@ -311,6 +311,13 @@ class Project extends Core\BackendBaseModel
         );
     }
 
+    public function suggestedInternalSupervisor()
+    {
+        return $this->final_internship_agreements()
+            ->first()
+            ->suggestedInternalSupervisor;
+    }
+
     // public function FirstReviewer()
     // {
     //     return $this->professors()
