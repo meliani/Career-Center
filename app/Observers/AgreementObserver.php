@@ -7,6 +7,7 @@ use App\Enums\Role;
 use App\Models\FinalYearInternshipAgreement;
 use App\Models\User;
 use App\Notifications\AgreementAssignedNotification;
+use App\Notifications\AgreementCancellationNotification;
 use App\Notifications\AgreementCreatedNotification;
 
 class AgreementObserver
@@ -61,11 +62,13 @@ class AgreementObserver
      */
     public function deleted(FinalYearInternshipAgreement $agreement): void
     {
-        // check if project esists
-        if (! $agreement->project) {
-            return;
+        // check if project exists
+        if ($agreement->project) {
+            $agreement->project->delete();
         }
-        $agreement->project->delete();
+
+        $agreement->student->notify(new AgreementCancellationNotification($agreement));
+
     }
 
     /**
