@@ -100,10 +100,33 @@ class DepartmentProjectAssignments extends Widget
             ->get();
     }
 
+    protected function validateProfessorAssignment(Project $project, $professorId, $role)
+    {
+        // Check if professor is already assigned to another role in this project
+        $existingRole = $project->professors()
+            ->where('professor_id', $professorId)
+            ->whereNotIn('jury_role', [$role])
+            ->first();
+
+        if ($existingRole) {
+            $this->addError('assignment', __('This professor is already assigned as :role in this project', [
+                'role' => strtolower(__($existingRole->pivot->jury_role->getLabel())),
+            ]));
+
+            return false;
+        }
+
+        return true;
+    }
+
     public function assignSupervisor($projectId, $professorId)
     {
         $project = Project::find($projectId);
         if ($project) {
+            if ($professorId && ! $this->validateProfessorAssignment($project, $professorId, Enums\JuryRole::Supervisor)) {
+                return;
+            }
+
             if ($professorId) {
                 $project->professors()->wherePivot('jury_role', Enums\JuryRole::Supervisor)->detach();
                 $project->professors()->attach($professorId, [
@@ -128,6 +151,10 @@ class DepartmentProjectAssignments extends Widget
     {
         $project = Project::find($projectId);
         if ($project) {
+            if ($professorId && ! $this->validateProfessorAssignment($project, $professorId, Enums\JuryRole::FirstReviewer)) {
+                return;
+            }
+
             if ($professorId) {
                 $project->professors()->wherePivot('jury_role', Enums\JuryRole::FirstReviewer)->detach();
                 $project->professors()->attach($professorId, [
@@ -150,6 +177,10 @@ class DepartmentProjectAssignments extends Widget
     {
         $project = Project::find($projectId);
         if ($project) {
+            if ($professorId && ! $this->validateProfessorAssignment($project, $professorId, Enums\JuryRole::SecondReviewer)) {
+                return;
+            }
+
             if ($professorId) {
                 $project->professors()->wherePivot('jury_role', Enums\JuryRole::SecondReviewer)->detach();
                 $project->professors()->attach($professorId, [

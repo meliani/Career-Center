@@ -329,6 +329,12 @@
                     </select>
                 </div>
 
+                <div class="mt-2">
+                    @error('assignment')
+                        <p class="text-sm text-danger-500">{{ $message }}</p>
+                    @enderror
+                </div>
+
                 {{-- Assignment Progress --}}
                 <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                     <div class="flex justify-between text-sm text-gray-500 dark:text-gray-400">

@@ -997,5 +997,6 @@
     "Internship Agreement Cancelled": "Convention de stage annulée",
     "Your internship agreement has been cancelled.": "Votre convention de stage a été annulée.",
     "Reason: ": "Raison : ",
-    "No reason provided.": "Aucune raison fournie."
+    "No reason provided.": "Aucune raison fournie.",
+    "This professor is already assigned as :role in this project": "Ce professeur est déjà assigné en tant que :role dans ce projet"
 }
