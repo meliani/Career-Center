@@ -75,7 +75,7 @@ class StudentResource extends Core\BaseResource
             'first_name',
             'last_name',
             'program',
-            'active_internship_agreement.id_pfe',
+            'id_pfe',
         ];
     }
 
@@ -118,7 +118,7 @@ class StudentResource extends Core\BaseResource
                 Forms\Components\Toggle::make('is_mobility'),
                 Forms\Components\TextInput::make('abroad_school')
                     ->maxLength(191),
-                Forms\Components\TextInput::make('pin')
+                Forms\Components\TextInput::make('id_pfe')
                     ->numeric(),
                 Forms\Components\Select::make('year_id')
                     ->label('Academic year')
