@@ -45,6 +45,7 @@
             <li>{{ __('Once a supervisor is assigned, you can select a first reviewer') }}</li>
             <li>{{ __('After selecting the first reviewer, you can assign a second reviewer') }}</li>
             <li>{{ __('The status icon will update as you complete each step') }}</li>
+            <li>{{ __('You can download all your projects details in the projects section') }}</li>
         </ul>
     </div>
 

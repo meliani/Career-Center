@@ -50,6 +50,13 @@
                                 {{ __('or the agreement to view details') }}
                             </span>
                         </li>
+
+                        <li class="relative pl-2 flex items-start gap-2 before:absolute before:w-1.5 before:h-1.5 before:bg-primary-400 before:rounded-full before:left-0 before:top-2 before:-translate-x-[4.5px]">
+                            <span class="text-primary-400 inline-block w-4">•</span>
+                            <span class="flex items center gap-1.5">
+                                {{ __('You can download all your projects details in the projects section') }}
+                            </span>
+                        </li>
                     </ul>
                 </div>
             </div>

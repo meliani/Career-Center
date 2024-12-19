@@ -428,7 +428,8 @@ class ProjectResource extends Core\BaseResource
                                 FilamentExcel\Columns\Column::make('reviewer2')->width(10)->heading(__('Second Reviewer')),
 
                             ]),
-                    ]),
+                    ])
+                    ->tooltip(__('Displayed columns will be exported, you can change the columns to be exported from the table settings')),
                 TableLayoutToggle::getToggleViewTableAction(compact: true),
                 // Tables\Actions\ActionGroup::make([
                 //     \App\Filament\Actions\Action\Processing\ImportProfessorsFromInternshipAgreements::make('Import Professors From Internship Agreements')
