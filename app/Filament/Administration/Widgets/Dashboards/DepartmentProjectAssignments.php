@@ -85,8 +85,21 @@ class DepartmentProjectAssignments extends Widget
 
     protected function loadProfessors()
     {
+        $currentYearId = \App\Models\Year::current()->id;
+
         $this->departmentProfessors = Professor::query()
             ->where('department', auth()->user()->department)
+            ->withCount(['projects as supervisor_count' => function ($query) use ($currentYearId) {
+                $query->whereHas('final_internship_agreements', function ($q) use ($currentYearId) {
+                    $q->where('year_id', $currentYearId);
+                })->where('jury_role', Enums\JuryRole::Supervisor);
+            }])
+            ->withCount(['projects as reviewer_count' => function ($query) use ($currentYearId) {
+                $query->whereHas('final_internship_agreements', function ($q) use ($currentYearId) {
+                    $q->where('year_id', $currentYearId);
+                })->where('jury_role', Enums\JuryRole::FirstReviewer)
+                    ->where('jury_role', Enums\JuryRole::SecondReviewer);
+            }])
             ->orderBy('name')
             ->get();
     }

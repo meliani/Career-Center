@@ -259,7 +259,7 @@
                                 value="{{ $professor->id }}"
                                 {{ $project->professors()->wherePivot('jury_role', \App\Enums\JuryRole::Supervisor)->first()?->id === $professor->id ? 'selected' : '' }}
                             >
-                                {{ $professor->name }}
+                                {{ $professor->name }} (Encad: {{ $professor->supervisor_count }}, Exam: {{ $professor->reviewer_count }})
                             </option>
                         @endforeach
                     </select>
@@ -293,7 +293,7 @@
                                 value="{{ $professor->id }}"
                                 {{ $project->professors()->wherePivot('jury_role', \App\Enums\JuryRole::FirstReviewer)->first()?->id === $professor->id ? 'selected' : '' }}
                             >
-                                {{ $professor->name }}
+                                {{ $professor->name }} (Encad: {{ $professor->supervisor_count }}, Exam: {{ $professor->reviewer_count }})
                             </option>
                         @endforeach
                     </select>
@@ -323,7 +323,7 @@
                                 value="{{ $professor->id }}"
                                 {{ $project->professors()->wherePivot('jury_role', \App\Enums\JuryRole::SecondReviewer)->first()?->id === $professor->id ? 'selected' : '' }}
                             >
-                                {{ $professor->name }}
+                                {{ $professor->name }} (Encad: {{ $professor->supervisor_count }}, Exam: {{ $professor->reviewer_count }})
                             </option>
                         @endforeach
                     </select>
