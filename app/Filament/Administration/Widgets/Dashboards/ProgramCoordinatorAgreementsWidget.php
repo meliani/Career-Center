@@ -86,8 +86,6 @@ class ProgramCoordinatorAgreementsWidget extends BaseWidget
                 //     ->searchable()
                 //     ->sortable()
                 //     ->extraAttributes(['class' => 'animate-slide-in-right']),
-                Tables\Columns\TextColumn::make('suggestedInternalSupervisor.name')
-                    ->label(__('Internal Supervisor (student suggested)')),
 
                 Tables\Columns\SelectColumn::make('assigned_department')
                     ->label(__('Department'))
@@ -99,7 +97,8 @@ class ProgramCoordinatorAgreementsWidget extends BaseWidget
                     ->afterStateUpdated(function ($record) {
                         $record->save();
                     }),
-
+                Tables\Columns\TextColumn::make('suggestedInternalSupervisor.name')
+                    ->label(__('Internal Supervisor (student suggested)')),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label(__('Submitted'))
                     ->dateTime()
