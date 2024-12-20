@@ -96,9 +96,10 @@ class ProgramCoordinatorAgreementsWidget extends BaseWidget
                     ])
                     ->afterStateUpdated(function ($record) {
                         $record->save();
-                    }),
-                Tables\Columns\TextColumn::make('suggestedInternalSupervisor.name')
-                    ->label(__('Internal Supervisor (student suggested)')),
+                    })
+                    ->tooltip(fn ($record) => $record->suggestedInternalSupervisor ? __('Internal Supervisor (student suggested)') . ': ' . $record->suggestedInternalSupervisor->name : null),
+                // Tables\Columns\TextColumn::make('suggestedInternalSupervisor.name')
+                //     ->label(__('Internal Supervisor (student suggested)')),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label(__('Submitted'))
                     ->dateTime()
