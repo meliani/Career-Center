@@ -112,23 +112,33 @@ class FinalYearInternshipAgreementResource extends BaseResource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('student.full_name')
-                    ->searchable(['first_name', 'last_name']),
+                    ->searchable(['first_name', 'last_name'])
+                    ->description(fn ($record) => $record->student->id_pfe),
 
                 Tables\Columns\TextColumn::make('student.program')
                     ->label('Program'),
-                Tables\Columns\TextColumn::make('organization.name'),
+                Tables\Columns\TextColumn::make('organization.name')
+                    ->description(fn ($record) => $record->organization->city . ', ' . $record->organization->country)
+                    ->searchable()
+                    ->label('Organization')
+                    ->tooltip(fn ($record) => __('Organization Representative') . ': ' . $record->parrain->full_name),
                 Tables\Columns\TextColumn::make('organization.city')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->Label('City'),
                 Tables\Columns\TextColumn::make('organization.country')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->Label('Country'),
 
                 Tables\Columns\TextColumn::make('title')
                     ->searchable()
-                    ->limit(50),
+                    ->limit(50)
+                    ->description(fn ($record) => __('Start date') . ': ' . $record->starting_at->format('d/m/Y') . ' - ' . __('End date') . ': ' . $record->ending_at->format('d/m/Y')),
                 Tables\Columns\TextColumn::make('starting_at')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('ending_at')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('student.level')
@@ -146,6 +156,7 @@ class FinalYearInternshipAgreementResource extends BaseResource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('parrain.full_name')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable()
                     ->searchable(false),
                 Tables\Columns\TextColumn::make('suggestedInternalSupervisor.full_name')
