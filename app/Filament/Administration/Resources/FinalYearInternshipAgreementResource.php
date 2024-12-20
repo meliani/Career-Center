@@ -299,7 +299,9 @@ class FinalYearInternshipAgreementResource extends BaseResource
                     ->outlined(),
                 \pxlrbt\FilamentExcel\Actions\Tables\ExportAction::make()
                     ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isDepartmentHead() || auth()->user()->isProgramCoordinator()) === false)
-                    ->outlined(),
+                    // ->outlined()
+                    ->tooltip(__('Displayed columns will be exported, you can change the columns to be exported from the table settings')),
+
             ]);
     }
 
