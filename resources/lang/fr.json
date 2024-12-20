@@ -1003,5 +1003,7 @@
     "Student suggested:": "Étudiant a suggéré :",
     "View project details": "Voir les détails du projet",
     "You can download all your projects details in the projects section": "Vous pouvez télécharger tous les détails de vos projets dans la section projets",
-    "Displayed columns will be exported, you can change the columns to be exported from the table settings": "Les colonnes affichées seront exportées, vous pouvez modifier les colonnes à exporter depuis les paramètres de la table"
+    "Displayed columns will be exported, you can change the columns to be exported from the table settings": "Les colonnes affichées seront exportées, vous pouvez modifier les colonnes à exporter depuis les paramètres de la table",
+    "Unable to send notification email at this time. Mail server connection failed. Please contact administrators: ": "Impossible d'envoyer l'email de notification pour le moment. La connexion au serveur de messagerie a échoué. Veuillez contacter les administrateurs : ",
+    "Notification Email Failed": "Échec de l'envoi de l'email de notification"
 }

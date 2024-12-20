@@ -3,10 +3,9 @@
 namespace App\Exceptions;
 
 use Filament\Notifications\Notification;
-use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\Mailer\Exception\TransportException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -37,29 +36,34 @@ class Handler extends ExceptionHandler
             Log::info($e->getMessage());
         });
 
-        // $this->renderable(function (QueryException $e, Request $request) {
-        //     $this->handleDuplicateEntryException($e);
+        $this->renderable(function (TransportException $e) {
+            Log::error('Mail server connection failed', [
+                'message' => $e->getMessage(),
+                'code' => $e->getCode(),
+                'smtp_host' => config('mail.mailers.smtp.host'),
+                'smtp_port' => config('mail.mailers.smtp.port'),
+            ]);
 
-        //     //  continu browsing normally and return http response
-        //     // return $request;
-        // });
+            if (request()->is('backend/*') || request()->is('*')) {
+                Notification::make()
+                    ->title(__('Notification Email Failed'))
+                    ->body(__('Unable to send notification email at this time. Mail server connection failed. Please contact administrators: ') . config('mail.from.address'))
+                    ->danger()
+                    ->persistent()
+                    ->sendToDatabase(auth()->user());
 
-    }
+            }
 
-    public function handleDuplicateEntryException(Throwable | QueryException $e)
-    {
-        // report($e);
-        Notification::make()
-            ->title('Error : ')// . $e->getMessage())
-            ->danger()
-            ->send();
+            // return response()->noContent();
 
-        // return response();
-        // return response()->json([
-        //     'message' => 'Duplicate entry',
-        //     'errors' => [
-        //         'name' => 'The name has already been taken.',
-        //     ],
-        // ], 422);
+            // return response()->json([
+            //     'message' => 'Mail exception handled',
+            // ], 200);
+
+            return response()->json([
+                'message' => 'Unable to send email at this time. Please try again later.',
+                'error' => 'mail_connection_failed',
+            ], 503);
+        });
     }
 }
