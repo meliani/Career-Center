@@ -116,7 +116,9 @@ class FinalYearInternshipAgreementResource extends BaseResource
                     ->description(fn ($record) => $record->student->id_pfe),
 
                 Tables\Columns\TextColumn::make('student.program')
-                    ->label('Program'),
+                    ->label('Program')
+                    ->tooltip(fn ($record) => $record->student->program->getDescription() . ' (' . __('Coordinator') . ': ' . $record->student->getProgramCoordinator()->full_name . ')'),
+
                 Tables\Columns\TextColumn::make('organization.name')
                     ->description(fn ($record) => $record->organization->city . ', ' . $record->organization->country)
                     ->searchable()
@@ -132,6 +134,7 @@ class FinalYearInternshipAgreementResource extends BaseResource
                 Tables\Columns\TextColumn::make('title')
                     ->searchable()
                     ->limit(50)
+                    ->tooltip(fn ($record) => $record->title)
                     ->description(fn ($record) => __('Start date') . ': ' . $record->starting_at->format('d/m/Y') . ' - ' . __('End date') . ': ' . $record->ending_at->format('d/m/Y')),
                 Tables\Columns\TextColumn::make('starting_at')
                     ->toggleable(isToggledHiddenByDefault: true)
@@ -163,10 +166,13 @@ class FinalYearInternshipAgreementResource extends BaseResource
                     ->label('Internal Supervisor (student suggested)')
                     ->searchable(false)
                     ->sortable(),
+                Tables\Columns\TextColumn::make('assigned_department')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('externalSupervisor.full_name')
                     ->searchable(false)
                     ->sortable(),
                 Tables\Columns\SpatieTagsColumn::make('tags')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(false),
                 // Tables\Columns\TextColumn::make('tutor_id')
                 //     ->toggleable(isToggledHiddenByDefault: true)
@@ -186,9 +192,9 @@ class FinalYearInternshipAgreementResource extends BaseResource
                 //     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('cancellation_reason')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->searchable(),
+                // Tables\Columns\TextColumn::make('cancellation_reason')
+                //     ->toggleable(isToggledHiddenByDefault: true)
+                //     ->searchable(),
 
                 Tables\Columns\TextColumn::make('announced_at')
                     ->toggleable(isToggledHiddenByDefault: true)
@@ -198,8 +204,7 @@ class FinalYearInternshipAgreementResource extends BaseResource
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->dateTime()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('assigned_department')
-                    ->toggleable(isToggledHiddenByDefault: true),
+
                 Tables\Columns\TextColumn::make('received_at')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->dateTime()
@@ -368,7 +373,7 @@ class FinalYearInternshipAgreementResource extends BaseResource
                                             ->label(__('Program'))
                                             ->icon('heroicon-o-academic-cap')
                                             ->badge()
-                                            ->tooltip(fn ($record) => $record->student->program->getDescription()),
+                                            ->tooltip(fn ($record) => $record->student->program->getDescription() . ' (' . __('Coordinator') . ': ' . $record->student->getProgramCoordinator()->full_name . ')'),
 
                                         Infolists\Components\TextEntry::make('organization.name')
                                             ->label(__('Organization'))
