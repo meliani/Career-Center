@@ -80,12 +80,15 @@ class SentEmailResource extends Core\BaseResource
             ->defaultSort('created_at', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('hash')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('sender_name')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('sender_email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('recipient_name')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('recipient_email')
                     ->searchable(),
@@ -112,6 +115,7 @@ class SentEmailResource extends Core\BaseResource
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('message_id')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
             ])
             ->filters([

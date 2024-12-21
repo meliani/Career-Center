@@ -49,13 +49,10 @@ class FinalYearInternshipAgreement extends Model implements Agreement
         'pdf_file_name',
         'cancelled_at',
         'cancellation_reason',
-        'is_signed_by_student',
-        'is_signed_by_organization',
-        'is_signed_by_administration',
+        'verification_document_url',
         'signed_by_student_at',
         'signed_by_organization_at',
         'signed_by_administration_at',
-        'verification_document_url',
     ];
 
     protected $appends = [
@@ -73,9 +70,6 @@ class FinalYearInternshipAgreement extends Model implements Agreement
         'starting_at' => 'date',
         'ending_at' => 'date',
         'remuneration' => 'decimal:2',
-        'is_signed_by_student' => 'boolean',
-        'is_signed_by_organization' => 'boolean',
-        'is_signed_by_administration' => 'boolean',
         'signed_by_student_at' => 'datetime',
         'signed_by_organization_at' => 'datetime',
         'signed_by_administration_at' => 'datetime',

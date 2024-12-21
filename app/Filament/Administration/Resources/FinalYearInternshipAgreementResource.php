@@ -294,7 +294,7 @@ class FinalYearInternshipAgreementResource extends BaseResource
                         ->color('warning')
                         ->requiresConfirmation()
                         ->hidden(fn () => ! auth()->user()->can('achieve', new FinalYearInternshipAgreement))
-                        ->action(fn ($records) => $records->each->achieve()),
+                        ->action(fn ($records) => $records->each->receive()),
                 ])
                     ->hidden(fn () => ! auth()->user()->can('manage', new FinalYearInternshipAgreement)),
             ])
@@ -306,7 +306,6 @@ class FinalYearInternshipAgreementResource extends BaseResource
                     ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isDepartmentHead() || auth()->user()->isProgramCoordinator()) === false)
                     // ->outlined()
                     ->tooltip(__('Displayed columns will be exported, you can change the columns to be exported from the table settings')),
-
             ]);
     }
 
