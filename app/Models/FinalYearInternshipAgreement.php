@@ -28,6 +28,8 @@ class FinalYearInternshipAgreement extends Model implements Agreement
         'announced_at',
         'validated_at',
         'assigned_department',
+        'department_assigned_at',
+        'department_assigned_by',
         'received_at',
         'signed_at',
         'observations',

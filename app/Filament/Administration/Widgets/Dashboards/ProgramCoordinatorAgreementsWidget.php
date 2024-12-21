@@ -4,6 +4,7 @@ namespace App\Filament\Administration\Widgets\Dashboards;
 
 use App\Enums;
 use App\Models\FinalYearInternshipAgreement as Agreement;
+use Filament\Notifications\Notification;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
@@ -95,9 +96,25 @@ class ProgramCoordinatorAgreementsWidget extends BaseWidget
                         'class' => 'transition-all duration-300 hover:scale-105',
                     ])
                     ->afterStateUpdated(function ($record) {
+                        $record->department_assigned_at = now();
+                        $record->department_assigned_by = auth()->user()->id;
                         $record->save();
-                    })
-                    ->tooltip(fn ($record) => $record->suggestedInternalSupervisor ? __('Internal Supervisor (student suggested)') . ': ' . $record->suggestedInternalSupervisor->name : null),
+                        // notification
+
+                        Notification::make()
+                            ->title(__('Department Assigned'))
+                            ->body(__(
+                                'The department :department has been assigned to the student :student, and an email notification has been sent to the department head.',
+                                [
+                                    'department' => $record->assigned_department->getLabel(),
+                                    'student' => $record->student->name,
+                                ]
+                            ))
+                            ->success()
+                            ->send();
+
+                    }),
+                // ->tooltip(fn ($record) => $record->suggestedInternalSupervisor ? __('Internal Supervisor (student suggested)') . ': ' . $record->suggestedInternalSupervisor->name : null),
                 // Tables\Columns\TextColumn::make('suggestedInternalSupervisor.name')
                 //     ->label(__('Internal Supervisor (student suggested)')),
                 Tables\Columns\TextColumn::make('created_at')

@@ -220,12 +220,12 @@
                     <p class="text-sm text-gray-500 dark:text-gray-400">
                         {{ $project->final_internship_agreements->first()?->organization?->name }}
                     </p>
-                    @if($project->suggestedInternalSupervisor())
+                    {{-- @if($project->suggestedInternalSupervisor())
                         <p class="mt-1 text-sm text-primary-600 dark:text-primary-400 flex items-center gap-1">
                             <x-heroicon-o-user-circle class="w-4 h-4" />
                             <span>{{ __('Student suggested:') }} {{ $project->suggestedInternalSupervisor()->name }}</span>
                         </p>
-                    @endif
+                    @endif --}}
                 </div>
                 <div
                     class="flex-shrink-0"
@@ -259,7 +259,7 @@
             {{-- Assignment Fields with Tooltips --}}
             <div class="space-y-3 p-4" x-show="showDetails">
                 {{-- Supervisor Selection --}}
-                <div class="relative" x-tooltip.raw="tooltips.supervisor">
+                <div class="relative" x-tooltip="tooltips.supervisor">
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center space-x-2">
                         <span>{{ __('Supervisor') }}</span>
                         <span x-show="@js($project->professors()->wherePivot('jury_role', \App\Enums\JuryRole::Supervisor)->exists())" class="text-success-500">

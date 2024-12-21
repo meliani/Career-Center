@@ -225,7 +225,7 @@ class AdminGettingStartedWidget extends Widget
             ->take(5)
             ->get()
             ->map(fn ($item) => [
-                'title' => __(' New application from') . " {$item->student?->name}",
+                'title' => __(' New application from') . " {$item->student->name}",
                 'time' => $item->created_at->diffForHumans(),
                 'status' => $item->status,
             ])
