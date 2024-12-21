@@ -1006,5 +1006,13 @@
     "Displayed columns will be exported, you can change the columns to be exported from the table settings": "Les colonnes affichées seront exportées, vous pouvez modifier les colonnes à exporter depuis les paramètres de la table",
     "Unable to send notification email at this time. Mail server connection failed. Please contact administrators: ": "Impossible d'envoyer l'email de notification pour le moment. La connexion au serveur de messagerie a échoué. Veuillez contacter les administrateurs : ",
     "Notification Email Failed": "Échec de l'envoi de l'email de notification",
-    "The department :department has been assigned to the student :student, and an email notification has been sent to the department head.": "Le département :department a été assigné à l'étudiant :student, et une notification par email a été envoyée au chef de département."
+    "The department :department has been assigned to the student :student, and an email notification has been sent to the department head.": "Le département :department a été assigné à l'étudiant :student, et une notification par email a été envoyée au chef de département.",
+    "From": "De",
+    "To": "À",
+    "Sent": "Envoyé",
+    "opens": "ouvertures",
+    "clicks": "clics",
+    "Clicks": "Clics",
+    "Opens": "Ouvertures",
+    "Clicked at": "Cliqué à"
 }

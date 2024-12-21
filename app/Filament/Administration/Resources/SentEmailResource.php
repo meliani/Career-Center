@@ -11,6 +11,7 @@ use Filament\Infolists;
 use Filament\Infolists\Infolist;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\View\View;
 
 class SentEmailResource extends Core\BaseResource
 {
@@ -93,27 +94,34 @@ class SentEmailResource extends Core\BaseResource
                 Tables\Columns\TextColumn::make('recipient_email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('subject')
+                    ->limit(40)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('opens')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->badge(),
                 Tables\Columns\TextColumn::make('clicks')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->badge(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->badge(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->badge(),
                 Tables\Columns\TextColumn::make('opened_at')
                     ->dateTime()
-                    ->sortable(),
+                    ->sortable()
+                    ->badge(),
                 Tables\Columns\TextColumn::make('clicked_at')
                     ->dateTime()
-                    ->sortable(),
+                    ->sortable()
+                    ->badge(),
                 Tables\Columns\TextColumn::make('message_id')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
@@ -122,8 +130,22 @@ class SentEmailResource extends Core\BaseResource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make()
+                    ->label('Full Details'),
+                Tables\Actions\Action::make('preview')
+                    ->label('Quick Preview')
+                    ->icon('heroicon-o-envelope')
+                    ->modalHeading(fn (SentEmail $record): string => "Email Preview: {$record->subject}")
+                    ->modalContent(
+                        fn (SentEmail $record): View => view(
+                            'filament.resources.sent-email-resource.preview-modal',
+                            ['record' => $record]
+                        )
+                    )
+                    ->modalSubmitAction(false)
+                    ->modalCancelActionLabel('Close')
+                    ->modalWidth('4xl'),
+                // Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -143,9 +165,9 @@ class SentEmailResource extends Core\BaseResource
     {
         return [
             'index' => Pages\ListSentEmails::route('/'),
-            'create' => Pages\CreateSentEmail::route('/create'),
+            // 'create' => Pages\CreateSentEmail::route('/create'),
             'view' => Pages\ViewSentEmail::route('/{record}'),
-            'edit' => Pages\EditSentEmail::route('/{record}/edit'),
+            // 'edit' => Pages\EditSentEmail::route('/{record}/edit'),
         ];
     }
 
@@ -153,37 +175,75 @@ class SentEmailResource extends Core\BaseResource
     {
         return $infolist
             ->schema([
-                Infolists\Components\TextEntry::make('hash')
-                    ->label('Hash'),
-                Infolists\Components\TextEntry::make('sender_name')
-                    ->label('Sender Name'),
-                Infolists\Components\TextEntry::make('sender_email')
-                    ->label('Sender Email'),
-                Infolists\Components\TextEntry::make('recipient_name')
-                    ->label('Recipient Name'),
-                Infolists\Components\TextEntry::make('recipient_email')
-                    ->label('Recipient Email'),
-                Infolists\Components\TextEntry::make('subject')
-                    ->label('Subject'),
-                Infolists\Components\TextEntry::make('opens')
-                    ->label('Opens'),
-                Infolists\Components\TextEntry::make('clicks')
-                    ->label('Clicks'),
-                Infolists\Components\TextEntry::make('created_at')
-                    ->label('Created At'),
-                Infolists\Components\TextEntry::make('updated_at')
-                    ->label('Updated At'),
-                Infolists\Components\TextEntry::make('opened_at')
-                    ->label('Opened At'),
-                Infolists\Components\TextEntry::make('clicked_at')
-                    ->label('Clicked At'),
-                Infolists\Components\TextEntry::make('message_id')
-                    ->label('Message Id'),
-                Infolists\Components\TextEntry::make('content')
-                    ->label('Content')
-                    ->columnSpanFull()
-                    ->html(),
+                Infolists\Components\Section::make('Email Details')
+                    ->schema([
+                        Infolists\Components\Grid::make(3)
+                            ->schema([
+                                Infolists\Components\Group::make([
+                                    Infolists\Components\TextEntry::make('subject')
+                                        ->label('Subject')
+                                        ->weight('bold')
+                                        ->columnSpanFull(),
+                                    Infolists\Components\TextEntry::make('created_at')
+                                        ->label('Sent At')
+                                        ->dateTime(),
+                                ]),
+                                Infolists\Components\Group::make([
+                                    Infolists\Components\TextEntry::make('sender_name')
+                                        ->label('From')
+                                        ->default(fn ($record) => $record->sender_email),
+                                    Infolists\Components\TextEntry::make('recipient_name')
+                                        ->label('To')
+                                        ->default(fn ($record) => $record->recipient_email),
+                                ]),
+                                Infolists\Components\Grid::make(2)
+                                    ->schema([
+                                        Infolists\Components\TextEntry::make('opens')
+                                            ->label('Opens')
+                                            ->icon('heroicon-o-eye')
+                                            ->color('success')
+                                            ->size('lg')
+                                            ->alignment('center'),
+                                        Infolists\Components\TextEntry::make('clicks')
+                                            ->label('Clicks')
+                                            ->icon('heroicon-o-cursor-arrow-rays')
+                                            ->color('info')
+                                            ->size('lg')
+                                            ->alignment('center'),
+                                    ])
+                                    ->columnSpan(1),
+                            ]),
+                    ])
+                    ->columns(3),
 
+                Infolists\Components\Section::make('Email Content')
+                    ->schema([
+                        Infolists\Components\TextEntry::make('content')
+                            ->label(false)
+                            ->html()
+                            // ->prose()
+                            ->columnSpanFull(),
+                    ]),
+
+                Infolists\Components\Section::make('Technical Details')
+                    ->schema([
+                        Infolists\Components\Grid::make(3)
+                            ->schema([
+                                Infolists\Components\TextEntry::make('message_id')
+                                    ->label('Message ID')
+                                    ->copyable(),
+                                Infolists\Components\TextEntry::make('hash')
+                                    ->label('Hash')
+                                    ->copyable(),
+                                Infolists\Components\TextEntry::make('opened_at')
+                                    ->label('First Opened')
+                                    ->dateTime(),
+                                Infolists\Components\TextEntry::make('clicked_at')
+                                    ->label('First Clicked')
+                                    ->dateTime(),
+                            ]),
+                    ])
+                    ->collapsible(),
             ]);
     }
 }
