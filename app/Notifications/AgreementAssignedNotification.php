@@ -3,7 +3,9 @@
 namespace App\Notifications;
 
 use App\Enums;
+use App\Enums\Role;
 use App\Models\FinalYearInternshipAgreement;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -13,7 +15,10 @@ class AgreementAssignedNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    public function __construct(protected FinalYearInternshipAgreement $agreement) {}
+    public function __construct(
+        protected FinalYearInternshipAgreement $agreement,
+        protected ?object $triggeredBy = null
+    ) {}
 
     public function via(object $notifiable): array
     {
@@ -26,17 +31,21 @@ class AgreementAssignedNotification extends Notification implements ShouldQueue
             ? $this->agreement->starting_at->format('d/m/Y') . ' - ' . $this->agreement->ending_at->format('d/m/Y')
             : __('Not specified');
 
+        $systemUsers = User::where('role', Role::System)->pluck('email')->toArray();
+
         $message = (new MailMessage)
-            ->subject(__('New Agreement Assignment - :program - :student (:PfeId)', [
+            ->cc($systemUsers)
+            ->subject(__('New Final Project Assigned - :program - :student (:PfeId)', [
                 'program' => $this->agreement->student->program->value,
                 'student' => $this->agreement->student->name,
                 'PfeId' => $this->agreement->student->id_pfe,
             ]))
-            ->greeting(__('Hello!'))
+            ->greeting(__('Hello :name,', ['name' => $notifiable->formal_name]))
             ->line('') // Empty line for spacing
-            ->line('### ' . __('Agreement Assignment Notification'))
-            ->line(__('An agreement for **:name** has been assigned to **:department** department.', [
-                'name' => $this->agreement->student->name,
+            ->line(__('The program coordinator of **:program**, **:coordinator**, has assigned the project \'**:title**\' to your department **:department**.', [
+                'program' => $this->agreement->student->program->value,
+                'coordinator' => $this->triggeredBy?->formal_name ?? __('System'),
+                'title' => $this->agreement->title,
                 'department' => $this->agreement->assigned_department->value,
             ]))
             ->line('') // Empty line for spacing
@@ -54,7 +63,7 @@ class AgreementAssignedNotification extends Notification implements ShouldQueue
         if ($notifiable->role === Enums\Role::DepartmentHead) {
             $message->line('') // Empty line for spacing
                 ->line('### ' . __('Next Steps:'))
-                ->line(__('You can now proceed with assigning supervisors and reviewers to this project.'))
+                ->line(__('The project is now ready for supervisor and reviewer assignments through careers platform.'))
                 ->action(
                     __('Go to Projects Dashboard'),
                     route('filament.Administration.pages.projects-dashboard')
@@ -64,16 +73,22 @@ class AgreementAssignedNotification extends Notification implements ShouldQueue
         return $message
             ->line('') // Empty line for spacing
             ->line('---')
-            ->line(__('You are receiving this notification because you are an administrator or department head.'))
-            ->line(__('This is an automated notification.'));
+            ->line(__('You are receiving this notification because you are the department head of **:department**.', [
+                'department' => $this->agreement->assigned_department->getDescription(),
+            ]))
+            ->line(__('This is an automated notification triggered by **:name**\'s action.', [
+                'name' => $this->triggeredBy?->formal_name ?? __('the system'),
+            ]));
     }
 
     public function toDatabase(object $notifiable): array
     {
         return [
             'title' => __('New Agreement Assignment'),
-            'body' => __('An agreement for :name has been assigned to :department department.', [
-                'name' => $this->agreement->student->name,
+            'body' => __('The program coordinator of :program, :coordinator, has assigned the project \':title\' to your department :department.', [
+                'program' => $this->agreement->student->program->value,
+                'coordinator' => $this->triggeredBy?->formal_name ?? __('System'),
+                'title' => $this->agreement->title,
                 'department' => $this->agreement->assigned_department->value,
             ]),
             'action' => route('filament.Administration.resources.final-year-internship-agreements.view', ['record' => $this->agreement]),

@@ -35,11 +35,16 @@ class AgreementObserver
         }
 
         // For department assignment on Signed agreements, notify department heads and admins
-        if ($agreement->wasChanged('assigned_department') && $agreement->assigned_department && $agreement->status === Enums\Status::Signed) {
+        if (
+            $agreement->wasChanged('assigned_department')
+            && $agreement->assigned_department
+            && $agreement->status === Enums\Status::Signed
+        ) {
             $recipients = User::query()
                 ->where(function ($query) use ($agreement) {
-                    $query->whereIn('role', [Role::Administrator, Role::SuperAdministrator])
-                        ->orWhere(function ($query) use ($agreement) {
+                    $query
+                    // ->whereIn('role', [Role::Administrator, Role::SuperAdministrator])
+                        ->where(function ($query) use ($agreement) {
                             $query->where('role', Role::DepartmentHead)
                                 ->where('department', $agreement->assigned_department);
                         });
@@ -47,7 +52,7 @@ class AgreementObserver
                 ->get();
 
             foreach ($recipients as $recipient) {
-                $recipient->notify(new AgreementAssignedNotification($agreement));
+                $recipient->notify(new AgreementAssignedNotification($agreement, auth()->user()));
             }
         }
     }
