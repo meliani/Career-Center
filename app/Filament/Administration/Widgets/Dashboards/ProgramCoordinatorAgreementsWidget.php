@@ -106,8 +106,16 @@ class ProgramCoordinatorAgreementsWidget extends BaseWidget
                     ->extraAttributes([
                         'class' => 'animate-fade-in',
                         'wire:loading.class' => 'opacity-50',
-                    ])
-                    ->tooltip(fn ($record) => __('Project title') . ': ' . $record->title),
+                    ]),
+                // ->tooltip(fn ($record) => __('Project title') . ': ' . $record->title),
+
+                Tables\Columns\TextColumn::make('title')
+                    ->label(__('Title'))
+                    ->searchable()
+                    ->sortable()
+                    ->extraAttributes(['class' => 'animate-slide-in-right'])
+
+                    ->tooltip(fn ($record) => __('Project description') . ': ' . $record->description),
 
                 // Tables\Columns\TextColumn::make('organization.name')
                 //     ->label(__('Organization'))

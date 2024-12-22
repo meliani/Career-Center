@@ -163,6 +163,7 @@ class FinalYearInternshipAgreementResource extends BaseResource
                     ->sortable()
                     ->searchable(false),
                 Tables\Columns\TextColumn::make('suggestedInternalSupervisor.full_name')
+                    ->visible(fn () => auth()->user()->isAdministrator())
                     ->label('Internal Supervisor (student suggested)')
                     ->searchable(false)
                     ->sortable(),
@@ -170,7 +171,9 @@ class FinalYearInternshipAgreementResource extends BaseResource
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('externalSupervisor.full_name')
                     ->searchable(false)
-                    ->sortable(),
+                    ->sortable()
+                    ->description(fn ($record) => $record->externalSupervisor->email)
+                    ->tooltip(fn ($record) => $record->externalSupervisor->phone),
                 Tables\Columns\SpatieTagsColumn::make('tags')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(false),
