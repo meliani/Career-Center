@@ -36,7 +36,7 @@ class AgreementCreatedNotification extends Notification implements ShouldQueue
                 'student' => $this->agreement->student->name,
                 'PfeId' => $this->agreement->student->id_pfe,
             ]))
-            ->greeting(__('Hello!'))
+            ->greeting(__('Hello :name,', ['name' => $notifiable->formal_name]))
             ->line('') // Empty line for spacing
             ->line(__('Student **:name** from **:program** program has submitted a new internship agreement.', [
                 'name' => $this->agreement->student->name,
