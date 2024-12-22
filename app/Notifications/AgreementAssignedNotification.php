@@ -17,7 +17,8 @@ class AgreementAssignedNotification extends Notification implements ShouldQueue
 
     public function __construct(
         protected FinalYearInternshipAgreement $agreement,
-        protected ?object $triggeredBy = null
+        protected ?object $triggeredBy = null,
+        protected bool $isReassignment = false
     ) {}
 
     public function via(object $notifiable): array
@@ -33,22 +34,37 @@ class AgreementAssignedNotification extends Notification implements ShouldQueue
 
         $systemUsers = User::where('role', Role::System)->pluck('email')->toArray();
 
+        $subject = $this->isReassignment
+            ? __('Project Reassignment Notification - :program - :student (:PfeId)')
+            : __('New Final Project Assigned - :program - :student (:PfeId)');
+
+        $message = $this->isReassignment
+            ? __('The program coordinator of **:program**, **:coordinator**, has reassigned the project from your department.')
+            : __('The program coordinator of **:program**, **:coordinator**, has assigned the project \'**:title**\' to your department **:department**.');
+
         $message = (new MailMessage)
             ->cc($systemUsers)
-            ->subject(__('New Final Project Assigned - :program - :student (:PfeId)', [
+            ->subject(__($subject, [
                 'program' => $this->agreement->student->program->value,
                 'student' => $this->agreement->student->name,
                 'PfeId' => $this->agreement->student->id_pfe,
             ]))
             ->greeting(__('Hello :name,', ['name' => $notifiable->formal_name]))
             ->line('') // Empty line for spacing
-            ->line(__('The program coordinator of **:program**, **:coordinator**, has assigned the project \'**:title**\' to your department **:department**.', [
+            ->line(__($message, [
                 'program' => $this->agreement->student->program->value,
                 'coordinator' => $this->triggeredBy?->formal_name ?? __('System'),
                 'title' => $this->agreement->title,
                 'department' => $this->agreement->assigned_department->value,
-            ]))
-            ->line('') // Empty line for spacing
+            ]));
+
+        // Add reassignment specific message if applicable
+        if ($this->isReassignment) {
+            $message->line('')
+                ->line(__('This project has been reassigned to another department. You will no longer receive updates about this project.'));
+        }
+
+        $message->line('') // Empty line for spacing
             ->line('### ' . __('Project Details:'))
             ->line('- **' . __('PFE ID:') . '** ' . $this->agreement->student->id_pfe)
             ->line('- **' . __('Title:') . '** ' . $this->agreement->title)
@@ -60,14 +76,17 @@ class AgreementAssignedNotification extends Notification implements ShouldQueue
             );
 
         // Only add the projects dashboard info for department heads
-        if ($notifiable->role === Enums\Role::DepartmentHead) {
-            $message->line('') // Empty line for spacing
-                ->line('### ' . __('Next Steps:'))
-                ->line(__('The project is now ready for supervisor and reviewer assignments through careers platform.'))
-                ->action(
-                    __('Go to Projects Dashboard'),
-                    route('filament.Administration.pages.projects-dashboard')
-                );
+        if (! $this->isReassignment) {
+
+            if ($notifiable->role === Enums\Role::DepartmentHead) {
+                $message->line('') // Empty line for spacing
+                    ->line('### ' . __('Next Steps:'))
+                    ->line(__('The project is now ready for supervisor and reviewer assignments through careers platform.'))
+                    ->action(
+                        __('Go to Projects Dashboard'),
+                        route('filament.Administration.pages.projects-dashboard')
+                    );
+            }
         }
 
         return $message
@@ -83,9 +102,17 @@ class AgreementAssignedNotification extends Notification implements ShouldQueue
 
     public function toDatabase(object $notifiable): array
     {
+        $title = $this->isReassignment
+            ? __('Project Reassignment Notification')
+            : __('New Agreement Assignment');
+
+        $body = $this->isReassignment
+            ? __('The program coordinator of :program, :coordinator, has reassigned the project \':title\' from your department.')
+            : __('The program coordinator of :program, :coordinator, has assigned the project \':title\' to your department :department.');
+
         return [
-            'title' => __('New Agreement Assignment'),
-            'body' => __('The program coordinator of :program, :coordinator, has assigned the project \':title\' to your department :department.', [
+            'title' => $title,
+            'body' => __($body, [
                 'program' => $this->agreement->student->program->value,
                 'coordinator' => $this->triggeredBy?->formal_name ?? __('System'),
                 'title' => $this->agreement->title,

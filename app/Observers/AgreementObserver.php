@@ -34,25 +34,31 @@ class AgreementObserver
             }
         }
 
-        // For department assignment on Signed agreements, notify department heads and admins
-        if (
-            $agreement->wasChanged('assigned_department')
-            && $agreement->assigned_department
-            && $agreement->status === Enums\Status::Signed
-        ) {
-            $recipients = User::query()
-                ->where(function ($query) use ($agreement) {
-                    $query
-                    // ->whereIn('role', [Role::Administrator, Role::SuperAdministrator])
-                        ->where(function ($query) use ($agreement) {
-                            $query->where('role', Role::DepartmentHead)
-                                ->where('department', $agreement->assigned_department);
-                        });
-                })
+        // For department assignment, notify department heads
+        if ($agreement->wasChanged('assigned_department') && $agreement->assigned_department) {
+            $departmentHeads = User::query()
+                ->where('role', Role::DepartmentHead)
+                ->where('department', $agreement->assigned_department)
                 ->get();
 
-            foreach ($recipients as $recipient) {
-                $recipient->notify(new AgreementAssignedNotification($agreement, auth()->user()));
+            foreach ($departmentHeads as $head) {
+                $head->notify(new AgreementAssignedNotification($agreement, auth()->user()));
+            }
+
+            // If this was a reassignment, notify previous department head
+            if ($oldDepartment = $agreement->getOriginal('assigned_department')) {
+                $previousHeads = User::query()
+                    ->where('role', Role::DepartmentHead)
+                    ->where('department', $oldDepartment)
+                    ->get();
+
+                foreach ($previousHeads as $head) {
+                    $head->notify(new AgreementAssignedNotification(
+                        agreement: $agreement,
+                        triggeredBy: auth()->user(),
+                        isReassignment: true
+                    ));
+                }
             }
         }
     }

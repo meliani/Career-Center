@@ -1021,5 +1021,13 @@
     "Review Agreement": "Examiner la convention",
     "The agreement is now ready for department assignment through careers platform.": "La convention est maintenant prête pour l'affectation de département via la plateforme Carrières.",
     "You are receiving this notification as the coordinator of the :program program.": "Vous recevez cette notification en tant que coordonnateur de la filière :program.",
-    "Hello :name,": "Bonjour :name,"
+    "Hello :name,": "Bonjour :name,",
+    "Project Reassignment Notification - :program - :student (:PfeId)": "Notification de réaffectation de projet - :program - :student (:PfeId)",
+    "The program coordinator of :program, :coordinator, has reassigned the project ':title' from your department.": "Le coordonnateur de la filière :program, :coordinator, a réaffecté le projet ':title' de votre département.",
+    "The program coordinator of :program, :coordinator, has assigned the project ':title' to your department :department.": "Le coordonnateur de la filière :program, :coordinator, a affecté le projet ':title' à votre département :department.",
+    "Project Reassignment Notification": "Notification de réaffectation de projet",
+    "This project has been reassigned to another department. You will no longer receive updates about this project.": "Ce projet a été réaffecté à un autre département. Vous ne recevrez plus de mises à jour concernant ce projet.",
+    "the system": "le système",
+    "The agreement has been assigned to :department department by :name": "La convention a été affectée au département :department par :name",
+    "The program coordinator of **:program**, **:coordinator**, has reassigned the project from your department.": "Le coordonnateur de la filière **:program**, **:coordinator**, a réaffecté le projet de votre département."
 }

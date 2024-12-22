@@ -19,6 +19,13 @@ class ProgramCoordinatorAgreementsWidget extends BaseWidget
 
     protected int | string | array $columnSpan = 'full';
 
+    protected $listeners = [
+        'confirm-department-change' => 'confirmDepartmentChange',
+        'cancel-department-change' => 'cancelDepartmentChange',
+    ];
+
+    public $pendingDepartmentChange = null;
+
     public function filterByStat(?string $filter): void
     {
         $this->activeFilter = $this->activeFilter === $filter ? null : $filter;
@@ -42,9 +49,29 @@ class ProgramCoordinatorAgreementsWidget extends BaseWidget
         };
     }
 
+    protected function handleDepartmentChange($record, $newDepartment): void
+    {
+        $record->department_assigned_at = now();
+        $record->department_assigned_by = auth()->user()->id;
+        $record->assigned_department = $newDepartment;
+        $record->save();
+
+        Notification::make()
+            ->title(__('Department Assigned'))
+            ->body(__(
+                'The department :department has been assigned to the student :student.',
+                [
+                    'department' => $record->assigned_department->getLabel(),
+                    'student' => $record->student->name,
+                ]
+            ))
+            ->success()
+            ->send();
+    }
+
     public function table(Table $table): Table
     {
-        // $filterLabel = match ($this->activeFilter) {
+        // $filterLabel = match ($this->.activeFilter) {
         //     'pending' => __('Pending Assignment'),
         //     'assigned' => __('Department Assigned'),
         //     default => null,
@@ -95,24 +122,50 @@ class ProgramCoordinatorAgreementsWidget extends BaseWidget
                     ->extraAttributes([
                         'class' => 'transition-all duration-300 hover:scale-105',
                     ])
-                    ->afterStateUpdated(function ($record) {
-                        $record->department_assigned_at = now();
-                        $record->department_assigned_by = auth()->user()->id;
-                        $record->save();
-                        // notification
+                    ->updateStateUsing(fn ($state, $record) => $record->assigned_department) // Disable automatic change
+                    ->beforeStateUpdated(function ($record, $state) {
+                        if (! $record->assigned_department) {
+                            $this->handleDepartmentChange($record, $state);
 
-                        Notification::make()
-                            ->title(__('Department Assigned'))
+                            return true;
+                        }
+
+                        $this->pendingDepartmentChange = [
+                            'recordId' => $record->id,
+                            'department' => $state,
+                        ];
+
+                        Notification::make('department-reassignment')
+                            ->title(__('Department Reassignment'))
                             ->body(__(
-                                'The department :department has been assigned to the student :student, and an email notification has been sent to the department head.',
+                                'The student :student is being reassigned from :oldDepartment to :newDepartment.',
                                 [
-                                    'department' => $record->assigned_department->getLabel(),
                                     'student' => $record->student->name,
+                                    'oldDepartment' => $record->assigned_department->getLabel(),
+                                    'newDepartment' => Enums\Department::from($state)->getLabel(),
                                 ]
                             ))
-                            ->success()
+                            ->warning()
+                            ->actions([
+                                \Filament\Notifications\Actions\Action::make('confirm')
+                                    ->label(__('Confirm Change'))
+                                    ->button()
+                                    ->color('warning')
+                                    ->dispatch('confirm-department-change', [
+                                        'id' => $record->id,
+                                        'department' => $state,
+                                    ])
+                                    ->close(),
+                                \Filament\Notifications\Actions\Action::make('cancel')
+                                    ->label(__('Cancel'))
+                                    ->color('gray')
+                                    ->dispatch('cancel-department-change')
+                                    ->close(),
+                            ])
+                            // ->persistent()
                             ->send();
 
+                        return false;
                     }),
                 // ->tooltip(fn ($record) => $record->suggestedInternalSupervisor ? __('Internal Supervisor (student suggested)') . ': ' . $record->suggestedInternalSupervisor->name : null),
                 // Tables\Columns\TextColumn::make('suggestedInternalSupervisor.name')
@@ -196,5 +249,19 @@ class ProgramCoordinatorAgreementsWidget extends BaseWidget
     protected function getTableContentFooter(): ?View
     {
         return view('filament.widgets.program-coordinator.footer');
+    }
+
+    public function confirmDepartmentChange(int $id, string $department): void
+    {
+        if ($record = Agreement::find($id)) {
+            $this->handleDepartmentChange($record, $department);
+        }
+        $this->pendingDepartmentChange = null;
+    }
+
+    public function cancelDepartmentChange(): void
+    {
+        $this->pendingDepartmentChange = null;
+        $this->resetTable();
     }
 }
