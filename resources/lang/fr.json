@@ -369,6 +369,7 @@
     "Internship theme": "Thème du stage",
     "Internship type": "Type de stage",
     "Internship Details": "Détails du stage",
+    "Define the internship specifics": "Définir les spécificités du stage",
     "Projects IDs": "Identifiants des projets",
     "Name": "Nom",
     "Projects Participations": "Participations aux projets",
@@ -1029,5 +1030,8 @@
     "This project has been reassigned to another department. You will no longer receive updates about this project.": "Ce projet a été réaffecté à un autre département. Vous ne recevrez plus de mises à jour concernant ce projet.",
     "the system": "le système",
     "The agreement has been assigned to :department department by :name": "La convention a été affectée au département :department par :name",
-    "The program coordinator of **:program**, **:coordinator**, has reassigned the project from your department.": "Le coordonnateur de la filière **:program**, **:coordinator**, a réaffecté le projet de votre département."
+    "The program coordinator of **:program**, **:coordinator**, has reassigned the project from your department.": "Le coordonnateur de la filière **:program**, **:coordinator**, a réaffecté le projet de votre département.",
+    "The final supervisor will be assigned after the departmental council.": "L'encadrant final sera assigné après le conseil de département.",
+    "Internal supervisor suggestion": "Suggestion d'encadrant interne",
+    "Suggested internal supervisor": "Encadrant interne suggéré"
 }

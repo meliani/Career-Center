@@ -160,8 +160,8 @@ class CreateFinalYearInternshipAgreement extends CreateRecord
                 ->schema([
                     Forms\Components\Grid::make(2)
                         ->schema([
-                            Forms\Components\Section::make('Organization Representative')
-                                ->label('Organization Representative')
+                            Forms\Components\Section::make(__('Organization Representative'))
+                                ->label(__('Organization Representative'))
                                 ->description(__('The person who will sign the agreement on behalf of the organization'))
                                 ->schema([
                                     Forms\Components\Select::make('parrain_id')
@@ -204,8 +204,8 @@ class CreateFinalYearInternshipAgreement extends CreateRecord
                                         }),
                                 ]),
 
-                            Forms\Components\Section::make('External Supervisor')
-                                ->label(__('External Supervisor'))
+                            Forms\Components\Section::make(__('External supervisor'))
+                                ->label(__('External supervisor'))
                                 ->description(__('Your internship supervisor from the organization'))
                                 ->schema([
                                     Forms\Components\Select::make('external_supervisor_id')
@@ -252,8 +252,8 @@ class CreateFinalYearInternshipAgreement extends CreateRecord
                                         }),
                                 ]),
 
-                            Forms\Components\Section::make('Internal Supervisor')
-                                ->description('The supervisor from the academic institution')
+                            Forms\Components\Section::make(__('Internal supervisor suggestion'))
+                                ->description(__('The final supervisor will be assigned after the departmental council.'))
                                 ->schema([
                                     Forms\Components\Select::make('internal_supervisor_id')
                                         ->hint(__('You can suggest a supervisor from the academic institution'))
@@ -272,9 +272,9 @@ class CreateFinalYearInternshipAgreement extends CreateRecord
                 ]),
 
             // Step 4: Internship Details
-            Forms\Components\Wizard\Step::make('Internship Details')
+            Forms\Components\Wizard\Step::make(__('Internship Details'))
                 ->icon('heroicon-o-document-text')
-                ->description('Define the internship specifics')
+                ->description(__('Define the internship specifics'))
                 ->schema([
                     Forms\Components\Section::make('Basic Information')
                         ->schema([
