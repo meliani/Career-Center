@@ -186,8 +186,8 @@ class CreateFinalYearInternshipAgreement extends CreateRecord
                                                     Forms\Components\TextInput::make('last_name')->required(),
                                                     Forms\Components\TextInput::make('email')
                                                         ->email()
-                                                        ->required()
-                                                        ->unique('internship_agreement_contacts', 'email'),
+                                                        ->required(),
+                                                    // ->unique('internship_agreement_contacts', 'email'),
                                                     Forms\Components\TextInput::make('phone')->tel()->required(),
                                                     Forms\Components\TextInput::make('function')->required(),
                                                 ]),
@@ -234,8 +234,8 @@ class CreateFinalYearInternshipAgreement extends CreateRecord
                                                         ->formatStateUsing(fn (?string $state): ?string => ucwords($state)),
                                                     Forms\Components\TextInput::make('email')
                                                         ->email()
-                                                        ->required()
-                                                        ->unique('internship_agreement_contacts', 'email'),
+                                                        ->required(),
+                                                    // ->unique('internship_agreement_contacts', 'email'),
                                                     Forms\Components\TextInput::make('phone')->tel()->required(),
                                                     Forms\Components\TextInput::make('function')->required(),
                                                 ]),
