@@ -88,6 +88,7 @@ class FinalYearInternshipAgreement extends Model implements Agreement
         static::created(function (FinalYearInternshipAgreement $finalYearInternship) {
             $finalYearInternship->generateVerificationLink();
         });
+
     }
 
     public function student()
@@ -285,6 +286,8 @@ class FinalYearInternshipAgreement extends Model implements Agreement
                 throw new AuthorizationException;
             }
             $this->assigned_department = $department;
+            $this->department_assigned_at = now();
+            $this->department_assigned_by = auth()->id();
             $this->save();
             \Filament\Notifications\Notification::make()
                 ->title('Assigned successfully')
