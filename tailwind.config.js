@@ -6,6 +6,7 @@ import typography from '@tailwindcss/typography'
 import preset from './tailwind.config.preset'
 
 
+/** @type {import('tailwindcss').Config} */
 export default {
     presets: [preset],
     content: [
@@ -14,6 +15,9 @@ export default {
         './vendor/filament/**/*.blade.php',
         // './app/**/*.php',
         // "./resources/**/*.{php,html,js,jsx,ts,tsx,vue,twig}",
+        './resources/views/pdf/**/*.blade.php',
+        "./resources/**/*.js",
+        "./resources/**/*.vue",
     ],
     darkMode: 'class',
     theme: {
