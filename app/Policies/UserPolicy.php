@@ -29,7 +29,7 @@ class UserPolicy extends CorePolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole(Role::SuperAdministrator);
+        return $user->isSuperAdministrator();
     }
 
     /**
@@ -37,7 +37,8 @@ class UserPolicy extends CorePolicy
      */
     public function update(User $user, User $model): bool
     {
-        return $user->hasAnyRole(Role::getAdministratorRoles()) || $user->id === $model->id;
+        // return $user->hasAnyRole(Role::getAdministratorRoles()) || $user->id === $model->id;
+        return $user->isRoot() || $user->id === $model->id;
     }
 
     /**
@@ -46,7 +47,7 @@ class UserPolicy extends CorePolicy
     public function delete(User $user, User $model): bool
     {
 
-        return $user->hasRole(Role::SuperAdministrator);
+        return $user->isRoot();
     }
 
     /**
@@ -54,7 +55,7 @@ class UserPolicy extends CorePolicy
      */
     public function restore(User $user, User $model): bool
     {
-        return $user->hasRole(Role::SuperAdministrator);
+        return $user->hasRole($user->isRoot());
     }
 
     /**
@@ -62,6 +63,6 @@ class UserPolicy extends CorePolicy
      */
     public function forceDelete(User $user, User $model): bool
     {
-        return $user->hasRole(Role::SuperAdministrator);
+        return $user->hasRole($user->isRoot());
     }
 }

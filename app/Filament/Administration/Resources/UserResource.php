@@ -148,7 +148,8 @@ class UserResource extends Resource
                         ->requiresConfirmation(),
                 ]),
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->visible(fn () => auth()->user()->isRoot()),
                 ]),
             ]);
     }
