@@ -158,10 +158,12 @@ class YearlyTimelineResource extends BaseResource
                 Tables\Columns\ViewColumn::make('assignedUsers')
                     ->label('Assigned Users')
                     ->view('filament.tables.columns.avatar-group')
+                    ->searchable(false)
                     ->alignCenter(),
                 Tables\Columns\TextColumn::make('assignedUsers_count')
                     ->counts('assignedUsers')
                     ->label('Total Assigned')
+                    ->searchable(false)
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->defaultSort('start_date', 'asc')

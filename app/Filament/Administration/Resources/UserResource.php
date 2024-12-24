@@ -87,12 +87,15 @@ class UserResource extends Resource
                     ->label('Avatar')
                     ->circular(),
                 Tables\Columns\TextColumn::make('long_full_name')
-                    ->searchable(),
+                    ->searchable(
+                        ['first_name', 'last_name']
+                    ),
                 // Tables\Columns\TextColumn::make('first_name')
                 //     ->searchable(),
                 // Tables\Columns\TextColumn::make('last_name')
                 //     ->searchable(),
                 Tables\Columns\TextColumn::make('role')
+                    ->badge()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),

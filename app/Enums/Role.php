@@ -11,7 +11,6 @@ enum Role: string implements HasLabel
 
     case ProgramCoordinator = 'ProgramCoordinator';
     case Professor = 'Professor';
-    case InternshipSupervisor = 'InternshipSupervisor';
     case DepartmentHead = 'DepartmentHead';
     case Administrator = 'Administrator';
     case SuperAdministrator = 'SuperAdministrator';
@@ -69,7 +68,6 @@ enum Role: string implements HasLabel
         return [
             Role::ProgramCoordinator,
             Role::Professor,
-            Role::InternshipSupervisor,
             Role::DepartmentHead,
             Role::Administrator,
             Role::SuperAdministrator,
@@ -84,7 +82,6 @@ enum Role: string implements HasLabel
         return match ($this) {
             Role::ProgramCoordinator => __('Program Coordinator'),
             Role::Professor => __('Professor'),
-            Role::InternshipSupervisor => __('Internship Supervisor'),
             Role::DepartmentHead => __('Head of Department'),
             Role::Administrator => __('Administrator'),
             Role::SuperAdministrator => __('Super Administrator'),
