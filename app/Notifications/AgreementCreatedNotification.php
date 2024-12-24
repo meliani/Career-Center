@@ -50,7 +50,7 @@ class AgreementCreatedNotification extends Notification implements ShouldQueue
             ->line('- **' . __('Period:') . '** ' . $period)
             ->action(
                 __('Go to Projects Dashboard'),
-                route('filament.Administration.pages.projects-dashboard')
+                route('filament.Administration.home')
             )
             ->line('') // Empty line for spacing
             ->line('### ' . __('Required Action:'))

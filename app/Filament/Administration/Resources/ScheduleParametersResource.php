@@ -75,7 +75,8 @@ class ScheduleParametersResource extends Resource
                     Actions\Action\Processing\GenerateTimeslotsFromArtisanAction::make('Generate Timeslots From Artisan')
                         ->label(__('Generate Timeslots From Artisan'))
                         ->requiresConfirmation()
-                        ->slideOver(),
+                        ->slideOver()
+                        ->color('success'),
                     Actions\Action\Processing\GenerateTimetableAction::make('Generate Timetable')
                         ->label(__('Generate Defenses Timetable'))
                         ->requiresConfirmation(),
@@ -86,7 +87,8 @@ class ScheduleParametersResource extends Resource
                         //     Forms\Components\DatePicker::make('startDate')->required(),
                         //     Forms\Components\DatePicker::make('endDate')->required(),
                         // ])
-                        ->slideOver(),
+                        ->slideOver()
+                        ->color('success'),
 
                 ]),
             ]);
@@ -104,9 +106,6 @@ class ScheduleParametersResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('day_starting_at'),
                 Tables\Columns\TextColumn::make('day_ending_at'),
-                Tables\Columns\TextColumn::make('max_defenses_per_professor')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('minutes_per_slot')
                     ->numeric()
                     ->sortable(),

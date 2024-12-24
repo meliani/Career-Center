@@ -42,20 +42,20 @@ class DiplomaResource extends BaseResource
     {
         if (auth()->check()) {
 
-            return auth()->user()->isSuperAdministrator() || auth()->user()->isAdministrativeSupervisor(12);
+            return auth()->user()->isRoot() || auth()->user()->isAdministrativeSupervisor(12);
         }
 
         return false;
     }
 
-    public static function canViewAny(): bool
-    {
-        if (auth()->check()) {
-            return auth()->user()->isSuperAdministrator() || auth()->user()->isAdministrativeSupervisor(12);
-        }
+    // public static function canViewAny(): bool
+    // {
+    //     if (auth()->check()) {
+    //         return auth()->user()->isSuperAdministrator() || auth()->user()->isAdministrativeSupervisor(12);
+    //     }
 
-        return false;
-    }
+    //     return false;
+    // }
 
     public static function form(Form $form): Form
     {

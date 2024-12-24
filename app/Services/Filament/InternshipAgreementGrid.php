@@ -34,9 +34,9 @@ class InternshipAgreementGrid
                 ->searchable(),
             Split::make([
                 Stack::make([
-                    Tables\Columns\TextColumn::make('organization_name')
+                    Tables\Columns\TextColumn::make('organization.name')
                         ->searchable(),
-                    Tables\Columns\TextColumn::make('country')
+                    Tables\Columns\TextColumn::make('organization.country')
                         ->searchable(),
                 ]),
                 Stack::make([
@@ -50,30 +50,27 @@ class InternshipAgreementGrid
             ]),
             Panel::make([
 
-                Stack::make([
-                    Split::make([
+                // Stack::make([
+                //     Split::make([
 
-                        Tables\Columns\TextColumn::make('encadrant_ext_nom')
-                            ->searchable(),
-                        Tables\Columns\TextColumn::make('encadrant_ext_prenom')
-                            ->searchable(),
-                        Tables\Columns\TextColumn::make('encadrant_ext_fonction')
-                            ->searchable(),
-                    ]),
-                    Split::make([
-                        Tables\Columns\TextColumn::make('encadrant_ext_tel')
-                            ->searchable()->icon('heroicon-m-phone')
-                            ->grow(true)->alignment(Alignment::End),
-                        Tables\Columns\TextColumn::make('encadrant_ext_mail')
-                            ->searchable()->icon('heroicon-m-envelope')
-                            ->copyable()
-                            ->copyMessage('Email address copied'),
-                    ]),
-                ])->grow(true)->alignment(Alignment::End),
+                //         Tables\Columns\TextColumn::make('encadrant_ext_nom')
+                //             ->searchable(),
+                //         Tables\Columns\TextColumn::make('encadrant_ext_prenom')
+                //             ->searchable(),
+                //         Tables\Columns\TextColumn::make('encadrant_ext_fonction')
+                //             ->searchable(),
+                //     ]),
+                //     Split::make([
+                //         Tables\Columns\TextColumn::make('encadrant_ext_tel')
+                //             ->searchable()->icon('heroicon-m-phone')
+                //             ->grow(true)->alignment(Alignment::End),
+                //         Tables\Columns\TextColumn::make('encadrant_ext_mail')
+                //             ->searchable()->icon('heroicon-m-envelope')
+                //             ->copyable()
+                //             ->copyMessage('Email address copied'),
+                //     ]),
+                // ])->grow(true)->alignment(Alignment::End),
             ])->collapsible(),
-            Tables\Columns\IconColumn::make('is_valid')
-                ->label(__('Validated by student'))
-                ->boolean(),
         ];
     }
 }

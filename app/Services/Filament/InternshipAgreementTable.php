@@ -53,13 +53,13 @@ class InternshipAgreementTable
             Tables\Columns\TextColumn::make('duration_in_months')
                 ->searchable(false)
                 ->label(__('Duration')),
-            Tables\Columns\TextColumn::make('central_organization')
-                ->toggleable(isToggledHiddenByDefault: true)
-                ->label('Central organization')
-                ->searchable()
-                ->sortable(),
+            // Tables\Columns\TextColumn::make('central_organization')
+            //     ->toggleable(isToggledHiddenByDefault: true)
+            //     ->label('Central organization')
+            //     ->searchable()
+            //     ->sortable(),
 
-            Tables\Columns\TextColumn::make('organization_name')
+            Tables\Columns\TextColumn::make('organization.name')
                 ->label('Organization')
                 ->searchable()
                 ->sortable()
@@ -93,22 +93,22 @@ class InternshipAgreementTable
                 ->tooltip(
                     fn (InternshipAgreement $internship) => $internship->description,
                 ),
-            Tables\Columns\TextColumn::make('parrain_nom')
-                ->toggleable(isToggledHiddenByDefault: true)
-                ->label(__('Parrain'))
-                ->formatStateUsing(function ($state, InternshipAgreement $internship) {
-                    return $internship->parrain_titre?->getLabel() . ' ' . $internship->parrain_nom . ' ' . $internship->parrain_prenom;
-                })
-                ->searchable()
-                ->sortable(),
-            Tables\Columns\TextColumn::make('encadrant_ext_nom')
-                ->toggleable(isToggledHiddenByDefault: true)
-                ->label('Encadrant')
-                ->formatStateUsing(function ($state, InternshipAgreement $internship) {
-                    return $internship->encadrant_ext_titre?->getLabel() . ' ' . $internship->encadrant_ext_nom . ' ' . $internship->encadrant_ext_prenom;
-                })
-                ->searchable()
-                ->sortable(),
+            // Tables\Columns\TextColumn::make('parrain_nom')
+            //     ->toggleable(isToggledHiddenByDefault: true)
+            //     ->label(__('Parrain'))
+            //     ->formatStateUsing(function ($state, InternshipAgreement $internship) {
+            //         return $internship->parrain_titre?->getLabel() . ' ' . $internship->parrain_nom . ' ' . $internship->parrain_prenom;
+            //     })
+            //     ->searchable()
+            //     ->sortable(),
+            // Tables\Columns\TextColumn::make('encadrant_ext_nom')
+            //     ->toggleable(isToggledHiddenByDefault: true)
+            //     ->label('Encadrant')
+            //     ->formatStateUsing(function ($state, InternshipAgreement $internship) {
+            //         return $internship->encadrant_ext_titre?->getLabel() . ' ' . $internship->encadrant_ext_nom . ' ' . $internship->encadrant_ext_prenom;
+            //     })
+            //     ->searchable()
+            //     ->sortable(),
             Tables\Columns\TextColumn::make('status')
                 ->label('Status')
                 ->searchable()

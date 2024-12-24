@@ -24,10 +24,10 @@ class SentEmailUrlClickedResource extends Core\BaseResource
 
     protected static ?string $navigationParentItem = 'Sent Emails';
 
-    public static function canViewAny(): bool
+    public static function canAccess(): bool
     {
         if (auth()->check()) {
-            return auth()->user()->isSuperAdministrator();
+            return auth()->user()->isRoot();
         }
 
         return false;

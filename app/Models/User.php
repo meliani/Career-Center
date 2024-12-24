@@ -33,7 +33,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName
      */
     protected $guarded = [];
 
-    protected $administrators = [Enums\Role::SuperAdministrator, Enums\Role::Administrator];
+    protected $administrators = [Enums\Role::SuperAdministrator, Enums\Role::Administrator, Enums\Role::System];
 
     protected $professors = [Enums\Role::Professor, Enums\Role::DepartmentHead, Enums\Role::ProgramCoordinator];
 
@@ -234,6 +234,11 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName
         $adminSupervisor = User::where('assigned_program', $program)->where('role', Enums\Role::AdministrativeSupervisor->value)->first();
 
         return $adminSupervisor;
+    }
+
+    public function isRoot()
+    {
+        return $this->hasRole(Enums\Role::System);
     }
 
     public function sendPasswordResetNotification($token)

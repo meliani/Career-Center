@@ -274,30 +274,35 @@ class FinalYearInternshipAgreementResource extends BaseResource
                     ->disabled(fn ($record): bool => $record['assigned_department'] !== null),
             ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
+                Tables\Actions\BulkAction::make('sign')
+                    ->label('Sign selection')
+                    ->icon('heroicon-o-check')
+                    ->color('success')
+                    ->requiresConfirmation()
+                    ->modalIconColor('success')
+                    ->modalIcon('heroicon-o-check')
+                    ->modalHeading(__('Sign internship agreements'))
+                    ->modalDescription(__('Are you sure you want to mark this internships as Signed?'))
+                    ->modalSubmitActionLabel(__('Mark as signed'))
+                    ->hidden(fn () => ! auth()->user()->can('sign', new FinalYearInternshipAgreement))
+                    ->action(fn ($records) => $records->each->sign()),
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\BulkAction::make('sign')
-                        ->label('Sign selection')
-                        ->icon('heroicon-o-check')
-                        ->color('success')
-                        ->requiresConfirmation()
-                        ->hidden(fn () => ! auth()->user()->can('sign', new FinalYearInternshipAgreement))
-                        ->action(fn ($records) => $records->each->sign()),
 
-                    Tables\Actions\BulkAction::make('validate')
-                        ->label('Validate selection')
-                        ->icon('heroicon-o-check-circle')
-                        ->color('success')
-                        ->requiresConfirmation()
-                        ->hidden(fn () => ! auth()->user()->can('validate', new FinalYearInternshipAgreement))
-                        ->action(fn ($records) => $records->each->validate()),
+                    // Tables\Actions\BulkAction::make('validate')
+                    //     ->label('Validate selection')
+                    //     ->icon('heroicon-o-check-circle')
+                    //     ->color('success')
+                    //     ->requiresConfirmation()
+                    //     ->hidden(fn () => ! auth()->user()->can('validate', new FinalYearInternshipAgreement))
+                    //     ->action(fn ($records) => $records->each->validate()),
 
-                    Tables\Actions\BulkAction::make('achieve')
-                        ->label('Achieve selection')
-                        ->icon('heroicon-o-archive-box')
-                        ->color('warning')
-                        ->requiresConfirmation()
-                        ->hidden(fn () => ! auth()->user()->can('achieve', new FinalYearInternshipAgreement))
-                        ->action(fn ($records) => $records->each->receive()),
+                    // Tables\Actions\BulkAction::make('achieve')
+                    //     ->label('Achieve selection')
+                    //     ->icon('heroicon-o-archive-box')
+                    //     ->color('warning')
+                    //     ->requiresConfirmation()
+                    //     ->hidden(fn () => ! auth()->user()->can('achieve', new FinalYearInternshipAgreement))
+                    //     ->action(fn ($records) => $records->each->receive()),
                 ])
                     ->hidden(fn () => ! auth()->user()->can('manage', new FinalYearInternshipAgreement)),
             ])

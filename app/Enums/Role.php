@@ -60,6 +60,7 @@ enum Role: string implements HasLabel
         return [
             Role::Administrator,
             Role::SuperAdministrator,
+            Role::System,
         ];
     }
 

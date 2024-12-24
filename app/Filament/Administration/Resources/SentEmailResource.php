@@ -11,6 +11,7 @@ use Filament\Infolists;
 use Filament\Infolists\Infolist;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\View\View;
 
 class SentEmailResource extends Core\BaseResource
@@ -24,6 +25,20 @@ class SentEmailResource extends Core\BaseResource
     protected static ?string $modelLabel = 'Sent Email';
 
     protected static ?string $pluralModelLabel = 'Sent Emails';
+
+    public static function canDelete(Model $record): bool
+    {
+        return false;
+    }
+
+    public static function canAccess(): bool
+    {
+        if (auth()->check()) {
+            return auth()->user()->isSuperAdministrator();
+        }
+
+        return false;
+    }
 
     public static function canViewAny(): bool
     {
@@ -146,10 +161,10 @@ class SentEmailResource extends Core\BaseResource
                     ->modalCancelActionLabel('Close')
                     ->modalWidth('4xl'),
                 // Tables\Actions\EditAction::make(),
-            ])
+            ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    // Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
