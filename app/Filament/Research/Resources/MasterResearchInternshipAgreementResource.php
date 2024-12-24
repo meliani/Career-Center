@@ -71,107 +71,112 @@ class MasterResearchInternshipAgreementResource extends StudentBaseResource
                     ->icon('heroicon-o-plus-circle')
                     ->button(),
             ])
-            ->contentGrid(
-                [
-                    'md' => 1,
-                    'lg' => 1,
-                    'xl' => 1,
-                    '2xl' => 1,
-                ]
-            )
             ->columns([
-                Tables\Columns\Layout\Split::make([
-
-                    Tables\Columns\Layout\Split::make([
+                Tables\Columns\Layout\Panel::make([
+                    Tables\Columns\Layout\Stack::make([
                         Tables\Columns\TextColumn::make('organization.name')
                             ->weight(FontWeight::Bold)
-                            ->description(__('Organization'), position: 'above')
-                            ->toggleable(false)
+                            ->size(Tables\Columns\TextColumn\TextColumnSize::Large)
                             ->label('Organization')
-                            ->numeric()
-                            ->sortable(false),
+                            ->tooltip('The organization where you will do your internship')
+                            ->sortable(false)
+                            ->toggleable(false)
+                            ->extraAttributes([
+                                'class' => 'pb-2',
+                            ]),
+
                         Tables\Columns\TextColumn::make('title')
-                            ->toggleable(false)
+                            ->weight(FontWeight::Medium)
+                            ->label('Subject')
+                            ->tooltip('The subject or topic of your internship')
                             ->sortable(false)
-                            ->description(__('Subject'), position: 'above')
-                            ->weight(FontWeight::Bold),
-                    ]),
+                            ->toggleable(false)
+                            ->extraAttributes([
+                                'class' => 'pb-4',
+                            ]),
+                    ])
+                        ->space(3),
 
-                    Tables\Columns\Layout\Split::make([
-                        Tables\Columns\TextColumn::make('status')
-                            // ->description(__('Status'), position: 'above')
-                            ->toggleable(false)
-                            ->sortable(false)
-                            ->grow(true)
-                            ->badge()
-                            ->columnSpan(1),
-                        Tables\Columns\Layout\Stack::make([
+                    Tables\Columns\Layout\Grid::make([
+                        'md' => 3,
+                        'lg' => 3,
+                    ])
+                        ->extraAttributes([
+                            'class' => 'border rounded-xl p-4 bg-gray-50',
+                        ])
+                        ->schema([
+                            Tables\Columns\TextColumn::make('status')
+                                ->badge()
+                                ->alignment(\Filament\Support\Enums\Alignment::Center)
+                                ->tooltip('Current status of your internship agreement')
+                                ->sortable(false)
+                                ->toggleable(false)
+                                ->grow(false),
+
                             Tables\Columns\TextColumn::make('starting_at')
-                                ->toggleable(false)
-                                ->description(__('Starting from'), position: 'above')
                                 ->date()
-                                ->sortable(false),
+                                ->label('Starting')
+                                ->tooltip('When your internship begins')
+                                ->alignment(\Filament\Support\Enums\Alignment::Center)
+                                ->sortable(false)
+                                ->toggleable(false)
+                                ->formatStateUsing(fn ($state) => $state->format('M d, Y')),
+
                             Tables\Columns\TextColumn::make('ending_at')
-                                ->toggleable(false)
-                                ->description(__('to'), position: 'above')
                                 ->date()
-                                ->sortable(false),
+                                ->label('Ending')
+                                ->tooltip('When your internship ends')
+                                ->alignment(\Filament\Support\Enums\Alignment::Center)
+                                ->sortable(false)
+                                ->toggleable(false)
+                                ->formatStateUsing(fn ($state) => $state->format('M d, Y')),
                         ]),
+
+                    Tables\Columns\Layout\Stack::make([
+                        Tables\Columns\TextColumn::make('agreement_pdf_url')
+                            ->label('Agreement PDF')
+                            ->tooltip('Download or generate your internship agreement document')
+                            ->placeholder(__('No PDF generated yet'))
+                            ->formatStateUsing(fn ($record) => $record->agreement_pdf_url ? __('Download agreement PDF') : __('No PDF generated yet'))
+                            ->url(fn ($record) => $record->agreement_pdf_url, shouldOpenInNewTab: true)
+                            ->badge()
+                            ->sortable(false)
+                            ->toggleable(false)
+                            ->color(fn ($record) => $record->agreement_pdf_url ? 'success' : 'gray')
+                            ->extraAttributes([
+                                'class' => 'mt-4',
+                            ]),
                     ]),
-
-                ]),
-                Tables\Columns\Layout\Panel::make([
-
-                    Tables\Columns\TextColumn::make('agreement_pdf_url')
-                        ->toggleable(false)
-                        // ->description(__('Agreement PDF'), position: 'before')
-                        ->label('Agreement PDF')
-                        ->placeholder(__('No PDF generated yet'))
-                        // ->limit(20)
-                        ->formatStateUsing(fn ($record) => $record->agreement_pdf_url ? _('Download agreement PDF') : _('No PDF generated yet'))
-                        ->columnSpan(3)
-                        ->sortable(false)
-                        ->url(fn ($record) => $record->agreement_pdf_url, shouldOpenInNewTab: true),
-                ]),
+                ])
+                    ->collapsible(false),
             ])
-            ->filters([
-                //
+            ->contentGrid([
+                'md' => 1,
             ])
             ->actions([
-
                 Tables\Actions\ActionGroup::make([
-
-                    ApplyForCancelInternshipAction::make('Apply for internship cancellation')
-                        ->color('danger')
-                        ->icon('heroicon-o-bolt-slash'),
                     Tables\Actions\ViewAction::make()
                         ->color('success')
                         ->label('View details'),
                     Tables\Actions\EditAction::make()
                         ->color('warning')
                         ->label('Edit possible fields'),
+                    ApplyForCancelInternshipAction::make('Apply for internship cancellation')
+                        ->color('danger')
+                        ->icon('heroicon-o-bolt-slash'),
                 ])
-                    ->dropdownPlacement('top-start')
-                    ->dropdownWidth(\Filament\Support\Enums\MaxWidth::Small)
-                    // ->outlined()
-                    ->label(__('Manage my internship agreement'))
-                    ->icon('heroicon-o-adjustments-horizontal')
-                    ->color('primary'),
-                GenerateInternshipAgreementAction::make('Generate Agreement PDF')
-                    ->label(__('Generate Agreement PDF'))
-                    ->icon('heroicon-o-arrow-path')
-                    ->color('primary')
-                    ->requiresConfirmation()
-                    ->outlined()
-                    ->size(\Filament\Support\Enums\ActionSize::ExtraSmall)
+                    ->label(__('Manage'))
+                    ->icon('heroicon-m-cog-6-tooth')
+                    ->color('gray')
                     ->button(),
 
-            ], position: Tables\Enums\ActionsPosition::AfterColumns)
-            ->bulkActions([
-                // Tables\Actions\BulkActionGroup::make([
-                //     Tables\Actions\DeleteBulkAction::make(),
-                // ]),
-            ]);
+                GenerateInternshipAgreementAction::make('Generate Agreement PDF')
+                    ->label(__('Generate PDF'))
+                    ->icon('heroicon-o-document-arrow-down')
+                    ->color('primary')
+                    ->button()
+                    ->requiresConfirmation(),
+            ], position: Tables\Enums\ActionsPosition::AfterColumns);
     }
 
     public static function getRelations(): array
