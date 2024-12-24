@@ -2,14 +2,14 @@
 
 namespace App\Filament\Actions\Action\Processing;
 
-use App\Models\FinalYearInternshipAgreement;
-use App\Services\UrlService;
 // use Filament\Forms\Components\Actions\Action;
+use App\Services\UrlService;
 use Filament\Notifications\Notification;
 use Filament\Tables\Actions\Action;
-use Illuminate\Support\Facades\File;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\File; // Ajouter ce use
 use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Str; // Ajouter ce use
+use Illuminate\Support\Str;
 
 use function Spatie\LaravelPdf\Support\pdf;
 
@@ -21,7 +21,7 @@ class GenerateInternshipAgreementAction extends Action
             'name' => $name ?? static::getDefaultName(),
         ]);
 
-        $static->configure()->action(function (array $data, FinalYearInternshipAgreement $FinalYearInternship): void {
+        $static->configure()->action(function (array $data, Model $FinalYearInternship): void {
             $FinalYearInternship = $FinalYearInternship->load('student', 'organization');
 
             // Determine template based on organization's country
@@ -39,10 +39,9 @@ class GenerateInternshipAgreementAction extends Action
                 File::makeDirectory($pdf_path, 0755, true);
             }
 
-            $veriication_link = $FinalYearInternship->generateVerificationLink();
-            // dd($veriication_link);
-            // Générer le QR code
-            $qrCodeSvg = UrlService::getQrCodeSvg($veriication_link);
+            $verication_link = $FinalYearInternship->generateVerificationLink();
+
+            $qrCodeSvg = UrlService::getQrCodeSvg($verication_link);
 
             $chromePath = env('BROWSERSHOT_CHROME_PATH');
             pdf()

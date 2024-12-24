@@ -113,8 +113,7 @@ class StudentResource extends Core\BaseResource
                     ->options(Enums\StudentLevel::class)
                     ->required(),
                 Forms\Components\Select::make('program')
-                    ->options(Enums\Program::class)
-                    ->required(),
+                    ->options(Enums\Program::class),
                 Forms\Components\Toggle::make('is_mobility'),
                 Forms\Components\TextInput::make('abroad_school')
                     ->maxLength(191),

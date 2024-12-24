@@ -82,11 +82,17 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
 
     public function canAccessPanel(Panel $panel): bool
     {
-        // if ($panel->getId() === 'app') {
-        //     return true;
-        // }
-
-        // return false;
+        // dd($panel->getId());
+        if ($panel->getId() === 'research') {
+            return $this->level === Enums\StudentLevel::MasterIoTBigData;
+        }
+        if ($panel->getId() === 'app' || str_ends_with($this->email, '@ine.inpt.ac.ma')) {
+            return in_array($this->level, [
+                Enums\StudentLevel::FirstYear,
+                Enums\StudentLevel::SecondYear,
+                Enums\StudentLevel::ThirdYear,
+            ]);
+        }
 
         return str_ends_with($this->email, '@ine.inpt.ac.ma');
         // && $this->hasVerifiedEmail();
@@ -149,14 +155,26 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
 
         //send veryfication email
         $notification = new VerifyEmail;
-        $notification->url = URL::temporarySignedRoute(
-            'filament.app.auth.email-verification.verify',
-            now()->addMinutes(config('auth.verification.expire', 60)),
-            [
-                'id' => $student->getKey(),
-                'hash' => sha1($student->getEmailForVerification()),
-            ],
-        );
+        if ($this->level === Enums\StudentLevel::Research) {
+            $notification->url = URL::temporarySignedRoute(
+                'filament.research.auth.email-verification.verify',
+                now()->addMinutes(config('auth.verification.expire', 60)),
+                [
+                    'id' => $student->getKey(),
+                    'hash' => sha1($student->getEmailForVerification()),
+                ],
+            );
+        } else {
+            $notification->url = URL::temporarySignedRoute(
+                'filament.app.auth.email-verification.verify',
+                now()->addMinutes(config('auth.verification.expire', 60)),
+                [
+                    'id' => $student->getKey(),
+                    'hash' => sha1($student->getEmailForVerification()),
+                ],
+            );
+        }
+
         $student->notify($notification);
 
         //or use reset password
@@ -264,6 +282,11 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
         return Professor::where('role', Role::ProgramCoordinator)
             ->where('assigned_program', $this->program)
             ->first();
+    }
+
+    public function getProgramCoordinatorFormalName()
+    {
+        return $this->getProgramCoordinator() ? $this->getProgramCoordinator()->formal_name : '';
     }
 
     public function applications()

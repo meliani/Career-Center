@@ -20,8 +20,10 @@
                             }}</strong></p>
                     <p class="text-xl mb-1">{{ __('Full Name') }}: <strong>{{ $payload->student->full_name }}</strong>
                     </p>
+                    @if($payload->student->program)
                     <p class="text-xl mb-6">{{ __('Program') }}: <strong>{{ $payload->student->program->getDescription()
                             }}</strong></p>
+                    @endif
                     <p class="text-xl mb-2">{{ __('Organization') }}: <strong>{{ $payload->organization->name
                             }}</strong>
                     </p>

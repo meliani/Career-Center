@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Filament\App\Resources;
+namespace App\Filament\Research\Resources;
 
 use App\Enums;
 use App\Filament\Actions\Action\ApplyForCancelInternshipAction;
 use App\Filament\Actions\Action\Processing\GenerateInternshipAgreementAction;
-use App\Filament\App\Resources\FinalYearInternshipAgreementResource\Pages;
 use App\Filament\Core\StudentBaseResource;
-use App\Models\FinalYearInternshipAgreement;
+use App\Filament\Research\Resources\MasterResearchInternshipAgreementResource\Pages;
+use App\Models\MasterResearchInternshipAgreement;
 use App\Models\Student;
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
@@ -16,22 +16,24 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Auth;
 
-class FinalYearInternshipAgreementResource extends StudentBaseResource
+class MasterResearchInternshipAgreementResource extends StudentBaseResource
 {
-    protected static ?string $model = FinalYearInternshipAgreement::class;
+    protected static ?string $model = MasterResearchInternshipAgreement::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $modelLabel = 'Research Internship Agreement';
 
-    protected static ?string $modelLabel = 'Internship Agreement';
+    protected static ?string $pluralModelLabel = 'Research Internship Agreements';
 
-    protected static ?string $pluralModelLabel = 'Internship Agreements';
+    protected static ?string $navigationGroup = null;
 
-    protected static ?string $navigationGroup = 'Final Project';
+    protected static ?int $navigationSort = 3;
+
+    protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     public static function canAccess(): bool
     {
         if (Auth::user() instanceof Student) {
-            if (Auth::user()->level === Enums\StudentLevel::ThirdYear) {
+            if (Auth::user()->level === Enums\StudentLevel::MasterIoTBigData) {
                 return true;
             }
         }
@@ -118,7 +120,6 @@ class FinalYearInternshipAgreementResource extends StudentBaseResource
                     ]),
 
                 ]),
-
                 Tables\Columns\Layout\Panel::make([
 
                     Tables\Columns\TextColumn::make('agreement_pdf_url')
@@ -183,10 +184,10 @@ class FinalYearInternshipAgreementResource extends StudentBaseResource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListFinalYearInternshipAgreements::route('/'),
-            'create' => Pages\CreateFinalYearInternshipAgreement::route('/create'),
-            'view' => Pages\ViewFinalYearInternshipAgreement::route('/{record}'),
-            // 'edit' => Pages\EditFinalYearInternshipAgreement::route('/{record}/edit'),
+            'index' => Pages\ListMasterResearchInternshipAgreements::route('/'),
+            'create' => Pages\CreateMasterResearchInternshipAgreement::route('/create'),
+            'view' => Pages\ViewMasterResearchInternshipAgreement::route('/{record}'),
+            // 'edit' => Pages\EditMasterResearchInternshipAgreement::route('/{record}/edit'),
         ];
     }
 

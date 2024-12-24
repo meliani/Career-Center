@@ -179,8 +179,8 @@ class UrlService
     {
         $svg = (new Writer(
             new ImageRenderer(
-                new RendererStyle(150, 1, null, null, Fill::uniformColor(new Rgb(255, 255, 255), new Rgb(45, 55, 72))),
-                new SvgImageBackEnd()
+                new RendererStyle(130, 1, null, null, Fill::uniformColor(new Rgb(255, 255, 255), new Rgb(45, 55, 72))),
+                new SvgImageBackEnd
             )
         ))->writeString($url);
 

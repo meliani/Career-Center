@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\App\Widgets\Dashboards;
+namespace App\Filament\Research\Widgets\Dashboards;
 
 use App\Models\FinalYearInternshipAgreement;
 use App\Models\InternshipApplication;
@@ -28,12 +28,6 @@ class StudentGettingStartedWidget extends Widget
                 'icon' => 'heroicon-o-user',
                 'color' => 'primary',
                 'action' => 'redirectToProfile',
-            ],
-            [
-                'label' => 'View Offers',
-                'icon' => 'heroicon-o-briefcase',
-                'color' => 'success',
-                'action' => 'redirectToOffers',
             ],
             [
                 'label' => 'Announce Internship',
@@ -76,29 +70,6 @@ class StudentGettingStartedWidget extends Widget
                     'contact' => ['status' => $hasContactInfo, 'label' => __('Contact Information')],
                     'documents' => ['status' => $hasDocuments, 'label' => __('CV & Cover Letter')],
                 ],
-            ],
-            [
-                'title' => __('Check Internship Offers'),
-                'status' => $hasViewedEnoughOffers ? 'completed' : ($hasCompleteProfile ? 'current' : 'pending'),
-                'details' => [
-                    'viewed' => [
-                        'status' => $viewedOffersCount > 0,
-                        'label' => __(':count/:required Offers Viewed', [
-                            'count' => $viewedOffersCount,
-                            'required' => $minimumOffersToView,
-                        ]),
-                    ],
-                    'progress' => [
-                        'status' => $hasViewedEnoughOffers,
-                        'label' => $hasViewedEnoughOffers
-                            ? __('Enough offers viewed')
-                            : __('View :more more offers', ['more' => $minimumOffersToView - $viewedOffersCount]),
-                    ],
-                ],
-            ],
-            [
-                'title' => __('Apply to Offers'),
-                'status' => $hasApplications ? 'completed' : ($hasViewedEnoughOffers ? 'current' : 'pending'),
             ],
             [
                 'title' => __('Announce Internship'),
@@ -144,7 +115,7 @@ class StudentGettingStartedWidget extends Widget
     {
         // Ensure the user is authenticated
         if (auth()->check()) {
-            return redirect()->route('filament.app.pages.my-profile'); // Update the route name if different
+            return redirect()->route('filament.research.pages.my-profile'); // Update the route name if different
         }
 
         // Optionally, redirect to the login page if not authenticated
@@ -160,7 +131,7 @@ class StudentGettingStartedWidget extends Widget
     {
         // Ensure the user is authenticated
         if (auth()->check()) {
-            return redirect()->route('filament.app.resources.internship-offers.index'); // Update the route name if different
+            return redirect()->route('filament.research.resources.internship-offers.index'); // Update the route name if different
         }
 
         // Optionally, redirect to the login page if not authenticated
@@ -178,10 +149,10 @@ class StudentGettingStartedWidget extends Widget
         if (auth()->check()) {
             // if has agreement redirect to the agreement page
             if ($this->hasAgreement) {
-                return redirect()->route('filament.app.resources.final-year-internship-agreements.index'); // Update the route name if different
+                return redirect()->route('filament.research.resources.master-research-internship-agreements.index'); // Update the route name if different
             }
 
-            return redirect()->route('filament.app.resources.final-year-internship-agreements.create'); // Update the route name if different
+            return redirect()->route('filament.research.resources.master-research-internship-agreements.create'); // Update the route name if different
         }
 
         // Optionally, redirect to the login page if not authenticated

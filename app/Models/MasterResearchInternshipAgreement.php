@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Gate;
 use Spatie\Tags\HasTags;
 
-class FinalYearInternshipAgreement extends Model implements Agreement
+class MasterResearchInternshipAgreement extends Model implements Agreement
 {
     use HasFactory;
     use HasTags;
@@ -79,13 +79,13 @@ class FinalYearInternshipAgreement extends Model implements Agreement
     {
         // static::addGlobalScope(new StudentRelatedScope);
 
-        static::creating(function (FinalYearInternshipAgreement $finalYearInternship) {
+        static::creating(function (MasterResearchInternshipAgreement $finalYearInternship) {
             $finalYearInternship->student_id = auth()->id();
             $finalYearInternship->year_id = Year::current()->id;
             $finalYearInternship->status = Enums\Status::Announced;
             $finalYearInternship->announced_at = now();
         });
-        static::created(function (FinalYearInternshipAgreement $finalYearInternship) {
+        static::created(function (MasterResearchInternshipAgreement $finalYearInternship) {
             $finalYearInternship->generateVerificationLink();
         });
 

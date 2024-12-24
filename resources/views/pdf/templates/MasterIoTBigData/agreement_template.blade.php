@@ -694,10 +694,7 @@
     </div>
     <div class="border-2 border-gray-500 p-2  mx-auto max-w-sm mt-10 mb-6">
         <h1 class="text-lg font-semibold text-center mb-2">
-            CONVENTION DE STAGE
-        </h1>
-        <h1 class="text-lg font-semibold text-center mb-2">
-            CONVENTION DE StAge DE RECHERCHE
+            CONVENTION DE STAGE DE RECHECHE
         </h1>
     </div>
     <h2 class="text-base font-semibold mb-0">ARTICLE PREMIER :</h2>
@@ -757,7 +754,7 @@
                 et
             </p>
             <p class="mt-1">
-                Coordonnateur de la filière :<strong>{{$internship->student->program_coordinator->full_name}}</strong>
+                Coordonnateur de la filière :<strong>{{$internship->student->getProgramCoordinatorFormalName()}}</strong>
             </p>
         </div>
         <p class="mt-2">
@@ -803,7 +800,7 @@
         </div>
         {{--
     </div> --}}
-    <div class="flex justify-end">
+    <div class="flex justify-end mr-4 mt-4">
         {!! $qrCodeSvg !!}
     </div>
     {{-- <div class="text-center text-[0.60rem] italic mb-52">

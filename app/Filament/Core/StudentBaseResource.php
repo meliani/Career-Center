@@ -31,7 +31,8 @@ class StudentBaseResource extends Resource
     public static function canAccess(): bool
     {
         if (auth()->check()) {
-            return auth()->user()->hasVerifiedEmail() && auth()->user()->is_verified;
+            return auth()->user()->hasVerifiedEmail();
+            // && auth()->user()->is_verified;
         }
 
         return false;

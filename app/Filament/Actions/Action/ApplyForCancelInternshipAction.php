@@ -5,6 +5,7 @@ namespace App\Filament\Actions\Action;
 // use App\Models\InternshipAgreement;
 use App\Models\Apprenticeship as InternshipAgreement;
 use App\Models\FinalYearInternshipAgreement;
+use App\Models\MasterResearchInternshipAgreement;
 use Filament\Forms\Get;
 use Filament\Notifications\Notification;
 use Filament\Tables\Actions\Action;
@@ -21,7 +22,7 @@ class ApplyForCancelInternshipAction extends Action
         $static = app(static::class, [
             'name' => $name ?? static::getDefaultName(),
         ]);
-        $static->configure()->action(function (array $data, InternshipAgreement | FinalYearInternshipAgreement $record): void {
+        $static->configure()->action(function (array $data, InternshipAgreement | FinalYearInternshipAgreement | MasterResearchInternshipAgreement $record): void {
 
             $record->withoutTimestamps(fn () => $record->applyForCancellation($data['cancellation_reason'] ?? null, $data['verification_document_url'] ?? null));
 
@@ -33,11 +34,6 @@ class ApplyForCancelInternshipAction extends Action
                 ->iconColor('green')
                 ->duration(5000)
                 ->persistent()
-                ->actions([
-                    \Filament\Notifications\Actions\Action::make('undo')
-                        ->label('Undo')
-                        ->action(fn (InternshipAgreement $internship) => $internship->undoCancellation()),
-                ])
                 ->send();
 
         })

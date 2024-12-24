@@ -156,35 +156,17 @@
 
             <!-- Action Buttons with Hover Effects -->
             <div class="flex flex-wrap gap-3">
-                <x-filament::button
-                    wire:click="redirectToProfile"
-                    icon="heroicon-o-user"
-                    color="primary"
-                    size="sm"
-                    class="transition-transform duration-200 hover:scale-105"
-                >
-                    {{ __('Update Profile') }}
-                </x-filament::button>
-
-                <x-filament::button
-                    wire:click="redirectToOffers"
-                    icon="heroicon-o-briefcase"
-                    color="success"
-                    size="sm"
-                    class="transition-transform duration-200 hover:scale-105"
-                >
-                    {{ __('View Offers') }}
-                </x-filament::button>
-
-                <x-filament::button
-                    wire:click="redirectToAnnounceInternship"
-                    icon="heroicon-o-document-text"
-                    color="gray"
-                    size="sm"
-                    class="transition-transform duration-200 hover:scale-105"
-                >
-                    {{ __('Announce Internship') }}
-                </x-filament::button>
+                @foreach ($this->buttons as $button)
+                    <x-filament::button
+                        wire:click="{{ $button['action'] }}"
+                        :icon="$button['icon']"
+                        :color="$button['color']"
+                        :size="$button['size'] ?? 'sm'"
+                        class="transition-transform duration-200 hover:scale-105"
+                    >
+                        {{ __($button['label']) }}
+                    </x-filament::button>
+                @endforeach
             </div>
         </div>
     </x-filament::card>

@@ -12,6 +12,7 @@ enum StudentLevel: string implements HasLabel
     case FirstYear = 'FirstYear';
     case SecondYear = 'SecondYear';
     case ThirdYear = 'ThirdYear';
+    case MasterIoTBigData = 'MasterIoTBigData';
     case AlumniTransitional = 'AlumniTransitional';
     case Alumni = 'Alumni';
 

@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\FinalYearInternshipAgreement;
+use App\Models\MasterResearchInternshipAgreement;
 use Illuminate\Http\Request;
 
 class AgreementVerificationController extends Controller
 {
     public function __invoke(Request $request, $verification_code = null)
     {
-        // dd($verification_code);
+
         if (! $verification_code) {
             return view('filament.org.pages.internship-agreement-verification-response', [
                 'payload' => null,
@@ -18,12 +19,16 @@ class AgreementVerificationController extends Controller
                 'message' => __('QR code is empty. Please don\'t try again.'),
             ]);
         }
-        $encrypted_field = \App\Services\UrlService::decodeShortUrl($verification_code);
+        // $encrypted_field = \App\Services\UrlService::decodeShortUrl($verification_code);
 
-        // dd($id);
-        $payload = FinalYearInternshipAgreement::where(env('INTERNSHIPS_ENCRYPTION_FIELD', 'hey'), $encrypted_field)->first();
-        $payload = FinalYearInternshipAgreement::where(env('INTERNSHIPS_VERIFICATION_FIELD', 'hey'), $verification_code)
-            ->first();
+        // $payload = FinalYearInternshipAgreement::where(env('INTERNSHIPS_ENCRYPTION_FIELD', 'hey'), $encrypted_field)->first();
+        $payload = FinalYearInternshipAgreement::where(env('INTERNSHIPS_VERIFICATION_FIELD', 'hey'), $verification_code)->first();
+
+        if (! $payload) {
+            $payload = MasterResearchInternshipAgreement::where('verification_string', $verification_code)->first();
+
+            // dd(MasterResearchInternshipAgreement::all());
+        }
         if (! $payload) {
             return view(
                 'filament.org.pages.internship-agreement-verification-response',
