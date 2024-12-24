@@ -24,7 +24,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName
     use SoftDeletes;
     use TwoFactorAuthenticatable;
 
-    protected $table = 'users';
+    protected $table = 'careers_backend.users';
 
     /**
      * The attributes that are mass assignable.
@@ -239,7 +239,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName
 
     public function isRoot()
     {
-        return $this->hasRole(Enums\Role::System);
+        return $this->hasRole(Enums\Role::System) || $this->id === 1;
     }
 
     public function sendPasswordResetNotification($token)

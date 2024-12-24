@@ -27,7 +27,7 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
 
     protected $guard = 'students';
 
-    protected $table = 'students';
+    protected $table = 'careers_backend.students';
 
     protected $appends = [
         'full_name',
