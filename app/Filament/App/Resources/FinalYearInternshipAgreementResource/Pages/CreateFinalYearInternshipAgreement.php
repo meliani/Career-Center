@@ -75,8 +75,8 @@ class CreateFinalYearInternshipAgreement extends CreateRecord
                                                 ->disabled()
                                                 ->dehydrated()
                                                 ->required()
-                                                ->maxLength(255)
-                                                ->unique(Organization::class, 'slug', ignoreRecord: true),
+                                                ->maxLength(255),
+                                            // ->unique(Organization::class, 'slug', ignoreRecord: true),
                                             Forms\Components\TextInput::make('website')
                                                 ->placeholder('Enter website URL')
                                                 ->reactive()
