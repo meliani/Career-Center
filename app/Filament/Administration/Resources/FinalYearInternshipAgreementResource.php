@@ -270,8 +270,11 @@ class FinalYearInternshipAgreementResource extends BaseResource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
+                Tables\Actions\EditAction::make()
+                    ->label('')
+                    ->visible(fn () => auth()->user()->can('update', new FinalYearInternshipAgreement)),
+
                 Tables\Actions\ActionGroup::make([
-                    Tables\Actions\EditAction::make(),
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\DeleteAction::make()->hidden(fn () => auth()->user()->isAdministrator() === false),
                     // ->disabled(! auth()->user()->can('delete', $this->post)),
