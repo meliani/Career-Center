@@ -57,53 +57,87 @@ class FinalYearInternshipAgreementResource extends BaseResource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('organization_id')
-                    ->relationship(
-                        name: 'organization',
-                        titleAttribute: 'name',
-                        modifyQueryUsing: fn ($query) => $query->active(),
-                    )
-                    ->required(),
-                Forms\Components\TextInput::make('office_location')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('title')
-                    ->maxLength(255),
-                // Forms\Components\SpatieTagsInput::make('tags')
-                //     ->type('internships')
-                //     ->splitKeys(['Tab', ',', ' '])
-                //     ->columnSpanFull(),
-                Forms\Components\DateTimePicker::make('starting_at'),
-                Forms\Components\DateTimePicker::make('ending_at'),
-                Forms\Components\ToggleButtons::make('status')
-                    ->options(Enums\Status::class)
-                    ->required()
-                    ->inline(),
-                Forms\Components\Fieldset::make('Dates')
-                    ->columns(2)
+                Forms\Components\Grid::make(3)
                     ->schema([
-                        // Forms\Components\DateTimePicker::make('announced_at'),
-                        Forms\Components\DateTimePicker::make('validated_at')
-                            ->seconds(false)
-                            ->native(false)
-                            // ->minutesStep(15)
-                            ->displayFormat('d/m/Y H:i')
-                            ->timezone('Africa/Casablanca'),
-                        Forms\Components\DateTimePicker::make('received_at')
-                            ->seconds(false)
-                            ->native(false)
-                            // ->minutesStep(15)
-                            ->displayFormat('d/m/Y H:i')
-                            ->timezone('Africa/Casablanca'),
-                        Forms\Components\DateTimePicker::make('signed_at')
-                            ->seconds(false)
-                            ->native(false)
-                            // ->minutesStep(15)
-                            ->displayFormat('d/m/Y H:i')
-                            ->timezone('Africa/Casablanca'),
+                        Forms\Components\Section::make('Important Dates')
+                            ->description('Key dates for the internship agreement process')
+                            ->icon('heroicon-o-calendar')
+                            ->columnSpan(1)
+                            ->schema([
+                                Forms\Components\DateTimePicker::make('validated_at')
+                                    ->label('Validation Date')
+                                    ->seconds(false)
+                                    ->native(false)
+                                    ->displayFormat('d/m/Y H:i')
+                                    ->timezone('Africa/Casablanca'),
+                                Forms\Components\DateTimePicker::make('received_at')
+                                    ->label('Reception Date')
+                                    ->seconds(false)
+                                    ->native(false)
+                                    ->displayFormat('d/m/Y H:i')
+                                    ->timezone('Africa/Casablanca'),
+                                Forms\Components\DateTimePicker::make('signed_at')
+                                    ->label('Signature Date')
+                                    ->seconds(false)
+                                    ->native(false)
+                                    ->displayFormat('d/m/Y H:i')
+                                    ->timezone('Africa/Casablanca'),
+                            ]),
+
+                        Forms\Components\Tabs::make('Agreement')
+                            ->columnSpan(2)
+                            ->tabs([
+                                Forms\Components\Tabs\Tab::make('Basic Information')
+                                    ->icon('heroicon-o-information-circle')
+                                    ->schema([
+                                        Forms\Components\Section::make('Organization Details')
+                                            ->schema([
+                                                Forms\Components\Select::make('organization_id')
+                                                    ->relationship(
+                                                        name: 'organization',
+                                                        titleAttribute: 'name',
+                                                        modifyQueryUsing: fn ($query) => $query->active(),
+                                                    )
+                                                    ->required(),
+                                                Forms\Components\TextInput::make('office_location')
+                                                    ->maxLength(255),
+                                            ])->columns(2),
+
+                                        Forms\Components\Section::make('Internship Details')
+                                            ->schema([
+                                                Forms\Components\TextInput::make('title')
+                                                    ->maxLength(255)
+                                                    ->columnSpanFull(),
+                                                Forms\Components\RichEditor::make('description')
+                                                    ->label('Internship description')
+                                                    ->columnSpanFull(),
+                                            ]),
+                                    ]),
+
+                                Forms\Components\Tabs\Tab::make('Schedule & Status')
+                                    ->icon('heroicon-o-calendar')
+                                    ->schema([
+                                        Forms\Components\Section::make('Timeline')
+                                            ->schema([
+                                                Forms\Components\DateTimePicker::make('starting_at')
+                                                    ->native(false)
+                                                    ->displayFormat('d/m/Y H:i'),
+                                                Forms\Components\DateTimePicker::make('ending_at')
+                                                    ->native(false)
+                                                    ->displayFormat('d/m/Y H:i'),
+                                            ])->columns(2),
+
+                                        Forms\Components\Section::make('Status')
+                                            ->schema([
+                                                Forms\Components\ToggleButtons::make('status')
+                                                    ->options(Enums\Status::class)
+                                                    ->required()
+                                                    ->inline()
+                                                    ->columnSpanFull(),
+                                            ]),
+                                    ]),
+                            ]),
                     ]),
-                Forms\Components\RichEditor::make('description')
-                    ->label('Internship description')
-                    ->columnSpan(3),
             ]);
     }
 
