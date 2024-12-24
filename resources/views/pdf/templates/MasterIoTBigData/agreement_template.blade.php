@@ -694,7 +694,7 @@
             </g>
         </svg>
     </div>
-    <div class="border-2 border-gray-500 p-2  mx-auto max-w-sm mt-10 mb-6">
+    <div class="border-2 border-gray-500 p-2  mx-auto max-w-sm mt-2 mb-2">
         <h1 class="text-lg font-semibold text-center mb-2">
             CONVENTION DE STAGE DE RECHECHE
         </h1>
@@ -781,28 +781,23 @@
             </p>
             <strong>Document établi en quatre exemplaires</strong>
         </div>
-        <div class="flex flex-row justify-between items-center mt-4 space-x-4 text-xs text-center mb-auto">
-            <div class="border-2 border-gray-800 w-full p-0 flex flex-col items-center min-h-[230px]">
-                <div class="min-h-[100px] px-2 pt-2 text-gray-900">Date et signature du Chef d’Entreprise (Cachet de
-                    l’Entreprise)
+        <div class="flex flex-row justify-between items-center mt-4 space-x-4 text-xs text-center">
+            <div class="border-2 border-gray-800 w-full p-0 flex flex-col items-center min-h-[250px]">
+                <div class="flex-1 px-2 pt-2 text-gray-900">Date et signature du Chef d'Entreprise (Cachet de l'Entreprise)
                 </div>
-                {{-- <div class="border-t-2 pt-2 text-gray-400 text-center">Cachet de l’organisme d'accueil</div> --}}
             </div>
-            <div class="border-2 border-gray-800 w-full p-0 flex flex-col items-center min-h-[230px]">
-                <div class="min-h-[100px] text-gray-900 px-2 pt-2">Date et Signature du stagiaire avec Mention
-                    manuscrite «
-                    Lu et
-                    approuvé »</div>
-                {{-- <div class="border-t-2 pt-2 text-gray-400 text-center">Mention manuscrite « Lu et approuvé »</div>
-                --}}
+
+            <div class="border-2 border-gray-800 w-full p-0 flex flex-col items-center min-h-[250px]">
+                <div class="flex-1 px-2 pt-2 text-gray-900">Date et Signature du stagiaire avec Mention manuscrite « Lu et approuvé »</div>
             </div>
-            <div class="border-2 border-gray-900 w-full pt-0 flex flex-col justify-between min-h-[230px]">
-                <div class="px-2 pt-2 text-gray-800 text-center">Le Directeur de l’INPT (ou son Représentant)</div>
+
+            <div class="border-2 border-gray-900 w-full p-0 flex flex-col items-center min-h-[250px]">
+                <div class="flex-1 px-2 pt-2 text-gray-800 text-center">Le Directeur de l'INPT (ou son Représentant)</div>
             </div>
         </div>
         {{--
     </div> --}}
-    <div class="flex justify-end mr-4 mt-4">
+    <div class="flex justify-end mr-4 mt-1">
         {!! $qrCodeSvg !!}
     </div>
     {{-- <div class="text-center text-[0.60rem] italic mb-52">
@@ -1675,8 +1670,8 @@
 
 
         </div>
-        <div class="p-2 text-gray-700 fixed bottom-0 w-fit border-t-2">
-            <p class="text-xs mb-0">Av. Allal El Fassi,</p>
+        <div class="text-gray-700 fixed bottom-0 w-fit border-t-2">
+            <p class="text-xs mb-0 mt-2">Av. Allal El Fassi,</p>
             <p class="text-xs mb-0">Madinat Al Irfane,</p>
             <p class="text-xs mb-1">Rabat - Maroc</p>
             <p class="text-xs mb-0">+ 212 538 002 700</p>
