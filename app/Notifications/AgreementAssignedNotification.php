@@ -18,8 +18,11 @@ class AgreementAssignedNotification extends Notification implements ShouldQueue
     public function __construct(
         protected FinalYearInternshipAgreement $agreement,
         protected ?object $triggeredBy = null,
-        protected bool $isReassignment = false
-    ) {}
+        protected bool $isReassignment = false,
+        protected ?object $programCoordinator = null,
+    ) {
+        $this->programCoordinator = $this->agreement->student->getProgramCoordinator();
+    }
 
     public function via(object $notifiable): array
     {
@@ -53,7 +56,7 @@ class AgreementAssignedNotification extends Notification implements ShouldQueue
             ->line('') // Empty line for spacing
             ->line(__($message, [
                 'program' => $this->agreement->student->program->value,
-                'coordinator' => $this->triggeredBy?->formal_name ?? __('System'),
+                'coordinator' => $this->programCoordinator?->formal_name ?? __('System'),
                 'title' => $this->agreement->title,
                 'department' => $this->agreement->assigned_department->value,
             ]));
