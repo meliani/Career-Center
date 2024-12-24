@@ -59,8 +59,8 @@ class FinalYearInternshipAgreementResource extends BaseResource
             ->schema([
                 Forms\Components\Grid::make(3)
                     ->schema([
-                        Forms\Components\Section::make('Important Dates')
-                            ->description('Key dates for the internship agreement process')
+                        Forms\Components\Section::make(__('Important Dates'))
+                            ->description(__('Key dates for the internship agreement process'))
                             ->icon('heroicon-o-calendar')
                             ->columnSpan(1)
                             ->schema([
@@ -87,10 +87,10 @@ class FinalYearInternshipAgreementResource extends BaseResource
                         Forms\Components\Tabs::make('Agreement')
                             ->columnSpan(2)
                             ->tabs([
-                                Forms\Components\Tabs\Tab::make('Basic Information')
+                                Forms\Components\Tabs\Tab::make(__('Basic Information'))
                                     ->icon('heroicon-o-information-circle')
                                     ->schema([
-                                        Forms\Components\Section::make('Organization Details')
+                                        Forms\Components\Section::make(__('Organization Details'))
                                             ->schema([
                                                 Forms\Components\Select::make('organization_id')
                                                     ->relationship(
@@ -103,7 +103,7 @@ class FinalYearInternshipAgreementResource extends BaseResource
                                                     ->maxLength(255),
                                             ])->columns(2),
 
-                                        Forms\Components\Section::make('Internship Details')
+                                        Forms\Components\Section::make(__('Internship Details'))
                                             ->schema([
                                                 Forms\Components\TextInput::make('title')
                                                     ->maxLength(255)
@@ -114,10 +114,10 @@ class FinalYearInternshipAgreementResource extends BaseResource
                                             ]),
                                     ]),
 
-                                Forms\Components\Tabs\Tab::make('Schedule & Status')
+                                Forms\Components\Tabs\Tab::make(__('Schedule & Status'))
                                     ->icon('heroicon-o-calendar')
                                     ->schema([
-                                        Forms\Components\Section::make('Timeline')
+                                        Forms\Components\Section::make(__('Timeline'))
                                             ->schema([
                                                 Forms\Components\DateTimePicker::make('starting_at')
                                                     ->native(false)
@@ -127,7 +127,7 @@ class FinalYearInternshipAgreementResource extends BaseResource
                                                     ->displayFormat('d/m/Y H:i'),
                                             ])->columns(2),
 
-                                        Forms\Components\Section::make('Status')
+                                        Forms\Components\Section::make(__('Status'))
                                             ->schema([
                                                 Forms\Components\ToggleButtons::make('status')
                                                     ->options(Enums\Status::class)
