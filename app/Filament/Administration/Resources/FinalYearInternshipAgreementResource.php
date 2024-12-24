@@ -68,10 +68,10 @@ class FinalYearInternshipAgreementResource extends BaseResource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('title')
                     ->maxLength(255),
-                Forms\Components\SpatieTagsInput::make('tags')
-                    ->type('internships')
-                    ->splitKeys(['Tab', ',', ' '])
-                    ->columnSpanFull(),
+                // Forms\Components\SpatieTagsInput::make('tags')
+                //     ->type('internships')
+                //     ->splitKeys(['Tab', ',', ' '])
+                //     ->columnSpanFull(),
                 Forms\Components\DateTimePicker::make('starting_at'),
                 Forms\Components\DateTimePicker::make('ending_at'),
                 Forms\Components\ToggleButtons::make('status')
@@ -85,19 +85,19 @@ class FinalYearInternshipAgreementResource extends BaseResource
                         Forms\Components\DateTimePicker::make('validated_at')
                             ->seconds(false)
                             ->native(false)
-                            ->minutesStep(15)
+                            // ->minutesStep(15)
                             ->displayFormat('d/m/Y H:i')
                             ->timezone('Africa/Casablanca'),
                         Forms\Components\DateTimePicker::make('received_at')
                             ->seconds(false)
                             ->native(false)
-                            ->minutesStep(15)
+                            // ->minutesStep(15)
                             ->displayFormat('d/m/Y H:i')
                             ->timezone('Africa/Casablanca'),
                         Forms\Components\DateTimePicker::make('signed_at')
                             ->seconds(false)
                             ->native(false)
-                            ->minutesStep(15)
+                            // ->minutesStep(15)
                             ->displayFormat('d/m/Y H:i')
                             ->timezone('Africa/Casablanca'),
                     ]),
