@@ -2,7 +2,9 @@
 
 <head>
     <title>Internship Agreement</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        {!! file_get_contents(public_path('build/assets/pdf.css')) !!}
+    </style>
 
 </head>
 
