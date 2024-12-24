@@ -67,7 +67,7 @@ class MasterResearchInternshipAgreementResource extends StudentBaseResource
             ->emptyStateActions([
                 Tables\Actions\Action::make('create')
                     ->label('Create your first internship agreement')
-                    ->url(route('filament.app.resources.final-year-internship-agreements.create'))
+                    ->url(route('filament.research.resources.master-research-internship-agreements.create'))
                     ->icon('heroicon-o-plus-circle')
                     ->button(),
             ])
