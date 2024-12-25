@@ -116,28 +116,40 @@ If you have trouble with the installation, please send an email to <m@meliani.xy
 
 For the comlete list look at [English docs](DOCS-EN.md) or [French docs](DOCS-FR.md)
 
-### Available charts
+## Department Prediction Feature
 
-- **Anounced Internships per Program**
-  - A chart that shows the number of internships announced per program
-- **Projects participation by department**
-  - A chart that shows the number of projects per department
-- **Internships per department**
-  - A chart that shows the number of internships per department
-- **Internships per program**
-  - A chart that shows the number of internships per program
-- **Intenships distribution by department**
-  - A chart that shows the number of internships per department
-- **Internships distribution by city**
-  - A chart that shows the number of internships per city
-- **Internships distribution by country**
-  - A chart that shows the number of internships per country
-- **Internships distribution by company**
-  - A chart that shows the number of internships per company
-- **Internships by end date**
-  - A chart that shows the number of internships by end date
-- **Assigned supervisors per department**
-  - A chart that shows the number of assigned supervisors per department
+This feature uses FastText to automatically predict and assign departments to internship agreements based on their titles and descriptions.
+
+### Prerequisites
+
+1. Install FastText:
+```
+git clone https://github.com/facebookresearch/fastText.git
+cd fastText
+make
+```
+
+2. Download the language identification model:
+```
+wget https://dl.fbaipublicfiles.com/fasttext/supervised-models/lid.176.bin
+```
+
+3. Update the `.env` file with the paths to the FastText binary and model.
+
+### Model Training and Prediction
+
+You can train your own department prediction model and optionally run predictions using these commands:
+
+```
+# Generate training file
+php artisan train:generate-department-file departments.train
+
+# Train quantized model
+php artisan train:department-model storage/app/training_data/training/departments.train --model=quantized
+
+# Run prediction
+php artisan predict:final-year-department
+```
 
 ## Supported browsers, databases, and PHP versions
 

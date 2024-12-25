@@ -9,17 +9,24 @@ class FastTextService
 {
     protected $fastTextPath;
 
-    protected $modelPath;
+    protected $departmentModelPath;
 
     public function __construct()
     {
-        $this->fastTextPath = env('FASTTEXT_BINARY_PATH', '/path/to/fasttext'); // Adjust path as needed
-        $this->modelPath = env('FASTTEXT_MODEL_PATH', '/path/to/lid.176.bin'); // Adjust path as needed
+        $this->fastTextPath = env('FASTTEXT_BINARY_PATH', '/path/to/fasttext');
+        $this->departmentModelPath = env('FASTTEXT_DEPARTMENT_MODEL_PATH', '/path/to/department.bin');
     }
 
-    public function detectLanguage($text)
+    public function predictDepartment($text, $k = 3)
     {
-        $process = new Process([$this->fastTextPath, 'predict-prob', $this->modelPath, '-']);
+        $process = new Process([
+            $this->fastTextPath,
+            'predict-prob',
+            $this->departmentModelPath,
+            '-',
+            $k,
+        ]);
+
         $process->setInput($text);
         $process->run();
 
@@ -27,10 +34,15 @@ class FastTextService
             throw new ProcessFailedException($process);
         }
 
-        $output = $process->getOutput();
-        $lines = explode("\n", trim($output));
-        $language = explode(' ', $lines[0]);
+        $output = trim($process->getOutput());
+        $predictions = [];
 
-        return str_replace('__label__', '', $language[0]);
+        foreach (explode("\n", $output) as $line) {
+            [$label, $probability] = explode(' ', $line);
+            $department = str_replace('__label__', '', $label);
+            $predictions[$department] = (float) $probability;
+        }
+
+        return $predictions;
     }
 }

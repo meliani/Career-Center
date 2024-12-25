@@ -73,6 +73,12 @@ return [
             'visibility' => 'public',
             'throw' => false,
         ],
+        'training_data' => [
+            'driver' => 'local',
+            'root' => storage_path('app/training_data'),
+            'visibility' => 'private',
+            'throw' => false,
+        ],
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

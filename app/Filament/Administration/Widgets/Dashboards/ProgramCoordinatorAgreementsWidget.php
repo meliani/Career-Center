@@ -4,6 +4,7 @@ namespace App\Filament\Administration\Widgets\Dashboards;
 
 use App\Enums;
 use App\Models\FinalYearInternshipAgreement as Agreement;
+use App\Services\FastTextService;
 use Filament\Notifications\Notification;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -13,6 +14,14 @@ use Illuminate\View\View;
 
 class ProgramCoordinatorAgreementsWidget extends BaseWidget
 {
+    protected FastTextService $fastTextService;
+
+    public function __construct(FastTextService $fastTextService = new FastTextService)
+    {
+        // parent::__construct();
+        $this->fastTextService = $fastTextService;
+    }
+
     public ?string $activeFilter = null;
 
     protected static ?int $sort = 2;
@@ -69,6 +78,35 @@ class ProgramCoordinatorAgreementsWidget extends BaseWidget
             ->send();
     }
 
+    protected function getPredictedDepartment($text): string
+    {
+        try {
+            // Request more predictions to ensure at least three
+            $predictions = $this->fastTextService->predictDepartment($text, 3);
+            if (! empty($predictions)) {
+                // Sort predictions by score descending
+                arsort($predictions);
+
+                $result = '🤖 ' . __('Department prediction') . ': ';
+                $count = 0;
+                foreach ($predictions as $department => $score) {
+                    if ($count >= 3) {
+                        break;
+                    }
+                    $probability = round($score * 100);
+                    $result .= \App\Enums\Department::from($department)->getLabel() . " ({$probability}%) ";
+                    $count++;
+                }
+
+                return trim($result);
+            }
+        } catch (\Exception $e) {
+            return 'Could not predict department';
+        }
+
+        return 'No prediction available';
+    }
+
     public function table(Table $table): Table
     {
         // $filterLabel = match ($this->.activeFilter) {
@@ -114,8 +152,9 @@ class ProgramCoordinatorAgreementsWidget extends BaseWidget
                     ->searchable()
                     ->sortable()
                     ->extraAttributes(['class' => 'animate-slide-in-right'])
-
-                    ->tooltip(fn ($record) => __('Project description') . ': ' . $record->description),
+                    ->tooltip(function ($record) {
+                        return __('Project description') . ': ' . $record->description;
+                    }),
 
                 // Tables\Columns\TextColumn::make('organization.name')
                 //     ->label(__('Organization'))
@@ -124,6 +163,13 @@ class ProgramCoordinatorAgreementsWidget extends BaseWidget
                 //     ->extraAttributes(['class' => 'animate-slide-in-right']),
 
                 Tables\Columns\SelectColumn::make('assigned_department')
+                    ->tooltip(function ($record) {
+                        $text = $record->title . ' ' . $record->description;
+                        $prediction = $this->getPredictedDepartment($text);
+
+                        return $prediction . "\n\n" . __('(Training data from previous year assingments)') .
+                            '. ' . __('This feature is experimental and may not be accurate.');
+                    })
                     ->label(__('Department'))
                     ->options(Enums\Department::class)
                     ->searchable()
