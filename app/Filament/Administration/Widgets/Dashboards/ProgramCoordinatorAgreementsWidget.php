@@ -93,7 +93,7 @@ class ProgramCoordinatorAgreementsWidget extends BaseWidget
                     if ($count >= 3) {
                         break;
                     }
-                    $probability = round($score * 100);
+                    $probability = number_format($score * 100, 0, '.', '');
                     $result .= \App\Enums\Department::from($department)->getLabel() . " ({$probability}%) ";
                     $count++;
                 }
