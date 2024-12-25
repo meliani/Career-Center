@@ -30,7 +30,7 @@ class ProjectPolicy extends CorePolicy
 
     public function update(User $user, Project $project)
     {
-        if ($user->isAdministrator() || $user->isAdministrativeSupervisor()) {
+        if ($user->isAdministrator()) {
             return true;
         }
 

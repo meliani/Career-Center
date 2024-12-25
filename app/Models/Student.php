@@ -279,6 +279,11 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
 
     public function getProgramCoordinator()
     {
+        if ($this->level === Enums\StudentLevel::MasterIoTBigData) {
+
+            return Professor::find(100024);
+        }
+
         return Professor::where('role', Role::ProgramCoordinator)
             ->where('assigned_program', $this->program)
             ->first();
@@ -286,7 +291,7 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
 
     public function getProgramCoordinatorFormalName()
     {
-        return $this->getProgramCoordinator() ? $this->getProgramCoordinator()->formal_name : '';
+        return $this->getProgramCoordinator() ? $this->getProgramCoordinator()->formal_name : __('Undefined');
     }
 
     public function applications()
