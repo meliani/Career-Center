@@ -3,7 +3,6 @@
 namespace App\Filament\Administration\Resources;
 
 use App\Enums;
-use App\Enums\Status;
 use App\Filament\Administration\Resources\MasterResearchInternshipAgreementResource\Pages;
 use App\Filament\Core\BaseResource;
 use App\Models\MasterResearchInternshipAgreement;
@@ -48,11 +47,8 @@ class MasterResearchInternshipAgreementResource extends BaseResource
 
     public static function getNavigationBadge(): ?string
     {
-        if (auth()->user()->isAdministrator()) {
-            return static::getModel()::where('status', Status::Signed)->count();
-        }
+        return static::getModel()::count();
 
-        return null;
     }
 
     public static function form(Form $form): Form
