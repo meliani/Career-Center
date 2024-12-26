@@ -52,8 +52,13 @@ class GeneralStatsDashboard extends \Filament\Pages\Dashboard
     protected function getHeaderWidgets(): array
     {
         return [
-            // \App\Filament\Administration\Widgets\Dashboards\YearlyTimelineWidget::class,
+            \App\Filament\Administration\Widgets\Dashboards\DepartmentAgreementsStatsWidget::class,
         ];
+    }
+
+    public function getHeaderWidgetsColumns(): int | array
+    {
+        return 1;
     }
 
     public function getWidgets(): array
