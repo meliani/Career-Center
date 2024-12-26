@@ -145,6 +145,11 @@ class FinalYearInternshipAgreementResource extends BaseResource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('student.id_pfe')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->label('ID PFE')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('student.full_name')
                     ->searchable(['first_name', 'last_name'])
                     ->description(fn ($record) => $record->student->id_pfe),
