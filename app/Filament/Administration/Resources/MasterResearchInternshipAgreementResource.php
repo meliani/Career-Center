@@ -41,7 +41,7 @@ class MasterResearchInternshipAgreementResource extends BaseResource
 
     public static function canAccess(): bool
     {
-        return auth()->user()->id === 11;
+        return (auth()->user()->id === 11) || auth()->user()->isAdministrator();
 
         return auth()->user()->can('viewAny', static::getModel());
     }
