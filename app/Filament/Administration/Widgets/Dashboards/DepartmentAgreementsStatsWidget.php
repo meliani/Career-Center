@@ -14,6 +14,12 @@ class DepartmentAgreementsStatsWidget extends Widget
     // Change to full width
     protected int | string | array $columnSpan = 'full';
 
+    // Add listeners for department assignment events
+    protected $listeners = [
+        'departmentAssigned' => '$refresh',
+        'departmentChanged' => '$refresh',
+    ];
+
     protected function getViewData(): array
     {
         return [

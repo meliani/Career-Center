@@ -65,6 +65,9 @@ class ProgramCoordinatorAgreementsWidget extends BaseWidget
         $record->assigned_department = $newDepartment;
         $record->save();
 
+        // Add this line to emit the event
+        $this->dispatch('departmentAssigned');
+
         Notification::make()
             ->title(__('Department Assigned'))
             ->body(__(
@@ -109,7 +112,7 @@ class ProgramCoordinatorAgreementsWidget extends BaseWidget
 
     public function table(Table $table): Table
     {
-        // $filterLabel = match ($this->.activeFilter) {
+        // $filterLabel = match ($this->activeFilter) {
         //     'pending' => __('Pending Assignment'),
         //     'assigned' => __('Department Assigned'),
         //     default => null,
@@ -322,6 +325,8 @@ class ProgramCoordinatorAgreementsWidget extends BaseWidget
     {
         if ($record = Agreement::find($id)) {
             $this->handleDepartmentChange($record, $department);
+            // Add this line to emit the event
+            $this->dispatch('departmentChanged');
         }
         $this->pendingDepartmentChange = null;
     }
