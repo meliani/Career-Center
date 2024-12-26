@@ -756,7 +756,7 @@
                 et
             </p>
             <p class="mt-1">
-                Coordonnateur de la filière :<strong>{{$internship->student->getProgramCoordinatorFormalName()}}</strong>
+                Coordonnateur de la filière : <strong>{{$internship->student->getProgramCoordinatorFormalName()}}</strong>
             </p>
         </div>
         <p class="mt-2">
