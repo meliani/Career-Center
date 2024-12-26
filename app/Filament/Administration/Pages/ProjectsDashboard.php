@@ -46,8 +46,14 @@ class ProjectsDashboard extends \Filament\Pages\Dashboard
     protected function getHeaderWidgets(): array
     {
         return [
-            // \App\Filament\Administration\Widgets\Dashboards\YearlyTimelineWidget::class,
+            \App\Filament\Administration\Widgets\Dashboards\DepartmentAgreementsStatsWidget::class,
         ];
+    }
+
+    // Add this method to force full width for header widgets
+    public function getHeaderWidgetsColumns(): int | array
+    {
+        return 1;
     }
 
     public function getWidgets(): array
