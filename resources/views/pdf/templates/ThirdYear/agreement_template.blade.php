@@ -792,7 +792,7 @@
             </p>
             <ul class="list-disc list-inside ml-4 mt-2 mb-2 space-y-0">
                 <li>
-                    Chef de la filière :
+                    Coordonnateur de la filière :
                     <strong>{{$internship->student?->getProgramCoordinator()->formal_name}}</strong>
                 </li>
             </ul>
