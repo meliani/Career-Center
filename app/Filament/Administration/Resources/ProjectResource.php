@@ -182,7 +182,7 @@ class ProjectResource extends Core\BaseResource
                     ])
                     ->collapsible()
                     ->columns(2),
-                Forms\Components\Section::make('Defense information')
+                Forms\Components\Section::make(__('Defense information'))
                     ->label(__('Defense information'))
                     ->columnSpan(1)
                     ->hidden(fn () => auth()->user()->isAdministrator() === false)
@@ -496,11 +496,14 @@ class ProjectResource extends Core\BaseResource
                         ->action(fn ($record) => $record->postponeDefense()),
 
                     // Tables\Actions\ActionGroup::make([
-                    // Tables\Actions\EditAction::make(),
+
                     Tables\Actions\ViewAction::make(),
                 ])->icon('heroicon-o-bars-3')
                     ->hidden(fn ($record) => auth()->user()->can('manage-project', $record) === false)
                     ->visible(false),
+                Tables\Actions\EditAction::make()
+                    ->label(false)
+                    ->hidden(fn ($record) => auth()->user()->isAdministrator() === false),
                 // ])->dropdown(false)
                 // ->tooltip(__('Edit or view this project')),
                 // ->hidden(true),
