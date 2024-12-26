@@ -87,6 +87,29 @@ class FinalYearInternshipAgreementResource extends BaseResource
                         Forms\Components\Tabs::make('Agreement')
                             ->columnSpan(2)
                             ->tabs([
+
+                                Forms\Components\Tabs\Tab::make(__('Schedule & Status'))
+                                    ->icon('heroicon-o-calendar')
+                                    ->schema([
+                                        Forms\Components\Section::make(__('Timeline'))
+                                            ->schema([
+                                                Forms\Components\DateTimePicker::make('starting_at')
+                                                    ->native(false)
+                                                    ->displayFormat('d/m/Y H:i'),
+                                                Forms\Components\DateTimePicker::make('ending_at')
+                                                    ->native(false)
+                                                    ->displayFormat('d/m/Y H:i'),
+                                            ])->columns(2),
+
+                                        Forms\Components\Section::make(__('Status'))
+                                            ->schema([
+                                                Forms\Components\ToggleButtons::make('status')
+                                                    ->options(Enums\Status::class)
+                                                    ->required()
+                                                    ->inline()
+                                                    ->columnSpanFull(),
+                                            ]),
+                                    ]),
                                 Forms\Components\Tabs\Tab::make(__('Basic Information'))
                                     ->icon('heroicon-o-information-circle')
                                     ->schema([
@@ -114,28 +137,6 @@ class FinalYearInternshipAgreementResource extends BaseResource
                                             ]),
                                     ]),
 
-                                Forms\Components\Tabs\Tab::make(__('Schedule & Status'))
-                                    ->icon('heroicon-o-calendar')
-                                    ->schema([
-                                        Forms\Components\Section::make(__('Timeline'))
-                                            ->schema([
-                                                Forms\Components\DateTimePicker::make('starting_at')
-                                                    ->native(false)
-                                                    ->displayFormat('d/m/Y H:i'),
-                                                Forms\Components\DateTimePicker::make('ending_at')
-                                                    ->native(false)
-                                                    ->displayFormat('d/m/Y H:i'),
-                                            ])->columns(2),
-
-                                        Forms\Components\Section::make(__('Status'))
-                                            ->schema([
-                                                Forms\Components\ToggleButtons::make('status')
-                                                    ->options(Enums\Status::class)
-                                                    ->required()
-                                                    ->inline()
-                                                    ->columnSpanFull(),
-                                            ]),
-                                    ]),
                             ]),
                     ]),
             ]);
