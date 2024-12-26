@@ -750,7 +750,7 @@
         <div class="text-xs px-6">
             <p class="mt-2">
                 Encadrant Externe
-                :<strong>{{$internship->externalSupervisor->full_name}},{{$internship->externalSupervisor->function}}</strong>
+                : <strong>{{$internship->externalSupervisor->full_name}},{{$internship->externalSupervisor->function}}</strong>
             </p>
             <p class="mt-1">
                 et
