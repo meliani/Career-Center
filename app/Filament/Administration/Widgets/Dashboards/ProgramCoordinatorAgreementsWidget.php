@@ -163,6 +163,19 @@ class ProgramCoordinatorAgreementsWidget extends BaseWidget
                 //     ->extraAttributes(['class' => 'animate-slide-in-right']),
 
                 Tables\Columns\SelectColumn::make('assigned_department')
+                    ->options(function () {
+                        // departments with count
+
+                        $departments = collect(Enums\Department::cases())
+                            ->mapWithKeys(function ($department) {
+                                $count = Agreement::where('assigned_department', $department->value)->count();
+
+                                return [$department->value => "{$department->value} ({$count} " . __('projects') . ')'];
+                            });
+
+                        return $departments;
+
+                    })
                     ->tooltip(function ($record) {
                         $text = $record->title . ' ' . $record->description;
                         $prediction = $this->getPredictedDepartment($text);
@@ -171,7 +184,7 @@ class ProgramCoordinatorAgreementsWidget extends BaseWidget
                             '. ' . __('This feature is experimental and may not be accurate.');
                     })
                     ->label(__('Department'))
-                    ->options(Enums\Department::class)
+                    // ->options(Enums\Department::class)
                     ->searchable()
                     ->extraAttributes([
                         'class' => 'transition-all duration-300 hover:scale-105',
