@@ -68,19 +68,19 @@ class FinalYearInternshipAgreementResource extends BaseResource
                                     ->label('Validation Date')
                                     ->seconds(false)
                                     ->native(false)
-                                    ->displayFormat('d/m/Y H:i')
+                                    ->displayFormat('d/m/Y')
                                     ->timezone('Africa/Casablanca'),
                                 Forms\Components\DateTimePicker::make('received_at')
                                     ->label('Reception Date')
                                     ->seconds(false)
                                     ->native(false)
-                                    ->displayFormat('d/m/Y H:i')
+                                    ->displayFormat('d/m/Y')
                                     ->timezone('Africa/Casablanca'),
                                 Forms\Components\DateTimePicker::make('signed_at')
                                     ->label('Signature Date')
                                     ->seconds(false)
                                     ->native(false)
-                                    ->displayFormat('d/m/Y H:i')
+                                    ->displayFormat('d/m/Y')
                                     ->timezone('Africa/Casablanca'),
                             ]),
 
@@ -95,10 +95,10 @@ class FinalYearInternshipAgreementResource extends BaseResource
                                             ->schema([
                                                 Forms\Components\DateTimePicker::make('starting_at')
                                                     ->native(false)
-                                                    ->displayFormat('d/m/Y H:i'),
+                                                    ->displayFormat('d/m/Y'),
                                                 Forms\Components\DateTimePicker::make('ending_at')
                                                     ->native(false)
-                                                    ->displayFormat('d/m/Y H:i'),
+                                                    ->displayFormat('d/m/Y'),
                                             ])->columns(2),
 
                                         Forms\Components\Section::make(__('Status'))
@@ -121,7 +121,8 @@ class FinalYearInternshipAgreementResource extends BaseResource
                                                         titleAttribute: 'name',
                                                         modifyQueryUsing: fn ($query) => $query->active(),
                                                     )
-                                                    ->required(),
+                                                    ->required()
+                                                    ->disabled(),
                                                 Forms\Components\TextInput::make('office_location')
                                                     ->maxLength(255),
                                             ])->columns(2),
