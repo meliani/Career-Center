@@ -3,11 +3,12 @@
 namespace App\Filament\Actions\Action\Processing;
 
 // use Filament\Forms\Components\Actions\Action;
+use App\Enums;
 use App\Services\UrlService;
 use Filament\Notifications\Notification;
 use Filament\Tables\Actions\Action;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\File; // Ajouter ce use
+use Illuminate\Database\Eloquent\Model; // Ajouter ce use
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 
@@ -43,11 +44,17 @@ class GenerateInternshipAgreementAction extends Action
 
             $qrCodeSvg = UrlService::getQrCodeSvg($verication_link);
 
+            if ($FinalYearInternship->status === Enums\Status::Draft) {
+                // Option 1: Pass a watermark variable to your Blade view
+                $watermark = 'DRAFT';
+            }
+
             $chromePath = env('BROWSERSHOT_CHROME_PATH');
             pdf()
                 ->view($template_view, [
                     'internship' => $FinalYearInternship,
-                    'qrCodeSvg' => $qrCodeSvg, // Ajouter le QR code à la vue
+                    'qrCodeSvg' => $qrCodeSvg,
+                    'watermark' => $watermark ?? null,
                 ])
                 ->save(
                     $pdf_path . '/' . $pdf_file_name
