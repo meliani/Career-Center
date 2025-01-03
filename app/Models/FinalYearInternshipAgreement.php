@@ -82,11 +82,25 @@ class FinalYearInternshipAgreement extends Model implements Agreement
         static::creating(function (FinalYearInternshipAgreement $finalYearInternship) {
             $finalYearInternship->student_id = auth()->id();
             $finalYearInternship->year_id = Year::current()->id;
-            $finalYearInternship->status = Enums\Status::Announced;
+            // $finalYearInternship->status = Enums\Status::Announced;
             $finalYearInternship->announced_at = now();
         });
-        static::created(function (FinalYearInternshipAgreement $finalYearInternship) {
-            $finalYearInternship->generateVerificationLink();
+        // static::created(function (FinalYearInternshipAgreement $finalYearInternship) {
+        //     $finalYearInternship->generateVerificationLink();
+        // });
+
+        static::updating(function (FinalYearInternshipAgreement $finalYearInternship) {
+            if ($finalYearInternship->isDirty('status')) {
+                if ($finalYearInternship->status === Enums\Status::Announced) {
+                    $finalYearInternship->announced_at = now();
+                }
+                // if ($finalYearInternship->status === Enums\Status::Signed) {
+                //     $finalYearInternship->signed_at = now();
+                // }
+                // if ($finalYearInternship->status === Enums\Status::Completed) {
+                //     $finalYearInternship->received_at = now();
+                // }
+            }
         });
 
     }

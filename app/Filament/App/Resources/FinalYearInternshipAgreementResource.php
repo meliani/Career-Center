@@ -158,10 +158,13 @@ class FinalYearInternshipAgreementResource extends StudentBaseResource
                         ->label('View details'),
                     Tables\Actions\EditAction::make()
                         ->color('warning')
-                        ->label('Edit possible fields'),
+                        ->label('Edit details')
+                        ->disabled(fn ($record) => $record->status !== Enums\Status::Draft),
                     ApplyForCancelInternshipAction::make('Apply for internship cancellation')
                         ->color('danger')
-                        ->icon('heroicon-o-bolt-slash'),
+                        ->icon('heroicon-o-bolt-slash')
+                        ->disabled(fn ($record) => $record->status === Enums\Status::Draft)
+                        ->hidden(fn ($record) => $record->status === Enums\Status::PendingCancellation),
                 ])
                     ->label(__('Manage'))
                     ->icon('heroicon-m-cog-6-tooth')
@@ -169,11 +172,11 @@ class FinalYearInternshipAgreementResource extends StudentBaseResource
                     ->button(),
 
                 GenerateInternshipAgreementAction::make('Generate Agreement PDF')
-                    ->label(__('Generate PDF'))
+                    ->label(__('Generate Agreement PDF'))
                     ->icon('heroicon-o-document-arrow-down')
                     ->color('primary')
                     ->button()
-                    ->requiresConfirmation(),
+                    ->disabled(fn ($record) => $record->status !== Enums\Status::Announced),
             ], position: Tables\Enums\ActionsPosition::AfterColumns);
     }
 
@@ -190,7 +193,7 @@ class FinalYearInternshipAgreementResource extends StudentBaseResource
             'index' => Pages\ListFinalYearInternshipAgreements::route('/'),
             'create' => Pages\CreateFinalYearInternshipAgreement::route('/create'),
             'view' => Pages\ViewFinalYearInternshipAgreement::route('/{record}'),
-            // 'edit' => Pages\EditFinalYearInternshipAgreement::route('/{record}/edit'),
+            'edit' => Pages\EditFinalYearInternshipAgreement::route('/{record}/edit'),
         ];
     }
 
@@ -243,15 +246,16 @@ class FinalYearInternshipAgreementResource extends StudentBaseResource
                             ->formatStateUsing(fn ($record) => $record->agreement_pdf_url ? _('Download agreement PDF') : _('No PDF generated yet'))
                             ->columnSpan(3)
                             ->badge()
-                            ->url(fn ($record) => $record->agreement_pdf_url, shouldOpenInNewTab: true)
-                            ->hintActions(
-                                [Infolists\Components\Actions\Action::make('generate')
-                                    ->label('Generate PDF')
-                                    ->icon('heroicon-o-document-plus')
-                                    ->button(),
-
-                                ]
-                            ),
+                            ->url(fn ($record) => $record->agreement_pdf_url, shouldOpenInNewTab: true),
+                        // ->hintActions(
+                        //     [
+                        //         Infolists\Components\Actions\Action::make('generate')
+                        //             ->label('Generate PDF')
+                        //             ->icon('heroicon-o-document-plus')
+                        //             ->button()
+                        //             ->action(fn () => GenerateInternshipAgreementAction::make('Generate Agreement PDF')),
+                        //     ]
+                        // ),
                         // ->suffixAction(
                         //     Infolists\Components\Actions\Action::make('delete')
                         //         ->label('Delete PDF')
