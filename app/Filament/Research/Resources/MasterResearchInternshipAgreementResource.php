@@ -160,10 +160,13 @@ class MasterResearchInternshipAgreementResource extends StudentBaseResource
                         ->label('View details'),
                     Tables\Actions\EditAction::make()
                         ->color('warning')
-                        ->label('Edit possible fields'),
+                        ->label('Edit details')
+                        ->disabled(fn ($record) => $record->status !== Enums\Status::Draft),
                     ApplyForCancelInternshipAction::make('Apply for internship cancellation')
                         ->color('danger')
-                        ->icon('heroicon-o-bolt-slash'),
+                        ->icon('heroicon-o-bolt-slash')
+                        ->disabled(fn ($record) => $record->status === Enums\Status::Draft)
+                        ->hidden(fn ($record) => $record->status === Enums\Status::PendingCancellation),
                 ])
                     ->label(__('Manage'))
                     ->icon('heroicon-m-cog-6-tooth')
@@ -171,11 +174,17 @@ class MasterResearchInternshipAgreementResource extends StudentBaseResource
                     ->button(),
 
                 GenerateInternshipAgreementAction::make('Generate Agreement PDF')
-                    ->label(__('Generate PDF'))
+                    ->label(__('Generate Agreement PDF'))
                     ->icon('heroicon-o-document-arrow-down')
                     ->color('primary')
                     ->button()
-                    ->requiresConfirmation(),
+                    ->visible(fn ($record) => $record->status == Enums\Status::Announced),
+                GenerateInternshipAgreementAction::make('Generate Draft Agreement PDF')
+                    ->label(__('Generate Draft Agreement PDF'))
+                    ->icon('heroicon-o-document-arrow-down')
+                    ->color('primary')
+                    ->button()
+                    ->visible(fn ($record) => $record->status == Enums\Status::Draft),
             ], position: Tables\Enums\ActionsPosition::AfterColumns);
     }
 
@@ -192,7 +201,7 @@ class MasterResearchInternshipAgreementResource extends StudentBaseResource
             'index' => Pages\ListMasterResearchInternshipAgreements::route('/'),
             'create' => Pages\CreateMasterResearchInternshipAgreement::route('/create'),
             'view' => Pages\ViewMasterResearchInternshipAgreement::route('/{record}'),
-            // 'edit' => Pages\EditMasterResearchInternshipAgreement::route('/{record}/edit'),
+            'edit' => Pages\EditMasterResearchInternshipAgreement::route('/{record}/edit'),
         ];
     }
 

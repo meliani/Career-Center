@@ -318,6 +318,17 @@ class CreateMasterResearchInternshipAgreement extends CreateRecord
                                     },
                                 ),
                         ]),
+                    Forms\Components\Section::make('Status')
+                        ->schema([
+                            Forms\Components\ToggleButtons::make('status')
+                                ->inline()
+                                ->options([
+                                    Enums\Status::Announced->value => Enums\Status::Announced->getLabel(),
+                                    Enums\Status::Draft->value => Enums\Status::Draft->getLabel(),
+                                ])
+                                ->default(Enums\Status::Announced->value)
+                                ->required(),
+                        ]),
                 ]),
         ];
     }

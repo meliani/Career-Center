@@ -4,6 +4,19 @@
     <title>Internship Agreement</title>
     <style>
         {!! file_get_contents(public_path('build/assets/pdf.css')) !!}
+        @if(!empty($watermark))
+        body::after {
+            content: "{{ $watermark }}";
+            position: fixed;
+            top: 40%;
+            left: 30%;
+            font-size: 10em;
+            color: rgba(0,0,0,0.1);
+            transform: rotate(-30deg);
+            pointer-events: none;
+            z-index: 9999;
+        }
+        @endif
     </style>
 
 </head>
@@ -696,7 +709,7 @@
     </div>
     <div class="border-2 border-gray-500 p-2  mx-auto max-w-sm mt-2 mb-2">
         <h1 class="text-lg font-semibold text-center mb-2">
-            CONVENTION DE STAGE DE RECHECHE
+            CONVENTION DE STAGE <p>DE RECHECHE</p>
         </h1>
     </div>
     <h2 class="text-base font-semibold mb-0">ARTICLE PREMIER :</h2>

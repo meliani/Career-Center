@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Enums;
-use App\Models\Scopes\StudentRelatedScope;
 use Carbon\Carbon;
 use Filament\Notifications\Notification;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -77,16 +76,19 @@ class MasterResearchInternshipAgreement extends Model implements Agreement
 
     protected static function booted(): void
     {
-        // static::addGlobalScope(new StudentRelatedScope);
-
         static::creating(function (MasterResearchInternshipAgreement $finalYearInternship) {
             $finalYearInternship->student_id = auth()->id();
             $finalYearInternship->year_id = Year::current()->id;
-            $finalYearInternship->status = Enums\Status::Announced;
+            // $finalYearInternship->status = Enums\Status::Announced;
             $finalYearInternship->announced_at = now();
         });
-        static::created(function (MasterResearchInternshipAgreement $finalYearInternship) {
-            $finalYearInternship->generateVerificationLink();
+
+        static::updating(function (MasterResearchInternshipAgreement $finalYearInternship) {
+            if ($finalYearInternship->isDirty('status')) {
+                if ($finalYearInternship->status === Enums\Status::Announced) {
+                    $finalYearInternship->announced_at = now();
+                }
+            }
         });
 
     }
