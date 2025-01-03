@@ -254,15 +254,16 @@ class MasterResearchInternshipAgreementResource extends StudentBaseResource
                             ->formatStateUsing(fn ($record) => $record->agreement_pdf_url ? _('Download agreement PDF') : _('No PDF generated yet'))
                             ->columnSpan(3)
                             ->badge()
-                            ->url(fn ($record) => $record->agreement_pdf_url, shouldOpenInNewTab: true)
-                            ->hintActions(
-                                [Infolists\Components\Actions\Action::make('generate')
-                                    ->label('Generate PDF')
-                                    ->icon('heroicon-o-document-plus')
-                                    ->button(),
+                            ->url(fn ($record) => $record->agreement_pdf_url, shouldOpenInNewTab: true),
+                        // ->hintActions(
+                        //     [
+                        //         Infolists\Components\Actions\Action::make('generate')
+                        //         ->label('Generate PDF')
+                        //         ->icon('heroicon-o-document-plus')
+                        //         ->button(),
 
-                                ]
-                            ),
+                        //     ]
+                        // ),
                         // ->suffixAction(
                         //     Infolists\Components\Actions\Action::make('delete')
                         //         ->label('Delete PDF')
