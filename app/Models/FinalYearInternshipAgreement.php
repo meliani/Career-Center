@@ -108,6 +108,7 @@ class FinalYearInternshipAgreement extends Model implements Agreement
                     $finalYearInternship->validated_by = auth()->id();
                 } elseif ($finalYearInternship->validated_at == 0) {
                     $finalYearInternship->validated_at = null;
+                    $finalYearInternship->validated_by = auth()->id();
                 }
             }
         });

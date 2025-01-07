@@ -176,7 +176,7 @@ class ProgramCoordinatorAgreementsWidget extends BaseWidget
                 //     ->color(fn ($record) => $record->status->getColor()),
 
                 \Archilex\ToggleIconColumn\Columns\ToggleIconColumn::make('validated_at')
-                    ->label(__('Validated'))
+                    ->label(__('Validation'))
                     ->searchable()
                     ->sortable()
                     ->hoverColor('success')
