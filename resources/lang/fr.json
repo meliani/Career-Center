@@ -1051,5 +1051,7 @@
     "The program coordinator of **:program**, **:coordinator**, has reassigned the project from your department.": "Le coordonnateur de la filière **:program**, **:coordinator**, a réaffecté le projet de votre département.",
     "The final supervisor will be assigned after the departmental council.": "L'encadrant final sera assigné après le conseil de département.",
     "Internal supervisor suggestion": "Suggestion d'encadrant interne",
-    "Suggested internal supervisor": "Encadrant interne suggéré"
+    "Suggested internal supervisor": "Encadrant interne suggéré",
+    "Validated - click to unvalidate": "Validé - cliquez pour annuler la validation",
+    "Unvalidated - click to validate": "Non validé - cliquez pour valider"
 }

@@ -50,7 +50,8 @@ class ProgramCoordinatorAgreementsWidget extends BaseWidget
             });
 
         return match ($this->activeFilter) {
-            'pending' => $query->where('status', Enums\Status::Signed)
+            'pending' => $query
+            // ->where('status', Enums\Status::Signed)
                 ->whereNull('assigned_department'),
             'assigned' => $query->whereNotNull('assigned_department')
                 ->where('assigned_department', '!=', ''),
@@ -165,6 +166,25 @@ class ProgramCoordinatorAgreementsWidget extends BaseWidget
                 //     ->sortable()
                 //     ->extraAttributes(['class' => 'animate-slide-in-right']),
 
+                // \Guava\FilamentIconSelectColumn\Tables\Columns\IconSelectColumn::make('status')
+                //     ->label(__('Status'))
+                //     ->options(Enums\Status::class)
+                //     ->searchable()
+                //     ->sortable()
+                //     ->extraAttributes(['class' => 'animate-fade-in'])
+                //     ->icon(fn ($record) => $record->status->getIcon())
+                //     ->color(fn ($record) => $record->status->getColor()),
+
+                \Archilex\ToggleIconColumn\Columns\ToggleIconColumn::make('validated_at')
+                    ->label(__('Validated'))
+                    ->searchable()
+                    ->sortable()
+                    ->hoverColor('success')
+                    ->extraAttributes(['class' => 'animate-fade-in'])
+                    ->tooltip(function ($record) {
+                        return $record->validated_at ? __('Validated - click to unvalidate') : __('Unvalidated - click to validate');
+                    }),
+
                 Tables\Columns\SelectColumn::make('assigned_department')
                     ->options(function () {
                         // departments with count
@@ -263,9 +283,9 @@ class ProgramCoordinatorAgreementsWidget extends BaseWidget
                     ->modalCancelAction(false)
                     ->extraAttributes(['class' => 'transition-transform duration-300 hover:scale-110']),
             ], position: Tables\Enums\ActionsPosition::BeforeColumns)
-            ->recordUrl(
-                fn (Agreement $record): string => route('filament.Administration.resources.final-year-internship-agreements.view', ['record' => $record])
-            )
+            // ->recordUrl(
+            //     fn (Agreement $record): string => route('filament.Administration.resources.final-year-internship-agreements.view', ['record' => $record])
+            // )
             ->striped()
             ->defaultSort('created_at', 'desc')
             ->poll('30s')
@@ -290,7 +310,7 @@ class ProgramCoordinatorAgreementsWidget extends BaseWidget
             [
                 'label' => __('Pending Department Assignment'),
                 'value' => (clone $baseQuery)
-                    ->where('status', Enums\Status::Signed)
+                    // ->where('status', Enums\Status::Signed)
                     ->whereNull('assigned_department')
                     ->orWhere('assigned_department', '')
                     ->count(),

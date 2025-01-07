@@ -18,6 +18,7 @@
     ],
     "require": {
         "php": "^8.2",
+        "archilex/filament-toggle-icon-column": "^3.1",
         "awcodes/light-switch": "^1.0",
         "bacon/bacon-qr-code": "^2.0",
         "bezhansalleh/filament-language-switch": "^3.0",
