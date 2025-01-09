@@ -272,8 +272,13 @@ class ProgramCoordinatorAgreementsWidget extends BaseWidget
                     ->options(Enums\Department::class),
             ])
             ->actions([
+                Tables\Actions\Action::make('open')
+                    ->label(false)
+                    ->icon('heroicon-o-arrow-top-right-on-square')
+                    ->url(fn (Agreement $record) => route('filament.Administration.resources.final-year-internship-agreements.view', ['record' => $record]))
+                    ->extraAttributes(['class' => 'transition-transform duration-300 hover:scale-110']),
                 Tables\Actions\ViewAction::make()
-                    ->label('Preview')
+                    ->label(false)
                     ->icon('heroicon-o-magnifying-glass')
                     ->modalContent(fn (Agreement $record): View => view(
                         'filament.resources.final-year-internship-agreement-resource.modal.view',
