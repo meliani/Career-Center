@@ -11,7 +11,9 @@ class Professor extends User
         parent::boot();
         static::addGlobalScope(function ($query) {
             $query
-                ->whereIn('role', Enums\Role::getProfessorRoles());
+                ->whereIn('role', Enums\Role::getProfessorRoles())
+                ->where('is_enabled', true)
+                ->where('can_supervise', true);
         });
         // static::addGlobalScope(new Scopes\ProfessorScope);
 
@@ -40,6 +42,21 @@ class Professor extends User
     public function projects()
     {
         return $this->belongsToMany(Project::class, 'professor_projects', 'professor_id', 'project_id')
+            ->withPivot('jury_role', 'created_by', 'updated_by', 'approved_by', 'is_president', 'votes')
+            ->withTimestamps()
+            ->using(ProfessorProject::class);
+    }
+
+    public function projectsWithCurrentYearAgreements()
+    {
+        return $this->projects()->whereHas('final_internship_agreements', function ($q) {
+            $q->where('year_id', Year::current()->id);
+        });
+
+        return $this->belongsToMany(Project::class, 'professor_projects', 'professor_id', 'project_id')
+            ->whereHas('final_internship_agreements', function ($query) {
+                $query->where('year_id', Year::current()->id);
+            })
             ->withPivot('jury_role', 'created_by', 'updated_by', 'approved_by', 'is_president', 'votes')
             ->withTimestamps()
             ->using(ProfessorProject::class);

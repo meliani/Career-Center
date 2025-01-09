@@ -24,7 +24,8 @@ return new class extends Migration
             $table->enum('role', Role::getValues());
             $table->string('email')->unique();
             $table->enum('assigned_program', Program::getValues())->nullable();
-            $table->integer('is_enabled')->default('0');
+            $table->integer('is_enabled')->nullable();
+            $table->integer('can_supervise')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('avatar_url')->nullable();

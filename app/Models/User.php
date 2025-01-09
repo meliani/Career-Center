@@ -49,6 +49,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName
         'email',
         'assigned_program',
         'is_enabled',
+        'can_supervise',
         'email_verified_at',
         'password',
         'remember_token',

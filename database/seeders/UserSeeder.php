@@ -34,6 +34,7 @@ class UserSeeder extends Seeder
                 'role' => Role::SuperAdministrator->value,
                 'assigned_program' => Program::cases()[array_rand(Program::cases())]->value,
                 'is_enabled' => true,
+                'can_supervise' => true,
                 'email_verified_at' => now(),
                 'password' => bcrypt($password),
                 'remember_token' => Str::random(10),
@@ -46,7 +47,7 @@ class UserSeeder extends Seeder
         );
 
         $faker = Faker::create();
-dd(Program::cases(), Program::getArray());
+        dd(Program::cases(), Program::getArray());
         foreach (range(1, 10) as $index) {
             User::create([
                 'title' => Title::cases()[array_rand(Title::cases())]->value,
@@ -58,6 +59,7 @@ dd(Program::cases(), Program::getArray());
                 'email' => $faker->unique()->safeEmail,
                 'assigned_program' => Program::cases()[array_rand(Program::cases())],
                 'is_enabled' => $faker->boolean,
+                'can_supervise' => $faker->boolean,
                 'email_verified_at' => now(),
                 'password' => bcrypt('password'), // You may want to change this
                 'remember_token' => Str::random(10),

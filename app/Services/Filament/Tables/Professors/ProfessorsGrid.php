@@ -79,10 +79,6 @@ class ProfessorsGrid
                             ->sortable()
                             ->counts('projects'),
                     ]),
-
-                    // Tables\Columns\ToggleColumn::make('is_enabled')
-                    //     ->toggleable(isToggledHiddenByDefault: true)
-                    //     ->sortable(),
                 ]),
 
                 // ]),
@@ -90,7 +86,7 @@ class ProfessorsGrid
             Panel::make([
                 Stack::make([
                     Split::make([
-                        Tables\Columns\TextColumn::make('projects.id_pfe')
+                        Tables\Columns\TextColumn::make('projectsWithCurrentYearAgreements.id_pfe')
                             ->badge()
                             ->searchable(false)
                             ->inline()

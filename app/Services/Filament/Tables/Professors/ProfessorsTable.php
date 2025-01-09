@@ -13,6 +13,7 @@ class ProfessorsTable
         return [
             // Tables\Columns\TextColumn::make('title')
             //     ->searchable(),
+
             Tables\Columns\TextColumn::make('name')
                 ->searchable(
                     ['first_name', 'last_name']
@@ -26,7 +27,7 @@ class ProfessorsTable
             //     ->searchable(),
             Tables\Columns\TextColumn::make('department')
                 ->searchable(),
-            Tables\Columns\TextColumn::make('projects_count')
+            Tables\Columns\TextColumn::make('active_projects_count')
                 ->alignment(Alignment::Center)
                 ->searchable(false)
 
@@ -45,7 +46,7 @@ class ProfessorsTable
                 ->alignCenter()
                 ->sortable()
                 ->counts('projects'),
-            Tables\Columns\TextColumn::make('projects.id_pfe')
+            Tables\Columns\TextColumn::make('projectsWithCurrentYearAgreements.id_pfe')
                 ->badge()
                 ->searchable(false)
                 ->inline()
@@ -69,10 +70,10 @@ class ProfessorsTable
                 ->searchable()
                 ->hidden(fn () => auth()->user()->isAdministrator() === false),
 
-            Tables\Columns\ToggleColumn::make('is_enabled')
-                ->toggleable(isToggledHiddenByDefault: true)
-                ->sortable()
-                ->hidden(fn () => auth()->user()->isAdministrator() === false),
+            // Tables\Columns\ToggleColumn::make('is_enabled')
+            //     ->toggleable(isToggledHiddenByDefault: true)
+            //     ->sortable()
+            //     ->hidden(fn () => auth()->user()->isAdministrator() === false),
             // Tables\Columns\TextColumn::make('email_verified_at')
             //     ->dateTime()
             //     ->sortable(),

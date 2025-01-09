@@ -68,14 +68,15 @@ class UserResource extends Resource
                     ->password()
                     ->maxLength(255)
                     ->dehydrated(fn (?string $state): bool => filled($state)),
-                Forms\Components\Toggle::make('active_status'),
-                Forms\Components\TextInput::make('avatar')
-                    ->maxLength(255)
-                    ->default('avatar.png'),
-                Forms\Components\Toggle::make('dark_mode')
-                    ->required(),
-                Forms\Components\TextInput::make('messenger_color')
-                    ->maxLength(255),
+
+                // Forms\Components\Toggle::make('active_status'),
+                // Forms\Components\TextInput::make('avatar')
+                //     ->maxLength(255)
+                //     ->default('avatar.png'),
+                // Forms\Components\Toggle::make('dark_mode')
+                //     ->required(),
+                // Forms\Components\TextInput::make('messenger_color')
+                //     ->maxLength(255),
             ]);
     }
 
@@ -96,6 +97,11 @@ class UserResource extends Resource
                 //     ->searchable(),
                 Tables\Columns\TextColumn::make('role')
                     ->badge()
+                    ->searchable(),
+                Tables\Columns\CheckboxColumn::make('can_supervise')
+                    ->label(__('Can Supervise'))
+                    ->alignCenter()
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),

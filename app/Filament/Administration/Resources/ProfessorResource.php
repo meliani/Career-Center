@@ -92,8 +92,8 @@ class ProfessorResource extends Core\BaseResource
                 //     ->password()
                 //     ->required()
                 //     ->maxLength(255),
-                Forms\Components\Toggle::make('active_status')
-                    ->required(),
+                // Forms\Components\Toggle::make('active_status')
+                //     ->required(),
                 // Forms\Components\FileUpload::make('avatar')
                 //     ->default('avatar.png'),
                 // Forms\Components\Toggle::make('dark_mode')
@@ -206,5 +206,11 @@ class ProfessorResource extends Core\BaseResource
             'create' => Pages\CreateProfessor::route('/create'),
             'edit' => Pages\EditProfessor::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withCount('projectsWithCurrentYearAgreements as active_projects_count');
     }
 }
