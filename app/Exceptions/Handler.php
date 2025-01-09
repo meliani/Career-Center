@@ -33,7 +33,9 @@ class Handler extends ExceptionHandler
     public function register(): void
     {
         $this->reportable(function (Throwable $e) {
-            Log::info($e->getMessage());
+            if (app()->bound('log')) {
+                Log::info($e->getMessage());
+            }
         });
 
         $this->renderable(function (TransportException $e) {

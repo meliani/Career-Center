@@ -3,7 +3,10 @@ import typography from '@tailwindcss/typography'
 
 export default {
     darkMode: 'class',
-    content: ['./vendor/filament/**/*.blade.php'],
+    content: [
+        './resources/views/**/*.blade.php',
+        './vendor/filament/**/*.blade.php',
+    ],
     theme: {
         extend: {
             colors: {

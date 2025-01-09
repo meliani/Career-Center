@@ -20,16 +20,16 @@ export default {
         "./resources/**/*.vue",
     ],
     darkMode: 'class',
-    theme: {
-        extend: {
-            colors: { 
-                danger: colors.rose,
-                primary: colors.blue,
-                success: colors.green,
-                warning: colors.yellow,
-            }, 
-        },
-    },
+    // theme: {
+    //     extend: {
+    //         colors: { 
+    //             danger: colors.rose,
+    //             primary: colors.blue,
+    //             success: colors.green,
+    //             warning: colors.yellow,
+    //         }, 
+    //     },
+    // },
     variants: {
         extend: {
             backgroundColor: ['active'],

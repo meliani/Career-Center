@@ -14,7 +14,6 @@ use Filament\Navigation\NavigationGroup;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
-use Filament\SpatieLaravelTranslatablePlugin;
 use Filament\Support\Enums\MaxWidth;
 use Filament\Widgets;
 use Hugomyb\FilamentErrorMailer\FilamentErrorMailerPlugin;
@@ -80,7 +79,7 @@ class AdminPanelProvider extends PanelProvider
             // ->databaseTransactions()
             ->sidebarCollapsibleOnDesktop()
             ->passwordReset()
-            ->profile() //isSimple: true)
+            ->profile() // isSimple: true)
             ->spa()
             ->maxContentWidth(MaxWidth::Full)
             ->default()
@@ -146,7 +145,7 @@ class AdminPanelProvider extends PanelProvider
                             'resourceTimeGrid',
                         ])
                         ->config([
-                            'initialView' => 'timeGridDay', //timeGridWeek, timeGridDay, dayGridMonth, listWeek
+                            'initialView' => 'timeGridDay', // timeGridWeek, timeGridDay, dayGridMonth, listWeek
                             'firstDay' => 1, // start the week on a Monday
                             'eventDisplay' => 'list-item', // block, list-item, auto, background, inverse-background and none
                             'eventTimeFormat' => [
@@ -254,13 +253,13 @@ class AdminPanelProvider extends PanelProvider
                     //     ->size(60)
                     //     ->square()
                     //     ->colors(['0A0310', '49007E', 'FF005B', 'FF7D10', 'FFB238']),
-                    SpatieLaravelTranslatablePlugin::make()->defaultLocales([config('app.locale')]),
+                    // SpatieLaravelTranslatablePlugin::make()->defaultLocales([config('app.locale')]),
                     // BoltPlugin::make(),
                     // FilamentTourPlugin::make()
                     //     ->onlyVisibleOnce(true),
-                    SpotlightPlugin::make(),
+                    // SpotlightPlugin::make(),
                     // FilamentErrorMailerPlugin::make(),
-                    FilamentPeekPlugin::make(),
+                    // FilamentPeekPlugin::make(),
                     BreezyCore::make()
                         ->myProfile(
                             shouldRegisterUserMenu: true, // Sets the 'account' link in the panel User Menu (default = true)

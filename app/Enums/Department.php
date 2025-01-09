@@ -34,7 +34,7 @@ enum Department: string implements HasColor, HasIcon, HasLabel
     public function getColor(): ?string
     {
         return match ($this) {
-            self::EMO => 'info',
+            self::EMO => 'primary',
             self::MIR => 'success',
             self::GLC => 'warning',
             self::SC => 'danger',

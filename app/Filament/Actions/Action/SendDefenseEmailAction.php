@@ -7,7 +7,6 @@ use App\Notifications\DefenseAuthorizedNotification;
 use Filament\Forms\Components\Wizard\Step;
 use Filament\Tables\Actions\Action;
 use Illuminate\Support\HtmlString;
-use Joaopaulolndev\FilamentPdfViewer\Forms\Components\PdfViewerField;
 
 class SendDefenseEmailAction extends Action
 {
