@@ -5,11 +5,13 @@ namespace App\Filament\Administration\Widgets\Dashboards;
 use App\Enums;
 use App\Models\FinalYearInternshipAgreement as Agreement;
 use App\Services\FastTextService;
+use Carbon\Carbon;
 use Filament\Notifications\Notification;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class ProgramCoordinatorAgreementsWidget extends BaseWidget
@@ -148,16 +150,52 @@ class ProgramCoordinatorAgreementsWidget extends BaseWidget
                     ->extraAttributes([
                         'class' => 'animate-fade-in',
                         'wire:loading.class' => 'opacity-50',
+                        'style' => 'white-space: normal; word-break: break-word; max-width: 200px;', // Allows text to wrap
                     ]),
                 // ->tooltip(fn ($record) => __('Project title') . ': ' . $record->title),
-
-                Tables\Columns\TextColumn::make('title')
-                    ->label(__('Title'))
+                Tables\Columns\CheckboxColumn::make('validated_at')
+                    ->label(__('Validation'))
                     ->searchable()
                     ->sortable()
-                    ->extraAttributes(['class' => 'animate-slide-in-right'])
+                    ->alignCenter()
+                    ->extraAttributes(['class' => 'animate-fade-in'])
                     ->tooltip(function ($record) {
-                        return __('Project description') . ': ' . $record->description;
+                        if ($record->validated_at && $record->validated_by) {
+                            $tooltip = __('Validated at :date by :user', [
+                                'date' => $record->validated_at->format('Y-m-d H:i'),
+                                'user' => $record->validatedBy->name,
+                            ]);
+                        } elseif ($record->validated_at) {
+                            $tooltip = __('Validated at :date', [
+                                'date' => $record->validated_at->format('Y-m-d H:i'),
+                            ]);
+                        } else {
+                            $tooltip = __('Not validated');
+                        }
+
+                        return $tooltip;
+                    })
+                    ->disabled(function ($record) {
+                        return $record->validated_at || $record->assigned_department;
+                    })
+                // ->beforeStateUpdated(function ($record, $state) {
+                //     if ($state == 1) {
+                //         $record->validated_at = Carbon::now();
+                //         // $record->save();
+                //     } elseif ($state == 0) {
+                //         // DB::transaction(function () use ($record) {
+                //             $record->validated_at = null;
+                //             // $record->save();
+                //         // });
+                //     }
+                // }),
+                    ->afterStateUpdated(function ($record, $state) {
+                        if ($state) {
+                            $record->validated_by = auth()->user()->id;
+                        } else {
+                            $record->validated_by = null;
+                        }
+                        $record->save();
                     }),
 
                 // Tables\Columns\TextColumn::make('organization.name')
@@ -175,15 +213,15 @@ class ProgramCoordinatorAgreementsWidget extends BaseWidget
                 //     ->icon(fn ($record) => $record->status->getIcon())
                 //     ->color(fn ($record) => $record->status->getColor()),
 
-                \Archilex\ToggleIconColumn\Columns\ToggleIconColumn::make('validated_at')
-                    ->label(__('Validation'))
-                    ->searchable()
-                    ->sortable()
-                    ->hoverColor('success')
-                    ->extraAttributes(['class' => 'animate-fade-in'])
-                    ->tooltip(function ($record) {
-                        return $record->validated_at ? __('Validated - click to unvalidate') : __('Unvalidated - click to validate');
-                    }),
+                // \Archilex\ToggleIconColumn\Columns\ToggleIconColumn::make('validated_at')
+                //     ->label(__('Validation'))
+                //     ->searchable()
+                //     ->sortable()
+                //     ->hoverColor('success')
+                //     ->extraAttributes(['class' => 'animate-fade-in'])
+                //     ->tooltip(function ($record) {
+                //         return $record->validated_at ? __('Validated - click to unvalidate') : __('Unvalidated - click to validate');
+                //     }),
 
                 Tables\Columns\SelectColumn::make('assigned_department')
                     ->options(function () {
@@ -257,14 +295,31 @@ class ProgramCoordinatorAgreementsWidget extends BaseWidget
 
                         return false;
                     }),
+                Tables\Columns\TextColumn::make('title')
+                    ->label(__('Title'))
+                    ->searchable()
+                    ->sortable()
+                    ->extraAttributes([
+                        'class' => 'animate-slide-in-right',
+                        'style' => 'white-space: normal; word-break: break-word; max-width: 300px;', // Allows text to wrap
+                    ])
+                    ->tooltip(function ($record) {
+                        return __('Project description') . ': ' . $record->description;
+                    })
+                    ->description(
+                        fn ($record) => __('Submitted at :announced_at, Status: :status', [
+                            'announced_at' => $record->announced_at->format('Y-m-d'),
+                            'status' => $record->status->getLabel(),
+                        ])
+                    ),
                 // ->tooltip(fn ($record) => $record->suggestedInternalSupervisor ? __('Internal Supervisor (student suggested)') . ': ' . $record->suggestedInternalSupervisor->name : null),
                 // Tables\Columns\TextColumn::make('suggestedInternalSupervisor.name')
                 //     ->label(__('Internal Supervisor (student suggested)')),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->label(__('Submitted'))
-                    ->dateTime()
-                    ->sortable()
-                    ->extraAttributes(['class' => 'animate-fade-in']),
+                // Tables\Columns\TextColumn::make('created_at')
+                //     ->label(__('Submitted'))
+                //     ->dateTime()
+                //     ->sortable()
+                //     ->extraAttributes(['class' => 'animate-fade-in']),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('assigned_department')
@@ -276,7 +331,8 @@ class ProgramCoordinatorAgreementsWidget extends BaseWidget
                     ->label(false)
                     ->icon('heroicon-o-arrow-top-right-on-square')
                     ->url(fn (Agreement $record) => route('filament.Administration.resources.final-year-internship-agreements.view', ['record' => $record]))
-                    ->extraAttributes(['class' => 'transition-transform duration-300 hover:scale-110']),
+                    ->extraAttributes(['class' => 'transition-transform duration-300 hover:scale-110'])
+                    ->tooltip(__('Open Agreement')),
                 Tables\Actions\ViewAction::make()
                     ->label(false)
                     ->icon('heroicon-o-magnifying-glass')
@@ -286,7 +342,8 @@ class ProgramCoordinatorAgreementsWidget extends BaseWidget
                     ))
                     ->modalSubmitAction(false)
                     ->modalCancelAction(false)
-                    ->extraAttributes(['class' => 'transition-transform duration-300 hover:scale-110']),
+                    ->extraAttributes(['class' => 'transition-transform duration-300 hover:scale-110'])
+                    ->tooltip(__('Preview Agreement')),
             ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             // ->recordUrl(
             //     fn (Agreement $record): string => route('filament.Administration.resources.final-year-internship-agreements.view', ['record' => $record])

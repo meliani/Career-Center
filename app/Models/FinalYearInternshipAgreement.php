@@ -73,6 +73,13 @@ class FinalYearInternshipAgreement extends Model implements Agreement
         'signed_by_student_at' => 'datetime',
         'signed_by_organization_at' => 'datetime',
         'signed_by_administration_at' => 'datetime',
+        'validated_at' => 'datetime',
+        'received_at' => 'datetime',
+        'signed_at' => 'datetime',
+        'announced_at' => 'datetime',
+        'cancelled_at' => 'datetime',
+        'department_assigned_at' => 'datetime',
+
     ];
 
     protected static function booted(): void
@@ -102,17 +109,44 @@ class FinalYearInternshipAgreement extends Model implements Agreement
                 // }
             }
 
-            if ($finalYearInternship->isDirty('validated_at')) {
-                if ($finalYearInternship->validated_at == 1) {
-                    $finalYearInternship->validated_at = now();
-                    $finalYearInternship->validated_by = auth()->id();
-                } elseif ($finalYearInternship->validated_at == 0) {
-                    $finalYearInternship->validated_at = null;
-                    $finalYearInternship->validated_by = auth()->id();
-                }
-            }
+            // if ($finalYearInternship->isDirty('validated_at')) {
+            //     if ($finalYearInternship->validated_at != null) {
+            //         // dd($finalYearInternship->validated_at);
+            //         $finalYearInternship->validated_at = now();
+            //         $finalYearInternship->validated_by = auth()->id();
+            //     } elseif ($finalYearInternship->validated_at == null) {
+            //         dd('here');
+            //         $finalYearInternship->validated_at = null;
+            //         $finalYearInternship->validated_by = auth()->id();
+            //     }
+            // }
         });
 
+    }
+
+    public function setValidatedAtAttribute($value)
+    {
+        try {
+            // Already a Carbon instance
+            if ($value instanceof Carbon) {
+                $this->attributes['validated_at'] = $value;
+
+                return;
+            }
+
+            // Boolean or integer toggle
+            if (is_bool($value) || $value === 1 || $value === 0) {
+                $this->attributes['validated_at'] = $value ? now() : null;
+
+                return;
+            }
+
+            // String or null value
+            $this->attributes['validated_at'] = $value ? Carbon::parse($value) : null;
+        } catch (Exception $e) {
+            // Fallback to null on parsing errors
+            $this->attributes['validated_at'] = null;
+        }
     }
 
     public function student()
@@ -160,6 +194,11 @@ class FinalYearInternshipAgreement extends Model implements Agreement
     public function suggestedInternalSupervisor()
     {
         return $this->belongsTo(Professor::class, 'internal_supervisor_id', 'id');
+    }
+
+    public function validatedBy()
+    {
+        return $this->belongsTo(User::class, 'validated_by');
     }
 
     public function setInternshipPeriodAttribute($value)
