@@ -1063,5 +1063,6 @@
     "Validated at :date by :user": "Validé le :date par :user",
     "Validated at :date": "Validé le :date",
     "Not validated": "Non validé",
+    "Not validated, click to validate": "Non validé, cliquez pour valider",
     "The Internship has been marked as :status by :user.": "Le stage a été marqué comme :status par :user."
 }

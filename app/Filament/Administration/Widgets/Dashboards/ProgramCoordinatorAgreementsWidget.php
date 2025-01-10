@@ -158,7 +158,6 @@ class ProgramCoordinatorAgreementsWidget extends BaseWidget
                     ->searchable()
                     ->sortable()
                     ->alignCenter()
-                    ->extraAttributes(['class' => 'animate-fade-in'])
                     ->tooltip(function ($record) {
                         if ($record->validated_at && $record->validated_by) {
                             $tooltip = __('Validated at :date by :user', [
@@ -170,7 +169,7 @@ class ProgramCoordinatorAgreementsWidget extends BaseWidget
                                 'date' => $record->validated_at->format('Y-m-d H:i'),
                             ]);
                         } else {
-                            $tooltip = __('Not validated');
+                            $tooltip = __('Not validated, click to validate');
                         }
 
                         return $tooltip;
@@ -178,6 +177,9 @@ class ProgramCoordinatorAgreementsWidget extends BaseWidget
                     ->disabled(function ($record) {
                         return $record->validated_at;
                     })
+                    ->extraAttributes([
+                        'class' => 'transition-all duration-300 hover:scale-110 cursor-pointer',
+                    ])
                 // ->beforeStateUpdated(function ($record, $state) {
                 //     if ($state == 1) {
                 //         $record->validated_at = Carbon::now();
