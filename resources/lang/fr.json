@@ -1056,7 +1056,7 @@
     "Unvalidated - click to validate": "Non validé - cliquez pour valider",
     "Rate of supervision = :projects projects / :professors professors": "Taux d'encadrement = :projects projets / :professors enseignants",
     "Ratio": "Ratio",
-    "Department assignements statistics": "Statistiques des affectations de département",
+    "Department assignements statistics": "Statistiques des affectations de département aux sujets de PFE",
     "Open Agreement": "Ouvrir la convention",
     "Preview Agreement": "Prévisualiser la convention",
     "Submitted at :announced_at, Status: :status": "Soumis le :announced_at, Statut : :status",
