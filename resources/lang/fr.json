@@ -1062,5 +1062,6 @@
     "Submitted at :announced_at, Status: :status": "Soumis le :announced_at, Statut : :status",
     "Validated at :date by :user": "Validé le :date par :user",
     "Validated at :date": "Validé le :date",
-    "Not validated": "Non validé"
+    "Not validated": "Non validé",
+    "The Internship has been marked as :status by :user.": "Le stage a été marqué comme :status par :user."
 }

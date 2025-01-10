@@ -109,17 +109,21 @@ class FinalYearInternshipAgreement extends Model implements Agreement
                 // }
             }
 
-            // if ($finalYearInternship->isDirty('validated_at')) {
-            //     if ($finalYearInternship->validated_at != null) {
-            //         // dd($finalYearInternship->validated_at);
-            //         $finalYearInternship->validated_at = now();
-            //         $finalYearInternship->validated_by = auth()->id();
-            //     } elseif ($finalYearInternship->validated_at == null) {
-            //         dd('here');
-            //         $finalYearInternship->validated_at = null;
-            //         $finalYearInternship->validated_by = auth()->id();
-            //     }
-            // }
+            if ($finalYearInternship->isDirty('validated_at')) {
+                //     if ($finalYearInternship->validated_at != null) {
+                //         // dd($finalYearInternship->validated_at);
+                //         $finalYearInternship->validated_at = now();
+                //         $finalYearInternship->validated_by = auth()->id();
+                //     } elseif ($finalYearInternship->validated_at == null) {
+                //         dd('here');
+                //         $finalYearInternship->validated_at = null;
+                //         $finalYearInternship->validated_by = auth()->id();
+                //     }
+                $finalYearInternship->validated_by = auth()->id();
+                if ($finalYearInternship->status === Enums\Status::Announced) {
+                    $finalYearInternship->status = Enums\Status::Validated;
+                }
+            }
         });
 
     }

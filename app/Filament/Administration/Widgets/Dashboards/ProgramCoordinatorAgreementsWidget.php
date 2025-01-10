@@ -176,7 +176,7 @@ class ProgramCoordinatorAgreementsWidget extends BaseWidget
                         return $tooltip;
                     })
                     ->disabled(function ($record) {
-                        return $record->validated_at || $record->assigned_department;
+                        return $record->validated_at;
                     })
                 // ->beforeStateUpdated(function ($record, $state) {
                 //     if ($state == 1) {
@@ -190,12 +190,23 @@ class ProgramCoordinatorAgreementsWidget extends BaseWidget
                 //     }
                 // }),
                     ->afterStateUpdated(function ($record, $state) {
-                        if ($state) {
-                            $record->validated_by = auth()->user()->id;
-                        } else {
-                            $record->validated_by = null;
-                        }
-                        $record->save();
+                        // if ($state) {
+                        //     $record->validated_by = auth()->user()->id;
+                        // } else {
+                        //     $record->validated_by = null;
+                        // }
+                        // $record->save();
+                        Notification::make()
+                            ->title(__('Validation'))
+                            ->body(__(
+                                'The Internship has been marked as :status by :user.',
+                                [
+                                    'status' => $state ? __('Validated') : __('Not validated'),
+                                    'user' => auth()->user()->name,
+                                ]
+                            ))
+                            ->success()
+                            ->send();
                     }),
 
                 // Tables\Columns\TextColumn::make('organization.name')
