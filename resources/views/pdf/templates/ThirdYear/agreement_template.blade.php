@@ -814,9 +814,15 @@
             Le stage portera sur le sujet suivant :
             <strong>{{$internship->title}}</strong>
         </p>
+        @php
+        $wordCount = str_word_count(strip_tags($internship->description));
+        @endphp
         <p class="mt-2">
-            Descriptif détaillé : <strong>{{$internship->description}}</strong>
+        Descriptif détaillé :
         </p>
+        <span class="mt-2" style="{{ $wordCount > 100 ? 'font-size:0.6rem;word-wrap:break-word;' : '' }}">
+         <strong>{{ $internship->description }}</strong>
+        </span>
         <p class="mt-2">
             Adresse du stage (adresse précise, si différente de l’adresse de l’entreprise indiquée ci dessus) :
         </p>
