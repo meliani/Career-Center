@@ -71,7 +71,6 @@
         "fakerphp/faker": "^1.9.1",
         "larastan/larastan": "^2.0",
         "laravel/pint": "^1.0",
-        "laravel/telescope": "^5.3",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^8.1",
         "phpstan/phpstan-deprecation-rules": "^1.1",
@@ -116,9 +115,7 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": [
-                "laravel/telescope"
-            ]
+            "dont-discover": []
         }
     },
     "config": {

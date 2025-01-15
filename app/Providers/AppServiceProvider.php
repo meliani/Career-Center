@@ -60,10 +60,6 @@ class AppServiceProvider extends ServiceProvider
         //         ->onQueue('emails'),
         //     // \Spatie\Health\Checks\Checks\RedisMemoryUsageCheck::new()->unless(app()->environment('production'))->failWhenAboveMb(1000),
         // ]);
-        if ($this->app->environment('local') && class_exists(\Laravel\Telescope\TelescopeServiceProvider::class)) {
-            $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
-            $this->app->register(TelescopeServiceProvider::class);
-        }
 
     }
 
