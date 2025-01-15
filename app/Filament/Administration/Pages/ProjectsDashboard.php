@@ -65,7 +65,7 @@ class ProjectsDashboard extends \Filament\Pages\Dashboard
 
         if (auth()->user()->isDepartmentHead()) {
             // Replace widget with Livewire component
-            $widgets[] = \App\Filament\Administration\Widgets\Dashboards\DepartmentProjectAssignments::class;
+            $widgets[] = \App\Filament\Administration\Widgets\Dashboards\MentoringManagerWidget::class;
         }
 
         if (auth()->user()->isProfessor()) {
@@ -74,7 +74,7 @@ class ProjectsDashboard extends \Filament\Pages\Dashboard
 
         if (auth()->user()->isAdministrator()) {
             // $widgets[] = \App\Filament\Administration\Widgets\AdministratorProjectsWidget::class;
-            $widgets[] = \App\Filament\Administration\Widgets\Dashboards\AdvisingManagerWidget::class;
+            $widgets[] = \App\Filament\Administration\Widgets\Dashboards\MentoringManagerWidget::class;
         }
 
         $widgets = array_merge($widgets, [

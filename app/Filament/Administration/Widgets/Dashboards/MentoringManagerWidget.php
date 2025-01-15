@@ -8,7 +8,7 @@ use App\Models\Project;
 use Filament\Widgets\Widget;
 use Livewire\Attributes\Computed;
 
-class AdvisingManagerWidget extends Widget
+class MentoringManagerWidget extends Widget
 {
     // Add polling
     #[Computed]
@@ -41,7 +41,13 @@ class AdvisingManagerWidget extends Widget
     protected function loadProjects()
     {
         $query = Project::query()
-            ->whereHas('final_internship_agreements');
+            ->whereHas('final_internship_agreements', function ($query) {
+                // Scope projects based on user role
+                if (auth()->user()->hasRole(Enums\Role::DepartmentHead)) {
+                    $query->where('assigned_department', auth()->user()->department);
+                }
+                // No department filter for administrators - they see all projects
+            });
 
         // Apply filters
         switch ($this->activeFilter) {
@@ -84,8 +90,15 @@ class AdvisingManagerWidget extends Widget
     {
         $currentYearId = \App\Models\Year::current()->id;
 
-        $this->departmentProfessors = Professor::query()
-            // ->where('department', auth()->user()->department)
+        $query = Professor::query();
+
+        // Scope professors based on user role
+        if (auth()->user()->hasRole(Enums\Role::DepartmentHead)) {
+            $query->where('department', auth()->user()->department);
+        }
+        // No department filter for administrators - they see all professors
+
+        $this->departmentProfessors = $query
             ->withCount(['activeProjects as supervisor_count' => function ($query) {
                 $query->where('jury_role', Enums\JuryRole::Supervisor);
             }])
@@ -206,7 +219,13 @@ class AdvisingManagerWidget extends Widget
     public function stats()
     {
         $baseQuery = Project::query()
-            ->whereHas('final_internship_agreements');
+            ->whereHas('final_internship_agreements', function ($query) {
+                // Scope stats based on user role
+                if (auth()->user()->hasRole(Enums\Role::DepartmentHead)) {
+                    $query->where('assigned_department', auth()->user()->department);
+                }
+                // No department filter for administrators - they see all stats
+            });
 
         return [
             'total' => $baseQuery->count(),
@@ -240,7 +259,8 @@ class AdvisingManagerWidget extends Widget
 
     public static function canView(): bool
     {
-        return auth()->user()->isAdministrator();
+        return auth()->user()->isAdministrator() || 
+               auth()->user()->hasRole(Enums\Role::DepartmentHead);
     }
 
     public function render(): \Illuminate\View\View
