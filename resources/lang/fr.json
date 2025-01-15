@@ -1064,5 +1064,9 @@
     "Validated at :date": "Validé le :date",
     "Not validated": "Non validé",
     "Not validated, click to validate": "Non validé, cliquez pour valider",
-    "The Internship has been marked as :status by :user.": "Le stage a été marqué comme :status par :user."
+    "The Internship has been marked as :status by :user.": "Le stage a été marqué comme :status par :user.",
+    "Display more projects": "Afficher plus de projets",
+    "Filter by status": "Filtrer par statut",
+    "Search": "Rechercher",
+    "Search by student names or organization...": "Rechercher par noms d'étudiants ou organisation..."
 }

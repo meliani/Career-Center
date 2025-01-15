@@ -113,7 +113,7 @@
         <div class="flex items-center justify-between gap-2 text-sm text-gray-500 dark:text-gray-400 mb-3">
             <div class="flex items-center gap-2">
                 <x-heroicon-o-funnel class="w-4 h-4" />
-                <span class="font-medium">{{ __('Filter by status:') }}</span>
+                <span class="font-medium">{{ __('Filter by status') }} :</span>
             </div>
             @if($activeFilter !== 'all')
                 <button 
@@ -504,11 +504,11 @@
                     class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     <span wire:loading.remove wire:target="loadMore">
-                        {{ __('Load More') }}
+                        {{ __('Display more projects') }}
                     </span>
                     <span wire:loading wire:target="loadMore" class="inline-flex items-center">
                         <x-heroicon-o-arrow-path class="w-4 h-4 mr-2 animate-spin" />
-                        {{ __('Loading...') }}
+                       
                     </span>
                 </button>
             </div>
