@@ -312,6 +312,19 @@ class MentoringManagerWidget extends Widget
                 // No department filter for administrators - they see all stats
             });
 
+        // Apply search filter to base query if search is active
+        if ($this->search) {
+            $searchTerm = '%' . $this->search . '%';
+            $baseQuery->where(function ($q) use ($searchTerm) {
+                $q->whereHas('final_internship_agreements.student', function ($q) use ($searchTerm) {
+                    $q->where('name', 'like', $searchTerm);
+                })
+                    ->orWhereHas('final_internship_agreements.organization', function ($q) use ($searchTerm) {
+                        $q->where('name', 'like', $searchTerm);
+                    });
+            });
+        }
+
         return [
             'total' => $baseQuery->count(),
             'pendingSupervisor' => (clone $baseQuery)
