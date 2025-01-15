@@ -60,6 +60,10 @@ class AppServiceProvider extends ServiceProvider
         //         ->onQueue('emails'),
         //     // \Spatie\Health\Checks\Checks\RedisMemoryUsageCheck::new()->unless(app()->environment('production'))->failWhenAboveMb(1000),
         // ]);
+        if ($this->app->environment('local') && class_exists(\Laravel\Telescope\TelescopeServiceProvider::class)) {
+            $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
+            $this->app->register(TelescopeServiceProvider::class);
+        }
 
     }
 
@@ -111,7 +115,7 @@ class AppServiceProvider extends ServiceProvider
             //         ? Limit::none()
             //         : Limit::perMinute(3)->by($job->user->id);
         });
-        /* end of Jobs/Queues Config  */
+        /* end of Jobs/Queues Config */
     }
 
     private function addEnumTypeToDoctrine()
