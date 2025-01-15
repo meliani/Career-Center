@@ -91,7 +91,7 @@ class ProfessorsRelationManager extends RelationManager
 
                 Tables\Actions\AttachAction::make()
                     ->preloadRecordSelect()
-                    ->recordSelectSearchColumns(['full_name', 'department'])
+                    ->recordSelectSearchColumns(['name', 'department'])
                     ->recordSelect(
                         fn (Select $select) => $select->placeholder(__('Search by name or department...')),
                     )

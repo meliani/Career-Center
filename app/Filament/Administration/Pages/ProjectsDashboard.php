@@ -35,7 +35,7 @@ class ProjectsDashboard extends \Filament\Pages\Dashboard
     {
         if (auth()->check()) {
             // return auth()->user()->isSuperAdministrator();
-            return auth()->user()->isDepartmentHead() || auth()->user()->isProgramCoordinator();
+            return auth()->user()->isDepartmentHead() || auth()->user()->isProgramCoordinator() || auth()->user()->isAdministrator();
 
             return auth()->user()->can('viewAny', \App\Models\Project::class);
         } else {
@@ -74,6 +74,7 @@ class ProjectsDashboard extends \Filament\Pages\Dashboard
 
         if (auth()->user()->isAdministrator()) {
             // $widgets[] = \App\Filament\Administration\Widgets\AdministratorProjectsWidget::class;
+            $widgets[] = \App\Filament\Administration\Widgets\Dashboards\AdvisingManagerWidget::class;
         }
 
         $widgets = array_merge($widgets, [
