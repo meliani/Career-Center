@@ -358,7 +358,7 @@
                             @foreach($departmentProfessors as $professor)
                                 <option
                                     value="{{ $professor->id }}"
-                                    {{ $project->supervisor_id === $professor->id ? 'selected' : '' }}
+                                    {{ optional($project->academic_supervisor())->id === $professor->id ? 'selected' : '' }}
                                 >
                                     {{ $professor->name }} (Encad: {{ $professor->supervisor_count }}, Exam: {{ $professor->reviewer_count }})
                                 </option>
@@ -392,7 +392,7 @@
                             @foreach($departmentProfessors as $professor)
                                 <option
                                     value="{{ $professor->id }}"
-                                    {{ $project->first_reviewer_id === $professor->id ? 'selected' : '' }}
+                                    {{ optional($project->first_reviewer())->id === $professor->id ? 'selected' : '' }}
                                 >
                                     {{ $professor->name }} (Encad: {{ $professor->supervisor_count }}, Exam: {{ $professor->reviewer_count }})
                                 </option>
@@ -422,7 +422,7 @@
                             @foreach($departmentProfessors as $professor)
                                 <option
                                     value="{{ $professor->id }}"
-                                    {{ $project->second_reviewer_id === $professor->id ? 'selected' : '' }}
+                                    {{ optional($project->second_reviewer())->id === $professor->id ? 'selected' : '' }}
                                 >
                                     {{ $professor->name }} (Encad: {{ $professor->supervisor_count }}, Exam: {{ $professor->reviewer_count }})
                                 </option>

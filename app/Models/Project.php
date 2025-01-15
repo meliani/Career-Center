@@ -111,15 +111,28 @@ class Project extends Core\BackendBaseModel
     public function academic_supervisor()
     {
         return $this->professors()
-            ->wherePivot('jury_role', Enums\JuryRole::Supervisor->value);
+            ->wherePivot('jury_role', Enums\JuryRole::Supervisor->value)
+            ->first();
+    }
+
+    public function first_reviewer()
+    {
+        return $this->professors()
+            ->wherePivot('jury_role', Enums\JuryRole::FirstReviewer->value)
+            ->first();
+    }
+
+    public function second_reviewer()
+    {
+        return $this->professors()
+            ->wherePivot('jury_role', Enums\JuryRole::SecondReviewer->value)
+            ->first();
     }
 
     public function reviewers()
     {
-
         return $this->professors()
-            ->wherePivot('jury_role', Enums\JuryRole::FirstReviewer->value)
-            ->orWherePivot('jury_role', Enums\JuryRole::SecondReviewer->value);
+            ->whereIn('jury_role', [Enums\JuryRole::FirstReviewer->value, Enums\JuryRole::SecondReviewer->value]);
     }
 
     public function timetable()

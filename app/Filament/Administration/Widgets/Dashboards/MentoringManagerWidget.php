@@ -52,18 +52,14 @@ class MentoringManagerWidget extends Widget
             ->select('projects.*')
             ->with([
                 'professors' => function ($query) {
-                    $query->select(['users.id as user_id', 'users.name', 'professor_projects.jury_role', 'professor_projects.professor_id'])
-                        ->withPivot('jury_role');
-                },
-                'final_internship_agreements' => function ($query) {
                     $query->select([
-                        'final_year_internship_agreements.id as agreement_id',
-                        'final_year_internship_agreements.organization_id',
-                    ])
-                        ->with(['organization' => function ($q) {
-                            $q->select('organizations.id as organization_id', 'organizations.name');
-                        }]);
+                        'users.id',
+                        'users.name',
+                        'professor_projects.jury_role',
+                        'professor_projects.professor_id',
+                    ]);
                 },
+                'final_internship_agreements.organization:id,name',
             ])
             ->whereHas('final_internship_agreements', function ($query) {
                 if (auth()->user()->hasRole(Enums\Role::DepartmentHead)) {
@@ -130,12 +126,10 @@ class MentoringManagerWidget extends Widget
             $project->has_first_reviewer = isset($professorsByRole[Enums\JuryRole::FirstReviewer->value]);
             $project->has_second_reviewer = isset($professorsByRole[Enums\JuryRole::SecondReviewer->value]);
 
-            $project->supervisor_id = $project->has_supervisor ?
-                $professorsByRole[Enums\JuryRole::Supervisor->value]->first()->id : null;
-            $project->first_reviewer_id = $project->has_first_reviewer ?
-                $professorsByRole[Enums\JuryRole::FirstReviewer->value]->first()->id : null;
-            $project->second_reviewer_id = $project->has_second_reviewer ?
-                $professorsByRole[Enums\JuryRole::SecondReviewer->value]->first()->id : null;
+            // Get the professor instances directly from the grouped collection
+            $project->supervisor_id = $professorsByRole[Enums\JuryRole::Supervisor->value][0]['id'] ?? null;
+            $project->first_reviewer_id = $professorsByRole[Enums\JuryRole::FirstReviewer->value][0]['id'] ?? null;
+            $project->second_reviewer_id = $professorsByRole[Enums\JuryRole::SecondReviewer->value][0]['id'] ?? null;
         }
 
         $this->projects = $projects;
