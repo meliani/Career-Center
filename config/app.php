@@ -178,6 +178,7 @@ return [
         App\Providers\Filament\ResearchPanelProvider::class,
         App\Providers\Filament\AlumniPanelProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\TelescopeServiceProvider::class,
     ])->toArray(),
 
     /*
