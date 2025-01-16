@@ -132,7 +132,7 @@ class FinalYearInternshipAgreementResource extends BaseResource
                                                 Forms\Components\TextInput::make('title')
                                                     ->maxLength(255)
                                                     ->columnSpanFull(),
-                                                Forms\Components\RichEditor::make('description')
+                                                Forms\Components\MarkdownEditor::make('description')
                                                     ->label('Internship description')
                                                     ->columnSpanFull(),
                                             ]),

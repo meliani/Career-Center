@@ -1068,5 +1068,6 @@
     "Display more projects": "Afficher plus de projets",
     "Filter by status": "Filtrer par statut",
     "Search": "Rechercher",
-    "Search by student names or organization...": "Rechercher par noms d'étudiants ou organisation..."
+    "Search by student names or organization...": "Rechercher par noms d'étudiants ou organisation...",
+    "Clear filter": "Réinitialiser le filtre"
 }
