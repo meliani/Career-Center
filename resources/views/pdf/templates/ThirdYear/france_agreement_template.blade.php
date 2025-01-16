@@ -774,7 +774,7 @@
                 </p>
 <p>Un avenant à la convention pourra éventuellement être établi en cas de prolongation de stage faite à la demande de l’entreprise et de l’étudiant stagiaire. Toutes prolongations seront soumises aux obligations du programme concerné.</p>
 <p class="text-xs mt-1"><strong>Déroulement du stage</strong></p>
-<p>La durée hebdomadaire maximale de présence du stagiaire dans l’entreprise sera de <strong>{{ $internship->workload }} heures/semaine<strong>.</p>
+<p>La durée hebdomadaire maximale de présence du stagiaire dans l’entreprise sera de <strong>{{ $internship->workload }} heures/semaine</strong>.</p>
             </p>
         </div>
         <h2 class="text-base font-semibold mt-2 mb-0">ARTICLE 4 : Statut du stagiaire - Encadrement</h2>

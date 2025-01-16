@@ -255,6 +255,10 @@ class FinalYearInternshipAgreement extends Model implements Agreement
 
     public function getAgreementPdfUrlAttribute()
     {
+        if (! $this->pdf_path || ! $this->pdf_file_name) {
+            return null;
+        }
+
         return asset($this->pdf_path) . '/' . $this->pdf_file_name;
     }
 
