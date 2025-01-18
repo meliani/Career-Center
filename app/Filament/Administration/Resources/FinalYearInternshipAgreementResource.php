@@ -315,7 +315,8 @@ class FinalYearInternshipAgreementResource extends BaseResource
                     ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isPowerProfessor()) === false)
                     ->visible(false),
                 \App\Filament\Actions\Action\AssignDepartmentAction::make()
-                    ->disabled(fn ($record): bool => $record['assigned_department'] !== null),
+                    ->disabled(fn ($record): bool => $record['assigned_department'] !== null)
+                    ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isProgramCoordinator()) === false),
             ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkAction::make('sign')

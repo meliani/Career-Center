@@ -6,7 +6,6 @@ use App\Enums;
 use App\Enums\Currency;
 use App\Filament\Research\Resources\MasterResearchInternshipAgreementResource;
 use App\Models\Organization;
-use App\Models\Year;
 use Filament\Actions;
 use Filament\Forms;
 use Filament\Forms\Components\SpatieTagsInput;
@@ -45,16 +44,6 @@ class EditMasterResearchInternshipAgreement extends EditRecord
                 ->icon('heroicon-o-building-office')
                 ->description(__('Select or create an organization'))
                 ->schema([
-                    /* Forms\Components\Section::make()
-                        ->schema([
-                            Forms\Components\Placeholder::make('notice')
-                                ->content('Notice: You can only announce one internship agreement during an academic year.')
-                                ->extraAttributes(['class' => 'text-warning-600']),
-                            Forms\Components\Placeholder::make('warning')
-                                ->content('When you save this form, you will not be able to change the organization and its representatives.')
-                                ->extraAttributes(['class' => 'text-warning-600']),
-                        ])
-                        ->collapsible(), */
                     Forms\Components\Group::make()
                         ->schema([
                             Forms\Components\Select::make('organization_id')

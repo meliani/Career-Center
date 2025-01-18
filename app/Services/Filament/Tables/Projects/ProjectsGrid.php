@@ -4,10 +4,11 @@ namespace App\Services\Filament\Tables\Projects;
 
 use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
+use Filament\Tables\Columns;
 
 class ProjectsGrid
 {
-    public static function get()
+    public static function get(): array
     {
         return [
 
@@ -66,11 +67,26 @@ class ProjectsGrid
             ])->collapsible(),
 
             Tables\Columns\Layout\Split::make([
-                Tables\Columns\TextColumn::make('title')
-                    ->description(__('Subject'), position: 'above')
-                    ->limit(150)
-                    ->searchable()
-                    ->sortable(false),
+                Columns\TextColumn::make('title')
+                    ->markdown()
+                    ->label('Title')
+                    ->html() // Add this line to enable HTML rendering
+                    ->searchable(true)
+                    ->sortable(false)
+                    ->description(fn ($record) => 'From ' . $record->start_date->format('d/m/Y') . ' to ' . $record->end_date->format('d/m/Y'))
+                    ->limit(100)
+                    ->formatStateUsing(function ($record) {
+                        $agreementTitle = $record->final_internship_agreements->first()?->title ?? '';
+                        $projectTitle = $record->title ?? '';
+                        $matches = trim(strtolower($agreementTitle)) === trim(strtolower($projectTitle));
+
+                        if ($matches) {
+                            return "{$projectTitle}";
+                        }
+
+                        return "{$projectTitle}<br>" .
+                               '<strong>' . __('Agreement title') . ":</strong> {$agreementTitle}";
+                    }),
             ]),
             Tables\Columns\Layout\Split::make([
                 Tables\Columns\TextColumn::make('supervisor.name')

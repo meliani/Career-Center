@@ -62,11 +62,29 @@ class ProjectsTable
                     //     ->sortableMany()
                     //     ->searchable(),
                     Tables\Columns\TextColumn::make('title')
+                        ->markdown()
                         ->label('Title')
+                        ->html() // Add this line to enable HTML rendering
                         ->searchable(true)
                         ->sortable(false)
-                        ->description(fn ($record) => 'From ' . $record->start_date->format('d/m/Y') . ' to ' . $record->end_date->format('d/m/Y'))
-                        ->limit(50),
+                        ->description(fn ($record) => __('From') . ' ' . $record->start_date->format('d/m/Y') . ' ' . __('to') . ' ' . $record->end_date->format('d/m/Y'))
+                        // ->limit(90)
+                        ->extraAttributes([
+                            'class' => 'text-truncate text-break text-wrap max-width-20',
+                            'style' => 'text-color: red',
+                        ])
+                        ->formatStateUsing(function ($record) {
+                            $agreementTitle = $record->final_internship_agreements->first()?->title ?? '';
+                            $projectTitle = $record->title ?? '';
+                            $matches = trim(strtolower($agreementTitle)) === trim(strtolower($projectTitle));
+
+                            if ($matches) {
+                                return "{$projectTitle}";
+                            }
+
+                            return "{$projectTitle}<br>" .
+                                   '<p class="text-warning-400" ><strong>' . __('Agreement title') . ":</strong> {$agreementTitle}</p>";
+                        }),
                     Tables\Columns\TextColumn::make('assigned_departments')
                         ->toggleable(isToggledHiddenByDefault: true)
                         // ->formatStateUsing(fn ($record) => $record->assigned_departments)
@@ -160,11 +178,6 @@ class ProjectsTable
                         ->label('Detected language')
                         ->searchable(false)
                         ->sortable(),
-                    Tables\Columns\TextColumn::make('title')
-                        ->toggleable(isToggledHiddenByDefault: true)
-                        ->limit(90)
-                        ->searchable(false)
-                        ->sortable(false),
                     Tables\Columns\TextColumn::make('defense_plan')
                         ->label('Defense plan')
                         ->toggleable(isToggledHiddenByDefault: true)

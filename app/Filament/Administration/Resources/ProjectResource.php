@@ -220,6 +220,20 @@ class ProjectResource extends Core\BaseResource
             ]);
     }
 
+    private static function compareTitles($project): array
+    {
+        $agreementTitle = $project->final_internship_agreements->first()?->title ?? '';
+        $projectTitle = $project->title ?? '';
+
+        $matches = trim(strtolower($agreementTitle)) === trim(strtolower($projectTitle));
+
+        return [
+            'matches' => $matches,
+            'agreement_title' => $agreementTitle,
+            'project_title' => $projectTitle,
+        ];
+    }
+
     public static function table(Table $table): Table
     {
         $livewire = $table->getLivewire();
@@ -695,7 +709,17 @@ class ProjectResource extends Core\BaseResource
                         Infolists\Components\TextEntry::make('title')
                             ->columnSpanFull()
                             ->markdown()
-                            ->icon('heroicon-o-document-text'),
+                            ->icon('heroicon-o-document-text')
+                            ->formatStateUsing(function ($record) {
+                                $comparison = self::compareTitles($record);
+
+                                if ($comparison['matches']) {
+                                    return "{$comparison['project_title']}";
+                                }
+
+                                return "{$comparison['project_title']}\n\n" .
+                                       "<span style='color: red'>**" . __('Agreement title') . ":** {$comparison['agreement_title']}</span>";
+                            }),
                         Infolists\Components\TextEntry::make('description')
                             ->columnSpanFull()
                             ->markdown()
