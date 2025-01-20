@@ -177,10 +177,10 @@ class ApprenticeshipResource extends BaseResource
             ->defaultGroup('student.level')
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
-                Tables\Filters\SelectFilter::make('student_level')
-                    ->relationship('student', 'level')
-                    // ->options(Enums\StudentLevel::class)
-                    ->label('Level'),
+                // Tables\Filters\SelectFilter::make('student_level')
+                //     ->relationship('student', 'level')
+                //     // ->options(Enums\StudentLevel::class)
+                //     ->label('Level'),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
