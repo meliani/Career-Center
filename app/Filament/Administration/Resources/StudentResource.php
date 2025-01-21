@@ -218,7 +218,8 @@ class StudentResource extends Core\BaseResource
                             <span class='text-sm'>{$record->email}</span>
                             <span class='text-sm text-gray-500'>{$record->phone}</span>
                         </div>
-                    "),
+                    ")
+                    ->searchable(['email', 'phone']),
 
                 Tables\Columns\TextColumn::make('academic_info')
                     ->label('Academic Info')
