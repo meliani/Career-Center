@@ -30,6 +30,7 @@ class FinalInternshipsPerProgramChart extends ApexChartsParentWidget
         $internshipData = \DB::table('students')
             ->leftJoin('final_year_internship_agreements', 'students.id', '=', 'final_year_internship_agreements.student_id')
             ->where('students.year_id', Year::current()->id)
+            ->where('students.deleted_at', null)
             ->where('students.level', 'ThirdYear')
             ->groupBy('students.program')
             ->select(
