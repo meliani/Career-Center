@@ -20,6 +20,7 @@ use Filament\Tables;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades;
 
@@ -83,48 +84,97 @@ class StudentResource extends Core\BaseResource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('title')
-                    ->options(Enums\Title::class)
-                    ->required(),
-                Forms\Components\TextInput::make('first_name')
-                    ->maxLength(191),
-                Forms\Components\TextInput::make('last_name')
-                    ->maxLength(191),
-                Forms\Components\TextInput::make('email')
-                    ->email()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('email_perso')
-                    ->email()
-                    ->maxLength(191),
-                // Forms\Components\TextInput::make('password')
-                //     ->password()
-                //     ->maxLength(255),
-                Forms\Components\TextInput::make('phone')
-                    ->tel()
-                    ->maxLength(191),
-                Forms\Components\TextInput::make('cv')
-                    ->maxLength(191),
-                Forms\Components\TextInput::make('lm')
-                    ->maxLength(191),
-                Forms\Components\TextInput::make('photo')
-                    ->maxLength(191),
-                Forms\Components\DatePicker::make('birth_date'),
-                Forms\Components\Select::make('level')
-                    ->options(Enums\StudentLevel::class)
-                    ->required(),
-                Forms\Components\Select::make('program')
-                    ->options(Enums\Program::class),
-                Forms\Components\Toggle::make('is_mobility'),
-                Forms\Components\TextInput::make('abroad_school')
-                    ->maxLength(191),
-                Forms\Components\TextInput::make('id_pfe')
-                    ->numeric(),
-                Forms\Components\Select::make('year_id')
-                    ->label('Academic year')
-                    ->relationship('year', 'title')
-                    ->required(),
-                Forms\Components\Toggle::make('is_active'),
-                Forms\Components\DatePicker::make('graduated_at'),
+                Forms\Components\Section::make('Basic Information')
+                    ->description('Student personal information')
+                    ->icon('heroicon-o-user')
+                    ->columns(3)
+                    ->schema([
+                        Forms\Components\Select::make('title')
+                            ->options(Enums\Title::class)
+                            ->required(),
+                        Forms\Components\TextInput::make('first_name')
+                            ->required()
+                            ->columnSpan(2)
+                            ->maxLength(191),
+                        Forms\Components\TextInput::make('last_name')
+                            ->required()
+                            ->columnSpan(2)
+                            ->maxLength(191),
+                    ]),
+
+                Forms\Components\Section::make('Contact Details')
+                    ->description('Student contact information')
+                    ->icon('heroicon-o-envelope')
+                    ->columns(2)
+                    ->schema([
+                        Forms\Components\TextInput::make('email')
+                            ->email()
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('email_perso')
+                            ->label('Personal Email')
+                            ->email()
+                            ->maxLength(191),
+                        Forms\Components\TextInput::make('phone')
+                            ->tel()
+                            ->maxLength(191),
+                    ]),
+
+                Forms\Components\Section::make('Academic Information')
+                    ->description('Academic status and program details')
+                    ->icon('heroicon-o-academic-cap')
+                    ->columns(2)
+                    ->schema([
+                        Forms\Components\Select::make('level')
+                            ->options(Enums\StudentLevel::class)
+                            ->required(),
+                        Forms\Components\Select::make('program')
+                            ->options(Enums\Program::class),
+                        Forms\Components\Select::make('year_id')
+                            ->label('Academic year')
+                            ->relationship('year', 'title')
+                            ->required(),
+                        Forms\Components\TextInput::make('id_pfe')
+                            ->numeric(),
+                        Forms\Components\DatePicker::make('birth_date')
+                            ->native(false),
+                    ]),
+
+                Forms\Components\Section::make('Documents')
+                    ->description('Student documents and files')
+                    ->icon('heroicon-o-document')
+                    ->columns(3)
+                    ->collapsed()
+                    ->schema([
+                        Forms\Components\FileUpload::make('cv')
+                            ->label('CV')
+                            ->directory('students/cv')
+                            ->acceptedFileTypes(['application/pdf']),
+                        Forms\Components\FileUpload::make('lm')
+                            ->label('Cover Letter')
+                            ->directory('students/lm')
+                            ->acceptedFileTypes(['application/pdf']),
+                        Forms\Components\FileUpload::make('photo')
+                            ->image()
+                            ->directory('students/photos'),
+                    ]),
+
+                Forms\Components\Section::make('Additional Information')
+                    ->description('Mobility and status information')
+                    ->icon('heroicon-o-information-circle')
+                    ->columns(2)
+                    ->collapsed()
+                    ->schema([
+                        Forms\Components\Toggle::make('is_mobility')
+                            ->inline(false),
+                        Forms\Components\TextInput::make('abroad_school')
+                            ->maxLength(191)
+                            ->visible(fn (Forms\Get $get) => $get('is_mobility')),
+                        Forms\Components\Toggle::make('is_active')
+                            ->inline(false),
+                        Forms\Components\DatePicker::make('graduated_at')
+                            ->native(false),
+                    ]),
             ]);
     }
 
@@ -230,6 +280,8 @@ class StudentResource extends Core\BaseResource
                     ->options(Enums\Program::class)
                     ->label(__('Program'))
                     ->placeholder(__('All programs')),
+                Tables\Filters\TrashedFilter::make()
+                    ->visible(fn () => auth()->user()->isAdministrator()),
             ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
                 \STS\FilamentImpersonate\Tables\Actions\Impersonate::make()
@@ -326,9 +378,9 @@ class StudentResource extends Core\BaseResource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->whereHas('year', function ($query) {
-                // $query->where('id', Year::current()->id);
-            });
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 
     public static function getRelations(): array

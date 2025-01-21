@@ -11,6 +11,7 @@ use Filament\Notifications\Auth\ResetPassword;
 use Filament\Notifications\Auth\VerifyEmail;
 use Filament\Panel;
 use Illuminate\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -23,6 +24,7 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
 {
     use MustVerifyEmail;
     use Notifiable;
+    use softDeletes;
     use TwoFactorAuthenticatable;
 
     protected $guard = 'students';
@@ -153,7 +155,7 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
         /** @var \App\Models\User $user */
         $student = $this;
 
-        //send veryfication email
+        // send veryfication email
         $notification = new VerifyEmail;
         if ($this->level === Enums\StudentLevel::Research) {
             $notification->url = URL::temporarySignedRoute(
@@ -177,10 +179,10 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
 
         $student->notify($notification);
 
-        //or use reset password
+        // or use reset password
         // $token = app('auth.password.broker')->createToken($student);
         // $notification = new ResetPassword($token);
-        //set panel for url
+        // set panel for url
         // $notification->url = filament()->getPanel('app')->getResetPasswordUrl($token, $student);
         // $student->notify($notification);
     }
