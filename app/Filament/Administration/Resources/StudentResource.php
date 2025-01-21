@@ -232,11 +232,13 @@ class StudentResource extends Core\BaseResource
                             </div>
                             <span class='text-sm text-gray-500'>{$record->year?->title}</span>
                         </div>
-                    "),
+                    ")
+                    ->searchable(['level', 'program']),
 
                 Tables\Columns\ViewColumn::make('documents')
                     ->label('Documents')
-                    ->view('filament.tables.columns.student-documents'),
+                    ->view('filament.tables.columns.student-documents')
+                    ->searchable(false),
 
                 Tables\Columns\IconColumn::make('is_active')
                     ->boolean()
