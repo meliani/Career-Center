@@ -139,6 +139,9 @@ class StudentResource extends Core\BaseResource
 
                 Tables\Columns\ColumnGroup::make('Identity')
                     ->columns([
+                        Tables\Columns\TextColumn::make('id_pfe')
+                            ->searchable()
+                            ->badge(),
                         Tables\Columns\TextColumn::make('title')
                             ->toggleable(isToggledHiddenByDefault: true)
                             ->badge(),
