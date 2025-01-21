@@ -184,86 +184,66 @@ class StudentResource extends Core\BaseResource
 
         return $table
             ->columns([
-                // Tables\Columns\TextColumn::make('title')
-                //     ->searchable(),
-
-                Tables\Columns\ColumnGroup::make('Identity')
-                    ->columns([
-                        Tables\Columns\TextColumn::make('id_pfe')
-                            ->searchable()
-                            ->badge(),
-                        Tables\Columns\TextColumn::make('title')
-                            ->toggleable(isToggledHiddenByDefault: true)
-                            ->badge(),
-                        Tables\Columns\TextColumn::make('first_name')
-                            ->searchable()
-                            ->wrap(),
-                        Tables\Columns\TextColumn::make('last_name')
-                            ->searchable()
-                            ->wrap(),
-                    ]),
-
                 Tables\Columns\ImageColumn::make('avatar_url')
                     ->label('Avatar')
-                    // ->url(fn (Student $record): ?string => $record->photo, true)
-                    ->rounded(),
-                Tables\Columns\TextColumn::make('name')
-                    ->formatStateUsing(function ($record) {
-                        return $record->full_name;
-                    })
-                    ->wrap(),
-                Tables\Columns\TextColumn::make('email')
-                    ->formatStateUsing(function ($record) {
-                        return "{$record->email}, {$record->email_perso}";
-                    })
-                    ->wrap(),
-                Tables\Columns\TextColumn::make('program')
-                    // ->formatStateUsing(fn ($record) => $record->level->getLabel() . ',' . $record->program->getLabel())
-                    ->tooltip(fn ($record) => $record->level->getLabel() . ',' . $record->program?->getDescription())
-                    ->badge(),
-                Tables\Columns\TextColumn::make('level')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->badge(),
-                // Tables\Columns\TextColumn::make('email_perso')
-                //     ->searchable(),
-                Tables\Columns\ToggleColumn::make('is_verified')
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('email_verified_at')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->dateTime(),
-                Tables\Columns\TextColumn::make('phone'),
-                Tables\Columns\TextColumn::make('cv')
-                    ->label('Curriculum vitae')
-                    ->limit(20)
-                    ->url(fn (Student $record): ?string => $record?->cv, true),
-                Tables\Columns\TextColumn::make('lm')
-                    ->label('Cover letter')
-                    ->url(fn (Student $record): ?string => $record?->lm, true)
-                    ->limit(20),
-                Tables\Columns\TextColumn::make('photo')
-                    ->url(fn (Student $record): ?string => $record?->photo, true)
-                    ->limit(20),
-                Tables\Columns\TextColumn::make('birth_date')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->date(),
+                    ->circular()
+                    ->defaultImageUrl(fn ($record) => 'https://ui-avatars.com/api/?name=' . urlencode($record->full_name))
+                    ->size(40),
 
-                Tables\Columns\ToggleColumn::make('is_mobility')
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('abroad_school')
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('year.title')
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\ToggleColumn::make('is_active')
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('graduated_at')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->date(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('id_pfe')
+                    ->label('ID')
+                    ->badge()
+                    ->color('gray')
+                    ->searchable()
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('full_name')
+                    ->label('Student')
+                    ->searchable(['first_name', 'last_name'])
+                    ->sortable()
+                    ->description(fn ($record) => $record->email)
+                    ->html()
+                    ->formatStateUsing(fn ($record) => "
+                        <div class='flex flex-col gap-1'>
+                            <span class='font-medium'>{$record->full_name}</span>
+                            <span class='text-gray-500'>{$record->id_pfe}</span>
+                        </div>
+                    "),
+
+                Tables\Columns\TextColumn::make('contact_info')
+                    ->label('Contact')
+                    ->html()
+                    ->formatStateUsing(fn ($record) => "
+                        <div class='flex flex-col gap-1'>
+                            <span class='text-sm'>{$record->email}</span>
+                            <span class='text-sm text-gray-500'>{$record->phone}</span>
+                        </div>
+                    "),
+
+                Tables\Columns\TextColumn::make('academic_info')
+                    ->label('Academic Info')
+                    ->html()
+                    ->formatStateUsing(fn ($record) => "
+                        <div class='flex flex-col gap-1'>
+                            <div class='flex gap-2'>
+                                <span class='badge badge-primary'>{$record->level?->getLabel()}</span>
+                                <span class='badge badge-success'>{$record->program?->getLabel()}</span>
+                            </div>
+                            <span class='text-sm text-gray-500'>{$record->year?->title}</span>
+                        </div>
+                    "),
+
+                Tables\Columns\ViewColumn::make('documents')
+                    ->label('Documents')
+                    ->view('filament.tables.columns.student-documents'),
+
+                Tables\Columns\IconColumn::make('is_active')
+                    ->boolean()
+                    ->label('Status')
+                    ->trueIcon('heroicon-o-check-circle')
+                    ->falseIcon('heroicon-o-x-circle')
+                    ->trueColor('success')
+                    ->falseColor('danger'),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('year_id')
@@ -284,6 +264,9 @@ class StudentResource extends Core\BaseResource
                     ->visible(fn () => auth()->user()->isAdministrator()),
             ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
+                Tables\Actions\RestoreAction::make()
+                    ->hidden(fn () => auth()->user()->isAdministrator() === false),
+
                 \STS\FilamentImpersonate\Tables\Actions\Impersonate::make()
                     ->hidden(fn ($record) => ! $record->canBeImpersonated())
                     ->guard('students'),
@@ -318,6 +301,9 @@ class StudentResource extends Core\BaseResource
                 ])->hidden(fn () => auth()->user()->isAdministrator() === false),
             ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
+                Tables\Actions\RestoreBulkAction::make()
+                    ->hidden(fn () => auth()->user()->isAdministrator() === false),
+
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ])->hidden(fn () => auth()->user()->isAdministrator() === false)
@@ -404,33 +390,84 @@ class StudentResource extends Core\BaseResource
     {
         return $infolist
             ->schema([
-                Infolists\Components\Section::make(__('Student information'))
+                Infolists\Components\Section::make(__('Personal Information'))
+                    ->icon('heroicon-o-user')
+                    ->columns(3)
                     ->schema([
-                        Infolists\Components\Fieldset::make(__('Internship agreement'))
+                        Infolists\Components\ImageEntry::make('avatar_url')
+                            ->label('Photo')
+                            ->circular()
+                            ->defaultImageUrl(fn ($record) => 'https://ui-avatars.com/api/?name=' . urlencode($record->full_name))
+                            ->columnSpan(1),
+
+                        Infolists\Components\Grid::make(2)
+                            ->columnSpan(2)
                             ->schema([
-                                Infolists\Components\TextEntry::make('long_full_name')
-                                    ->label('Full name'),
+                                Infolists\Components\TextEntry::make('full_name')
+                                    ->label('Name')
+                                    ->weight('bold'),
+                                Infolists\Components\TextEntry::make('id_pfe')
+                                    ->label('ID')
+                                    ->badge(),
                                 Infolists\Components\TextEntry::make('email')
-                                    ->label('Email'),
+                                    ->icon('heroicon-m-envelope'),
                                 Infolists\Components\TextEntry::make('phone')
-                                    ->label('Phone'),
-                                Infolists\Components\TextEntry::make('program')
-                                    ->label('Program'),
-                            ]),
-                        Infolists\Components\Fieldset::make(__('Student documents'))
-                            ->schema([
-                                Infolists\Components\TextEntry::make('cv')
-                                    ->url(fn (Student $record): ?string => $record?->cv, true)
-                                    ->label('Curriculum vitae'),
-                                Infolists\Components\TextEntry::make('lm')
-                                    ->url(fn (Student $record): ?string => $record?->lm, true)
-                                    ->label('Cover letter'),
-                                Infolists\Components\TextEntry::make('photo')
-                                    ->url(fn (Student $record): ?string => $record?->photo, true)
-                                    ->label('Photo'),
+                                    ->icon('heroicon-m-phone'),
                             ]),
                     ]),
-            ]);
 
+                Infolists\Components\Section::make(__('Academic Information'))
+                    ->icon('heroicon-o-academic-cap')
+                    ->columns(3)
+                    ->schema([
+                        Infolists\Components\TextEntry::make('level')
+                            ->badge()
+                            ->color('primary'),
+                        Infolists\Components\TextEntry::make('program')
+                            ->badge()
+                            ->color('success'),
+                        Infolists\Components\TextEntry::make('year.title')
+                            ->badge()
+                            ->color('info'),
+                        Infolists\Components\Grid::make(2)
+                            ->columnSpan(3)
+                            ->schema([
+                                Infolists\Components\TextEntry::make('is_active')
+                                    ->label('Active Status')
+                                    ->badge()
+                                    ->color(fn (bool $state): string => $state ? 'success' : 'danger'),
+                                Infolists\Components\TextEntry::make('graduated_at')
+                                    ->label('Graduation Date')
+                                    ->date(),
+                            ]),
+                    ]),
+
+                Infolists\Components\Section::make(__('Documents'))
+                    ->icon('heroicon-o-document')
+                    ->columns(3)
+                    ->schema([
+                        Infolists\Components\TextEntry::make('cv')
+                            ->label('CV')
+                            ->url(fn ($record) => $record->cv, true)
+                            ->hidden(fn ($record) => empty($record->cv))
+                            ->badge()
+                            ->color('success')
+                            ->icon('heroicon-m-document'),
+                        Infolists\Components\TextEntry::make('lm')
+                            ->label('Cover Letter')
+                            ->url(fn ($record) => $record->lm, true)
+                            ->hidden(fn ($record) => empty($record->lm))
+                            ->badge()
+                            ->color('success')
+                            ->icon('heroicon-m-document'),
+                        Infolists\Components\TextEntry::make('photo')
+                            ->label('Photo')
+                            ->url(fn ($record) => $record->photo, true)
+                            ->hidden(fn ($record) => empty($record->photo))
+                            ->badge()
+                            ->color('success')
+                            ->icon('heroicon-m-photo'),
+                    ]),
+            ]);
     }
 }

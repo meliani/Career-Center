@@ -52,7 +52,6 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
         'phone',
         'cv',
         'lm',
-        'photo',
         'birth_date',
         'level',
         'program',
