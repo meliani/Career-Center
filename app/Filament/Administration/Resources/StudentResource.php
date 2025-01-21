@@ -137,6 +137,19 @@ class StudentResource extends Core\BaseResource
                 // Tables\Columns\TextColumn::make('title')
                 //     ->searchable(),
 
+                Tables\Columns\ColumnGroup::make('Identity')
+                    ->columns([
+                        Tables\Columns\TextColumn::make('title')
+                            ->toggleable(isToggledHiddenByDefault: true)
+                            ->badge(),
+                        Tables\Columns\TextColumn::make('first_name')
+                            ->searchable()
+                            ->wrap(),
+                        Tables\Columns\TextColumn::make('last_name')
+                            ->searchable()
+                            ->wrap(),
+                    ]),
+
                 Tables\Columns\ImageColumn::make('avatar_url')
                     ->label('Avatar')
                     // ->url(fn (Student $record): ?string => $record->photo, true)
