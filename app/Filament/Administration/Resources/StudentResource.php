@@ -165,15 +165,39 @@ class StudentResource extends Core\BaseResource
                     ->columns(2)
                     ->collapsed()
                     ->schema([
-                        Forms\Components\Toggle::make('is_mobility')
-                            ->inline(false),
-                        Forms\Components\TextInput::make('abroad_school')
-                            ->maxLength(191)
-                            ->visible(fn (Forms\Get $get) => $get('is_mobility')),
                         Forms\Components\Toggle::make('is_active')
                             ->inline(false),
                         Forms\Components\DatePicker::make('graduated_at')
                             ->native(false),
+                    ]),
+
+                Forms\Components\Section::make('Mobility Information')
+                    ->description('Student exchange details')
+                    ->icon('heroicon-o-globe-alt')
+                    ->columns(2)
+                    ->collapsed()
+                    ->schema([
+                        Forms\Components\Toggle::make('is_mobility')
+                            ->label('Exchange Student')
+                            ->inline(false)
+                            ->reactive(),
+                        Forms\Components\Select::make('student_exchange_partner_id')
+                            ->label('Exchange Partner')
+                            ->relationship('exchangePartner', 'name')
+                            ->searchable()
+                            ->preload()
+                            ->createOptionForm([
+                                Forms\Components\TextInput::make('name')
+                                    ->required(),
+                                Forms\Components\TextInput::make('country'),
+                                Forms\Components\TextInput::make('city'),
+                                Forms\Components\TextInput::make('website')
+                                    ->url(),
+                                Forms\Components\TextInput::make('email')
+                                    ->email(),
+                                Forms\Components\TextInput::make('phone_number'),
+                            ])
+                            ->visible(fn (Forms\Get $get) => $get('is_mobility')),
                     ]),
             ]);
     }
@@ -202,38 +226,15 @@ class StudentResource extends Core\BaseResource
                     ->searchable(['first_name', 'last_name'])
                     ->sortable()
                     ->description(fn ($record) => $record->email)
-                    ->html()
-                    ->formatStateUsing(fn ($record) => "
-                        <div class='flex flex-col gap-1'>
-                            <span class='font-medium'>{$record->full_name}</span>
-                            <span class='text-gray-500'>{$record->id_pfe}</span>
-                        </div>
-                    "),
+                    ->view('filament.tables.columns.name-with-id'),
 
                 Tables\Columns\TextColumn::make('contact_info')
                     ->label('Contact')
-                    ->html()
-                    ->formatStateUsing(fn ($record) => "
-                        <div class='flex flex-col gap-1'>
-                            <span class='text-sm'>{$record->email}</span>
-                            <span class='text-sm text-gray-500'>{$record->phone}</span>
-                        </div>
-                    ")
-                    ->searchable(['email', 'phone']),
+                    ->view('filament.tables.columns.contact-info'),
 
                 Tables\Columns\TextColumn::make('academic_info')
                     ->label('Academic Info')
-                    ->html()
-                    ->formatStateUsing(fn ($record) => "
-                        <div class='flex flex-col gap-1'>
-                            <div class='flex gap-2'>
-                                <span class='badge badge-primary'>{$record->level?->getLabel()}</span>
-                                <span class='badge badge-success'>{$record->program?->getLabel()}</span>
-                            </div>
-                            <span class='text-sm text-gray-500'>{$record->year?->title}</span>
-                        </div>
-                    ")
-                    ->searchable(['level', 'program']),
+                    ->view('filament.tables.columns.academic-info'),
 
                 Tables\Columns\ViewColumn::make('documents')
                     ->label('Documents')
@@ -247,6 +248,11 @@ class StudentResource extends Core\BaseResource
                     ->falseIcon('heroicon-o-x-circle')
                     ->trueColor('success')
                     ->falseColor('danger'),
+
+                Tables\Columns\TextColumn::make('student_exchange_info')
+                    ->label('Exchange Information')
+                    ->view('filament.tables.columns.exchange-info'),
+
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('year_id')
@@ -265,6 +271,18 @@ class StudentResource extends Core\BaseResource
                     ->placeholder(__('All programs')),
                 Tables\Filters\TrashedFilter::make()
                     ->visible(fn () => auth()->user()->isAdministrator()),
+
+                Tables\Filters\SelectFilter::make('student_exchange_partner')
+                    ->relationship('exchangePartner', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->label('Exchange Partner')
+                    ->visible(fn () => auth()->user()->isAdministrator()),
+
+                Tables\Filters\Filter::make('is_mobility')
+                    ->label('Exchange Students Only')
+                    ->toggle()
+                    ->query(fn (Builder $query) => $query->where('is_mobility', true)),
             ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
                 Tables\Actions\RestoreAction::make()
@@ -471,6 +489,26 @@ class StudentResource extends Core\BaseResource
                             ->color('success')
                             ->icon('heroicon-m-photo'),
                     ]),
+
+                Infolists\Components\Section::make('Exchange Information')
+                    ->icon('heroicon-o-globe-alt')
+                    ->columns(2)
+                    ->schema([
+                        Infolists\Components\TextEntry::make('exchangePartner.name')
+                            ->label('Partner Institution')
+                            ->visible(fn ($record) => $record->is_mobility),
+                        Infolists\Components\TextEntry::make('exchangePartner.full_address')
+                            ->label('Location')
+                            ->visible(fn ($record) => $record->is_mobility),
+                        Infolists\Components\TextEntry::make('exchangePartner.website')
+                            ->label('Website')
+                            ->url(fn ($record) => $record->exchangePartner->website)
+                            ->visible(fn ($record) => $record->is_mobility),
+                        Infolists\Components\TextEntry::make('exchangePartner.email')
+                            ->label('Contact Email')
+                            ->visible(fn ($record) => $record->is_mobility),
+                    ])
+                    ->visible(fn ($record) => $record->is_mobility),
             ]);
     }
 }

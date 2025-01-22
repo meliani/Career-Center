@@ -56,7 +56,6 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
         'level',
         'program',
         'is_mobility',
-        // 'abroad_school_old_archive',
         'student_exchange_partner_id',
         'year_id',
         'is_active',
@@ -412,5 +411,11 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
     public function receivedCollaborationRequests()
     {
         return $this->hasMany(CollaborationRequest::class, 'receiver_id');
+    }
+
+    // Add this relationship
+    public function exchangePartner()
+    {
+        return $this->belongsTo(StudentExchangePartner::class, 'student_exchange_partner_id');
     }
 }
