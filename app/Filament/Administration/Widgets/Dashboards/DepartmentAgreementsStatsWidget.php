@@ -19,7 +19,15 @@ class DepartmentAgreementsStatsWidget extends Widget
     protected $listeners = [
         'departmentAssigned' => '$refresh',
         'departmentChanged' => '$refresh',
+        'toggleStats' => 'toggleStatsView',
     ];
+
+    public bool $showAlternativeStats = false;
+
+    public function toggleStatsView()
+    {
+        $this->showAlternativeStats = ! $this->showAlternativeStats;
+    }
 
     protected function getViewData(): array
     {
@@ -31,7 +39,16 @@ class DepartmentAgreementsStatsWidget extends Widget
     protected function getStats(): Collection
     {
         return collect(Department::cases())->map(function ($department) {
-            $projectCount = FinalYearInternshipAgreement::where('assigned_department', $department->value)->count();
+            if ($this->showAlternativeStats) {
+                // Calculate based on project->professors->department relationship
+                $projectCount = FinalYearInternshipAgreement::whereHas('project.professors', function ($query) use ($department) {
+                    $query->where('department', $department->value);
+                })->count();
+            } else {
+                // Original calculation based on assigned_department
+                $projectCount = FinalYearInternshipAgreement::where('assigned_department', $department->value)->count();
+            }
+
             $professorsCount = Professor::where('department', $department->value)->count();
             $ratio = $professorsCount ? $projectCount / $professorsCount : 0;
 
@@ -42,7 +59,7 @@ class DepartmentAgreementsStatsWidget extends Widget
                 'color' => $department->getColor(),
                 'icon' => $department->getIcon(),
                 'ratio' => $ratio,
-                'professors_count' => $professorsCount, // Add this line
+                'professors_count' => $professorsCount,
             ];
         })->sortByDesc('count');
     }

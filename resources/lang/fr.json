@@ -1071,5 +1071,7 @@
     "Filter by status": "Filtrer par statut",
     "Search": "Rechercher",
     "Search by student names or organization...": "Rechercher par noms d'étudiants ou organisation...",
-    "Clear filter": "Réinitialiser le filtre"
+    "Clear filter": "Réinitialiser le filtre",
+    "By assigned professor": "Par encadrement / examination",
+    "By assigned department": "Par département affecté"
 }
