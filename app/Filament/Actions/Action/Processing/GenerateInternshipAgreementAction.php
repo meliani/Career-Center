@@ -25,6 +25,15 @@ class GenerateInternshipAgreementAction extends Action
         $static->configure()->action(function (array $data, Model $FinalYearInternship): void {
             $FinalYearInternship = $FinalYearInternship->load('student', 'organization');
 
+            if ($FinalYearInternship->student->is_mobility) {
+                // stop the process and notify the user
+                Notification::make()
+                    ->title('Error generating document, Please contact the administration')
+                    ->warning()
+                    ->send();
+
+                return;
+            }
             // Determine template based on organization's country
             $template_view = 'pdf.templates.' . $FinalYearInternship->student->level->value . '.';
             if ($FinalYearInternship->organization->country === 'France') {
