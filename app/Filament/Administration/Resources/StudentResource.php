@@ -230,11 +230,13 @@ class StudentResource extends Core\BaseResource
 
                 Tables\Columns\TextColumn::make('contact_info')
                     ->label('Contact')
-                    ->view('filament.tables.columns.contact-info'),
+                    ->view('filament.tables.columns.contact-info')
+                    ->searchable(false),
 
                 Tables\Columns\TextColumn::make('academic_info')
                     ->label('Academic Info')
-                    ->view('filament.tables.columns.academic-info'),
+                    ->view('filament.tables.columns.academic-info')
+                    ->searchable(false),
 
                 Tables\Columns\ViewColumn::make('documents')
                     ->label('Documents')
@@ -251,7 +253,8 @@ class StudentResource extends Core\BaseResource
 
                 Tables\Columns\TextColumn::make('student_exchange_info')
                     ->label('Exchange Information')
-                    ->view('filament.tables.columns.exchange-info'),
+                    ->view('filament.tables.columns.exchange-info')
+                    ->searchable(false),
 
             ])
             ->filters([
