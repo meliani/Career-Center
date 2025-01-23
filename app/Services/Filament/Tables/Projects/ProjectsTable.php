@@ -5,6 +5,7 @@ namespace App\Services\Filament\Tables\Projects;
 use App\Filament\Actions\Action\AddOrganizationEvaluationSheetAction;
 use App\Models\FinalYearInternshipAgreement;
 use App\Models\InternshipAgreement;
+use App\Models\ProjectAgreement;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Storage;
@@ -49,12 +50,24 @@ class ProjectsTable
                     Tables\Columns\TextColumn::make('agreements.agreeable.student.full_name')
                         ->label('Student name')
                         ->searchable(false)
-                        // ->limit(20)
+                        ->sortable(false)
                         ->description(fn ($record) => $record->id_pfe),
                     Tables\Columns\TextColumn::make('agreements.agreeable.student.program')
                         ->toggleable(isToggledHiddenByDefault: false)
                         ->label('Program')
                         ->searchable(false)
+                        ->sortable(query: function (Builder $query, string $direction) {
+                            return $query->orderBy(
+                                ProjectAgreement::query()
+                                    ->select('students.program')
+                                    ->join('final_year_internship_agreements', 'project_agreements.agreeable_id', '=', 'final_year_internship_agreements.id')
+                                    ->join('students', 'final_year_internship_agreements.student_id', '=', 'students.id')
+                                    ->whereColumn('project_agreements.project_id', 'projects.id')
+                                    ->where('project_agreements.agreeable_type', FinalYearInternshipAgreement::class)
+                                    ->limit(1),
+                                $direction
+                            );
+                        })
                         ->badge(),
                     // Tables\Columns\TextColumn::make('internship_agreements.assigned_department')
                     //     ->label('Assigned department')
