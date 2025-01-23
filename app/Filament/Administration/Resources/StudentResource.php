@@ -181,7 +181,12 @@ class StudentResource extends Core\BaseResource
                             ->label('Exchange Student')
                             ->inline(false)
                             ->reactive(),
+                        Forms\Components\Select::make('exchange_type')
+                            ->options(Enums\ExchangeType::class)
+                            ->visible(fn (Forms\Get $get) => $get('is_mobility'))
+                            ->required(fn (Forms\Get $get) => $get('is_mobility')),
                         Forms\Components\Select::make('student_exchange_partner_id')
+                            ->required(fn (Forms\Get $get) => $get('is_mobility'))
                             ->label('Exchange Partner')
                             ->relationship('exchangePartner', 'name')
                             ->searchable()
