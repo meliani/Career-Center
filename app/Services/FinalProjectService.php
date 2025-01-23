@@ -55,65 +55,53 @@ class FinalProjectService
         return $this->finalProject->where('defense_status', DefenseStatus::Authorized)->get();
     }
 
-    public static function AssignFinalInternshipsToProjects(): void
+    public static function AssignFinalInternshipsToProjects(bool $override = false): void
     {
         self::$createdProjects = 0;
         self::$duplicateProjects = 0;
 
-        $agreements = FinalYearInternshipAgreement::where('status', Status::Signed)
-        // not having a project polymorphic using ProjectAgreement
-            ->doesntHave('project')
-            ->get();
+        $agreements = FinalYearInternshipAgreement::where('status', Status::Signed);
+
+        if (! $override) {
+            $agreements = $agreements->doesntHave('project');
+        }
+
+        $agreements = $agreements->get();
 
         foreach ($agreements as $agreement) {
-
-            $project = FinalProject::create([
+            $projectData = [
                 'title' => $agreement->title,
-                'language' => null, // Set default or get from agreement if available
+                'language' => null,
                 'start_date' => $agreement->starting_at,
                 'end_date' => $agreement->ending_at,
                 'organization_id' => $agreement->organization_id,
                 'external_supervisor_id' => $agreement->external_supervisor_id,
                 'parrain_id' => $agreement->parrain_id,
                 'defense_status' => 'Pending',
-            ]);
+            ];
 
-            $agreement->project()->attach($project);
-
-            self::$createdProjects++;
+            if ($override && $agreement->project) {
+                $agreement->project->update($projectData);
+                self::$duplicateProjects++;
+            } else {
+                $project = FinalProject::create($projectData);
+                $agreement->project()->attach($project);
+                self::$createdProjects++;
+            }
         }
 
-        // Show notification with results
+        $message = [];
+        if (self::$createdProjects) {
+            $message[] = __(':count new projects created', ['count' => self::$createdProjects]);
+        }
+        if (self::$duplicateProjects) {
+            $message[] = __(':count existing projects updated', ['count' => self::$duplicateProjects]);
+        }
+
         Notification::make()
             ->title(__('Projects Assignment Complete'))
             ->success()
-            ->body(self::$createdProjects ? __(':count new project created.', ['count' => self::$createdProjects]) : __('No new projects created'))->send();
-    }
-
-    private static function createFromAgreement(FinalYearInternshipAgreement $internshipAgreement): FinalProject
-    {
-        if ($internshipAgreement->project instanceof FinalProject) {
-            self::$duplicateProjects++;
-
-            return $internshipAgreement->project;
-        }
-
-        /** @var FinalProject $project */
-        $project = FinalProject::create([
-            'title' => $internshipAgreement->title,
-            'start_date' => $internshipAgreement->starting_at,
-            'end_date' => $internshipAgreement->ending_at,
-        ]);
-
-        $internshipAgreement->final_project_id = $project->id;
-        $internshipAgreement->save();
-
-        if ($internshipAgreement->student) {
-            $project->students()->sync([$internshipAgreement->student->id]);
-        }
-
-        self::$createdProjects++;
-
-        return $project;
+            ->body($message ? implode(', ', $message) : __('No changes made'))
+            ->send();
     }
 }

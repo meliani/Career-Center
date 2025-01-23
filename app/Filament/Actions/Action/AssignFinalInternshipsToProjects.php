@@ -3,6 +3,7 @@
 namespace App\Filament\Actions\Action;
 
 use App\Services\FinalProjectService;
+use Filament\Forms\Components\Checkbox;
 use Filament\Tables\Actions\Action;
 
 class AssignFinalInternshipsToProjects extends Action
@@ -15,14 +16,20 @@ class AssignFinalInternshipsToProjects extends Action
 
         $static->configure()
             ->requiresConfirmation()
-            ->label('Migrate to Projects')
-            ->modalHeading('Migrate Final Year Internships to Projects')
-            ->modalDescription('This action will create projects from signed internship agreements.')
-            ->successNotificationTitle('Projects created successfully')
+            ->form([
+                Checkbox::make('override_existing')
+                    ->label(__('Override existing projects'))
+                    ->helperText(__('If checked, existing projects will be updated with new data'))
+                    ->default(false),
+            ])
+            ->label(__('Migrate to Projects'))
+            ->modalHeading(__('Migrate Final Year Internships to Projects'))
+            ->modalDescription(__('This action will create projects from signed internship agreements.'))
+            ->successNotificationTitle(__('Projects created successfully'))
             ->color('success')
             ->icon('heroicon-o-arrow-path')
-            ->action(function (): void {
-                FinalProjectService::AssignFinalInternshipsToProjects();
+            ->action(function (array $data): void {
+                FinalProjectService::AssignFinalInternshipsToProjects($data['override_existing'] ?? false);
             });
 
         return $static;

@@ -1073,5 +1073,11 @@
     "Search by student names or organization...": "Rechercher par noms d'étudiants ou organisation...",
     "Clear filter": "Réinitialiser le filtre",
     "By assigned professor": "Par encadrement / examination",
-    "By assigned department": "Par département affecté"
+    "By assigned department": "Par département affecté",
+    "Override existing projects": "Écraser les projets existants",
+    "If checked, existing projects will be updated with new data": "Si coché, les projets existants seront mis à jour avec les nouvelles données",
+    "Migrate to Projects": "Migrer vers les Projets",
+    "Projects created successfully": "Projets créés avec succès",
+    "Migrate Final Year Internships to Projects": "Migrer les stages fin d'études vers les projets",
+    "This action will create projects from signed internship agreements.": "Cette action va créer des projets depuis des conventions de stage signées"
 }
