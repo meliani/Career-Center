@@ -510,7 +510,7 @@ class StudentResource extends Core\BaseResource
                             ->visible(fn ($record) => $record->is_mobility),
                         Infolists\Components\TextEntry::make('exchangePartner.website')
                             ->label('Website')
-                            ->url(fn ($record) => $record->exchangePartner->website)
+                            ->url(fn ($record) => $record->exchangePartner?->website)
                             ->visible(fn ($record) => $record->is_mobility),
                         Infolists\Components\TextEntry::make('exchangePartner.email')
                             ->label('Contact Email')
