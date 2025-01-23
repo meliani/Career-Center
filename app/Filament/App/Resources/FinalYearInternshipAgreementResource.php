@@ -175,8 +175,8 @@ class FinalYearInternshipAgreementResource extends StudentBaseResource
                     ->label(__('Generate Agreement PDF'))
                     ->icon('heroicon-o-document-arrow-down')
                     ->color('primary')
-                    ->button(),
-                // ->visible(fn ($record) => $record->status == Enums\Status::Announced || $record->status == Enums\Status::Validated),
+                    ->button()
+                    ->visible(fn ($record) => $record->status == Enums\Status::Announced || $record->status == Enums\Status::Validated),
                 GenerateInternshipAgreementAction::make('Generate Draft Agreement PDF')
                     ->label(__('Generate Draft Agreement PDF'))
                     ->icon('heroicon-o-document-arrow-down')
