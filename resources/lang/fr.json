@@ -1056,7 +1056,7 @@
     "Suggested internal supervisor": "Encadrant interne suggéré",
     "Validated - click to unvalidate": "Validé - cliquez pour annuler la validation",
     "Unvalidated - click to validate": "Non validé - cliquez pour valider",
-    "Rate of supervision = :projects projects / :professors professors": "Taux d'encadrement = :projects projets / :professors enseignants",
+    "Supervisor Rate = :projects projects / :professors professors": "Taux d'encadrement = :projects projets / :professors enseignants",
     "Ratio": "Ratio",
     "Department assignements statistics": "Statistiques des affectations de département aux sujets de PFE",
     "Open Agreement": "Ouvrir la convention",
@@ -1079,5 +1079,7 @@
     "Migrate to Projects": "Migrer vers les Projets",
     "Projects created successfully": "Projets créés avec succès",
     "Migrate Final Year Internships to Projects": "Migrer les stages fin d'études vers les projets",
-    "This action will create projects from signed internship agreements.": "Cette action va créer des projets depuis des conventions de stage signées"
+    "This action will create projects from signed internship agreements.": "Cette action va créer des projets depuis des conventions de stage signées",
+    "advisings": "encadrements",
+    "Combined Supervision Rate = :projects advisings / :professors professors": "Taux d'encadrement combiné = :projects encadrements / :professors enseignants"
 }

@@ -32,13 +32,18 @@
                     <x-filament::badge :color="$stat['color']">
                         <div class="flex items-center gap-2">
                             <x-dynamic-component :component="$stat['icon']" class="w-4 h-4" />
-                            <span>{{ $stat['count'] }} {{ __('projects') }}</span>
+                            <span>
+                                {{ $stat['count'] }} 
+                                {{ $showAlternativeStats ? __('advisings') : __('projects') }}
+                            </span>
                         </div>
                     </x-filament::badge>
                     <span class="text-sm font-medium text-gray-600 dark:text-gray-300 whitespace-nowrap">
                         {{ $stat['name'] }}
                     </span>
-                    <span class="text-xs text-gray-500" x-data x-tooltip.raw="{{ __('Rate of supervision = :projects projects / :professors professors', ['projects' => $stat['count'], 'professors' => $stat['professors_count']]) }}">
+                    <span class="text-xs text-gray-500" x-data x-tooltip.raw="{{ $showAlternativeStats 
+                        ? __('Combined Supervision Rate = :projects advisings / :professors professors', ['projects' => $stat['count'], 'professors' => $stat['professors_count']])
+                        : __('Supervisor Rate = :projects projects / :professors professors', ['projects' => $stat['count'], 'professors' => $stat['professors_count']]) }}">
                         ({{ __('Ratio') }} : {{ round($stat['ratio'] ?? 0, 2) }})
                     </span>
                 </div>
