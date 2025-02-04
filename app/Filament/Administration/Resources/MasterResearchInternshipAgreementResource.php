@@ -480,7 +480,7 @@ class MasterResearchInternshipAgreementResource extends BaseResource
                                         Infolists\Components\TextEntry::make('remuneration')
                                             ->label(__('Remuneration'))
                                             ->icon('heroicon-o-banknotes')
-                                            ->money(fn ($record) => ($record->currency->value))
+                                            ->money(fn ($record) => ($record->currency?->value))
                                             ->placeholder(__('No remuneration specified'))
                                             ->visible(fn ($record) => $record->remuneration),
                                     ]),
