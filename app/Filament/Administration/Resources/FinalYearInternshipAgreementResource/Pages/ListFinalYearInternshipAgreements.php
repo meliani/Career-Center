@@ -27,7 +27,8 @@ class ListFinalYearInternshipAgreements extends ListRecords
         if (auth()->user()->isAdministrator()) {
 
             $tabs = [
-                __('All') => Tab::make(),
+                __('All') => Tab::make()
+                    ->badge(FinalYearInternshipAgreement::count()),
                 __('Draft') => Tab::make()
                     ->badge(FinalYearInternshipAgreement::where('status', Enums\Status::Draft->value)->count())
                     ->modifyQueryUsing(fn (Builder $query) => $query->where('status', Enums\Status::Draft->value)),
