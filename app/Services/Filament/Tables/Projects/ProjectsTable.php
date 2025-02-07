@@ -195,7 +195,9 @@ class ProjectsTable
                                     return $professor->pivot->createdBy->name; // change this to any pivot attribute you wish to show
                                 })
                                 ->implode(', ');
-                        }),
+                        })
+                        ->badge()
+                        ->visible(fn ($record) => auth()->user()->isAdministrator()),
 
                     Tables\Columns\TextColumn::make('language')
                         ->toggleable(isToggledHiddenByDefault: true)
