@@ -185,6 +185,17 @@ class ProjectsTable
                         ->label('Reviewers')
                         ->searchable(false)
                         ->sortable(false),
+                    Tables\Columns\TextColumn::make('professors')
+                        ->label('Assigned by')
+                        ->searchable(false)
+                        ->sortable(false)
+                        ->formatStateUsing(function ($record) {
+                            return $record->professors
+                                ->map(function ($professor) {
+                                    return $professor->pivot->createdBy->name; // change this to any pivot attribute you wish to show
+                                })
+                                ->implode(', ');
+                        }),
 
                     Tables\Columns\TextColumn::make('language')
                         ->toggleable(isToggledHiddenByDefault: true)
