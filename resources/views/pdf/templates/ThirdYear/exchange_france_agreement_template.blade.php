@@ -751,8 +751,8 @@
                 {{$internship->student->program}}
                 @endif
             </strong> de l’Institut National des Postes et Télécommunications (INPT) de Rabat, 
-            en échange académique à l’Ecole {{$internship->student->exchangePartner->name}}
-            sur l’année scolaire {{\App\Models\Year::current()->title }}
+            en échange académique à l’Ecole <strong>{{$internship->student->exchangePartner->name}}</strong>
+            sur l’année scolaire <strong>{{\App\Models\Year::current()->title }}</strong>
             dans le cadre d’un partenariat,
         </p>
         <p><strong>de troisième part,</strong></p>
