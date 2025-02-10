@@ -782,8 +782,6 @@
             sur l’année scolaire <strong>{{\App\Models\Year::current()->title }}</strong>
             dans le cadre d’un partenariat,
         </p>
-        <p><strong>de troisième part,</strong></p>
-
 
     </div>
 
