@@ -31,12 +31,14 @@ class GenerateInternshipAgreementAction extends Action
                 if ($FinalYearInternship->student->exchangePartner->country === 'FR') {
                     $template_view .= '.exchange_france_agreement_template';
                 } else {
-                    Notification::make()
-                        ->title('Error generating document, Please contact the administration')
-                        ->warning()
-                        ->send();
+                    $template_view .= '.exchange_agreement_template';
 
-                    return;
+                    // Notification::make()
+                    //     ->title('Error generating document, Please contact the administration')
+                    //     ->warning()
+                    //     ->send();
+
+                    // return;
                 }
 
             } else {
