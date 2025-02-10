@@ -24,24 +24,29 @@ class GenerateInternshipAgreementAction extends Action
 
         $static->configure()->action(function (array $data, Model $FinalYearInternship): void {
             $FinalYearInternship = $FinalYearInternship->load('student', 'organization');
+            $template_view = 'pdf.templates.' . $FinalYearInternship->student->level->value . '.';
 
             if ($FinalYearInternship->student->is_mobility) {
                 // stop the process and notify the user
-                Notification::make()
-                    ->title('Error generating document, Please contact the administration')
-                    ->warning()
-                    ->send();
+                if ($FinalYearInternship->student->exchangePartner->country === 'FR') {
+                    $template_view .= '.exchange_france_agreement_template';
+                } else {
+                    Notification::make()
+                        ->title('Error generating document, Please contact the administration')
+                        ->warning()
+                        ->send();
 
-                return;
-            }
-            // Determine template based on organization's country
-            $template_view = 'pdf.templates.' . $FinalYearInternship->student->level->value . '.';
-            if ($FinalYearInternship->organization->country === 'France') {
-                $template_view .= 'france_agreement_template';
+                    return;
+                }
+
             } else {
-                $template_view .= 'agreement_template';
+                // Determine template based on organization's country
+                if ($FinalYearInternship->organization->country === 'France') {
+                    $template_view .= 'france_agreement_template';
+                } else {
+                    $template_view .= 'agreement_template';
+                }
             }
-
             $pdf_path = 'storage/pdf/apprenticeship_agreements/' . $FinalYearInternship->student->level->value;
             $pdf_file_name = 'convention-de-stage-' . Str::slug($FinalYearInternship->student->full_name) . '-' . time() . '.pdf';
 
