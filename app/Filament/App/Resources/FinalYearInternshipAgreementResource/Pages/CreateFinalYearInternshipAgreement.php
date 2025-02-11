@@ -314,8 +314,7 @@ class CreateFinalYearInternshipAgreement extends CreateRecord
                                     Forms\Components\TextInput::make('remuneration')
                                         ->label('Monthly Remuneration')
                                         ->numeric()
-                                        ->prefix(fn (Get $get) => Currency::tryFrom($get('currency'))?->getSymbol()),
-
+                                        ->prefix(fn (Get $get) => ($currency = $get('currency')) !== null ? Currency::tryFrom($currency)?->getSymbol() : ''),
                                     Forms\Components\TextInput::make('workload')
                                         ->label('Weekly Hours')
                                         ->numeric()
