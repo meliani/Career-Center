@@ -774,7 +774,7 @@
         <h2 class="text-base font-semibold mt-2 mb-0">ARTICLE 3 : Modalités du stage</h2>
         <div class="text-xs mt-2">
             <p>
-                <strong>Durée du stage</strong>: 6 mois à partir du <strong>{{$internship->starting_at->format('d/m/Y')}}</strong>.
+                <strong>Durée du stage</strong>: 6 mois à partir du <strong>{{$internship->starting_at->format('d/m/Y')}}</strong> jusqu’au <strong>{{$internship->ending_at->format('d/m/Y')}}</strong>
                 </p>
             <p>Un avenant à la convention pourra éventuellement être établi en cas de prolongation de stage faite à la demande de l’entreprise et de l’étudiant stagiaire. Toutes prolongations seront soumises aux obligations du programme concerné.</p>
             <p class="text-xs mt-1"><strong>Déroulement du stage</strong></p>
