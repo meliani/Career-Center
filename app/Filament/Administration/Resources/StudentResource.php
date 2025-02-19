@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades;
+use Illuminate\Support\Str;
 
 class StudentResource extends Core\BaseResource
 {
@@ -442,6 +443,28 @@ class StudentResource extends Core\BaseResource
                                     ->icon('heroicon-m-envelope'),
                                 Infolists\Components\TextEntry::make('phone')
                                     ->icon('heroicon-m-phone'),
+                                Infolists\Components\Actions::make([
+                                    Infolists\Components\Actions\Action::make('resetPassword')
+                                        ->label('Reset Password')
+                                        ->icon('heroicon-o-key')
+                                        ->color('warning')
+                                        ->requiresConfirmation()
+                                        ->modalHeading('Reset Student Password')
+                                        ->modalDescription('This will generate and set a new password for the student. The new password will be displayed here.')
+                                        ->action(function ($record) {
+                                            $password = Str::password(8);
+                                            $record->update([
+                                                'password' => bcrypt($password),
+                                            ]);
+
+                                            Notification::make()
+                                                ->title('Password reset successful')
+                                                ->success()
+                                                ->body("New password: {$password}")
+                                                ->persistent()
+                                                ->send();
+                                        }),
+                                ]),
                             ]),
                     ]),
 
