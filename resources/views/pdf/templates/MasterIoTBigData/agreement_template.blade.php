@@ -745,7 +745,7 @@
     <div class="text-xs mb-2">
         <p>Concernant le stage de Fin d’études de
             <strong>{{$internship->student->long_full_name}}</strong>, étudiant(e) au 
-            <strong> Master en loT et Big Data</strong>.
+            <strong> Master loT et Big Data</strong>.
         </p>
         <div class="text-xs mt-2">
             Pour la période du
