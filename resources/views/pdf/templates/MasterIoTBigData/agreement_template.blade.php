@@ -744,12 +744,8 @@
 
     <div class="text-xs mb-2">
         <p>Concernant le stage de Fin d’études de
-            <strong>{{$internship->student->long_full_name}}</strong>, étudiant(e) au <strong>Master 
-                @if(is_a($internship->student->program, \App\Enums\Program::class))
-                {{$internship->student->program->getDescription()}}
-                @else
-                {{$internship->student->program}}
-                @endif </strong>.
+            <strong>{{$internship->student->long_full_name}}</strong>, étudiant(e) au 
+            <strong> Master en loT et Big Data</strong>.
         </p>
         <div class="text-xs mt-2">
             Pour la période du
