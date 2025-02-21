@@ -60,7 +60,7 @@
                         x-ref="searchInput"
                         type="text"
                         wire:model.live.debounce.100ms="search"  {{-- Changed to wire:model.live with shorter debounce --}}
-                        placeholder="{{ __('Search by student names or organization...') }}"
+                        placeholder="{{ __('Search by ID_PFE, student names or organization...') }}"
                         class="w-full h-10 pl-10 pr-10 text-sm border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500"
                         style="padding-left: 1rem;"
                         @keydown.escape="showSearchBox = false; search = ''"

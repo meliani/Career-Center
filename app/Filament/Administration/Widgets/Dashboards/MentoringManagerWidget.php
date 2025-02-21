@@ -60,6 +60,7 @@ class MentoringManagerWidget extends Widget
                     ]);
                 },
                 'final_internship_agreements.organization:id,name',
+                'final_internship_agreements.student:id,name,id_pfe', // Add id_pfe to student selection
             ])
             ->whereHas('final_internship_agreements', function ($query) {
                 if (auth()->user()->hasRole(Enums\Role::DepartmentHead)) {
@@ -67,12 +68,13 @@ class MentoringManagerWidget extends Widget
                 }
             });
 
-        // Add search functionality with optimization
+        // Enhanced search functionality
         if ($this->search) {
             $searchTerm = '%' . $this->search . '%';
             $query->where(function ($q) use ($searchTerm) {
                 $q->whereHas('final_internship_agreements.student', function ($q) use ($searchTerm) {
-                    $q->where('name', 'like', $searchTerm);
+                    $q->where('name', 'like', $searchTerm)
+                        ->orWhere('id_pfe', 'like', $searchTerm);
                 })
                     ->orWhereHas('final_internship_agreements.organization', function ($q) use ($searchTerm) {
                         $q->where('name', 'like', $searchTerm);
@@ -311,7 +313,8 @@ class MentoringManagerWidget extends Widget
             $searchTerm = '%' . $this->search . '%';
             $baseQuery->where(function ($q) use ($searchTerm) {
                 $q->whereHas('final_internship_agreements.student', function ($q) use ($searchTerm) {
-                    $q->where('name', 'like', $searchTerm);
+                    $q->where('name', 'like', $searchTerm)
+                        ->orWhere('id_pfe', 'like', $searchTerm);
                 })
                     ->orWhereHas('final_internship_agreements.organization', function ($q) use ($searchTerm) {
                         $q->where('name', 'like', $searchTerm);
