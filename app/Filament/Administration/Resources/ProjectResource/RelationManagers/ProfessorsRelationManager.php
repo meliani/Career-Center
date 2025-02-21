@@ -98,8 +98,21 @@ class ProfessorsRelationManager extends RelationManager
                     ->label(__('Add Jury Member'))
                     ->color('primary')
                     ->form(fn (Tables\Actions\AttachAction $action): array => [
-                        $action->getRecordSelect(),
-                        Forms\Components\Select::make('jury_role')->options(Enums\JuryRole::class)
+
+                        // $action->getRecordSelect(),
+                        Forms\Components\Select::make('recordId')
+                            ->preload()
+                            ->required()
+                            ->placeholder(__('Search by name or department...'))
+                            ->options(fn () => \App\Models\Professor::query()
+                                ->where('is_enabled', true)
+                                ->where('can_supervise', true)
+                                ->get()
+                                ->mapWithKeys(fn ($professor) => [$professor->id => $professor->long_full_name])
+                                ->toArray())
+                            ->searchable(),
+                        Forms\Components\Select::make('jury_role')
+                            ->options(Enums\JuryRole::class)
                             ->required()
                             ->default(Enums\JuryRole::Supervisor),
                     ])

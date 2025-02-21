@@ -246,13 +246,13 @@ class ProjectResource extends Core\BaseResource
             ->defaultSort('timetable.timeslot.start_time')
             ->defaultGroup('timetable.timeslot.start_time')
             ->groups([
-                Tables\Grouping\Group::make('timetable.timeslot.start_time')
-                    ->date()
-                    ->collapsible()
-                    ->label(__('Day of')),
-                Tables\Grouping\Group::make('defense_status')
-                    ->collapsible()
-                    ->label(__('Defense status')),
+                // Tables\Grouping\Group::make('timetable.timeslot.start_time')
+                //     ->date()
+                //     ->collapsible()
+                //     ->label(__('Day of')),
+                // Tables\Grouping\Group::make('defense_status')
+                //     ->collapsible()
+                //     ->label(__('Defense status')),
             ])
             ->columns(
                 $livewire->isGridLayout()
@@ -269,38 +269,38 @@ class ProjectResource extends Core\BaseResource
                     ] : null
             )
             ->filters([
-                SelectFilter::make('agreement_type')
-                    ->label('Internship Type')
-                    ->options([
-                        'internship' => 'Introductory/Technical Internship',
-                        'final_year' => 'Final Year Internship',
-                    ])
-                    ->query(function (Builder $query, array $data): Builder {
-                        return $query->when(
-                            $data['value'],
-                            function (Builder $query, string $value): Builder {
-                                return $query->whereHas('agreements', function (Builder $query) use ($value) {
-                                    if ($value === 'internship') {
-                                        $query->where('agreeable_type', InternshipAgreement::class);
-                                    } elseif ($value === 'final_year') {
-                                        $query->where('agreeable_type', FinalYearInternshipAgreement::class);
-                                    }
-                                });
-                            }
-                        );
-                    })
-                    ->indicateUsing(function (array $data): ?string {
-                        if (! $data['value']) {
-                            return null;
-                        }
+                // SelectFilter::make('agreement_type')
+                //     ->label('Internship Type')
+                //     ->options([
+                //         'internship' => 'Introductory/Technical Internship',
+                //         'final_year' => 'Final Year Internship',
+                //     ])
+                //     ->query(function (Builder $query, array $data): Builder {
+                //         return $query->when(
+                //             $data['value'],
+                //             function (Builder $query, string $value): Builder {
+                //                 return $query->whereHas('agreements', function (Builder $query) use ($value) {
+                //                     if ($value === 'internship') {
+                //                         $query->where('agreeable_type', InternshipAgreement::class);
+                //                     } elseif ($value === 'final_year') {
+                //                         $query->where('agreeable_type', FinalYearInternshipAgreement::class);
+                //                     }
+                //                 });
+                //             }
+                //         );
+                //     })
+                //     ->indicateUsing(function (array $data): ?string {
+                //         if (! $data['value']) {
+                //             return null;
+                //         }
 
-                        return 'Type: ' . (
-                            $data['value'] === 'internship'
-                            ? 'Introductory/Technical'
-                            : 'Final Year'
-                        );
-                    })
-                    ->visible(fn () => auth()->user()->isAdministrator() === true),
+                //         return 'Type: ' . (
+                //             $data['value'] === 'internship'
+                //             ? 'Introductory/Technical'
+                //             : 'Final Year'
+                //         );
+                //     })
+                //     ->visible(fn () => auth()->user()->isAdministrator() === true),
 
                 // DateRangeFilter::make('timetable.timeslot.start_time')
                 // ->label('Defense date')
@@ -312,59 +312,66 @@ class ProjectResource extends Core\BaseResource
                 //     ->relationship('timetable.timeslot', 'start_time')
                 //     ->searchable()
                 //     ->preload(),
-                Tables\Filters\Filter::make('Defense date')
-                    ->form([
-                        Forms\Components\DatePicker::make('defenses_from'),
-                        // ->default(now()),
-                        Forms\Components\DatePicker::make('defenses_until'),
-                        // ->default(now()->addDays(7)),
-                    ])
-                    ->query(function (Builder $query, array $data): Builder {
-                        return $query
-                            ->when(
-                                $data['defenses_from'],
-                                fn (Builder $query, $date): Builder => $query->whereRelation('timetable.timeslot', 'start_time', '>=', $date),
-                            )
-                            ->when(
-                                $data['defenses_until'],
-                                fn (Builder $query, $date): Builder => $query->whereRelation('timetable.timeslot', 'start_time', '<=', $date),
-                            );
-                    })
-                    ->indicateUsing(function (array $data): array {
-                        $indicators = [];
+                // Tables\Filters\Filter::make('Defense date')
+                //     ->form([
+                //         Forms\Components\DatePicker::make('defenses_from'),
+                //         // ->default(now()),
+                //         Forms\Components\DatePicker::make('defenses_until'),
+                //         // ->default(now()->addDays(7)),
+                //     ])
+                //     ->query(function (Builder $query, array $data): Builder {
+                //         return $query
+                //             ->when(
+                //                 $data['defenses_from'],
+                //                 fn (Builder $query, $date): Builder => $query->whereRelation('timetable.timeslot', 'start_time', '>=', $date),
+                //             )
+                //             ->when(
+                //                 $data['defenses_until'],
+                //                 fn (Builder $query, $date): Builder => $query->whereRelation('timetable.timeslot', 'start_time', '<=', $date),
+                //             );
+                //     })
+                //     ->indicateUsing(function (array $data): array {
+                //         $indicators = [];
 
-                        if ($data['defenses_from'] ?? null) {
-                            $indicators[] = Tables\Filters\Indicator::make(__('Defenses from :date', ['date' => Carbon::parse($data['defenses_from'])->toFormattedDateString()]))
-                                ->removeField('defenses_from');
-                        }
+                //         if ($data['defenses_from'] ?? null) {
+                //             $indicators[] = Tables\Filters\Indicator::make(__('Defenses from :date', ['date' => Carbon::parse($data['defenses_from'])->toFormattedDateString()]))
+                //                 ->removeField('defenses_from');
+                //         }
 
-                        if ($data['defenses_until'] ?? null) {
-                            $indicators[] = Tables\Filters\Indicator::make(__('Defenses until :date', ['date' => Carbon::parse($data['defenses_until'])->toFormattedDateString()]))
-                                ->removeField('defenses_until');
-                        }
+                //         if ($data['defenses_until'] ?? null) {
+                //             $indicators[] = Tables\Filters\Indicator::make(__('Defenses until :date', ['date' => Carbon::parse($data['defenses_until'])->toFormattedDateString()]))
+                //                 ->removeField('defenses_until');
+                //         }
 
-                        return $indicators;
-                    }),
+                //         return $indicators;
+                //     }),
                 // ->default(),
 
-                Tables\Filters\SelectFilter::make('defense_status')
-                    ->options(Enums\DefenseStatus::class)
-                    ->query(
-                        fn (Builder $query, array $data) => $query->when(
-                            $data['value'],
-                            fn (Builder $query, $status): Builder => $query->where('defense_status', $status)
-                        ),
-                    ),
+                // Tables\Filters\SelectFilter::make('defense_status')
+                //     ->options(Enums\DefenseStatus::class)
+                //     ->query(
+                //         fn (Builder $query, array $data) => $query->when(
+                //             $data['value'],
+                //             fn (Builder $query, $status): Builder => $query->where('defense_status', $status)
+                //         ),
+                //     ),
                 Tables\Filters\SelectFilter::make('professor')
                     ->searchable()
                     ->preload()
-                    ->relationship('professors', 'name'),
+                    ->options(fn () => \App\Models\Professor::all()->pluck('full_name', 'id'))
+                    ->query(
+                        fn (Builder $query, array $data) => $query->when(
+                            $data['value'],
+                            fn (Builder $query, $professor): Builder => $query->whereHas('professors', fn (Builder $query) => $query->where('professor_id', $professor))
+                        ),
+                    ),
                 Tables\Filters\SelectFilter::make('Assigned department')
+                    ->label(__('Assigned department'))
                     ->options(Enums\Department::class)
                     ->query(
                         fn (Builder $query, array $data) => $query->when(
                             $data['value'],
-                            fn (Builder $query, $department): Builder => $query->whereRelation('internship_agreements', 'assigned_department', $department)
+                            fn (Builder $query, $department): Builder => $query->whereRelation('final_internship_agreements', 'assigned_department', $department)
                         ),
                     ),
 
