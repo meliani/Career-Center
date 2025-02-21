@@ -289,6 +289,9 @@
                         <div class="flex items-center gap-2">
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400">
                                 {{ $project->students_names }}
+                                <span class="ml-2 text-sm font-normal text-gray-500 dark:text-gray-400">
+                                    #{{ $project->final_internship_agreements->first()?->student?->id_pfe }}
+                                </span>
                             </h3>
                             <a 
                                 href="{{ route('filament.Administration.resources.projects.view', $project) }}"
