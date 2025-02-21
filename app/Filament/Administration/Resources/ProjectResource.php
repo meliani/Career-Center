@@ -522,12 +522,14 @@ class ProjectResource extends Core\BaseResource
                 ])->icon('heroicon-o-bars-3')
                     ->hidden(fn ($record) => auth()->user()->can('manage-project', $record) === false)
                     ->visible(false),
-                Tables\Actions\EditAction::make()
-                    ->label(false)
-                    ->hidden(fn ($record) => auth()->user()->isAdministrator() === false),
                 // ])->dropdown(false)
                 // ->tooltip(__('Edit or view this project')),
                 // ->hidden(true),
+                Tables\Actions\ViewAction::make()
+                    ->iconButton(),
+                Tables\Actions\EditAction::make()
+                    ->iconButton()
+                    ->hidden(fn ($record) => auth()->user()->isAdministrator() === false),
             ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
 
