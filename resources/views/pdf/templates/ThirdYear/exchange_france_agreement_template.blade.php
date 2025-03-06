@@ -726,7 +726,7 @@
         {{$internship->organization->country}}
     </div>
     <div class="text-xs">
-        ci-après désignée par Entreprise, et représentée par <strong>{{$internship->parrain->full_name}}</strong>,
+        ci-après désignée par Entreprise, et représentée par <strong>{{$internship->parrain->formal_name}}</strong>,
         <strong>{{$internship->parrain->function}}</strong>
     </div>
     <div class="text-xs font-semibold mt-0 mb-2">
