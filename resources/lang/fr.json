@@ -1081,5 +1081,7 @@
     "Migrate Final Year Internships to Projects": "Migrer les stages fin d'études vers les projets",
     "This action will create projects from signed internship agreements.": "Cette action va créer des projets depuis des conventions de stage signées",
     "advisings": "encadrements",
-    "Combined Supervision Rate = :projects advisings / :professors professors": "Taux d'encadrement combiné = :projects encadrements / :professors enseignants"
+    "Combined Supervision Rate = :projects advisings / :professors professors": "Taux d'encadrement combiné = :projects encadrements / :professors enseignants",
+    "Student emails": "Emails des étudiants",
+    "Student phone": "Téléphone de l'étudiant"
 }
