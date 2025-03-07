@@ -52,6 +52,19 @@ class ProjectsTable
                         ->searchable(false)
                         ->sortable(false)
                         ->description(fn ($record) => $record->id_pfe),
+                    Tables\Columns\TextColumn::make('agreements.agreeable.student.email')
+                        ->label('Student emails')
+                        ->copyable()
+                        ->toggleable()
+                        ->searchable(false)
+                        ->sortable(false)
+                        ->description(fn ($record) => $record->final_internship_agreements->first()->student->email_perso),
+                    Tables\Columns\TextColumn::make('agreements.agreeable.student.phone')
+                        ->label('Student phone')
+                        ->copyable()
+                        ->toggleable()
+                        ->searchable(false)
+                        ->sortable(false),
                     Tables\Columns\TextColumn::make('agreements.agreeable.student.program')
                         ->toggleable(isToggledHiddenByDefault: false)
                         ->label('Program')
