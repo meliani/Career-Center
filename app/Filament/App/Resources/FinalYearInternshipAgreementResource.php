@@ -59,14 +59,22 @@ class FinalYearInternshipAgreementResource extends StudentBaseResource
             ->recordTitleAttribute('title')
             ->paginated(false)
             ->searchable(false)
-            ->emptyStateHeading('')
-            ->emptyStateDescription('')
+            ->emptyStateHeading('No Internship Agreement')
+            ->emptyStateDescription('You have not created a final year internship agreement yet.')
             ->emptyStateIcon('heroicon-o-document-text')
             ->emptyStateActions([
                 Tables\Actions\Action::make('create')
-                    ->label('Create your first internship agreement')
+                    ->label('Create your internship agreement')
                     ->url(route('filament.app.resources.final-year-internship-agreements.create'))
                     ->icon('heroicon-o-plus-circle')
+                    ->visible(function () {
+                        $currentYearId = Year::current()->id;
+                        $existingAgreement = FinalYearInternshipAgreement::where('student_id', Auth::id())
+                            ->where('year_id', $currentYearId)
+                            ->exists();
+
+                        return ! $existingAgreement;
+                    })
                     ->button(),
             ])
             ->columns([

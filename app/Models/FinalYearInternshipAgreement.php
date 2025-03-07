@@ -91,10 +91,16 @@ class FinalYearInternshipAgreement extends Model implements Agreement
             $finalYearInternship->year_id = Year::current()->id;
             // $finalYearInternship->status = Enums\Status::Announced;
             $finalYearInternship->announced_at = now();
+
+            // Check if student already has an agreement for this year
+            $existingAgreement = self::where('student_id', $finalYearInternship->student_id)
+                ->where('year_id', $finalYearInternship->year_id)
+                ->first();
+
+            if ($existingAgreement) {
+                throw new \Exception('You already have a final year internship agreement for this academic year.');
+            }
         });
-        // static::created(function (FinalYearInternshipAgreement $finalYearInternship) {
-        //     $finalYearInternship->generateVerificationLink();
-        // });
 
         static::updating(function (FinalYearInternshipAgreement $finalYearInternship) {
             if ($finalYearInternship->isDirty('status')) {

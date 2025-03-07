@@ -5,24 +5,23 @@ namespace App\Filament\App\Resources\FinalYearInternshipAgreementResource\Pages;
 use App\Enums;
 use App\Enums\Currency;
 use App\Filament\App\Resources\FinalYearInternshipAgreementResource;
+use App\Models\FinalYearInternshipAgreement;
 use App\Models\Organization;
-use App\Models\Year;
 use Filament\Forms;
 use Filament\Forms\Components\SpatieTagsInput;
 use Filament\Forms\Components\Wizard\Step;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
-use Filament\Support\Facades\FilamentView;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use Malzariey\FilamentDaterangepickerFilter\Fields\DateRangePicker;
-
-use function Filament\Support\is_app_url;
 
 class CreateFinalYearInternshipAgreement extends CreateRecord
 {
@@ -39,16 +38,16 @@ class CreateFinalYearInternshipAgreement extends CreateRecord
                 ->icon('heroicon-o-building-office')
                 ->description(__('Select or create an organization'))
                 ->schema([
-                    /* Forms\Components\Section::make()
+                    Forms\Components\Section::make()
                         ->schema([
                             Forms\Components\Placeholder::make('notice')
-                                ->content('Notice: You can only announce one internship agreement during an academic year.')
+                                ->content('Notice: You can only create one final year internship agreement during an academic year.')
                                 ->extraAttributes(['class' => 'text-warning-600']),
                             Forms\Components\Placeholder::make('warning')
                                 ->content('When you save this form, you will not be able to change the organization and its representatives.')
                                 ->extraAttributes(['class' => 'text-warning-600']),
                         ])
-                        ->collapsible(), */
+                        ->collapsible(),
                     Forms\Components\Group::make()
                         ->schema([
                             Forms\Components\Select::make('organization_id')
@@ -355,14 +354,31 @@ class CreateFinalYearInternshipAgreement extends CreateRecord
     {
         return $this->getResource()::getUrl('index');
     }
-    // public function create(bool $another = false): void
-    // {
-    //     $data = $this->form->getState();
 
-    //     $this->record->update($data);
+    protected function handleRecordCreation(array $data): FinalYearInternshipAgreement
+    {
+        try {
+            return static::getModel()::create($data);
+        } catch (QueryException $e) {
+            // Check if it's a unique constraint violation
+            if (str_contains($e->getMessage(), 'one_agreement_per_student_per_year')) {
+                Notification::make()
+                    ->title('You already have a final year internship agreement for this academic year')
+                    ->body('Only one final year internship agreement is allowed per academic year.')
+                    ->danger()
+                    ->send();
 
-    //     $redirectUrl = $this->getRedirectUrl();
+                $this->halt();
+            }
 
-    //     $this->redirect($redirectUrl, navigate: FilamentView::hasSpaMode() && is_app_url($redirectUrl));
-    // }
+            throw $e;
+        } catch (\Exception $e) {
+            Notification::make()
+                ->title($e->getMessage())
+                ->danger()
+                ->send();
+
+            $this->halt();
+        }
+    }
 }
