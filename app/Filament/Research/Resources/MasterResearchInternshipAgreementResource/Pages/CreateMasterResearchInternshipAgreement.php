@@ -5,6 +5,7 @@ namespace App\Filament\Research\Resources\MasterResearchInternshipAgreementResou
 use App\Enums;
 use App\Enums\Currency;
 use App\Filament\Research\Resources\MasterResearchInternshipAgreementResource;
+use App\Models\MasterResearchInternshipAgreement;
 use App\Models\Organization;
 use App\Models\Year;
 use Filament\Forms;
@@ -13,16 +14,15 @@ use Filament\Forms\Components\Wizard\Step;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
-use Filament\Support\Facades\FilamentView;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use Malzariey\FilamentDaterangepickerFilter\Fields\DateRangePicker;
-
-use function Filament\Support\is_app_url;
 
 class CreateMasterResearchInternshipAgreement extends CreateRecord
 {
@@ -296,7 +296,11 @@ class CreateMasterResearchInternshipAgreement extends CreateRecord
                                     Forms\Components\TextInput::make('remuneration')
                                         ->label('Monthly Remuneration')
                                         ->numeric()
-                                        ->prefix(fn (Get $get) => Currency::tryFrom($get('currency'))?->getSymbol()),
+                                        ->prefix(function (Get $get) {
+                                            $currencyValue = $get('currency');
+
+                                            return $currencyValue ? Currency::tryFrom($currencyValue)?->getSymbol() : null;
+                                        }),
 
                                     Forms\Components\TextInput::make('workload')
                                         ->label('Weekly Hours')
@@ -307,27 +311,27 @@ class CreateMasterResearchInternshipAgreement extends CreateRecord
 
                     Forms\Components\Section::make('Keywords')
                         ->schema([
-                            SpatieTagsInput::make('tags')
-                                // ->suggestion()
-                                ->type('internships')
-                                ->splitKeys(['Tab', ',', ' '])
-                                ->columnSpanFull()
-                                ->suggestions(
-                                    function () {
-                                        return \Spatie\Tags\Tag::withType('internships')->pluck('name');
-                                    },
-                                ),
-                        ]),
+                                                                SpatieTagsInput::make('tags')
+                                                                    // ->suggestion()
+                                                                    ->type('internships')
+                                                                    ->splitKeys(['Tab', ',', ' '])
+                                                                    ->columnSpanFull()
+                                                                    ->suggestions(
+                                                                        function () {
+                                                                            return \Spatie\Tags\Tag::withType('internships')->pluck('name');
+                                                                        },
+                                                                    ),
+                                                            ]),
                     Forms\Components\Section::make('Status')
                         ->schema([
                             Forms\Components\ToggleButtons::make('status')
-                                ->inline()
-                                ->options([
-                                    Enums\Status::Announced->value => Enums\Status::Announced->getLabel(),
-                                    Enums\Status::Draft->value => Enums\Status::Draft->getLabel(),
-                                ])
-                                ->default(Enums\Status::Announced->value)
-                                ->required(),
+                                                                    ->inline()
+                                                                    ->options([
+                                                                        Enums\Status::Announced->value => Enums\Status::Announced->getLabel(),
+                                                                        Enums\Status::Draft->value => Enums\Status::Draft->getLabel(),
+                                                                    ])
+                                                                    ->default(Enums\Status::Announced->value)
+                                                                    ->required(),
                         ]),
                 ]),
         ];
@@ -337,14 +341,31 @@ class CreateMasterResearchInternshipAgreement extends CreateRecord
     {
         return $this->getResource()::getUrl('index');
     }
-    // public function create(bool $another = false): void
-    // {
-    //     $data = $this->form->getState();
 
-    //     $this->record->update($data);
+    protected function handleRecordCreation(array $data): MasterResearchInternshipAgreement
+    {
+        try {
+            return static::getModel()::create($data);
+        } catch (QueryException $e) {
+            // Check if it's a unique constraint violation
+            if (str_contains($e->getMessage(), 'one_agreement_per_student_per_year')) {
+                Notification::make()
+                    ->title('You already have a research internship agreement for this academic year')
+                    ->body('Only one research internship agreement is allowed per academic year.')
+                    ->danger()
+                    ->send();
 
-    //     $redirectUrl = $this->getRedirectUrl();
+                $this->halt();
+            }
 
-    //     $this->redirect($redirectUrl, navigate: FilamentView::hasSpaMode() && is_app_url($redirectUrl));
-    // }
+            throw $e;
+        } catch (\Exception $e) {
+            Notification::make()
+                ->title($e->getMessage())
+                ->danger()
+                ->send();
+
+            $this->halt();
+        }
+    }
 }
