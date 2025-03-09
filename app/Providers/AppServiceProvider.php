@@ -39,6 +39,7 @@ use Spatie\Health\Facades\Health;
 use Spatie\LaravelPdf\Enums\Format;
 use Spatie\LaravelPdf\Enums\Unit;
 use Spatie\LaravelPdf\Facades\Pdf;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -251,5 +252,12 @@ class AppServiceProvider extends ServiceProvider
                     ->orderBy(implode('_', [$table, $field]), $direction);
             });
         });
+    }
+
+    public function boot()
+    {
+        if ($this->app->environment('production')) {
+            URL::forceScheme('https');
+        }
     }
 }
