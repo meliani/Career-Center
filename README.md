@@ -34,6 +34,16 @@ We are integrating machine learning and smart algorithms to enhance our platform
 
 ## How to install
 
+### Resolving 'Permission denied (publickey)' Error
+
+If you encounter the error `git@github.com: Permission denied (publickey).` while trying to clone the repository, it means that your SSH key is not properly configured or you do not have the correct access rights. To resolve this issue, you can configure Git to use HTTPS instead of SSH for GitHub URLs by running the following command:
+
+```bash
+git config --global url."https://github.com/".insteadOf git@github.com:
+```
+
+This command tells Git to replace any instance of `git@github.com:` with `https://github.com/` in the URLs it uses. This way, you can clone the repository using HTTPS, which does not require an SSH key.
+
 ### 1. Clone the repository
 
 ```bash
