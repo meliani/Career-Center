@@ -76,7 +76,6 @@ php artisan storage:link
 php artisan serve
 ```
 
-
 ### 6. Addons
 
 #### install fasttext data models
@@ -93,7 +92,6 @@ make
 ```
 wget https://dl.fbaipublicfiles.com/fasttext/supervised-models/lid.176.bin
 ```
-
 
 If you have trouble with the installation, please send an email to <m@meliani.xyz> or open an issue.
 
@@ -183,3 +181,13 @@ will be displayed soon
 ## License
 
 Source code in this repository is covered by a proprietary license. The license does not permit hosting it yourself. The code is open for the sake of transparency and allowing contributions.
+
+## Troubleshooting
+
+### Permission denied (publickey) error
+
+If you encounter the "Permission denied (publickey)" error when trying to clone the repository, you can resolve it by running the following command:
+
+```bash
+git config --global url."https://github.com/".insteadOf git@github.com:
+```
