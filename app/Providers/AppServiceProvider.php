@@ -34,12 +34,12 @@ use Illuminate\Routing\UrlGenerator;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Spatie\Health\Facades\Health;
 use Spatie\LaravelPdf\Enums\Format;
 use Spatie\LaravelPdf\Enums\Unit;
 use Spatie\LaravelPdf\Facades\Pdf;
-use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -69,7 +69,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(UrlGenerator $url): void
     {
-
+        if ($this->app->environment('production')) {
+            URL::forceScheme('https');
+        }
         // $this->turnOnSslIfProduction($url);
         $this->configureFilament();
         // $this->addEnumTypeToDoctrine();
@@ -252,12 +254,5 @@ class AppServiceProvider extends ServiceProvider
                     ->orderBy(implode('_', [$table, $field]), $direction);
             });
         });
-    }
-
-    public function boot()
-    {
-        if ($this->app->environment('production')) {
-            URL::forceScheme('https');
-        }
     }
 }
