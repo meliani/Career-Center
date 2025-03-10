@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'asset_url'  => env('LIVEWIRE_PATH'),
+    'asset_url' => env('LIVEWIRE_ASSETS_URL', config('app.url')),
 
     /*
     |---------------------------------------------------------------------------
