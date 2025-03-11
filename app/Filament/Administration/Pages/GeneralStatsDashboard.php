@@ -10,7 +10,7 @@ class GeneralStatsDashboard extends \Filament\Pages\Dashboard
 
     protected static ?string $title = 'General Statistics Dashboard';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 0;
 
     protected static ?string $navigationLabel = 'General Statistics Dashboard';
 
