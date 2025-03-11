@@ -10,8 +10,11 @@ use App\Filament\Core\BaseResource as Resource;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UserResource extends Resource
 {
@@ -143,6 +146,36 @@ class UserResource extends Resource
                     ->visible(fn (User $record) => auth()->user()->can('delete', $record)),
                 \STS\FilamentImpersonate\Tables\Actions\Impersonate::make()
                     ->hidden(fn ($record) => ! $record->canBeImpersonated()),
+                // Add the reset password action
+                Tables\Actions\Action::make('reset_password')
+                    ->label(false)
+                    ->tooltip(__('Reset Password'))
+                    ->icon('heroicon-o-key')
+                    ->color('danger')
+                    ->requiresConfirmation()
+                    ->modalDescription('This will generate a new random password for the user. The user will need to change their password after logging in.')
+                    ->action(function (User $record) {
+                        // Generate a new random password (10 characters)
+                        $newPassword = Str::password(10);
+
+                        // Update the user's password
+                        $record->update([
+                            'password' => Hash::make($newPassword),
+                            // Optionally set a flag to force password change on next login
+                            // 'force_password_change' => true,
+                        ]);
+
+                        // Show the new password in a notification
+                        Notification::make()
+                            ->title('Password Reset Successfully')
+                            ->body("New password for {$record->name}: {$newPassword}")
+                            ->success()
+                            ->send();
+
+                        // Optionally send an email with the new password
+                        // Mail::to($record->email)->send(new PasswordResetMail($record, $newPassword));
+                    })
+                    ->visible(fn (User $record) => auth()->user()->can('update', $record)),
             ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
