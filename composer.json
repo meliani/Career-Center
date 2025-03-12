@@ -1,6 +1,7 @@
 {
     "name": "meliani/career-center",
     "type": "platform",
+    "version": "4.0.0",
     "description": "Career management platform.",
     "keywords": [
         "laravel",
