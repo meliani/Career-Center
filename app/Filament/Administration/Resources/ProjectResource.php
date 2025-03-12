@@ -484,6 +484,15 @@ class ProjectResource extends Core\BaseResource
                         ->hidden(fn () => auth()->user()->isAdministrator() === false)
                         ->modalSubmitAction(false)
                         ->modalCancelAction(false),
+                    RelationManagerAction::make('comments-relation-manager')
+                        ->label('Manage Comments')
+                        ->icon('heroicon-o-chat-bubble-left-right')
+                        ->relationManager(RelationManagers\CommentsRelationManager::class)
+                        ->hidden(fn () => auth()->user()->isAdministrator() === false)
+                        ->modalHeading('Comments')
+                        ->modalSubmitAction(false)
+                        ->slideOver()
+                        ->modalCancelAction(false),
 
                 ])
                     ->icon('heroicon-o-ellipsis-horizontal-circle')

@@ -10,6 +10,8 @@ use Filament\Tables\Table;
 
 class CommentsRelationManager extends RelationManager
 {
+    use \Guava\FilamentModalRelationManagers\Concerns\CanBeEmbeddedInModals;
+
     protected static string $relationship = 'filamentComments';
 
     protected static ?string $title = 'Comments';
@@ -56,7 +58,8 @@ class CommentsRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                // Tables\Actions\CreateAction::make()
+                //     ->label('Add Comment'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
