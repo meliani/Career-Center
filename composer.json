@@ -60,6 +60,7 @@
         "spatie/laravel-data": "^4.2",
         "spatie/laravel-health": "^1.30",
         "spatie/laravel-pdf": "^1.4",
+        "spatie/laravel-responsecache": "^7.6",
         "spatie/period": "^2.4",
         "stechstudio/filament-impersonate": "^3.15",
         "symfony/process": "^7.2",
