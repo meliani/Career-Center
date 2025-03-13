@@ -279,7 +279,8 @@ class FinalYearInternshipAgreementResource extends BaseResource
             ->actions([
                 Tables\Actions\EditAction::make()
                     ->label('')
-                    ->visible(fn () => auth()->user()->can('update', new FinalYearInternshipAgreement)),
+                    ->visible(fn () => auth()->user()->can('update', new FinalYearInternshipAgreement))
+                    ->tooltip(__('Edit this internship agreement')),
 
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
@@ -316,7 +317,13 @@ class FinalYearInternshipAgreementResource extends BaseResource
                     ->visible(false),
                 \App\Filament\Actions\Action\AssignDepartmentAction::make()
                     ->disabled(fn ($record): bool => $record['assigned_department'] !== null)
+                    ->visible(fn ($record) => $record['assigned_department'] === null)
                     ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isProgramCoordinator()) === false),
+                \App\Filament\Actions\Action\AssignDepartmentAction::make()
+                    ->label('edit department')
+                    ->tooltip(__('Edit assigned department : old and new department coordinators will be notified'))
+                    // visible when department exists and when the user is an administrator
+                    ->visible(fn ($record) => $record['assigned_department'] !== null && auth()->user()->isAdministrator()),
             ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkAction::make('sign')
