@@ -68,7 +68,7 @@ class FinalYearInternshipAgreementResource extends StudentBaseResource
                     ->url(route('filament.app.resources.final-year-internship-agreements.create'))
                     ->icon('heroicon-o-plus-circle')
                     ->visible(function () {
-                        $currentYearId = Year::current()->id;
+                        $currentYearId = \App\Models\Year::current()->id;
                         $existingAgreement = FinalYearInternshipAgreement::where('student_id', Auth::id())
                             ->where('year_id', $currentYearId)
                             ->exists();
