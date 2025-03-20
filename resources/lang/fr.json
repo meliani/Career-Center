@@ -1083,5 +1083,9 @@
     "advisings": "encadrements",
     "Combined Supervision Rate = :projects advisings / :professors professors": "Taux d'encadrement combiné = :projects encadrements / :professors enseignants",
     "Student emails": "Emails des étudiants",
-    "Student phone": "Téléphone de l'étudiant"
+    "Student phone": "Téléphone de l'étudiant",
+    "Without Internship Agreement": "Sans convention de stage",
+    "Exchange Students Only": "Étudiants d'échange uniquement",
+    "Exchange Partner": "Partenaire d'échange",
+    "Academic year": "Année académique"
 }
