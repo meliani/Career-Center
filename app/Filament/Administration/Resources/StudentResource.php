@@ -292,6 +292,11 @@ class StudentResource extends Core\BaseResource
                     ->label('Exchange Students Only')
                     ->toggle()
                     ->query(fn (Builder $query) => $query->where('is_mobility', true)),
+
+                Tables\Filters\Filter::make('no_internship_agreement')
+                    ->label('Without Internship Agreement')
+                    ->toggle()
+                    ->query(fn (Builder $query) => $query->whereDoesntHave('finalYearInternship')),
             ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
                 Tables\Actions\RestoreAction::make()
