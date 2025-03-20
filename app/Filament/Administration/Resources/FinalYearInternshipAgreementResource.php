@@ -11,11 +11,13 @@ use App\Models\Year;
 use Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Storage;
 
@@ -164,10 +166,10 @@ class FinalYearInternshipAgreementResource extends BaseResource
                                                                     ->options(Enums\Title::class),
                                                                 Forms\Components\TextInput::make('first_name')
                                                                     ->required()
-                                                                    ->formatStateUsing(fn (?string $state): ?string => ucwords($state)),
+                                                                    ->formatStateUsing(fn (?string $state): ?string => $state !== null ? ucwords($state) : null),
                                                                 Forms\Components\TextInput::make('last_name')
                                                                     ->required()
-                                                                    ->formatStateUsing(fn (?string $state): ?string => ucwords($state)),
+                                                                    ->formatStateUsing(fn (?string $state): ?string => $state !== null ? ucwords($state) : null),
                                                                 Forms\Components\TextInput::make('email')
                                                                     ->email()
                                                                     ->required(),
