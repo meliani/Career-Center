@@ -138,6 +138,55 @@ class FinalYearInternshipAgreementResource extends BaseResource
                                             ]),
                                     ]),
 
+                                Forms\Components\Tabs\Tab::make(__('Supervisors'))
+                                    ->icon('heroicon-o-users')
+                                    ->schema([
+                                        Forms\Components\Section::make(__('External Supervisor'))
+                                            ->description(__('The student\'s supervisor from the organization'))
+                                            ->schema([
+                                                Forms\Components\Select::make('external_supervisor_id')
+                                                    ->label(__('External Supervisor'))
+                                                    ->preload()
+                                                    ->relationship(
+                                                        name: 'externalSupervisor',
+                                                        titleAttribute: 'full_name',
+                                                        modifyQueryUsing: fn (Builder $query, Get $get) => $query->where('organization_id', $get('organization_id'))
+                                                    )
+                                                    ->getOptionLabelFromRecordUsing(
+                                                        fn (Model $record) => "{$record->full_name} - {$record->function}"
+                                                    )
+                                                    ->searchable(['first_name', 'last_name'])
+                                                    ->required()
+                                                    ->createOptionForm([
+                                                        Forms\Components\Grid::make(2)
+                                                            ->schema([
+                                                                Forms\Components\Select::make('title')
+                                                                    ->options(Enums\Title::class),
+                                                                Forms\Components\TextInput::make('first_name')
+                                                                    ->required()
+                                                                    ->formatStateUsing(fn (?string $state): ?string => ucwords($state)),
+                                                                Forms\Components\TextInput::make('last_name')
+                                                                    ->required()
+                                                                    ->formatStateUsing(fn (?string $state): ?string => ucwords($state)),
+                                                                Forms\Components\TextInput::make('email')
+                                                                    ->email()
+                                                                    ->required(),
+                                                                Forms\Components\TextInput::make('phone')->tel()->required(),
+                                                                Forms\Components\TextInput::make('function')->required(),
+                                                            ]),
+                                                    ])
+                                                    ->createOptionUsing(function ($data, Get $get) {
+                                                        $contact = new \App\Models\InternshipAgreementContact;
+                                                        $contact->fill($data);
+                                                        $contact->role = Enums\OrganizationContactRole::Mentor;
+                                                        $contact->organization_id = $get('organization_id');
+                                                        $contact->save();
+
+                                                        return $contact->getKey();
+                                                    }),
+                                            ]),
+                                    ]),
+
                             ]),
                     ]),
             ]);
