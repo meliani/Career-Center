@@ -43,7 +43,7 @@ class AgreementAssignedNotification extends Notification implements ShouldQueue
 
         $message = $this->isReassignment
             ? __('The program coordinator of **:program**, **:coordinator**, has reassigned the project from your department.')
-            : __('The program coordinator of **:program**, **:coordinator**, has assigned the project \'**:title**\' to your department **:department**.');
+            : __("The program coordinator of **:program**, **:coordinator**, has assigned the project '**:title**' to your department **:department**.");
 
         $message = (new MailMessage)
             ->cc($systemUsers)
@@ -98,7 +98,7 @@ class AgreementAssignedNotification extends Notification implements ShouldQueue
             ->line(__('You are receiving this notification because you are the department head of **:department**.', [
                 'department' => $this->agreement->assigned_department->getDescription(),
             ]))
-            ->line(__('This is an automated notification triggered by **:name**\'s action.', [
+            ->line(__("This is an automated notification triggered by **:name**'s action.", [
                 'name' => $this->triggeredBy?->formal_name ?? __('the system'),
             ]));
     }
@@ -110,8 +110,8 @@ class AgreementAssignedNotification extends Notification implements ShouldQueue
             : __('New Agreement Assignment');
 
         $body = $this->isReassignment
-            ? __('The program coordinator of :program, :coordinator, has reassigned the project \':title\' from your department.')
-            : __('The program coordinator of :program, :coordinator, has assigned the project \':title\' to your department :department.');
+            ? __("The program coordinator of :program, :coordinator, has reassigned the project ':title' from your department.")
+            : __("The program coordinator of :program, :coordinator, has assigned the project ':title' to your department :department.");
 
         return [
             'title' => $title,
