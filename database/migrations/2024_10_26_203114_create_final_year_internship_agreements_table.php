@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('status', 255)->nullable();
             $table->dateTime('announced_at')->nullable();
             $table->dateTime('validated_at')->nullable();
-            $table->enum('assigned_department', Enums\Department::toArray())->nullable();
+            $table->enum('assigned_department', Enums\Department::getValues())->nullable();
             $table->dateTime('received_at')->nullable();
             $table->dateTime('signed_at')->nullable();
             $table->text('observations')->nullable();

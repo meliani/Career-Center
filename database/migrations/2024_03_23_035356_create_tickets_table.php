@@ -14,11 +14,11 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
             $table->text('response')->nullable();
-            $table->enum('status', Enums\TicketStatus::getArray())->default(Enums\TicketStatus::Open->value)->nullable();
+            $table->enum('status', Enums\TicketStatus::getValues())->default(Enums\TicketStatus::Open->value)->nullable();
             $table->foreignId('user_id')->nullable()->constrained('users');
             $table->foreignId('assigned_to')->nullable()->constrained('users');
             $table->timestamp('closed_at')->nullable()->constrained('users');
-            $table->enum('closed_reason', Enums\TicketClosedReason::getArray())->nullable();
+            $table->enum('closed_reason', Enums\TicketClosedReason::getValues())->nullable();
             $table->timestamps();
             $table->softDeletes();
 

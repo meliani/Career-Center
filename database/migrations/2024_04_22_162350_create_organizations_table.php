@@ -20,7 +20,7 @@ class CreateOrganizationsTable extends Migration
                 ->references('id')
                 ->on('organizations')
                 ->onDelete('set null')->nullable();
-            $table->enum('status', OrganizationStatus::getArray())->nullable();
+            $table->enum('status', OrganizationStatus::getValues())->nullable();
             $table->unsignedBigInteger('created_by_student_id')->nullable();
             $table->foreign('created_by_student_id')
                 ->references('id')
@@ -29,7 +29,7 @@ class CreateOrganizationsTable extends Migration
             $table->unsignedBigInteger('industry_information_id')->nullable();
             $table->foreign('industry_information_id')
                 ->references('id')
-                ->on('industry_informations')
+                ->on('industry_information')
                 ->onDelete('set null')->nullable();
             $table->timestamps();
             $table->softDeletes();

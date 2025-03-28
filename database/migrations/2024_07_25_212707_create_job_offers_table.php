@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('job_offers', function (Blueprint $table) {
             $table->id();
             $table->string('organization_name')->nullable();
-            $table->enum('organization_type', Enums\OrganizationType::getArray());
+            $table->enum('organization_type', Enums\OrganizationType::getValues());
             $table->bigInteger('organization_id')->nullable();
             $table->string('country')->nullable();
             $table->string('responsible_name')->nullable();
@@ -35,7 +35,7 @@ return new class extends Migration
             $table->unsignedInteger('workload')->nullable();
             $table->enum('recruiting_type', ['SchoolManaged', 'RecruiterManaged'])->nullable();
             $table->string('application_email')->nullable();
-            $table->enum('status', Enums\OfferStatus::getArray());
+            $table->enum('status', Enums\OfferStatus::getValues());
             $table->boolean('applyable')->nullable();
             $table->date('expire_at')->nullable();
             $table->unsignedInteger('user_id')->nullable();

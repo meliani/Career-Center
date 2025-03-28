@@ -7,6 +7,8 @@ use Filament\Support\Contracts\HasLabel;
 
 enum OrganizationType: string implements HasColor, HasLabel
 {
+    use Concerns\HasBaseEnumFeatures;
+    
     case Company = 'Company';
     case NGO = 'NGO';
     case PublicInstitution = 'PublicInstitution';
