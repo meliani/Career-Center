@@ -23,13 +23,17 @@ return new class extends Migration
             $table->string('full_name', 191)->nullable();
             $table->string('first_name', 191)->nullable();
             $table->string('last_name', 191)->nullable();
+            $table->string('name', 191)->nullable();
+            $table->string('email')->unique();
+            $table->string('password');
+            $table->timestamp('email_verified_at')->nullable();
             $table->string('email_perso', 191)->nullable();
             $table->string('phone', 191)->nullable();
             $table->string('cv', 191)->nullable();
             $table->string('lm', 191)->nullable();
             $table->string('photo', 191)->nullable();
             $table->date('birth_date')->nullable();
-            $table->enum('level', Enums\StudentLevel::getArray())->nullable();
+            $table->enum('level', Enums\StudentLevel::getValues())->nullable();
             $table->string('program', 10)->nullable();
             $table->tinyInteger('is_mobility')->nullable()->default(0);
             $table->string('abroad_school', 191)->nullable();

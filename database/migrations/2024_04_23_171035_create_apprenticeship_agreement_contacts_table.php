@@ -11,13 +11,13 @@ class CreateApprenticeshipAgreementContactsTable extends Migration
     {
         Schema::create('apprenticeship_agreement_contacts', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->enum('title', Enums\Title::getArray());
+            $table->enum('title', Enums\Title::getValues());
             $table->string('first_name');
             $table->string('last_name');
             $table->string('function')->nullable();
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
-            $table->enum('role', Enums\OrganizationContactRole::getArray());
+            $table->enum('role', Enums\OrganizationContactRole::getValues());
             $table->foreignId('organization_id')->constrained()->onDelete('restrict');
             $table->timestamps();
             $table->softDeletes();

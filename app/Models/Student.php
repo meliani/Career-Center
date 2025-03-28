@@ -29,7 +29,7 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
 
     protected $guard = 'students';
 
-    protected $table = 'careers_backend.students';
+    protected $table = 'students';
 
     protected $appends = [
         'full_name',
@@ -82,6 +82,12 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
         'password' => 'hashed',
         'offers_viewed' => 'array',
     ];
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->table = env('DB_DATABASE', 'careers_backend') . '.students';
+    }
 
     public function canAccessPanel(Panel $panel): bool
     {
@@ -158,7 +164,7 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
 
         // send veryfication email
         $notification = new VerifyEmail;
-        if ($this->level === Enums\StudentLevel::Research) {
+        if ($this->level === Enums\StudentLevel::MasterIoTBigData) {
             $notification->url = URL::temporarySignedRoute(
                 'filament.research.auth.email-verification.verify',
                 now()->addMinutes(config('auth.verification.expire', 60)),

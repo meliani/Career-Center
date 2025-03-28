@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Enums\StudentLevel;
 use Illuminate\Database\Seeder;
+use App\Enums\DocumentTemplateType;
 
 class DocumentTemplateSeeder extends Seeder
 {
@@ -17,7 +18,7 @@ class DocumentTemplateSeeder extends Seeder
                 'name' => 'Document Template 1',
                 'content' => 'Document Template 1 Content',
                 'example_url' => null,
-                'type' => 'type1',
+                'type' => DocumentTemplateType::Sheet,
                 'level' => StudentLevel::FirstYear,
                 'status' => 'active',
                 'created_by' => 1,
@@ -27,7 +28,7 @@ class DocumentTemplateSeeder extends Seeder
                 'name' => 'Document Template 2',
                 'content' => 'Document Template 2 Content',
                 'example_url' => null,
-                'type' => 'type2',
+                'type' => DocumentTemplateType::AgreementMorocco,
                 'level' => StudentLevel::SecondYear,
                 'status' => 'active',
                 'created_by' => 1,
@@ -37,7 +38,7 @@ class DocumentTemplateSeeder extends Seeder
                 'name' => 'Document Template 3',
                 'content' => 'Document Template 3 Content',
                 'example_url' => null,
-                'type' => 'type3',
+                'type' => DocumentTemplateType::AgreementFrance,
                 'level' => StudentLevel::ThirdYear,
                 'status' => 'active',
                 'created_by' => 1,

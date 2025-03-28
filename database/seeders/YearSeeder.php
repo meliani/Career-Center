@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Year;
-use Faker\Factory as Faker; // Replace with your actual Year model namespace
+use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 
 class YearSeeder extends Seeder
@@ -16,12 +16,19 @@ class YearSeeder extends Seeder
     public function run()
     {
         $faker = Faker::create();
-
+        $years = [];
+        
+        // Create 10 years
         foreach (range(1, 10) as $index) {
-            Year::create([
+            $years[] = Year::create([
                 'title' => $faker->year,
-                'date' => $faker->dateTimeThisYear,
+                'is_current' => false,
             ]);
         }
+        
+        // Set the most recent year as current
+        $currentYear = $years[count($years) - 1];
+        $currentYear->is_current = true;
+        $currentYear->save();
     }
 }

@@ -20,9 +20,9 @@ class ScheduleSettingsSeeder extends Seeder
             'day_ending_at' => '18:00:00',
             'lunch_starting_at' => '12:00:00',
             'lunch_ending_at' => '14:00:00',
-            'number_of_rooms' => 5,
-            'max_defenses_per_professor' => 10,
-            'max_rooms' => 5,
+            // 'number_of_rooms' => 5,
+            // 'max_defenses_per_professor' => 10,
+            // 'max_rooms' => 5,
             'minutes_per_slot' => 30,
         ]);
     }

@@ -11,7 +11,7 @@ class CreateProfessorProjectTable extends Migration
         Schema::create('professor_projects', function (Blueprint $table) {
             $table->foreignId('professor_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('project_id')->constrained('projects')->onDelete('cascade');
-            $table->enum('jury_role', Enums\JuryRole::getArray());
+            $table->enum('jury_role', \App\Enums\JuryRole::getValues());
             $table->boolean('is_president')->nullable();
             $table->integer('votes')->nullable();
             $table->boolean('was_present')->nullable();

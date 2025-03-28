@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('content');
             $table->string('example_url')->nullable()->default(null);
             $table->string('type');
-            $table->enum('level', \App\Enums\StudentLevel::getArray())->nullable()->default(null);
+            $table->enum('level', \App\Enums\StudentLevel::getValues())->nullable()->default(null);
             $table->string('status')->default('active');
             $table->foreignId('created_by')->nullable()->constrained('users');
             $table->foreignId('updated_by')->nullable()->constrained('users');

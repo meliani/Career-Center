@@ -47,7 +47,7 @@ class UserSeeder extends Seeder
         );
 
         $faker = Faker::create();
-        dd(Program::cases(), Program::getArray());
+        // dd(Program::cases(), Program::getArray());
         foreach (range(1, 10) as $index) {
             User::create([
                 'title' => Title::cases()[array_rand(Title::cases())]->value,

@@ -24,7 +24,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName
     use SoftDeletes;
     use TwoFactorAuthenticatable;
 
-    protected $table = 'careers_backend.users';
+    protected $table = 'users';
 
     /**
      * The attributes that are mass assignable.
@@ -68,6 +68,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName
         parent::__construct($attributes);
 
         $this->connection = config('database.default');
+        $this->table = env('DB_DATABASE', 'careers_backend') . '.users';
     }
     // protected static function boot(): void
     // {
