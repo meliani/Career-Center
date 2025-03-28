@@ -366,11 +366,12 @@ class FinalYearInternshipAgreementResource extends BaseResource
                     ->tooltip(__('Validate, sign, or assign department'))
                     ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isPowerProfessor()) === false)
                     ->visible(false),
-                \App\Filament\Actions\Action\AssignDepartmentAction::make()
+                \App\Filament\Actions\Action\AssignDepartmentAction::make('assign_department')
+                    ->label('Assign department')
                     ->disabled(fn ($record): bool => $record['assigned_department'] !== null)
                     ->visible(fn ($record) => $record['assigned_department'] === null)
                     ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isProgramCoordinator()) === false),
-                \App\Filament\Actions\Action\AssignDepartmentAction::make()
+                \App\Filament\Actions\Action\AssignDepartmentAction::make('edit_department')
                     ->label('edit department')
                     ->tooltip(__('Edit assigned department : old and new department coordinators will be notified'))
                     // visible when department exists and when the user is an administrator
