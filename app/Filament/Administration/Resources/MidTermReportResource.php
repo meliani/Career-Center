@@ -22,6 +22,20 @@ class MidTermReportResource extends Resource
 
     protected static ?int $navigationSort = 3;
 
+    public static function canAccess(): bool
+    {
+        return auth()->user()->isAdministrator();
+    }
+
+    public static function canViewAny(): bool
+    {
+        if (auth()->check()) {
+            return auth()->user()->isAdministrator();
+        }
+
+        return false;
+    }
+
     public static function getNavigationLabel(): string
     {
         return __('Mid-Term Reports');
