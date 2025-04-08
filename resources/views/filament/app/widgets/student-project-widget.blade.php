@@ -307,9 +307,11 @@
                                 {{ __('You submitted your mid-term report on:') }}
                                 <strong>{{ $midTermReport->submitted_at->format('M d, Y H:i') }}</strong>
                             </p>
-                            <a href="{{ Storage::url($midTermReport->file_path) }}" target="_blank" class="text-primary-600 dark:text-primary-400 underline">
-                                {{ __('View Report') }}
-                            </a>
+                            <div class="mt-2 p-4 bg-gray-50 dark:bg-gray-900/50 rounded-lg border border-gray-200 dark:border-gray-700">
+                                <p class="text-sm text-gray-900 dark:text-white whitespace-pre-wrap">
+                                    {{ $midTermReport->content }}
+                                </p>
+                            </div>
                             @if($midTermReport->is_read_by_supervisor)
                                 <p class="mt-2 text-sm text-green-600 dark:text-green-400">
                                     {{ __('Your supervisor has read the report.') }}
@@ -322,9 +324,10 @@
                         </div>
                     @else
                         <form wire:submit.prevent="submitMidTermReport" class="mt-4">
-                            <x-filament::file-upload
-                                wire:model="midTermReportFile"
-                                label="{{ __('Upload Mid-Term Report') }}"
+                            <x-filament::textarea
+                                wire:model="midTermReportContent"
+                                label="{{ __('Mid-Term Report Content') }}"
+                                rows="10"
                                 required
                             />
                             <x-filament::button

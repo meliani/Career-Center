@@ -38,7 +38,7 @@ class StudentProjectWidget extends Widget implements Forms\Contracts\HasForms
 
     public bool $showCollaboratorForm = false;
 
-    public $midTermReportFile;
+    public $midTermReportContent;
 
     public function mount(): void
     {
@@ -374,7 +374,7 @@ class StudentProjectWidget extends Widget implements Forms\Contracts\HasForms
     public function submitMidTermReport(): void
     {
         $this->validate([
-            'midTermReportFile' => ['required', 'file', 'mimes:pdf', 'max:2048'], // Ensure the file is a PDF and under 2MB
+            'midTermReportContent' => ['required', 'string', 'max:5000'], // Limit content to 5000 characters
         ]);
 
         $project = $this->getProject();
@@ -389,17 +389,15 @@ class StudentProjectWidget extends Widget implements Forms\Contracts\HasForms
         }
 
         try {
-            $filePath = $this->midTermReportFile->store('mid-term-reports', 'public');
-
             MidTermReport::create([
                 'student_id' => auth()->id(),
                 'project_id' => $project->id,
                 'submitted_at' => now(),
                 'is_read_by_supervisor' => false,
-                'file_path' => $filePath,
+                'content' => $this->midTermReportContent,
             ]);
 
-            $this->reset('midTermReportFile');
+            $this->reset('midTermReportContent');
 
             Notification::make()
                 ->title('Mid-term report submitted successfully.')
