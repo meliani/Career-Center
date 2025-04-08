@@ -43,6 +43,7 @@ class StudentProjectWidget extends Widget implements Forms\Contracts\HasForms
     public function mount(): void
     {
         $this->collaboratorForm->fill();
+        $this->form->fill();
     }
 
     protected function getForms(): array
@@ -50,6 +51,19 @@ class StudentProjectWidget extends Widget implements Forms\Contracts\HasForms
         return [
             'collaboratorForm' => $this->makeForm()
                 ->schema($this->getCollaboratorFormSchema()),
+            'form' => $this->makeForm()
+                ->schema($this->getMidTermFormSchema()),
+        ];
+    }
+
+    protected function getMidTermFormSchema(): array
+    {
+        return [
+            Forms\Components\Textarea::make('midTermReportContent')
+                ->label('Mid-Term Report Content')
+                ->required()
+                ->maxLength(5000)
+                ->rows(10),
         ];
     }
 
@@ -373,13 +387,11 @@ class StudentProjectWidget extends Widget implements Forms\Contracts\HasForms
 
     public function submitMidTermReport(): void
     {
-        $this->validate([
-            'midTermReportContent' => ['required', 'string', 'max:5000'], // Limit content to 5000 characters
-        ]);
+        $this->form->validate();
 
         $project = $this->getProject();
 
-        if (!$project) {
+        if (! $project) {
             Notification::make()
                 ->title('You must have an assigned project to submit a mid-term report.')
                 ->danger()
@@ -416,7 +428,7 @@ class StudentProjectWidget extends Widget implements Forms\Contracts\HasForms
     {
         $project = $this->getProject();
 
-        if (!$project) {
+        if (! $project) {
             return null;
         }
 

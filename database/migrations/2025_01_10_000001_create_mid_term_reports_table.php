@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('project_id')->constrained('projects')->cascadeOnDelete();
             $table->timestamp('submitted_at')->nullable();
             $table->boolean('is_read_by_supervisor')->default(false);
+            $table->text('content')->nullable();
             $table->timestamps();
         });
     }

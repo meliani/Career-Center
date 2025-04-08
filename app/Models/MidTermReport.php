@@ -14,6 +14,7 @@ class MidTermReport extends Model
         'project_id',
         'submitted_at',
         'is_read_by_supervisor',
+        'content',
     ];
 
     protected $casts = [

@@ -323,13 +323,9 @@
                             @endif
                         </div>
                     @else
-                        <form wire:submit.prevent="submitMidTermReport" class="mt-4">
-                            <x-filament::textarea
-                                wire:model="midTermReportContent"
-                                label="{{ __('Mid-Term Report Content') }}"
-                                rows="10"
-                                required
-                            />
+                        <form wire:submit="submitMidTermReport" class="mt-4">
+                            {{ $this->form }}
+
                             <x-filament::button
                                 type="submit"
                                 color="primary"
