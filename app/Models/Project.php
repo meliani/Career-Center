@@ -331,6 +331,11 @@ class Project extends Core\BackendBaseModel
             ->suggestedInternalSupervisor;
     }
 
+    public function midTermReports()
+    {
+        return $this->hasMany(MidTermReport::class);
+    }
+
     // public function FirstReviewer()
     // {
     //     return $this->professors()
