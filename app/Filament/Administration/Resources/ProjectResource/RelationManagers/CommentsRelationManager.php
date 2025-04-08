@@ -10,7 +10,7 @@ use Filament\Tables\Table;
 
 class CommentsRelationManager extends RelationManager
 {
-    use \Guava\FilamentModalRelationManagers\Concerns\CanBeEmbeddedInModals;
+    // use \Guava\FilamentModalRelationManagers\Concerns\CanBeEmbeddedInModals;
 
     protected static string $relationship = 'filamentComments';
 
