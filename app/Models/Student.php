@@ -426,4 +426,9 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
     {
         return $this->belongsTo(StudentExchangePartner::class, 'student_exchange_partner_id');
     }
+
+    public function midTermReports()
+    {
+        return $this->hasMany(MidTermReport::class);
+    }
 }

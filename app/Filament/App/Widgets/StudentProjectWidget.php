@@ -6,6 +6,7 @@ use App\Enums\CollaborationStatus;
 use App\Enums\Role;
 use App\Models\CollaborationRequest;
 use App\Models\FinalYearInternshipAgreement;
+use App\Models\MidTermReport;
 use App\Models\Project;
 use App\Models\ProjectAgreement;
 use App\Models\Student;
@@ -37,9 +38,12 @@ class StudentProjectWidget extends Widget implements Forms\Contracts\HasForms
 
     public bool $showCollaboratorForm = false;
 
+    public $midTermReportContent;
+
     public function mount(): void
     {
         $this->collaboratorForm->fill();
+        $this->form->fill();
     }
 
     protected function getForms(): array
@@ -47,6 +51,19 @@ class StudentProjectWidget extends Widget implements Forms\Contracts\HasForms
         return [
             'collaboratorForm' => $this->makeForm()
                 ->schema($this->getCollaboratorFormSchema()),
+            'form' => $this->makeForm()
+                ->schema($this->getMidTermFormSchema()),
+        ];
+    }
+
+    protected function getMidTermFormSchema(): array
+    {
+        return [
+            Forms\Components\Textarea::make('midTermReportContent')
+                ->label('Mid-Term Report Content')
+                ->required()
+                ->maxLength(5000)
+                ->rows(10),
         ];
     }
 
@@ -166,7 +183,7 @@ class StudentProjectWidget extends Widget implements Forms\Contracts\HasForms
     public function getProject()
     {
         return Project::query()
-            ->with(['timetable.room', 'timetable.timeslot', 'externalSupervisor'])
+            ->with(['timetable.room', 'timetable.timeslot', 'externalSupervisor', 'professors'])
             ->whereHas('agreements', function (Builder $query) {
                 $query->whereHas('agreeable', function (Builder $query) {
                     $query->where('student_id', auth()->id())
@@ -366,5 +383,57 @@ class StudentProjectWidget extends Widget implements Forms\Contracts\HasForms
             ->where('year_id', Year::current()->id)
             ->where('status', 'accepted')
             ->exists();
+    }
+
+    public function submitMidTermReport(): void
+    {
+        $this->form->validate();
+
+        $project = $this->getProject();
+
+        if (! $project) {
+            Notification::make()
+                ->title('You must have an assigned project to submit a mid-term report.')
+                ->danger()
+                ->send();
+
+            return;
+        }
+
+        try {
+            MidTermReport::create([
+                'student_id' => auth()->id(),
+                'project_id' => $project->id,
+                'submitted_at' => now(),
+                'is_read_by_supervisor' => false,
+                'content' => $this->midTermReportContent,
+            ]);
+
+            $this->reset('midTermReportContent');
+
+            Notification::make()
+                ->title('Mid-term report submitted successfully.')
+                ->success()
+                ->send();
+        } catch (\Exception $e) {
+            Notification::make()
+                ->title('Failed to submit mid-term report.')
+                ->body($e->getMessage())
+                ->danger()
+                ->send();
+        }
+    }
+
+    public function getMidTermReport()
+    {
+        $project = $this->getProject();
+
+        if (! $project) {
+            return null;
+        }
+
+        return MidTermReport::where('student_id', auth()->id())
+            ->where('project_id', $project->id)
+            ->first();
     }
 }

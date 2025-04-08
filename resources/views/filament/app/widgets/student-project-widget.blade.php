@@ -2,6 +2,7 @@
     <div class="rounded-xl bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700">
         @php
             $project = $this->getProject();
+            $midTermReport = $this->getMidTermReport();
         @endphp
 
         @if($project)
@@ -110,12 +111,14 @@
                     @foreach([
                         'academic' => [
                             'title' => __('Academic Supervisor'),
-                            'name' => $project->academic_supervisor_name,
+                            'name' => $project->academic_supervisor()->name ?? $project->academic_supervisor_name,
+                            'email' => $project->academic_supervisor()?->email,
                             'icon' => 'heroicon-o-academic-cap'
                         ],
                         'company' => [
                             'title' => __('Company Supervisor'),
                             'name' => $project->externalSupervisor->full_name,
+                            'email' => $project->externalSupervisor->email,
                             'icon' => 'heroicon-o-building-office-2'
                         ]
                     ] as $type => $supervisor)
@@ -127,13 +130,24 @@
                                         class="w-5 h-5 text-gray-500 dark:text-gray-400"
                                     />
                                 </div>
-                                <div>
+                                <div class="overflow-hidden">
                                     <p class="text-sm font-medium text-gray-500 dark:text-gray-400">
                                         {{ $supervisor['title'] }}
                                     </p>
                                     <p class="text-base font-semibold text-gray-900 dark:text-white">
                                         {{ $supervisor['name'] }}
                                     </p>
+                                    @if(isset($supervisor['email']) && $supervisor['email'])
+                                        <p class="text-xs text-gray-500 dark:text-gray-400 flex items-center mt-1 truncate">
+                                            <x-filament::icon
+                                                icon="heroicon-o-envelope"
+                                                class="w-3 h-3 mr-1 flex-shrink-0 text-gray-400"
+                                            />
+                                            <a href="mailto:{{ $supervisor['email'] }}" class="hover:text-primary-500 transition-colors truncate" title="{{ $supervisor['email'] }}">
+                                                {{ $supervisor['email'] }}
+                                            </a>
+                                        </p>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -293,6 +307,58 @@
                         </div>
                     </div>
                 @endif
+
+                {{-- Mid-Term Report Section --}}
+                <div class="border-t pt-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                            {{ __('Mid-Term Report') }}
+                        </h3>
+                        <x-filament::badge color="warning" class="ml-2">
+                            {{ __('Test Feature') }}
+                        </x-filament::badge>
+                    </div>
+                    
+                    <p class="text-xs text-gray-400 dark:text-gray-500 mt-1 mb-3">
+                        {{ __('This is a test feature and may change in the future.') }}
+                    </p>
+
+                    @if($midTermReport)
+                        <div class="mt-4">
+                            <p class="text-sm text-gray-500 dark:text-gray-400">
+                                {{ __('You submitted your mid-term report on:') }}
+                                <strong>{{ $midTermReport->submitted_at->format('M d, Y H:i') }}</strong>
+                            </p>
+                            <div class="mt-2 p-4 bg-gray-50 dark:bg-gray-900/50 rounded-lg border border-gray-200 dark:border-gray-700">
+                                <p class="text-sm text-gray-900 dark:text-white whitespace-pre-wrap">
+                                    {{ $midTermReport->content }}
+                                </p>
+                            </div>
+                            @if($midTermReport->is_read_by_supervisor)
+                                <p class="mt-2 text-sm text-green-600 dark:text-green-400">
+                                    {{ __('Your supervisor has read the report.') }}
+                                </p>
+                            @else
+                                <p class="mt-2 text-sm text-yellow-600 dark:text-yellow-400">
+                                    {{ __('Your supervisor has not read the report yet.') }}
+                                </p>
+                            @endif
+                        </div>
+                    @else
+                        <form wire:submit="submitMidTermReport" class="mt-4">
+                            {{ $this->form }}
+
+                            <x-filament::button
+                                type="submit"
+                                color="primary"
+                                class="mt-4"
+                                wire:loading.attr="disabled"
+                            >
+                                {{ __('Submit Report') }}
+                            </x-filament::button>
+                        </form>
+                    @endif
+                </div>
 
                 {{-- View Details Link --}}
                 <div class="border-t pt-4">
