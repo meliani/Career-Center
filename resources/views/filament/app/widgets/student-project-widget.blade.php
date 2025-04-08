@@ -2,6 +2,7 @@
     <div class="rounded-xl bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700">
         @php
             $project = $this->getProject();
+            $midTermReport = $this->getMidTermReport();
         @endphp
 
         @if($project)
@@ -293,6 +294,50 @@
                         </div>
                     </div>
                 @endif
+
+                {{-- Mid-Term Report Section --}}
+                <div class="border-t pt-4">
+                    <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                        {{ __('Mid-Term Report') }}
+                    </h3>
+
+                    @if($midTermReport)
+                        <div class="mt-4">
+                            <p class="text-sm text-gray-500 dark:text-gray-400">
+                                {{ __('You submitted your mid-term report on:') }}
+                                <strong>{{ $midTermReport->submitted_at->format('M d, Y H:i') }}</strong>
+                            </p>
+                            <a href="{{ Storage::url($midTermReport->file_path) }}" target="_blank" class="text-primary-600 dark:text-primary-400 underline">
+                                {{ __('View Report') }}
+                            </a>
+                            @if($midTermReport->is_read_by_supervisor)
+                                <p class="mt-2 text-sm text-green-600 dark:text-green-400">
+                                    {{ __('Your supervisor has read the report.') }}
+                                </p>
+                            @else
+                                <p class="mt-2 text-sm text-yellow-600 dark:text-yellow-400">
+                                    {{ __('Your supervisor has not read the report yet.') }}
+                                </p>
+                            @endif
+                        </div>
+                    @else
+                        <form wire:submit.prevent="submitMidTermReport" class="mt-4">
+                            <x-filament::file-upload
+                                wire:model="midTermReportFile"
+                                label="{{ __('Upload Mid-Term Report') }}"
+                                required
+                            />
+                            <x-filament::button
+                                type="submit"
+                                color="primary"
+                                class="mt-4"
+                                wire:loading.attr="disabled"
+                            >
+                                {{ __('Submit Report') }}
+                            </x-filament::button>
+                        </form>
+                    @endif
+                </div>
 
                 {{-- View Details Link --}}
                 <div class="border-t pt-4">
