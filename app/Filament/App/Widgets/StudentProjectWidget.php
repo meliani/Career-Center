@@ -183,7 +183,7 @@ class StudentProjectWidget extends Widget implements Forms\Contracts\HasForms
     public function getProject()
     {
         return Project::query()
-            ->with(['timetable.room', 'timetable.timeslot', 'externalSupervisor'])
+            ->with(['timetable.room', 'timetable.timeslot', 'externalSupervisor', 'professors'])
             ->whereHas('agreements', function (Builder $query) {
                 $query->whereHas('agreeable', function (Builder $query) {
                     $query->where('student_id', auth()->id())

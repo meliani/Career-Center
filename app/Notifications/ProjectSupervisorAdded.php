@@ -4,6 +4,7 @@ namespace App\Notifications;
 
 use App\Models\Project;
 use App\Models\Student;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -44,22 +45,36 @@ class ProjectSupervisorAdded extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
+        // Get academic supervisor info
+        $supervisorName = $this->project->academic_supervisor() ?
+            'M./Mme ' . $this->project->academic_supervisor()->name :
+            'votre encadrant(e) (pas encore assigné(e))';
+
+        $supervisorEmail = $this->project->academic_supervisor() ?
+            $this->project->academic_supervisor()->email :
+            '';
+
+        // Calculate mid-term deadline as the halfway point between start and end dates
+        $midTermDeadline = 'à définir';
+
+        if ($this->project->start_date && $this->project->end_date) {
+            $startDate = Carbon::parse($this->project->start_date);
+            $endDate = Carbon::parse($this->project->end_date);
+            $totalDays = $startDate->diffInDays($endDate);
+            $midPointDays = floor($totalDays / 2);
+            $midTermDeadline = $startDate->copy()->addDays($midPointDays)->format('d/m/Y');
+        }
+
         return (new MailMessage)
             ->subject("L'encadrant de votre stage de Projet de Fin d'Études")
-            ->greeting("Bonjour {$this->student->long_full_name},")
-            ->lineIf($this->project->academic_supervisor(), "Nous vous informons que votre encadrant de stage PFE est **Pr. {$this->project->academic_supervisor?->name}**")
-            // ->action(__('Voir le projet'), url('/'))
-            ->lineIf($this->project->academic_supervisor(), "N'hésitez pas à contacter votre encadrant par mail ({$this->project->academic_supervisor?->email}) pour convenir d'un premier rendez-vous et établir ensemble
-            les modalités de travail.")
-            ->lineIf(! $this->project->academic_supervisor(), "Nous vous informons que votre encadrant pour votre stage de Projet de Fin d'Études n'a pas encore été désigné. Nous vous tiendrons informé dès que cela sera fait.")
-            ->line('Pour rappel, voici les information relatives à votre stage :')
-            ->line("Organisation : **{$this->project->organization}**")
-            ->line("Titre du PFE : **{$this->project->title}**")
-            // ->line("Date de début : {$this->project->start_date}")
-            // ->line("Date de fin : {$this->project->end_date}")
-            ->lineIf($this->project->hasTeammate(), "Vous êtes en binôme pour ce projet, votre binôme est : **{$this->student->teammate()?->long_full_name}**")
-            ->line('---')
-            ->salutation("Cordialement,\n\n **La DASRE**");
+            ->greeting('Cher(e) étudiant(e),')
+            ->line("Suite à la validation de l'étape liée au dépôt et à la signature de votre convention de stage, et en accord avec le règlement intérieur de l'INPT, nous portons à votre connaissance que {$supervisorName} a été nommé(e) comme votre encadrant(e) interne pour votre projet intitulé : **{$this->project->title}**.")
+            ->when($supervisorEmail, function ($message) use ($supervisorEmail) {
+                return $message->line("Afin d'assurer un suivi optimal de votre travail, nous vous encourageons à prendre contact avec votre encadrant(e), si cela n'a pas encore été fait, à l'adresse suivante : **{$supervisorEmail}**.");
+            })
+            ->line("Par ailleurs, nous vous rappelons que la date limite de soumission de votre rapport mi-parcours est fixée au **{$midTermDeadline}**. Ce document devra être envoyé par mail à votre encadrant en copiant **entreprises@inpt.ac.ma**")
+            ->line('Nous restons à votre disposition pour toute information complémentaire.')
+            ->salutation("Cordialement,\nDASRE INPT");
     }
 
     /**

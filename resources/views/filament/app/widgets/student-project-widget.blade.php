@@ -111,12 +111,14 @@
                     @foreach([
                         'academic' => [
                             'title' => __('Academic Supervisor'),
-                            'name' => $project->academic_supervisor_name,
+                            'name' => $project->academic_supervisor()->name ?? $project->academic_supervisor_name,
+                            'email' => $project->academic_supervisor()?->email,
                             'icon' => 'heroicon-o-academic-cap'
                         ],
                         'company' => [
                             'title' => __('Company Supervisor'),
                             'name' => $project->externalSupervisor->full_name,
+                            'email' => $project->externalSupervisor->email,
                             'icon' => 'heroicon-o-building-office-2'
                         ]
                     ] as $type => $supervisor)
@@ -128,13 +130,24 @@
                                         class="w-5 h-5 text-gray-500 dark:text-gray-400"
                                     />
                                 </div>
-                                <div>
+                                <div class="overflow-hidden">
                                     <p class="text-sm font-medium text-gray-500 dark:text-gray-400">
                                         {{ $supervisor['title'] }}
                                     </p>
                                     <p class="text-base font-semibold text-gray-900 dark:text-white">
                                         {{ $supervisor['name'] }}
                                     </p>
+                                    @if(isset($supervisor['email']) && $supervisor['email'])
+                                        <p class="text-xs text-gray-500 dark:text-gray-400 flex items-center mt-1 truncate">
+                                            <x-filament::icon
+                                                icon="heroicon-o-envelope"
+                                                class="w-3 h-3 mr-1 flex-shrink-0 text-gray-400"
+                                            />
+                                            <a href="mailto:{{ $supervisor['email'] }}" class="hover:text-primary-500 transition-colors truncate" title="{{ $supervisor['email'] }}">
+                                                {{ $supervisor['email'] }}
+                                            </a>
+                                        </p>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -297,9 +310,18 @@
 
                 {{-- Mid-Term Report Section --}}
                 <div class="border-t pt-4">
-                    <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">
-                        {{ __('Mid-Term Report') }}
-                    </h3>
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                            {{ __('Mid-Term Report') }}
+                        </h3>
+                        <x-filament::badge color="warning" class="ml-2">
+                            {{ __('Test Feature') }}
+                        </x-filament::badge>
+                    </div>
+                    
+                    <p class="text-xs text-gray-400 dark:text-gray-500 mt-1 mb-3">
+                        {{ __('This is a test feature and may change in the future.') }}
+                    </p>
 
                     @if($midTermReport)
                         <div class="mt-4">
