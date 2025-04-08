@@ -74,7 +74,7 @@ class ProjectSupervisorAdded extends Notification implements ShouldQueue
             })
             ->line("Par ailleurs, nous vous rappelons que la date limite de soumission de votre rapport mi-parcours est fixée au **{$midTermDeadline}**. Ce document devra être envoyé par mail à votre encadrant en copiant **entreprises@inpt.ac.ma**")
             ->line('Nous restons à votre disposition pour toute information complémentaire.')
-            ->salutation("Cordialement,\nDASRE INPT");
+            ->salutation("Cordialement,\n\rDirection Adjoint des Stages et des Relations avec les Entreprises - INPT");
     }
 
     /**
