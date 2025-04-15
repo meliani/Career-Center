@@ -287,6 +287,7 @@ class ProjectsTable
                     }
                     return 'à définir';
                 })
+                ->searchable(false)
                 ->toggleable(isToggledHiddenByDefault: true),
 
             Tables\Columns\TextColumn::make('created_at')
