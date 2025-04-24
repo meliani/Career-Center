@@ -7,6 +7,7 @@ use App\Http\Controllers\PVVerificationController;
 use App\Http\Controllers\QrUrlDecoder;
 use App\Models\DefenseSync;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 use Spatie\Health\Http\Controllers\HealthCheckResultsController;
 
 Route::get('health', HealthCheckResultsController::class);
@@ -46,9 +47,9 @@ Route::get('/verify-diploma/', DiplomaVerificationController::class);
 Route::get('/verify-deliberation-pv/{verification_code}', PVVerificationController::class)->name('deliberation-pv.verify');
 // Route::get('/qr-response', Pages\QrResponse::class)->name('qr-response');
 Route::get('/verify-agreement/{verification_code}', AgreementVerificationController::class)->name('internship-agreement.verify');
-// Route::get('/mail-preview/{email}', 'App\Http\Controllers\MailPreviewController@show');
+// Route::get('/mail_preview/{email}', 'App\Http\Controllers\MailPreviewController@show');
 
-// Route::get('/public-internship-offer-form', \App\Livewire\PublicInternshipOfferForm::class);
+// Route::get('/public-internship_offer_form', \App\Livewire\PublicInternshipOfferForm::class);
 
 Route::get('/publier-un-stage', \App\Livewire\NewInternship::class)->name('new-internship-fr');
 Route::get('/publish-internship', \App\Livewire\NewInternship::class)->name('new-internship');
@@ -89,3 +90,26 @@ Route::get('/internship/{internship}/applications/preview', [\App\Http\Controlle
 Route::get('/internship/{internship}/applications/export', [\App\Http\Controllers\InternshipApplicationPreviewController::class, 'export'])
     ->name('internship.applications.export')
     ->middleware('signed');
+
+// Add this route with your other signed URL routes
+
+Route::get('students/info/preview', function (Request $request) {
+    // Validate the signature
+    if (!$request->hasValidSignature()) {
+        abort(401, 'This link has expired.');
+    }
+    
+    // Get students from the provided IDs
+    $students = \App\Models\Student::whereIn('id', $request->studentIds)->get();
+    
+    // Apply CV filter if requested
+    if ($request->has('filter_cv') && $request->filter_cv === 'true') {
+        $students = $students->filter(function ($student) {
+            return !empty($student->cv);
+        });
+    }
+    
+    return view('students.info-preview', [
+        'students' => $students
+    ]);
+})->name('students.info.preview');

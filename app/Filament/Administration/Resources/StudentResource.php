@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades;
 use Illuminate\Support\Str;
+use App\Filament\Actions\Action\SendStudentsEmailAction;
 
 class StudentResource extends Core\BaseResource
 {
@@ -348,6 +349,11 @@ class StudentResource extends Core\BaseResource
                 BulkAction\Email\SendGenericEmail::make('Send Email')
                     ->outlined()
                     ->label(__('Send email')),
+                    
+                SendStudentsEmailAction::make()
+                    ->outlined()
+                    ->color('info')
+                    ->icon('heroicon-o-share'),
 
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\BulkAction::make('PassToNextLevel')
