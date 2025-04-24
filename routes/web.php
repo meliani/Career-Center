@@ -6,9 +6,7 @@ use App\Http\Controllers\DiplomaVerificationController;
 use App\Http\Controllers\PVVerificationController;
 use App\Http\Controllers\QrUrlDecoder;
 use App\Models\DefenseSync;
-use App\Models\StudentShareToken;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
 use Spatie\Health\Http\Controllers\HealthCheckResultsController;
 
 Route::get('health', HealthCheckResultsController::class);
@@ -48,9 +46,9 @@ Route::get('/verify-diploma/', DiplomaVerificationController::class);
 Route::get('/verify-deliberation-pv/{verification_code}', PVVerificationController::class)->name('deliberation-pv.verify');
 // Route::get('/qr-response', Pages\QrResponse::class)->name('qr-response');
 Route::get('/verify-agreement/{verification_code}', AgreementVerificationController::class)->name('internship-agreement.verify');
-// Route::get('/mail_preview/{email}', 'App\Http\Controllers\MailPreviewController@show');
+// Route::get('/mail-preview/{email}', 'App\Http\Controllers\MailPreviewController@show');
 
-// Route::get('/public-internship_offer_form', \App\Livewire\PublicInternshipOfferForm::class);
+// Route::get('/public-internship-offer-form', \App\Livewire\PublicInternshipOfferForm::class);
 
 Route::get('/publier-un-stage', \App\Livewire\NewInternship::class)->name('new-internship-fr');
 Route::get('/publish-internship', \App\Livewire\NewInternship::class)->name('new-internship');
@@ -91,30 +89,3 @@ Route::get('/internship/{internship}/applications/preview', [\App\Http\Controlle
 Route::get('/internship/{internship}/applications/export', [\App\Http\Controllers\InternshipApplicationPreviewController::class, 'export'])
     ->name('internship.applications.export')
     ->middleware('signed');
-
-// Add this route with your other signed URL routes
-
-Route::get('students/info/preview/{token}', function (string $token) {
-    // Find the token record
-    $tokenRecord = StudentShareToken::where('token', $token)
-        ->where('expires_at', '>', now())
-        ->first();
-        
-    if (!$tokenRecord) {
-        abort(401, 'This link has expired or is invalid.');
-    }
-    
-    // Get students from the token's stored IDs
-    $students = \App\Models\Student::whereIn('id', $tokenRecord->student_ids)->get();
-    
-    // Apply CV filter if requested in the token
-    if ($tokenRecord->filter_cv) {
-        $students = $students->filter(function ($student) {
-            return !empty($student->cv);
-        });
-    }
-    
-    return view('students.info-preview', [
-        'students' => $students
-    ]);
-})->name('students.info.preview');

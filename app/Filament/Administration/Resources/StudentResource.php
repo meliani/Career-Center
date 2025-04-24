@@ -24,7 +24,6 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades;
 use Illuminate\Support\Str;
-use App\Filament\Actions\BulkAction\SendStudentsBulkEmailAction;
 
 class StudentResource extends Core\BaseResource
 {
@@ -298,11 +297,6 @@ class StudentResource extends Core\BaseResource
                     ->label('Without Internship Agreement')
                     ->toggle()
                     ->query(fn (Builder $query) => $query->whereDoesntHave('finalYearInternship')),
-
-                Tables\Filters\Filter::make('has_cv')
-                    ->label('Has CV')
-                    ->toggle()
-                    ->query(fn (Builder $query) => $query->whereNotNull('cv')->where('cv', '!=', '')),
             ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
                 Tables\Actions\RestoreAction::make()
@@ -354,12 +348,6 @@ class StudentResource extends Core\BaseResource
                 BulkAction\Email\SendGenericEmail::make('Send Email')
                     ->outlined()
                     ->label(__('Send email')),
-                    
-                SendStudentsBulkEmailAction::make()
-                    ->outlined()
-                    ->label(__('Share Students Info'))
-                    ->icon('heroicon-o-share')
-                    ->color('info'),
 
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\BulkAction::make('PassToNextLevel')
