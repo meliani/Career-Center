@@ -2,12 +2,14 @@
 
 namespace App\Filament\Actions\BulkAction;
 
+use App\Models\StudentShareToken;
 use App\Notifications\ShareStudentsInfoNotification;
 use Filament\Forms\Components\Wizard\Step;
 use Filament\Tables\Actions\BulkAction;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Str;
 
 class SendStudentsBulkEmailAction extends BulkAction
 {
@@ -61,23 +63,35 @@ class SendStudentsBulkEmailAction extends BulkAction
             ])
             ->action(function (Collection $records, array $data): void {
                 $expiresAt = now()->addDays(7);
-                $queryParams = [];
                 
-                if ($data['only_with_cv']) {
-                    $queryParams['filter_cv'] = 'true';
-                }
+                // Generate a secure token instead of putting IDs in the URL
+                $token = Str::random(64);
                 
-                $url = URL::temporarySignedRoute(
-                    'students.info.preview',
-                    $expiresAt,
-                    array_merge(['studentIds' => $records->pluck('id')->toArray()], $queryParams)
-                );
+                // Store the token with student information
+                StudentShareToken::create([
+                    'token' => $token,
+                    'student_ids' => $records->pluck('id')->toArray(),
+                    'filter_cv' => $data['only_with_cv'],
+                    'expires_at' => $expiresAt,
+                ]);
+                
+                // Create a secure URL with just the token
+                $url = route('students.info.preview', ['token' => $token]);
+                
+                // Create a preview URL for email content
+                $previewUrl = view('emails.students-link-preview', [
+                    'url' => $url,
+                    'count' => $records->count(),
+                ])->render();
+                
+                // Include the preview in the email body
+                $emailBody = $data['email_body'] . $previewUrl;
 
                 foreach ($data['emails'] as $email) {
                     Notification::route('mail', $email)
                         ->notify(new ShareStudentsInfoNotification(
                             $records,
-                            $data['email_body'],
+                            $emailBody,
                             $data['subject'],
                             $url
                         ));

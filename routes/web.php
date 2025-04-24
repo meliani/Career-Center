@@ -6,6 +6,7 @@ use App\Http\Controllers\DiplomaVerificationController;
 use App\Http\Controllers\PVVerificationController;
 use App\Http\Controllers\QrUrlDecoder;
 use App\Models\DefenseSync;
+use App\Models\StudentShareToken;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Spatie\Health\Http\Controllers\HealthCheckResultsController;
@@ -93,17 +94,21 @@ Route::get('/internship/{internship}/applications/export', [\App\Http\Controller
 
 // Add this route with your other signed URL routes
 
-Route::get('students/info/preview', function (Request $request) {
-    // Validate the signature
-    if (!$request->hasValidSignature()) {
-        abort(401, 'This link has expired.');
+Route::get('students/info/preview/{token}', function (string $token) {
+    // Find the token record
+    $tokenRecord = StudentShareToken::where('token', $token)
+        ->where('expires_at', '>', now())
+        ->first();
+        
+    if (!$tokenRecord) {
+        abort(401, 'This link has expired or is invalid.');
     }
     
-    // Get students from the provided IDs
-    $students = \App\Models\Student::whereIn('id', $request->studentIds)->get();
+    // Get students from the token's stored IDs
+    $students = \App\Models\Student::whereIn('id', $tokenRecord->student_ids)->get();
     
-    // Apply CV filter if requested
-    if ($request->has('filter_cv') && $request->filter_cv === 'true') {
+    // Apply CV filter if requested in the token
+    if ($tokenRecord->filter_cv) {
         $students = $students->filter(function ($student) {
             return !empty($student->cv);
         });

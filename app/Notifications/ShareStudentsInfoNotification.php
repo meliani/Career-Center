@@ -43,11 +43,18 @@ class ShareStudentsInfoNotification extends Notification implements ShouldQueue
      */
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage)
+        $mail = (new MailMessage)
             ->subject($this->subject)
             ->greeting('Hello!')
-            ->line($this->emailBody)
-            ->action('View Student Information', $this->url)
-            ->line('This link will expire in 7 days.');
+            ->line($this->emailBody);
+            
+        // Don't add the action button if the email body already contains the URL
+        if (!str_contains($this->emailBody, $this->url)) {
+            $mail->action('View Student Information', $this->url);
+        }
+            
+        $mail->line('This link will expire in 7 days.');
+            
+        return $mail;
     }
 }
