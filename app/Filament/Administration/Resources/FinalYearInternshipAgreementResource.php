@@ -429,14 +429,21 @@ class FinalYearInternshipAgreementResource extends BaseResource
                     ->hidden(fn () => ! auth()->user()->can('assignToProject', FinalYearInternshipAgreement::class))
                     ->outlined(),
                 \pxlrbt\FilamentExcel\Actions\Tables\ExportAction::make()
-                    ->label('Export Data')
-                    ->color('success')
-                    ->icon('heroicon-o-document-arrow-down')
-                    ->exports([
-                        \App\Filament\Exports\InternshipExcelExporter::make(),
-                    ])
                     ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isDepartmentHead() || auth()->user()->isProgramCoordinator()) === false)
-                    ->tooltip(__('Export internship data with advanced formatting')),
+                    ->exports([
+                        FilamentExcel\Exports\ExcelExport::make()
+                            ->askForFilename()
+                            ->askForWriterType()
+                            ->withFilename(fn ($filename) => 'carrieres-' . $filename)
+                            ->fromTable()
+                            ->ignoreFormatting([
+                                'tags',
+                            ])
+                            ->withColumns([
+                                FilamentExcel\Columns\Column::make('tags.name')->width(10)->heading(__('Tags')),
+                            ]),
+                    ])
+                    ->tooltip(__('Displayed columns will be exported, you can change the columns to be exported from the table settings')),
             ]);
     }
 
