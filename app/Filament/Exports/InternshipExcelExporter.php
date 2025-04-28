@@ -5,13 +5,14 @@ namespace App\Filament\Exports;
 use App\Models\FinalYearInternshipAgreement;
 use pxlrbt\FilamentExcel\Columns\Column;
 use pxlrbt\FilamentExcel\Exports\ExcelExport;
-use Illuminate\Database\Eloquent\Builder;
 use Carbon\Carbon;
 
 class InternshipExcelExporter extends ExcelExport
 {
     public function __construct()
     {
+        parent::__construct();
+        
         $this
             ->askForFilename()
             ->askForWriterType()
@@ -19,15 +20,11 @@ class InternshipExcelExporter extends ExcelExport
                 $date = Carbon::now()->format('Y-m-d');
                 return "internships-{$date}-{$filename}";
             })
-            ->withSheets([
-                'Active Internships' => fn ($export) => $export->withColumns($this->getColumns())
-                    ->modifyQueryUsing(fn (Builder $query) => $query->whereNotIn('status', ['Cancelled', 'Expired'])),
-                
-                'All Internships' => fn ($export) => $export->withColumns($this->getColumns()),
-            ])
+            ->fromTable()
+            ->withColumns($this->getColumns())
             ->queue()
-            ->notifyWhenReady()
-            ->fromModel(fn () => FinalYearInternshipAgreement::class);
+            ->timeoutAfter(120)
+            ->notifyWhenReady();
     }
 
     public function getColumns(): array
@@ -55,12 +52,12 @@ class InternshipExcelExporter extends ExcelExport
 
             Column::make('starting_at')
                 ->heading(__('Start Date'))
-                ->formatStateUsing(fn (string $state) => Carbon::parse($state)->format('d/m/Y'))
+                ->formatStateUsing(fn ($state) => $state ? Carbon::parse($state)->format('d/m/Y') : '')
                 ->width(12),
                 
             Column::make('ending_at')
                 ->heading(__('End Date'))
-                ->formatStateUsing(fn (string $state) => Carbon::parse($state)->format('d/m/Y'))
+                ->formatStateUsing(fn ($state) => $state ? Carbon::parse($state)->format('d/m/Y') : '')
                 ->width(12),
                 
             Column::make('tags')
