@@ -280,7 +280,7 @@ class FinalYearInternshipAgreementResource extends BaseResource
                 ->wrap()
                 ->lineClamp(2)
                 ->tooltip(
-                    fn (InternshipAgreement $internship) => $internship->description,
+                    fn (FinalYearInternshipAgreement $internship) => $internship->description,
                 ),
                 // Tables\Columns\TextColumn::make('tutor_id')
                 //     ->toggleable(isToggledHiddenByDefault: true)
