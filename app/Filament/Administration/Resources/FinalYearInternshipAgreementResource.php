@@ -429,9 +429,14 @@ class FinalYearInternshipAgreementResource extends BaseResource
                     ->hidden(fn () => ! auth()->user()->can('assignToProject', FinalYearInternshipAgreement::class))
                     ->outlined(),
                 \pxlrbt\FilamentExcel\Actions\Tables\ExportAction::make()
+                    ->label('Export Data')
+                    ->color('success')
+                    ->icon('heroicon-o-document-arrow-down')
+                    ->exports([
+                        \App\Filament\Exports\InternshipExcelExporter::class,
+                    ])
                     ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isDepartmentHead() || auth()->user()->isProgramCoordinator()) === false)
-                    // ->outlined()
-                    ->tooltip(__('Displayed columns will be exported, you can change the columns to be exported from the table settings')),
+                    ->tooltip(__('Export internship data with advanced formatting')),
             ]);
     }
 
