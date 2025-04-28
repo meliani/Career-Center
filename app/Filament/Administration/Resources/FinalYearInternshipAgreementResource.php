@@ -433,7 +433,7 @@ class FinalYearInternshipAgreementResource extends BaseResource
                     ->color('success')
                     ->icon('heroicon-o-document-arrow-down')
                     ->exports([
-                        new \App\Filament\Exports\InternshipExcelExporter(),
+                        \App\Filament\Exports\InternshipExcelExporter::make(),
                     ])
                     ->hidden(fn () => (auth()->user()->isAdministrator() || auth()->user()->isDepartmentHead() || auth()->user()->isProgramCoordinator()) === false)
                     ->tooltip(__('Export internship data with advanced formatting')),
