@@ -9,7 +9,7 @@ use Carbon\Carbon;
 
 class InternshipExcelExporter extends ExcelExport
 {
-    public static function make(): static
+    public static function make(string $name = 'Internships Export'): static
     {
         return (new static())
             ->askForFilename()
