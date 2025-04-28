@@ -268,7 +268,20 @@ class FinalYearInternshipAgreementResource extends BaseResource
                     ->tooltip(fn ($record) => $record->externalSupervisor->phone),
                 Tables\Columns\SpatieTagsColumn::make('tags')
                     ->toggleable(isToggledHiddenByDefault: true)
-                    ->searchable(false),
+                    ->type('internships')
+                    ->searchable(false)
+                    ->sortable(),
+                                Tables\Columns\TextColumn::make('description')
+                ->label(__('Description'))
+                    ->toggleable(isToggledHiddenByDefault: true)
+                ->searchable(false)
+                ->width('xl')
+                ->sortable(false)
+                ->wrap()
+                ->lineClamp(2)
+                ->tooltip(
+                    fn (InternshipAgreement $internship) => $internship->description,
+                ),
                 // Tables\Columns\TextColumn::make('tutor_id')
                 //     ->toggleable(isToggledHiddenByDefault: true)
                 //     ->numeric()
