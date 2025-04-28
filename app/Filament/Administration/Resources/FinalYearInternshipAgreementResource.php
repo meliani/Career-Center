@@ -271,8 +271,8 @@ class FinalYearInternshipAgreementResource extends BaseResource
                     ->type('internships')
                     ->searchable(false)
                     ->sortable()
-                    ->formatStateUsing(fn ($state) => collect($state)->pluck('name')->join(', '))
-                    ->formatStateForExport(fn ($state) => collect($state)->pluck('name')->join(', ')),
+                    ->formatStateUsing(fn ($state) => collect($state)->pluck('name')->join(', ')),
+                    
                 Tables\Columns\TextColumn::make('description')
                 ->label(__('Description'))
                 ->toggleable(isToggledHiddenByDefault: true)
