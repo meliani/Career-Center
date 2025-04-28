@@ -271,9 +271,9 @@ class FinalYearInternshipAgreementResource extends BaseResource
                     ->type('internships')
                     ->searchable(false)
                     ->sortable(),
-                                Tables\Columns\TextColumn::make('description')
+                Tables\Columns\TextColumn::make('description')
                 ->label(__('Description'))
-                    ->toggleable(isToggledHiddenByDefault: true)
+                ->toggleable(isToggledHiddenByDefault: true)
                 ->searchable(false)
                 ->width('xl')
                 ->sortable(false)
@@ -354,12 +354,12 @@ class FinalYearInternshipAgreementResource extends BaseResource
                     Tables\Actions\RestoreAction::make(),
 
                 ])
-                    ->hidden((auth()->user()->isAdministrator() || auth()->user()->isPowerProfessor()) === false)
-                    ->hidden(true)
-                    ->label('')
-                    ->icon('heroicon-o-ellipsis-vertical')
-                    ->size(Filament\Support\Enums\ActionSize::ExtraLarge)
-                    ->tooltip(__('View, edit, or delete this internship agreement')),
+                ->hidden((auth()->user()->isAdministrator() || auth()->user()->isPowerProfessor()) === false)
+                ->hidden(true)
+                ->label('')
+                ->icon('heroicon-o-ellipsis-vertical')
+                ->size(Filament\Support\Enums\ActionSize::ExtraLarge)
+                ->tooltip(__('View, edit, or delete this internship agreement')),
                 Tables\Actions\ActionGroup::make([
                     \App\Filament\Actions\Action\SignAction::make()
                         ->disabled(fn ($record): bool => $record['signed_at'] !== null),
