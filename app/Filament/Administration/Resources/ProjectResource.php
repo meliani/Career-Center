@@ -208,11 +208,11 @@ class ProjectResource extends Core\BaseResource
                         //     ]),
                         Forms\Components\Select::make('timeslot_id')
                             ->relationship('timeslot', 'start_time')
-                            ->required()
+                            // ->required()
                             ->disabled(fn () => auth()->user()->isAdministrator() === false),
                         Forms\Components\Select::make('room_id')
                             ->relationship('room', 'name')
-                            ->required()
+                            // ->required()
                             ->disabled(fn () => auth()->user()->isAdministrator() === false),
                     ])
                     ->columns(3),
