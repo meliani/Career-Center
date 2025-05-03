@@ -187,6 +187,7 @@ class ProjectResource extends Core\BaseResource
                     ->columnSpan(1)
                     ->hidden(fn () => auth()->user()->isAdministrator() === false)
                     ->relationship('timetable')
+                    ->hidden(true)
                     ->columns(3)
                     ->schema([
                         // Forms\Components\Fieldset::make('Time')
@@ -211,11 +212,9 @@ class ProjectResource extends Core\BaseResource
                             // ->required()
                             ->nullable()
                             ->dehydrated(fn ($state) => filled($state))
-                            ->hidden(true)
                             ->disabled(fn () => auth()->user()->isAdministrator() === false),
                         Forms\Components\Select::make('room_id')
                             ->relationship('room', 'name')
-                            ->hidden(true)
                             // ->required()
                             ->nullable()
                             ->dehydrated(fn ($state) => filled($state))
