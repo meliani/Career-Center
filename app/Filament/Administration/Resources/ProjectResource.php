@@ -183,39 +183,20 @@ class ProjectResource extends Core\BaseResource
                     ->collapsible()
                     ->columns(2),
                 Forms\Components\Section::make(__('Defense information'))
-                    ->label(__('Defense information'))
-                    ->columnSpan(1)
-                    ->hidden(fn () => auth()->user()->isAdministrator() === false)
-                    ->relationship('timetable')
-                    ->columns(3)
                     ->schema([
-                        // Forms\Components\Fieldset::make('Time')
-                        //     ->relationship('timeslot')
-                        //     ->schema([
-                        //         Forms\Components\DateTimePicker::make('start_time')
-                        //             // ->format('m/d/Y hh:ii:ss')
-                        //             ->seconds(false)
-                        //             ->native(false)
-                        //             ->displayFormat('Y-m-d H:i:s')
-                        //             ->required(),
-                        //         // ->disabled(fn () => auth()->user()->isAdministrator() === false),
-                        //         Forms\Components\DateTimePicker::make('end_time')
-                        //             ->seconds(false)
-                        //             // ->native(false)
-                        //             ->displayFormat('Y-m-d H:i:s')
-                        //             ->required(),
-                        //         // ->disabled(fn () => auth()->user()->isAdministrator() === false),
-                        //     ]),
                         Forms\Components\Select::make('timeslot_id')
                             ->relationship('timeslot', 'start_time')
-                            // ->required()
-                            ->disabled(fn () => auth()->user()->isAdministrator() === false),
-                        Forms\Components\Selects::make('room_id')
+                            ->nullable()
+                            ->dehydrated(fn ($state) => filled($state)),
+                        Forms\Components\Select::make('room_id')
                             ->relationship('room', 'name')
-                            // ->required()
-                            ->disabled(fn () => auth()->user()->isAdministrator() === false),
+                            ->nullable()
+                            ->dehydrated(fn ($state) => filled($state)),
                     ])
-                    ->columns(3),
+                    ->collapsed(true)
+                    ->collapsible()
+                    ->hidden(fn () => auth()->user()->isAdministrator() === false)
+                    ->columns(2),
 
             ]);
     }
