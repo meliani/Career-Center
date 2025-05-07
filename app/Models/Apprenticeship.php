@@ -32,6 +32,7 @@ class Apprenticeship extends Model
         'year_id',
         'project_id',
         'status',
+        'internship_level',
         'announced_at',
         'validated_at',
         'assigned_department',
@@ -63,6 +64,7 @@ class Apprenticeship extends Model
         'assigned_department' => Enums\Department::class,
         'status' => Enums\Status::class,
         'currency' => Enums\Currency::class,
+        'internship_level' => Enums\InternshipLevel::class,
         'starting_at' => 'date',
         'ending_at' => 'date',
         'remuneration' => 'decimal:2',
@@ -89,6 +91,19 @@ class Apprenticeship extends Model
             $apprenticeship->year_id = Year::current()->id;
             $apprenticeship->status = Enums\Status::Announced;
             $apprenticeship->announced_at = now();
+            
+            // Automatically assign internship level based on student level
+            if (auth()->user() instanceof Student) {
+                $studentLevel = auth()->user()->level;
+                
+                if ($studentLevel === Enums\StudentLevel::FirstYear) {
+                    $apprenticeship->internship_level = Enums\InternshipLevel::IntroductoryInternship;
+                } elseif ($studentLevel === Enums\StudentLevel::SecondYear) {
+                    $apprenticeship->internship_level = Enums\InternshipLevel::TechnicalInternship;
+                } elseif ($studentLevel === Enums\StudentLevel::ThirdYear) {
+                    $apprenticeship->internship_level = Enums\InternshipLevel::FinalYearInternship;
+                }
+            }
         });
 
     }

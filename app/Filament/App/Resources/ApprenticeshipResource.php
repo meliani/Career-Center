@@ -113,6 +113,11 @@ class ApprenticeshipResource extends StudentBaseResource
                         ->grow(true)
                         ->badge()
                         ->columnSpan(1),
+                    Tables\Columns\TextColumn::make('internship_level')
+                        ->toggleable(false)
+                        ->description(__('Type'), position: 'above')
+                        ->badge()
+                        ->sortable(false),
                     Tables\Columns\Layout\Stack::make([
                         Tables\Columns\TextColumn::make('starting_at')
                             ->toggleable(false)
@@ -288,6 +293,9 @@ class ApprenticeshipResource extends StudentBaseResource
                                     ->label('Organization name'),
                                 // Infolists\Components\TextEntry::make('id_pfe')
                                 //     ->label('ID PFE'),
+                                Infolists\Components\TextEntry::make('internship_level')
+                                    ->label('Internship Type')
+                                    ->badge(),
                                 Infolists\Components\TextEntry::make('status')
                                     ->label('Status'),
                                 // Infolists\Components\TextEntry::make('assigned_department')
