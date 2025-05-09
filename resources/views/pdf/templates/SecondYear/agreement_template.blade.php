@@ -725,7 +725,7 @@
     </div>
     <div class="text-xs">
         Représenté par Monsieur Ahmed Kensi,
-        Directeur Adjoint des Stages et Relations avec les Entreprises par intérim,
+        Directeur Adjoint des Stages et Relations avec les Entreprises,
     </div>
     <div class="text-xs font-semibold mt-0">
         Et désigné dans ce qui suit par l’INPT
