@@ -26,6 +26,7 @@
         "cmixin/enhanced-period": "^1.2",
         "cyrildewit/eloquent-viewable": "^7.0",
         "doctrine/dbal": "^3.8",
+        "dotswan/filament-grapesjs-v3": "^1.1",
         "fauzie811/filament-list-entry": "^1.0",
         "filament/filament": "^3.2",
         "filament/forms": "^3.2",

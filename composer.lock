@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2a2e44d48b0490c82e0157d78854056e",
+    "content-hash": "95f304b5389a2b74289a95b6f90d881b",
     "packages": [
         {
             "name": "amphp/amp",
@@ -2728,6 +2728,77 @@
                 }
             ],
             "time": "2024-02-05T11:56:58+00:00"
+        },
+        {
+            "name": "dotswan/filament-grapesjs-v3",
+            "version": "v1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dotswan/filament-grapesjs-v3.git",
+                "reference": "2a07b5e71151a5177b765083afa01436fff277df"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dotswan/filament-grapesjs-v3/zipball/2a07b5e71151a5177b765083afa01436fff277df",
+                "reference": "2a07b5e71151a5177b765083afa01436fff277df",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.0",
+                "illuminate/contracts": "^10.0 || ^11.0 || ^12.0",
+                "php": "^8.1",
+                "spatie/laravel-package-tools": "^1.19.0"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.0",
+                "nunomaduro/collision": "^7.9",
+                "orchestra/testbench": "^8.0|^9.0|^10.0",
+                "pestphp/pest": "^2.1|^3.1",
+                "pestphp/pest-plugin-arch": "^2.0",
+                "pestphp/pest-plugin-laravel": "^2.0",
+                "phpstan/extension-installer": "^1.1",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-phpunit": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "FilamentGrapesjs": "Dotswan\\FilamentGrapesjs\\Facades\\FilamentGrapesjs"
+                    },
+                    "providers": [
+                        "Dotswan\\FilamentGrapesjs\\FilamentGrapesJsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Dotswan\\FilamentGrapesjs\\": "src/",
+                    "Dotswan\\FilamentGrapesjs\\Database\\Factories\\": "database/factories/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dotswan",
+                    "email": "tech@dotswan.com",
+                    "role": "Developer"
+                }
+            ],
+            "homepage": "https://github.com/dotswan/filament-grapesjs-v3",
+            "keywords": [
+                "dotswan",
+                "filament-grapesjs-v3",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/dotswan/filament-grapesjs-v3/issues",
+                "source": "https://github.com/dotswan/filament-grapesjs-v3"
+            },
+            "time": "2025-03-01T17:26:56+00:00"
         },
         {
             "name": "dragonmantank/cron-expression",
