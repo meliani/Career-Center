@@ -21,7 +21,7 @@ use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use Malzariey\FilamentDaterangepickerFilter\Fields\DateRangePicker;
-
+use Filament;
 class CreateApprenticeship extends CreateRecord
 {
     use CreateRecord\Concerns\HasWizard;
@@ -271,6 +271,25 @@ class CreateApprenticeship extends CreateRecord
                                         }
                                     }
                                 })
+                                ->afterStateUpdated(function (callable $set, $state, $get) {
+                                    if (!empty($state)) {
+                                        $dates = explode(' - ', $state);
+                                        if (count($dates) === 2) {
+                                            $start = \Carbon\Carbon::createFromFormat('d/m/Y', $dates[0]);
+                                            $end = \Carbon\Carbon::createFromFormat('d/m/Y', $dates[1]);
+                                            $weeks = ceil($start->floatDiffInRealWeeks($end));
+                                            if ($weeks > 8) {
+                                                $set('internship_period', null); 
+                                                Filament\Notifications\Notification::make()
+                                                    ->title('Internship period too long')
+                                                    ->body('The internship period cannot exceed 8 weeks.')
+                                                    ->danger()
+                                                    ->send();
+                                            }
+                                        }
+                                    }
+                                })
+                                ->helperText(__('The internship period cannot exceed 8 weeks'))
                                 ->columnSpanFull(),
 
                             // Forms\Components\Select::make('internship_level')

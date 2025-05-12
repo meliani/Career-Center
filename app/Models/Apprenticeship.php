@@ -88,6 +88,7 @@ class Apprenticeship extends Model
     {
 
         static::addGlobalScope(new Scopes\ApprenticeshipScope);
+        
         static::creating(function (Apprenticeship $apprenticeship) {
             $apprenticeship->student_id = auth()->id();
             $apprenticeship->year_id = Year::current()->id;
@@ -107,7 +108,16 @@ class Apprenticeship extends Model
                 }
             }
         });
-
+        
+        // Validate internship period on both create and update operations
+        static::saving(function (Apprenticeship $apprenticeship) {
+            if ($apprenticeship->starting_at && $apprenticeship->ending_at) {
+                $weeks = ceil($apprenticeship->starting_at->floatDiffInRealWeeks($apprenticeship->ending_at));
+                if ($weeks > 8) {
+                    throw new \Exception('The internship period cannot exceed 8 weeks.');
+                }
+            }
+        });
     }
 
     public function student()

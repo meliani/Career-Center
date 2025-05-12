@@ -213,13 +213,28 @@ class EditApprenticeship extends EditRecord
                                     if (!empty($state)) {
                                         $dates = explode(' - ', $state);
                                         if (count($dates) === 2) {
-                                            // We store these dates for direct database saving
-                                            $set('starting_at', \Carbon\Carbon::createFromFormat('d/m/Y', $dates[0])->format('Y-m-d'));
-                                            $set('ending_at', \Carbon\Carbon::createFromFormat('d/m/Y', $dates[1])->format('Y-m-d'));
+                                            // Check if the period is valid (max 8 weeks)
+                                            $start = \Carbon\Carbon::createFromFormat('d/m/Y', $dates[0]);
+                                            $end = \Carbon\Carbon::createFromFormat('d/m/Y', $dates[1]);
+                                            $weeks = ceil($start->floatDiffInRealWeeks($end));
+                                            
+                                            if ($weeks > 8) {
+                                                $set('internship_period', null); 
+                                                Filament\Notifications\Notification::make()
+                                                    ->title('Internship period too long')
+                                                    ->body('The internship period cannot exceed 8 weeks.')
+                                                    ->danger()
+                                                    ->send();
+                                            } else {
+                                                // We store these dates for direct database saving
+                                                $set('starting_at', \Carbon\Carbon::createFromFormat('d/m/Y', $dates[0])->format('Y-m-d'));
+                                                $set('ending_at', \Carbon\Carbon::createFromFormat('d/m/Y', $dates[1])->format('Y-m-d'));
+                                            }
                                         }
                                     }
                                 })
                                 ->required()
+                                ->helperText(__('The internship period cannot exceed 8 weeks'))
                                 ->columnSpanFull(),
 
                             // Forms\Components\Select::make('internship_level')

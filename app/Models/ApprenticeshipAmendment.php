@@ -26,6 +26,19 @@ class ApprenticeshipAmendment extends Model
         'validation_comment',
     ];
     
+    // protected static function booted(): void
+    // {
+    //     // Validate that amendment period doesn't exceed 8 weeks
+    //     static::saving(function (ApprenticeshipAmendment $amendment) {
+    //         if ($amendment->new_starting_at && $amendment->new_ending_at) {
+    //             $weeks = ceil($amendment->new_starting_at->floatDiffInRealWeeks($amendment->new_ending_at));
+    //             if ($weeks > 8) {
+    //                 throw new \Exception('The amended internship period cannot exceed 8 weeks.');
+    //             }
+    //         }
+    //     });
+    // }
+    
     protected $casts = [
         'new_starting_at' => 'date',
         'new_ending_at' => 'date',
