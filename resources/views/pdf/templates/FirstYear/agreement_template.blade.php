@@ -9,144 +9,216 @@
     @include('pdf.components.header')
 
     @include('pdf.components.title-box', [
-        'mainTitle' => 'CONVENTION DE STAGE "OUVRIER"',
+        'mainTitle' => 'CONVENTION DE STAGE OUVRIER',
         'subtitle' => '1<sup>ère</sup> Année du cycle Ingénieur (INE) de l\'Institut National des Postes et Télécommunications (INPT-Rabat)'
     ])
 
-    <div class="text-xs font-semibold">
-        Entre : L'Institut National des Postes et Télécommunications (INPT-Rabat)
-    </div>
-    <div class="text-xs">
-        Sis à Avenue Allal El Fassi, Madinat Al Irfane, Rabat - Maroc
-    </div>
-    <div class="text-xs">
-        Représenté par Monsieur Ahmed Kensi,
-        Directeur Adjoint des Stages et Relations avec les Entreprises,
-    </div>
-    <div class="text-xs font-semibold mt-0">
-        Et désigné dans ce qui suit par l'INPT
-    </div>
-    <div class="text-xs font-semibold mt-2">
-        Et : <strong>{{$internship->organization->name}}</strong>
-    </div>
-    <div class="text-xs">
-        Sise à l'addresse : <strong>{{$internship->organization->address}}, {{$internship->organization->city}},
-            {{$internship->organization->country}}</strong>
-    </div>
-    <div class="text-xs">
-        Représenté par <strong>{{$internship->parrain->full_name}}</strong>,
-        <strong>{{$internship->parrain->function}}</strong>
-    </div>
-    <div class="text-xs font-semibold mt-0">
-        Et désigné dans ce qui suit par l'organisme d'accueil
-    </div>
-
     <div class="p-6 bg-white">
-        <h1 class="text-base font-semibold mb-0">Préambule</h1>
-        <div class="text-xs mb-2">
-            <p>L'INPT a pour mission la formation, la recherche et l'expertise. Il est chargé de la formation initiale
-                et de la
-                formation continue dans les domaines des télécommunications, des technologies de l'information et de la
-                communication et
-                disciplines connexes.</p>
-            <p>La mise en situation professionnelle est une étape importante dans la formation d'ingénieurs, elle permet
-                aux élèves de se
-                confronter aux réalités techniques, scientifiques, économiques et sociales. C'est dans cette optique que
-                l'INPT s'inscrit et marque sa
-                volonté d'avoir dans ses programmes de formation, des stages de divers types orientés vers des objectifs
-                globaux et spécifiques
-                (Stage Ouvrier, Stage Technique et Stage de Projet de Fin d'Études).</p>
-            <p>Durant le stage ouvrier dont la durée est de 4 semaines ou plus, l'élève ingénieur occupe généralement un
-                poste où il se familiarise
-                avec les conditions de travail et observe le fonctionnement de l'organisme d'accueil.</p>
+        <div class="text-base font-semibold">Article 1 : Désignation des parties</div>
+        <div class="text-xs mb-4">
+            <p>La présente convention règle les rapports <strong>entre</strong> :</p>
+            
+            <div class="mb-2">
+                <p><strong>L'Institut National des Postes et Télécommunications (INPT-RABAT),</strong> établissement d'enseignement 
+                supérieur rattaché à l'ANRT en vertu de l'article 107 de la loi n°24-96 relative à la poste et 
+                aux télécommunications, sis à Avenue Allal Al Fassi, Madinat Al Irfane à Rabat, représenté par 
+                Monsieur <strong>Ahmed Kensi</strong>, Directeur Adjoint des Stages et des Relations avec les Entreprises.</p>
+                <p class="text-right italic font-semibold">Ci-après désigné l'Institut.</p>
+            </div>
+            
+            <div class="mb-2">
+                <p>Et l'organisme d'accueil : <strong>{{$internship->organization->name}}</strong><br>
+                Adresse : <strong>{{$internship->organization->address}}, {{$internship->organization->city}}, {{$internship->organization->country}}</strong><br>
+                Représenté par : <strong>{{$internship->parrain->full_name}}</strong><br>
+                Fonction : <strong>{{$internship->parrain->function}}</strong><br>
+                Téléphone : <strong>{{$internship->parrain->phone}}</strong> Email : <strong>{{$internship->parrain->email}}</strong></p>
+                <p class="text-right italic font-semibold">Ci-après désigné organisme d'accueil.</p>
+            </div>
+            
+            <div class="mb-2">
+                <p>Concernant le stage <strong>ouvrier</strong> d'une durée de <strong>4 à 8 semaines</strong> et effectué par l'élève Ingénieur :</p>
+                <table class="w-full mb-1 text-xs">
+                    <tr>
+                        <td class="w-1/3"><strong>Nom</strong> : {{$internship->student->last_name}}</td>
+                        <td class="w-2/3"><strong>Prénom</strong> : {{$internship->student->first_name}}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tél</strong> : {{$internship->student->phone}}</td>
+                        <td><strong>Adresse Email</strong> : {{$internship->student->email}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><strong>Filière</strong> : 
+                            @if(is_a($internship->student->program, \App\Enums\Program::class))
+                            {{$internship->student->program->getDescription()}}
+                            @else
+                            {{$internship->student->program}}
+                            @endif
+                        </td>
+                    </tr>
+                </table>
+                <p class="text-right italic font-semibold">Ci-après désigné le stagiaire.</p>
+            </div>
         </div>
-        <h2 class="text-base font-semibold mb-0">Article 1</h2>
-        <div class="text-xs mb-2">
-            <p>La présente convention règle les rapports entre l'organisme d'accueil d'une part, l'INPT et le stagiaire
-                d'autre part.</p>
-            <p>Cette convention concerne
-                <strong>{{$internship->student->long_full_name}}</strong>, élève ingénieur en 1<sup>ère</sup> année du
-                cycle INE
-                de l'INPT, inscrit(e) en filière <strong>
-                    @if(is_a($internship->student->program, \App\Enums\Program::class))
-                    {{$internship->student->program->getDescription()}}
-                    @else
-                    {{$internship->student->program}}
-                    @endif
-                </strong>.
-            </p>
+
+        <div class="text-base font-semibold">Article 2 : Objet de la convention</div>
+        <div class="text-xs mb-4">
+            <p>La présente convention a pour objet la mise en œuvre, au profit de l'élève ingénieur stagiaire de l'Institut, un stage en milieu professionnel chez l'organisme d'accueil dans le cadre de sa formation du cycle Ingénieur l'INPT.</p>
         </div>
-        <h2 class="text-base font-semibold mb-0">Article 2</h2>
-        <div class="text-xs mb-2">
-            <p>L'étudiant(e) sera encadré(e) par un Responsable de stage désigné par l'organisme d'accueil, en
-                l'occurence
-                <strong>{{$internship->supervisor->full_name}}</strong>
-            </p>
-            <p>Le thème du stage est établi d'un commun accord entre l'organisme d'accueil et l'élève ingénieur.</p>
+
+        <div class="text-base font-semibold">Article 3 : Finalité du stage ouvrier</div>
+        <div class="text-xs mb-4">
+            <p>Le stage a pour objectif de permettre à l'étudiant de vivre une première expérience dans le milieu industriel et de développer une réflexion sur cette expérience. Dans ce sens, il lui permettra de connaitre l'organisation et le fonctionnement de l'entreprise mais également de développer le sens du contact et d'organiser son temps pour achever le travail demandé dans un délai déterminé.</p>
+            <p>Cet élément de module concerne l'évaluation du stage de première année d'une durée de 4 à 8 semaines et a lieu en général après la fin des cours de première année.</p>
         </div>
-        <h2 class="text-base font-semibold mb-0">Article 3</h2>
-        <div class="text-xs mb-2">
-            <p>
-            <p>Thème du stage : <strong>{{$internship->title}}</strong></p>
+
+        <div class="text-base font-semibold">Article 4 : Thématique et période de stage</div>
+        <div class="text-xs mb-4">
+            <p>L'élève stagiaire va travailler pendant la période de stage sur le thème détaillé ci-après :<br>
+            <strong>{{$internship->title}}</strong></p>
             <p>
                 La durée du stage est fixée à <strong>{{$internship->duration_in_weeks}} semaines</strong>, du
                 @if($internship->starting_at instanceof \Carbon\Carbon)
                 <strong>{{$internship->starting_at->format('d/m/Y')}}</strong>
                 au
-                <strong>{{$internship->ending_at->format('d/m/Y')}}</strong>
-                .
+                <strong>{{$internship->ending_at->format('d/m/Y')}}</strong>.
                 @else
                 ..................... au .....................
                 @endif
             </p>
+            <p>Le présent stage sera effectué en mode: 
+                <span class="border border-black px-1">☐ Présentiel</span>
+                <span class="border border-black px-1">☐ A distance</span>
+                <span class="border border-black px-1">☐ En Hybride</span>
+            </p>
         </div>
-        <h2 class="text-base font-semibold mb-0">Article 4</h2>
-        <p class="text-xs mb-2">
-            Durant son stage l'élève ingénieur est soumis à la discipline de l'organisme d'accueil, notamment en ce qui
-            concerne l'horaire et le respect du secret professionnel.
-        </p>
     </div>
 
     {{-- second page --}}
     @include('pdf.components.page_break')
     
     <div class="p-6 bg-white">
-        <h2 class="text-base font-semibold mb-0">Article 5</h2>
-        <p class="text-xs mb-2">
-            En cas de faute grave, de manquement à la discipline ou de tout autre problème, l'organisme d'accueil
-            informera, aussitôt la
-            direction de l'INPT pour convenir des mesures à prendre.
-        </p>
-        <h2 class="text-base font-semibold mb-0">Article 6</h2>
-        <p class="text-xs mb-2">
-            L'élève ingénieur continuera à bénéficier du régime d'assurance universitaire souscrite par l'INPT en sa
-            faveur, durant la période de
-            son stage.
-        </p>
-        <h2 class="text-base font-semibold mb-0">Article 7</h2>
-        <div class="text-xs mb-2">
-            <p>
-                A la fin du stage, l'organisme d'accueil délivre une attestation de stage mentionnant la période du
-                stage et une fiche d'appreciation de l'encadrant sur le travail et le comportement de l'élève
-                ingénieur
-                stagiaire.
-            </p>
-            <p>
-                Ces documents sont à communiquer à la direction adjointe des stages et relataions avec les
-                entreprises
-                de l'INPT par email sur <strong>entreprises@inpt.ac.ma</strong>.
-            </p>
+        <div class="text-base font-semibold">Article 5 : Déroulement du stage</div>
+        <div class="text-xs mb-4">
+            <p>Pendant la durée du stage, le stagiaire est soumis aux règles générales en vigueur dans l'organisme d'accueil, notamment en matière d'horaires, de congés et de discipline.</p>
+            <p>Le Directeur de l'Institut et le représentant de l'organisme d'accueil se tiennent mutuellement informés des difficultés qui pourraient être rencontrées au cours du stage. Le cas échéant, ils prendront, d'un commun accord et en liaison avec le coordonnateur de la filière concernée à l'INPT, les dispositions pour résoudre les problèmes d'absentéisme ou d'indiscipline. Au besoin, ils étudieront ensemble les modalités de suspension ou de résiliation du stage.</p>
         </div>
-        <h2 class="text-base font-semibold mb-0">Article 8</h2>
-        <p class="text-xs mb-2">
-            L'élève ingénieur s'engage à fournir au terme de son stage, un rapport représentant les résultats de son
-            travail à l'organisme
-            d'accueil et à l'INPT avant la fin du mois d'octobre de l'année en cours.
-        </p>
+
+        <div class="text-base font-semibold">Article 6 : Assurance responsabilité civile</div>
+        <div class="text-xs mb-4">
+            <p>Le stagiaire est assuré pendant sa présence dans l'organisme d'accueil selon les lois en vigueur en matière d'accueil de stagiaires.</p>
+        </div>
+
+        <div class="text-base font-semibold">Article 7 : Gratification</div>
+        <div class="text-xs mb-4">
+            <p>L'organisme d'accueil peut verser au stagiaire une gratification ou une rémunération.</p>
+        </div>
+
+        <div class="text-base font-semibold">Article 8 : Rapport de stage</div>
+        <div class="text-xs mb-4">
+            <p>À L'issue de son stage, le stagiaire remet des exemplaires de son rapport de stage (sur support papier et informatique) à l'organisme d'accueil et à l'institut. Un exemplaire, après sa validation, est conservé dans la bibliothèque de l'institut.</p>
+        </div>
+
+        <div class="text-base font-semibold">Article 9 : Appréciation du stage</div>
+        <div class="text-xs mb-4">
+            <p>À la fin du stage, l'organisme d'accueil délivre une attestation de stage mentionnant la période du stage et une fiche d'appréciation de l'encadrant sur le travail et le comportement de l'élève ingénieur stagiaire selon le modèle en annexe à cette convention.</p>
+            <p>Ces documents sont à communiquer à la Direction Adjointe des Stages et des Relations avec les Entreprises de l'INPT par email sur <a href="mailto:entreprises@inpt.ac.ma"><strong>entreprises@inpt.ac.ma</strong></a> / <a href="mailto:dasre@inpt.ac.ma"><strong>dasre@inpt.ac.ma</strong></a></p>
+        </div>
+
+        <div class="text-base font-semibold">Article 10 : Confidentialité</div>
+        <div class="text-xs mb-4">
+            <p>Le stagiaire est tenu d'observer une entière discrétion sur l'ensemble des renseignements qu'il pourra recueillir dans l'organisme d'accueil. Il s'engage à ne pas faire figurer sur son rapport ou communiquer à des tiers aucune information considérée confidentielle par l'organisme d'accueil.</p>
+        </div>
+
+        <div class="text-xs mb-4 mt-8">
+            <p>Fait en trois (3) originaux de deux (2) pages de dix (10) articles, le ...........................................</p>
+        </div>
     </div>
     
     @include('pdf.components.signature_boxes')
+    
     @include('pdf.components.qr_verification')
+
+    @include('pdf.components.page_break')
+
+    <div class="p-6 bg-white">
+        <h1 class="text-lg font-bold text-center mb-6">Annexe 1 : Fiche d'appréciation de stage</h1>
+
+        <div class="text-xs mb-4">
+            <table class="w-full border border-black mb-6">
+                <tr class="border border-black">
+                    <td class="border border-black p-2 w-1/3">Organisme</td>
+                    <td class="border border-black p-2 w-2/3">{{$internship->organization->name}}</td>
+                </tr>
+                <tr class="border border-black">
+                    <td class="border border-black p-2">Étudiant – Stagiaire</td>
+                    <td class="border border-black p-2">{{$internship->student->long_full_name}}</td>
+                </tr>
+                <tr class="border border-black">
+                    <td class="border border-black p-2">Sujet</td>
+                    <td class="border border-black p-2">{{$internship->title}}</td>
+                </tr>
+                <tr class="border border-black">
+                    <td class="border border-black p-2">Responsable de stage<br>Fonction :<br>Signature et cachet</td>
+                    <td class="border border-black p-2 h-24">{{$internship->supervisor->full_name}}<br>{{$internship->supervisor->function}}</td>
+                </tr>
+            </table>
+
+            <table class="w-full border border-black">
+                <tr class="border border-black">
+                    <td class="border border-black p-2 w-1/3 font-semibold">Travail Fourni et Apport Personnel</td>
+                    <td class="border border-black p-2 w-1/6 text-center font-semibold">Note</td>
+                    <td class="border border-black p-2 w-1/3 font-semibold">Compétences</td>
+                    <td class="border border-black p-2 w-1/6 text-center font-semibold">Note</td>
+                </tr>
+                <tr class="border border-black">
+                    <td class="border border-black p-2">Réalisation des objectifs</td>
+                    <td class="border border-black p-2"></td>
+                    <td class="border border-black p-2">Pertinence des propositions</td>
+                    <td class="border border-black p-2"></td>
+                </tr>
+                <tr class="border border-black">
+                    <td class="border border-black p-2">Qualité du travail fourni</td>
+                    <td class="border border-black p-2"></td>
+                    <td class="border border-black p-2">Fiabilité des résultats</td>
+                    <td class="border border-black p-2"></td>
+                </tr>
+                <tr class="border border-black">
+                    <td class="border border-black p-2">Investissement personnel</td>
+                    <td class="border border-black p-2"></td>
+                    <td class="border border-black p-2">Maîtrise technologique, méthodologie</td>
+                    <td class="border border-black p-2"></td>
+                </tr>
+                <tr class="border border-black">
+                    <td class="border border-black p-2">Adaptabilité à l'entreprise</td>
+                    <td class="border border-black p-2"></td>
+                    <td class="border border-black p-2">Organisation, conduite de projet, coordination</td>
+                    <td class="border border-black p-2"></td>
+                </tr>
+                <tr class="border border-black">
+                    <td class="border border-black p-2 font-semibold">Moyenne 1</td>
+                    <td class="border border-black p-2"></td>
+                    <td class="border border-black p-2 font-semibold">Moyenne 2</td>
+                    <td class="border border-black p-2"></td>
+                </tr>
+                <tr class="border border-black">
+                    <td colspan="2" class="border border-black p-2 font-semibold">Note Finale/20 = (Moyenne1+Moyenne2)/2</td>
+                    <td colspan="2" class="border border-black p-2"></td>
+                </tr>
+            </table>
+
+            <div class="mt-6">
+                <p class="font-semibold">Commentaires :</p>
+                <div class="min-h-[250px] border border-black p-2"></div>
+            </div>
+
+            <p class="mt-4">
+                <strong>NB :</strong> La présente fiche d'évaluation est à remplir et envoyer par mail à
+                <a href="mailto:entreprises@inpt.ac.ma">entreprises@inpt.ac.ma</a> et
+                <a href="mailto:dasre@inpt.ac.ma">dasre@inpt.ac.ma</a>
+            </p>
+        </div>
+    </div>
+
     @include('pdf.components.footer')
 </body>
 
