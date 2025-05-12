@@ -207,8 +207,8 @@ class EditApprenticeship extends EditRecord
 
                             DateRangePicker::make('internship_period')
                                 ->label(__('Apprenticeship Period'))
-                                ->displayFormat('d/m/Y')
-                                ->format('d/m/Y')
+                                // ->displayFormat('d/m/Y')
+                                // ->format('d/m/Y')
                                 ->afterStateUpdated(function ($state, callable $set) {
                                     if (!empty($state)) {
                                         $dates = explode(' - ', $state);
