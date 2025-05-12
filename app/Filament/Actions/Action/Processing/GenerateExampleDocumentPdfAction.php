@@ -7,6 +7,7 @@ use App\Services\UrlService;
 use Filament\Notifications\Notification;
 use Filament\Tables\Actions\Action;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use stdClass;
@@ -105,6 +106,7 @@ class GenerateExampleDocumentPdfAction extends Action
                 'title' => 'Stage de fin d\'études',
                 'description' => 'description du stage de fin d\'études',
                 'duration' => '3 mois',
+                'duration_in_weeks' => 8, // Add this property
                 'starting_at' => '01/01/2021',
                 'ending_at' => '01/04/2021',
                 'remuneration' => '1000 DH',
@@ -152,5 +154,15 @@ class GenerateExampleDocumentPdfAction extends Action
         });
 
         return $static;
+    }
+
+    public static function getDefaultName(): ?string
+    {
+        return 'generate-example-document-pdf';
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
     }
 }

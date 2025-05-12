@@ -72,7 +72,7 @@ class DocumentTemplateResource extends Resource
                     ->label('Agreement PDF')
                     ->limit(30)
                     ->formatStateUsing(fn (DocumentTemplate $record) => ! is_null($record->example_url) ? 'View example agreement' : 'Generate a new PDF')
-                    ->url(fn (DocumentTemplate $record) => URL::to($record->example_url), shouldOpenInNewTab: true),
+                    ->url(fn (DocumentTemplate $record) => $record->example_url ? URL::to($record->example_url) : null, shouldOpenInNewTab: true),
 
                 Tables\Columns\TextColumn::make('type')
                     ->searchable(),

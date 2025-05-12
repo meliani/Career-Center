@@ -4,30 +4,11 @@
     <title>Internship Agreement</title>
     {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
     {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
-    <style>
-        {!! file_get_contents(public_path('build/assets/pdf.css')) !!}
-        @if(!empty($watermark))
-        body::after {
-            content: "{{ $watermark }}";
-            position: fixed;
-            top: 40%;
-            left: 30%;
-            font-size: 10em;
-            color: rgba(0,0,0,0.1);
-            transform: rotate(-30deg);
-            pointer-events: none;
-            z-index: 9999;
-        }
-        @endif
-    </style>
-
+    @include('pdf.components.stylesheet')
 </head>
 
 <body class="text-justify text-xs sm:text-sm md:text-base lg:text-lg">
-    <div>
-        {!! str_replace('<svg', '<svg width="130" height="63.8" ', file_get_contents(public_path('svg/logo-colors.svg'))) !!}
-
-    </div>
+    @include('pdf.components.header')
     <div class="border-2 border-gray-500 p-2  mx-auto max-w-sm mt-10 mb-6">
         <h1 class="text-lg font-semibold text-center mb-2">
             CONVENTION DE STAGE
@@ -147,10 +128,7 @@
         </p>
         <strong>{{$internship->office_location}}</strong>
 
-        <div style="page-break-before: always;"></div>
-        {{-- <div class="flex flex-col justify-between min-h-screen"> --}}
-            <div>
-        {!! str_replace('<svg', '<svg width="130" height="63.8" ', file_get_contents(public_path('svg/logo-colors.svg'))) !!}
+        @include('pdf.components.page_break')
 
             </div>
             <div class="flex flex-col justify-start items-center">
@@ -209,9 +187,7 @@
                     </div>
                     {{--
                 </div> --}}
-                <div class="flex justify-center items-center mt-20">
-                    {!! $qrCodeSvg !!}
-                </div>
+                @include('pdf.components.qr_verification')
                 {{-- <div class="text-center text-[0.60rem] italic mb-52">
                     <p>Scannez pour voir la version électronique de la convention</p>
                 </div> --}}
@@ -220,10 +196,7 @@
 
         {{-- second page --}}
 
-        <div style="page-break-before: always;"></div>
-        {{-- <div class="flex flex-col justify-between min-h-screen"> --}}
-            <div>
-                <svg version="1.1" id="svg2" width="130" height="63.81522" viewBox="0 0 662.28388 325.64667"
+        @include('pdf.components.page_break')
                     xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
                     <defs id="defs6">
                         <clipPath clipPathUnits="userSpaceOnUse" id="clipPath20">
