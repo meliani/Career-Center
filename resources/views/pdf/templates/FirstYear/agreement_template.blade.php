@@ -2,28 +2,13 @@
 
 <head>
     <title>Internship Agreement</title>
-    <style>
-        {!! file_get_contents(public_path('build/assets/pdf.css')) !!}
-        @if(!empty($watermark))
-        body::after {
-            content: "{{ $watermark }}";
-            position: fixed;
-            top: 40%;
-            left: 30%;
-            font-size: 10em;
-            color: rgba(0,0,0,0.1);
-            transform: rotate(-30deg);
-            pointer-events: none;
-            z-index: 9999;
-        }
-        @endif
-    </style>
+    @include('pdf.components.stylesheet')
+
 </head>
 
 <body class="text-justify">
-    <div>
-        {!! str_replace('<svg', '<svg width="130" height="63.8" " ', file_get_contents(public_path('svg/logo-colors.svg'))) !!}
-    </div>
+    @include('pdf.components.header')
+
     <div class="border-2 border-gray-500 p-2 rounded-md mx-auto max-w-sm mt-10 mb-6">
         <h1 class="text-lg font-semibold text-center mb-2">
             CONVENTION DE STAGE "OUVRIER"
@@ -132,14 +117,9 @@
 
 
 
+        {{-- second page --}}
 
-    {{-- second page --}}
-
-    <div style="page-break-before: always;"></div>
-    <div class="flex flex-col justify-between min-h-screen">
-        <div>
-        {!! str_replace('<svg', '<svg width="130" height="63.8" " ', file_get_contents(public_path('svg/logo-colors.svg'))) !!}
-        </div>
+        @include('pdf.components.page_break')
         <div class="p-6 bg-white">
 
             <h2 class="text-base font-semibold mb-0">Article 5</h2>
