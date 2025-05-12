@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use stdClass;
-
+use Carbon\Carbon;
 use function Spatie\LaravelPdf\Support\pdf;
 
 class GenerateExampleDocumentPdfAction extends Action
@@ -63,6 +63,7 @@ class GenerateExampleDocumentPdfAction extends Action
                 'student' => [
                     'long_full_name' => 'Nom et prénom de l\'étudiant',
                     'full_name' => 'Nom complet de l\'étudiant',
+                    'formal_name' => 'Nom de l\'étudiant',
                     'phone' => '0666666666',
                     'email' => 'student@school.org',
                     'program' => 'Filière de l\'étudiant',
@@ -93,6 +94,7 @@ class GenerateExampleDocumentPdfAction extends Action
                 ],
                 'parrain' => [
                     'full_name' => 'parrain full name',
+                    'formal_name' => 'parrain formal name',
                     'function' => 'parrain function',
                     'phone' => '0666666666',
                     'email' => 'parrain@entreprise.com',
@@ -103,12 +105,19 @@ class GenerateExampleDocumentPdfAction extends Action
                     'phone' => '0666666666',
                     'email' => 'tutor@school.org',
                 ],
+                'externalSupervisor' => [
+                    'full_name' => 'external supervisor full name',
+                    'formal_name' => 'external supervisor formal name',
+                    'function' => 'external supervisor function',
+                    'phone' => '0666666666',
+                    'email' => 'external_supervisor@entreprise.com',
+                ],
                 'title' => 'Stage de fin d\'études',
                 'description' => 'description du stage de fin d\'études',
                 'duration' => '3 mois',
                 'duration_in_weeks' => 8, // Add this property
-                'starting_at' => '01/01/2021',
-                'ending_at' => '01/04/2021',
+                'starting_at' => Carbon::now(),
+                'ending_at' => Carbon::now()->addWeeks(8),
                 'remuneration' => '1000 DH',
                 'working_hours' => '8h - 17h',
                 'working_days' => 'Lundi - Vendredi',
