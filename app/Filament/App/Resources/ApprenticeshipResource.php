@@ -225,6 +225,17 @@ class ApprenticeshipResource extends StudentBaseResource
                     ->color('gray')
                     ->button(),
                 
+                Tables\Actions\Action::make('request_amendment_modal')
+                    ->label(__('Request Amendment'))
+                    ->icon('heroicon-o-pencil-square')
+                    ->color('warning')
+                    ->button()
+                    ->url(fn ($record) => static::getUrl('view', ['record' => $record]))
+                    ->visible(fn ($record) => 
+                        $record->status !== Enums\Status::Draft && 
+                        $record->status !== Enums\Status::PendingCancellation && 
+                        !$record->hasPendingAmendmentRequests()),
+                        
                 GenerateApprenticeshipAgreementAction::make('Generate Agreement PDF')
                     ->label(__('Generate Agreement PDF'))
                     ->icon('heroicon-o-document-arrow-down')
