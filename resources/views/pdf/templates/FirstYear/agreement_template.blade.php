@@ -140,7 +140,7 @@
         </div>
 
         <div class="text-xs mb-4 mt-8">
-            <p>Fait en trois (3) originaux de deux (2) pages de dix (10) articles, le ...........................................</p>
+            <p>Fait en trois (2) originaux de deux (2) pages de dix (10) articles, le ...........................................</p>
         </div>
     </div>
     
@@ -151,75 +151,75 @@
     <div class="p-6 bg-white">
         <h1 class="text-lg font-bold text-center mb-6">Annexe 1 : Fiche d'appréciation de stage</h1>
 
-        <div class="text-xs mb-4">
+        <div class="text-[10px] mb-4">
             <table class="w-full border border-black mb-6">
                 <tr class="border border-black">
-                    <td class="border border-black p-2 w-1/3">Organisme</td>
-                    <td class="border border-black p-2 w-2/3">{{$internship->organization->name}}</td>
+                    <td class="border border-black p-1 w-1/3">Organisme</td>
+                    <td class="border border-black p-1 w-2/3">{{$internship->organization->name}}</td>
                 </tr>
                 <tr class="border border-black">
-                    <td class="border border-black p-2">Étudiant – Stagiaire</td>
-                    <td class="border border-black p-2">{{$internship->student->long_full_name}}</td>
+                    <td class="border border-black p-1">Étudiant – Stagiaire</td>
+                    <td class="border border-black p-1">{{$internship->student->long_full_name}}</td>
                 </tr>
                 <tr class="border border-black">
-                    <td class="border border-black p-2">Sujet</td>
-                    <td class="border border-black p-2">{{$internship->title}}</td>
+                    <td class="border border-black p-1">Sujet</td>
+                    <td class="border border-black p-1">{{$internship->title}}</td>
                 </tr>
                 <tr class="border border-black">
-                    <td class="border border-black p-2">Responsable de stage<br>Fonction :<br>Signature et cachet</td>
-                    <td class="border border-black p-2 h-24">{{$internship->supervisor->full_name}}<br>{{$internship->supervisor->function}}</td>
+                    <td class="border border-black p-1">Responsable de stage<br>Fonction :<br>Signature et cachet</td>
+                    <td class="border border-black p-1 h-24">{{$internship->supervisor->full_name}}<br>{{$internship->supervisor->function}}</td>
                 </tr>
             </table>
 
             <table class="w-full border border-black">
                 <tr class="border border-black">
-                    <td class="border border-black p-2 w-1/3 font-semibold">Travail Fourni et Apport Personnel</td>
-                    <td class="border border-black p-2 w-1/6 text-center font-semibold">Note</td>
-                    <td class="border border-black p-2 w-1/3 font-semibold">Compétences</td>
-                    <td class="border border-black p-2 w-1/6 text-center font-semibold">Note</td>
+                    <td class="border border-black p-1 w-1/3 font-semibold">Travail Fourni et Apport Personnel</td>
+                    <td class="border border-black p-1 w-1/6 text-center font-semibold">Note</td>
+                    <td class="border border-black p-1 w-1/3 font-semibold">Compétences</td>
+                    <td class="border border-black p-1 w-1/6 text-center font-semibold">Note</td>
                 </tr>
                 <tr class="border border-black">
-                    <td class="border border-black p-2">Réalisation des objectifs</td>
-                    <td class="border border-black p-2"></td>
-                    <td class="border border-black p-2">Pertinence des propositions</td>
-                    <td class="border border-black p-2"></td>
+                    <td class="border border-black p-1">Réalisation des objectifs</td>
+                    <td class="border border-black p-1"></td>
+                    <td class="border border-black p-1">Pertinence des propositions</td>
+                    <td class="border border-black p-1"></td>
                 </tr>
                 <tr class="border border-black">
-                    <td class="border border-black p-2">Qualité du travail fourni</td>
-                    <td class="border border-black p-2"></td>
-                    <td class="border border-black p-2">Fiabilité des résultats</td>
-                    <td class="border border-black p-2"></td>
+                    <td class="border border-black p-1">Qualité du travail fourni</td>
+                    <td class="border border-black p-1"></td>
+                    <td class="border border-black p-1">Fiabilité des résultats</td>
+                    <td class="border border-black p-1"></td>
                 </tr>
                 <tr class="border border-black">
-                    <td class="border border-black p-2">Investissement personnel</td>
-                    <td class="border border-black p-2"></td>
-                    <td class="border border-black p-2">Maîtrise technologique, méthodologie</td>
-                    <td class="border border-black p-2"></td>
+                    <td class="border border-black p-1">Investissement personnel</td>
+                    <td class="border border-black p-1"></td>
+                    <td class="border border-black p-1">Maîtrise technologique, méthodologie</td>
+                    <td class="border border-black p-1"></td>
                 </tr>
                 <tr class="border border-black">
-                    <td class="border border-black p-2">Adaptabilité à l'entreprise</td>
-                    <td class="border border-black p-2"></td>
-                    <td class="border border-black p-2">Organisation, conduite de projet, coordination</td>
-                    <td class="border border-black p-2"></td>
+                    <td class="border border-black p-1">Adaptabilité à l'entreprise</td>
+                    <td class="border border-black p-1"></td>
+                    <td class="border border-black p-1">Organisation, conduite de projet, coordination</td>
+                    <td class="border border-black p-1"></td>
                 </tr>
                 <tr class="border border-black">
-                    <td class="border border-black p-2 font-semibold">Moyenne 1</td>
-                    <td class="border border-black p-2"></td>
-                    <td class="border border-black p-2 font-semibold">Moyenne 2</td>
-                    <td class="border border-black p-2"></td>
+                    <td class="border border-black p-1 font-semibold">Moyenne 1</td>
+                    <td class="border border-black p-1"></td>
+                    <td class="border border-black p-1 font-semibold">Moyenne 2</td>
+                    <td class="border border-black p-1"></td>
                 </tr>
                 <tr class="border border-black">
-                    <td colspan="2" class="border border-black p-2 font-semibold">Note Finale/20 = (Moyenne1+Moyenne2)/2</td>
-                    <td colspan="2" class="border border-black p-2"></td>
+                    <td colspan="2" class="border border-black p-1 font-semibold">Note Finale/20 = (Moyenne1+Moyenne2)/2</td>
+                    <td colspan="2" class="border border-black p-1"></td>
                 </tr>
             </table>
 
             <div class="mt-6">
                 <p class="font-semibold">Commentaires :</p>
-                <div class="min-h-[250px] border border-black p-2"></div>
+                <div class="min-h-[250px] border border-black p-1"></div>
             </div>
 
-            <p class="mt-4">
+            <p class="mt-4 text-[10px]">
                 <strong>NB :</strong> La présente fiche d'évaluation est à remplir et envoyer par mail à
                 <a href="mailto:entreprises@inpt.ac.ma">entreprises@inpt.ac.ma</a> et
                 <a href="mailto:dasre@inpt.ac.ma">dasre@inpt.ac.ma</a>
