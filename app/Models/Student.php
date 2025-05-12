@@ -45,6 +45,7 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
         'id',
         'title',
         'id_pfe',
+        'konosys_id',
         'email',
         'first_name',
         'last_name',
