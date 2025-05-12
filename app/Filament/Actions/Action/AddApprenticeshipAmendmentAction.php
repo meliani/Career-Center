@@ -80,8 +80,8 @@ class AddApprenticeshipAmendmentAction extends Action
 
                             DateRangePicker::make('internship_period')
                                 ->label(__('New Internship Period'))
-                                ->displayFormat('d/m/Y')
-                                ->format('d/m/Y')
+                                // ->displayFormat('d/m/Y')
+                                // ->format('d/m/Y')
                                 ->afterStateUpdated(function (string $state, Set $set) {
                                     if (!empty($state)) {
                                         $dates = explode(' - ', $state);
