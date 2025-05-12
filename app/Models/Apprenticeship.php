@@ -21,7 +21,6 @@ class Apprenticeship extends Model
 
     protected $appends = [
         'duration_in_weeks',
-        'verification_string',
         'encoded_url',
         'decoded_url',
         'internship_period',
@@ -59,6 +58,7 @@ class Apprenticeship extends Model
         'signed_by_organization_at',
         'signed_by_administration_at',
         'verification_document_url',
+        'verification_string',
     ];
 
     protected $casts = [
@@ -153,9 +153,20 @@ class Apprenticeship extends Model
         }
     }
 
-    public function getVerificationStringAttribute()
+    /**
+     * Generate a verification link for this apprenticeship agreement
+     * 
+     * @return string The verification URL
+     */
+    public function generateVerificationLink()
     {
-        return $this->id . '-' . $this->student_id;
+        $verification_string = \App\Services\UrlService::encodeShortUrl($this->attributes[env('INTERNSHIPS_ENCRYPTION_FIELD', 'id')]);
+        $verification_url = route('internship-agreement.verify', $verification_string);
+
+        $this->verification_string = $verification_string;
+        $this->save();
+
+        return $verification_url;
     }
 
     public function getEncodedUrlAttribute()

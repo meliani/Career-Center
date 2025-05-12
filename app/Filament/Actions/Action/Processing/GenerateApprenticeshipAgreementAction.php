@@ -31,13 +31,16 @@ class GenerateApprenticeshipAgreementAction extends Action
                 File::makeDirectory($pdf_path, 0755, true);
             }
 
-            // Générer l'URL de vérification
-            $verificationString = $apprenticeship->student->id . '-' . $apprenticeship->id;
-            $encodedUrl = UrlService::encodeUrl($verificationString);
-            $verificationUrl = URL::to('/verify-agreement?x=' . $encodedUrl);
+            // Generate verification string and get verification URL
+            $verification_string = \App\Services\UrlService::encodeShortUrl($apprenticeship->id);
+            $verification_url = route('internship-agreement.verify', $verification_string);
+            
+            // Save the verification string to the apprenticeship record
+            $apprenticeship->verification_string = $verification_string;
+            $apprenticeship->save();
 
-            // Générer le QR code
-            $qrCodeSvg = UrlService::getQrCodeSvg($verificationUrl);
+            // Generate QR code for verification
+            $qrCodeSvg = UrlService::getQrCodeSvg($verification_url);
 
             $chromePath = env('BROWSERSHOT_CHROME_PATH');
             pdf()

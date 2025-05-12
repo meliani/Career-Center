@@ -26,8 +26,10 @@ class AgreementVerificationController extends Controller
 
         if (! $payload) {
             $payload = MasterResearchInternshipAgreement::where('verification_string', $verification_code)->first();
-
-            // dd(MasterResearchInternshipAgreement::all());
+        }
+        
+        if (! $payload) {
+            $payload = \App\Models\Apprenticeship::where('verification_string', $verification_code)->first();
         }
         if (! $payload) {
             return view(

@@ -4,3 +4,4 @@
 </div>
 <div class="text-center text-[0.60rem] italic mb-2">
     <p>Ce QR code permet de vérifier l'authenticité de ce document.</p>
+</div>
