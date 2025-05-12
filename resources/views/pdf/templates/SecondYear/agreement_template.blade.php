@@ -8,16 +8,8 @@
 <body class="text-justify">
     @include('pdf.components.header')
 
-    @include('pdf.components.tit            <div class="mt-6">
-                <p class="font-semibold">Commentaires :</p>
-                <div class="min-h-[250px] border border-black p-1"></div>
-            </div>
-
-            <p class="mt-4 text-[10px]">
-                <strong>NB :</strong> La présente fiche d'évaluation est à remplir et envoyer par mail à
-                <a href="mailto:entreprises@inpt.ac.ma">entreprises@inpt.ac.ma</a> et
-                <a href="mailto:dasre@inpt.ac.ma">dasre@inpt.ac.ma</a>
-            </p>
+    @include('pdf.components.title-box',
+    [
         'mainTitle' => 'CONVENTION DE STAGE TECHNIQUE',
         'subtitle' => '2<sup>ème</sup> Année du cycle Ingénieur (INE) de l\'Institut National des Postes et Télécommunications (INPT-Rabat)'
     ])
