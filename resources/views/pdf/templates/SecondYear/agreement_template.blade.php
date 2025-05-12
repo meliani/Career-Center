@@ -30,8 +30,13 @@
                 <p>Et l'organisme d'accueil : <strong>{{$internship->organization->name}}</strong><br>
                 Adresse : <strong>{{$internship->organization->address}}, {{$internship->organization->city}}, {{$internship->organization->country}}</strong><br>
                 Représenté par : <strong>{{$internship->parrain->full_name}}</strong><br>
-                Fonction : <strong>{{$internship->parrain->function}}</strong><br>
-                Téléphone : <strong>{{$internship->parrain->phone}}</strong> Email : <strong>{{$internship->parrain->email}}</strong></p>
+                Fonction : <strong>{{$internship->parrain->function}}</strong></p>
+                <table class="w-full mb-1 text-xs">
+                    <tr>
+                        <td class="w-1/3"><strong>Téléphone</strong> : {{$internship->parrain->phone}}</td>
+                        <td class="w-2/3"><strong>Email</strong> : {{$internship->parrain->email}}</td>
+                    </tr>
+                </table>
                 <p class="text-right italic font-semibold">Ci-après désigné organisme d'accueil.</p>
             </div>
             
@@ -85,12 +90,15 @@
                 @endif
             </p>
             <p>Le présent stage sera effectué en mode: 
-                <span class="border border-black px-1">☐ Présentiel</span>
-                <span class="border border-black px-1">☐ A distance</span>
-                <span class="border border-black px-1">☐ En Hybride</span>
+                <span class="ml-2 mr-4">{{ $internship->internship_type?->value === \App\Enums\InternshipType::OnSite->value ? '☑' : '☐' }} Présentiel</span>
+                <span class="mr-4">{{ $internship->internship_type?->value === \App\Enums\InternshipType::Remote->value ? '☑' : '☐' }} À distance</span>
+                <span>{{ $internship->internship_type?->value === \App\Enums\InternshipType::Hybrid->value ? '☑' : '☐' }} En hybride</span>
             </p>
         </div>
     </div>
+    
+    {{-- QR Code verification component --}}
+    @include('pdf.components.qr_verification')
     
     @include('pdf.components.footer')
 
@@ -136,8 +144,6 @@
     </div>
     
     @include('pdf.components.signature_boxes')
-    
-    @include('pdf.components.qr_verification')
 
     @include('pdf.components.page_break')
 
