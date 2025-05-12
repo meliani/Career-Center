@@ -92,6 +92,8 @@
             </p>
         </div>
     </div>
+    
+    @include('pdf.components.footer')
 
     {{-- second page --}}
     @include('pdf.components.page_break')
@@ -219,7 +221,6 @@
         </div>
     </div>
 
-    @include('pdf.components.footer')
 </body>
 
 </html>
