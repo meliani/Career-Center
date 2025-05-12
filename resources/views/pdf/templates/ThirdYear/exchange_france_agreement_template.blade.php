@@ -2,40 +2,15 @@
 
 <head>
     <title>Internship Agreement</title>
-    {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
-    {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
-    <style>
-        {!! file_get_contents(public_path('build/assets/pdf.css')) !!}
-        @if(!empty($watermark))
-        body::after {
-            content: "{{ $watermark }}";
-            position: fixed;
-            top: 40%;
-            left: 30%;
-            font-size: 10em;
-            color: rgba(0,0,0,0.1);
-            transform: rotate(-30deg);
-            pointer-events: none;
-            z-index: 9999;
-        }
-        @endif
-    </style>
-
+    @include('pdf.components.stylesheet')
 </head>
 
 <body class="text-justify text-xs sm:text-sm md:text-base lg:text-lg">
-    <div>
-        {!! str_replace('<svg', '<svg width="130" height="63.8" " ', file_get_contents(public_path('svg/logo-colors.svg'))) !!}
-
-    </div>
-    <div class="border-2 border-gray-500 p-2  mx-auto max-w-sm mt-0 mb-8">
-        <h1 class="text-lg font-semibold text-center mb-2">
-            CONVENTION DE STAGE
-        </h1>
-        <h1 class="text-lg font-semibold text-center mb-2">
-            PROJET DE FIN D’ETUDES
-        </h1>
-    </div>
+    @include('pdf.components.header')
+    
+    @include('pdf.components.title-box', [
+        'mainTitle' => 'CONVENTION DE STAGE'
+    ])
 
     <h2 class="text-base font-semibold mt-2 mb-0">ARTICLE 1 : Parties signataires de la convention</h2>
     <div class="text-xs font-semibold mt-2">
@@ -206,7 +181,6 @@ Cette dernière est fixée à <strong>{{ $internship->remuneration }} {{ $intern
 <div class="text-xs mt-2 mb-2">
     <p>Le devoir de réserve est de rigueur absolue. Les étudiants stagiaires prennent donc l'engagement de n'utiliser en aucun cas les informations recueillies ou obtenues par eux pour en faire l'objet de publication, communication à des tiers sans accord préalable de la Direction de l'Entreprise, y compris le rapport de stage. Cet engagement vaudra non seulement pour la durée du stage mais également après son expiration. L'étudiant s'engage à ne conserver, emporter, ou prendre copie d'aucun document ou logiciel, de quelque nature que ce soit, appartenant à l'Entreprise, sauf accord de cette dernière.</p>
     <p>Nota : Dans le cadre de la confidentialité des informations contenues dans le rapport, l'Entreprise peut demander une restriction de la diffusion du rapport, voire le retrait de certains éléments très confidentiels. Les personnes amenées à en connaître sont contraintes par le secret professionnel à n'utiliser ni ne divulguer les informations du rapport.</p>
-</div>
 </div>
         <div style="page-break-before: always;"></div>
         {{-- <div class="flex flex-col justify-between min-h-screen"> --}}

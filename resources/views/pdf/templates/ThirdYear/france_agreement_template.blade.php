@@ -2,40 +2,15 @@
 
 <head>
     <title>Internship Agreement</title>
-    {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
-    {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
-    <style>
-        {!! file_get_contents(public_path('build/assets/pdf.css')) !!}
-        @if(!empty($watermark))
-        body::after {
-            content: "{{ $watermark }}";
-            position: fixed;
-            top: 40%;
-            left: 30%;
-            font-size: 10em;
-            color: rgba(0,0,0,0.1);
-            transform: rotate(-30deg);
-            pointer-events: none;
-            z-index: 9999;
-        }
-        @endif
-    </style>
-
+    @include('pdf.components.stylesheet')
 </head>
 
 <body class="text-justify text-xs sm:text-sm md:text-base lg:text-lg">
-    <div>
-        {!! str_replace('<svg', '<svg width="130" height="63.8" " ', file_get_contents(public_path('svg/logo-colors.svg'))) !!}
-
-    </div>
-    <div class="border-2 border-gray-500 p-2  mx-auto max-w-sm mt-10 mb-6">
-        <h1 class="text-lg font-semibold text-center mb-2">
-            CONVENTION DE STAGE
-        </h1>
-        <h1 class="text-lg font-semibold text-center mb-2">
-            PROJET DE FIN D’ETUDES
-        </h1>
-    </div>
+    @include('pdf.components.header')
+    
+    @include('pdf.components.title-box', [
+        'mainTitle' => 'CONVENTION DE STAGE'
+    ])
 
     <h2 class="text-base font-semibold mt-2 mb-0">ARTICLE 1 : Parties signataires de la convention</h2>
     <div class="text-xs font-semibold mt-2">
@@ -91,9 +66,9 @@
             <p>
                 <strong>Période de stage</strong>: Le stage aura lieu du <strong>{{$internship->starting_at->format('d/m/Y')}}</strong> au <strong>{{$internship->ending_at->format('d/m/Y')}}</strong>.
                 </p>
-<p>Un avenant à la convention pourra éventuellement être établi en cas de prolongation de stage faite à la demande de l’entreprise et de l’étudiant stagiaire. Toutes prolongations seront soumises aux obligations du programme concerné.</p>
+<p>Un avenant à la convention pourra éventuellement être établi en cas de prolongation de stage faite à la demande de l'entreprise et de l'étudiant stagiaire. Toutes prolongations seront soumises aux obligations du programme concerné.</p>
 <p class="text-xs mt-1"><strong>Déroulement du stage</strong></p>
-<p>La durée hebdomadaire maximale de présence du stagiaire dans l’entreprise sera de <strong>{{ $internship->workload }} heures/semaine</strong>.</p>
+<p>La durée hebdomadaire maximale de présence du stagiaire dans l'entreprise sera de <strong>{{ $internship->workload }} heures/semaine</strong>.</p>
             </p>
         </div>
         <h2 class="text-base font-semibold mt-2 mb-0">ARTICLE 4 : Statut du stagiaire - Encadrement</h2>
@@ -111,10 +86,11 @@
         </div>
 
 
-        <div style="page-break-before: always;"></div>
+        @include('pdf.components.page_break')
+
         {{-- <div class="flex flex-col justify-between min-h-screen"> --}}
             <div>
-        {!! str_replace('<svg', '<svg width="130" height="63.8" " ', file_get_contents(public_path('svg/logo-colors.svg'))) !!}
+        @include('pdf.components.header')
 
             </div>
             <div class="flex flex-col justify-start items-center">
@@ -132,10 +108,10 @@
                     <h2 class="text-base font-semibold mt-2 mb-0">ARTICLE 6 : Gratification – Avantages en nature - Remboursement de frais</h2>
                     <div class="text-xs mt-2 mb-2">
                         <p>L’étudiant stagiaire ne perçoit aucune rémunération. Toutefois il peut lui être alloué une gratification.
-Lorsque la durée du  stage est supérieure à trois mois consécutifs, celui-ci fait l’objet d’une gratification
+Lorsque la durée du stage est supérieure à trois mois consécutifs, celui-ci fait l’objet d’une gratification
 Cette dernière est fixée à <strong>{{ $internship->remuneration }} {{ $internship->currency->getSymbol() }}</strong> par mois.
                         </p>
-                        <p><strong>Modalités de versement de la gratification</strong> : virement</p>
+                        <p><strong>Modalités de versement de la gratification</strong> : virement</p>
                         <p>Si le stagiaire bénéficie d’avantages en nature (gratuité des repas par exemple), le montant représentant la valeur de ces avantages sera ajouté au montant de la gratification  mensuelle avant comparaison au produit de 12.5% du plafond horaire de la sécurité sociale par le nombre d’heures de stage effectuées au cours du mois considéré.
                         </p>
                         <p>Les frais de déplacement, d'hébergement et de restauration engagés par l’étudiant stagiaire à la demande de l'Entreprise, ainsi que les frais de formation éventuellement nécessités par le stage, seront intégralement pris en charge par celle-ci selon les modalités en vigueur dans l’entreprise.
@@ -159,9 +135,9 @@ Cette dernière est fixée à <strong>{{ $internship->remuneration }} {{ $intern
     <p>L'élève stagiaire bénéficie de la couverture légale en application des dispositions des articles L 411-1 et suivants du code de la Sécurité Sociale. En cas d'accident survenant à l'étudiant stagiaire, soit au cours des travaux dans l'Entreprise, soit au cours du trajet, soit sur des lieux rendus utiles pour les besoins de son stage, l'Entreprise effectue toutes les démarches nécessaires auprès de la Caisse Primaire d'Assurance Maladie et informe l'Ecole dans les meilleurs délais.</p>
 
 </div>
-        <div style="page-break-before: always;"></div>
+        @include('pdf.components.page_break')
             <div>
-        {!! str_replace('<svg', '<svg width="130" height="63.8" " ', file_get_contents(public_path('svg/logo-colors.svg'))) !!}
+        @include('pdf.components.header')
 
 
     <p class="text-xs mt-2"><strong>7.3 : Déplacements</strong></p>
@@ -203,66 +179,9 @@ Cette dernière est fixée à <strong>{{ $internship->remuneration }} {{ $intern
     <p>Le devoir de réserve est de rigueur absolue. Les étudiants stagiaires prennent donc l'engagement de n'utiliser en aucun cas les informations recueillies ou obtenues par eux pour en faire l'objet de publication, communication à des tiers sans accord préalable de la Direction de l'Entreprise, y compris le rapport de stage. Cet engagement vaudra non seulement pour la durée du stage mais également après son expiration. L'étudiant s'engage à ne conserver, emporter, ou prendre copie d'aucun document ou logiciel, de quelque nature que ce soit, appartenant à l'Entreprise, sauf accord de cette dernière.</p>
     <p>Nota : Dans le cadre de la confidentialité des informations contenues dans le rapport, l'Entreprise peut demander une restriction de la diffusion du rapport, voire le retrait de certains éléments très confidentiels. Les personnes amenées à en connaître sont contraintes par le secret professionnel à n'utiliser ni ne divulguer les informations du rapport.</p>
 </div>
-</div>
-        <div style="page-break-before: always;"></div>
-        {{-- <div class="flex flex-col justify-between min-h-screen"> --}}
-            <div>
-        {!! str_replace('<svg', '<svg width="130" height="63.8" " ', file_get_contents(public_path('svg/logo-colors.svg'))) !!}
-
-        <h2 class="text-base font-semibold mt-2 mb-0">ARTICLE 12 : Recrutement</h2>
-        <div class="text-xs mt-2 mb-2">
-            <p>S'il advenait qu'un contrat de travail prenant effet avant la date de fin du stage soit signé avec l'Entreprise, la présente convention deviendrait caduque ; l'étudiant stagiaire perdrait son statut d'étudiant et ne relèverait plus de la responsabilité de l'Ecole. Ce dernier devrait impérativement en être averti avant signature du contrat.</p>
-        </div>
-
-                        <p class="mt-8 mb-8">
-                            <strong>Document établi en quatre exemplaires; le premier est destiné au chef de filière, le deuxième à l'Entreprise accueillant le stagiaire, le troisième  à l’Ecole et le quatrième à l'étudiant.</strong>
-                        </p>
-                    </div>
-                    <div class="flex flex-row justify-between items-center mt-8 space-x-4 text-xs text-center mb-8">
-                        <div class="border-2 border-gray-800 w-full p-0 flex flex-col items-center min-h-[250px]">
-                            <div class="min-h-[100px] px-2 pt-2 text-gray-900">Date et signature du Chef d’Entreprise
-                                (Cachet de
-                                l’Entreprise)
-                            </div>
-                            {{-- <div class="border-t-2 pt-2 text-gray-400 text-center">Cachet de l’organisme d'accueil
-                            </div> --}}
-                        </div>
-                        <div class="border-2 border-gray-800 w-full p-0 flex flex-col items-center min-h-[250px]">
-                            <div class="min-h-[100px] text-gray-900 px-2 pt-2">Date et Signature du stagiaire avec
-                                Mention
-                                manuscrite «
-                                Lu et
-                                approuvé »</div>
-                            {{-- <div class="border-t-2 pt-2 text-gray-400 text-center">Mention manuscrite « Lu et
-                                approuvé »</div>
-                            --}}
-                        </div>
-                        <div class="border-2 border-gray-900 w-full pt-0 flex flex-col justify-between min-h-[250px]">
-                            <div class="px-2 pt-2 text-gray-800 text-center">Le Directeur de l’INPT (ou son
-                                Représentant)</div>
-                        </div>
-                    </div>
-                    {{--
-                </div> --}}
-                <div class="flex justify-center items-center mt-20">
-                    {!! $qrCodeSvg !!}
-                </div>
-                {{-- <div class="text-center text-[0.60rem] italic mb-52">
-                    <p>Scannez pour voir la version électronique de la convention</p>
-                </div> --}}
-            </div>
-        </div>
-            </div>
-            <footer class="text-gray-500 text-[0.60rem] p-2 border-t fixed bottom-0">
-                <p class="mb-0">Direction Adjointe des stages et des relations avec les entreprises - INPT-Rabat, Maroc
-                </p>
-                <p class="mb-0">
-                    Tél: +212 5 38 00 27 65/28-62/63-30 77 |
-                    Fax: +212 5 37 77 30 44 |
-                    E-mail: entreprises@inpt.ac.ma |
-                    Site web: <a href="https://www.inpt.ac.ma" class="text-blue-600 hover:underline">www.inpt.ac.ma</a>
-                </p>
-            </footer>
+        @include('pdf.components.signature_boxes')
+        @include('pdf.components.qr_verification')
+        @include('pdf.components.footer')
 </body>
 
 </html>

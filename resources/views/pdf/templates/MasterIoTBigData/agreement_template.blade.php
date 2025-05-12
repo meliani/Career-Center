@@ -2,29 +2,13 @@
 
 <head>
     <title>Internship Agreement</title>
-    <style>
-        {!! file_get_contents(public_path('build/assets/pdf.css')) !!}
-        @if(!empty($watermark))
-        body::after {
-            content: "{{ $watermark }}";
-            position: fixed;
-            top: 40%;
-            left: 30%;
-            font-size: 10em;
-            color: rgba(0,0,0,0.1);
-            transform: rotate(-30deg);
-            pointer-events: none;
-            z-index: 9999;
-        }
-        @endif
-    </style>
-
+    @include('pdf.components.stylesheet')
 </head>
 
 <body class="text-justify text-xs sm:text-sm md:text-base lg:text-lg">
-    <div>
-        <svg version="1.1" id="svg2" width="130" height="63.81522" viewBox="0 0 662.28388 325.64667"
-            xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+    @include('pdf.components.header')
+    
+    <!-- Rest of content continues unchanged -->
             <defs id="defs6">
                 <clipPath clipPathUnits="userSpaceOnUse" id="clipPath20">
                     <path d="M 0,244.235 H 496.713 V 0 H 0 Z" id="path18" />

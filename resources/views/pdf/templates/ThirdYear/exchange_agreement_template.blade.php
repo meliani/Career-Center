@@ -2,65 +2,41 @@
 
 <head>
     <title>Internship Agreement</title>
-    {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
-    {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
-    <style>
-        {!! file_get_contents(public_path('build/assets/pdf.css')) !!}
-        @if(!empty($watermark))
-        body::after {
-            content: "{{ $watermark }}";
-            position: fixed;
-            top: 40%;
-            left: 30%;
-            font-size: 10em;
-            color: rgba(0,0,0,0.1);
-            transform: rotate(-30deg);
-            pointer-events: none;
-            z-index: 9999;
-        }
-        @endif
-    </style>
-
+    @include('pdf.components.stylesheet')
 </head>
 
 <body class="text-justify text-xs sm:text-sm md:text-base lg:text-lg">
-    <div>
-        {!! str_replace('<svg', '<svg width="130" height="63.8" " ', file_get_contents(public_path('svg/logo-colors.svg'))) !!}
+    @include('pdf.components.header')
 
-    </div>
-    <div class="border-2 border-gray-500 p-2  mx-auto max-w-sm mt-0 mb-0">
-        <h1 class="text-lg font-semibold text-center mb-2">
-            CONVENTION DE STAGE
-        </h1>
-        <h1 class="text-lg font-semibold text-center mb-2">
-            PROJET DE FIN D’ETUDES
-        </h1>
-    </div>
+    @include('pdf.components.title-box', [
+        'mainTitle' => 'CONVENTION DE STAGE
+PROJET DE FIN D\'ETUDES'
+    ])
 
     <h2 class="text-base font-semibold mt-2 mb-0">Préambule :</h2>
     <div class="text-xs" style="font-size:0.7rem;">
-        Le présent stage de Projet de Fin d'Études (PFE) vise à doter l’élève ingénieur des
+        Le présent stage de Projet de Fin d'Études (PFE) vise à doter l'élève ingénieur des
         compétences et aptitudes
         nécessaires
         à son intégration dans un environnement professionnel, en ce compris, sans s'y limiter, les éléments suivants :
         <ul class="list-disc list-inside ml-4 mt-2 mb-2 space-y-0">
-            <li>L’aptitude à s’intégrer dans un environnement professionnel, en observant les codes et usages en
+            <li>L'aptitude à s'intégrer dans un environnement professionnel, en observant les codes et usages en
                 vigueur;</li>
             <li>Le développement du sens du contact, favorisant les échanges et la collaboration avec les différents
                 acteurs
                 du milieu
                 professionnel;</li>
-            <li>L’acquisition d’une première expérience professionnelle significative;</li>
+            <li>L'acquisition d'une première expérience professionnelle significative;</li>
             <li>La capacité à organiser et gérer efficacement son temps en vue d'achever les travaux qui lui sont
                 confiés dans
                 les
                 délais impartis;</li>
-            <li>Le travail en équipe, dans une logique de collaboration et d’échange de savoir-faire;</li>
-            <li>Le développement de la créativité et de l’innovation dans la conduite de projets;</li>
-            <li>La rédaction d’un mémoire de qualité, conforme aux standards académiques et professionnels;</li>
+            <li>Le travail en équipe, dans une logique de collaboration et d'échange de savoir-faire;</li>
+            <li>Le développement de la créativité et de l'innovation dans la conduite de projets;</li>
+            <li>La rédaction d'un mémoire de qualité, conforme aux standards académiques et professionnels;</li>
             <li>La présentation des résultats obtenus devant un jury compétent, en vue de leur évaluation finale.</li>
         </ul>
-        Les obligations et engagements découlant de ce stage s’inscrivent dans le cadre des exigences de la formation
+        Les obligations et engagements découlant de ce stage s'inscrivent dans le cadre des exigences de la formation
         dispensée,
         ainsi que des normes professionnelles en vigueur.
     </div>
@@ -79,16 +55,16 @@
         Et
     </div>
     <div class="text-xs">
-        L’Institut National des Postes et Télécommunications (INPT) représenté par <strong>Monsieur Ahmed KENSI,
+        L'Institut National des Postes et Télécommunications (INPT) représenté par <strong>Monsieur Ahmed KENSI,
             Directeur Adjoint des
             Stages et des Relations avec les Entreprises</strong> par intérim,
     </div>
     <div class="text-xs font-semibold mt-0 mb-2">
-        Et désigné dans ce qui suit par l’INPT
+        Et désigné dans ce qui suit par l'INPT
     </div>
 
     <div class="text-xs mb-2">
-        <p>Concernant le stage de Fin d’études de
+        <p>Concernant le stage de Fin d'études de
             <strong>{{$internship->student->formal_name}}</strong>, élève ingénieur de la filière
             <strong>
                 @if(is_a($internship->student->program, \App\Enums\Program::class))
@@ -96,16 +72,13 @@
                 @else
                 {{$internship->student->program}}
                 @endif
-            </strong> de l’Institut National des Postes et Télécommunications (INPT) de Rabat, 
-            en échange académique à l’Ecole <strong>{{$internship->student->exchangePartner->name}}</strong>
-            sur l’année scolaire <strong>{{\App\Models\Year::current()->title }}</strong>
-            dans le cadre d’un partenariat,
+            </strong> de l'Institut National des Postes et Télécommunications (INPT) de Rabat, 
+            en échange académique à l'Ecole <strong>{{$internship->student->exchangePartner->name}}</strong>
+            sur l'année scolaire <strong>{{\App\Models\Year::current()->title }}</strong>
         </p>
-
     </div>
 
-    {{-- <div class="p-6 bg-white"> --}}
-        <h2 class="text-base font-semibold mt-2 mb-0">ARTICLE 2 : Durée et sujet du stage</h2>
+    <h2 class="text-base font-semibold mt-2 mb-0">ARTICLE 2 : Durée et sujet du stage</h2>
         <div class="text-xs mt-1">
             Le stage commencera le <strong>{{$internship->starting_at->format('d/m/Y')}}</strong>
             et prendra fin le <strong>{{$internship->ending_at->format('d/m/Y')}}</strong>,
