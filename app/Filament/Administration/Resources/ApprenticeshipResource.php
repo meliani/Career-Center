@@ -118,7 +118,10 @@ class ApprenticeshipResource extends BaseResource
                                                     ->required(),
                                                 Forms\Components\TextInput::make('office_location')
                                                     ->maxLength(255),
-                                            ])->columns(2),
+                                                Forms\Components\Select::make('internship_type')
+                                                    ->options(Enums\InternshipType::class)
+                                                    ->required(),
+                                            ])->columns(3),
 
                                         Forms\Components\Section::make(__('Apprenticeship Details'))
                                             ->schema([
@@ -164,6 +167,10 @@ class ApprenticeshipResource extends BaseResource
                 Tables\Columns\TextColumn::make('supervisor.full_name')
                     ->searchable(false)
                     ->sortable(),
+                    
+                Tables\Columns\TextColumn::make('internship_type')
+                    ->badge()
+                    ->sortable(),
 
                 Tables\Columns\TextColumn::make('status')
                     ->badge(),
@@ -177,6 +184,9 @@ class ApprenticeshipResource extends BaseResource
             ->defaultGroup('student.level')
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
+                Tables\Filters\SelectFilter::make('internship_type')
+                    ->options(Enums\InternshipType::class)
+                    ->label('Work Modality'),
                 // Tables\Filters\SelectFilter::make('student_level')
                 //     ->relationship('student', 'level')
                 //     // ->options(Enums\StudentLevel::class)
@@ -275,11 +285,15 @@ class ApprenticeshipResource extends BaseResource
                             ->icon('heroicon-o-map-pin')
                             ->schema([
 
-                                Infolists\Components\Section::make(__('Location'))
+                                Infolists\Components\Section::make(__('Location & Work Modality'))
                                     ->icon('heroicon-o-map-pin')
+                                    ->columns(2)
                                     ->schema([
                                         Infolists\Components\TextEntry::make('office_location')
                                             ->icon('heroicon-o-map-pin')
+                                            ->badge(),
+                                        Infolists\Components\TextEntry::make('internship_type')
+                                            ->icon('heroicon-o-building-office-2')
                                             ->badge(),
                                     ]),
 

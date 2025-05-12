@@ -2,6 +2,7 @@
 
 namespace App\Filament\App\Resources;
 
+use App\Enums;
 use App\Filament\Actions\Action\ApplyForCancelInternshipAction;
 use App\Filament\Actions\Action\Processing\GenerateApprenticeshipAgreementAction;
 use App\Filament\App\Resources\ApprenticeshipResource\Pages;
@@ -60,173 +61,170 @@ class ApprenticeshipResource extends StudentBaseResource
 
     public static function form(Form $form): Form
     {
+        // This form definition will be used for editing. 
+        // The creation form is handled by the wizard in CreateApprenticeship page
         return $form->schema((new ApprenticeshipAgreementForm)->getSchema());
     }
 
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->where('student_id', Auth::id());
+    }
+            
     public static function table(Table $table): Table
     {
         return $table
-            ->heading(__('My apprenticeship agreements'))
+            ->heading(__('My Apprenticeship Agreements'))
             ->recordTitleAttribute('title')
             ->paginated(false)
             ->searchable(false)
-            ->emptyStateHeading('')
-            ->emptyStateDescription('')
+            ->emptyStateHeading('No Apprenticeship Agreement')
+            ->emptyStateDescription('You have not created an apprenticeship agreement yet.')
             ->emptyStateIcon('heroicon-o-document-text')
             ->emptyStateActions([
                 Action::make('create')
-                    ->label('Create your first apprenticeship agreement')
+                    ->label('Create your apprenticeship agreement')
                     ->url(route('filament.app.resources.apprenticeships.create'))
                     ->icon('heroicon-o-plus-circle')
+                    ->visible(function () {
+                        $currentYearId = \App\Models\Year::current()->id;
+                        $existingAgreement = Apprenticeship::where('student_id', Auth::id())
+                            ->where('year_id', $currentYearId)
+                            ->exists();
+
+                        return ! $existingAgreement;
+                    })
                     ->button(),
             ])
-            ->contentGrid(
-                [
-                    'md' => 1,
-                    'lg' => 1,
-                    'xl' => 1,
-                    '2xl' => 1,
-                ]
-            )
+            ->contentGrid([
+                'md' => 1,
+            ])
             ->columns([
-
-                Tables\Columns\Layout\Split::make([
-                    Tables\Columns\TextColumn::make('organization.name')
-                        ->weight(FontWeight::Bold)
-                        ->description(__('Organization'), position: 'above')
-                        ->toggleable(false)
-                        ->label('Organization')
-                        ->numeric()
-                        ->sortable(false),
-                    Tables\Columns\TextColumn::make('title')
-                        ->toggleable(false)
-                        ->sortable(false)
-                        ->description(__('Subject'), position: 'above')
-                        ->weight(FontWeight::Bold),
-                ]),
-
-                Tables\Columns\Layout\Split::make([
-                    Tables\Columns\TextColumn::make('status')
-                        // ->description(__('Status'), position: 'above')
-                        ->toggleable(false)
-                        ->sortable(false)
-                        ->grow(true)
-                        ->badge()
-                        ->columnSpan(1),
-                    Tables\Columns\TextColumn::make('internship_level')
-                        ->toggleable(false)
-                        ->description(__('Type'), position: 'above')
-                        ->badge()
-                        ->sortable(false),
-                    Tables\Columns\Layout\Stack::make([
-                        Tables\Columns\TextColumn::make('starting_at')
-                            ->toggleable(false)
-                            ->description(__('Starting from'), position: 'above')
-                            ->date()
-                            ->sortable(false),
-                        Tables\Columns\TextColumn::make('ending_at')
-                            ->toggleable(false)
-                            ->description(__('to'), position: 'above')
-                            ->date()
-                            ->sortable(false),
-                    ]),
-                ]),
                 Tables\Columns\Layout\Panel::make([
-                    // Tables\Columns\Layout\Split::make([
-                    // Tables\Columns\Layout\Panel::make([
+                    Tables\Columns\Layout\Stack::make([
+                        Tables\Columns\TextColumn::make('organization.name')
+                            ->weight(FontWeight::Bold)
+                            ->size(Tables\Columns\TextColumn\TextColumnSize::Large)
+                            ->label('Organization')
+                            ->tooltip('The organization where you will do your apprenticeship')
+                            ->sortable(false)
+                            ->toggleable(false)
+                            ->extraAttributes([
+                                'class' => 'pb-2',
+                            ]),
 
-                    Tables\Columns\TextColumn::make('agreement_pdf_url')
-                        ->toggleable(false)
-                        // ->description(__('Agreement PDF'), position: 'before')
-                        ->label('Agreement PDF')
-                        ->placeholder(__('No PDF generated yet'))
-                        // ->limit(20)
-                        ->formatStateUsing(fn ($record) => $record->agreement_pdf_url ? _('Download agreement PDF') : _('No PDF generated yet'))
-                        ->columnSpan(3)
-                        ->badge()
-                        ->sortable(false)
-                        ->url(fn ($record) => $record->agreement_pdf_url, shouldOpenInNewTab: true),
-                ]),
-                // ]),
-                // ]),
+                        Tables\Columns\TextColumn::make('title')
+                            ->weight(FontWeight::Medium)
+                            ->label('Subject')
+                            ->tooltip('The subject or topic of your apprenticeship')
+                            ->sortable(false)
+                            ->toggleable(false)
+                            ->extraAttributes([
+                                'class' => 'pb-4',
+                            ]),
+                    ])
+                        ->space(3),
 
-                // Tables\Columns\TextColumn::make('remuneration')
-                //     ->numeric()
-                //     ->sortable(),
-                // Tables\Columns\TextColumn::make('currency')
-                //     ->searchable(),
-                // Tables\Columns\TextColumn::make('workload')
-                //     ->numeric()
-                //     ->sortable(),
+                    Tables\Columns\Layout\Grid::make([
+                        'md' => 3,
+                        'lg' => 3,
+                    ])
+                        ->extraAttributes([
+                            'class' => 'border rounded-xl p-4 bg-gray-50',
+                        ])
+                        ->schema([
+                            Tables\Columns\TextColumn::make('status')
+                                ->badge()
+                                ->alignment(\Filament\Support\Enums\Alignment::Center)
+                                ->tooltip('Current status of your apprenticeship agreement')
+                                ->sortable(false)
+                                ->toggleable(false)
+                                ->grow(false),
 
-                // Tables\Columns\TextColumn::make('student_id')
-                //     ->numeric()
-                //     ->sortable(),
-                // Tables\Columns\TextColumn::make('year_id')
-                //     ->numeric()
-                //     ->sortable(),
-                // Tables\Columns\TextColumn::make('project_id')
-                //     ->numeric()
-                //     ->sortable(),
+                            Tables\Columns\TextColumn::make('internship_level')
+                                ->badge()
+                                ->label('Type')
+                                ->tooltip('The type of apprenticeship')
+                                ->alignment(\Filament\Support\Enums\Alignment::Center)
+                                ->sortable(false)
+                                ->toggleable(false),
+                                
+                            Tables\Columns\TextColumn::make('internship_type')
+                                ->badge()
+                                ->label('Modality')
+                                ->tooltip('How you will work during the apprenticeship')
+                                ->alignment(\Filament\Support\Enums\Alignment::Center)
+                                ->sortable(false)
+                                ->toggleable(false),
 
-                // Tables\Columns\TextColumn::make('announced_at')
-                //     ->dateTime()
-                //     ->sortable(),
-                // Tables\Columns\TextColumn::make('validated_at')
-                //     ->dateTime()
-                //     ->sortable(),
-                // Tables\Columns\TextColumn::make('assigned_department'),
-                // Tables\Columns\TextColumn::make('received_at')
-                //     ->dateTime()
-                //     ->sortable(),
-                // Tables\Columns\TextColumn::make('signed_at')
-                //     ->dateTime()
-                //     ->sortable(),
+                            Tables\Columns\Layout\Stack::make([
+                                Tables\Columns\TextColumn::make('starting_at')
+                                    ->date()
+                                    ->label('Duration')
+                                    ->tooltip('Apprenticeship period')
+                                    ->formatStateUsing(fn ($state) => $state->format('M d, Y')),
+                                    
+                                Tables\Columns\TextColumn::make('ending_at')
+                                    ->date()
+                                    ->formatStateUsing(fn ($state) => "to " . $state->format('M d, Y')),
+                            ])
+                                ->space(1)
+                                ->alignment(\Filament\Support\Enums\Alignment::Center),
+                        ]),
 
-                // Tables\Columns\TextColumn::make('created_at')
-                //     ->dateTime()
-                //     ->sortable()
-                //     ->toggleable(isToggledHiddenByDefault: true),
-                // Tables\Columns\TextColumn::make('updated_at')
-                //     ->dateTime()
-                //     ->sortable()
-                //     ->toggleable(isToggledHiddenByDefault: true),
-                // Tables\Columns\TextColumn::make('deleted_at')
-                //     ->dateTime()
-                //     ->sortable()
-                //     ->toggleable(isToggledHiddenByDefault: true),
+                    Tables\Columns\Layout\Stack::make([
+                        Tables\Columns\TextColumn::make('agreement_pdf_url')
+                            ->label('Agreement PDF')
+                            ->tooltip('Download or generate your apprenticeship agreement document')
+                            ->placeholder(__('No PDF generated yet'))
+                            ->formatStateUsing(fn ($record) => $record->agreement_pdf_url ? __('Download agreement PDF') : __('No PDF generated yet'))
+                            ->url(fn ($record) => $record->agreement_pdf_url, shouldOpenInNewTab: true)
+                            ->badge()
+                            ->sortable(false)
+                            ->toggleable(false)
+                            ->color(fn ($record) => $record->agreement_pdf_url ? 'success' : 'gray')
+                            ->extraAttributes([
+                                'class' => 'mt-4',
+                            ]),
+                    ]),
+                ])
+                    ->collapsible(false),
             ])
             ->filters([
             ])
             ->actions([
-
                 Tables\Actions\ActionGroup::make([
-
-                    ApplyForCancelInternshipAction::make('Apply for internship cancellation')
-                        ->color('danger')
-                        ->icon('heroicon-o-bolt-slash'),
                     Tables\Actions\ViewAction::make()
                         ->color('success')
                         ->label('View details'),
                     Tables\Actions\EditAction::make()
                         ->color('warning')
-                        ->label('Edit possible fields'),
+                        ->label('Edit details')
+                        ->disabled(fn ($record) => $record->status !== Enums\Status::Draft),
+                    ApplyForCancelInternshipAction::make('Apply for internship cancellation')
+                        ->color('danger')
+                        ->icon('heroicon-o-bolt-slash')
+                        ->disabled(fn ($record) => $record->status === Enums\Status::Draft)
+                        ->hidden(fn ($record) => $record->status === Enums\Status::PendingCancellation),
                 ])
-                    ->dropdownPlacement('top-start')
-                    ->dropdownWidth(\Filament\Support\Enums\MaxWidth::Small)
-                    // ->outlined()
-                    ->label(__('Manage my internship agreement'))
-                    ->icon('heroicon-o-adjustments-horizontal')
-                    ->color('primary'),
+                    ->label(__('Manage'))
+                    ->icon('heroicon-m-cog-6-tooth')
+                    ->color('gray')
+                    ->button(),
+                
                 GenerateApprenticeshipAgreementAction::make('Generate Agreement PDF')
                     ->label(__('Generate Agreement PDF'))
-                    ->icon('heroicon-o-arrow-path')
+                    ->icon('heroicon-o-document-arrow-down')
                     ->color('primary')
-                    ->requiresConfirmation()
-                    ->outlined()
-                    ->size(\Filament\Support\Enums\ActionSize::ExtraSmall)
-                    ->button(),
-
+                    ->button()
+                    ->visible(fn ($record) => $record->status == Enums\Status::Announced || $record->status == Enums\Status::Validated),
+                GenerateApprenticeshipAgreementAction::make('Generate Draft Agreement PDF')
+                    ->label(__('Generate Draft Agreement PDF'))
+                    ->icon('heroicon-o-document-arrow-down')
+                    ->color('primary')
+                    ->button()
+                    ->visible(fn ($record) => $record->status == Enums\Status::Draft),
             ], position: Tables\Enums\ActionsPosition::AfterColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -269,18 +267,9 @@ class ApprenticeshipResource extends StudentBaseResource
     {
         return $infolist
             ->schema([
-                Infolists\Components\Section::make(__('Internship agreement and validation process'))
-                    ->headerActions([
-                        // Infolists\Components\Actions\Action::make('edit page', 'edit')
-                        //     ->label('Edit')
-                        //     ->icon('heroicon-o-pencil')
-                        //     ->size(Filament\Support\Enums\ActionSize::ExtraLarge)
-                        //     ->tooltip('Edit this internship agreement')
-                        //     ->url(fn ($record) => \App\Filament\App\Resources\ApprenticeshipResource::getUrl('edit', [$record->id])),
-                    ])
+                Infolists\Components\Section::make(__('Apprenticeship agreement and validation process'))
                     ->schema([
-
-                        Infolists\Components\Fieldset::make('Internship agreement')
+                        Infolists\Components\Fieldset::make('Apprenticeship agreement')
                             ->schema([
                                 Infolists\Components\TextEntry::make('student.long_full_name')
                                     ->label('Student'),
@@ -290,18 +279,21 @@ class ApprenticeshipResource extends StudentBaseResource
                                     ->columnSpanFull()
                                     ->html(),
                                 Infolists\Components\TextEntry::make('organization.name')
-                                    ->label('Organization name'),
-                                // Infolists\Components\TextEntry::make('id_pfe')
-                                //     ->label('ID PFE'),
+                                    ->label('Organization'),
                                 Infolists\Components\TextEntry::make('internship_level')
-                                    ->label('Internship Type')
+                                    ->label('Apprenticeship Type')
+                                    ->badge(),
+                                Infolists\Components\TextEntry::make('internship_type')
+                                    ->label('Work Modality')
                                     ->badge(),
                                 Infolists\Components\TextEntry::make('status')
-                                    ->label('Status'),
-                                // Infolists\Components\TextEntry::make('assigned_department')
-                                //     ->label('Assigned department'),
+                                    ->label('Status')
+                                    ->badge(),
+                                Infolists\Components\TextEntry::make('created_at')
+                                    ->label('Created At')
+                                    ->date(),
                             ]),
-                        Infolists\Components\Fieldset::make('Administative dates')
+                        Infolists\Components\Fieldset::make('Validation process')
                             ->schema([
                                 Infolists\Components\TextEntry::make('announced_at')
                                     ->date()
@@ -317,7 +309,17 @@ class ApprenticeshipResource extends StudentBaseResource
                                     ->label('Signed at'),
                             ])
                             ->columns(4),
-
+                    ]),
+                Infolists\Components\Section::make(__('Apprenticeship agreement paperwork'))
+                    ->schema([
+                        Infolists\Components\TextEntry::make('agreement_pdf_url')
+                            ->label('Agreement PDF')
+                            ->placeholder(__('No PDF generated yet'))
+                            ->formatStateUsing(fn ($record) => $record->agreement_pdf_url ? __('Download agreement PDF') : __('No PDF generated yet'))
+                            ->columnSpan(3)
+                            ->badge()
+                            ->color(fn ($record) => $record->agreement_pdf_url ? 'success' : 'gray')
+                            ->url(fn ($record) => $record->agreement_pdf_url, shouldOpenInNewTab: true),
                     ]),
             ]);
     }

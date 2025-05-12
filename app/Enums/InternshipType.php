@@ -13,10 +13,15 @@ enum InternshipType: string implements HasColor, HasIcon, HasLabel
 
     case OnSite = 'OnSite';
     case Remote = 'Remote';
+    case Hybrid = 'Hybrid';
 
     public function getLabel(): ?string
     {
-        return __($this->value);
+        return match ($this) {
+            self::OnSite => __('Présentiel'),
+            self::Remote => __('A distance'),
+            self::Hybrid => __('En Hybride'),
+        };
     }
 
     public function getColor(): ?string
@@ -24,6 +29,7 @@ enum InternshipType: string implements HasColor, HasIcon, HasLabel
         return match ($this) {
             self::OnSite => 'success',
             self::Remote => 'info',
+            self::Hybrid => 'warning',
         };
     }
 
@@ -32,6 +38,7 @@ enum InternshipType: string implements HasColor, HasIcon, HasLabel
         return match ($this) {
             self::OnSite => 'heroicon-o-building-office-2',
             self::Remote => 'heroicon-c-computer-desktop',
+            self::Hybrid => 'heroicon-o-arrows-right-left',
         };
     }
 }

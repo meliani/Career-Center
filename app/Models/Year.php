@@ -37,11 +37,14 @@ class Year extends Core\BackendBaseModel
 
     public static function current()
     {
-        return Cache::remember(
+        $year = Cache::remember(
             self::CACHE_KEY_PREFIX . 'current',
             self::CACHE_DURATION,
             fn () => self::where('is_current', true)->first()
         );
+
+        //dd($year);
+        return $year;
     }
 
     protected static function booted()
