@@ -27,8 +27,7 @@ class ListStudents extends ListRecords
                         ->required(),
                     \Filament\Forms\Components\Textarea::make('ids')
                         ->label('IDs')
-                        ->placeholder('Paste IDs here, separated by commas or new lines')
-                        ->required(),
+                        ->placeholder('Paste IDs here, separated by commas or new lines'),
                     \Filament\Forms\Components\Select::make('level')
                         ->label('New Level')
                         ->options([
