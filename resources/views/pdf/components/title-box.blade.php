@@ -1,5 +1,5 @@
 {{-- Title box component for agreement templates --}}
-<div class="border-2 border-gray-500 p-2 mx-auto max-w-sm mt-10 mb-6">
+<div class="border-2 border-gray-500 p-2 mx-auto max-w-sm mt-3 mb-3">
     <h1 class="text-lg font-semibold text-center mb-2">
         {{ $mainTitle }}
     </h1>
