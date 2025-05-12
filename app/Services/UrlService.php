@@ -121,7 +121,14 @@ class UrlService
 
         [$version, $verification_string] = $parts;
         $verification_string = Crypt::decryptString($verification_string);
-        [$StudentId, $InternshipId] = explode('-', $verification_string);
+        $parts = explode('-', $verification_string);
+        
+        // Ensure we have both parts before unpacking
+        if (count($parts) < 2) {
+            return ['StudentId' => $parts[0] ?? null, 'InternshipId' => null];
+        }
+        
+        [$StudentId, $InternshipId] = $parts;
 
         return ['StudentId' => $StudentId, 'InternshipId' => $InternshipId];
     }
