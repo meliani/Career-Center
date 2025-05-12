@@ -4,6 +4,7 @@ namespace App\Filament\App\Resources\ApprenticeshipResource\Pages;
 
 use App\Enums\Status;
 use App\Filament\Actions\Action\ApplyForCancelInternshipAction;
+use App\Filament\Actions\Action\AddApprenticeshipAmendmentAction;
 use App\Filament\Actions\Action\Processing\GenerateApprenticeshipAgreementAction;
 use App\Filament\App\Resources\ApprenticeshipResource;
 use Filament\Actions;
@@ -38,23 +39,31 @@ class ViewApprenticeship extends ViewRecord
                 ->color('warning')
                 ->visible(fn () => $this->record->status === Status::Draft),
                 
-            ApplyForCancelInternshipAction::make('Apply for cancellation')
-                ->label(__('Apply for cancellation'))
-                ->icon('heroicon-o-bolt-slash')
-                ->color('danger')
-                ->visible(fn () => $this->record->status !== Status::Draft && $this->record->status !== Status::PendingCancellation),
+            AddApprenticeshipAmendmentAction::make('request_amendment')
+                ->label(__('Request Amendment'))
+                ->icon('heroicon-o-pencil-square')
+                ->color('warning')
+                ->visible(fn () => $this->record->status !== Status::Draft && 
+                                   $this->record->status !== Status::PendingCancellation && 
+                                   !$this->record->hasPendingAmendmentRequests()),
                 
-            GenerateApprenticeshipAgreementAction::make('generate_agreement')
-                ->label(__('Generate Agreement PDF'))
-                ->icon('heroicon-o-document-arrow-down')
-                ->color('primary')
-                ->visible(fn () => $this->record->status == Status::Announced || $this->record->status == Status::Validated),
+            // ApplyForCancelInternshipAction::make('Apply for cancellation')
+            //     ->label(__('Apply for cancellation'))
+            //     ->icon('heroicon-o-bolt-slash')
+            //     ->color('danger')
+            //     ->visible(fn () => $this->record->status !== Status::Draft && $this->record->status !== Status::PendingCancellation),
                 
-            GenerateApprenticeshipAgreementAction::make('generate_draft_agreement')
-                ->label(__('Generate Draft Agreement PDF'))
-                ->icon('heroicon-o-document-arrow-down')
-                ->color('primary')
-                ->visible(fn () => $this->record->status == Status::Draft),
+            // GenerateApprenticeshipAgreementAction::make('generate_agreement')
+            //     ->label(__('Generate Agreement PDF'))
+            //     ->icon('heroicon-o-document-arrow-down')
+            //     ->color('primary')
+            //     ->visible(fn () => $this->record->status == Status::Announced || $this->record->status == Status::Validated),
+                
+            // GenerateApprenticeshipAgreementAction::make('generate_draft_agreement')
+            //     ->label(__('Generate Draft Agreement PDF'))
+            //     ->icon('heroicon-o-document-arrow-down')
+            //     ->color('primary')
+            //     ->visible(fn () => $this->record->status == Status::Draft),
         ];
     }
     

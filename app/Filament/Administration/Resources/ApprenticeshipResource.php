@@ -4,6 +4,7 @@ namespace App\Filament\Administration\Resources;
 
 use App\Enums;
 use App\Filament\Administration\Resources\ApprenticeshipResource\Pages;
+use App\Filament\Administration\Resources\ApprenticeshipResource\RelationManagers;
 use App\Filament\Core\BaseResource;
 use App\Models\Apprenticeship;
 use Filament\Forms;
@@ -213,7 +214,7 @@ class ApprenticeshipResource extends BaseResource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\AmendmentsRelationManager::class,
         ];
     }
 
@@ -237,7 +238,10 @@ class ApprenticeshipResource extends BaseResource
 
     public static function infolist(Infolist $infolist): Infolist
     {
-        $verification_document_url = Storage::disk('cancellation_verification')->url($infolist->getRecord()->verification_document_url);
+        $record = $infolist->getRecord();
+        $verification_document_url = $record->verification_document_url 
+            ? Storage::disk('cancellation_verification')->url($record->verification_document_url)
+            : null;
 
         return $infolist
             ->columns(12)

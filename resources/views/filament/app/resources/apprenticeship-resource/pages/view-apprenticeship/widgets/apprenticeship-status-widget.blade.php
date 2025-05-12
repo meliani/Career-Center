@@ -60,7 +60,7 @@
                         </div>
                         <div class="mt-2 text-sm {{ $date['date'] ? 'text-success-700' : 'text-gray-400' }}">
                             @if ($date['date'])
-                                {{ $date['date']->format('M d, Y') }}
+                                {{ $date['date'] }}
                             @else
                                 {{ __('Pending') }}
                             @endif

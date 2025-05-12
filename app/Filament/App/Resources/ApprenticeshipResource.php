@@ -3,6 +3,7 @@
 namespace App\Filament\App\Resources;
 
 use App\Enums;
+use App\Filament\Actions\Action\AddApprenticeshipAmendmentAction;
 use App\Filament\Actions\Action\ApplyForCancelInternshipAction;
 use App\Filament\Actions\Action\Processing\GenerateApprenticeshipAgreementAction;
 use App\Filament\App\Resources\ApprenticeshipResource\Pages;
@@ -202,6 +203,17 @@ class ApprenticeshipResource extends StudentBaseResource
                         ->color('warning')
                         ->label('Edit details')
                         ->disabled(fn ($record) => $record->status !== Enums\Status::Draft),
+                    Action::make('request_amendment')
+                        ->label(__('Request Amendment'))
+                        ->icon('heroicon-o-pencil-square')
+                        ->color('warning')
+                        ->action(function (Apprenticeship $record) {
+                            return redirect()->to(static::getUrl('view', ['record' => $record]));
+                        })
+                        ->visible(fn (Apprenticeship $record) => 
+                            $record->status !== Enums\Status::Draft && 
+                            $record->status !== Enums\Status::PendingCancellation && 
+                            !$record->hasPendingAmendmentRequests()),
                     ApplyForCancelInternshipAction::make('Apply for internship cancellation')
                         ->color('danger')
                         ->icon('heroicon-o-bolt-slash')
@@ -232,8 +244,6 @@ class ApprenticeshipResource extends StudentBaseResource
                     // Tables\Actions\ForceDeleteBulkAction::make(),
                     // Tables\Actions\RestoreBulkAction::make(),
                 ]),
-            ])
-            ->headerActions([
             ]);
 
     }
@@ -241,7 +251,7 @@ class ApprenticeshipResource extends StudentBaseResource
     public static function getRelations(): array
     {
         return [
-            //
+            \App\Filament\App\Resources\ApprenticeshipResource\RelationManagers\AmendmentsRelationManager::class,
         ];
     }
 
@@ -289,6 +299,13 @@ class ApprenticeshipResource extends StudentBaseResource
                                 Infolists\Components\TextEntry::make('status')
                                     ->label('Status')
                                     ->badge(),
+                                    
+                                Infolists\Components\TextEntry::make('amendment_status')
+                                    ->label('Amendment Status')
+                                    ->state(fn ($record) => $record->hasPendingAmendmentRequests() ? __('Amendment Pending') : null)
+                                    ->badge()
+                                    ->color('warning')
+                                    ->visible(fn ($record) => $record->hasPendingAmendmentRequests()),
                                 Infolists\Components\TextEntry::make('created_at')
                                     ->label('Created At')
                                     ->date(),

@@ -221,4 +221,54 @@ class Apprenticeship extends Model
         // example of variables : path:"storage/pdf/apprenticeship_agreements/FirstYear"	filename:"convention-de-stage-aya-hichabe-1714397022.pdf"
         return asset($this->pdf_path) . '/' . $this->pdf_file_name;
     }
+    
+    /**
+     * Get the amendments for the apprenticeship.
+     */
+    public function amendments()
+    {
+        return $this->hasMany(ApprenticeshipAmendment::class);
+    }
+    
+    /**
+     * Check if the apprenticeship has any pending amendments.
+     */
+    public function hasPendingAmendmentRequests(): bool
+    {
+        return $this->amendments()->where('status', 'pending')->exists();
+    }
+    
+    /**
+     * Get pending amendments relationship - used for Filament filtering.
+     */
+    public function pendingAmendments()
+    {
+        return $this->amendments()->where('status', 'pending');
+    }
+    
+    /**
+     * Apply an amendment that has been validated.
+     */
+    public function applyAmendment(ApprenticeshipAmendment $amendment)
+    {
+        if ($amendment->status === 'validated') {
+            if (!empty($amendment->title)) {
+                $this->title = $amendment->title;
+            }
+            
+            if (!empty($amendment->description)) {
+                $this->description = $amendment->description;
+            }
+            
+            if ($amendment->new_starting_at) {
+                $this->starting_at = $amendment->new_starting_at;
+            }
+            
+            if ($amendment->new_ending_at) {
+                $this->ending_at = $amendment->new_ending_at;
+            }
+            
+            $this->save();
+        }
+    }
 }
