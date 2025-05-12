@@ -273,13 +273,14 @@ class CreateApprenticeship extends CreateRecord
                                 })
                                 ->columnSpanFull(),
 
-                            Forms\Components\Select::make('internship_level')
-                                ->label(__('Apprenticeship Type'))
-                                ->options([
-                                    'FirstYear' => __('First Year'),
-                                    'SecondYear' => __('Second Year'),
-                                ])
-                                ->required(),
+                            // Forms\Components\Select::make('internship_level')
+                            //     ->label(__('Apprenticeship Type'))
+                            //     ->options([
+                            //         \App\Enums\InternshipLevel::IntroductoryInternship->value => __('First Year'), 
+                            //         \App\Enums\InternshipLevel::TechnicalInternship->value => __('Second Year'),
+                            //         \App\Enums\InternshipLevel::FinalYearInternship->value => __('Final Year'),
+                            //     ])
+                            //     ->required(),
 
                             Forms\Components\MarkdownEditor::make('description')
                                 ->label(__('Description of Tasks & Responsibilities'))
