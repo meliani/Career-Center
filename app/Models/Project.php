@@ -62,6 +62,8 @@ class Project extends Core\BackendBaseModel
         'defense_authorized_by',
         'evaluation_sheet_url',
         'organization_evaluation_sheet_url',
+        'midterm_due_date',
+        'midterm_report_status',
     ];
 
     protected $appends = [
@@ -76,8 +78,10 @@ class Project extends Core\BackendBaseModel
     protected $casts = [
         'start_date' => 'date',
         'end_date' => 'date',
+        'midterm_due_date' => 'date',
         'language' => Enums\Language::class,
         'defense_status' => Enums\DefenseStatus::class,
+        'midterm_report_status' => Enums\MidTermReportStatus::class,
     ];
 
     // public function internship_agreements()

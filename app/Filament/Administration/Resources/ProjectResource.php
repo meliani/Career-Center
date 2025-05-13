@@ -179,6 +179,14 @@ class ProjectResource extends Core\BaseResource
                         Forms\Components\DatePicker::make('end_date')
                             ->native(false)
                             ->disabled(fn () => (auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()) === false),
+                        Forms\Components\DatePicker::make('midterm_due_date')
+                            ->label(__('Midterm Due Date'))
+                            ->native(false)
+                            ->disabled(fn () => (auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()) === false),
+                        Forms\Components\Select::make('midterm_report_status')
+                            ->label(__('Midterm Report Status'))
+                            ->options(\App\Enums\MidTermReportStatus::class)
+                            ->disabled(fn () => (auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()) === false),
                     ])
                     ->collapsible()
                     ->columns(2),
@@ -260,11 +268,21 @@ class ProjectResource extends Core\BaseResource
                 //     ->collapsible()
                 //     ->label(__('Defense status')),
             ])
-            ->columns(
-                $livewire->isGridLayout()
-                    ? \App\Services\Filament\Tables\Projects\ProjectsGrid::get()
-                    : \App\Services\Filament\Tables\Projects\ProjectsTable::get()
-            )
+            ->columns([
+                ...(
+                    $livewire->isGridLayout()
+                        ? \App\Services\Filament\Tables\Projects\ProjectsGrid::get()
+                        : \App\Services\Filament\Tables\Projects\ProjectsTable::get()
+                ),
+                Tables\Columns\TextColumn::make('midterm_due_date')
+                    ->label(__('Midterm Due Date'))
+                    ->date()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('midterm_report_status')
+                    ->label(__('Midterm Status'))
+                    ->badge()
+                    ->sortable(),
+            ])
             ->contentGrid(
                 fn () => $livewire->isGridLayout()
                     ? [

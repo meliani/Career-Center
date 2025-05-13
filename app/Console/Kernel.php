@@ -18,6 +18,7 @@ class Kernel extends ConsoleKernel
             ->dailyAt('15:40');
         $schedule->command(\Spatie\Health\Commands\RunHealthChecksCommand::class)->everyMinute();
         $schedule->command(\Spatie\Health\Commands\DispatchQueueCheckJobsCommand::class)->everyMinute();
+        $schedule->job(new \App\Jobs\UpdateMidtermDueDates())->twiceDaily(1, 13);
     }
 
     /**
