@@ -25,7 +25,7 @@ class ViewFinalYearInternshipAgreement extends ViewRecord
                 ->icon('heroicon-o-document-arrow-down')
                 ->color('primary')
                 ->size(ActionSize::Small)
-                ->visible(fn (FinalYearInternshipAgreement $record) => $record->status == Enums\Status::Announced || $record->status == Enums\Status::Validated)
+                ->visible(fn (FinalYearInternshipAgreement $record) => $record->status == Enums\Status::Announced || $record->status == Enums\Status::Validated || $record->status == Enums\Status::Signed)
                 ->record(fn () => $this->getRecord()),
                 
             GenerateFinalYearInternshipAgreementPageAction::make('generate_draft_agreement_pdf')
