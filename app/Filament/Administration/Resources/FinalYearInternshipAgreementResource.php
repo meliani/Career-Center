@@ -631,6 +631,16 @@ class FinalYearInternshipAgreementResource extends BaseResource
                                     ->url(fn ($record) => $record->agreement_pdf_url, shouldOpenInNewTab: true)
                                     ->badge()
                                     ->color('success'),
+                                    
+                                Infolists\Components\TextEntry::make('pdf_path')
+                                    ->label(__('Generated PDF'))
+                                    ->placeholder(__('No PDF generated yet'))
+                                    ->formatStateUsing(fn ($record) => $record->pdf_path ? __('View/Download PDF') : __('No PDF generated yet'))
+                                    ->badge()
+                                    ->color(fn ($record) => $record->pdf_path ? 'success' : 'gray')
+                                    ->icon('heroicon-o-document')
+                                    ->url(fn ($record) => $record->pdf_path ? asset($record->pdf_path . '/' . $record->pdf_file_name) : null, shouldOpenInNewTab: true)
+                                    ->visible(fn ($record) => $record->pdf_path || $record->pdf_file_name),
 
                                 Infolists\Components\SpatieTagsEntry::make('tags')
                                     ->type('internships')
