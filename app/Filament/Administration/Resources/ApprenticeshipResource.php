@@ -323,7 +323,15 @@ class ApprenticeshipResource extends BaseResource
                             ->schema([
                                 Infolists\Components\TextEntry::make('status')
                                     ->badge(),
-                                // ... other status entries
+                                Infolists\Components\TextEntry::make('agreement_pdf_url')
+                                    ->label(__('Agreement PDF'))
+                                    ->placeholder(__('No PDF generated yet'))
+                                    ->formatStateUsing(fn ($record) => $record->pdf_path ? __('View/Download PDF') : __('No PDF generated yet'))
+                                    ->badge()
+                                    ->color(fn ($record) => $record->pdf_path ? 'success' : 'gray')
+                                    ->icon('heroicon-o-document')
+                                    ->url(fn ($record) => $record->pdf_path ? asset($record->pdf_path . '/' . $record->pdf_file_name) : null, shouldOpenInNewTab: true)
+                                    ->visible(fn ($record) => $record->pdf_path || $record->pdf_file_name),
                             ]),
 
                         Infolists\Components\Section::make(__('Important Dates'))

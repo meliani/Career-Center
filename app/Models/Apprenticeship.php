@@ -113,7 +113,26 @@ class Apprenticeship extends Model
         static::saving(function (Apprenticeship $apprenticeship) {
             if ($apprenticeship->starting_at && $apprenticeship->ending_at) {
                 $weeks = ceil($apprenticeship->starting_at->floatDiffInRealWeeks($apprenticeship->ending_at));
-                if ($weeks > 8) {
+                
+                // Only enforce 8-week restriction if not being saved from administration panel
+                $isAdministrator = auth()->check() && auth()->user()->isAdministrator();
+                $currentPath = request()->path();
+                $isBackendUrl = request()->is('*/backend/*');
+                
+                $isAdminOperation = $isAdministrator;
+                
+                // Log route information for debugging if needed
+                if ($weeks > 8 && $isAdministrator) {
+                    \Illuminate\Support\Facades\Log::debug('Apprenticeship 8-week validation triggered', [
+                        'current_path' => $currentPath,
+                        'is_admin' => $isAdministrator,
+                        'is_backend_url' => $isBackendUrl,
+                        'admin_operation_bypass' => $isAdminOperation,
+                        'weeks' => $weeks
+                    ]);
+                }
+                
+                if ($weeks > 8 && !$isAdminOperation) {
                     throw new \Exception('The internship period cannot exceed 8 weeks.');
                 }
             }
