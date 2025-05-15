@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Period\Period;
 use Spatie\Tags\HasTags;
+use Filament\Notifications\Notification;
 
 class Apprenticeship extends Model
 {
@@ -114,7 +115,12 @@ class Apprenticeship extends Model
             if ($apprenticeship->starting_at && $apprenticeship->ending_at) {
                 $weeks = ceil($apprenticeship->starting_at->floatDiffInRealWeeks($apprenticeship->ending_at));
                 if ($weeks > 8 && auth()->user() instanceof Student) {
-                    throw new \Exception('The internship period cannot exceed 8 weeks.');
+                    Notification::make()
+                        ->title('Internship Period Exceeded')
+                        ->body('The internship period cannot exceed 8 weeks.')
+                        ->danger()
+                        ->send();
+                    //throw new \Exception('The internship period cannot exceed 8 weeks.');
                 }
 
                 // Only enforce 8-week restriction if not being saved from administration panel
