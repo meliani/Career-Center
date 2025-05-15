@@ -268,11 +268,17 @@ class ProjectsTable
             Tables\Columns\TextColumn::make('start_date')
                 ->label('Start Date')
                 ->date('d/m/Y')
+                ->formatStateUsing(function ($record) {
+                    return $record->start_date ? Carbon::parse($record->start_date)->format('d/m/Y') : 'not defined';
+                })
                 ->toggleable(isToggledHiddenByDefault: true),
 
             Tables\Columns\TextColumn::make('end_date')
                 ->label('End Date')
                 ->date('d/m/Y')
+                ->formatStateUsing(function ($record) {
+                    return $record->end_date ? Carbon::parse($record->end_date)->format('d/m/Y') : 'not defined';
+                })
                 ->toggleable(isToggledHiddenByDefault: true),
 
             Tables\Columns\TextColumn::make('mid_term_deadline')
