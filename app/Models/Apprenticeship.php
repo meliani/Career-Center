@@ -113,7 +113,10 @@ class Apprenticeship extends Model
         static::saving(function (Apprenticeship $apprenticeship) {
             if ($apprenticeship->starting_at && $apprenticeship->ending_at) {
                 $weeks = ceil($apprenticeship->starting_at->floatDiffInRealWeeks($apprenticeship->ending_at));
-                
+                if (auth()->user() instanceof Student) {
+                    throw new \Exception('The internship period cannot exceed 8 weeks.');
+                }
+
                 // Only enforce 8-week restriction if not being saved from administration panel
                 $isAdministrator = auth()->check() && auth()->user()->isAdministrator();
                 $currentPath = request()->path();
