@@ -281,21 +281,6 @@ class ProjectsTable
                 })
                 ->toggleable(isToggledHiddenByDefault: true),
 
-            Tables\Columns\TextColumn::make('mid_term_deadline')
-                ->label('Mid-term Deadline')
-                ->getStateUsing(function ($record) {
-                    if ($record->start_date && $record->end_date) {
-                        $startDate = Carbon::parse($record->start_date);
-                        $endDate = Carbon::parse($record->end_date);
-                        $totalDays = $startDate->diffInDays($endDate);
-                        $midPointDays = floor($totalDays / 2);
-                        return $startDate->copy()->addDays($midPointDays)->format('d/m/Y');
-                    }
-                    return 'à définir';
-                })
-                ->searchable(false)
-                ->toggleable(isToggledHiddenByDefault: true),
-
             Tables\Columns\TextColumn::make('created_at')
                 ->searchable(false)
                 ->sortable(false)
