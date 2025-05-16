@@ -293,7 +293,7 @@ class EditApprenticeship extends EditRecord
 
                     Forms\Components\Section::make('Keywords')
                         ->schema([
-                            SpatieTagsInput::make('keywords')
+                            SpatieTagsInput::make('tags')
                                 ->label(__('Keywords'))
                                 ->helperText(__('Add keywords that describe your apprenticeship'))
                                 ->splitKeys(['Tab', ',', ' '])
