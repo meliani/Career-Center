@@ -70,7 +70,7 @@
                     </div>
 
                     {{-- Defense Information Card --}}
-                    @if($project->timetable)
+                    @if($project->timetable && false)
                         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 p-4 shadow-sm hover:shadow-md transition-all duration-300">
                             <div class="space-y-4">
                                 <div class="flex items-center justify-between">
