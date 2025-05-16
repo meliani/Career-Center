@@ -3,12 +3,15 @@
 namespace App\Filament\Administration\Resources\StudentResource\Pages;
 
 use App\Filament\Administration\Resources\StudentResource;
+use App\Imports\StudentsImport;
 use App\Models\Student;
 use App\Models\Year;
 use Filament\Notifications\Notification;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class ListStudents extends ListRecords
 {
@@ -18,6 +21,82 @@ class ListStudents extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+            Actions\Action::make('importStudents')
+                ->label('Import Students')
+                ->icon('heroicon-o-arrow-up-tray')
+                ->color('success')
+                ->form([
+                    \Filament\Forms\Components\FileUpload::make('csv_file')
+                        ->label('CSV File')
+                        ->disk('local')
+                        ->directory('temp')
+                        ->acceptedFileTypes(['text/csv', 'application/vnd.ms-excel'])
+                        ->required(),
+                    \Filament\Forms\Components\Select::make('merge_mode')
+                        ->label('Merge Mode')
+                        ->options([
+                            'update' => 'Update existing students',
+                            'skip' => 'Skip existing students',
+                            'replace' => 'Replace existing students',
+                        ])
+                        ->default('update')
+                        ->required()
+                        ->helperText('How to handle existing students found in the import file'),
+                    \Filament\Forms\Components\Select::make('academic_year')
+                        ->label('Academic Year')
+                        ->options(\App\Models\Year::pluck('title', 'title'))
+                        ->default(\App\Models\Year::current()->title)
+                        ->required(),
+                ])
+                ->action(function (array $data): void {
+                    $filePath = storage_path('app/' . $data['csv_file']);
+                    
+                    try {
+                        $import = new \App\Imports\StudentsImport(
+                            $data['merge_mode'],
+                            $data['academic_year']
+                        );
+                        
+                        $import->import($filePath);
+                        
+                        // Get the results
+                        $results = $import->getImportResults();
+                        
+                        // Show a notification with the results
+                        \Filament\Notifications\Notification::make()
+                            ->title('Import Completed')
+                            ->body("Created: {$results['created']}, Updated: {$results['updated']}, Skipped: {$results['skipped']}, Failed: {$results['failed']}")
+                            ->success()
+                            ->send();
+                        
+                        // If there were any errors, log them and inform the user
+                        if (!empty($results['errors'])) {
+                            // Log the detailed errors
+                            \Illuminate\Support\Facades\Log::error('Student import errors', [
+                                'errors' => $results['errors'],
+                            ]);
+                            
+                            // Notify the user that there were errors
+                            \Filament\Notifications\Notification::make()
+                                ->title('Import Warnings')
+                                ->body("There were {$results['failed']} errors during import. See application logs for details.")
+                                ->warning()
+                                ->send();
+                        }
+                    } catch (\Exception $e) {
+                        \Filament\Notifications\Notification::make()
+                            ->title('Import Failed')
+                            ->body("Error: {$e->getMessage()}")
+                            ->danger()
+                            ->send();
+                        
+                        \Illuminate\Support\Facades\Log::error('Student import failed', [
+                            'error' => $e->getMessage(),
+                            'trace' => $e->getTraceAsString(),
+                        ]);
+                    }
+                })
+                ->visible(fn () => auth()->user()->isAdministrator()),
             Actions\Action::make('PastEmailsToChange')
                 ->label('Update Students by Email and IDs')
                 ->form([

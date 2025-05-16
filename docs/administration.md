@@ -8,6 +8,12 @@
 - Bulk operations
 - SSO integration
 
+### Student Data Management
+- [Student Import from CSV](guides/student-import.md)
+- Student record updates
+- Profile verification
+- Academic progress tracking
+
 ### Email System
 - Campaign configuration
 - Template management
