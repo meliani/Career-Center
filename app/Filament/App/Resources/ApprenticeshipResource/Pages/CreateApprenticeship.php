@@ -346,14 +346,15 @@ class CreateApprenticeship extends CreateRecord
                                 ]),
                         ]),
 
-                    Forms\Components\Section::make('Keywords')
+                    /*Forms\Components\Section::make('Keywords')
                         ->schema([
                             SpatieTagsInput::make('tags')
+                            ->type('internships')
                                 ->label(__('Keywords'))
                                 ->helperText(__('Add keywords that describe your apprenticeship'))
                                 ->splitKeys(['Tab', ',', ' '])
                                 ->columnSpanFull(),
-                        ]),
+                        ]),*/
 
                     Forms\Components\Section::make('Status')
                         ->schema([

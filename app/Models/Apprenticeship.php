@@ -74,6 +74,7 @@ class Apprenticeship extends Model
         'signed_by_student_at' => 'datetime',
         'signed_by_organization_at' => 'datetime',
         'signed_by_administration_at' => 'datetime',
+        'tags' => 'array',
     ];
 
     protected $dates = [
