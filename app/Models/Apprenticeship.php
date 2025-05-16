@@ -124,7 +124,7 @@ class Apprenticeship extends Model
 
                         return false; // Prevent saving the model
                     //throw new \Exception('The internship period cannot exceed 8 weeks.');
-                } else {
+                } elseif ($weeks > 8 && (auth()->user() instanceof User)) {
                     // Only enforce 8-week restriction if not being saved from administration panel
                     $isAdministrator = auth()->check() && auth()->user()->isAdministrator();
                     $currentPath = request()->path();
