@@ -230,7 +230,7 @@ class ProjectsTable
                         ->sortable(true)
                         //->dateTime('d M Y H:i')
                         ->formatStateUsing(function ($record) {
-                        return $record->start_date ? Carbon::parse($record->start_date)->format('d/m/Y H:i') : __('not defined');
+                        return $record->timetable->timeslot->start_time ? Carbon::parse($record->timetable->timeslot->start_time)->format('d/m/Y H:i') : __('not defined');
                         }),
                     Tables\Columns\TextColumn::make('timetable.timeslot.end_time')
                         ->label('Defense end date')
@@ -239,7 +239,7 @@ class ProjectsTable
                         ->toggleable(isToggledHiddenByDefault: true)
                         //->dateTime('d M Y H:i')
                         ->formatStateUsing(function ($record) {
-                        return $record->end_date ? Carbon::parse($record->end_date)->format('d/m/Y H:i') : __('not defined');
+                        return $record->timetable->timeslot->end_time ? Carbon::parse($record->timetable->timeslot->end_time)->format('d/m/Y H:i') : __('not defined');
                         }),
                     // Tables\Columns\TextColumn::make('timetable.timeslot.start_date')
                     //     ->toggleable(isToggledHiddenByDefault: true)
