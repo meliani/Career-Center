@@ -241,21 +241,21 @@ class ProjectsTable
                         ->formatStateUsing(function ($record) {
                         return $record->timetable->timeslot->end_time ? Carbon::parse($record->timetable->timeslot->end_time)->format('d/m/Y H:i') : __('not defined');
                         }),
-                    // Tables\Columns\TextColumn::make('timetable.timeslot.start_date')
+                    // Tables\Columns\TextColumn::make('defense_start_time')
                     //     ->toggleable(isToggledHiddenByDefault: true)
                     //     ->label('Defense start time')
                     //     ->searchable(false)
                     //     ->sortable(false)
                     //     ->formatStateUsing(function ($record) {
-                    //         return $record->start_date ? Carbon::parse($record->start_date)->format('H:i') : 'not defined';
+                    //         return $record->timetable->timeslot->start_time ? Carbon::parse($record->timetable->timeslot->start_time)->format('H:i') : __('not defined');
                     //     }),
-                    // Tables\Columns\TextColumn::make('timetable.timeslot.end_date')
+                    // Tables\Columns\TextColumn::make('defense_end_time')
                     //     ->label('Defense end time')
                     //     ->searchable(false)
                     //     ->sortable(false)
                     //     ->toggleable(isToggledHiddenByDefault: true)
                     //     ->formatStateUsing(function ($record) {
-                    //         return $record->end_date ? Carbon::parse($record->end_date)->format('H:i') : 'not defined';
+                    //         return $record->timetable->timeslot->end_time ? Carbon::parse($record->timetable->timeslot->end_time)->format('H:i') : __('not defined');
                     //     }),
                     Tables\Columns\TextColumn::make('timetable.room.name')
                         ->toggleable(isToggledHiddenByDefault: true)
