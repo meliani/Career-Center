@@ -120,6 +120,8 @@ class Apprenticeship extends Model
                         ->body('The internship period cannot exceed 8 weeks.')
                         ->danger()
                         ->send();
+
+                        return false; // Prevent saving the model
                     //throw new \Exception('The internship period cannot exceed 8 weeks.');
                 }
 
