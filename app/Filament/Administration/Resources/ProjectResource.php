@@ -461,8 +461,8 @@ class ProjectResource extends Core\BaseResource
                                 'updated_at',
                                 'timetable.timeslot.start_time',
                                 'timetable.timeslot.end_time',
-                                'start_date',
-                                'end_date',
+                                //'start_date',
+                                //'end_date',
                             ])
                             ->withColumns([
                                 FilamentExcel\Columns\Column::make('title')->width(10),
