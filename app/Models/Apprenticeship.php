@@ -114,6 +114,43 @@ class Apprenticeship extends Model
         // Validate internship period on both create and update operations
         static::saving(function (Apprenticeship $apprenticeship) {
             if ($apprenticeship->starting_at && $apprenticeship->ending_at) {
+                // Check if apprenticeship starts before May 15th
+                $validStartDate = Carbon::create(null, 5, 15); // May 15th of current year
+                if ($apprenticeship->starting_at->year > $validStartDate->year) {
+                    $validStartDate->setYear($apprenticeship->starting_at->year);
+                } elseif ($apprenticeship->starting_at->year < $validStartDate->year) {
+                    $validStartDate->subYear();
+                }
+                
+                // Check if apprenticeship ends after July 31st
+                $validEndDate = Carbon::create(null, 7, 31); // July 31st of current year
+                if ($apprenticeship->ending_at->year > $validEndDate->year) {
+                    $validEndDate->setYear($apprenticeship->ending_at->year);
+                } elseif ($apprenticeship->ending_at->year < $validEndDate->year) {
+                    $validEndDate->subYear();
+                }
+                
+                // Validate dates
+                if ($apprenticeship->starting_at->lt($validStartDate) && !app()->runningInConsole()) {
+                    Notification::make()
+                        ->title('Invalid Start Date')
+                        ->body('The apprenticeship cannot start before May 15th.')
+                        ->danger()
+                        ->send();
+                        
+                    return false; // Prevent saving the model
+                }
+                
+                if ($apprenticeship->ending_at->gt($validEndDate) && !app()->runningInConsole()) {
+                    Notification::make()
+                        ->title('Invalid End Date')
+                        ->body('The apprenticeship cannot end after July 31st.')
+                        ->danger()
+                        ->send();
+                        
+                    return false; // Prevent saving the model
+                }
+                
                 $weeks = ceil($apprenticeship->starting_at->floatDiffInRealWeeks($apprenticeship->ending_at));
                 if ($weeks > 8 && (auth()->user() instanceof Student)) {
                     Notification::make()

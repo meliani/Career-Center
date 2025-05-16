@@ -30,7 +30,9 @@ class CreateApprenticeship extends CreateRecord
 
     protected function getRedirectUrl(): string
     {
-        return $this->getResource()::getUrl('view', ['record' => $this->record]);
+        return $this->record
+            ? $this->getResource()::getUrl('view', ['record' => $this->record])
+            : $this->getResource()::getUrl('index');
     }
     
     protected function getCreatedNotification(): ?Notification
