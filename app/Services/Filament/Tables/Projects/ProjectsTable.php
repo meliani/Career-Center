@@ -225,16 +225,38 @@ class ProjectsTable
                         ->searchable(false),
                     Tables\Columns\TextColumn::make('timetable.timeslot.start_time')
                         ->toggleable(isToggledHiddenByDefault: true)
-                        ->label('Defense start time')
+                        ->label('Defense start date')
                         ->searchable(false)
                         ->sortable(true)
-                        ->dateTime('d M Y H:i'),
+                        //->dateTime('d M Y H:i')
+                        ->formatStateUsing(function ($record) {
+                        return $record->start_date ? Carbon::parse($record->start_date)->format('d/m/Y H:i') : __('not defined');
+                        }),
                     Tables\Columns\TextColumn::make('timetable.timeslot.end_time')
-                        ->label('Defense end time')
+                        ->label('Defense end date')
                         ->searchable(false)
                         ->sortable(false)
                         ->toggleable(isToggledHiddenByDefault: true)
-                        ->dateTime('d M Y H:i'),
+                        //->dateTime('d M Y H:i')
+                        ->formatStateUsing(function ($record) {
+                        return $record->end_date ? Carbon::parse($record->end_date)->format('d/m/Y H:i') : __('not defined');
+                        }),
+                    // Tables\Columns\TextColumn::make('timetable.timeslot.start_date')
+                    //     ->toggleable(isToggledHiddenByDefault: true)
+                    //     ->label('Defense start time')
+                    //     ->searchable(false)
+                    //     ->sortable(false)
+                    //     ->formatStateUsing(function ($record) {
+                    //         return $record->start_date ? Carbon::parse($record->start_date)->format('H:i') : 'not defined';
+                    //     }),
+                    // Tables\Columns\TextColumn::make('timetable.timeslot.end_date')
+                    //     ->label('Defense end time')
+                    //     ->searchable(false)
+                    //     ->sortable(false)
+                    //     ->toggleable(isToggledHiddenByDefault: true)
+                    //     ->formatStateUsing(function ($record) {
+                    //         return $record->end_date ? Carbon::parse($record->end_date)->format('H:i') : 'not defined';
+                    //     }),
                     Tables\Columns\TextColumn::make('timetable.room.name')
                         ->toggleable(isToggledHiddenByDefault: true)
                         ->searchable(false)

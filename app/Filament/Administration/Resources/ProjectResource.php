@@ -459,8 +459,8 @@ class ProjectResource extends Core\BaseResource
                             ->ignoreFormatting([
                                 'created_at',
                                 'updated_at',
-                                'timetable.timeslot.start_time',
-                                'timetable.timeslot.end_time',
+                                // 'timetable.timeslot.start_time',
+                                // 'timetable.timeslot.end_time',
                                 //'start_date',
                                 //'end_date',
                             ])
