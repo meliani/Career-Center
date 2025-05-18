@@ -472,10 +472,10 @@ class ProjectResource extends Core\BaseResource
                                 FilamentExcel\Columns\Column::make('reviewer1')->width(10)->heading(__('First Reviewer')),
                                 FilamentExcel\Columns\Column::make('reviewer2')->width(10)->heading(__('Second Reviewer')),
                                 FilamentExcel\Columns\Column::make('start_date')
-                                    ->heading(__('Start Date'))
+                                    ->heading(__('Internship Start Date'))
                                     ->formatStateUsing(fn($state) => $state ? \Carbon\Carbon::parse($state)->format('Y-m-d H:i:s') : null),
                                 FilamentExcel\Columns\Column::make('end_date')
-                                    ->heading(__('End Date'))
+                                    ->heading(__('Internship End Date'))
                                     ->formatStateUsing(fn($state) => $state ? \Carbon\Carbon::parse($state)->format('Y-m-d H:i:s') : null),
                                 FilamentExcel\Columns\Column::make('midterm_due_date')
                                     ->heading(__('Midterm Due Date'))
@@ -489,6 +489,34 @@ class ProjectResource extends Core\BaseResource
                             ]),
                     ])
                     ->tooltip(__('Displayed columns will be exported, you can change the columns to be exported from the table settings')),
+                FilamentExcel\Actions\Tables\ExportAction::make('exportPlanning')
+                    ->label(__('Export Planning'))
+                    ->exports([
+                        FilamentExcel\Exports\ExcelExport::make()
+                            ->askForFilename()
+                            ->askForWriterType()
+                            ->withFilename(fn ($filename) => 'planning-' . $filename)
+                            ->fromTable()
+                            ->withColumns([
+                                FilamentExcel\Columns\Column::make('title')->width(10)->heading(__('Project Title')),
+                                FilamentExcel\Columns\Column::make('students_names')->width(10)->heading(__('Students')),
+                                FilamentExcel\Columns\Column::make('timetable.timeslot.start_time')
+                                    ->heading(__('Defense Date'))
+                                    ->formatStateUsing(fn($state) => $state ? \Carbon\Carbon::parse($state)->format('Y-m-d') : null),
+                                FilamentExcel\Columns\Column::make('timetable.timeslot.start_time')
+                                    ->heading(__('Defense Start Time'))
+                                    ->formatStateUsing(fn($state) => $state ? \Carbon\Carbon::parse($state)->format('H:i:s') : null),
+                                FilamentExcel\Columns\Column::make('timetable.timeslot.end_time')
+                                    ->heading(__('Defense End Time'))
+                                    ->formatStateUsing(fn($state) => $state ? \Carbon\Carbon::parse($state)->format('H:i:s') : null),
+                                FilamentExcel\Columns\Column::make('timetable.room.name')
+                                    ->heading(__('Room')),
+                                FilamentExcel\Columns\Column::make('academic_supervisor_name')->width(10)->heading(__('Academic Supervisor')),
+                                FilamentExcel\Columns\Column::make('reviewer1')->width(10)->heading(__('First Reviewer')),
+                                FilamentExcel\Columns\Column::make('reviewer2')->width(10)->heading(__('Second Reviewer')),
+                            ]),
+                    ])
+                    ->tooltip(__('Export planning with defense date and time separated')),
                 TableLayoutToggle::getToggleViewTableAction(compact: true),
                 // Tables\Actions\ActionGroup::make([
                 //     \App\Filament\Actions\Action\Processing\ImportProfessorsFromInternshipAgreements::make('Import Professors From Internship Agreements')
