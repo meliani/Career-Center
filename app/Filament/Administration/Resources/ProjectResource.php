@@ -257,8 +257,8 @@ class ProjectResource extends Core\BaseResource
             ->filtersLayout(FiltersLayout::AboveContentCollapsible)
             // ->striped()
             // ->deferLoading()
-            ->defaultSort('timetable.timeslot.start_time')
-            ->defaultGroup('timetable.timeslot.start_time')
+            ->defaultSort('end_date', 'asc')
+            // ->defaultGroup('timetable.timeslot.start_time')
             ->groups([
                 // Tables\Grouping\Group::make('timetable.timeslot.start_time')
                 //     ->date()
