@@ -500,15 +500,27 @@ class ProjectResource extends Core\BaseResource
                             ->withColumns([
                                 FilamentExcel\Columns\Column::make('title')->width(10)->heading(__('Project Title')),
                                 FilamentExcel\Columns\Column::make('students_names')->width(10)->heading(__('Students')),
-                                FilamentExcel\Columns\Column::make('timetable.timeslot.start_time')
+                                FilamentExcel\Columns\Column::make('defense_date')
                                     ->heading(__('Defense Date'))
-                                    ->formatStateUsing(fn($state) => $state ? \Carbon\Carbon::parse($state)->format('Y-m-d') : null),
-                                FilamentExcel\Columns\Column::make('timetable.timeslot.start_time')
+                                    ->formatStateUsing(fn($state, $record) =>
+                                        optional(optional($record->timetable->timeslot)->start_time)
+                                            ? \Carbon\Carbon::parse($record->timetable->timeslot->start_time)->format('Y-m-d')
+                                            : null
+                                    ),
+                                FilamentExcel\Columns\Column::make('defense_start_time')
                                     ->heading(__('Defense Start Time'))
-                                    ->formatStateUsing(fn($state) => $state ? \Carbon\Carbon::parse($state)->format('H:i:s') : null),
-                                FilamentExcel\Columns\Column::make('timetable.timeslot.end_time')
+                                    ->formatStateUsing(fn($state, $record) =>
+                                        optional(optional($record->timetable->timeslot)->start_time)
+                                            ? \Carbon\Carbon::parse($record->timetable->timeslot->start_time)->format('H:i:s')
+                                            : null
+                                    ),
+                                FilamentExcel\Columns\Column::make('defense_end_time')
                                     ->heading(__('Defense End Time'))
-                                    ->formatStateUsing(fn($state) => $state ? \Carbon\Carbon::parse($state)->format('H:i:s') : null),
+                                    ->formatStateUsing(fn($state, $record) =>
+                                        optional(optional($record->timetable->timeslot)->end_time)
+                                            ? \Carbon\Carbon::parse($record->timetable->timeslot->end_time)->format('H:i:s')
+                                            : null
+                                    ),
                                 FilamentExcel\Columns\Column::make('timetable.room.name')
                                     ->heading(__('Room')),
                                 FilamentExcel\Columns\Column::make('academic_supervisor_name')->width(10)->heading(__('Academic Supervisor')),
