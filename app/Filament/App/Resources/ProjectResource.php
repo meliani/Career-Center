@@ -139,7 +139,8 @@ class ProjectResource extends StudentBaseResource
                                     ->label('Room')
                                     ->badge(),
                             ]),
-                    ]),
+                    ])
+                    ->visible(false),
 
                 Infolists\Components\Section::make(__('Supervisors'))
                     ->schema([
