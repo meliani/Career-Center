@@ -1,7 +1,7 @@
 <?php
 
 use App\Settings\NotificationSettings;
-
+use App\Settings\DisplaySettings;
 return [
 
     /*
@@ -10,6 +10,7 @@ return [
      */
     'settings' => [
         NotificationSettings::class,
+        DisplaySettings::class,
 
     ],
 

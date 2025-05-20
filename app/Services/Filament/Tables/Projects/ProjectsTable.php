@@ -198,7 +198,7 @@ class ProjectsTable
                     Tables\Columns\TextColumn::make('reviewers.name')
                         ->label('Reviewers')
                         ->searchable(false)
-                        ->visible(fn ($record) => auth()->user()->isAdministrator())
+                        ->visible(fn (DisplaySettings $displaySettings) => $displaySettings->display_project_reviewers || auth()->user()->isAdministrator())
                         ->sortable(false),
                     Tables\Columns\TextColumn::make('professors')
                         ->label('Assigned by')
@@ -223,6 +223,7 @@ class ProjectsTable
                         ->label('Defense plan')
                         ->toggleable(isToggledHiddenByDefault: true)
                         ->sortable(false)
+                        ->visible(fn (DisplaySettings $displaySettings) => $displaySettings->display_plannings || auth()->user()->isAdministrator())
                         ->searchable(false),
                     Tables\Columns\TextColumn::make('timetable.timeslot.start_time')
                         ->toggleable(isToggledHiddenByDefault: true)
@@ -230,6 +231,7 @@ class ProjectsTable
                         ->searchable(false)
                         ->sortable(true)
                         //->dateTime('d M Y H:i')
+                        ->visible(fn (DisplaySettings $displaySettings) => $displaySettings->display_plannings || auth()->user()->isAdministrator())
                         ->formatStateUsing(function ($record) {
                         return $record->timetable->timeslot->start_time ? Carbon::parse($record->timetable->timeslot->start_time)->format('d/m/Y H:i') : __('not defined');
                         }),
@@ -237,6 +239,7 @@ class ProjectsTable
                         ->label('Defense end date')
                         ->searchable(false)
                         ->sortable(false)
+                        ->visible(fn (DisplaySettings $displaySettings) => $displaySettings->display_plannings || auth()->user()->isAdministrator())
                         ->toggleable(isToggledHiddenByDefault: true)
                         //->dateTime('d M Y H:i')
                         ->formatStateUsing(function ($record) {
@@ -262,6 +265,7 @@ class ProjectsTable
                         ->toggleable(isToggledHiddenByDefault: true)
                         ->searchable(false)
                         ->sortable(false)
+                        ->visible(fn (DisplaySettings $displaySettings) => $displaySettings->display_plannings || auth()->user()->isAdministrator())
                         ->label('Room'),
                 ]),
 

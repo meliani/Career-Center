@@ -88,11 +88,11 @@ class ProjectResource extends StudentBaseResource
                     ->icon(fn ($state) => $state?->getIcon()),
                 Tables\Columns\TextColumn::make('timetable.timeslot.start_time')
                     ->label('Defense Date')
+                    ->visible(fn (DisplaySettings $displaySettings) => $displaySettings->display_plannings)
                     ->dateTime()
                     ->toggleable(false)
                     ->sortable(),
             ])
-            ->defaultSort('timetable.timeslot.start_time', 'desc')
             ->actions([
                 Tables\Actions\ViewAction::make(),
             ])
@@ -140,7 +140,7 @@ class ProjectResource extends StudentBaseResource
                                     ->badge(),
                             ]),
                     ])
-                    ->visible(false),
+                    ->visible(fn (DisplaySettings $displaySettings) => $displaySettings->display_plannings),
 
                 Infolists\Components\Section::make(__('Supervisors'))
                     ->schema([

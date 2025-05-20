@@ -31,7 +31,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 use pxlrbt\FilamentExcel;
-
+use App\Settings\DisplaySettings;
 class ProjectResource extends Core\BaseResource
 {
     protected static ?string $model = Project::class;
@@ -469,8 +469,8 @@ class ProjectResource extends Core\BaseResource
                                 // FilamentExcel\Columns\Column::make('description')->width(10),
                                 FilamentExcel\Columns\Column::make('organization.name')->width(10)->heading(__('Organization')),
                                 FilamentExcel\Columns\Column::make('academic_supervisor_name')->width(10)->heading(__('Academic Supervisor')),
-                                FilamentExcel\Columns\Column::make('reviewer1')->width(10)->heading(__('First Reviewer')),
-                                FilamentExcel\Columns\Column::make('reviewer2')->width(10)->heading(__('Second Reviewer')),
+                                // FilamentExcel\Columns\Column::make('reviewer1')->width(10)->heading(__('First Reviewer')),
+                                // FilamentExcel\Columns\Column::make('reviewer2')->width(10)->heading(__('Second Reviewer')),
                                 FilamentExcel\Columns\Column::make('start_date')
                                     ->heading(__('Internship Start Date'))
                                     ->formatStateUsing(fn($state) => $state ? \Carbon\Carbon::parse($state)->format('Y-m-d H:i:s') : null),
@@ -687,12 +687,14 @@ class ProjectResource extends Core\BaseResource
                                             ->label(__('First Reviewer'))
                                             ->icon('heroicon-o-user')
                                             ->badge()
+                                            ->visible(fn (DisplaySettings $displaySettings) => $displaySettings->display_project_reviewers || auth()->user()->isAdministrator())
                                             ->color('success'),
 
                                         Infolists\Components\TextEntry::make('reviewer2')
                                             ->label(__('Second Reviewer'))
                                             ->icon('heroicon-o-user')
                                             ->badge()
+                                            ->visible(fn (DisplaySettings $displaySettings) => $displaySettings->display_project_reviewers || auth()->user()->isAdministrator())
                                             ->color('success'),
                                     ]),
                             ]),
