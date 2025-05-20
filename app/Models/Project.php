@@ -148,9 +148,7 @@ class Project extends Core\BackendBaseModel
     public function currentYearTimetable()
     {
         return $this->hasOne(Timetable::class)
-            ->whereHas('timeslot', function ($query) {
-                $query->where('year_id', Year::current()->id);
-            });
+            ->where('year_id', Year::current()->id);
     }
 
     public function unplanned()
