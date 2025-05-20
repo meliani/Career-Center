@@ -144,6 +144,13 @@ class Project extends Core\BackendBaseModel
         return $this->hasOne(Timetable::class);
     }
 
+    // Relationship: Only timetable for the current year
+    public function currentYearTimetable()
+    {
+        return $this->hasOne(Timetable::class)
+            ->where('year_id', Year::current()->id);
+    }
+
     public function unplanned()
     {
         return $this->whereDoesntHave('timetable');
