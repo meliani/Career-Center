@@ -198,6 +198,7 @@ class ProjectsTable
                     Tables\Columns\TextColumn::make('reviewers.name')
                         ->label('Reviewers')
                         ->searchable(false)
+                        ->visible(fn ($record) => auth()->user()->isAdministrator())
                         ->sortable(false),
                     Tables\Columns\TextColumn::make('professors')
                         ->label('Assigned by')
