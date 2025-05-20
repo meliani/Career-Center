@@ -10,7 +10,7 @@ use Carbon\Carbon;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Storage;
-
+use App\Settings\DisplaySettings;
 class ProjectsTable
 {
     public static function get()

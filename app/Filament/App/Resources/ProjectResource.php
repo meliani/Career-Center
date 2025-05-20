@@ -13,7 +13,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Settings\DisplaySettings;
 class ProjectResource extends StudentBaseResource
 {
     protected static ?string $model = Project::class;
