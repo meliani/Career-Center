@@ -28,6 +28,9 @@ class ProfessorsParticipationTable extends BaseWidget
                 'allProjects as supervisor_count' => function (Builder $query) {
                     $query->where('professor_projects.jury_role', 'Supervisor'); // Adjust 'pivot_table_name' to your actual pivot table name
                 },
+                'allProjects as total_reviewer_count' => function (Builder $query) {
+                    $query->whereIn('professor_projects.jury_role', ['Reviewer1', 'Reviewer2']); // Adjust 'pivot_table_name' to your actual pivot table name
+                },
                 'allProjects as reviewer1_count' => function (Builder $query) {
                     $query->where('professor_projects.jury_role', 'Reviewer1'); // Adjust 'pivot_table_name' to your actual pivot table name
                 },
@@ -43,7 +46,7 @@ class ProfessorsParticipationTable extends BaseWidget
             ->deferLoading()
             // ->paginated(false)
             // ->extremePaginationLinks(true)
-            ->paginationPageOptions([5, 10])
+            ->paginationPageOptions([5, 10, 25, 50, 100])
             ->defaultPaginationPageOption(5)
             ->defaultSort('total_participation_count', 'desc')
             ->columns([
@@ -60,22 +63,30 @@ class ProfessorsParticipationTable extends BaseWidget
                     ->label('Total presence')
                     ->sortable()
                     ->searchable(false)
+                    ->hidden(true)
                     ->visible(fn () => auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()),
                 Tables\Columns\TextColumn::make('total_participation_count')
-                    ->label('Total participations')
+                    ->label('Total mentoring participations')
                     ->sortable()
                     ->searchable(false),
                 Tables\Columns\TextColumn::make('supervisor_count')
-                    ->label('Supervisor participations')
+                    ->label('Supervising participations')
+                    ->sortable()
+                    ->searchable(false)
+                    ->visible(fn () => auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()),
+                Tables\Columns\TextColumn::make('total_reviewer_count')
+                    ->label('Reviewing participations')
                     ->sortable()
                     ->searchable(false)
                     ->visible(fn () => auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()),
                 Tables\Columns\TextColumn::make('reviewer1_count')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->label('Reviewer1 participations')
                     ->sortable()
                     ->searchable(false)
                     ->visible(fn () => auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()),
                 Tables\Columns\TextColumn::make('reviewer2_count')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->label('Reviewer2 participations')
                     ->sortable()
                     ->searchable(false)
