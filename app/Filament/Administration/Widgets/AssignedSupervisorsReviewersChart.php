@@ -3,6 +3,7 @@
 namespace App\Filament\Administration\Widgets;
 
 use App\Filament\Core\Widgets\ApexChartsParentWidget;
+use App\Models\Year;
 
 class AssignedSupervisorsReviewersChart extends ApexChartsParentWidget
 {
@@ -31,9 +32,20 @@ class AssignedSupervisorsReviewersChart extends ApexChartsParentWidget
      */
     public function getOptions(): array
     {
+        $currentYear = Year::current();
+        
+        // Set dynamic heading with current year
+        static::$heading = 'Assigned supervisors by department (' . $currentYear->title . ')';
+
         $data = \DB::table('professor_projects')
             ->join('projects', 'professor_projects.project_id', '=', 'projects.id')
             ->join('users', 'professor_projects.professor_id', '=', 'users.id')
+            ->join('project_agreements', 'projects.id', '=', 'project_agreements.project_id')
+            ->join('final_year_internship_agreements', function ($join) use ($currentYear) {
+                $join->on('project_agreements.agreeable_id', '=', 'final_year_internship_agreements.id')
+                    ->where('project_agreements.agreeable_type', '=', 'App\\Models\\FinalYearInternshipAgreement')
+                    ->where('final_year_internship_agreements.year_id', '=', $currentYear->id);
+            })
             ->selectRaw("
             users.department as department_name,
             CASE
