@@ -8,6 +8,7 @@ use App\Models\Professor;
 use Filament\Widgets\Widget;
 use Illuminate\Support\Collection;
 
+#[Lazy]
 class DepartmentAgreementsStatsWidget extends Widget
 {
     protected static string $view = 'filament.widgets.department-agreements-stats';
