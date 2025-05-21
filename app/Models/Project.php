@@ -298,15 +298,46 @@ class Project extends Core\BackendBaseModel
     // active scope
     public function scopeActive($query)
     {
+        $currentYearId = Year::current()->id;
+        
         return $query->whereNot('defense_status', Enums\DefenseStatus::Completed)
-            ->whereHas('agreements', function ($query) {
+            ->whereHas('agreements', function ($query) use ($currentYearId) {
                 $query->whereMorphRelation(
                     'agreeable',
                     [InternshipAgreement::class, FinalYearInternshipAgreement::class],
                     'year_id',
-                    Year::current()->id
+                    $currentYearId
                 );
             });
+    }
+    
+    // Add a new scope to filter projects by year
+    public function scopeForYear($query, $yearId = null)
+    {
+        $yearId = $yearId ?? Year::current()->id;
+        
+        return $query->whereHas('agreements', function ($query) use ($yearId) {
+            $query->whereMorphRelation(
+                'agreeable',
+                '*',
+                'year_id',
+                $yearId
+            );
+        });
+    }
+
+    // Add a helper method to check if project is for current year
+    public function isCurrentYear(): bool
+    {
+        $currentYearId = Year::current()->id;
+        
+        return $this->agreements()
+            ->whereMorphRelation(
+                'agreeable',
+                '*',
+                'year_id',
+                $currentYearId
+            )->exists();
     }
 
     public function canAddCollaborator()

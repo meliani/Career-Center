@@ -87,8 +87,14 @@ class FinalYearInternshipAgreement extends Model implements Agreement
         // static::addGlobalScope(new StudentRelatedScope);
 
         static::creating(function (FinalYearInternshipAgreement $finalYearInternship) {
+            $currentYear = Year::current();
+            
+            if (!$currentYear) {
+                throw new \Exception('No current academic year is defined. Please contact an administrator.');
+            }
+            
             $finalYearInternship->student_id = auth()->id();
-            $finalYearInternship->year_id = Year::current()->id;
+            $finalYearInternship->year_id = $currentYear->id;
             // $finalYearInternship->status = Enums\Status::Announced;
             $finalYearInternship->announced_at = now();
 

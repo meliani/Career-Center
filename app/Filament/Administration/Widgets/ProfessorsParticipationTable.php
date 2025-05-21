@@ -3,6 +3,7 @@
 namespace App\Filament\Administration\Widgets;
 
 use App\Models\Professor;
+use App\Models\Year;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
@@ -16,26 +17,77 @@ class ProfessorsParticipationTable extends BaseWidget
 
     public function table(Table $table): Table
     {
+        // Get the current year ID
+        $currentYearId = Year::current()->id;
 
         // we'll professors and their participation in defenses from pivot table there is jury_role(Reviewer1, Reviewer2, Supervisor) so we want to count all of them and count eveny one seperately
         $query = Professor::query()
             ->withCount([
                 // Assuming 'projects' is the name of the relationship on the Professor model
-                'allProjects as total_participation_count', // Count total participations
-                'allProjects as total_presence_count' => function (Builder $query) {
-                    $query->where('professor_projects.was_present', true); // Adjust 'pivot_table_name' to your actual pivot table name
+                'allProjects as total_participation_count' => function (Builder $query) use ($currentYearId) {
+                    $query->whereHas('agreements', function ($q) use ($currentYearId) {
+                        $q->whereMorphRelation(
+                            'agreeable',
+                            '*',
+                            'year_id',
+                            $currentYearId
+                        );
+                    });
                 },
-                'allProjects as supervisor_count' => function (Builder $query) {
-                    $query->where('professor_projects.jury_role', 'Supervisor'); // Adjust 'pivot_table_name' to your actual pivot table name
+                'allProjects as total_presence_count' => function (Builder $query) use ($currentYearId) {
+                    $query->where('professor_projects.was_present', true)
+                        ->whereHas('agreements', function ($q) use ($currentYearId) {
+                            $q->whereMorphRelation(
+                                'agreeable',
+                                '*',
+                                'year_id',
+                                $currentYearId
+                            );
+                        });
                 },
-                'allProjects as total_reviewer_count' => function (Builder $query) {
-                    $query->whereIn('professor_projects.jury_role', ['Reviewer1', 'Reviewer2']); // Adjust 'pivot_table_name' to your actual pivot table name
+                'allProjects as supervisor_count' => function (Builder $query) use ($currentYearId) {
+                    $query->where('professor_projects.jury_role', 'Supervisor')
+                        ->whereHas('agreements', function ($q) use ($currentYearId) {
+                            $q->whereMorphRelation(
+                                'agreeable',
+                                '*',
+                                'year_id',
+                                $currentYearId
+                            );
+                        });
                 },
-                'allProjects as reviewer1_count' => function (Builder $query) {
-                    $query->where('professor_projects.jury_role', 'Reviewer1'); // Adjust 'pivot_table_name' to your actual pivot table name
+                'allProjects as total_reviewer_count' => function (Builder $query) use ($currentYearId) {
+                    $query->whereIn('professor_projects.jury_role', ['Reviewer1', 'Reviewer2'])
+                        ->whereHas('agreements', function ($q) use ($currentYearId) {
+                            $q->whereMorphRelation(
+                                'agreeable',
+                                '*',
+                                'year_id',
+                                $currentYearId
+                            );
+                        });
                 },
-                'allProjects as reviewer2_count' => function (Builder $query) {
-                    $query->where('professor_projects.jury_role', 'Reviewer2'); // Adjust 'pivot_table_name' to your actual pivot table name
+                'allProjects as reviewer1_count' => function (Builder $query) use ($currentYearId) {
+                    $query->where('professor_projects.jury_role', 'Reviewer1')
+                        ->whereHas('agreements', function ($q) use ($currentYearId) {
+                            $q->whereMorphRelation(
+                                'agreeable',
+                                '*',
+                                'year_id',
+                                $currentYearId
+                            );
+                        });
+                },
+                'allProjects as reviewer2_count' => function (Builder $query) use ($currentYearId) {
+                    $query->where('professor_projects.jury_role', 'Reviewer2')
+                        ->whereHas('agreements', function ($q) use ($currentYearId) {
+                            $q->whereMorphRelation(
+                                'agreeable',
+                                '*',
+                                'year_id',
+                                $currentYearId
+                            );
+                        });
                 },
             ]);
 
