@@ -137,15 +137,15 @@ class ProjectResource extends Core\BaseResource
     public static function getRelations(): array
     {
         return [
-            // RelationManagers\ProfessorsRelationManager::class,
-            // RelationGroup::make(__('Students'), [
-            //     // RelationManagers\StudentsRelationManager::class,
-            //     RelationManagers\InternshipAgreementsRelationManager::class,
-            //     // RelationManagers\CommentsRelationManager::class,
-            // ]),
-            // RelationGroup::make(__('Defense Details'), [
-            //     RelationManagers\TimetableRelationManager::class,
-            // ]),
+            RelationManagers\ProfessorsRelationManager::class,
+            RelationGroup::make(__('Students'), [
+                // RelationManagers\StudentsRelationManager::class,
+                RelationManagers\InternshipAgreementsRelationManager::class,
+                // RelationManagers\CommentsRelationManager::class,
+            ]),
+            RelationGroup::make(__('Defense Details'), [
+                RelationManagers\TimetableRelationManager::class,
+            ]),
         ];
     }
 
