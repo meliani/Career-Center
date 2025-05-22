@@ -782,6 +782,24 @@ class ProjectResource extends Core\BaseResource
                             ->columnSpanFull()
                             ->markdown()
                             ->icon('heroicon-o-document-text'),
+                            
+                        Infolists\Components\TextEntry::make('tags')
+                            ->label(__('Tags'))
+                            ->formatStateUsing(function ($state) {
+                                // Ensure state is always an array
+                                if (is_string($state)) {
+                                    $state = json_decode($state, true) ?? [];
+                                }
+                                
+                                if (is_null($state)) {
+                                    $state = [];
+                                }
+                                
+                                return $state;
+                            })
+                            ->badge()
+                            ->columnSpanFull(),
+                            
                         Infolists\Components\Grid::make(2)
                             ->schema([
                                 Infolists\Components\TextEntry::make('start_date')
