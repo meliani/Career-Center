@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\FinalYearInternshipAgreement;
 use App\Models\Project;
 use App\Models\Room;
 use App\Models\Timeslot;
@@ -17,7 +18,7 @@ class GeneratePlanning extends Command implements PromptsForMissingInput
      *
      * @var string
      */
-    protected $signature = 'app:generate-planning {projects_start_date} {projects_end_date} {--force=false} {--user=1} {--schedule=1}';
+    protected $signature = 'app:generate-planning {projects_start_date} {projects_end_date} {--force=false} {--user=1} {--schedule=1} {--program=}';
 
     /*
     Define the project's date range that will be scheduled and planned within the specified schedule window using the following variables:
@@ -72,6 +73,8 @@ class GeneratePlanning extends Command implements PromptsForMissingInput
 
     protected $projectsEndDate;
 
+    protected $program;
+
     /**
      * Execute the console command.
      */
@@ -84,7 +87,14 @@ class GeneratePlanning extends Command implements PromptsForMissingInput
         // $this->userId = $this->argument('user');
         $this->userId = $this->option('user');
         $this->force = $this->option('force');
+        $this->program = $this->option('program');
+
         $this->info('Generating the planning for projects');
+        
+        if ($this->program) {
+            $this->info("Filtering projects for program: {$this->program}");
+        }
+        
         $this->generateTimetable($this->argument('projects_start_date'), $this->argument('projects_end_date'));
         $this->info('Planning generated successfully');
     }
@@ -109,9 +119,25 @@ class GeneratePlanning extends Command implements PromptsForMissingInput
   */
     public function generateTimetable($startDate, $endDate)
     {
-        $projects = Project::whereDoesntHave('timetable')
-            ->whereBetween('end_date', [$startDate, $endDate])
-            ->orderBy('end_date', 'asc')
+        $query = Project::whereDoesntHave('timetable')
+            ->whereBetween('end_date', [$startDate, $endDate]);
+            
+        // Filter projects by program if specified
+        if ($this->program) {
+            $query->whereHas('agreements', function($q1) {
+                $q1->whereHasMorph(
+                    'agreeable', 
+                    [FinalYearInternshipAgreement::class], 
+                    function($q2) {
+                        $q2->whereHas('student', function($q3) {
+                            $q3->where('program', $this->program);
+                        });
+                    }
+                );
+            });
+        }
+        
+        $projects = $query->orderBy('end_date', 'asc')
             ->get();
 
         foreach ($projects as $project) {

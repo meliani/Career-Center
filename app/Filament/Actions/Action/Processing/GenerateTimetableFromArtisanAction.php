@@ -20,6 +20,7 @@ class GenerateTimetableFromArtisanAction extends Action
                 'force' => false,
                 'startDate' => $record->schedule_starting_at,
                 'endDate' => $record->schedule_ending_at,
+                'program' => null, // Default to null (all programs)
             ])
             ->form(
                 [
@@ -30,6 +31,11 @@ class GenerateTimetableFromArtisanAction extends Action
                         ->schema([
                             Forms\Components\DatePicker::make('startDate')->required(),
                             Forms\Components\DatePicker::make('endDate')->required(),
+                            Forms\Components\Select::make('program')
+                                ->label('Filter by Program')
+                                ->options(\App\Enums\Program::class)
+                                ->placeholder('All Programs')
+                                ->helperText('Only schedule projects for students in this program'),
                         ]),
                 ]
             )
@@ -41,16 +47,23 @@ class GenerateTimetableFromArtisanAction extends Action
                 // Access the form data from the $record parameter
                 $startDate = $data['startDate'];
                 $endDate = $data['endDate'];
+                $program = $data['program'];
 
-                // dd($startDate, $endDate);
-
-                Artisan::call('app:generate-planning', [
+                // Build artisan command arguments
+                $args = [
                     'projects_start_date' => $startDate,
                     'projects_end_date' => $endDate,
                     '--force' => $force,
                     '--user' => $user,
                     '--schedule' => $record->id,
-                ]);
+                ];
+
+                // Add program filter if specified
+                if ($program) {
+                    $args['--program'] = $program;
+                }
+
+                Artisan::call('app:generate-planning', $args);
 
                 Notification::make()
                     ->title('Projects Timetable has been generated successfully')
