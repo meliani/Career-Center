@@ -58,8 +58,8 @@ class TimetableRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                // Tables\Actions\CreateAction::make()
-                //     ->label('Schedule'),
+                Tables\Actions\CreateAction::make()
+                    ->label('Schedule'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make()

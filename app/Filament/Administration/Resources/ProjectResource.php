@@ -194,7 +194,7 @@ class ProjectResource extends Core\BaseResource
                     ->label(__('Defense information'))
                     ->columnSpan(1)
                     ->hidden(fn () => auth()->user()->isAdministrator() === false)
-                    ->relationship('currentYearTimetable')
+                    ->relationship('timetable') // Changed from 'currentYearTimetable' to just 'timetable'
                     ->hidden(true)
                     ->columns(3)
                     ->schema([
