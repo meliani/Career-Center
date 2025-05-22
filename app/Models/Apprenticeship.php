@@ -141,14 +141,34 @@ class Apprenticeship extends Model
                     return false; // Prevent saving the model
                 }
                 
-                if ($apprenticeship->ending_at->gt($validEndDate) && !app()->runningInConsole()) {
-                    Notification::make()
-                        ->title('Invalid End Date')
-                        ->body('The apprenticeship cannot end after July 31st.')
-                        ->danger()
-                        ->send();
+                // Enforce July 31st end date for everyone, including administrators
+                if ($apprenticeship->ending_at->gt($validEndDate)) {
+                    // Only bypass for console operations (e.g., seeding)
+                    if (app()->runningInConsole()) {
+                        \Illuminate\Support\Facades\Log::info('Console operation bypassing end date validation', [
+                            'apprenticeship_id' => $apprenticeship->id,
+                            'ending_at' => $apprenticeship->ending_at->format('Y-m-d'),
+                            'valid_end_date' => $validEndDate->format('Y-m-d')
+                        ]);
+                    } else {
+                        // Log the validation event
+                        \Illuminate\Support\Facades\Log::debug('End date validation triggered', [
+                            'user_id' => auth()->id(),
+                            'user_type' => auth()->user() ? get_class(auth()->user()) : 'unauthenticated',
+                            'is_admin' => auth()->check() && auth()->user()->isAdministrator(),
+                            'apprenticeship_id' => $apprenticeship->id,
+                            'ending_at' => $apprenticeship->ending_at->format('Y-m-d'),
+                            'valid_end_date' => $validEndDate->format('Y-m-d')
+                        ]);
                         
-                    return false; // Prevent saving the model
+                        Notification::make()
+                            ->title('Invalid End Date')
+                            ->body('The apprenticeship cannot end after July 31st.')
+                            ->danger()
+                            ->send();
+                            
+                        return false; // Prevent saving the model for all users
+                    }
                 }
                 
                 $weeks = ceil($apprenticeship->starting_at->floatDiffInRealWeeks($apprenticeship->ending_at));
