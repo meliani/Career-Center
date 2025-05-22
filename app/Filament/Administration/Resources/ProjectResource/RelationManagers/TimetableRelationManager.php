@@ -54,6 +54,10 @@ class TimetableRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('room.name')
                     ->toggleable(false),
             ])
+            ->emptyStateActions([
+                Tables\Actions\CreateAction::make()
+                    ->label('Arrange a schedule'),
+            ])
             ->filters([
                 //
             ])
