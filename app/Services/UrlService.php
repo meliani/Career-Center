@@ -10,12 +10,16 @@ use BaconQrCode\Renderer\RendererStyle\Fill;
 use BaconQrCode\Renderer\RendererStyle\RendererStyle;
 use BaconQrCode\Writer;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Log;
 
 class UrlService
 {
     protected static $verification_string = '';
 
     protected static $separator = '?/$';
+
+    // Constant to use when null value is provided
+    protected static $null_placeholder = 'NULL_VALUE_PLACEHOLDER';
 
     private static function getVersion($url)
     {
@@ -33,7 +37,10 @@ class UrlService
     private static function encryptv1($verification_string)
     {
         if (is_null($verification_string)) {
-            throw new \Exception('Verification string cannot be null');
+            Log::warning('Null verification string provided to encryptv1', [
+                'caller' => debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1] ?? 'unknown'
+            ]);
+            $verification_string = self::$null_placeholder;
         }
 
         $encrypted_x = Enums\UrlVersion::V1->value . self::$separator . Crypt::encryptString($verification_string);
@@ -44,8 +51,12 @@ class UrlService
     private static function encryptV1Short($verification_string)
     {
         if (is_null($verification_string)) {
-            throw new \Exception('Verification string cannot be null');
+            Log::warning('Null verification string provided to encryptV1Short', [
+                'caller' => debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1] ?? 'unknown'
+            ]);
+            $verification_string = self::$null_placeholder;
         }
+        
         $cipher = 'AES-128-CBC';
         // Decode the APP_KEY from base64 to get the raw key
         $key = base64_decode(env('APP_KEY'));
@@ -101,12 +112,12 @@ class UrlService
 
         // Decrypt the data
         $decrypted = openssl_decrypt($encrypted, $cipher, $key, 0, $iv);
-        // if ($decrypted === false) {
-        //     // Optionally, log the error details for debugging
-        //     throw new \Exception('Decryption failed: ' . openssl_error_string());
-        // }
-        // dd($decrypted);
-
+        
+        // Check if we got our null placeholder back
+        if ($decrypted === self::$null_placeholder) {
+            return null;
+        }
+        
         return $decrypted;
     }
 
@@ -121,6 +132,12 @@ class UrlService
 
         [$version, $verification_string] = $parts;
         $verification_string = Crypt::decryptString($verification_string);
+        
+        // Check if we got our null placeholder back
+        if ($verification_string === self::$null_placeholder) {
+            return ['StudentId' => null, 'InternshipId' => null];
+        }
+        
         $parts = explode('-', $verification_string);
         
         // Ensure we have both parts before unpacking
@@ -139,7 +156,10 @@ class UrlService
         $iv = substr(hash('sha256', env('APP_IV', 'default_iv')), 0, 16); // Provide a default value for APP_IV to avoid null
 
         if (is_null($url)) {
-            throw new \Exception('URL cannot be null');
+            Log::warning('Null URL provided to encapsulate', [
+                'caller' => debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1] ?? 'unknown'
+            ]);
+            $url = self::$null_placeholder;
         }
 
         $encapsulated = openssl_encrypt($url, 'AES-256-CBC', $secretKey, 0, $iv);
@@ -164,12 +184,26 @@ class UrlService
 
     public static function encodeUrl($verification_string)
     {
-        return self::encapsulate(self::encryptv1($verification_string));
+        try {
+            return self::encapsulate(self::encryptv1($verification_string));
+        } catch (\Exception $e) {
+            Log::error('Error encoding URL: ' . $e->getMessage(), [
+                'verification_string' => $verification_string ? 'exists' : 'null'
+            ]);
+            return null;
+        }
     }
 
     public static function encodeShortUrl($verification_string)
     {
-        return self::encryptV1Short($verification_string);
+        try {
+            return self::encryptV1Short($verification_string);
+        } catch (\Exception $e) {
+            Log::error('Error encoding short URL: ' . $e->getMessage(), [
+                'verification_string' => $verification_string ? 'exists' : 'null'
+            ]);
+            return null;
+        }
     }
 
     public static function decodeShortUrl($url)
