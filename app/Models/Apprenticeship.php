@@ -142,13 +142,30 @@ class Apprenticeship extends Model
                 }
                 
                 if ($apprenticeship->ending_at->gt($validEndDate) && !app()->runningInConsole()) {
-                    Notification::make()
-                        ->title('Invalid End Date')
-                        ->body('The apprenticeship cannot end after July 31st.')
-                        ->danger()
-                        ->send();
-                        
-                    return false; // Prevent saving the model
+                    // Check if the user is an administrator to bypass the restriction
+                    $isAdministrator = auth()->check() && auth()->user()->isAdministrator();
+                    $isAdminOperation = $isAdministrator;
+                    
+                    // Log for debugging if needed
+                    if ($isAdministrator) {
+                        \Illuminate\Support\Facades\Log::debug('Apprenticeship end date validation triggered', [
+                            'current_path' => request()->path(),
+                            'is_admin' => $isAdministrator,
+                            'admin_operation_bypass' => $isAdminOperation,
+                            'end_date' => $apprenticeship->ending_at->format('Y-m-d')
+                        ]);
+                    }
+                    
+                    // Only apply restriction for non-admin users
+                    if (!$isAdminOperation) {
+                        Notification::make()
+                            ->title('Invalid End Date')
+                            ->body('The apprenticeship cannot end after July 31st.')
+                            ->danger()
+                            ->send();
+                            
+                        return false; // Prevent saving the model
+                    }
                 }
                 
                 $weeks = ceil($apprenticeship->starting_at->floatDiffInRealWeeks($apprenticeship->ending_at));
