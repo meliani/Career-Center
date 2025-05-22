@@ -131,7 +131,7 @@ class ApprenticeshipResource extends BaseResource
                                                     ->columnSpanFull(),
                                                 // Forms\Components\TagsInput::make('keywords')
                                                 //     ->columnSpanFull(),
-                                                Forms\Components\RichEditor::make('description')
+                                                Forms\Components\MarkdownEditor::make('description')
                                                     ->columnSpanFull(),
                                             ]),
                                     ]),
