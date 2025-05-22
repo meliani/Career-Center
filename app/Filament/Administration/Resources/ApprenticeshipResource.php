@@ -129,8 +129,8 @@ class ApprenticeshipResource extends BaseResource
                                                 Forms\Components\TextInput::make('title')
                                                     ->maxLength(255)
                                                     ->columnSpanFull(),
-                                                Forms\Components\TagsInput::make('keywords')
-                                                    ->columnSpanFull(),
+                                                // Forms\Components\TagsInput::make('keywords')
+                                                //     ->columnSpanFull(),
                                                 Forms\Components\RichEditor::make('description')
                                                     ->columnSpanFull(),
                                             ]),
@@ -281,7 +281,7 @@ class ApprenticeshipResource extends BaseResource
                                             ->markdown(),
                                         Infolists\Components\TextEntry::make('description')
                                             ->markdown(),
-                                        Infolists\Components\SpatieTagsEntry::make('keywords'),
+                                        // Infolists\Components\SpatieTagsEntry::make('keywords'),
                                     ]),
                             ]),
 
