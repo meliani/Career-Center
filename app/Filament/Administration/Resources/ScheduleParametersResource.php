@@ -52,21 +52,57 @@ class ScheduleParametersResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\DatePicker::make('schedule_starting_at')
-                    ->required(),
-                Forms\Components\DatePicker::make('schedule_ending_at')
-                    ->required(),
-                Forms\Components\TimePicker::make('day_starting_at')
-                    ->required(),
-                Forms\Components\TimePicker::make('day_ending_at')
-                    ->required(),
-                Forms\Components\TimePicker::make('lunch_starting_at')
-                    ->required(),
-                Forms\Components\TimePicker::make('lunch_ending_at')
-                    ->required(),
-                Forms\Components\TextInput::make('minutes_per_slot')
-                    ->required()
-                    ->numeric(),
+                Forms\Components\Section::make('Schedule Date Range')
+                    ->schema([
+                        Forms\Components\DatePicker::make('schedule_starting_at')
+                            ->label('Schedule Starting Date')
+                            ->required()
+                            ->helperText('The first day of the scheduling period'),
+                        Forms\Components\DatePicker::make('schedule_ending_at')
+                            ->label('Schedule Ending Date')
+                            ->required()
+                            ->helperText('The last day of the scheduling period')
+                            ->after('schedule_starting_at'),
+                    ])->columns(2),
+                    
+                Forms\Components\Section::make('Daily Schedule')
+                    ->schema([
+                        Forms\Components\TimePicker::make('day_starting_at')
+                            ->label('Day Start Time')
+                            ->required()
+                            ->seconds(false)
+                            ->helperText('The time when the day schedule starts'),
+                        Forms\Components\TimePicker::make('day_ending_at')
+                            ->label('Day End Time')
+                            ->required()
+                            ->seconds(false)
+                            ->helperText('The time when the day schedule ends')
+                            ->after('day_starting_at'),
+                        Forms\Components\TimePicker::make('lunch_starting_at')
+                            ->label('Lunch Break Start')
+                            ->required()
+                            ->seconds(false)
+                            ->helperText('The time when lunch break starts'),
+                        Forms\Components\TimePicker::make('lunch_ending_at')
+                            ->label('Lunch Break End')
+                            ->required()
+                            ->seconds(false)
+                            ->helperText('The time when lunch break ends')
+                            ->after('lunch_starting_at'),
+                    ])->columns(2),
+                    
+                Forms\Components\Section::make('Slot Duration')
+                    ->schema([
+                        Forms\Components\TextInput::make('minutes_per_slot')
+                            ->label('Minutes per Slot')
+                            ->required()
+                            ->numeric()
+                            ->minValue(15)
+                            ->maxValue(180)
+                            ->step(15)
+                            ->default(90)
+                            ->helperText('Duration of each defense slot in minutes'),
+                    ]),
 
                 \Filament\Forms\Components\Actions::make([
                     // Actions\Action\Processing\GenerateTimeslotsAction::make('Generate Timeslots')
