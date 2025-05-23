@@ -172,29 +172,48 @@ class ScheduleProfessorDefensesBulkAction extends BulkAction
                     continue;
                 }
                 
-                // Find an available room
-                $room = $this->findAvailableRoom($timeslot);
-                if (!$room) {
-                    continue; // No room available, try next timeslot
+                // Find available rooms for this timeslot
+                $availableRooms = $this->findAvailableRoom($timeslot);
+                
+                if ($availableRooms->isEmpty()) {
+                    // No rooms available for this timeslot, try next timeslot
+                    continue;
                 }
                 
-                // Schedule the defense
-                $timetable = new Timetable();
-                $timetable->timeslot_id = $timeslot->id;
-                $timetable->room_id = $room->id;
-                $timetable->project_id = $project->id;
-                $timetable->year_id = Year::current()->id;
-                $timetable->created_by = auth()->id();
-                $timetable->updated_by = auth()->id();
-                $timetable->save();
+                // Try to schedule in any of the available rooms
+                $scheduled = false;
                 
-                // Increment counters
-                $scheduledCount++;
-                $scheduledByDate[$date] = ($scheduledByDate[$date] ?? 0) + 1;
+                foreach ($availableRooms as $room) {
+                    try {
+                        // Schedule the defense
+                        $timetable = new Timetable();
+                        $timetable->timeslot_id = $timeslot->id;
+                        $timetable->room_id = $room->id;
+                        $timetable->project_id = $project->id;
+                        $timetable->user_id = auth()->id();
+                        $timetable->created_by = auth()->id();
+                        $timetable->updated_by = auth()->id();
+                        $timetable->save();
+                        
+                        // Increment counters
+                        $scheduledCount++;
+                        $scheduledByDate[$date] = ($scheduledByDate[$date] ?? 0) + 1;
+                        
+                        // Remove used timeslot
+                        $availableTimeslots->forget($key);
+                        
+                        $scheduled = true;
+                        break; // Successfully scheduled, break out of room loop
+                    } catch (\Exception $e) {
+                        // Log error but try next room
+                        report($e);
+                        continue;
+                    }
+                }
                 
-                // Remove used timeslot
-                $availableTimeslots->forget($key);
-                break;
+                if ($scheduled) {
+                    break; // Successfully scheduled, move to next project
+                }
             }
         }
         
@@ -216,8 +235,7 @@ class ScheduleProfessorDefensesBulkAction extends BulkAction
 
     protected function getAvailableTimeslots($startDate, $endDate, $excludeDates)
     {
-        return Timeslot::where('year_id', Year::current()->id)
-            ->where('is_enabled', true)
+        return Timeslot::where('is_enabled', true)
             ->where('start_time', '>=', $startDate)
             ->where('start_time', '<=', $endDate)
             ->whereNotIn(\DB::raw('DATE(start_time)'), $excludeDates)
@@ -246,10 +264,10 @@ class ScheduleProfessorDefensesBulkAction extends BulkAction
             ->pluck('room_id')
             ->toArray();
             
-        // Find an available room
-        return Room::where('is_enabled', true)
+        // Find all available rooms - using the 'status' column and Available enum value
+        return Room::where('status', \App\Enums\RoomStatus::Available)
             ->whereNotIn('id', $usedRoomIds)
-            ->first();
+            ->get();
     }
 
     protected function filterProjectsByProfessorRole(Collection $projects, Professor $professor, $roleFilter)
