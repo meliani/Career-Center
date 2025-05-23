@@ -47,6 +47,18 @@ class ProjectsTable
                         )
                         ->wrap()
                         ->label('ID PFE')
+                        ->sortable(query: function (Builder $query, string $direction) {
+                            return $query->orderBy(
+                                ProjectAgreement::query()
+                                    ->select('students.id_pfe')
+                                    ->join('final_year_internship_agreements', 'project_agreements.agreeable_id', '=', 'final_year_internship_agreements.id')
+                                    ->join('students', 'final_year_internship_agreements.student_id', '=', 'students.id')
+                                    ->whereColumn('project_agreements.project_id', 'projects.id')
+                                    ->where('project_agreements.agreeable_type', FinalYearInternshipAgreement::class)
+                                    ->limit(1),
+                                $direction
+                            );
+                        })
                         ->toggleable(isToggledHiddenByDefault: true),
                     Tables\Columns\TextColumn::make('agreements.agreeable.student.full_name')
                         ->label('Student name')
