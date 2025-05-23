@@ -69,19 +69,19 @@ class ScheduleParametersResource extends Resource
                     ->numeric(),
 
                 \Filament\Forms\Components\Actions::make([
-                    Actions\Action\Processing\GenerateTimeslotsAction::make('Generate Timeslots')
-                        ->label(__('Generate Timeslots'))
-                        ->requiresConfirmation(),
+                    // Actions\Action\Processing\GenerateTimeslotsAction::make('Generate Timeslots')
+                    //     ->label(__('Generate Timeslots'))
+                    //     ->requiresConfirmation(),
                     Actions\Action\Processing\GenerateTimeslotsFromArtisanAction::make('Generate Timeslots From Artisan')
-                        ->label(__('Generate Timeslots From Artisan'))
+                        ->label(__('Generate Timeslots'))
                         ->requiresConfirmation()
                         ->slideOver()
                         ->color('success'),
-                    Actions\Action\Processing\GenerateTimetableAction::make('Generate Timetable')
-                        ->label(__('Generate Defenses Timetable'))
-                        ->requiresConfirmation(),
+                    // Actions\Action\Processing\GenerateTimetableAction::make('Generate Timetable')
+                    //     ->label(__('Generate Defenses Timetable'))
+                    //     ->requiresConfirmation(),
                     Actions\Action\Processing\GenerateTimetableFromArtisanAction::make('Generate Timetable From Artisan')
-                        ->label(__('Generate Defenses Timetable From Artisan'))
+                        ->label(__('Generate Defenses Timetable'))
                         ->requiresConfirmation()
                         // ->form([
                         //     Forms\Components\DatePicker::make('startDate')->required(),
