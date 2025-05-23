@@ -6,12 +6,14 @@ use App\Filament\Administration\Resources\TimetableResource\Pages;
 use App\Filament\Core\BaseResource;
 use App\Models\Project;
 use App\Models\Timetable;
+use App\Models\Year;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
 class TimetableResource extends BaseResource
@@ -32,7 +34,7 @@ class TimetableResource extends BaseResource
 
     protected static ?string $navigationGroup = 'Internships and Projects';
 
-    protected static ?string $navigationParentItem = 'Final Projects Defenses';
+    protected static ?string $navigationParentItem = 'Final Projects';
 
     public static function canViewAny(): bool
     {
@@ -175,7 +177,20 @@ class TimetableResource extends BaseResource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('year')
+                    ->label('Year')
+                    ->options(Year::getYearsForSelect(1))
+                    ->default(Year::current()->id)
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query->when(
+                            $data['value'],
+                            fn (Builder $query, $yearId): Builder => $query->whereHas('timeslot', function (Builder $q) use ($yearId) {
+                                $q->where('year_id', $yearId);
+                            })
+                        );
+                    })
+                    ->indicateUsing(fn (array $data): ?string => $data['value'] ? __('Year') . ': ' . Year::find($data['value'])->title : null)
+                    ->visible(fn () => auth()->user()->isAdministrator() === true),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
