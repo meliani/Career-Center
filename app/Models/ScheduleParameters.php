@@ -7,10 +7,13 @@ use Carbon\Carbon;
 class ScheduleParameters extends Core\BackendBaseModel
 {
     protected $fillable = [
+        'title',
         'schedule_starting_at',
         'schedule_ending_at',
         'day_starting_at',
         'day_ending_at',
+        'lunch_starting_at',
+        'lunch_ending_at',
         'number_of_rooms',
         'max_defenses_per_professor',
         'max_rooms',
@@ -22,6 +25,8 @@ class ScheduleParameters extends Core\BackendBaseModel
         'schedule_ending_at' => 'datetime',
         'day_starting_at' => 'datetime',
         'day_ending_at' => 'datetime',
+        'lunch_starting_at' => 'datetime',
+        'lunch_ending_at' => 'datetime',
     ];
     // public function getDayEndingAtAttribute($value)
     // {

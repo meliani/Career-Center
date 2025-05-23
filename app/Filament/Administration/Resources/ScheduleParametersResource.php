@@ -22,7 +22,7 @@ class ScheduleParametersResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Schedules parameters';
 
-    // protected static ?string $recordTitleAttribute = 'schedule_starting_at';
+    protected static ?string $recordTitleAttribute = 'title';
     protected static ?string $navigationIcon = 'heroicon-o-calendar';
 
     protected static ?string $navigationGroup = 'Settings';
@@ -52,6 +52,12 @@ class ScheduleParametersResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\TextInput::make('title')
+                    ->label('Title')
+                    ->placeholder('Enter a descriptive title')
+                    ->helperText('A descriptive title for this schedule configuration')
+                    ->maxLength(255),
+
                 Forms\Components\Section::make('Schedule Date Range')
                     ->schema([
                         Forms\Components\DatePicker::make('schedule_starting_at')
@@ -134,6 +140,9 @@ class ScheduleParametersResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('title')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('schedule_starting_at')
                     ->date()
                     ->sortable(),
