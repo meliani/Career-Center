@@ -48,21 +48,30 @@ class GenerateTimeslotsFromArtisanAction extends Action
                     return;
                 }
                 
+                // Format the dates for clearer output
+                $startDate = $record->schedule_starting_at->format('Y-m-d');
+                $endDate = $record->schedule_ending_at->format('Y-m-d');
+                $dayStart = $record->day_starting_at->format('H:i:s');
+                $dayEnd = $record->day_ending_at->format('H:i:s');
+                $lunchStart = $record->lunch_starting_at->format('H:i:s');
+                $lunchEnd = $record->lunch_ending_at->format('H:i:s');
+                $interval = $record->minutes_per_slot;
+                
                 \Filament\Notifications\Notification::make()
                     ->title('Generating timeslots')
-                    ->body("Using parameters: Start: {$record->schedule_starting_at}, End: {$record->schedule_ending_at}, Day Start: {$record->day_starting_at}, Day End: {$record->day_ending_at}, Interval: {$record->minutes_per_slot} minutes")
+                    ->body("Using parameters: Start: {$startDate}, End: {$endDate}, Day: {$dayStart}-{$dayEnd}, Lunch: {$lunchStart}-{$lunchEnd}, Interval: {$interval} minutes")
                     ->info()
                     ->send();
                 
                 Artisan::call('app:generate-timeslots', [
-                    '--start-date' => $record->schedule_starting_at,
-                    '--end-date' => $record->schedule_ending_at,
+                    '--start-date' => $startDate,
+                    '--end-date' => $endDate,
                     '--year-id' => $currentYear->id,
-                    '--day-start' => $record->day_starting_at,
-                    '--day-end' => $record->day_ending_at,
-                    '--lunch-start' => $record->lunch_starting_at,
-                    '--lunch-end' => $record->lunch_ending_at,
-                    '--interval' => $record->minutes_per_slot,
+                    '--day-start' => $dayStart,
+                    '--day-end' => $dayEnd,
+                    '--lunch-start' => $lunchStart,
+                    '--lunch-end' => $lunchEnd,
+                    '--interval' => $interval,
                 ]);
                 
                 // Get the output from the command to display to the user

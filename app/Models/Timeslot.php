@@ -10,6 +10,7 @@ class Timeslot extends Core\BackendBaseModel
 
     public function __construct(?Carbon $start_time = null, ?Carbon $end_time = null, $is_enabled = true)
     {
+        parent::__construct();
         $this->start_time = $start_time;
         $this->end_time = $end_time;
         $this->is_enabled = $is_enabled;

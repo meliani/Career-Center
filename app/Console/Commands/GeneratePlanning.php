@@ -99,7 +99,8 @@ class GeneratePlanning extends Command implements PromptsForMissingInput
             return;
         }
         
-        $this->info("Using schedule parameters with ID: {$scheduleId}");
+        $scheduleTitle = $scheduleParams->title ?? "Schedule #{$scheduleId}";
+        $this->info("Using schedule parameters: {$scheduleTitle} (ID: {$scheduleId})");
         
         // Get schedule date range - use passed parameters or fall back to schedule record
         $scheduleStartDate = $this->option('schedule-start-date') ?: $scheduleParams->schedule_starting_at;
