@@ -4,6 +4,7 @@ namespace App\Filament\Administration\Resources;
 
 use App\Enums;
 use App\Filament\Actions\BulkAction;
+use App\Filament\Actions\BulkAction\ScheduleProfessorDefensesBulkAction;
 use App\Filament\Administration\Resources\ProjectResource\Pages;
 use App\Filament\Administration\Resources\ProjectResource\RelationManagers;
 use App\Filament\Core;
@@ -595,6 +596,9 @@ class ProjectResource extends Core\BaseResource
                         ->hidden(auth()->user()->cannot('manage-projects'))
                         ->requiresConfirmation()
                         ->action(fn ($records) => $records->each->postponeDefense()),
+                    ScheduleProfessorDefensesBulkAction::make()
+                        ->color('primary')
+                        ->hidden(fn () => !auth()->user()->isAdministrator()),
                     Tables\Actions\BulkAction::make('complete')
                         ->label('Complete selection')
                         ->icon('heroicon-o-check-circle')
