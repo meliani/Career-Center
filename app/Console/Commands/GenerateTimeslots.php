@@ -14,14 +14,14 @@ class GenerateTimeslots extends Command implements PromptsForMissingInput
      *
      * @var string
      */
-    protected $signature = 'app:generate-timeslots {--start-date=2024-06-24} {--end-date=2024-07-24}';
+    protected $signature = 'app:generate-timeslots {--start-date=2024-06-24} {--end-date=2024-07-24} {--year-id=}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Generate timeslots for the given date range';
+    protected $description = 'Generate timeslots for the given date range and academic year';
 
     protected $start_date;
 
@@ -34,6 +34,7 @@ class GenerateTimeslots extends Command implements PromptsForMissingInput
     {
         $this->start_date = $this->option('start-date');
         $this->end_date = $this->option('end-date');
+        $this->year_id = $this->option('year-id') ?: \App\Models\Year::current()->id;
         $this->generateTimeslots();
     }
 
@@ -106,9 +107,10 @@ class GenerateTimeslots extends Command implements PromptsForMissingInput
                 if ($interval == 90) {
                     $timeslotPeriod = new Timeslot($start_time, $end_time);
                     $timeslotPeriod->is_enabled = 1;
+                    $timeslotPeriod->year_id = $this->year_id;
                     $timeslotPeriod->save();
 
-                    $this->info('Timeslot generated: ' . $timeslotPeriod->start_time . ' - ' . $timeslotPeriod->end_time);
+                    $this->info('Timeslot generated: ' . $timeslotPeriod->start_time . ' - ' . $timeslotPeriod->end_time . ' (Year ID: ' . $this->year_id . ')');
                 }
             }
         });

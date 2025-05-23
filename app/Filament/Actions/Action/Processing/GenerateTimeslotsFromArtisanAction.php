@@ -18,10 +18,12 @@ class GenerateTimeslotsFromArtisanAction extends Action
 
         $static->configure()
             ->action(function ($record): void {
+                $currentYear = \App\Models\Year::current();
+                
                 Artisan::call('app:generate-timeslots', [
-                    //     protected $signature = 'app:generate-timeslots {--start-date=2024-06-24} {--end-date=2024-07-24}';
                     '--start-date' => $record->schedule_starting_at,
                     '--end-date' => $record->schedule_ending_at,
+                    '--year-id' => $currentYear->id,
                 ]);
             });
 
