@@ -2,6 +2,7 @@
 
 namespace App\Filament\Administration\Resources;
 
+use App\Enums\JuryRole;
 use App\Filament\Administration\Resources\TimetableResource\Pages;
 use App\Filament\Core\BaseResource;
 use App\Models\Project;
@@ -45,6 +46,19 @@ class TimetableResource extends BaseResource
         return false;
     }
 
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->with([
+                'project.final_internship_agreements.student',
+                'project.final_internship_agreements.organization',
+                'project.professors',
+                'project.externalSupervisor',
+                'timeslot',
+                'room'
+            ]);
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -63,8 +77,12 @@ class TimetableResource extends BaseResource
                     //     Project::pluck('title', 'id')
                     // )
                     ->options(
-                        Project::join('internships', 'projects.id', '=', 'internships.project_id')
-                            ->join('students', 'internships.student_id', '=', 'students.id')
+                        Project::join('project_agreements', 'projects.id', '=', 'project_agreements.project_id')
+                            ->join('final_year_internship_agreements', function($join) {
+                                $join->on('project_agreements.agreeable_id', '=', 'final_year_internship_agreements.id')
+                                     ->where('project_agreements.agreeable_type', '=', 'App\\Models\\FinalYearInternshipAgreement');
+                            })
+                            ->join('students', 'final_year_internship_agreements.student_id', '=', 'students.id')
                             ->select(DB::raw("CONCAT(COALESCE(students.name, 'Unknown Student'), ' - ', COALESCE(projects.title, 'Untitled Project')) AS student_project"), 'projects.id')
                             ->pluck('student_project', 'id')
                     ),
@@ -102,24 +120,82 @@ class TimetableResource extends BaseResource
                 Tables\Grouping\Group::make('timeslot.start_time')
                     ->date()
                     ->collapsible()
-                    ->label(__('Day of')),
+                    ->label(__('Defense Day')),
             ])
             ->columns([
-                Tables\Columns\TextColumn::make('timeslot.start_time')
+                Tables\Columns\TextColumn::make('defense_date')
+                    ->label('Date de soutenance')
+                    ->getStateUsing(fn ($record) => $record->timeslot?->defense_date ?? '-')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('room.name')
+                Tables\Columns\TextColumn::make('defense_time')
+                    ->label('Heure de soutenance')
+                    ->getStateUsing(fn ($record) => $record->timeslot?->defense_time ?? '-')
+                    ->sortable(false),
+                Tables\Columns\TextColumn::make('room_name')
+                    ->label('Salle')
+                    ->getStateUsing(fn ($record) => $record->room?->name ?? '-')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('project.title')
+                Tables\Columns\TextColumn::make('id_pfe')
+                    ->label('ID PFE')
+                    ->getStateUsing(function ($record) {
+                        $students = $record->project?->final_internship_agreements?->pluck('student.id_pfe')?->filter();
+                        return $students?->isNotEmpty() ? $students->implode(', ') : '-';
+                    })
+                    ->sortable()
+                    ->limit(20),
+                Tables\Columns\TextColumn::make('student_name')
+                    ->label('Nom de l\'étudiant')
+                    ->getStateUsing(function ($record) {
+                        $students = $record->project?->final_internship_agreements?->pluck('student.name')?->filter();
+                        return $students?->isNotEmpty() ? $students->implode(', ') : '-';
+                    })
+                    ->sortable()
+                    ->limit(30),
+                Tables\Columns\TextColumn::make('student_program')
+                    ->label('Filière')
+                    ->getStateUsing(function ($record) {
+                        $programs = $record->project?->final_internship_agreements?->map(function ($agreement) {
+                            return $agreement->student?->program?->getLabel();
+                        })?->filter()?->unique();
+                        return $programs?->isNotEmpty() ? $programs->implode(', ') : '-';
+                    })
+                    ->badge()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('organization_name')
+                    ->label('Organisme d\'accueil')
+                    ->getStateUsing(function ($record) {
+                        $organizations = $record->project?->final_internship_agreements?->pluck('organization.name')?->filter()?->unique();
+                        return $organizations?->isNotEmpty() ? $organizations->implode(', ') : '-';
+                    })
+                    ->sortable()
+                    ->limit(40),
+                Tables\Columns\TextColumn::make('project_title')
+                    ->label('Sujet de stage PFE')
+                    ->getStateUsing(fn ($record) => $record->project?->title ?? '-')
                     ->sortable()
                     ->limit(50),
-                Tables\Columns\TextColumn::make('project.final_year_internship_agreements.student.name')
-                    ->sortable()
-                    ->limit(50)
-                    ->label('Student'),
-                Tables\Columns\TextColumn::make('project.final_year_internship_agreements.id_pfe')
-                    ->sortable()
-                    ->limit(50)
-                    ->label('ID PFE'),
+                Tables\Columns\TextColumn::make('academic_supervisor')
+                    ->label('Encadrant interne')
+                    ->getStateUsing(fn ($record) => $record->project?->professors?->filter(fn ($prof) => 
+                        $prof->pivot->jury_role->value === JuryRole::Supervisor->value
+                    )?->first()?->name ?? '-')
+                    ->sortable(false)
+                    ->limit(30),
+                Tables\Columns\TextColumn::make('reviewers')
+                    ->label('Examinateurs')
+                    ->getStateUsing(function ($record) {
+                        $reviewers = $record->project?->professors?->filter(fn ($prof) => 
+                            in_array($prof->pivot->jury_role->value, [JuryRole::FirstReviewer->value, JuryRole::SecondReviewer->value])
+                        )?->pluck('name')?->implode(', ');
+                        return $reviewers ?: '-';
+                    })
+                    ->sortable(false)
+                    ->limit(40),
+                Tables\Columns\TextColumn::make('external_supervisor')
+                    ->label('Encadrant externe')
+                    ->getStateUsing(fn ($record) => $record->project?->externalSupervisor?->full_name ?? '-')
+                    ->sortable(false)
+                    ->limit(30),
 
                 // Tables\Columns\TextColumn::make('user_id')
                 //     ->numeric()
@@ -268,14 +344,41 @@ class TimetableResource extends BaseResource
                     ])
                     ->columns(3)
                     ->schema([
-                        Infolists\Components\TextEntry::make('project.id_pfe')
-                            ->label('PFE ID'),
-                        Infolists\Components\TextEntry::make('project.students.long_full_name')
-                            ->label('Student'),
-                        Infolists\Components\TextEntry::make('project.students.program')
-                            ->label('Program'),
-                        Infolists\Components\TextEntry::make('project.organization')
-                            ->label('Organization'),
+                        Infolists\Components\TextEntry::make('project.final_internship_agreements.student.id_pfe')
+                            ->label('PFE ID')
+                            ->formatStateUsing(function ($record) {
+                                $ids = $record->project?->final_internship_agreements?->pluck('student.id_pfe')?->filter();
+                                return $ids?->isNotEmpty() ? $ids->implode(', ') : '-';
+                            }),
+                        Infolists\Components\TextEntry::make('project.final_internship_agreements.student.name')
+                            ->label('Student')
+                            ->formatStateUsing(function ($record) {
+                                $students = $record->project?->final_internship_agreements?->pluck('student.name')?->filter();
+                                return $students?->isNotEmpty() ? $students->implode(', ') : '-';
+                            }),
+                        Infolists\Components\TextEntry::make('project.final_internship_agreements.student.program')
+                            ->label('Program')
+                            ->formatStateUsing(function ($record) {
+                                $programs = $record->project?->final_internship_agreements?->map(function ($agreement) {
+                                    return $agreement->student?->program?->getLabel();
+                                })?->filter()?->unique();
+                                return $programs?->isNotEmpty() ? $programs->implode(', ') : '-';
+                            }),
+                        Infolists\Components\TextEntry::make('project.final_internship_agreements.organization.name')
+                            ->label('Organization')
+                            ->formatStateUsing(function ($record) {
+                                $organizations = $record->project?->final_internship_agreements?->map(function ($agreement) {
+                                    $org = $agreement->organization;
+                                    if ($org) {
+                                        $info = $org->name;
+                                        if ($org->city) $info .= " ({$org->city})";
+                                        if ($org->website) $info .= " - {$org->website}";
+                                        return $info;
+                                    }
+                                    return null;
+                                })?->filter()?->unique();
+                                return $organizations?->isNotEmpty() ? $organizations->implode(', ') : '-';
+                            }),
 
                         Infolists\Components\TextEntry::make('project.title')
                             ->label('Project title'),

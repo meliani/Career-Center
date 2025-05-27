@@ -32,6 +32,12 @@ class Timeslot extends Core\BackendBaseModel
         'end_time' => 'datetime',
     ];
 
+    protected $appends = [
+        'defense_time',
+        'defense_day',
+        'defense_date',
+    ];
+
     // protected $dates = [
     //     'start_time',
     //     'end_time',
@@ -54,5 +60,41 @@ class Timeslot extends Core\BackendBaseModel
     public function scopeActive($query)
     {
         return $query->where('year_id', Year::current()->id);
+    }
+
+    /**
+     * Get the defense time formatted as HH:MM-HH:MM
+     */
+    public function getDefenseTimeAttribute(): string
+    {
+        if (!$this->start_time || !$this->end_time) {
+            return __('not defined');
+        }
+
+        return Carbon::parse($this->start_time)->format('H:i') . '-' . Carbon::parse($this->end_time)->format('H:i');
+    }
+
+    /**
+     * Get the defense day formatted as "Monday 15 May 2025" (localized)
+     */
+    public function getDefenseDayAttribute(): string
+    {
+        if (!$this->start_time) {
+            return __('not defined');
+        }
+
+        return Carbon::parse($this->start_time)->translatedFormat('l d F Y');
+    }
+
+    /**
+     * Get the defense date formatted as DD/MM/YYYY
+     */
+    public function getDefenseDateAttribute(): string
+    {
+        if (!$this->start_time) {
+            return __('not defined');
+        }
+
+        return Carbon::parse($this->start_time)->format('d/m/Y');
     }
 }

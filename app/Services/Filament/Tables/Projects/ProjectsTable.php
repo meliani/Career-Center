@@ -214,6 +214,7 @@ class ProjectsTable
                         ->sortable(false),
                     Tables\Columns\TextColumn::make('professors')
                         ->label('Assigned by')
+                        ->toggleable(isToggledHiddenByDefault: true)
                         ->searchable(false)
                         ->sortable(false)
                         ->formatStateUsing(function ($record) {
@@ -239,24 +240,23 @@ class ProjectsTable
                         ->searchable(false),
                     Tables\Columns\TextColumn::make('timetable.timeslot.start_time')
                         ->toggleable(isToggledHiddenByDefault: true)
-                        ->label('Defense start date')
+                        ->label('Defense Start DateTime')
                         ->searchable(false)
                         ->sortable(true)
-                        //->dateTime('d M Y H:i')
-                        ->visible(fn (DisplaySettings $displaySettings) => $displaySettings->display_plannings || auth()->user()->isAdministrator())
-                        ->formatStateUsing(function ($record) {
-                        return $record->timetable->timeslot->start_time ? Carbon::parse($record->timetable->timeslot->start_time)->format('d/m/Y H:i') : __('not defined');
-                        }),
-                    Tables\Columns\TextColumn::make('timetable.timeslot.end_time')
-                        ->label('Defense end date')
+                        ->dateTime()
+                        ->visible(fn (DisplaySettings $displaySettings) => $displaySettings->display_plannings || auth()->user()->isAdministrator()),
+                    Tables\Columns\TextColumn::make('timetable.timeslot.defense_day')
+                        ->toggleable(isToggledHiddenByDefault: true)
+                        ->label('Defense Day')
+                        ->searchable(false)
+                        ->sortable(false)
+                        ->visible(fn (DisplaySettings $displaySettings) => $displaySettings->display_plannings || auth()->user()->isAdministrator()),
+                    Tables\Columns\TextColumn::make('timetable.timeslot.defense_time')
+                        ->label('Defense Time')
                         ->searchable(false)
                         ->sortable(false)
                         ->visible(fn (DisplaySettings $displaySettings) => $displaySettings->display_plannings || auth()->user()->isAdministrator())
-                        ->toggleable(isToggledHiddenByDefault: true)
-                        //->dateTime('d M Y H:i')
-                        ->formatStateUsing(function ($record) {
-                        return $record->timetable->timeslot->end_time ? Carbon::parse($record->timetable->timeslot->end_time)->format('d/m/Y H:i') : __('not defined');
-                        }),
+                        ->toggleable(isToggledHiddenByDefault: true),
                     // Tables\Columns\TextColumn::make('defense_start_time')
                     //     ->toggleable(isToggledHiddenByDefault: true)
                     //     ->label('Defense start time')
