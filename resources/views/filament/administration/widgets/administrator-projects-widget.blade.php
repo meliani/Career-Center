@@ -69,9 +69,9 @@
                                     <strong>{{ $project->title }}</strong>
                                 </div>
 
-                                @if($project->defense_date)
+                                @if($project->timetable && $project->timetable->timeslot)
                                     <div class="text-sm text-gray-600">
-                                        <strong>{{ __('Defense:') }}</strong> {{ $project->defense_date->format('d M Y H:i') }}
+                                        <strong>{{ __('Defense:') }}</strong> {{ $project->timetable->timeslot->start_time->format('d M Y H:i') }}
                                     </div>
                                 @endif
 

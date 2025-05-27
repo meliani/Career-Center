@@ -193,6 +193,7 @@ class ScheduleProfessorDefensesBulkAction extends BulkAction
                         $timetable->user_id = auth()->id();
                         $timetable->created_by = auth()->id();
                         $timetable->updated_by = auth()->id();
+                        $timetable->scheduled_by = auth()->id();
                         $timetable->save();
                         
                         // Increment counters
