@@ -41,7 +41,8 @@ class RequestDefenseReschedule extends Page
     public $existingRequest = null;
 
     public function mount($rescheduleRequest = null): void
-    {        $studentId = auth()->id();
+    {        
+        $studentId = auth()->id();
         
         // Get the student's timetable through the project's final_internship_agreements
         $this->timetable = Timetable::whereHas('project', function ($query) use ($studentId) {
@@ -51,34 +52,45 @@ class RequestDefenseReschedule extends Page
             })
             ->with(['timeslot', 'room', 'project'])
             ->orderBy('created_at', 'desc')
-            ->first();        // If we don't have a timetable yet, redirect to dashboard
+            ->first();        
+            
+        // If we don't have a timetable yet, redirect to dashboard
         if (!$this->timetable) {
             $this->redirect(route('filament.app.pages.welcome-dashboard'));
             return;
         }
-          // Check if we're viewing an existing request
+        
+        // First, check if we have any existing request for this timetable
+        $existingRequest = RescheduleRequest::where('student_id', $studentId)
+            ->where('timetable_id', $this->timetable->id)
+            ->latest()
+            ->first();
+          
+        // Check if we're viewing a specific existing request
         if ($rescheduleRequest) {
-            $this->existingRequest = RescheduleRequest::where('id', $rescheduleRequest)
+            $specificRequest = RescheduleRequest::where('id', $rescheduleRequest)
                 ->where('student_id', $studentId)
-                ->first();            if (!$this->existingRequest) {
+                ->first();
+                
+            if (!$specificRequest) {
                 $this->redirect(route('filament.app.pages.welcome-dashboard'));
                 return;
             }
-              // Fill form with existing data
+            
+            $this->existingRequest = $specificRequest;
+        } else {
+            // Use the most recent request if it exists
+            $this->existingRequest = $existingRequest;
+        }
+        
+        // Fill form based on whether we have an existing request
+        if ($this->existingRequest) {
             $this->form->fill([
                 'timetable_id' => $this->existingRequest->timetable_id,
                 'reason' => $this->existingRequest->reason,
                 'preferred_timeslot_id' => $this->existingRequest->preferred_timeslot_id,
             ]);
-        } else {// Check if there's already a pending request
-            $pendingRequest = RescheduleRequest::where('student_id', $studentId)
-                ->where('timetable_id', $this->timetable->id)
-                ->whereIn('status', [RescheduleRequestStatus::Pending, RescheduleRequestStatus::Approved])
-                ->first();            if ($pendingRequest) {
-                $this->redirect(route('filament.app.pages.request-defense-reschedule', ['rescheduleRequest' => $pendingRequest->id]));
-                return;
-            }
-            
+        } else {
             // Fill with default data
             $this->form->fill([
                 'timetable_id' => $this->timetable->id,
@@ -184,9 +196,16 @@ class RequestDefenseReschedule extends Page
             ])
             ->statePath('data');
     }    public function submit(): void
-    {        if ($this->existingRequest && 
+    {        
+        // Check if we have a non-rejected existing request
+        if ($this->existingRequest && 
             $this->existingRequest->status !== RescheduleRequestStatus::Rejected) {
-            $this->redirect(route('filament.app.pages.welcome-dashboard'));
+            // Show notification instead of redirecting
+            Notification::make()
+                ->title('Request Already Exists')
+                ->body('You already have an active reschedule request. Please wait for it to be processed.')
+                ->warning()
+                ->send();
             return;
         }
 
@@ -246,8 +265,16 @@ class RequestDefenseReschedule extends Page
                 ->success()
                 ->send();
                 
-            // Redirect to the request view
-            $this->redirect(route('filament.app.pages.request-defense-reschedule', ['rescheduleRequest' => $request->id]));
+            // Update the current page state instead of redirecting
+            $this->existingRequest = $request;
+            
+            // Fill form with the new request data
+            $this->form->fill([
+                'timetable_id' => $request->timetable_id,
+                'reason' => $request->reason,
+                'preferred_timeslot_id' => $request->preferred_timeslot_id,
+            ]);
+            
             return;
             
         } catch (\Exception $e) {
@@ -263,7 +290,31 @@ class RequestDefenseReschedule extends Page
                 ->danger()
                 ->send();
         }
-    }protected function getFormActions(): array
+    }public function refreshRequestStatus(): void
+    {
+        // Refresh the existing request data
+        if ($this->existingRequest) {
+            $this->existingRequest = $this->existingRequest->fresh();
+        } else {
+            // Check for any new requests
+            $studentId = auth()->id();
+            $this->existingRequest = RescheduleRequest::where('student_id', $studentId)
+                ->where('timetable_id', $this->timetable->id)
+                ->latest()
+                ->first();
+        }
+        
+        // Refresh the form data
+        if ($this->existingRequest) {
+            $this->form->fill([
+                'timetable_id' => $this->existingRequest->timetable_id,
+                'reason' => $this->existingRequest->reason,
+                'preferred_timeslot_id' => $this->existingRequest->preferred_timeslot_id,
+            ]);
+        }
+    }
+
+    protected function getFormActions(): array
     {
         // We're handling the actions in the view directly with wire:click
         return [];

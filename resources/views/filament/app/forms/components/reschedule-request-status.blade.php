@@ -49,7 +49,7 @@
                 
                 <div class="col-span-2">
                     <div class="flex items-start space-x-2">
-                        @svg('heroicon-o-chat-alt', 'w-5 h-5 text-gray-500 mt-0.5')
+                        @svg('heroicon-o-chat-bubble-bottom-center-text', 'w-5 h-5 text-gray-500 mt-0.5')
                         <div>
                             <span class="font-medium text-gray-700">{{ __('Reason:') }}</span>
                             <p class="mt-1 text-gray-600">{{ $request->reason }}</p>

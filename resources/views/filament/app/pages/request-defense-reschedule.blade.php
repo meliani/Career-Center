@@ -35,9 +35,12 @@
                 <x-filament::button 
                     color="primary"
                     wire:click="submit"
+                    wire:loading.attr="disabled"
+                    wire:loading.class="opacity-50"
                     type="button"
                 >
-                    {{ __('Submit Request') }}
+                    <span wire:loading.remove>{{ __('Submit Request') }}</span>
+                    <span wire:loading>{{ __('Submitting...') }}</span>
                 </x-filament::button>
             </div>
         @else

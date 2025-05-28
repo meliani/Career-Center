@@ -73,7 +73,9 @@ class StudentDefenseWidget extends Widget
     public function viewRescheduleRequest()
     {
         if (auth()->check() && $this->rescheduleRequest) {
-            return redirect()->to(route('filament.app.pages.request-defense-reschedule', ['rescheduleRequest' => $this->rescheduleRequest->id]));
+            // Navigate to the page without parameters to avoid loops
+            // The page will automatically load the latest request
+            return redirect()->to(route('filament.app.pages.request-defense-reschedule'));
         }
 
         return redirect()->route('filament.app.pages.welcome-dashboard');
