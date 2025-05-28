@@ -31,13 +31,13 @@ class ProfessorsRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                // Forms\Components\TextInput::make('full_name')
-                //     ->required()
-                //     ->maxLength(255),
-                // Forms\Components\Select::make('jury_role')
-                //     ->required()
-                //     ->options(Enums\JuryRole::class)
-                //     ->default(Enums\JuryRole::Reviewer),
+                Forms\Components\TextInput::make('full_name')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\Select::make('jury_role')
+                    ->required()
+                    ->options(Enums\JuryRole::class)
+                    ->default(Enums\JuryRole::Reviewer),
             ]);
     }
 
