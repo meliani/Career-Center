@@ -13,9 +13,16 @@
             <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
                 <div class="flex items-center space-x-3">
                     @svg('heroicon-o-information-circle', 'w-6 h-6 text-blue-500')
-                    <p class="text-sm text-blue-700">
-                        {{ __('Please provide a valid reason for rescheduling your defense and select an available timeslot. Only timeslots where all your professors are available will be shown.') }}
-                    </p>
+                    <div class="text-sm text-blue-700">
+                        <p class="mb-2">
+                            {{ __('Please provide a valid reason for rescheduling your defense and select an available timeslot and room.') }}
+                        </p>
+                        <ul class="list-disc list-inside space-y-1">
+                            <li>{{ __('Only timeslots where all your professors are available will be shown') }}</li>
+                            <li>{{ __('Select a timeslot first, then choose from available rooms for that time') }}</li>
+                            <li>{{ __('Room availability is checked in real-time to prevent conflicts') }}</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         @endif

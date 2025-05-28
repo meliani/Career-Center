@@ -6,8 +6,10 @@ use App\Models\RescheduleRequest;
 use App\Models\Timetable;
 use App\Models\Timeslot;
 use App\Models\Student;
+use App\Models\Room;
 use App\Enums\RescheduleRequestStatus;
 use App\Notifications\RescheduleRequestSubmitted;
+use App\Services\RoomService;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\ViewField;
@@ -26,9 +28,19 @@ class RequestDefenseReschedule extends Page
 
     protected static string $view = 'filament.app.pages.request-defense-reschedule';
 
-    protected static ?string $title = 'Request Defense Reschedule';
+    protected static ?string $title = null;
 
-    protected static ?string $navigationLabel = 'Defense Reschedule';
+    protected static ?string $navigationLabel = null;
+
+    public function getTitle(): string
+    {
+        return __('Request Defense Reschedule');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('Defense Reschedule');
+    }
 
     protected static ?int $navigationSort = 5;
 
@@ -89,6 +101,7 @@ class RequestDefenseReschedule extends Page
                 'timetable_id' => $this->existingRequest->timetable_id,
                 'reason' => $this->existingRequest->reason,
                 'preferred_timeslot_id' => $this->existingRequest->preferred_timeslot_id,
+                'preferred_room_id' => $this->existingRequest->preferred_room_id,
             ]);
         } else {
             // Fill with default data
@@ -102,7 +115,7 @@ class RequestDefenseReschedule extends Page
     {
         return $form
             ->schema([
-                Section::make('Current Defense Schedule')
+                Section::make(__('Current Defense Schedule'))
                     ->schema([
                         ViewField::make('current_schedule')
                             ->view('filament.app.forms.components.current-defense-schedule')
@@ -111,13 +124,13 @@ class RequestDefenseReschedule extends Page
                             ]),
                     ])
                     ->columns(1),
-                  Section::make('Reschedule Request')
+                  Section::make(__('Reschedule Request'))
                     ->schema([
                         Filament\Forms\Components\Hidden::make('timetable_id'),
                         
                         Textarea::make('reason')
-                            ->label('Reason for Reschedule')
-                            ->placeholder('Please explain why you need to reschedule your defense')
+                            ->label(__('Reason for Reschedule'))
+                            ->placeholder(__('Please explain why you need to reschedule your defense'))
                             ->required()
                             ->disabled(function () {
                                 return $this->existingRequest && 
@@ -126,41 +139,22 @@ class RequestDefenseReschedule extends Page
                             ->minLength(20)
                             ->maxLength(500)
                             ->columnSpanFull(),                        Filament\Forms\Components\Select::make('preferred_timeslot_id')
-                            ->label('Preferred Timeslot')                            ->options(function () {
-                                // Get only future timeslots
-                                $timeslots = Timeslot::where('start_time', '>=', now()->addDays(3))
-                                    ->where('start_time', '<=', now()->addDays(30))
+                            ->label(__('Preferred Timeslot'))
+                            ->options(function () {
+                                // Get ALL future timeslots - no filtering by availability
+                                $timeslots = Timeslot::where('start_time', '>=', now()->addHours(24))
                                     ->orderBy('start_time')
                                     ->get();
                                 
                                 $availableTimeslots = [];
                                 
-                                // Get the current project from the timetable to check professor availability
-                                $project = $this->timetable->project;
-                                
                                 foreach ($timeslots as $timeslot) {
-                                    // Check if this timeslot has available rooms
-                                    $usedRoomIds = Timetable::where('timeslot_id', $timeslot->id)
-                                        ->pluck('room_id')
-                                        ->toArray();
+                                    // Show ALL timeslots with localized formatting
+                                    $label = $timeslot->start_time->locale(app()->getLocale())->isoFormat('dddd, LL - HH:mm') . 
+                                             ' ' . __('to') . ' ' . 
+                                             $timeslot->end_time->format('H:i');
                                     
-                                    $availableRooms = \App\Models\Room::where('status', \App\Enums\RoomStatus::Available)
-                                        ->whereNotIn('id', $usedRoomIds)
-                                        ->count();
-                                    
-                                    // Check if professors are available for this timeslot
-                                    $professorsAvailable = \App\Services\ProfessorService::checkJuryAvailability(
-                                        $timeslot, 
-                                        $project, 
-                                        $this->timetable->id
-                                    );
-                                      // Only add timeslots that have available rooms AND all professors are available
-                                    if (($availableRooms > 0 || $usedRoomIds === []) && $professorsAvailable) {
-                                        $label = $timeslot->start_time->format('l, F j, Y - H:i') . ' to ' . 
-                                            $timeslot->end_time->format('H:i');
-                                        
-                                        $availableTimeslots[$timeslot->id] = $label;
-                                    }
+                                    $availableTimeslots[$timeslot->id] = $label;
                                 }
                                 
                                 return $availableTimeslots;
@@ -168,9 +162,139 @@ class RequestDefenseReschedule extends Page
                             ->searchable()
                             ->preload()
                             ->required()
+                            ->live()
+                            ->afterStateUpdated(function (callable $set) {
+                                // Clear room selection when timeslot changes
+                                $set('preferred_room_id', null);
+                            })
                             ->disabled(function () {
                                 return $this->existingRequest && 
                                     $this->existingRequest->status !== RescheduleRequestStatus::Rejected;
+                            })
+                            ->helperText(function () {
+                                $totalTimeslots = Timeslot::where('start_time', '>=', now()->addHours(24))->count();
+                                return __('Choose from :count available future timeslots. Room availability will be checked when you select a timeslot.', ['count' => $totalTimeslots]);
+                            })
+                            ->columnSpanFull(),
+
+                        Filament\Forms\Components\Select::make('preferred_room_id')
+                            ->label(__('Preferred Room'))
+                            ->options(function (callable $get) {
+                                $timeslotId = $get('preferred_timeslot_id');
+                                
+                                if (!$timeslotId) {
+                                    return [];
+                                }
+                                
+                                $timeslot = Timeslot::find($timeslotId);
+                                if (!$timeslot) {
+                                    return [];
+                                }
+                                
+                                // Get ALL active rooms, regardless of availability
+                                return Room::where('status', \App\Enums\RoomStatus::Available)
+                                    ->get()
+                                    ->mapWithKeys(function ($room) use ($timeslot) {
+                                        // Enhanced room display with capacity and availability information
+                                        $label = $room->name;
+                                        if ($room->capacity) {
+                                            $label .= ' (' . __('Capacity') . ': ' . $room->capacity . ')';
+                                        }
+                                        if ($room->building) {
+                                            $label .= ' - ' . $room->building;
+                                        }
+                                        
+                                        // Check availability and add indicator
+                                        $isAvailable = RoomService::checkRoomAvailability($timeslot, $room, $this->timetable?->id);
+                                        if (!$isAvailable) {
+                                            $label .= ' ⚠️ ' . __('(Unavailable)');
+                                        }
+                                        
+                                        return [$room->id => $label];
+                                    })
+                                    ->toArray();
+                            })
+                            ->searchable()
+                            ->preload()
+                            ->required()
+                            ->disabled(function (callable $get) {
+                                $timeslotSelected = $get('preferred_timeslot_id');
+                                $isExistingRequest = $this->existingRequest && 
+                                    $this->existingRequest->status !== RescheduleRequestStatus::Rejected;
+                                
+                                return !$timeslotSelected || $isExistingRequest;
+                            })
+                            ->helperText(function (callable $get) {
+                                $timeslotId = $get('preferred_timeslot_id');
+                                
+                                if (!$timeslotId) {
+                                    return __('Please select a timeslot first.');
+                                }
+                                
+                                $timeslot = Timeslot::find($timeslotId);
+                                if (!$timeslot) {
+                                    return __('Invalid timeslot selected.');
+                                }
+                                
+                                // Get ALL rooms and analyze availability
+                                $allRooms = Room::where('status', \App\Enums\RoomStatus::Available)->get();
+                                $availableRooms = $allRooms->filter(function ($room) use ($timeslot) {
+                                    return RoomService::checkRoomAvailability($timeslot, $room, $this->timetable?->id);
+                                });
+                                
+                                $totalCount = $allRooms->count();
+                                $availableCount = $availableRooms->count();
+                                $unavailableCount = $totalCount - $availableCount;
+                                
+                                // Check professor availability for this timeslot
+                                $project = $this->timetable->project;
+                                $professorsAvailable = \App\Services\ProfessorService::checkJuryAvailability(
+                                    $timeslot, 
+                                    $project, 
+                                    $this->timetable->id
+                                );
+                                
+                                $warnings = [];
+                                if (!$professorsAvailable) {
+                                    $warnings[] = __('⚠️ Some professors may not be available for this timeslot');
+                                }
+                                
+                                // Show room availability statistics
+                                $details = [__(':total rooms total', ['total' => $totalCount])];
+                                
+                                if ($availableCount > 0) {
+                                    $details[] = __(':count available', ['count' => $availableCount]);
+                                }
+                                
+                                if ($unavailableCount > 0) {
+                                    $details[] = __(':count unavailable', ['count' => $unavailableCount]);
+                                }
+                                
+                                // Show some details about all rooms
+                                $capacityRange = $allRooms->pluck('capacity')->filter()->unique()->sort()->values();
+                                $buildings = $allRooms->pluck('building')->filter()->unique()->values();
+                                
+                                if ($capacityRange->count() > 0) {
+                                    $min = $capacityRange->first();
+                                    $max = $capacityRange->last();
+                                    if ($min === $max) {
+                                        $details[] = __('Room capacity') . ': ' . $min;
+                                    } else {
+                                        $details[] = __('Room capacities') . ': ' . $min . '-' . $max;
+                                    }
+                                }
+                                
+                                if ($buildings->count() > 0) {
+                                    $details[] = __('Buildings') . ': ' . $buildings->take(3)->join(', ');
+                                }
+                                
+                                $info = implode(' | ', $details);
+                                
+                                if ($unavailableCount > 0) {
+                                    $info .= ' | ⚠️ ' . __('Unavailable rooms are marked with warning icon');
+                                }
+                                
+                                return $warnings ? implode(' ', $warnings) . ' | ' . $info : $info;
                             })
                             ->columnSpanFull(),
                     ])
@@ -180,7 +304,7 @@ class RequestDefenseReschedule extends Page
                             $this->existingRequest->status === RescheduleRequestStatus::Rejected;
                     }),
                 
-                Section::make('Request Status')
+                Section::make(__('Request Status'))
                     ->schema([
                         ViewField::make('request_status')
                             ->view('filament.app.forms.components.reschedule-request-status')
@@ -202,8 +326,8 @@ class RequestDefenseReschedule extends Page
             $this->existingRequest->status !== RescheduleRequestStatus::Rejected) {
             // Show notification instead of redirecting
             Notification::make()
-                ->title('Request Already Exists')
-                ->body('You already have an active reschedule request. Please wait for it to be processed.')
+                ->title(__('Request Already Exists'))
+                ->body(__('You already have an active reschedule request. Please wait for it to be processed.'))
                 ->warning()
                 ->send();
             return;
@@ -217,7 +341,20 @@ class RequestDefenseReschedule extends Page
             // Verify that the selected timeslot is still valid
             $timeslot = Timeslot::find($data['preferred_timeslot_id']);
             if (!$timeslot) {
-                throw new \Exception('Selected timeslot no longer exists.');
+                throw new \Exception(__('Selected timeslot no longer exists.'));
+            }
+            
+            // Verify that the selected room is still available
+            $room = Room::find($data['preferred_room_id']);
+            if (!$room) {
+                throw new \Exception(__('Selected room no longer exists.'));
+            }
+            
+            // Check if the timeslot+room combination is still available using RoomService
+            $isRoomAvailable = RoomService::checkRoomAvailability($timeslot, $room, $this->timetable?->id);
+            
+            if (!$isRoomAvailable) {
+                throw new \Exception(__('The selected room is no longer available for this timeslot.'));
             }
             
             // Verify that professors are still available
@@ -229,7 +366,7 @@ class RequestDefenseReschedule extends Page
             );
             
             if (!$professorsAvailable) {
-                throw new \Exception('One or more professors are no longer available at this timeslot.');
+                throw new \Exception(__('One or more professors are no longer available at this timeslot.'));
             }
             
             // Create or update the reschedule request
@@ -238,6 +375,7 @@ class RequestDefenseReschedule extends Page
                   $this->existingRequest->update([
                     'reason' => $data['reason'],
                     'preferred_timeslot_id' => $data['preferred_timeslot_id'],
+                    'preferred_room_id' => $data['preferred_room_id'],
                     'status' => RescheduleRequestStatus::Pending,
                     'admin_notes' => null,
                     'processed_by' => null,
@@ -251,6 +389,7 @@ class RequestDefenseReschedule extends Page
                     'student_id' => auth()->id(),
                     'reason' => $data['reason'],
                     'preferred_timeslot_id' => $data['preferred_timeslot_id'],
+                    'preferred_room_id' => $data['preferred_room_id'],
                     'status' => RescheduleRequestStatus::Pending,
                 ]);
             }
@@ -261,7 +400,7 @@ class RequestDefenseReschedule extends Page
             RescheduleRequestSubmitted::sendToAdmins($request);
               // Show success notification
             Notification::make()
-                ->title('Reschedule request submitted successfully')
+                ->title(__('Reschedule request submitted successfully'))
                 ->success()
                 ->send();
                 
@@ -273,6 +412,7 @@ class RequestDefenseReschedule extends Page
                 'timetable_id' => $request->timetable_id,
                 'reason' => $request->reason,
                 'preferred_timeslot_id' => $request->preferred_timeslot_id,
+                'preferred_room_id' => $request->preferred_room_id,
             ]);
             
             return;
@@ -285,8 +425,8 @@ class RequestDefenseReschedule extends Page
             
             // Show error notification
             Notification::make()
-                ->title('Error submitting reschedule request')
-                ->body($e->getMessage() ?: 'Please try again later or contact support if the problem persists.')
+                ->title(__('Error submitting reschedule request'))
+                ->body($e->getMessage() ?: __('Please try again later or contact support if the problem persists.'))
                 ->danger()
                 ->send();
         }
@@ -310,6 +450,7 @@ class RequestDefenseReschedule extends Page
                 'timetable_id' => $this->existingRequest->timetable_id,
                 'reason' => $this->existingRequest->reason,
                 'preferred_timeslot_id' => $this->existingRequest->preferred_timeslot_id,
+                'preferred_room_id' => $this->existingRequest->preferred_room_id,
             ]);
         }
     }

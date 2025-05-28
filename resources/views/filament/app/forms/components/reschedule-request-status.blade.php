@@ -34,10 +34,12 @@
                         </div>
                     @endif
                 </div>
-              <!-- Request Details -->            <div class="grid grid-cols-1 gap-3 text-sm">
+              <!-- Request Details -->
+            <div class="grid grid-cols-1 gap-3 text-sm">
                 <div class="flex items-center space-x-2">
                     @svg('heroicon-o-calendar', 'w-5 h-5 text-gray-500')
-                    <span>                        <span class="font-medium text-gray-700">{{ __('Preferred Timeslot:') }}</span>
+                    <span>
+                        <span class="font-medium text-gray-700">{{ __('Preferred Timeslot:') }}</span>
                         @if($request->preferredTimeslot)
                             {{ $request->preferredTimeslot->start_time->format('l, F j, Y') }} at 
                             {{ $request->preferredTimeslot->start_time->format('H:i') }} - 
@@ -45,7 +47,26 @@
                         @else
                             {{ __('Not specified') }}
                         @endif
-                    </span>                </div>
+                    </span>
+                </div>
+
+                <div class="flex items-center space-x-2">
+                    @svg('heroicon-o-building-office', 'w-5 h-5 text-gray-500')
+                    <span>
+                        <span class="font-medium text-gray-700">{{ __('Preferred Room:') }}</span>
+                        @if($request->preferredRoom)
+                            {{ $request->preferredRoom->name }}
+                            @if($request->preferredRoom->capacity)
+                                <span class="text-gray-500">(Capacity: {{ $request->preferredRoom->capacity }})</span>
+                            @endif
+                            @if($request->preferredRoom->building)
+                                <span class="text-gray-500">- {{ $request->preferredRoom->building }}</span>
+                            @endif
+                        @else
+                            {{ __('Not specified') }}
+                        @endif
+                    </span>
+                </div>
                 
                 <div class="col-span-2">
                     <div class="flex items-start space-x-2">

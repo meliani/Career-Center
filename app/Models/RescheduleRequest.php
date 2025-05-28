@@ -15,6 +15,7 @@ class RescheduleRequest extends Model
         'reason',
         'admin_notes',
         'preferred_timeslot_id',
+        'preferred_room_id',
         'processed_by',
         'processed_at',
     ];
@@ -43,5 +44,10 @@ class RescheduleRequest extends Model
     public function preferredTimeslot(): BelongsTo
     {
         return $this->belongsTo(Timeslot::class, 'preferred_timeslot_id');
+    }
+
+    public function preferredRoom(): BelongsTo
+    {
+        return $this->belongsTo(Room::class, 'preferred_room_id');
     }
 }
