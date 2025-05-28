@@ -46,14 +46,14 @@ class RescheduleRequestSubmitted extends Notification implements ShouldQueue
         return (new MailMessage)
             ->subject('Defense Reschedule Request')
             ->greeting('Hello!')
-            ->line('A student has submitted a request to reschedule their defense.')            ->line("Student: {$student->full_name}")
+            ->line('A student has submitted a request to reschedule their defense.')            ->line("Student: {$student->first_name} {$student->last_name}")
             ->line("Project: {$project->title}")
             ->line("Current Date: {$timetable->timeslot->start_time->format('F j, Y')}")
             ->line("Current Time: {$timetable->timeslot->start_time->format('H:i')} - {$timetable->timeslot->end_time->format('H:i')}")
             ->line("Requested Date: {$this->rescheduleRequest->preferredTimeslot->start_time->format('F j, Y')}")
             ->line("Requested Time: {$this->rescheduleRequest->preferredTimeslot->start_time->format('H:i')} - {$this->rescheduleRequest->preferredTimeslot->end_time->format('H:i')}")
             ->line("Reason: {$this->rescheduleRequest->reason}")
-            ->action('Review Request', url(route('filament.Administration.resources.reschedule-requests.edit', $this->rescheduleRequest)))
+            ->action('Review Request', url(route('filament.Administration.resources.reschedule-requests.view', $this->rescheduleRequest)))
             ->line('Thank you for using our application!');
     }
 
@@ -90,11 +90,11 @@ class RescheduleRequestSubmitted extends Notification implements ShouldQueue
         FilamentNotification::make()
             ->title('New Defense Reschedule Request')
             ->icon('heroicon-o-calendar')
-            ->body("Student {$student->full_name} has requested to reschedule their defense from {$timetable->timeslot->start_time->format('F j')} to {$rescheduleRequest->preferredTimeslot->start_time->format('F j')}.")
+            ->body("Student {$student->first_name} {$student->last_name} has requested to reschedule their defense from {$timetable->timeslot->start_time->format('F j')} to {$rescheduleRequest->preferredTimeslot->start_time->format('F j')}.")
             ->actions([
                 NotificationAction::make('view')
                     ->label('View Request')
-                    ->url(route('filament.Administration.resources.reschedule-requests.edit', $rescheduleRequest))
+                    ->url(route('filament.Administration.resources.reschedule-requests.view', $rescheduleRequest))
                     ->button(),
             ])
             ->danger()

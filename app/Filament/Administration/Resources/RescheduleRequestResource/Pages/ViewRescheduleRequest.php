@@ -3,30 +3,20 @@
 namespace App\Filament\Administration\Resources\RescheduleRequestResource\Pages;
 
 use App\Filament\Administration\Resources\RescheduleRequestResource;
-use App\Models\RescheduleRequest;
 use App\Enums\RescheduleRequestStatus;
 use App\Services\DefenseReschedulingService;
 use Filament\Actions;
-use Filament\Resources\Pages\EditRecord;
+use Filament\Resources\Pages\ViewRecord;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\DB;
 
-class EditRescheduleRequest extends EditRecord
+class ViewRescheduleRequest extends ViewRecord
 {
     protected static string $resource = RescheduleRequestResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('view_details')
-                ->label('View Full Details')
-                ->icon('heroicon-o-eye')
-                ->color('gray')
-                ->modalHeading(fn (): string => 'Reschedule Request #' . $this->record->id)
-                ->modalContent(fn () => view('filament.administration.reschedule-request-details', ['record' => $this->record]))
-                ->modalSubmitAction(false)
-                ->modalCancelActionLabel('Close'),
-                
             Actions\Action::make('check_availability')
                 ->label('Check Availability')
                 ->icon('heroicon-o-clock')
@@ -37,37 +27,66 @@ class EditRescheduleRequest extends EditRecord
                 ->modalCancelActionLabel('Close')
                 ->visible(fn () => $this->record->status === RescheduleRequestStatus::Pending),
                 
-            Actions\Action::make('approve')
-                ->label('Approve Request')
+            Actions\Action::make('quick_approve')
+                ->label('Quick Approve')
                 ->icon('heroicon-o-check-circle')
                 ->color('success')
                 ->requiresConfirmation()
-                ->modalHeading('Approve Reschedule Request')
+                ->modalHeading('Quick Approve Request')
                 ->modalDescription(fn (): string => 
-                    "Are you sure you want to approve this request and reschedule {$this->record->student->full_name}'s defense?"
+                    "Approve reschedule request from {$this->record->student->full_name}?"
                 )
-                ->modalSubmitActionLabel('Yes, Approve')
+                ->modalSubmitActionLabel('Approve')
                 ->visible(fn () => $this->record->status === RescheduleRequestStatus::Pending)
                 ->action(function () {
-                    $this->processRequest(RescheduleRequestStatus::Approved, 'Request approved from edit page.');
+                    $this->processRequest(RescheduleRequestStatus::Approved, 'Quick approval from view page.');
                 }),
                 
-            Actions\Action::make('reject')
-                ->label('Reject Request')
+            Actions\Action::make('quick_reject')
+                ->label('Quick Reject')
                 ->icon('heroicon-o-x-circle')
                 ->color('danger')
                 ->form([
-                    \Filament\Forms\Components\Textarea::make('rejection_reason')
-                        ->label('Rejection Reason')
+                    \Filament\Forms\Components\Select::make('rejection_template')
+                        ->label('Rejection Reason Template')
+                        ->options([
+                            'professor_conflict' => 'Professor not available at requested time',
+                            'room_conflict' => 'Room not available at requested time',
+                            'too_close' => 'Request submitted too close to defense date',
+                            'invalid_timeslot' => 'Requested timeslot is not valid for defenses',
+                            'insufficient_notice' => 'Insufficient notice provided for rescheduling',
+                            'custom' => 'Custom reason (specify below)',
+                        ])
                         ->required()
+                        ->reactive(),
+                    \Filament\Forms\Components\Textarea::make('custom_reason')
+                        ->label('Custom Rejection Reason')
+                        ->required()
+                        ->visible(fn (callable $get) => $get('rejection_template') === 'custom')
                         ->placeholder('Please provide a detailed reason for rejecting this request'),
                 ])
-                ->modalHeading('Reject Reschedule Request')
+                ->modalHeading('Quick Reject Request')
                 ->modalSubmitActionLabel('Reject Request')
                 ->visible(fn () => $this->record->status === RescheduleRequestStatus::Pending)
                 ->action(function (array $data) {
-                    $this->processRequest(RescheduleRequestStatus::Rejected, $data['rejection_reason']);
+                    $reasonMap = [
+                        'professor_conflict' => 'The requested timeslot conflicts with professor availability. Please select an alternative time.',
+                        'room_conflict' => 'The requested room is not available at the specified time. Please choose a different room or time.',
+                        'too_close' => 'Rescheduling requests must be submitted at least 48 hours before the defense date.',
+                        'invalid_timeslot' => 'The requested timeslot is outside of defense scheduling hours or on a non-working day.',
+                        'insufficient_notice' => 'Insufficient notice provided. Please submit rescheduling requests with adequate advance notice.',
+                    ];
+                    
+                    $reason = $data['rejection_template'] === 'custom' 
+                        ? $data['custom_reason'] 
+                        : $reasonMap[$data['rejection_template']];
+                        
+                    $this->processRequest(RescheduleRequestStatus::Rejected, $reason);
                 }),
+                
+            Actions\EditAction::make()
+                ->label('Edit/Process')
+                ->icon('heroicon-o-pencil-square'),
                 
             Actions\DeleteAction::make()
                 ->visible(fn () => $this->record->status !== RescheduleRequestStatus::Approved),
@@ -116,8 +135,8 @@ class EditRescheduleRequest extends EditRecord
             
             DB::commit();
             
-            // Redirect back to list
-            $this->redirect($this->getResource()::getUrl('index'));
+            // Refresh the page to show updated status
+            $this->redirect($this->getResource()::getUrl('view', ['record' => $this->record]));
             
         } catch (\Exception $e) {
             DB::rollBack();
@@ -128,15 +147,5 @@ class EditRescheduleRequest extends EditRecord
                 ->danger()
                 ->send();
         }
-    }
-    
-    protected function getRedirectUrl(): string
-    {
-        return $this->getResource()::getUrl('index');
-    }
-    
-    protected function getSavedNotificationTitle(): ?string
-    {
-        return 'Reschedule request updated successfully.';
     }
 }
