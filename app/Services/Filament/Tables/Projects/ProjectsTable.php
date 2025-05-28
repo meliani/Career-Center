@@ -243,7 +243,10 @@ class ProjectsTable
                         ->label('Defense Start DateTime')
                         ->searchable(false)
                         ->sortable(true)
-                        ->dateTime()
+                        ->dateTime('Y-m-d H:i:s')
+                        ->formatStateUsing(function ($state) {
+                            return $state ? Carbon::parse($state)->format('Y-m-d H:i:s') : null;
+                        })
                         ->visible(fn (DisplaySettings $displaySettings) => $displaySettings->display_plannings || auth()->user()->isAdministrator()),
                     Tables\Columns\TextColumn::make('timetable.timeslot.defense_day')
                         ->toggleable(isToggledHiddenByDefault: true)
