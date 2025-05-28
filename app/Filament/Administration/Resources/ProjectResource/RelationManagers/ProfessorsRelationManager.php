@@ -125,7 +125,7 @@ class ProfessorsRelationManager extends RelationManager
                     ->requiresConfirmation()
                     ->action(fn ($record) => $record->pivot->update(['approved_by' => auth()->user()->id]))
                     ->visible(fn () => auth()->user()->isAdministrator() || auth()->user()->isDirection()),
-                // Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make(),
                 Tables\Actions\DetachAction::make()
                     ->label('')
                     ->icon('heroicon-o-trash')
