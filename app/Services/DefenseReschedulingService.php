@@ -76,13 +76,16 @@ class DefenseReschedulingService
                 'scheduled_by' => $request->processed_by,
             ]);
             
-            // Optionally, mark the old timetable as inactive or delete it
-            $currentTimetable->delete();
-              // Update the request to indicate it's been fulfilled
+            // Update the reschedule request to reference the new timetable BEFORE deleting the old one
+            // This prevents cascade deletion of the reschedule request
             $request->update([
+                'timetable_id' => $newTimetable->id,
                 'admin_notes' => ($request->admin_notes ? $request->admin_notes . "\n\n" : '') . 
                     "Defense successfully rescheduled to {$timeslot->start_time->format('F j, Y')} at {$timeslot->start_time->format('H:i')} in room {$availableRoom->name}."
             ]);
+            
+            // Now it's safe to delete the old timetable since the reschedule request points to the new one
+            $currentTimetable->delete();
             
             DB::commit();
             

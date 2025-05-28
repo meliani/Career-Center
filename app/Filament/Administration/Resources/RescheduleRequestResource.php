@@ -553,7 +553,7 @@ class RescheduleRequestResource extends Resource
         try {
             DB::beginTransaction();
             
-            // Update the request status
+            // Update the request status first
             $record->update([
                 'status' => $status,
                 'processed_by' => auth()->id(),
@@ -561,25 +561,51 @@ class RescheduleRequestResource extends Resource
                 'admin_notes' => $adminNotes,
             ]);
             
+            // Commit the status update first
+            DB::commit();
+            
             if ($status === RescheduleRequestStatus::Approved) {
-                // Use the service to reschedule the defense
-                $reschedulingService = new DefenseReschedulingService();
-                $newTimetable = $reschedulingService->rescheduleDefense($record);
-                
-                if (!$newTimetable) {
-                    throw new \Exception('Failed to reschedule the defense. Please try again or check the system logs.');
+                // Try to reschedule the defense in a separate transaction
+                try {
+                    DB::beginTransaction();
+                    
+                    $reschedulingService = new DefenseReschedulingService();
+                    $newTimetable = $reschedulingService->rescheduleDefense($record);
+                    
+                    if (!$newTimetable) {
+                        DB::rollBack();
+                        // Status is already updated, just show a warning
+                        Notification::make()
+                            ->title('Request Approved')
+                            ->body('The request has been approved, but automatic rescheduling failed. Please reschedule manually.')
+                            ->warning()
+                            ->send();
+                        return;
+                    }
+                    
+                    DB::commit();
+                    
+                    $message = "Defense rescheduled successfully to {$newTimetable->timeslot->start_time->format('F j, Y')} at {$newTimetable->timeslot->start_time->format('H:i')}";
+                    if ($newTimetable->room) {
+                        $message .= " in room {$newTimetable->room->name}";
+                    }
+                    
+                    Notification::make()
+                        ->title('Request Approved')
+                        ->body($message)
+                        ->success()
+                        ->send();
+                        
+                } catch (\Exception $e) {
+                    DB::rollBack();
+                    Log::error('Defense rescheduling failed: ' . $e->getMessage());
+                    
+                    Notification::make()
+                        ->title('Request Approved')
+                        ->body('The request has been approved, but automatic rescheduling failed: ' . $e->getMessage())
+                        ->warning()
+                        ->send();
                 }
-                
-                $message = "Defense rescheduled successfully to {$newTimetable->timeslot->start_time->format('F j, Y')} at {$newTimetable->timeslot->start_time->format('H:i')}";
-                if ($newTimetable->room) {
-                    $message .= " in room {$newTimetable->room->name}";
-                }
-                
-                Notification::make()
-                    ->title('Request Approved')
-                    ->body($message)
-                    ->success()
-                    ->send();
             } else {
                 Notification::make()
                     ->title('Request Rejected')
@@ -589,8 +615,6 @@ class RescheduleRequestResource extends Resource
             }
             
             // TODO: Send appropriate notification to student
-            
-            DB::commit();
             
         } catch (\Exception $e) {
             DB::rollBack();
