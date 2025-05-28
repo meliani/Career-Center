@@ -37,7 +37,7 @@ class ProfessorsRelationManager extends RelationManager
                 Forms\Components\Select::make('jury_role')
                     ->required()
                     ->options(Enums\JuryRole::class)
-                    ->default(Enums\JuryRole::Reviewer),
+                    ->default(Enums\JuryRole::Reviewer1),
             ]);
     }
 
