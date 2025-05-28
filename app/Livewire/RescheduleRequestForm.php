@@ -4,9 +4,9 @@ namespace App\Livewire;
 
 use App\Models\RescheduleRequest;
 use App\Models\Timetable;
-use Filament\Forms\Components\DatePicker;
+use App\Models\Timeslot;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\TimePicker;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
@@ -30,15 +30,13 @@ class RescheduleRequestForm extends Component implements HasForms
     {
         return $form
             ->schema([
-                DatePicker::make('preferred_date')
-                    ->label(__('Preferred Date'))
+                Select::make('preferred_timeslot_id')
+                    ->label(__('Preferred Timeslot'))
+                    ->placeholder(__('Select a preferred timeslot'))
+                    ->options($this->getAvailableTimeslots())
                     ->required()
-                    ->minDate(now()->addDays(1)),
-                    
-                TimePicker::make('preferred_time')
-                    ->label(__('Preferred Time'))
-                    ->seconds(false)
-                    ->required(),
+                    ->searchable()
+                    ->preload(),
                     
                 Textarea::make('reason')
                     ->label(__('Reason for Rescheduling'))
@@ -82,8 +80,7 @@ class RescheduleRequestForm extends Component implements HasForms
             'student_id' => auth()->user()->student->id,
             'status' => 'pending',
             'reason' => $data['reason'],
-            'preferred_date' => $data['preferred_date'],
-            'preferred_time' => $data['preferred_time'],
+            'preferred_timeslot_id' => $data['preferred_timeslot_id'],
         ]);
         
         $this->showForm = false;
@@ -96,6 +93,25 @@ class RescheduleRequestForm extends Component implements HasForms
             ->send();
             
         $this->dispatch('reschedule-request-submitted');
+    }
+    
+    private function getAvailableTimeslots()
+    {
+        // Get timeslots that are available for rescheduling
+        // Exclude the current timeslot and past timeslots
+        return Timeslot::whereDoesntHave('timetables', function ($query) {
+                // Exclude timeslots that already have timetables assigned
+                // (meaning they're taken)
+            })
+            ->where('start_time', '>', now())
+            ->where('id', '!=', $this->timetable->timeslot_id)
+            ->orderBy('start_time')
+            ->get()
+            ->mapWithKeys(function ($timeslot) {
+                return [
+                    $timeslot->id => $timeslot->start_time->format('M d, Y - H:i')
+                ];
+            });
     }
     
     public function render()

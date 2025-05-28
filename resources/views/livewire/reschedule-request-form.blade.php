@@ -82,9 +82,9 @@
                 {{ __('Requested') }}: {{ $pendingRequest->created_at->format('M d, Y H:i') }}
             </div>
             
-            @if ($pendingRequest->preferred_date)
+            @if ($pendingRequest->preferredTimeslot)
                 <div class="mt-2 text-xs {{ $pendingRequest->status === 'pending' ? 'text-yellow-600 dark:text-yellow-400' : ($pendingRequest->status === 'approved' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400') }}">
-                    {{ __('Preferred Date/Time') }}: {{ \Carbon\Carbon::parse($pendingRequest->preferred_date)->format('M d, Y') }} at {{ \Carbon\Carbon::parse($pendingRequest->preferred_time)->format('H:i') }}
+                    {{ __('Preferred Timeslot') }}: {{ $pendingRequest->preferredTimeslot->start_time->format('M d, Y - H:i') }}
                 </div>
             @endif
             
