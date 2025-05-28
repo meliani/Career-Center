@@ -25,6 +25,7 @@ class Timetable extends Core\BackendBaseModel
         'rescheduled_by',
         'created_by',
         'updated_by',
+        'scheduled_by',
     ];
 
     protected $casts = [
@@ -193,6 +194,11 @@ class Timetable extends Core\BackendBaseModel
     public function updatedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'updated_by');
+    }
+
+    public function scheduledBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'scheduled_by');
     }
 
     public function available_timeslots()

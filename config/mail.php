@@ -133,9 +133,9 @@ return [
 
 
     /* New optional parametres */
-    'driver' => env('MAIL_DRIVER', 'smtp'),
+    'driver' => env('MAIL_DRIVER', 'log'),
 
-    'host' => env('MAIL_HOST', '192.168.1.101'),
+    'host' => env('MAIL_HOST'),
 
     'local_domain' => env('MAIL_LOCAL_DOMAIN', 'localhost'),
 

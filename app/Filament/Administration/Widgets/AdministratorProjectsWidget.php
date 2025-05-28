@@ -44,16 +44,30 @@ class AdministratorProjectsWidget extends Widget
     {
         return null;
 
+        // Example of how this could be implemented with Timeslot model
         return Action::make('scheduleDefense')
             ->record(fn (array $arguments) => Project::find($arguments['projectId']))
             ->form([
-                DateTimePicker::make('defense_date')
+                DateTimePicker::make('defense_datetime')
                     ->required()
                     ->native(false),
             ])
             ->action(function (Project $record, array $data): void {
+                // Create a timeslot and timetable instead of directly setting defense_date
+                $timeslot = Timeslot::create([
+                    'start_time' => $data['defense_datetime'],
+                    'end_time' => (clone $data['defense_datetime'])->addMinutes(30),
+                    'is_enabled' => true,
+                    'year_id' => Year::current()->id,
+                ]);
+                
+                Timetable::create([
+                    'timeslot_id' => $timeslot->id,
+                    'project_id' => $record->id,
+                    'room_id' => Room::available()->first()->id,
+                ]);
+                
                 $record->update([
-                    'defense_date' => $data['defense_date'],
                     'defense_status' => 'Authorized',
                 ]);
             });

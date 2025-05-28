@@ -52,6 +52,11 @@ class Timeslot extends Core\BackendBaseModel
         return $this->hasOne(Timetable::class);
     }
 
+    public function timetables()
+    {
+        return $this->hasMany(Timetable::class);
+    }
+
     public function year()
     {
         return $this->belongsTo(Year::class);

@@ -145,10 +145,10 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName
         // return $this->avatar_url ? Storage::url($this->avatar_url) : asset('/svg/logo_entreprises_round.svg');
     }
 
-    // add scoop for administrators role
+    // add scope for administrators role
     public function scopeAdministrators($query)
     {
-        return $query->whereIn('role', $this->administrators)->get();
+        return $query->whereIn('role', $this->administrators);
     }
 
     public function getNameAttribute()
