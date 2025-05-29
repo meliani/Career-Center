@@ -455,4 +455,10 @@ class Student extends Authenticatable implements FilamentUser, HasAvatar, HasNam
     {
         return $this->hasMany(MidTermReport::class);
     }
+
+
+    public function isAdministrator(): bool
+    {
+        return false;
+    }
 }
