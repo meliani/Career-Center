@@ -67,7 +67,7 @@ class GeneralStatsDashboard extends \Filament\Pages\Dashboard
 
         if (auth()->user()->isProfessor()) {
             $widgets[] = \App\Filament\Administration\Widgets\Dashboards\AdminGettingStartedWidget::class;
-            $widgets[] = \App\Filament\Administration\Widgets\FinalInternshipsPerProgramChart::class;
+            // $widgets[] = \App\Filament\Administration\Widgets\FinalInternshipsPerProgramChart::class;
 
             // $widgets[] = \App\Filament\Administration\Widgets\ProfessorProjectsWidget::class;
         }
@@ -75,7 +75,7 @@ class GeneralStatsDashboard extends \Filament\Pages\Dashboard
         if (auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor() || auth()->user()->isDirection()) {
             $widgets[] = \App\Filament\Administration\Widgets\Dashboards\AdminGettingStartedWidget::class;
             $widgets[] = \App\Filament\Administration\Widgets\Dashboards\YearlyTimelineWidget::class;
-            $widgets[] = \App\Filament\Administration\Widgets\FinalInternshipsPerProgramChart::class;
+            // $widgets[] = \App\Filament\Administration\Widgets\FinalInternshipsPerProgramChart::class;
 
         }
 
