@@ -8,6 +8,7 @@ use App\Models\FinalYearInternshipAgreement;
 use App\Models\Professor;
 use App\Models\Project;
 use App\Models\Year;
+use App\Services\ProjectStatisticsService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 
@@ -30,27 +31,27 @@ class CheckProjectStatisticsIntegrity extends Command
      *
      * @var string
      */
-    protected $description = 'Check the integrity of project statistics and related information around Project model including professor assignments, department distributions, and mentoring data';
-
-    /**
+    protected $description = 'Check the integrity of project statistics and related information around Project model including professor assignments, department distributions, and mentoring data';    /**
      * Statistics tracking
      */
     protected array $issues = [];
     protected array $summary = [];
     protected int $totalProjects = 0;
     protected int $totalProfessors = 0;
-
-    /**
+    protected ProjectStatisticsService $statisticsService;    /**
      * Execute the console command.
-     */
-    public function handle()
+     */    public function handle()
     {
-        $this->info('🔍 Starting Project Statistics Integrity Check...');
+        $this->info(__('🔍 Starting Project Statistics Integrity Check...'));
         $this->newLine();
 
         // Get the year to check
         $year = $this->getYearToCheck();
-        $this->info("📅 Checking data for year: {$year->title}");
+        
+        // Initialize the statistics service
+        $this->statisticsService = new ProjectStatisticsService($year);
+        
+        $this->info(__('📅 Checking data for year:') . " {$year->title}");
         $this->newLine();
 
         // Initialize summary
@@ -83,14 +84,12 @@ class CheckProjectStatisticsIntegrity extends Command
         // Fix orphans if requested
         if ($this->option('fix-orphans')) {
             $this->fixOrphanedRelationships();
-        }
-
-        $this->newLine();
+        }        $this->newLine();
         $issueCount = count($this->issues);
         if ($issueCount === 0) {
-            $this->info('✅ All integrity checks passed! No issues found.');
+            $this->info(__('✅ All integrity checks passed! No issues found.'));
         } else {
-            $this->error("❌ Found {$issueCount} integrity issues that need attention.");
+            $this->error(__('❌ Found :count integrity issues that need attention.', ['count' => $issueCount]));
         }
 
         return $issueCount === 0 ? Command::SUCCESS : Command::FAILURE;
@@ -115,10 +114,9 @@ class CheckProjectStatisticsIntegrity extends Command
 
     /**
      * Check Project-Agreement relationship integrity
-     */
-    protected function checkProjectAgreementIntegrity(Year $year): void
+     */    protected function checkProjectAgreementIntegrity(Year $year): void
     {
-        $this->info('🔗 Checking Project-Agreement relationship integrity...');
+        $this->info(__('🔗 Checking Project-Agreement relationship integrity...'));
 
         // Get all agreements for the year
         $agreements = FinalYearInternshipAgreement::where('year_id', $year->id)->get();
@@ -170,7 +168,7 @@ class CheckProjectStatisticsIntegrity extends Command
      */
     protected function checkProfessorAssignmentIntegrity(Year $year): void
     {
-        $this->info('👨‍🏫 Checking Professor assignment integrity...');
+        $this->info(__('👨‍🏫 Checking Professor assignment integrity...'));
 
         $projects = Project::whereHas('final_internship_agreements', function($query) use ($year) {
             $query->where('year_id', $year->id);
@@ -257,75 +255,79 @@ class CheckProjectStatisticsIntegrity extends Command
         $this->line("  ❌ Duplicate role assignments: {$duplicateRoleAssignments}");
         $this->line("  ❌ Invalid professor assignments: {$invalidProfessorAssignments}");
         $this->newLine();
-    }
-
-    /**
+    }    /**
      * Check Department distribution integrity
      */
     protected function checkDepartmentDistributionIntegrity(Year $year): void
     {
-        $this->info('🏢 Checking Department distribution integrity...');
+        $this->info(__('🏢 Checking Department distribution integrity...'));
 
         $departmentFilter = $this->option('department');
-        $departments = $departmentFilter ? [Department::from($departmentFilter)] : Department::cases();
-
-        foreach ($departments as $department) {
-            $this->checkDepartmentStatistics($department, $year);
+        if ($departmentFilter) {
+            $department = Department::from($departmentFilter);
+            $this->checkDepartmentStatistics($department);
+        } else {
+            $departments = Department::cases();
+            foreach ($departments as $department) {
+                $this->checkDepartmentStatistics($department);
+            }
         }
     }
 
     /**
-     * Check statistics for a specific department
+     * Check statistics for a specific department using the statistics service
      */
-    protected function checkDepartmentStatistics(Department $department, Year $year): void
+    protected function checkDepartmentStatistics(Department $department): void
     {
-        // Get professors in this department
-        $professors = Professor::where('department', $department->value)
-            ->where('is_enabled', true)
-            ->where('can_supervise', true)
-            ->get();
-
-        $professorCount = $professors->count();
+        $stats = $this->statisticsService->getDepartmentStatistics($department)->first();
+        
+        $professorCount = $stats['professors_count'];
         $this->totalProfessors += $professorCount;
 
-        // Method 1: Count by assigned_department
-        $projectsByAssignedDept = FinalYearInternshipAgreement::where('assigned_department', $department->value)
-            ->where('year_id', $year->id)
-            ->count();
+        $projectsByAssignedDept = $stats['projects_by_assigned_department'];
+        $projectsByProfessorDept = $stats['projects_by_professor_department'];
+        $mentoringStats = $stats['mentoring_stats'];
 
-        // Method 2: Count by professor department
-        $projectsByProfessorDept = FinalYearInternshipAgreement::whereHas('project.professors', function($query) use ($department) {
-            $query->where('department', $department->value);
-        })->where('year_id', $year->id)->count();
+        $this->line("📋 Department: {$department->getLabel()} ({$department->value})");
+        $this->line("   Professors: {$professorCount}");
+        $this->line("   Projects (by assigned dept): {$projectsByAssignedDept}");
+        $this->line("   Projects (by professor dept): {$projectsByProfessorDept}");
+        $this->line("   Avg Supervising: {$mentoringStats['avg_supervising']}");
+        $this->line("   Avg Reviewing: {$mentoringStats['avg_reviewing']}");
+        $this->line("   Total Avg: {$mentoringStats['total_avg']}");
+        $this->newLine();
 
-        // Check for discrepancies
+        // Check for mismatches
         if ($projectsByAssignedDept !== $projectsByProfessorDept) {
             $this->issues[] = [
                 'type' => 'Department Assignment Mismatch',
-                'description' => "Department {$department->getLabel()}: Projects by assigned_department ({$projectsByAssignedDept}) != Projects by professor department ({$projectsByProfessorDept})",
-                'severity' => 'warning',
-                'entity_type' => 'department',
+                'description' => "Department {$department->value}: Projects by assigned_department ({$projectsByAssignedDept}) != Projects by professor department ({$projectsByProfessorDept})",
+                'severity' => 'warning',                'entity_type' => 'department',
                 'entity_id' => $department->value
             ];
         }
-
-        // Calculate supervision statistics
-        $supervisionStats = $this->calculateSupervisionStatistics($professors, $year);
-
-        $departmentData = [
-            'name' => $department->getLabel(),
-            'code' => $department->value,
-            'professor_count' => $professorCount,
-            'projects_by_assigned_dept' => $projectsByAssignedDept,
-            'projects_by_professor_dept' => $projectsByProfessorDept,
-            'supervision_stats' => $supervisionStats
-        ];
-
-        $this->summary['departments'][$department->value] = $departmentData;
-
-        if ($this->option('detailed')) {
-            $this->displayDepartmentDetails($departmentData);
+    }    /**
+     * Check Mentoring statistics integrity using the statistics service
+     */
+    protected function checkMentoringStatisticsIntegrity(Year $year): void    {
+        $this->info(__('📊 Checking Mentoring statistics integrity...'));
+        
+        // Ensure the service is using the correct year
+        $this->statisticsService = new ProjectStatisticsService($year);
+        $mentoringStats = $this->statisticsService->getMentoringStatisticsSorted();
+        
+        $this->line('  📈 Department Mentoring Statistics (sorted by total average):');
+        foreach ($mentoringStats as $stats) {
+            $this->line("    {$stats['department_name']}: {$stats['professors_count']} professors, " .
+                       "Avg Supervising: {$stats['avg_supervising']}, " .
+                       "Avg Reviewing: {$stats['avg_reviewing']}, " .
+                       "Total Avg: {$stats['total_avg']}");
         }
+        
+        $this->newLine();
+
+        // Store mentoring stats in summary
+        $this->summary['mentoring_statistics'] = $mentoringStats->toArray();
     }
 
     /**
@@ -367,47 +369,11 @@ class CheckProjectStatisticsIntegrity extends Command
     }
 
     /**
-     * Check mentoring statistics integrity
-     */
-    protected function checkMentoringStatisticsIntegrity(Year $year): void
-    {
-        $this->info('📊 Checking Mentoring statistics integrity...');
-
-        $stats = [];
-        foreach (Department::cases() as $department) {
-            if (isset($this->summary['departments'][$department->value])) {
-                $deptData = $this->summary['departments'][$department->value];
-                $stats[] = [
-                    'department' => $department->value,
-                    'label' => $department->getLabel(),
-                    'professors' => $deptData['professor_count'],
-                    'avg_supervising' => $deptData['supervision_stats']['avg_supervising'],
-                    'avg_reviewing' => $deptData['supervision_stats']['avg_reviewing'],
-                    'total_avg' => $deptData['supervision_stats']['total_avg']
-                ];
-            }
-        }
-
-        // Sort by total average mentoring (descending)
-        usort($stats, function($a, $b) {
-            return $b['total_avg'] <=> $a['total_avg'];
-        });
-
-        $this->summary['mentoring_statistics'] = $stats;
-
-        $this->line('  📈 Department Mentoring Statistics (sorted by total average):');
-        foreach ($stats as $stat) {
-            $this->line("    {$stat['label']}: {$stat['professors']} professors, Avg Supervising: {$stat['avg_supervising']}, Avg Reviewing: {$stat['avg_reviewing']}, Total Avg: {$stat['total_avg']}");
-        }
-        $this->newLine();
-    }
-
-    /**
      * Check for orphaned relationships
      */
     protected function checkOrphanedRelationships(Year $year): void
     {
-        $this->info('🔍 Checking for orphaned relationships...');
+        $this->info(__('🔍 Checking for orphaned relationships...'));
 
         // Check for projects without agreements
         $projectsWithoutAgreements = Project::whereDoesntHave('final_internship_agreements')->count();
@@ -465,7 +431,7 @@ class CheckProjectStatisticsIntegrity extends Command
      */
     protected function checkDataConsistency(Year $year): void
     {
-        $this->info('🔄 Checking data consistency...');
+        $this->info(__('🔄 Checking data consistency...'));
 
         // Check for professors without department
         $professorsWithoutDepartment = Professor::whereNull('department')->count();
@@ -539,14 +505,13 @@ class CheckProjectStatisticsIntegrity extends Command
      */
     protected function displayResults(): void
     {
-        $this->info('📊 INTEGRITY CHECK SUMMARY');
+        $this->info(__('📊 INTEGRITY CHECK SUMMARY'));
         $this->line('=' . str_repeat('=', 50));
-        
-        // Summary statistics
-        $this->line("Year: {$this->summary['year']}");
-        $this->line("Total Projects: {$this->summary['total_projects']}");
-        $this->line("Total Professors: {$this->totalProfessors}");
-        $this->line("Total Agreements: {$this->summary['total_agreements']}");
+          // Summary statistics
+        $this->line(__('Year') . ": {$this->summary['year']}");
+        $this->line(__('Total Projects') . ": {$this->summary['total_projects']}");
+        $this->line(__('Total Professors') . ": {$this->totalProfessors}");
+        $this->line(__('Total Agreements') . ": {$this->summary['total_agreements']}");
         $this->newLine();
 
         // Issues by severity
@@ -554,7 +519,7 @@ class CheckProjectStatisticsIntegrity extends Command
         $warnings = array_filter($this->issues, fn($issue) => $issue['severity'] === 'warning');
 
         if (!empty($errors)) {
-            $this->error("❌ ERRORS (" . count($errors) . "):");
+            $this->error("❌ " . __('ERRORS') . " (" . count($errors) . "):");
             foreach ($errors as $error) {
                 $this->line("  • [{$error['type']}] {$error['description']}");
             }
@@ -562,18 +527,17 @@ class CheckProjectStatisticsIntegrity extends Command
         }
 
         if (!empty($warnings)) {
+            $this->warn("⚠️  " . __('WARNINGS') . " (" . count($warnings) . "):");
             $this->warn("⚠ WARNINGS (" . count($warnings) . "):");
             foreach ($warnings as $warning) {
                 $this->line("  • [{$warning['type']}] {$warning['description']}");
             }
             $this->newLine();
-        }
-
-        // Display mentoring statistics summary
+        }        // Display mentoring statistics summary
         if (!empty($this->summary['mentoring_statistics'])) {
-            $this->info('📈 MENTORING STATISTICS SUMMARY:');
+            $this->info(__('📈 MENTORING STATISTICS SUMMARY:'));
             foreach ($this->summary['mentoring_statistics'] as $stat) {
-                $this->line("{$stat['label']}: {$stat['professors']} professors, Avg Supervising: {$stat['avg_supervising']}, Avg Reviewing: {$stat['avg_reviewing']}, Total Avg: {$stat['total_avg']}");
+                $this->line("{$stat['department_name']}: {$stat['professors_count']} professors, Avg Supervising: {$stat['avg_supervising']}, Avg Reviewing: {$stat['avg_reviewing']}, Total Avg: {$stat['total_avg']}");
             }
         }
     }
@@ -634,7 +598,7 @@ class CheckProjectStatisticsIntegrity extends Command
      */
     protected function fixOrphanedRelationships(): void
     {
-        $this->info('🔧 Attempting to fix orphaned relationships...');
+        $this->info(__('🔧 Attempting to fix orphaned relationships...'));
 
         $fixed = 0;
 

@@ -1,51 +1,48 @@
 <div class="p-2 bg-white dark:bg-gray-800 rounded-xl shadow">
     <div class="flex items-center justify-between px-4">
         <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200">
-            {{ __('Department assignements statistics') }}
+            {{ __('Department Mentoring Statistics') }}
         </h3>
-        <div class="flex items-center gap-2">
-            <span class="text-sm text-gray-600 dark:text-gray-400">
-                {{ __('By assigned department') }}
-            </span>
-            <button 
-                wire:click="toggleStatsView"
-                type="button"
-                class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 {{ $showAlternativeStats ? 'bg-primary-600' : 'bg-gray-200' }}"
-                role="switch"
-                aria-checked="{{ $showAlternativeStats ? 'true' : 'false' }}"
-            >
-                <span 
-                    aria-hidden="true"
-                    class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out {{ $showAlternativeStats ? 'translate-x-5' : 'translate-x-0' }}"
-                ></span>
-            </button>
-            <span class="text-sm text-gray-600 dark:text-gray-400">
-                {{ __('By assigned professor') }}
-            </span>
+        <div class="text-sm text-gray-600 dark:text-gray-400">
+            {{ __('Supervising + Reviewing Averages') }}
         </div>
     </div>
     
     <div class="flex items-center justify-center gap-4 overflow-x-auto py-2 px-4">
         <div class="flex items-center gap-4 min-w-fit">
             @foreach ($stats as $stat)
-                <div class="flex items-center gap-3 bg-gray-50 dark:bg-gray-900/50 px-3 py-2 rounded-lg">
-                    <x-filament::badge :color="$stat['color']">
+                <div class="flex flex-col gap-2 bg-gray-50 dark:bg-gray-900/50 px-4 py-3 rounded-lg min-w-[200px]">
+                    <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2">
                             <x-dynamic-component :component="$stat['icon']" class="w-4 h-4" />
-                            <span>
-                                {{ $stat['count'] }} 
-                                {{ $showAlternativeStats ? __('advisings') : __('projects') }}
+                            <span class="text-sm font-medium text-gray-600 dark:text-gray-300">
+                                {{ $stat['name'] }}
                             </span>
                         </div>
-                    </x-filament::badge>
-                    <span class="text-sm font-medium text-gray-600 dark:text-gray-300 whitespace-nowrap">
-                        {{ $stat['name'] }}
-                    </span>
-                    <span class="text-xs text-gray-500" x-data x-tooltip.raw="{{ $showAlternativeStats 
-                        ? __('Combined Supervision Rate = :projects advisings / :professors professors', ['projects' => $stat['count'], 'professors' => $stat['professors_count']])
-                        : __('Supervisor Rate = :projects projects / :professors professors', ['projects' => $stat['count'], 'professors' => $stat['professors_count']]) }}">
-                        ({{ __('Ratio') }} : {{ round($stat['ratio'] ?? 0, 2) }})
-                    </span>
+                        <x-filament::badge :color="$stat['color']" size="xs">
+                            {{ $stat['projects_count'] }} {{ __('projects') }}
+                        </x-filament::badge>
+                    </div>
+                    
+                    <div class="text-xs text-gray-600 dark:text-gray-400">
+                        <div class="flex justify-between mb-1">
+                            <span class="font-medium">{{ $stat['professors_count'] }} {{ __('professors') }}</span>
+                        </div>
+                        <div class="space-y-1">
+                            <div class="flex justify-between">
+                                <span>{{ __('Avg Supervising') }}:</span>
+                                <span class="font-medium">{{ $stat['avg_supervising'] }}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>{{ __('Avg Reviewing') }}:</span>
+                                <span class="font-medium">{{ $stat['avg_reviewing'] }}</span>
+                            </div>
+                            <div class="flex justify-between border-t pt-1">
+                                <span class="font-medium">{{ __('Total Avg') }}:</span>
+                                <span class="font-bold text-gray-800 dark:text-gray-200">{{ $stat['total_avg'] }}</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             @endforeach
         </div>

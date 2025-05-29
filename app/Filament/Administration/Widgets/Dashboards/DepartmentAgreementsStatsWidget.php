@@ -5,6 +5,8 @@ namespace App\Filament\Administration\Widgets\Dashboards;
 use App\Enums\Department;
 use App\Models\FinalYearInternshipAgreement;
 use App\Models\Professor;
+use App\Models\Year;
+use App\Services\ProjectStatisticsService;
 use Filament\Widgets\Widget;
 use Illuminate\Support\Collection;
 
@@ -20,14 +22,11 @@ class DepartmentAgreementsStatsWidget extends Widget
     protected $listeners = [
         'departmentAssigned' => '$refresh',
         'departmentChanged' => '$refresh',
-        'toggleStats' => 'toggleStatsView',
     ];
 
-    public bool $showAlternativeStats = false;
-
-    public function toggleStatsView()
+    public function mount()
     {
-        $this->showAlternativeStats = ! $this->showAlternativeStats;
+        // Widget now shows mentoring statistics by default
     }
 
     protected function getViewData(): array
@@ -39,29 +38,28 @@ class DepartmentAgreementsStatsWidget extends Widget
 
     protected function getStats(): Collection
     {
-        return collect(Department::cases())->map(function ($department) {
-            if ($this->showAlternativeStats) {
-                // Calculate based on project->professors->department relationship
-                $projectCount = FinalYearInternshipAgreement::whereHas('project.professors', function ($query) use ($department) {
-                    $query->where('department', $department->value);
-                })->count();
-            } else {
-                // Original calculation based on assigned_department
-                $projectCount = FinalYearInternshipAgreement::where('assigned_department', $department->value)->count();
-            }
-
-            $professorsCount = Professor::where('department', $department->value)->count();
-            $ratio = $professorsCount ? $projectCount / $professorsCount : 0;
-
+        $year = Year::current();
+        $statisticsService = new ProjectStatisticsService($year);
+        
+        // Get mentoring statistics instead of simple project counts
+        return $statisticsService->getMentoringStatisticsSorted()->map(function ($stats) use ($statisticsService) {
+            $department = $stats['department'];
+            $projectsCount = $statisticsService->getProjectsByProfessorDepartment($department);
+            
             return [
-                'name' => $department->getLabel(),
+                'name' => $stats['department_name'],
                 'description' => $department->getDescription(),
-                'count' => $projectCount,
+                'count' => $stats['total_avg'], // Use total average as the main metric
                 'color' => $department->getColor(),
                 'icon' => $department->getIcon(),
-                'ratio' => $ratio,
-                'professors_count' => $professorsCount,
+                'ratio' => $stats['total_avg'], // Total mentoring average
+                'professors_count' => $stats['professors_count'],
+                'projects_count' => $projectsCount,
+                'avg_supervising' => $stats['avg_supervising'],
+                'avg_reviewing' => $stats['avg_reviewing'],
+                'total_avg' => $stats['total_avg'],
+                'department' => $department,
             ];
-        })->sortByDesc('count');
+        });
     }
 }
