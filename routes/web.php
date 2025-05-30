@@ -60,24 +60,42 @@ Route::get('/soutenances', function () {
     // $connector = new GlobalDefenseCalendarConnector;
     // $data = $connector->getDefenses(); // Assuming fetchData() is a method to get the data
 
-    $data = DefenseSync::all()->map(function ($defense) {
-        return collect([
-            'Date Soutenance' => $defense->date_soutenance,
-            'Heure' => $defense->heure,
-            'Autorisation' => $defense->autorisation,
-            'Lieu' => $defense->lieu,
-            'ID PFE' => $defense->id_pfe,
-            "Nom de l'étudiant" => $defense->nom_etudiant,
-            'Filière' => $defense->filiere,
-            'Encadrant Interne' => $defense->encadrant_interne,
-            'Nom et Prénom Examinateur 1' => $defense->examinateur_1,
-            'Nom et Prénom Examinateur 2' => $defense->examinateur_2,
-            'remarques' => $defense->remarques,
-            'convention signée' => $defense->convention_signee,
-            'accord encadrant interne' => $defense->accord_encadrant_interne,
-            'fiche evaluation entreprise' => $defense->fiche_evaluation_entreprise,
-        ]);
-    });
+    // Import at the top of the file:
+    // use App\Models\Timetable;
+    $data = \App\Models\Timetable::planned()
+        ->whereHas('timeslot', function ($query) {
+            $query->where('year_id', 8);
+        })
+        ->with(['project.agreements.agreeable.student', 'timeslot', 'room'])
+        ->get()
+        ->filter(function ($timetable) {
+            return $timetable->project !== null;
+        })
+        ->map(function ($timetable) {
+            $project = $timetable->project;
+            $students = $project?->agreements->map(function($agreement) {
+                return optional($agreement->agreeable?->student);
+            })->filter();
+            $studentNames = $students->map(fn($s) => $s->full_name)->join(' & ');
+            $studentIds = $students->map(fn($s) => $s->id_pfe)->join(' & ');
+            $studentFiliere = $students->map(fn($s) => $s->program?->getLabel())->unique()->join(' / ');
+            return collect([
+                'Date Soutenance' => optional($timetable->timeslot)->start_time?->format('Y-m-d'),
+                'Heure' => optional($timetable->timeslot)->start_time?->format('H:i'),
+                'Autorisation' => $project?->isAuthorized() ? 'Autorisé' : 'En Attente',
+                'Lieu' => optional($timetable->room)->name,
+                'ID PFE' =>  $studentIds,
+                "Nom de l'étudiant" => $studentNames ?: 'Libre',
+                'Filière' => $studentFiliere,
+                'Encadrant Interne' => $project?->academic_supervisor()?->name,
+                'Nom et Prénom Examinateur 1' => $project?->first_reviewer()?->name,
+                'Nom et Prénom Examinateur 2' => $project?->second_reviewer()?->name,
+                'remarques' => '',
+                'convention signée' => '',
+                'accord encadrant interne' => '',
+                'fiche evaluation entreprise' => '',
+            ]);
+        });
 
     return view('livewire.defense-calendar', ['data' => $data]);
 })->name('globalDefenseCalendar');

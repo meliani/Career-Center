@@ -83,7 +83,7 @@ class DefensesCalendarWidget extends FullCalendarWidget
                 fn (Project $project) => EventData::make()
                     ->id($project->id)
                     ->title(
-                        $project->getStudentsCollection()->map(fn ($person) => $person->full_name)->join(' & ') .
+                        $project->getStudentsCollection()->map(fn ($person) => $person?->full_name)->join(' & ') .
                     "\n\r" . ', ' .
                     $project->timetable->room?->name . ',' .
                     ' ID PFE: ' .

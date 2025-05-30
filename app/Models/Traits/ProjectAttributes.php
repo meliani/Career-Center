@@ -17,7 +17,7 @@ trait ProjectAttributes
     public function getStudentsCollection()
     {
         return $this->agreements->map(function ($agreement) {
-            return $agreement->agreeable->student;
+            return $agreement->agreeable?->student;
         })->unique();
 
     }
