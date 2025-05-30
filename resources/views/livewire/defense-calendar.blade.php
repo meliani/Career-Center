@@ -4,7 +4,7 @@
             <div class="flex items-center justify-between">
                 <!-- Title centered both vertically and horizontally -->
                 <div class="flex-1 text-center mb-6 pb-10 mt-0 my-auto">
-                    <h2 class="text-2xl font-semibold text-gray-800">Calendrier des soutenances 2024</h2>
+                    <h2 class="text-2xl font-semibold text-gray-800">Calendrier des soutenances 2025</h2>
                 </div>
                 <!-- Logo aligned to the right with vertical centering and margins -->
                 <div x-data="{ mode: 'light' }" x-on:dark-mode-toggled.window="mode = $event.detail"
