@@ -16,6 +16,14 @@
                 <table class="min-w-full leading-normal text-sm">
                     <thead>
                         <tr class="bg-gray-100">
+                    <style>
+                        .holiday-row {
+                            @apply bg-emerald-100 text-center font-bold text-xl py-6 text-emerald-800;
+                        }
+                        .holiday-row td {
+                            @apply text-center;
+                        }
+                    </style>
 
                             <!-- Always visible columns headers -->
                             <th class="px-4 py-2 border-gray-500 border-2">Date</th>
@@ -33,9 +41,19 @@
                         @if($loop->first)
                         @continue
                         @endif
+                        
+                        @if(isset($defense['holiday']) && $defense['holiday'])
+                            <tr class="holiday-row">
+                                <td colspan="7" class="px-4 py-6 text-2xl font-bold text-center bg-emerald-100 text-emerald-800">
+                                    {{ $defense['message'] }}
+                                </td>
+                            </tr>
+                            @continue
+                        @endif
+                        
                         <tr>
                             <!-- Always visible columns data -->
-                            <td class="px-4 py-2  border-gray-500 border-2">
+                            <td class="px-4 py-2 border-gray-500 border-2">
                                 <p>{{ $defense['Date Soutenance'] }}</p>
                                 <p>{{ $defense['Heure'] }}</p>
                                 <p>{{ $defense['Lieu'] }}</p>

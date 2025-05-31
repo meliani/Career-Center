@@ -57,45 +57,100 @@ Route::get('/publish-internship', \App\Livewire\NewInternship::class)->name('new
 Route::get('/publier-un-evenement', \App\Livewire\NewMidweekEvent::class)->name('new-midweek-event');
 
 Route::get('/soutenances', function () {
-    // $connector = new GlobalDefenseCalendarConnector;
-    // $data = $connector->getDefenses(); // Assuming fetchData() is a method to get the data
-
-    // Import at the top of the file:
-    // use App\Models\Timetable;
-    $data = \App\Models\Timetable::planned()
+    // First, get all the regular defense dates except June 27
+    $regularData = \App\Models\Timetable::planned()
         ->whereHas('timeslot', function ($query) {
-            $query->where('year_id', 8);
+            $query->where('year_id', 8)
+                  ->whereRaw("DATE_FORMAT(start_time, '%m-%d') != '06-27'");
         })
         ->with(['project.agreements.agreeable.student', 'timeslot', 'room'])
         ->get()
         ->filter(function ($timetable) {
-            return $timetable->project !== null;
+            if ($timetable->project === null) {
+                return false;
+            }
+            $hasStudents = $timetable->project->agreements->some(function($agreement) {
+                return $agreement->agreeable?->student !== null;
+            });
+            return $hasStudents;
         })
         ->map(function ($timetable) {
             $project = $timetable->project;
-            $students = $project?->agreements->map(function($agreement) {
+            $students = $project->agreements->map(function($agreement) {
                 return optional($agreement->agreeable?->student);
             })->filter();
             $studentNames = $students->map(fn($s) => $s->full_name)->join(' & ');
             $studentIds = $students->map(fn($s) => $s->id_pfe)->join(' & ');
             $studentFiliere = $students->map(fn($s) => $s->program?->getLabel())->unique()->join(' / ');
+            
             return collect([
                 'Date Soutenance' => optional($timetable->timeslot)->start_time?->format('Y-m-d'),
                 'Heure' => optional($timetable->timeslot)->start_time?->format('H:i'),
-                'Autorisation' => $project?->isAuthorized() ? 'Autorisé' : 'En Attente',
+                'Autorisation' => $project->isAuthorized() ? 'Autorisé' : 'En Attente',
                 'Lieu' => optional($timetable->room)->name,
                 'ID PFE' =>  $studentIds,
-                "Nom de l'étudiant" => $studentNames ?: 'Libre',
+                "Nom de l'étudiant" => $studentNames,
                 'Filière' => $studentFiliere,
-                'Encadrant Interne' => $project?->academic_supervisor()?->name,
-                'Nom et Prénom Examinateur 1' => $project?->first_reviewer()?->name,
-                'Nom et Prénom Examinateur 2' => $project?->second_reviewer()?->name,
+                'Encadrant Interne' => $project->academic_supervisor()?->name,
+                'Nom et Prénom Examinateur 1' => $project->first_reviewer()?->name,
+                'Nom et Prénom Examinateur 2' => $project->second_reviewer()?->name,
                 'remarques' => '',
                 'convention signée' => '',
                 'accord encadrant interne' => '',
                 'fiche evaluation entreprise' => '',
             ]);
         });
+
+    // Check if we need to insert the holiday row
+    $hasJune27 = \App\Models\Timetable::planned()
+        ->whereHas('timeslot', function ($query) {
+            $query->whereRaw("DATE_FORMAT(start_time, '%m-%d') = '06-27'");
+        })
+        ->exists();
+
+    if ($hasJune27) {
+        // Find the position to insert the holiday entry
+        $holidayData = collect([
+            'holiday' => true,
+            'message' => 'فاتح شهر محرم 1447',
+            '_special_class' => 'holiday-row',
+            'Date Soutenance' => '',
+            'Heure' => '',
+            'Lieu' => '',
+            'Autorisation' => '',
+            'ID PFE' => '',
+            "Nom de l'étudiant" => '',
+            'Filière' => '',
+            'Encadrant Interne' => '',
+            'Nom et Prénom Examinateur 1' => '',
+            'Nom et Prénom Examinateur 2' => '',
+            'remarques' => '',
+            'convention signée' => '',
+            'accord encadrant interne' => '',
+            'fiche evaluation entreprise' => '',
+        ]);
+
+        // Insert the holiday entry at the correct position
+        $finalData = collect();
+        $holidayInserted = false;
+        
+        foreach ($regularData as $entry) {
+            if (!$holidayInserted && $entry['Date Soutenance'] > '2025-06-27') {
+                $finalData->push($holidayData);
+                $holidayInserted = true;
+            }
+            $finalData->push($entry);
+        }
+
+        // If holiday hasn't been inserted yet (it's the last date), add it at the end
+        if (!$holidayInserted) {
+            $finalData->push($holidayData);
+        }
+
+        $data = $finalData;
+    } else {
+        $data = $regularData;
+    }
 
     return view('livewire.defense-calendar', ['data' => $data]);
 })->name('globalDefenseCalendar');
