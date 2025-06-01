@@ -40,31 +40,7 @@
                 </div>
             </div>
 
-            <!-- Islamic Holiday Display -->
-            @if(isset($islamicHoliday) && $islamicHoliday['is_holiday'])
-            <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
-                <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <div class="flex items-center space-x-3">
-                        <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-emerald-100">
-                            <svg class="h-6 w-6 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
-                            </svg>
-                        </span>
-                        <div>
-                            <h3 class="text-lg font-semibold text-emerald-900 ltr:text-left rtl:text-right">
-                                {{ $islamicHoliday['message'] }}
-                            </h3>
-                            <p class="text-emerald-700">
-                                {{ $islamicHoliday['gregorian_date'] }}
-                            </p>
-                        </div>
-                    </div>
-                    <span class="inline-flex items-center rounded-md bg-emerald-100/60 px-4 py-2 text-sm font-medium text-emerald-700">
-                        Jour férié
-                    </span>
-                </div>
-            </div>
-            @endif
+
 
             <!-- Scheduled defenses section -->
             <div class="space-y-4">
@@ -88,6 +64,7 @@
                                 <th scope="col" class="hidden sm:table-cell px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:w-auto">Autorisation</th>
                                 <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 w-[35%] sm:w-auto">Étudiant</th>
                                 <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 w-[35%] sm:w-auto">Jury</th>
+                                <th scope="col" class="px-3 py-3.5 text-right text-sm font-semibold text-gray-900">Référent</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200 bg-white">
@@ -103,16 +80,16 @@
                                                         </svg>
                                                     </span>
                                                     <div>
-                                                        <p class="text-lg font-semibold text-emerald-900 ltr:text-left rtl:text-right">
-                                                            {{ $entry['message'] ?? '' }}
+                                                        <p class="text-lg font-semibold text-emerald-900 rtl">
+                                                            {{ $entry['islamic_date'] ?? '' }}
                                                         </p>
-                                                        <p class="text-emerald-700">
+                                                        <p class="text-emerald-700 mt-1">
                                                             {{ $entry['gregorian_date'] ?? '' }}
                                                         </p>
                                                     </div>
                                                 </div>
-                                                <span class="inline-flex items-center rounded-md bg-emerald-100/60 px-4 py-2 text-sm font-medium text-emerald-700">
-                                                    Jour férié
+                                                <span class="inline-flex items-center rounded-md bg-emerald-100/60 px-4 py-2 text-sm font-medium text-emerald-700 rtl">
+                                                    عطلة
                                                 </span>
                                             </div>
                                         </td>
@@ -268,6 +245,17 @@
                                                     <span class="text-gray-500">Non assigné</span>
                                                 @endif
                                             </div>
+                                        </td>
+                                        <td class="px-3 py-4 text-sm text-gray-900 text-right">
+                                            @if($entry['type'] !== 'holiday')
+                                                @if(isset($entry['AdminSupervisor']))
+                                                    <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
+                                                        {{ $entry['AdminSupervisor'] }}
+                                                    </span>
+                                                @else
+                                                    <span class="text-gray-500">Non assigné</span>
+                                                @endif
+                                            @endif
                                         </td>
                                     </tr>
                                 @endif

@@ -16,13 +16,13 @@ class DefenseCalendar extends Component
     public $nonPlannedProjects;
     public $islamicHoliday;    public function mount()
     {
-        $this->data = collect([]);
-        $this->nonPlannedProjects = collect([]);
-        $this->islamicHoliday = [
-            'is_holiday' => false,
-            'message' => '',
-            'gregorian_date' => ''
-        ];
+        $this->data = collect();
+        $this->nonPlannedProjects = collect();
+        
+        // Initialize Islamic holiday state
+        $holidayDate = \Carbon\Carbon::parse('2025-06-27');
+        $this->islamicHoliday = $this->getIslamicHoliday($holidayDate);
+        
         $this->loadData();
         $this->loadUnplannedProjects();
     }    public function updatedSearch()
@@ -93,23 +93,26 @@ class DefenseCalendar extends Component
         
         // Define the specific date for 1st Muharram 1447
         if ($dateStr === '2025-06-27') {
+            $formattedDate = $date->translatedFormat('l j F Y');
             return [
+                'id' => 'holiday-' . $dateStr,
                 'is_holiday' => true,
                 'type' => 'holiday',
                 'date' => $dateStr,
-                'message' => 'فاتح شهر محرم 1447',
-                'gregorian_date' => 'Vendredi 27 Juin 2025',
-                'id' => 'holiday-' . $dateStr,
+                'islamic_date' => 'فاتح شهر محرم 1447',
+                'gregorian_date' => $formattedDate,
+                'message' => 'فاتح شهر محرم 1447 - Vendredi 27 Juin 2025',
             ];
         }
         
         return [
+            'id' => 'regular-' . $dateStr,
             'is_holiday' => false,
             'type' => 'regular',
             'date' => $dateStr,
-            'message' => '',
+            'islamic_date' => '',
             'gregorian_date' => '',
-            'id' => 'regular-' . $dateStr,
+            'message' => '',
         ];
     }
 
@@ -117,24 +120,25 @@ class DefenseCalendar extends Component
     {
         try {
             \Log::info('Starting to load defense data');
-
-            // Check today's date for Islamic holiday
-            $today = now();
-            $this->islamicHoliday = $this->getIslamicHoliday($today);
+            
+            // Initialize collections
+            $this->data = collect();
 
             // Get current academic year
             $currentYear = \App\Models\Year::current();
             \Log::info('Current academic year ID: ' . $currentYear->id);
 
-            // Start with Timetables and their relationships
+            // Get timetables with their relationships
             $query = Timetable::query()
                 ->with([
                     'timeslot',
                     'room',
                     'project' => function($query) {
-                        $query->with([
-                            'agreements.agreeable.student',
-                            'professors',
+                        $query->withoutTrashed()->with([
+                            'final_internship_agreements.student',
+                            'professors' => function($query) {
+                                $query->withPivot('jury_role');
+                            },
                             'organization'
                         ]);
                     }
@@ -145,12 +149,20 @@ class DefenseCalendar extends Component
                       ->where('is_enabled', true)
                       ->where('year_id', $currentYear->id);
                 })
-                ->whereHas('project');
+                ->whereHas('project', function($q) {
+                    $q->withoutTrashed()->whereHas('final_internship_agreements', function($q) {
+                        $q->whereHas('student', function($q) {
+                            $q->whereNull('deleted_at');
+                        });
+                    });
+                });
 
             // Apply search if needed
             if (!empty($this->search)) {
                 $query = $this->applySearchToQuery($query);
-            }            // Apply ordering by date and time
+            }
+
+            // Apply ordering by date and time
             $query->join('timeslots', 'timetables.timeslot_id', '=', 'timeslots.id')
                   ->where('timeslots.is_enabled', true)
                   ->orderBy('timeslots.start_time', 'asc')
@@ -160,81 +172,108 @@ class DefenseCalendar extends Component
             
             \Log::info('Found timetables for current year: ' . $timetables->count());
 
-            $processedDates = collect();
-            $this->data = collect();
+            // Process timetables and build data collection
+            $defenseData = collect();
+            $hasDefenseOnHoliday = false;
 
-            // Process timetables
-            $timetables->each(function($timetable) use (&$processedDates) {
-                try {
-                    $startTime = \Carbon\Carbon::parse($timetable->timeslot->start_time);
-                    $dateStr = $startTime->format('Y-m-d');
+            // Process each timetable
+            $timetables->each(function($timetable) use (&$defenseData, &$hasDefenseOnHoliday) {
+                // Process defense data as before
+                if (!$timetable->project || !$timetable->timeslot) {
+                    return;
+                }
 
-                    // Check for Islamic holiday
-                    $holiday = $this->getIslamicHoliday($startTime);
-                    if ($holiday['type'] === 'holiday' && !$processedDates->contains($dateStr)) {
-                        $processedDates->push($dateStr);
-                        $this->data->push($holiday);
-                    }
+                $startTime = \Carbon\Carbon::parse($timetable->timeslot->start_time);
+                $dateStr = $startTime->format('Y-m-d');
 
-                    $project = $timetable->project;
-                    if (!$project || !$timetable->timeslot) {
-                        return;
-                    }
+                // Check if this defense is on the holiday
+                if ($dateStr === '2025-06-27') {
+                    $hasDefenseOnHoliday = true;
+                }
 
-                    // Get all students from agreements
-                    $students = collect();
-                    foreach ($project->agreements as $agreement) {
-                        if ($agreement->agreeable && method_exists($agreement->agreeable, 'student')) {
-                            $student = $agreement->agreeable->student;
-                            if ($student) {
-                                $students->push([                                    'name' => $student->first_name . ' ' . $student->last_name,
-                                    'id_pfe' => $student->id_pfe,
-                                    'program' => $student->program,
-                                    'exchange_partner' => $student->exchangePartner?->name
-                                ]);
-                            }
+                // Get all students from agreements and find admin supervisor
+                $students = collect();
+                $adminSupervisor = null;
+                foreach ($timetable->project->final_internship_agreements as $agreement) {
+                    $student = $agreement->student;
+                    if ($student && is_null($student->deleted_at)) {
+                        $students->push([
+                            'name' => $student->first_name . ' ' . $student->last_name,
+                            'id_pfe' => $student->id_pfe,
+                            'program' => $student->program,
+                            'exchange_partner' => $student->exchangePartner?->name
+                        ]);
+                        
+                        // Get admin supervisor from first active student
+                        if (!$adminSupervisor && $student->administrative_supervisor) {
+                            $adminSupervisor = $student->administrative_supervisor;
                         }
                     }
-                    
-                    // Get professors with their roles
-                    $supervisor = $project->academic_supervisor();
-                    $reviewers = $project->reviewers()->get();
-
-                    // Format jury with role distinctions
-                    $juryDisplay = [];
-                    if ($supervisor) {
-                        $juryDisplay[] = "Encadrant: " . $supervisor->name;
-                    }
-                    if ($reviewers->isNotEmpty()) {
-                        $juryDisplay[] = "Examinateurs: " . $reviewers->pluck('name')->implode(', ');
-                    }
-                    
-                    $authorization = $this->getAuthorizationStatus($project);
-                    
-                    $this->data->push([
-                        'id' => $timetable->id,
-                        'type' => 'defense',
-                        'date' => $dateStr,
-                        'project_id' => $project->id,
-                        'Date Soutenance' => $startTime->format('d/m/Y'),
-                        'Heure' => $startTime->format('H:i') . ' - ' . \Carbon\Carbon::parse($timetable->timeslot->end_time)->format('H:i'),
-                        'Lieu' => $timetable->room?->name ?? 'Non définie',
-                        'Students' => $students->toArray(),
-                        'Organisation' => $project->organization?->name ?? 'Non définie',
-                        'Jury' => implode("\n", $juryDisplay) ?: 'Non assigné',
-                        'Autorisation' => $authorization,
-                    ]);
-
-                } catch (\Exception $e) {
-                    \Log::error('Error processing timetable: ' . $e->getMessage());
-                    \Log::error($e->getTraceAsString());
                 }
+                
+                if ($students->isEmpty()) {
+                    return;
+                }
+
+                // Get professors with their roles
+                $supervisor = $timetable->project->professors
+                    ->where('pivot.jury_role', \App\Enums\JuryRole::Supervisor->value)
+                    ->first();
+
+                $firstReviewer = $timetable->project->professors
+                    ->where('pivot.jury_role', \App\Enums\JuryRole::FirstReviewer->value)
+                    ->first();
+
+                $secondReviewer = $timetable->project->professors
+                    ->where('pivot.jury_role', \App\Enums\JuryRole::SecondReviewer->value)
+                    ->first();
+
+                // Format jury display
+                $juryDisplay = [];
+                if ($supervisor) {
+                    $juryDisplay[] = "Encadrant: " . $supervisor->name;
+                }
+
+                $reviewerNames = collect([$firstReviewer, $secondReviewer])
+                    ->filter()
+                    ->pluck('name');
+
+                if ($reviewerNames->isNotEmpty()) {
+                    $juryDisplay[] = "Examinateurs: " . $reviewerNames->implode(', ');
+                }
+
+                $defenseData->push([
+                    'id' => $timetable->id,
+                    'type' => 'defense',
+                    'date' => $dateStr,
+                    'project_id' => $timetable->project->id,
+                    'Date Soutenance' => $startTime->format('d/m/Y'),
+                    'Heure' => $startTime->format('H:i') . ' - ' . \Carbon\Carbon::parse($timetable->timeslot->end_time)->format('H:i'),
+                    'Lieu' => $timetable->room?->name ?? 'Non définie',
+                    'Students' => $students->toArray(),
+                    'Organisation' => $timetable->project->organization?->name ?? 'Non définie',
+                    'Jury' => implode("\n", $juryDisplay) ?: 'Non assigné',
+                    'Autorisation' => $this->getAuthorizationStatus($timetable->project),
+                    'AdminSupervisor' => $adminSupervisor?->name ?? null
+                ]);
             });
 
+            // Check if we need to add the holiday entry
+            if (!$hasDefenseOnHoliday) {
+                // Add the holiday entry for June 27, 2025
+                $holiday = $this->getIslamicHoliday(\Carbon\Carbon::parse('2025-06-27'));
+                if ($holiday['is_holiday']) {                    $defenseData->push([
+                        'id' => 'holiday-2025-06-27',
+                        'type' => 'holiday',
+                        'date' => '2025-06-27',
+                        'islamic_date' => 'فاتح شهر محرم 1447',
+                        'gregorian_date' => 'Vendredi 27 juin 2025'
+                    ]);
+                }
+            }
+
             // Sort the final collection by date
-            $this->data = $this->data->sortBy(function ($item) {
-                return $item['date'];
-            })->values();
+            $this->data = $defenseData->sortBy('date')->values();
 
         } catch (\Exception $e) {
             \Log::error('Error in loadData: ' . $e->getMessage());
@@ -246,28 +285,34 @@ class DefenseCalendar extends Component
     {
         $currentYear = \App\Models\Year::current();
         
+        // Start with all valid projects in current year
         $query = Project::query()
-            ->whereDoesntHave('timetable')
+            ->withoutTrashed()  // Exclude soft-deleted projects
             ->whereHas('final_internship_agreements', function($query) use ($currentYear) {
                 $query->whereHas('student', function($query) use ($currentYear) {
-                    $query->where('year_id', $currentYear->id);
+                    $query->whereNull('deleted_at')  // Only active students
+                          ->where('year_id', $currentYear->id);
                 });
             });
 
-        // Apply search if needed
+        // Apply search filters if needed
         if (!empty($this->search)) {
             $searchTerm = '%' . $this->search . '%';
             
             if ($this->searchField === 'student') {
                 $query->whereHas('final_internship_agreements.student', function($query) use ($searchTerm) {
-                    $query->where('first_name', 'like', $searchTerm)
-                          ->orWhere('last_name', 'like', $searchTerm)
-                          ->orWhere(\DB::raw("CONCAT(first_name, ' ', last_name)"), 'like', $searchTerm);
+                    $query->whereNull('deleted_at')
+                          ->where(function($q) use ($searchTerm) {
+                              $q->where('first_name', 'like', $searchTerm)
+                                ->orWhere('last_name', 'like', $searchTerm)
+                                ->orWhere(\DB::raw("CONCAT(first_name, ' ', last_name)"), 'like', $searchTerm);
+                          });
                 });
             }
             elseif ($this->searchField === 'pfe_id') {
                 $query->whereHas('final_internship_agreements.student', function($query) use ($searchTerm) {
-                    $query->where('id_pfe', 'like', $searchTerm);
+                    $query->whereNull('deleted_at')
+                          ->where('id_pfe', 'like', $searchTerm);
                 });
             }
             elseif ($this->searchField === 'professor') {
@@ -283,10 +328,13 @@ class DefenseCalendar extends Component
             elseif ($this->searchField === 'all') {
                 $query->where(function($query) use ($searchTerm) {
                     $query->whereHas('final_internship_agreements.student', function($query) use ($searchTerm) {
-                        $query->where('first_name', 'like', $searchTerm)
-                              ->orWhere('last_name', 'like', $searchTerm)
-                              ->orWhere('id_pfe', 'like', $searchTerm)
-                              ->orWhere(\DB::raw("CONCAT(first_name, ' ', last_name)"), 'like', $searchTerm);
+                        $query->whereNull('deleted_at')
+                              ->where(function($q) use ($searchTerm) {
+                                  $q->where('first_name', 'like', $searchTerm)
+                                    ->orWhere('last_name', 'like', $searchTerm)
+                                    ->orWhere('id_pfe', 'like', $searchTerm)
+                                    ->orWhere(\DB::raw("CONCAT(first_name, ' ', last_name)"), 'like', $searchTerm);
+                              });
                     })
                     ->orWhereHas('professors', function($query) use ($searchTerm) {
                         $query->where('name', 'like', $searchTerm);
@@ -298,19 +346,31 @@ class DefenseCalendar extends Component
             }
         }
 
+        // Eager load relationships
         $projects = $query->with([
-            'final_internship_agreements.student',
+            'final_internship_agreements.student.exchangePartner',
             'professors' => function($query) {
                 $query->withPivot('jury_role');
             },
-            'organization'
-        ])->get();
+            'organization',
+            'timetable.timeslot'
+        ])
+        ->get()
+        ->filter(function($project) {
+            // Consider a project as unplanned if:
+            // 1. It has no timetable OR
+            // 2. Its timetable has no timeslot OR
+            // 3. Its timetable's timeslot is not enabled
+            return !$project->timetable || 
+                   !$project->timetable->timeslot ||
+                   !$project->timetable->timeslot->is_enabled;
+        });
 
         $this->nonPlannedProjects = $projects->map(function($project) {
             $students = collect();
             foreach ($project->final_internship_agreements as $agreement) {
                 $student = $agreement->student;
-                if ($student) {
+                if ($student && is_null($student->deleted_at)) {
                     $students->push([
                         'name' => $student->first_name . ' ' . $student->last_name,
                         'id_pfe' => $student->id_pfe,
@@ -318,6 +378,11 @@ class DefenseCalendar extends Component
                         'exchange_partner' => $student->exchangePartner?->name
                     ]);
                 }
+            }
+
+            // Skip if no valid students found
+            if ($students->isEmpty()) {
+                return null;
             }
 
             $supervisor = $project->professors
@@ -340,7 +405,7 @@ class DefenseCalendar extends Component
                 'second_reviewer' => $secondReviewer?->name ?? 'Non assigné',
                 'organisation' => $project->organization?->name ?? 'Non définie'
             ];
-        });
+        })->filter();
     }
 
     private function getStatusInFrench($status)
@@ -402,9 +467,9 @@ class DefenseCalendar extends Component
 
     public function render()
     {
-        // Always check today for Islamic holiday status
-        $today = now();
-        $this->islamicHoliday = $this->getIslamicHoliday($today);
+        // Ensure the holiday state is always up to date
+        $holidayDate = \Carbon\Carbon::parse('2025-06-27');
+        $this->islamicHoliday = $this->getIslamicHoliday($holidayDate);
 
         return view('livewire.defense-calendar');
     }
