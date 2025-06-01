@@ -64,7 +64,6 @@
                                 <th scope="col" class="hidden sm:table-cell px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:w-auto">Autorisation</th>
                                 <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 w-[35%] sm:w-auto">Étudiant</th>
                                 <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 w-[35%] sm:w-auto">Jury</th>
-                                <th scope="col" class="px-3 py-3.5 text-right text-sm font-semibold text-gray-900">Référent</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200 bg-white">
@@ -156,16 +155,26 @@
 
                                                 @forelse($entry['Students'] ?? [] as $index => $student)
                                                     <div class="min-w-0 flex-1 {{ $index > 0 ? 'border-t border-gray-100 pt-1.5' : '' }}">
-                                                        <div class="flex items-center gap-1.5">
-                                                            @if($index === 0)
-                                                                <p class="font-medium text-gray-900 truncate">{{ $student['name'] }}</p>
-                                                            @else
-                                                                <div class="flex items-center gap-1">
-                                                                    <span class="inline-flex items-center rounded-full bg-gray-100 px-1.5 py-0.5 text-[10px] font-medium text-gray-600">
-                                                                        Binôme {{ $index + 1 }}
-                                                                    </span>
+                                                        <div class="flex items-center justify-between gap-1.5">
+                                                            <div class="flex items-center gap-1.5">
+                                                                @if($index === 0)
                                                                     <p class="font-medium text-gray-900 truncate">{{ $student['name'] }}</p>
-                                                                </div>
+                                                                @else
+                                                                    <div class="flex items-center gap-1">
+                                                                        <span class="inline-flex items-center rounded-full bg-gray-100 px-1.5 py-0.5 text-[10px] font-medium text-gray-600">
+                                                                            Binôme {{ $index + 1 }}
+                                                                        </span>
+                                                                        <p class="font-medium text-gray-900 truncate">{{ $student['name'] }}</p>
+                                                                    </div>
+                                                                @endif
+                                                            </div>
+                                                            @if($index === 0 && isset($entry['AdminSupervisor']))
+                                                                <span class="inline-flex items-center gap-1 rounded-md bg-orange-50 px-1.5 py-0.5 text-[10px] font-medium text-orange-700 ring-1 ring-inset ring-orange-700/10 shrink-0">
+                                                                    <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                                                    </svg>
+                                                                    Référent: {{ $entry['AdminSupervisor'] }}
+                                                                </span>
                                                             @endif
                                                         </div>
                                                         <div class="flex items-center gap-1.5 mt-0.5">
@@ -186,15 +195,18 @@
                                                                         </span>
                                                                     @endif
                                                                 </div>
-                                                                @if($index === 0 && isset($entry['Organisation']) && $entry['Organisation'] !== 'Non définie')
-                                                                    <div class="flex items-center gap-1.5">
-                                                                        <span class="inline-flex items-center gap-1 rounded-md bg-blue-50 px-1.5 py-0.5 text-[10px] font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">
-                                                                            <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                                                <path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                                            </svg>
-                                                                            {{ $entry['Organisation'] }}
-                                                                        </span>
-                                                                    </div>
+                                                                @if($index === 0)
+                                                                    @if(isset($entry['Organisation']) && $entry['Organisation'] !== 'Non définie')
+                                                                        <div class="flex items-center gap-1.5">
+                                                                            <span class="inline-flex items-center gap-1 rounded-md bg-blue-50 px-1.5 py-0.5 text-[10px] font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">
+                                                                                <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                                                </svg>
+                                                                                {{ $entry['Organisation'] }}
+                                                                            </span>
+                                                                        </div>
+                                                                    @endif
+                                 
                                                                 @endif
                                                             </div>
                                                         </div>
@@ -245,17 +257,6 @@
                                                     <span class="text-gray-500">Non assigné</span>
                                                 @endif
                                             </div>
-                                        </td>
-                                        <td class="px-3 py-4 text-sm text-gray-900 text-right">
-                                            @if($entry['type'] !== 'holiday')
-                                                @if(isset($entry['AdminSupervisor']))
-                                                    <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
-                                                        {{ $entry['AdminSupervisor'] }}
-                                                    </span>
-                                                @else
-                                                    <span class="text-gray-500">Non assigné</span>
-                                                @endif
-                                            @endif
                                         </td>
                                     </tr>
                                 @endif
