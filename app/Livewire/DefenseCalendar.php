@@ -12,17 +12,20 @@ class DefenseCalendar extends Component
 {
     public $search = '';
     public $searchField = 'all';
+    public $programFilter = '';
     public $data;
     public $nonPlannedProjects;
-    public $islamicHoliday;    public function mount()
+    public $islamicHoliday;
+
+    public function mount()
     {
-        $this->data = collect();
-        $this->nonPlannedProjects = collect();
-        
-        // Initialize Islamic holiday state
-        $holidayDate = \Carbon\Carbon::parse('2025-06-27');
-        $this->islamicHoliday = $this->getIslamicHoliday($holidayDate);
-        
+        $this->data = collect([]);
+        $this->nonPlannedProjects = collect([]);
+        $this->islamicHoliday = [
+            'is_holiday' => false,
+            'message' => '',
+            'gregorian_date' => ''
+        ];
         $this->loadData();
         $this->loadUnplannedProjects();
     }    public function updatedSearch()
@@ -35,54 +38,77 @@ class DefenseCalendar extends Component
     {
         $this->loadData();
         $this->loadUnplannedProjects();
+    }
+
+    public function updatedProgramFilter()
+    {
+        $this->loadData();
+        $this->loadUnplannedProjects();
     }    private function applySearchToQuery($query)
     {
-        if (empty($this->search)) {
+        if (empty($this->search) && empty($this->programFilter)) {
             return $query;
         }
 
         $searchTerm = '%' . $this->search . '%';
 
-        return $query->whereHas('project', function($projectQuery) use ($searchTerm) {
-            $projectQuery->where(function($q) use ($searchTerm) {
-                // Student or PFE ID search
-                if ($this->searchField === 'student' || $this->searchField === 'pfe_id' || $this->searchField === 'all') {
-                    $q->orWhereHas('agreements', function($agreementQuery) use ($searchTerm) {
-                        $agreementQuery->whereHasMorph(
-                            'agreeable',
-                            [FinalYearInternshipAgreement::class],
-                            function($morphQuery) use ($searchTerm) {
-                                $morphQuery->whereHas('student', function($studentQuery) use ($searchTerm) {
-                                    $studentQuery->where(function($sq) use ($searchTerm) {
-                                        $sq->where('first_name', 'like', $searchTerm)
-                                          ->orWhere('last_name', 'like', $searchTerm)
-                                          ->orWhere('id_pfe', 'like', $searchTerm)
-                                          ->orWhere(
-                                              \DB::raw("CONCAT(first_name, ' ', last_name)"),
-                                              'like',
-                                              $searchTerm
-                                          );
-                                    });
+        $query->where(function($mainQuery) use ($searchTerm) {
+            // Apply text search if there is a search term
+            if (!empty($this->search)) {
+                $mainQuery->where(function($q) use ($searchTerm) {
+                    // Student or PFE ID search
+                    if ($this->searchField === 'student' || $this->searchField === 'pfe_id' || $this->searchField === 'all') {
+                        $q->orWhereHas('project.final_internship_agreements', function($agreementQuery) use ($searchTerm) {
+                            $agreementQuery->whereHas('student', function($studentQuery) use ($searchTerm) {
+                                $studentQuery->where(function($sq) use ($searchTerm) {
+                                    $sq->where('first_name', 'like', $searchTerm)
+                                      ->orWhere('last_name', 'like', $searchTerm)
+                                      ->orWhere('id_pfe', 'like', $searchTerm)
+                                      ->orWhere(
+                                          \DB::raw("CONCAT(first_name, ' ', last_name)"),
+                                          'like',
+                                          $searchTerm
+                                      );
                                 });
-                            }
-                        );
-                    });
-                }
+                            });
+                        });
+                    }
 
-                // Professor search
-                if ($this->searchField === 'professor' || $this->searchField === 'all') {
-                    $q->orWhereHas('professors', function($sq) use ($searchTerm) {
-                        $sq->where('name', 'like', $searchTerm);
-                    });
-                }
+                    // Professor search
+                    if ($this->searchField === 'professor' || $this->searchField === 'all') {
+                        $q->orWhereHas('project.professors', function($sq) use ($searchTerm) {
+                            $sq->where('name', 'like', $searchTerm);
+                        });
+                    }
 
-                // Organization search
-                if ($this->searchField === 'organization' || $this->searchField === 'all') {
-                    $q->orWhereHas('organization', function($sq) use ($searchTerm) {
-                        $sq->where('name', 'like', $searchTerm);
-                    });
-                }
-            });
+                    // Organization search
+                    if ($this->searchField === 'organization' || $this->searchField === 'all') {
+                        $q->orWhereHas('project.organization', function($sq) use ($searchTerm) {
+                            $sq->where('name', 'like', $searchTerm);
+                        });
+                    }
+                });
+            }
+
+            // Apply program filter if selected
+            if (!empty($this->programFilter)) {
+                $mainQuery->whereHas('project.final_internship_agreements.student', function($query) {
+                    $query->where('program', \Str::upper($this->programFilter));
+                });
+            }
+        });
+
+        return $query;
+    }
+
+    private function applyProgramFilterToQuery($query)
+    {
+        if (empty($this->programFilter)) {
+            return $query;
+        }
+
+        return $query->whereHas('final_internship_agreements.student', function($query) {
+            $query->where('program', \Str::upper($this->programFilter));
         });
     }
 
@@ -153,6 +179,11 @@ class DefenseCalendar extends Component
                     $q->withoutTrashed()->whereHas('final_internship_agreements', function($q) {
                         $q->whereHas('student', function($q) {
                             $q->whereNull('deleted_at');
+                            
+                            // Apply program filter if selected
+                            if (!empty($this->programFilter)) {
+                                $q->where('program', \Str::upper($this->programFilter));
+                            }
                         });
                     });
                 });
@@ -293,58 +324,52 @@ class DefenseCalendar extends Component
                     $query->whereNull('deleted_at')  // Only active students
                           ->where('year_id', $currentYear->id);
                 });
-            });
-
-        // Apply search filters if needed
-        if (!empty($this->search)) {
-            $searchTerm = '%' . $this->search . '%';
-            
-            if ($this->searchField === 'student') {
-                $query->whereHas('final_internship_agreements.student', function($query) use ($searchTerm) {
-                    $query->whereNull('deleted_at')
-                          ->where(function($q) use ($searchTerm) {
-                              $q->where('first_name', 'like', $searchTerm)
-                                ->orWhere('last_name', 'like', $searchTerm)
-                                ->orWhere(\DB::raw("CONCAT(first_name, ' ', last_name)"), 'like', $searchTerm);
-                          });
-                });
-            }
-            elseif ($this->searchField === 'pfe_id') {
-                $query->whereHas('final_internship_agreements.student', function($query) use ($searchTerm) {
-                    $query->whereNull('deleted_at')
-                          ->where('id_pfe', 'like', $searchTerm);
-                });
-            }
-            elseif ($this->searchField === 'professor') {
-                $query->whereHas('professors', function($query) use ($searchTerm) {
-                    $query->where('name', 'like', $searchTerm);
-                });
-            }
-            elseif ($this->searchField === 'organization') {
-                $query->whereHas('organization', function($query) use ($searchTerm) {
-                    $query->where('name', 'like', $searchTerm);
-                });
-            }
-            elseif ($this->searchField === 'all') {
-                $query->where(function($query) use ($searchTerm) {
-                    $query->whereHas('final_internship_agreements.student', function($query) use ($searchTerm) {
-                        $query->whereNull('deleted_at')
-                              ->where(function($q) use ($searchTerm) {
-                                  $q->where('first_name', 'like', $searchTerm)
-                                    ->orWhere('last_name', 'like', $searchTerm)
-                                    ->orWhere('id_pfe', 'like', $searchTerm)
-                                    ->orWhere(\DB::raw("CONCAT(first_name, ' ', last_name)"), 'like', $searchTerm);
-                              });
-                    })
-                    ->orWhereHas('professors', function($query) use ($searchTerm) {
-                        $query->where('name', 'like', $searchTerm);
-                    })
-                    ->orWhereHas('organization', function($query) use ($searchTerm) {
-                        $query->where('name', 'like', $searchTerm);
+            });            // Apply search and program filters
+            $query->where(function($mainQuery) {
+                // Apply text search if there is a search term
+                if (!empty($this->search)) {
+                    $searchTerm = '%' . $this->search . '%';
+                    
+                    $mainQuery->where(function($query) use ($searchTerm) {
+                        if ($this->searchField === 'student' || $this->searchField === 'all') {
+                            $query->orWhereHas('final_internship_agreements.student', function($query) use ($searchTerm) {
+                                $query->whereNull('deleted_at')
+                                      ->where(function($q) use ($searchTerm) {
+                                          $q->where('first_name', 'like', $searchTerm)
+                                            ->orWhere('last_name', 'like', $searchTerm)
+                                            ->orWhere(\DB::raw("CONCAT(first_name, ' ', last_name)"), 'like', $searchTerm);
+                                      });
+                            });
+                        }
+                        
+                        if ($this->searchField === 'pfe_id' || $this->searchField === 'all') {
+                            $query->orWhereHas('final_internship_agreements.student', function($query) use ($searchTerm) {
+                                $query->whereNull('deleted_at')
+                                      ->where('id_pfe', 'like', $searchTerm);
+                            });
+                        }
+                        
+                        if ($this->searchField === 'professor' || $this->searchField === 'all') {
+                            $query->orWhereHas('professors', function($query) use ($searchTerm) {
+                                $query->where('name', 'like', $searchTerm);
+                            });
+                        }
+                        
+                        if ($this->searchField === 'organization' || $this->searchField === 'all') {
+                            $query->orWhereHas('organization', function($query) use ($searchTerm) {
+                                $query->where('name', 'like', $searchTerm);
+                            });
+                        }
                     });
-                });
-            }
-        }
+                }
+
+                // Apply program filter if selected
+                if (!empty($this->programFilter)) {
+                    $mainQuery->whereHas('final_internship_agreements.student', function($query) {
+                        $query->where('program', \Str::upper($this->programFilter));
+                    });
+                }
+            });
 
         // Eager load relationships
         $projects = $query->with([

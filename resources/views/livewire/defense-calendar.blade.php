@@ -1,4 +1,13 @@
 <div>
+    <style>
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div class="space-y-8">
             <!-- Header Section -->
@@ -15,26 +24,117 @@
             <!-- Search Section -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                 <div class="border-b border-gray-200 bg-gray-50/50 px-4 py-4">
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <div class="flex-grow">
-                            <label for="search" class="block text-sm font-medium text-gray-900 mb-1">Rechercher</label>
-                            <div class="relative rounded-md shadow-sm">
-                                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                    <svg class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                    <!-- Search and Filter Fields -->
+                    <div class="flex flex-col gap-4">
+                        <!-- Search Bar and Field Filter -->
+                        <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                            <div class="sm:col-span-3">
+                                <label for="search" class="block text-sm font-medium text-gray-900 mb-1">Rechercher</label>
+                                <div class="relative rounded-md shadow-sm">
+                                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                        <svg class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                                    </div>
+                                    <input type="text" wire:model.live.debounce.300ms="search" class="block w-full rounded-lg border-0 py-2.5 pl-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" placeholder="Rechercher par nom, ID, organisation...">
                                 </div>
-                                <input type="text" wire:model.live.debounce.300ms="search" class="block w-full rounded-lg border-0 py-2.5 pl-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" placeholder="Rechercher par nom, ID, organisation...">
+                            </div>
+                            <div>
+                                <label for="searchField" class="block text-sm font-medium text-gray-900 mb-1">Filtrer par</label>
+                                <select wire:model.live="searchField" class="w-full rounded-lg border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6">
+                                    <option value="all">Tous les champs</option>
+                                    <option value="student">Nom de l'étudiant</option>
+                                    <option value="pfe_id">ID PFE</option>
+                                    <option value="professor">Professeur</option>
+                                    <option value="organization">Organisation</option>
+                                </select>
                             </div>
                         </div>
-                        <div class="sm:w-48">
-                            <label for="searchField" class="block text-sm font-medium text-gray-900 mb-1">Filtrer par</label>
-                            <select wire:model.live="searchField" class="block w-full rounded-lg border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6">
-                                <option value="all">Tous les champs</option>
-                                <option value="student">Nom de l'étudiant</option>
-                                <option value="pfe_id">ID PFE</option>
-                                <option value="professor">Professeur</option>
-                                <option value="organization">Organisation</option>
-                            </select>
+
+                        <!-- Program Filter Tabs -->
+                        <div class="-mx-4 px-4 border-t border-gray-200 pt-4">
+                            <div class="flex overflow-x-auto hide-scrollbar">
+                                <div class="flex space-x-2">
+                                    <button type="button" wire:click="$set('programFilter', '')"
+                                            @class([
+                                                'shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg transition-colors',
+                                                'bg-gray-100 text-gray-900 ring-1 ring-gray-200' => empty($programFilter),
+                                                'text-gray-500 hover:bg-gray-50' => !empty($programFilter),
+                                            ])>
+                                        <x-heroicon-o-funnel class="w-4 h-4" />
+                                        Tous
+                                    </button>
+                                    
+                                    <button type="button" wire:click="$set('programFilter', 'AMOA')"
+                                            @class([
+                                                'shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg transition-colors',
+                                                'bg-primary-100 text-primary-900 ring-1 ring-primary-200' => $programFilter === 'AMOA',
+                                                'text-gray-500 hover:bg-gray-50' => $programFilter !== 'AMOA',
+                                            ])>
+                                        <x-heroicon-o-light-bulb class="w-4 h-4" />
+                                        AMOA
+                                    </button>
+
+                                    <button type="button" wire:click="$set('programFilter', 'ASEDS')"
+                                            @class([
+                                                'shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg transition-colors',
+                                                'bg-secondary-100 text-secondary-900 ring-1 ring-secondary-200' => $programFilter === 'ASEDS',
+                                                'text-gray-500 hover:bg-gray-50' => $programFilter !== 'ASEDS',
+                                            ])>
+                                        <x-heroicon-o-code-bracket class="w-4 h-4" />
+                                        ASEDS
+                                    </button>
+
+                                    <button type="button" wire:click="$set('programFilter', 'DATA')"
+                                            @class([
+                                                'shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg transition-colors',
+                                                'bg-success-100 text-success-900 ring-1 ring-success-200' => $programFilter === 'DATA',
+                                                'text-gray-500 hover:bg-gray-50' => $programFilter !== 'DATA',
+                                            ])>
+                                        <x-heroicon-o-chart-bar class="w-4 h-4" />
+                                        DATA
+                                    </button>
+
+                                    <button type="button" wire:click="$set('programFilter', 'ICCN')"
+                                            @class([
+                                                'shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg transition-colors',
+                                                'bg-danger-100 text-danger-900 ring-1 ring-danger-200' => $programFilter === 'ICCN',
+                                                'text-gray-500 hover:bg-gray-50' => $programFilter !== 'ICCN',
+                                            ])>
+                                        <x-heroicon-o-shield-check class="w-4 h-4" />
+                                        ICCN
+                                    </button>
+
+                                    <button type="button" wire:click="$set('programFilter', 'SESNUM')"
+                                            @class([
+                                                'shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg transition-colors',
+                                                'bg-warning-100 text-warning-900 ring-1 ring-warning-200' => $programFilter === 'SESNUM',
+                                                'text-gray-500 hover:bg-gray-50' => $programFilter !== 'SESNUM',
+                                            ])>
+                                        <x-heroicon-o-viewfinder-circle class="w-4 h-4" />
+                                        SESNUM
+                                    </button>
+
+                                    <button type="button" wire:click="$set('programFilter', 'SMART-ICT')"
+                                            @class([
+                                                'shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg transition-colors',
+                                                'bg-info-100 text-info-900 ring-1 ring-info-200' => $programFilter === 'SMART-ICT',
+                                                'text-gray-500 hover:bg-gray-50' => $programFilter !== 'SMART-ICT',
+                                            ])>
+                                        <x-heroicon-o-cpu-chip class="w-4 h-4" />
+                                        SMART-ICT
+                                    </button>
+
+                                    <button type="button" wire:click="$set('programFilter', 'SUD')"
+                                            @class([
+                                                'shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg transition-colors',
+                                                'bg-gray-100 text-gray-900 ring-1 ring-gray-200' => $programFilter === 'SUD',
+                                                'text-gray-500 hover:bg-gray-50' => $programFilter !== 'SUD',
+                                            ])>
+                                        <x-heroicon-o-circle-stack class="w-4 h-4" />
+                                        SUD
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
