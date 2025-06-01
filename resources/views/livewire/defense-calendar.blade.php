@@ -306,37 +306,93 @@
                         <table class="min-w-full divide-y divide-gray-300">
                             <thead>
                                 <tr class="bg-red-50">
-                                    <th class="px-4 py-3.5 text-left text-sm font-semibold text-gray-900">Étudiant(s)</th>
-                                    <th class="px-4 py-3.5 text-left text-sm font-semibold text-gray-900">ID PFE</th>
-                                    <th class="hidden sm:table-cell px-4 py-3.5 text-left text-sm font-semibold text-gray-900">
-                                        Encadrant</th>
-                                    <th class="hidden lg:table-cell px-4 py-3.5 text-left text-sm font-semibold text-gray-900">
-                                        Examinateur 1</th>
-                                    <th class="hidden lg:table-cell px-4 py-3.5 text-left text-sm font-semibold text-gray-900">
-                                        Examinateur 2</th>
+                                    <th class="px-4 py-3.5 text-left text-sm font-semibold text-gray-900 w-[40%]">Étudiant(s)</th>
+                                    <th class="px-4 py-3.5 text-left text-sm font-semibold text-gray-900 w-[60%]">Encadrement</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200 bg-white">
                                 @foreach($nonPlannedProjects as $project)
-                                <tr wire:key="nonplanned-{{ $project['student_ids'] }}" class="hover:bg-gray-50">
-                                    <td class="px-4 py-4" data-label="Étudiant(s)">
-                                        <div class="font-medium text-gray-900">{{ $project['student_names'] }}</div>
+                                <tr wire:key="nonplanned-{{ $project['id'] }}" class="hover:bg-gray-50">
+                                    <td class="px-4 py-4">
+                                        <div class="space-y-3">
+                                            @forelse($project['students'] as $index => $student)
+                                                <div class="min-w-0 flex-1 {{ $index > 0 ? 'border-t border-gray-100 pt-3' : '' }}">
+                                                    <div class="flex flex-col gap-1.5">
+                                                        <div class="flex items-center gap-1.5">
+                                                            @if($index === 0)
+                                                                <p class="font-medium text-gray-900">{{ $student['name'] }}</p>
+                                                            @else
+                                                                <div class="flex items-center gap-1">
+                                                                    <span class="inline-flex items-center rounded-full bg-gray-100 px-1.5 py-0.5 text-[10px] font-medium text-gray-600">
+                                                                        Binôme {{ $index + 1 }}
+                                                                    </span>
+                                                                    <p class="font-medium text-gray-900">{{ $student['name'] }}</p>
+                                                                </div>
+                                                            @endif
+                                                        </div>
+                                                        <div class="flex items-center gap-1.5">
+                                                            <span class="text-gray-500 text-xs font-medium">{{ $student['id_pfe'] ?? 'N/A' }}</span>
+                                                            @if(isset($student['program']) && $student['program'] !== 'N/A')
+                                                                <span class="inline-flex items-center rounded-md bg-gray-50 px-1.5 py-0.5 text-[10px] font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
+                                                                    {{ $student['program'] }}
+                                                                </span>
+                                                            @endif
+                                                            @if(isset($student['exchange_partner']))
+                                                                <span class="inline-flex items-center rounded-md bg-indigo-50 px-1.5 py-0.5 text-[10px] font-medium text-indigo-700 ring-1 ring-inset ring-indigo-700/10">
+                                                                    <svg class="h-3 w-3 mr-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                                                                    </svg>
+                                                                    {{ $student['exchange_partner'] }}
+                                                                </span>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                    @if($index === 0 && $project['organisation'] !== 'Non définie')
+                                                        <div class="flex items-center gap-1.5 mt-1.5">
+                                                            <span class="inline-flex items-center gap-1 rounded-md bg-blue-50 px-1.5 py-0.5 text-[10px] font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">
+                                                                <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                                </svg>
+                                                                {{ $project['organisation'] }}
+                                                            </span>
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            @empty
+                                                <div class="text-gray-500">Non assigné</div>
+                                            @endforelse
+                                        </div>
                                     </td>
-                                    <td class="px-4 py-4 text-gray-600" data-label="ID PFE">
-                                        {{ $project['student_ids'] }}
-                                    </td>
-                                    <td class="hidden sm:table-cell px-4 py-4 text-gray-600" data-label="Encadrant">
-                                        {{ $project['supervisor'] }}
-                                    </td>
-                                    <td class="hidden lg:table-cell px-4 py-4 text-gray-600" data-label="Examinateur 1">
-                                        <span class="{{ $project['reviewer1'] === 'Non assigné' ? 'text-yellow-600 italic' : 'text-gray-600' }}">
-                                            {{ $project['reviewer1'] }}
-                                        </span>
-                                    </td>
-                                    <td class="hidden lg:table-cell px-4 py-4 text-gray-600" data-label="Examinateur 2">
-                                        <span class="{{ $project['reviewer2'] === 'Non assigné' ? 'text-yellow-600 italic' : 'text-gray-600' }}">
-                                            {{ $project['reviewer2'] }}
-                                        </span>
+                                    <td class="px-4 py-4">
+                                        <div class="space-y-4">
+                                            <div class="flex items-center gap-2">
+                                                <span class="inline-flex items-center justify-center bg-blue-50 px-2.5 py-1.5 text-xs font-medium text-blue-700 rounded-md ring-1 ring-inset ring-blue-700/10">
+                                                    Encadrant
+                                                </span>
+                                                <span class="text-sm text-gray-900">{{ $project['supervisor'] }}</span>
+                                            </div>
+
+                                            <div class="border-t border-gray-100 pt-4">
+                                                <div class="space-y-2">
+                                                    <div class="flex items-center gap-2">
+                                                        <span class="inline-flex items-center justify-center bg-purple-50 px-2.5 py-1.5 text-xs font-medium text-purple-700 rounded-md ring-1 ring-inset ring-purple-700/10 min-w-[6rem]">
+                                                            Examinateur 1
+                                                        </span>
+                                                        <span class="text-sm {{ $project['first_reviewer'] === 'Non assigné' ? 'text-yellow-600 italic' : 'text-gray-900' }}">
+                                                            {{ $project['first_reviewer'] }}
+                                                        </span>
+                                                    </div>
+                                                    <div class="flex items-center gap-2">
+                                                        <span class="inline-flex items-center justify-center bg-purple-50 px-2.5 py-1.5 text-xs font-medium text-purple-700 rounded-md ring-1 ring-inset ring-purple-700/10 min-w-[6rem]">
+                                                            Examinateur 2
+                                                        </span>
+                                                        <span class="text-sm {{ $project['second_reviewer'] === 'Non assigné' ? 'text-yellow-600 italic' : 'text-gray-900' }}">
+                                                            {{ $project['second_reviewer'] }}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                                 @endforeach

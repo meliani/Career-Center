@@ -142,7 +142,7 @@ class Project extends Core\BackendBaseModel
     public function timetable()
     {
         return $this->hasOne(Timetable::class)
-            ->whereNull('cancelled_at')
+            // ->whereNull('cancelled_at')
             ->latest();
     }
 
@@ -153,7 +153,7 @@ class Project extends Core\BackendBaseModel
             ->whereHas('timeslot', function($query) {
                 $query->whereYear('date', now()->year);
             })
-            ->whereNull('cancelled_at')
+            // ->whereNull('cancelled_at')
             ->latest();
     }
 

@@ -14,9 +14,7 @@ class DefenseCalendar extends Component
     public $searchField = 'all';
     public $data;
     public $nonPlannedProjects;
-    public $islamicHoliday;
-
-    public function mount()
+    public $islamicHoliday;    public function mount()
     {
         $this->data = collect([]);
         $this->nonPlannedProjects = collect([]);
@@ -26,16 +24,17 @@ class DefenseCalendar extends Component
             'gregorian_date' => ''
         ];
         $this->loadData();
-    }
-
-    public function updatedSearch()
+        $this->loadUnplannedProjects();
+    }    public function updatedSearch()
     {
         $this->loadData();
+        $this->loadUnplannedProjects();
     }
 
     public function updatedSearchField()
     {
         $this->loadData();
+        $this->loadUnplannedProjects();
     }    private function applySearchToQuery($query)
     {
         if (empty($this->search)) {
@@ -153,6 +152,7 @@ class DefenseCalendar extends Component
                 $query = $this->applySearchToQuery($query);
             }            // Apply ordering by date and time
             $query->join('timeslots', 'timetables.timeslot_id', '=', 'timeslots.id')
+                  ->where('timeslots.is_enabled', true)
                   ->orderBy('timeslots.start_time', 'asc')
                   ->select('timetables.*');
 
@@ -240,6 +240,107 @@ class DefenseCalendar extends Component
             \Log::error('Error in loadData: ' . $e->getMessage());
             \Log::error($e->getTraceAsString());
         }
+    }
+
+    private function loadUnplannedProjects()
+    {
+        $currentYear = \App\Models\Year::current();
+        
+        $query = Project::query()
+            ->whereDoesntHave('timetable')
+            ->whereHas('final_internship_agreements', function($query) use ($currentYear) {
+                $query->whereHas('student', function($query) use ($currentYear) {
+                    $query->where('year_id', $currentYear->id);
+                });
+            });
+
+        // Apply search if needed
+        if (!empty($this->search)) {
+            $searchTerm = '%' . $this->search . '%';
+            
+            if ($this->searchField === 'student') {
+                $query->whereHas('final_internship_agreements.student', function($query) use ($searchTerm) {
+                    $query->where('first_name', 'like', $searchTerm)
+                          ->orWhere('last_name', 'like', $searchTerm)
+                          ->orWhere(\DB::raw("CONCAT(first_name, ' ', last_name)"), 'like', $searchTerm);
+                });
+            }
+            elseif ($this->searchField === 'pfe_id') {
+                $query->whereHas('final_internship_agreements.student', function($query) use ($searchTerm) {
+                    $query->where('id_pfe', 'like', $searchTerm);
+                });
+            }
+            elseif ($this->searchField === 'professor') {
+                $query->whereHas('professors', function($query) use ($searchTerm) {
+                    $query->where('name', 'like', $searchTerm);
+                });
+            }
+            elseif ($this->searchField === 'organization') {
+                $query->whereHas('organization', function($query) use ($searchTerm) {
+                    $query->where('name', 'like', $searchTerm);
+                });
+            }
+            elseif ($this->searchField === 'all') {
+                $query->where(function($query) use ($searchTerm) {
+                    $query->whereHas('final_internship_agreements.student', function($query) use ($searchTerm) {
+                        $query->where('first_name', 'like', $searchTerm)
+                              ->orWhere('last_name', 'like', $searchTerm)
+                              ->orWhere('id_pfe', 'like', $searchTerm)
+                              ->orWhere(\DB::raw("CONCAT(first_name, ' ', last_name)"), 'like', $searchTerm);
+                    })
+                    ->orWhereHas('professors', function($query) use ($searchTerm) {
+                        $query->where('name', 'like', $searchTerm);
+                    })
+                    ->orWhereHas('organization', function($query) use ($searchTerm) {
+                        $query->where('name', 'like', $searchTerm);
+                    });
+                });
+            }
+        }
+
+        $projects = $query->with([
+            'final_internship_agreements.student',
+            'professors' => function($query) {
+                $query->withPivot('jury_role');
+            },
+            'organization'
+        ])->get();
+
+        $this->nonPlannedProjects = $projects->map(function($project) {
+            $students = collect();
+            foreach ($project->final_internship_agreements as $agreement) {
+                $student = $agreement->student;
+                if ($student) {
+                    $students->push([
+                        'name' => $student->first_name . ' ' . $student->last_name,
+                        'id_pfe' => $student->id_pfe,
+                        'program' => $student->program,
+                        'exchange_partner' => $student->exchangePartner?->name
+                    ]);
+                }
+            }
+
+            $supervisor = $project->professors
+                ->where('pivot.jury_role', \App\Enums\JuryRole::Supervisor->value)
+                ->first();
+
+            $firstReviewer = $project->professors
+                ->where('pivot.jury_role', \App\Enums\JuryRole::FirstReviewer->value)
+                ->first();
+
+            $secondReviewer = $project->professors
+                ->where('pivot.jury_role', \App\Enums\JuryRole::SecondReviewer->value)
+                ->first();
+
+            return [
+                'id' => $project->id,
+                'students' => $students,
+                'supervisor' => $supervisor?->name ?? 'Non assigné',
+                'first_reviewer' => $firstReviewer?->name ?? 'Non assigné',
+                'second_reviewer' => $secondReviewer?->name ?? 'Non assigné',
+                'organisation' => $project->organization?->name ?? 'Non définie'
+            ];
+        });
     }
 
     private function getStatusInFrench($status)
