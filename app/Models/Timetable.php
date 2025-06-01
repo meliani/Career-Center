@@ -7,31 +7,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Timetable extends Core\BackendBaseModel
 {
     protected $fillable = [
-        // Primary fields
         'timeslot_id',
         'room_id',
         'project_id',
-        'user_id',
         'year_id',
-
-        // Action timestamps
-        'confirmed_at',
-        'cancelled_at',
-        'rescheduled_at',
-
-        // Action performers
-        'confirmed_by',
-        'cancelled_by',
-        'rescheduled_by',
-        'created_by',
-        'updated_by',
         'scheduled_by',
-    ];
-
-    protected $casts = [
-        'confirmed_at' => 'datetime',
-        'cancelled_at' => 'datetime',
-        'rescheduled_at' => 'datetime',
     ];
 
     protected static function boot()
@@ -214,12 +194,14 @@ class Timetable extends Core\BackendBaseModel
     // Scopes
     public function scopeUnplanned($query)
     {
-        // return $query->whereDoesntHave('project');
-        return $query->whereNull('project_id');
+        return $query->whereDoesntHave('project');
+        // return $query->whereNull('project_id');
     }
 
     public function scopePlanned($query)
     {
+
+        // return $query->whereHas('project');
         return $query->whereNotNull('project_id');
     }
 
@@ -252,5 +234,21 @@ class Timetable extends Core\BackendBaseModel
     public function year()
     {
         return $this->belongsTo(Year::class);
+    }
+
+    // Add date accessor
+    public function getDateAttribute()
+    {
+        return $this->timeslot?->date;
+    }
+
+    public function getStartTimeAttribute()
+    {
+        return $this->timeslot?->start_time;
+    }
+
+    public function getEndTimeAttribute()
+    {
+        return $this->timeslot?->end_time;
     }
 }
