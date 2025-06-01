@@ -114,21 +114,6 @@ class Timetable extends Core\BackendBaseModel
         return ! is_null($this->project_id);
     }
 
-    public function getIsConfirmedAttribute(): bool
-    {
-        return ! is_null($this->confirmed_at);
-    }
-
-    public function getIsCancelledAttribute(): bool
-    {
-        return ! is_null($this->cancelled_at);
-    }
-
-    public function getIsRescheduledAttribute(): bool
-    {
-        return ! is_null($this->rescheduled_at);
-    }
-
     // Relationships
     public function timeslot(): BelongsTo
     {
@@ -148,22 +133,6 @@ class Timetable extends Core\BackendBaseModel
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
-    }
-
-    // Action performer relationships
-    public function confirmedBy(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'confirmed_by');
-    }
-
-    public function cancelledBy(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'cancelled_by');
-    }
-
-    public function rescheduledBy(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'rescheduled_by');
     }
 
     public function createdBy(): BelongsTo
