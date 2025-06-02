@@ -333,6 +333,18 @@ class ProjectsTable
                 ->sortable(false)
                 ->dateTime()
                 ->toggleable(isToggledHiddenByDefault: true),
+            Tables\Columns\TextColumn::make('writing_language')
+                ->label(__('Writing Language'))
+                ->badge()
+                ->formatStateUsing(fn ($state) => $state?->getLabel())
+                ->color(fn ($state) => $state?->getColor())
+                ->sortable(),
+            Tables\Columns\TextColumn::make('presentation_language')
+                ->label(__('Presentation Language'))
+                ->badge()
+                ->formatStateUsing(fn ($state) => $state?->getLabel())
+                ->color(fn ($state) => $state?->getColor())
+                ->sortable(),
         ];
     }
 }

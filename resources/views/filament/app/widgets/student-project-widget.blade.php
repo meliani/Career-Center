@@ -43,9 +43,26 @@
                             </h3>
                             @if($project->description)
                                 <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                                    {{ Str::limit($project->description, 200) }}
+                                    {{ $project->description }}
                                 </p>
                             @endif
+                            
+                            <div class="mt-3 flex flex-wrap gap-2">
+                                @if($project->writing_language)
+                                    <x-filament::badge 
+                                        :color="$project->writing_language->getColor()"
+                                    >
+                                        {{ __('Writing Language') }}: {{ $project->writing_language->getLabel() }}
+                                    </x-filament::badge>
+                                @endif
+                                @if($project->presentation_language)
+                                    <x-filament::badge 
+                                        :color="$project->presentation_language->getColor()"
+                                    >
+                                        {{ __('Presentation Language') }}: {{ $project->presentation_language->getLabel() }}
+                                    </x-filament::badge>
+                                @endif
+                            </div>
                         </div>
                     </div>
 
@@ -308,56 +325,88 @@
                     </div>
                 @endif
 
-                {{-- Mid-Term Report Section --}}
+                {{-- Add Language Settings before Mid-Term Report --}}
                 <div class="border-t pt-4">
                     <div class="flex items-center justify-between">
                         <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">
-                            {{ __('Mid-Term Report') }}
+                            {{ __('Project Languages') }}
                         </h3>
-                        <x-filament::badge color="warning" class="ml-2">
-                            {{ __('Test Feature') }}
-                        </x-filament::badge>
                     </div>
-                    
-                    <p class="text-xs text-gray-400 dark:text-gray-500 mt-1 mb-3">
-                        {{ __('This is a test feature and may change in the future.') }}
-                    </p>
 
-                    @if($midTermReport)
-                        <div class="mt-4">
-                            <p class="text-sm text-gray-500 dark:text-gray-400">
-                                {{ __('You submitted your mid-term report on:') }}
-                                <strong>{{ $midTermReport->submitted_at->format('M d, Y H:i') }}</strong>
-                            </p>
-                            <div class="mt-2 p-4 bg-gray-50 dark:bg-gray-900/50 rounded-lg border border-gray-200 dark:border-gray-700">
-                                <p class="text-sm text-gray-900 dark:text-white whitespace-pre-wrap">
-                                    {{ $midTermReport->content }}
-                                </p>
+                    <form wire:submit.prevent="updateLanguages" class="mt-4">
+                        {{ $this->languageForm }}
+
+                        <x-filament::button
+                            type="submit"
+                            class="mt-3"
+                            wire:loading.attr="disabled"
+                        >
+                            {{ __('Update Languages') }}
+                        </x-filament::button>
+                    </form>
+                </div>
+
+                {{-- Mid-Term Report Section --}}
+                <div class="border-t pt-4">
+                    <div x-data="{ isExpanded: false }">
+                        <div class="flex items-center justify-between cursor-pointer" @click="isExpanded = !isExpanded">
+                            <div class="flex items-center">
+                                <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                                    {{ __('Mid-Term Report') }}
+                                </h3>
+                                <x-filament::badge color="warning" class="ml-2">
+                                    {{ __('Test Feature') }}
+                                </x-filament::badge>
                             </div>
-                            @if($midTermReport->is_read_by_supervisor)
-                                <p class="mt-2 text-sm text-green-600 dark:text-green-400">
-                                    {{ __('Your supervisor has read the report.') }}
-                                </p>
+                            <button type="button" class="text-gray-400">
+                                <x-filament::icon
+                                    name="heroicon-m-chevron-down"
+                                    class="w-5 h-5 transition-transform"
+                                    x-bind:class="{ 'rotate-180': isExpanded }"
+                                />
+                            </button>
+                        </div>
+                        
+                        <div x-show="isExpanded" x-collapse.duration.200ms>
+                            <p class="text-xs text-gray-400 dark:text-gray-500 mt-1 mb-3">
+                                {{ __('This is a test feature and may change in the future.') }}
+                            </p>
+
+                            @if($midTermReport)
+                                <div class="mt-4">
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                                        {{ __('You submitted your mid-term report on:') }}
+                                        <strong>{{ $midTermReport->submitted_at->format('M d, Y H:i') }}</strong>
+                                    </p>
+                                    <div class="mt-2 p-4 bg-gray-50 dark:bg-gray-900/50 rounded-lg border border-gray-200 dark:border-gray-700">
+                                        <p class="text-sm text-gray-900 dark:text-white whitespace-pre-wrap">
+                                            {{ $midTermReport->content }}
+                                        </p>
+                                    </div>
+                                    @if($midTermReport->is_read_by_supervisor)
+                                        <p class="mt-2 text-sm text-green-600 dark:text-green-400">
+                                            {{ __('Your supervisor has read the report.') }}
+                                        </p>
+                                    @else
+                                        <p class="mt-2 text-sm text-yellow-600 dark:text-yellow-400">
+                                            {{ __('Your supervisor has not read the report yet.') }}
+                                        </p>
+                                    @endif
+                                </div>
                             @else
-                                <p class="mt-2 text-sm text-yellow-600 dark:text-yellow-400">
-                                    {{ __('Your supervisor has not read the report yet.') }}
-                                </p>
+                                <form wire:submit="submitMidTermReport" class="mt-4">
+                                    {{ $this->form }}
+
+                                    <x-filament::button
+                                        type="submit"
+                                        wire:loading.attr="disabled"
+                                    >
+                                        {{ __('Submit Report') }}
+                                    </x-filament::button>
+                                </form>
                             @endif
                         </div>
-                    @else
-                        <form wire:submit="submitMidTermReport" class="mt-4">
-                            {{ $this->form }}
-
-                            <x-filament::button
-                                type="submit"
-                                color="primary"
-                                class="mt-4"
-                                wire:loading.attr="disabled"
-                            >
-                                {{ __('Submit Report') }}
-                            </x-filament::button>
-                        </form>
-                    @endif
+                    </div>
                 </div>
 
                 {{-- View Details Link --}}

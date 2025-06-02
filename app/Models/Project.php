@@ -41,6 +41,8 @@ class Project extends Core\BackendBaseModel
     {
         return [
             'title' => 'required|max:255',
+            'writing_language' => 'nullable|string|in:' . implode(',', array_column(Enums\Language::cases(), 'value')),
+            'presentation_language' => 'nullable|string|in:' . implode(',', array_column(Enums\Language::cases(), 'value')),
             'start_date' => 'required|date',
             'end_date' => 'required|date',
         ];
@@ -49,6 +51,8 @@ class Project extends Core\BackendBaseModel
     protected $fillable = [
         'title',
         'language',
+        'writing_language',
+        'presentation_language',
         'start_date',
         'end_date',
         'agreement_verified_at',
@@ -80,6 +84,8 @@ class Project extends Core\BackendBaseModel
         'end_date' => 'date',
         'midterm_due_date' => 'date',
         'language' => Enums\Language::class,
+        'writing_language' => Enums\Language::class,
+        'presentation_language' => Enums\Language::class,
         'defense_status' => Enums\DefenseStatus::class,
         'midterm_report_status' => Enums\MidTermReportStatus::class,
     ];

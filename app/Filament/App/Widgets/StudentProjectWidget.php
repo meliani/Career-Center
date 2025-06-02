@@ -31,7 +31,8 @@ class StudentProjectWidget extends Widget implements Forms\Contracts\HasForms
     protected int | string | array $columnSpan = '1';
 
     public $selectedStudent;
-
+    public $writing_language;
+    public $presentation_language;
     public $message;
 
     public $selectedCollaborator;
@@ -44,6 +45,16 @@ class StudentProjectWidget extends Widget implements Forms\Contracts\HasForms
     {
         $this->collaboratorForm->fill();
         $this->form->fill();
+        
+        $project = $this->getProject();
+        if ($project) {
+            $this->writing_language = $project->writing_language?->value;
+            $this->presentation_language = $project->presentation_language?->value;
+            $this->languageForm->fill([
+                'writing_language' => $this->writing_language,
+                'presentation_language' => $this->presentation_language,
+            ]);
+        }
     }
 
     protected function getForms(): array
@@ -53,6 +64,8 @@ class StudentProjectWidget extends Widget implements Forms\Contracts\HasForms
                 ->schema($this->getCollaboratorFormSchema()),
             'form' => $this->makeForm()
                 ->schema($this->getMidTermFormSchema()),
+            'languageForm' => $this->makeForm()
+                ->schema($this->getLanguageFormSchema()),
         ];
     }
 
@@ -103,6 +116,20 @@ class StudentProjectWidget extends Widget implements Forms\Contracts\HasForms
                 ->required()
                 ->maxLength(255)
                 ->helperText('Write a brief message explaining why you want to collaborate'),
+        ];
+    }
+
+    protected function getLanguageFormSchema(): array
+    {
+        return [
+            Forms\Components\Select::make('writing_language')
+                ->label(__('Writing Language'))
+                ->options(\App\Enums\Language::class)
+                ->nullable(),
+            Forms\Components\Select::make('presentation_language')
+                ->label(__('Presentation Language'))
+                ->options(\App\Enums\Language::class)
+                ->nullable(),
         ];
     }
 
@@ -435,5 +462,23 @@ class StudentProjectWidget extends Widget implements Forms\Contracts\HasForms
         return MidTermReport::where('student_id', auth()->id())
             ->where('project_id', $project->id)
             ->first();
+    }
+
+    public function updateLanguages(): void
+    {
+        $project = $this->getProject();
+        if (!$project) {
+            return;
+        }
+
+        $project->update([
+            'writing_language' => $this->writing_language,
+            'presentation_language' => $this->presentation_language,
+        ]);
+
+        Notification::make()
+            ->title(__('Languages updated successfully'))
+            ->success()
+            ->send();
     }
 }
