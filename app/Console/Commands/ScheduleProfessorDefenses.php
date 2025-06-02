@@ -174,7 +174,7 @@ class ScheduleProfessorDefenses extends Command implements PromptsForMissingInpu
                     $timetable->project_id = $project->id;
                     $timetable->year_id = $timeslot->year_id;
                     $timetable->created_by = 1; // System user
-                    $timetable->updated_by = 1;
+                    // $timetable->updated_by = 1;
                     $timetable->save();
                     
                     $this->info("Scheduled defense for project ID {$project->id} at {$timeslot->start_time} in room {$room->name}");

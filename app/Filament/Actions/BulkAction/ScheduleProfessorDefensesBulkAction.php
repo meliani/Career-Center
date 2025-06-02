@@ -190,9 +190,9 @@ class ScheduleProfessorDefensesBulkAction extends BulkAction
                         $timetable->timeslot_id = $timeslot->id;
                         $timetable->room_id = $room->id;
                         $timetable->project_id = $project->id;
-                        $timetable->user_id = auth()->id();
-                        $timetable->created_by = auth()->id();
-                        $timetable->updated_by = auth()->id();
+                        // $timetable->user_id = auth()->id();
+                        // $timetable->created_by = auth()->id();
+                        // $timetable->updated_by = auth()->id();
                         $timetable->scheduled_by = auth()->id();
                         $timetable->save();
                         

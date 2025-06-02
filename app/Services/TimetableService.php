@@ -53,10 +53,11 @@ class TimetableService
                         Timetable::create([
                             'timeslot_id' => $timeslot->id,
                             'room_id' => $room->id,
-                            'user_id' => auth()->id(),
+                            // 'user_id' => auth()->id(),
                             'project_id' => $project->id,
-                            'created_by' => auth()->id(),
-                            'updated_by' => auth()->id(),
+                            // 'created_by' => auth()->id(),
+                            // 'updated_by' => auth()->id(),
+                            'scheduled_by' => auth()->id(),
                         ]);
 
                         // Decrement the remaining slots for the timeslot

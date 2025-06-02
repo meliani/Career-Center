@@ -367,7 +367,7 @@ class GeneratePlanning extends Command implements PromptsForMissingInput
         $timetable->room_id = $room->id;
         $timetable->user_id = $this->userId;
         $timetable->created_by = $this->userId;
-        $timetable->updated_by = $this->userId;
+        // $timetable->updated_by = $this->userId;
         $timetable->save();
 
         $this->removeTimeslot($timeslot);
