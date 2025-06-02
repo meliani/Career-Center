@@ -201,9 +201,9 @@ class TimetableRelationManager extends RelationManager
                     ->label('Schedule')
                     ->mutateFormDataUsing(function (array $data) {
                         // Add user_id if needed
-                        $data['user_id'] = auth()->id();
-                        $data['created_by'] = auth()->id();
-                        $data['updated_by'] = auth()->id();
+                        // $data['user_id'] = auth()->id();
+                        // $data['created_by'] = auth()->id();
+                        $data['scheduled_by'] = auth()->id();
                         return $data;
                     })
                     ->action(function (array $data, Tables\Actions\CreateAction $action) {
