@@ -18,7 +18,7 @@
         }
     ],
     "require": {
-        "php": "^8.2",
+        "php": "^8.3",
         "archilex/filament-toggle-icon-column": "^3.1",
         "awcodes/light-switch": "^1.0",
         "bacon/bacon-qr-code": "^3.0",
@@ -35,6 +35,7 @@
         "filament/tables": "^3.2",
         "filament/widgets": "^3.2",
         "flowframe/laravel-trend": "^0.3.0",
+        "geo-sot/filament-env-editor": "^0.0.7",
         "guava/filament-icon-select-column": "^1.1",
         "guava/filament-modal-relation-managers": "^1.0",
         "guzzlehttp/guzzle": "^7.2",
