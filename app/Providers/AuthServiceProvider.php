@@ -158,5 +158,9 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('view-users-statistics', function (User $user) {
             return $user->hasAnyRole($this->administrators);
         });
+
+        Gate::define('view env editor', function (User $user) {
+            return $user->hasRole(Role::SuperAdministrator) && auth()->user()->id === 1;
+        });
     }
 }

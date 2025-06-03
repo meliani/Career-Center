@@ -36,6 +36,7 @@ use pxlrbt\FilamentEnvironmentIndicator\EnvironmentIndicatorPlugin;
 use pxlrbt\FilamentSpotlight\SpotlightPlugin;
 use Saade\FilamentFullCalendar\FilamentFullCalendarPlugin;
 use SolutionForest\FilamentSimpleLightBox\SimpleLightBoxPlugin;
+use GeoSot\FilamentEnvEditor\FilamentEnvEditorPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -128,6 +129,15 @@ class AdminPanelProvider extends PanelProvider
             ->plugins(
                 [
                     SimpleLightBoxPlugin::make(),
+                    FilamentEnvEditorPlugin::make()
+                        ->navigationGroup('System Tools')
+                        ->navigationLabel('My Env')
+                        ->navigationIcon('heroicon-o-cog-8-tooth')
+                        ->navigationSort(1)
+                        ->slug('env-editor')
+                        ->authorize(
+                        fn () => auth()->user()?->isSuperAdministrator() && auth()->user()?->can('view env editor')
+                        ),
                     // FilamentRouteStatisticsPlugin::make(),
                     FilamentFullCalendarPlugin::make()
                         // ->schedulerLicenseKey('GPL-My-Project-Is-Open-Source')
