@@ -1,6 +1,6 @@
 # PowerShell equivalent of deploy_to_peer.sh
 # Variables
-$REMOTE_HOST = "carrieres.inpt.ac.ma"
+# $REMOTE_HOST = "192.168.1.6"
 $REMOTE_DIR = "/var/www/html/careers_backend"
 $REMOTE_BRANCH = "main"
 
@@ -8,6 +8,8 @@ $REMOTE_BRANCH = "main"
 $QUEUE_SERVICES = @("laravel-default-worker.service", "laravel-emails-queue-worker.service") # Replace with actual service names
 
 # Prompt for the username
+
+$REMOTE_HOST = Read-Host -Prompt "Enter host"
 $REMOTE_USER = Read-Host -Prompt "Enter the remote username"
 
 # Push changes to the remote
