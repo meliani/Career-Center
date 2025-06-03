@@ -95,6 +95,8 @@ class RescheduleRequestResource extends Resource
                     ->sortable(),
                     
                 Tables\Columns\TextColumn::make('priority')
+                    ->searchable(false)
+                    ->sortable(false)
                     ->badge()
                     ->state(function (RescheduleRequest $record): string {
                         if (!$record->timetable?->timeslot?->start_time) {
@@ -118,6 +120,8 @@ class RescheduleRequestResource extends Resource
                     }),
                     
                 Tables\Columns\TextColumn::make('urgency_days')
+                    ->searchable(false)
+                    ->sortable(false)
                     ->label('Urgency (Days)')
                     ->state(function (RescheduleRequest $record): string {
                         if (!$record->timetable?->timeslot?->start_time) {
@@ -179,6 +183,8 @@ class RescheduleRequestResource extends Resource
                     }),
                     
                 Tables\Columns\TextColumn::make('availability_status')
+                    ->searchable(false)
+                    ->sortable(false)
                     ->label('Availability')
                     ->badge()
                     ->state(function (RescheduleRequest $record): string {
