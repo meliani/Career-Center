@@ -16,7 +16,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Storage;
-
+use App\Models\Year;
 class ApprenticeshipResource extends BaseResource
 {
     protected static ?string $model = Apprenticeship::class;
@@ -192,6 +192,18 @@ class ApprenticeshipResource extends BaseResource
                 //     ->relationship('student', 'level')
                 //     // ->options(Enums\StudentLevel::class)
                 //     ->label('Level'),
+                Tables\Filters\SelectFilter::make('year')
+                    ->label('Year')
+                    ->options(Year::getYearsForSelect(1))
+                    ->default(Year::current()->id)
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query->when(
+                            $data['value'],
+                            fn (Builder $query, $value) => $query->where('year_id', $value)
+                        );
+                    })
+                    ->indicateUsing(fn (array $data): ?string => $data['value'] ? __('Year') . ': ' . Year::find($data['value'])->title : null)
+                    ->visible(fn () => auth()->user()->isAdministrator() === true),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
