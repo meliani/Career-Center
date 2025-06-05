@@ -3,6 +3,7 @@
 namespace App\Models\Traits;
 
 use App\Enums;
+use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 
 trait ProjectAttributes
@@ -20,6 +21,13 @@ trait ProjectAttributes
             return $agreement->agreeable?->student;
         })->unique();
 
+    }
+
+    public function getStudentsAttribute()
+    {
+        return $this->agreements->map(function ($agreement) {
+            return $agreement->agreeable?->student;
+        })->filter()->unique();
     }
 
     public function getOrganization()
@@ -80,9 +88,30 @@ trait ProjectAttributes
 
     public function getAdministrativeSupervisorAttribute()
     {
-        $AdministrativeSupervisor = User::administrativeSupervisor($this->internship_agreements()->first()->student->program->value);
+        $firstStudent = $this->agreements->map(function ($agreement) {
+            return $agreement->agreeable?->student;
+        })->filter()->first();
+        
+        if (!$firstStudent) {
+            return 'Undefined Administrative Supervisor';
+        }
+        
+        $AdministrativeSupervisor = User::administrativeSupervisor($firstStudent->program->value);
 
         return $AdministrativeSupervisor ? $AdministrativeSupervisor->full_name : 'Undefined Administrative Supervisor';
+    }
+
+    public function getAdministrativeSupervisorUserAttribute()
+    {
+        $firstStudent = $this->agreements->map(function ($agreement) {
+            return $agreement->agreeable?->student;
+        })->filter()->first();
+        
+        if (!$firstStudent) {
+            return null;
+        }
+        
+        return User::administrativeSupervisor($firstStudent->program->value);
     }
 
     public function getAcademicSupervisorNameAttribute()
@@ -92,6 +121,24 @@ trait ProjectAttributes
             ->first();
 
         return $AcademicSupervisor ? $AcademicSupervisor->full_name : __('Undefined Academic Supervisor');
+    }
+
+    public function getExternalSupervisorNameAttribute()
+    {
+        $externalSupervisor = $this->agreements->map(function ($agreement) {
+            return $agreement->agreeable->externalSupervisor;
+        })->filter()->first();
+
+        return $externalSupervisor ? $externalSupervisor->full_name : __('Undefined External Supervisor');
+    }
+
+    public function getExternalSupervisorEmailAttribute()
+    {
+        $externalSupervisor = $this->agreements->map(function ($agreement) {
+            return $agreement->agreeable->externalSupervisor;
+        })->filter()->first();
+
+        return $externalSupervisor ? $externalSupervisor->email : null;
     }
 
     public function getAcademicSupervisorPresenceAttribute()

@@ -34,11 +34,11 @@ class DefenseAuthorizedNotification extends Notification
             ->line(__('**Administrative supervisor:** ') . $this->project->administrative_supervisor_name)
             ->line(__('**Defense Date:** ') . $this->project->defense_plan)
             ->line(__('## Student information'))
-            ->line(__('**Name:** ') . $this->project->students->implode('full_name', ' & '))
+            ->line(__('**Name:** ') . ($this->project->students ? $this->project->students->implode('full_name', ' & ') : 'Undefined'))
             ->line(__('**ID PFE:** ') . $this->project->id_pfe)
-            ->line(__('**Program:** ') . $this->project->students->map(function ($student) {
+            ->line(__('**Program:** ') . ($this->project->students ? $this->project->students->map(function ($student) {
                 return $student->program->value;
-            })->implode(' & '))
+            })->implode(' & ') : 'Undefined'))
             ->line(__('**Organization:** ') . $this->project->organization_name)
             ->line(__('## Project information'))
             ->line(__('**Title:** ') . $this->project->title)
