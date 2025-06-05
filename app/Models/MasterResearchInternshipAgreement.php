@@ -77,8 +77,14 @@ class MasterResearchInternshipAgreement extends Model implements Agreement
     protected static function booted(): void
     {
         static::creating(function (MasterResearchInternshipAgreement $finalYearInternship) {
+            $currentYear = Year::current();
+            
+            if (!$currentYear) {
+                throw new \Exception('No current academic year is defined. Please contact an administrator.');
+            }
+            
             $finalYearInternship->student_id = auth()->id();
-            $finalYearInternship->year_id = Year::current()->id;
+            $finalYearInternship->year_id = $currentYear->id;
             // $finalYearInternship->status = Enums\Status::Announced;
             $finalYearInternship->announced_at = now();
 

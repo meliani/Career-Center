@@ -416,7 +416,7 @@ class ProjectResource extends Core\BaseResource
                 Tables\Filters\SelectFilter::make('year')
                     ->label('Year')
                     ->options(Year::getYearsForSelect(1))
-                    ->default(Year::current()->id)
+                    ->default(Year::current()?->id)
                     ->query(function (Builder $query, array $data): Builder {
                         return $query->when(
                             $data['value'],
@@ -429,11 +429,11 @@ class ProjectResource extends Core\BaseResource
                             })
                         );
                     })
-                    ->indicateUsing(fn (array $data): ?string => $data['value'] ? __('Year') . ': ' . Year::find($data['value'])->title : null)
-                    ->visible(fn () => auth()->user()->isAdministrator() === true),
+                    ->indicateUsing(fn (array $data): ?string => $data['value'] ? __('Year') . ': ' . (Year::find($data['value'])?->title ?? 'Unknown') : null)
+                    ->visible(fn () => auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()),
                 // trashed filter visible by admins
                 Tables\Filters\TrashedFilter::make()
-                    ->visible(fn () => auth()->user()->isAdministrator() === true),
+                    ->visible(fn () => auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()),
 
             ])
             ->headerActions([
@@ -568,8 +568,8 @@ class ProjectResource extends Core\BaseResource
 
                     Tables\Actions\ViewAction::make(),
                 ])->icon('heroicon-o-bars-3')
-                    ->hidden(fn ($record) => auth()->user()->can('manage-project', $record) === false)
-                    ->visible(false),
+                    ->hidden(fn ($record) => auth()->user()->can('manage-project', $record) === false),
+                    // ->visible(false),
                 // ])->dropdown(false)
                 // ->tooltip(__('Edit or view this project')),
                 // ->hidden(true),

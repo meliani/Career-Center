@@ -265,8 +265,8 @@ class FinalYearInternshipAgreementResource extends BaseResource
                 Tables\Columns\TextColumn::make('externalSupervisor.full_name')
                     ->searchable(false)
                     ->sortable()
-                    ->description(fn ($record) => $record->externalSupervisor->email)
-                    ->tooltip(fn ($record) => $record->externalSupervisor->phone),
+                    ->description(fn ($record) => $record->externalSupervisor?->email)
+                    ->tooltip(fn ($record) => $record->externalSupervisor?->phone),
                 Tables\Columns\SpatieTagsColumn::make('tags')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->type('internships')

@@ -310,7 +310,11 @@ class Project extends Core\BackendBaseModel
     // active scope
     public function scopeActive($query)
     {
-        $currentYearId = Year::current()->id;
+        $currentYear = Year::current();
+        if (!$currentYear) {
+            return $query->whereRaw('1 = 0'); // Return empty result if no current year
+        }
+        $currentYearId = $currentYear->id;
         
         return $query->whereNot('defense_status', Enums\DefenseStatus::Completed)
             ->whereHas('agreements', function ($query) use ($currentYearId) {
@@ -326,7 +330,12 @@ class Project extends Core\BackendBaseModel
     // Add a new scope to filter projects by year
     public function scopeForYear($query, $yearId = null)
     {
-        $yearId = $yearId ?? Year::current()->id;
+        $currentYear = Year::current();
+        $yearId = $yearId ?? ($currentYear ? $currentYear->id : null);
+        
+        if (!$yearId) {
+            return $query->whereRaw('1 = 0'); // Return empty result if no year
+        }
         
         return $query->whereHas('agreements', function ($query) use ($yearId) {
             $query->whereMorphRelation(
@@ -341,7 +350,11 @@ class Project extends Core\BackendBaseModel
     // Add a helper method to check if project is for current year
     public function isCurrentYear(): bool
     {
-        $currentYearId = Year::current()->id;
+        $currentYear = Year::current();
+        if (!$currentYear) {
+            return false;
+        }
+        $currentYearId = $currentYear->id;
         
         return $this->agreements()
             ->whereMorphRelation(

@@ -30,7 +30,7 @@ class ProjectPolicy extends CorePolicy
 
     public function update(User $user, Project $project)
     {
-        if ($user->isAdministrator()) {
+        if ($user->isAdministrator() || $user->isAdministrativeSupervisor()) {
             return true;
         }
 
@@ -72,7 +72,7 @@ class ProjectPolicy extends CorePolicy
 
     public function sendDefenseEmail(User $user, Project $project)
     {
-        return $user->isAdministrator();
+        return $user->isAdministrator() || $user->isAdministrativeSupervisor();
     }
     // public function viewSome(User $user, Project $project)
     // {

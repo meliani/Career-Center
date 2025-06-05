@@ -71,7 +71,7 @@ class ProjectsTable
                         ->toggleable()
                         ->searchable(false)
                         ->sortable(false)
-                        ->description(fn ($record) => $record->final_internship_agreements->first()->student->email_perso),
+                        ->description(fn ($record) => $record->final_internship_agreements->first()?->student?->email_perso),
                     Tables\Columns\TextColumn::make('agreements.agreeable.student.phone')
                         ->label('Student phone')
                         ->copyable()
@@ -220,7 +220,7 @@ class ProjectsTable
                         ->formatStateUsing(function ($record) {
                             return $record->professors
                                 ->map(function ($professor) {
-                                    return $professor->pivot->createdBy->name; // change this to any pivot attribute you wish to show
+                                    return $professor->pivot?->createdBy?->name ?? 'Unknown'; // change this to any pivot attribute you wish to show
                                 })
                                 ->implode(', ');
                         })
@@ -293,8 +293,8 @@ class ProjectsTable
                         ->label('Organization')
                         ->searchable(false)
                         ->sortable(false)
-                        ->description(fn ($record) => $record->organization->city . ', ' . $record->organization->country)
-                        ->tooltip(fn ($record) => __('Organization Representative') . ': ' . $record->parrain->full_name),
+                        ->description(fn ($record) => ($record->organization?->city ?? '') . ', ' . ($record->organization?->country ?? ''))
+                        ->tooltip(fn ($record) => __('Organization Representative') . ': ' . ($record->parrain?->full_name ?? '')),
                     // Tables\Columns\TextColumn::make('organization.address')
                     //     ->toggleable(isToggledHiddenByDefault: true)
                     //     ->label('Address')

@@ -49,13 +49,18 @@ class Professor extends User
 
     public function projectsWithCurrentYearAgreements()
     {
-        return $this->projects()->whereHas('final_internship_agreements', function ($q) {
-            $q->where('year_id', Year::current()->id);
+        $currentYear = Year::current();
+        if (!$currentYear) {
+            return $this->projects()->whereRaw('1 = 0'); // Return empty result
+        }
+        
+        return $this->projects()->whereHas('final_internship_agreements', function ($q) use ($currentYear) {
+            $q->where('year_id', $currentYear->id);
         });
 
         return $this->belongsToMany(Project::class, 'professor_projects', 'professor_id', 'project_id')
-            ->whereHas('final_internship_agreements', function ($query) {
-                $query->where('year_id', Year::current()->id);
+            ->whereHas('final_internship_agreements', function ($query) use ($currentYear) {
+                $query->where('year_id', $currentYear->id);
             })
             ->withPivot('jury_role', 'created_by', 'updated_by', 'approved_by', 'is_president', 'votes')
             ->withTimestamps()
@@ -64,8 +69,13 @@ class Professor extends User
 
     public function activeProjects()
     {
-        return $this->projects()->whereHas('final_internship_agreements', function ($q) {
-            $q->where('year_id', Year::current()->id);
+        $currentYear = Year::current();
+        if (!$currentYear) {
+            return $this->projects()->whereRaw('1 = 0'); // Return empty result
+        }
+        
+        return $this->projects()->whereHas('final_internship_agreements', function ($q) use ($currentYear) {
+            $q->where('year_id', $currentYear->id);
         });
     }
 
