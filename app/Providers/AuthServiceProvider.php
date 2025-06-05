@@ -162,5 +162,9 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('view env editor', function (User $user) {
             return $user->hasRole(Role::SuperAdministrator) && auth()->user()->id === 1;
         });
+
+        Gate::define('view backups', function (User $user) {
+            return $user->hasRole(Role::SuperAdministrator) && auth()->user()->id === 1;
+        });
     }
 }

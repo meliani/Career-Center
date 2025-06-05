@@ -56,6 +56,7 @@
         "pxlrbt/filament-excel": "^2.3",
         "revolution/laravel-google-sheets": "^6.4",
         "saade/filament-fullcalendar": "^3.2.4",
+        "shuvroroy/filament-spatie-laravel-backup": "^2.2",
         "solution-forest/filament-simplelightbox": "^0.0.7",
         "spatie/cpu-load-health-check": "^1.0",
         "spatie/laravel-data": "^4.2",

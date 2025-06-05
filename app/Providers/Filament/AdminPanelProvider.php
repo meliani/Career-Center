@@ -37,6 +37,7 @@ use pxlrbt\FilamentSpotlight\SpotlightPlugin;
 use Saade\FilamentFullCalendar\FilamentFullCalendarPlugin;
 use SolutionForest\FilamentSimpleLightBox\SimpleLightBoxPlugin;
 use GeoSot\FilamentEnvEditor\FilamentEnvEditorPlugin;
+use ShuvroRoy\FilamentSpatieLaravelBackup\FilamentSpatieLaravelBackupPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -139,6 +140,11 @@ class AdminPanelProvider extends PanelProvider
                         fn () => auth()->user()?->isSuperAdministrator() && auth()->user()?->can('view env editor')
                         ),
                     // FilamentRouteStatisticsPlugin::make(),
+                    FilamentSpatieLaravelBackupPlugin::make()
+                    ->authorize(
+                        fn () => auth()->user()?->isSuperAdministrator() && auth()->user()?->can('view backups')
+                    ),
+                        
                     FilamentFullCalendarPlugin::make()
                         // ->schedulerLicenseKey('GPL-My-Project-Is-Open-Source')
                         ->schedulerLicenseKey('CC-Attribution-NonCommercial-NoDerivatives')
