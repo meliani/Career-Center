@@ -66,22 +66,39 @@
                 </div>
             </div>
             
-            {{-- Enhanced Pin Button --}}
-            <button
-                @click="isPinned = !isPinned"
-                :class="{ 
-                    'bg-blue-100 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400': isPinned,
-                    'bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300': !isPinned 
-                }"
-                class="flex h-8 w-8 items-center justify-center rounded-lg transition-all duration-200 shadow-sm"
-                :title="isPinned ? 'Unpin filters' : 'Pin filters open'"
-            >
-                <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10 2L13 5H11V9H9V5H7L10 2Z" />
-                    <path d="M4 10H16V12H4V10Z" />
-                    <path d="M7 15H13V17H7V15Z" />
-                </svg>
-            </button>
+            <div class="flex items-center gap-2">
+                {{-- Collapse/Expand Toggle Button --}}
+                <button
+                    @click="isCollapsed = !isCollapsed; if (isCollapsed) isPinned = false;"
+                    :class="{ 
+                        'bg-yellow-100 text-yellow-600 dark:bg-yellow-900/50 dark:text-yellow-400': isCollapsed,
+                        'bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300': !isCollapsed 
+                    }"
+                    class="flex h-8 w-8 items-center justify-center rounded-lg transition-all duration-200 shadow-sm"
+                    :title="isCollapsed ? 'Expand filters' : 'Collapse filters'"
+                >
+                    <svg class="h-4 w-4 transform transition-transform duration-200" :class="{ 'rotate-180': isCollapsed }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
+                    </svg>
+                </button>
+                
+                {{-- Enhanced Pin Button --}}
+                <button
+                    @click="isPinned = !isPinned; if (isPinned) isCollapsed = false;"
+                    :class="{ 
+                        'bg-blue-100 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400': isPinned,
+                        'bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300': !isPinned 
+                    }"
+                    class="flex h-8 w-8 items-center justify-center rounded-lg transition-all duration-200 shadow-sm"
+                    :title="isPinned ? 'Unpin filters' : 'Pin filters open'"
+                >
+                    <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 2L13 5H11V9H9V5H7L10 2Z" />
+                        <path d="M4 10H16V12H4V10Z" />
+                        <path d="M7 15H13V17H7V15Z" />
+                    </svg>
+                </button>
+            </div>
         </div>        {{-- Enhanced Collapsible Content --}}
         <div 
             x-show="isPinned || (!isCollapsed && !isPinned) || (isCollapsed && isHovered)"
