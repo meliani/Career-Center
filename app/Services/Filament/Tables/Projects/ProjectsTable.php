@@ -20,51 +20,134 @@ class ProjectsTable
         // dd($closures['evaluation_sheet_url']($record));
 
         return [
-            // Tables\Columns\TextColumn::make('agreement_types')
-            //     ->label('Agreement Type')
-            //     ->searchable(false),
-            // ->formatStateUsing(function ($state) {
-            //     return implode(', ', $state);
-            // }),
-            Tables\Columns\ColumnGroup::make(__('Student information'))
-                ->columns([
-                    Tables\Columns\TextColumn::make('id_pfe')
-                        ->searchable(
-                            query: fn (Builder $query, string $search): Builder => $query
-                                ->whereHas('agreements', function (Builder $query) use ($search) {
-                                    $query->whereMorphRelation(
-                                        'agreeable',
-                                        [InternshipAgreement::class, FinalYearInternshipAgreement::class],
-                                        function (Builder $query) use ($search) {
-                                            $query->whereHas('student', function (Builder $query) use ($search) {
-                                                $query->where('id_pfe', 'like', "%{$search}%")
-                                                    ->orWhere('first_name', 'like', "%{$search}%")
-                                                    ->orWhere('last_name', 'like', "%{$search}%");
-                                            });
-                                        }
-                                    );
-                                })
-                        )
-                        ->wrap()
-                        ->label('ID PFE')
-                        ->sortable(query: function (Builder $query, string $direction) {
-                            return $query->orderBy(
-                                ProjectAgreement::query()
-                                    ->select('students.id_pfe')
-                                    ->join('final_year_internship_agreements', 'project_agreements.agreeable_id', '=', 'final_year_internship_agreements.id')
-                                    ->join('students', 'final_year_internship_agreements.student_id', '=', 'students.id')
-                                    ->whereColumn('project_agreements.project_id', 'projects.id')
-                                    ->where('project_agreements.agreeable_type', FinalYearInternshipAgreement::class)
-                                    ->limit(1),
-                                $direction
+            // Primary columns in the requested order
+            // Date de soutenance
+            Tables\Columns\TextColumn::make('timetable.timeslot.defense_day')
+                ->label('Date de soutenance')
+                ->searchable(false)
+                ->sortable(false)
+                ->visible(fn (DisplaySettings $displaySettings) => $displaySettings->display_plannings || auth()->user()->isAdministrator()),
+            
+            // Heure de soutenance  
+            Tables\Columns\TextColumn::make('timetable.timeslot.defense_time')
+                ->label('Heure de soutenance')
+                ->searchable(false)
+                ->sortable(false)
+                ->visible(fn (DisplaySettings $displaySettings) => $displaySettings->display_plannings || auth()->user()->isAdministrator()),
+            
+            // Defense DateTime (sortable)
+            Tables\Columns\TextColumn::make('timetable.timeslot.start_time')
+                ->label('Défense Date/Heure')
+                ->searchable(false)
+                ->sortable(true)
+                ->dateTime('d/m/Y H:i')
+                ->toggleable(isToggledHiddenByDefault: true)
+                ->visible(fn (DisplaySettings $displaySettings) => $displaySettings->display_plannings || auth()->user()->isAdministrator()),
+            
+            // Salle
+            Tables\Columns\TextColumn::make('timetable.room.name')
+                ->label('Salle')
+                ->searchable(false)
+                ->sortable(false)
+                ->visible(fn (DisplaySettings $displaySettings) => $displaySettings->display_plannings || auth()->user()->isAdministrator()),
+            
+            // ID PFE
+            Tables\Columns\TextColumn::make('id_pfe')
+                ->searchable(
+                    query: fn (Builder $query, string $search): Builder => $query
+                        ->whereHas('agreements', function (Builder $query) use ($search) {
+                            $query->whereMorphRelation(
+                                'agreeable',
+                                [InternshipAgreement::class, FinalYearInternshipAgreement::class],
+                                function (Builder $query) use ($search) {
+                                    $query->whereHas('student', function (Builder $query) use ($search) {
+                                        $query->where('id_pfe', 'like', "%{$search}%")
+                                            ->orWhere('first_name', 'like', "%{$search}%")
+                                            ->orWhere('last_name', 'like', "%{$search}%");
+                                    });
+                                }
                             );
                         })
-                        ->toggleable(isToggledHiddenByDefault: true),
-                    Tables\Columns\TextColumn::make('agreements.agreeable.student.full_name')
-                        ->label('Student name')
-                        ->searchable(false)
-                        ->sortable(false)
-                        ->description(fn ($record) => $record->id_pfe),
+                )
+                ->wrap()
+                ->label('ID PFE')
+                ->sortable(query: function (Builder $query, string $direction) {
+                    return $query->orderBy(
+                        ProjectAgreement::query()
+                            ->select('students.id_pfe')
+                            ->join('final_year_internship_agreements', 'project_agreements.agreeable_id', '=', 'final_year_internship_agreements.id')
+                            ->join('students', 'final_year_internship_agreements.student_id', '=', 'students.id')
+                            ->whereColumn('project_agreements.project_id', 'projects.id')
+                            ->where('project_agreements.agreeable_type', FinalYearInternshipAgreement::class)
+                            ->limit(1),
+                        $direction
+                    );
+                }),
+            
+            // Nom de l'étudiant
+            Tables\Columns\TextColumn::make('agreements.agreeable.student.full_name')
+                ->label('Nom de l\'étudiant')
+                ->searchable(false)
+                ->sortable(false)
+                ->description(fn ($record) => $record->id_pfe),
+            
+            // Filière
+            Tables\Columns\TextColumn::make('agreements.agreeable.student.program')
+                ->label('Filière')
+                ->searchable(false)
+                ->sortable(query: function (Builder $query, string $direction) {
+                    return $query->orderBy(
+                        ProjectAgreement::query()
+                            ->select('students.program')
+                            ->join('final_year_internship_agreements', 'project_agreements.agreeable_id', '=', 'final_year_internship_agreements.id')
+                            ->join('students', 'final_year_internship_agreements.student_id', '=', 'students.id')
+                            ->whereColumn('project_agreements.project_id', 'projects.id')
+                            ->where('project_agreements.agreeable_type', FinalYearInternshipAgreement::class)
+                            ->limit(1),
+                        $direction
+                    );
+                })
+                ->badge(),
+            
+            // Organisme d'accueil
+            Tables\Columns\TextColumn::make('organization.name')
+                ->label('Organisme d\'accueil')
+                ->searchable(false)
+                ->sortable(false)
+                ->description(fn ($record) => ($record->organization?->city ?? '') . ', ' . ($record->organization?->country ?? ''))
+                ->tooltip(fn ($record) => __('Organization Representative') . ': ' . ($record->parrain?->full_name ?? '')),
+            
+            // Sujet de stage PFE
+            Tables\Columns\TextColumn::make('title')
+                ->label('Sujet de stage PFE')
+                ->searchable()
+                ->limit(50)
+                ->tooltip(fn ($record) => $record->title)
+                ->description(fn ($record) => __('Start date') . ': ' . $record->start_date->format('d/m/Y') . ' - ' . __('End date') . ': ' . $record->end_date->format('d/m/Y')),
+            
+            // Encadrant interne
+            Tables\Columns\TextColumn::make('academic_supervisor_name')
+                ->label('Encadrant interne')
+                ->sortable(false)
+                ->searchable(false),
+            
+            // Examinateurs
+            Tables\Columns\TextColumn::make('reviewers.name')
+                ->label('Examinateurs')
+                ->searchable(false)
+                ->visible(fn (DisplaySettings $displaySettings) => $displaySettings->display_project_reviewers || auth()->user()->isAdministrator())
+                ->sortable(false),
+            
+            // Encadrant externe
+            Tables\Columns\TextColumn::make('externalSupervisor.full_name')
+                ->label('Encadrant externe')
+                ->limit(30)
+                ->searchable(false)
+                ->sortable(false),
+
+            // Additional columns (previously organized in groups)
+            Tables\Columns\ColumnGroup::make(__('Additional Student Information'))
+                ->columns([
                     Tables\Columns\TextColumn::make('agreements.agreeable.student.email')
                         ->label('Student emails')
                         ->copyable()
@@ -78,55 +161,8 @@ class ProjectsTable
                         ->toggleable()
                         ->searchable(false)
                         ->sortable(false),
-                    Tables\Columns\TextColumn::make('agreements.agreeable.student.program')
-                        ->toggleable(isToggledHiddenByDefault: false)
-                        ->label('Program')
-                        ->searchable(false)
-                        ->sortable(query: function (Builder $query, string $direction) {
-                            return $query->orderBy(
-                                ProjectAgreement::query()
-                                    ->select('students.program')
-                                    ->join('final_year_internship_agreements', 'project_agreements.agreeable_id', '=', 'final_year_internship_agreements.id')
-                                    ->join('students', 'final_year_internship_agreements.student_id', '=', 'students.id')
-                                    ->whereColumn('project_agreements.project_id', 'projects.id')
-                                    ->where('project_agreements.agreeable_type', FinalYearInternshipAgreement::class)
-                                    ->limit(1),
-                                $direction
-                            );
-                        })
-                        ->badge(),
-                    // Tables\Columns\TextColumn::make('internship_agreements.assigned_department')
-                    //     ->label('Assigned department')
-                    //     // ->sortable(false)
-                    //     ->sortableMany()
-                    //     ->searchable(),
-                    Tables\Columns\TextColumn::make('title')
-                        ->markdown()
-                        ->label('Title')
-                        ->html() // Add this line to enable HTML rendering
-                        ->searchable(true)
-                        ->sortable(false)
-                        ->description(fn ($record) => __('From') . ' ' . $record->start_date->format('d/m/Y') . ' ' . __('to') . ' ' . $record->end_date->format('d/m/Y'))
-                        // ->limit(90)
-                        ->extraAttributes([
-                            'class' => 'text-truncate text-break text-wrap max-width-20',
-                            'style' => 'text-color: red',
-                        ])
-                        ->formatStateUsing(function ($record) {
-                            $agreementTitle = $record->final_internship_agreements->first()?->title ?? '';
-                            $projectTitle = $record->title ?? '';
-                            $matches = trim(strtolower($agreementTitle)) === trim(strtolower($projectTitle));
-
-                            if ($matches) {
-                                return "{$projectTitle}";
-                            }
-
-                            return "{$projectTitle}<br>" .
-                                   '<p class="text-warning-400" ><strong>' . __('Agreement title') . ":</strong> {$agreementTitle}</p>";
-                        }),
                     Tables\Columns\TextColumn::make('assigned_departments')
                         ->toggleable(isToggledHiddenByDefault: true)
-                        // ->formatStateUsing(fn ($record) => $record->assigned_departments)
                         ->label('Assigned department')
                         ->searchable(false)
                         ->sortable(false),
@@ -140,7 +176,6 @@ class ProjectsTable
                         ->toggleable(isToggledHiddenByDefault: true)
                         ->badge(),
                     Tables\Columns\TextColumn::make('organization_evaluation_sheet_url')
-                        // ->disabled(true)
                         ->toggleable(isToggledHiddenByDefault: true)
                         ->searchable(false)
                         ->sortable(false)
@@ -156,13 +191,6 @@ class ProjectsTable
                         ->formatStateUsing(fn ($record) => $record->organization_evaluation_sheet_url ? __('Open in new tab') : __('Click to add'))
                         ->tooltip(fn ($record) => $record->organization_evaluation_sheet_url ? __('Open document in a new tab') : __('Click to add an evaluation sheet'))
                         ->url(fn ($record) => $record->organization_evaluation_sheet_url, shouldOpenInNewTab: true),
-                    // ->simpleLightbox(fn ($record) => $record->organization_evaluation_sheet_url),
-
-                    /*      like this
-                        Tables\Columns\TextColumn::make('pdf_file_name')
-                    ->label('Agreement PDF')
-                    ->limit(20)
-                    ->url(fn (Apprenticeship $record) => URL::to($record->pdf_path . '/' . $record->pdf_file_name), shouldOpenInNewTab: true), */
                     Tables\Columns\TextColumn::make('evaluation_sheet_url')
                         ->toggleable(isToggledHiddenByDefault: true)
                         ->searchable(false)
@@ -175,42 +203,14 @@ class ProjectsTable
                         ->badge()
                         ->tooltip(fn ($record) => $record->evaluation_sheet_url ? __('Open document in a new tab') : __('Click to view the project'))
                         ->url(fn ($record) => $record->evaluation_sheet_url, shouldOpenInNewTab: true),
-                    // ->simpleLightbox(Storage::disk('public')->url($closures['evaluation_sheet_url'](fn ($record) => $record->evaluation_sheet_url))),
-                    // ->simpleLightbox(fn ($record) => $record->evaluation_sheet_url),
-                    // Tables\Columns\TextColumn::make('defense_authorized_by_user.name')
-                    //     ->toggleable(isToggledHiddenByDefault: true)
-                    //     ->label('Authorized by')
-                    //     ->badge(),
                 ]),
 
-            Tables\Columns\ColumnGroup::make(__('Supervision & Defense'))
+            Tables\Columns\ColumnGroup::make(__('Additional Defense Details'))
                 ->columns([
-                    // Tables\Columns\TextColumn::make('supervisor.name')
-                    //     ->label('Supervisor')
-                    //     ->searchable(
-                    //         ['first_name', 'last_name']
-                    //     ),
-                    Tables\Columns\TextColumn::make('externalSupervisor.full_name')
-                        ->label('External Supervisor')
-                        ->limit(30)
-                        ->searchable(false)
-                        ->sortable(false),
                     Tables\Columns\TextColumn::make('external_supervisor_contact')
                         ->toggleable(isToggledHiddenByDefault: true)
                         ->label('Contacts External Supervisor')
                         ->searchable(false)
-                        ->sortable(false),
-                    Tables\Columns\TextColumn::make('academic_supervisor_name')
-                        ->label('Academic Supervisor')
-                        // ->searchable(
-                        //     ['first_name', 'last_name']
-                        // )
-                        ->sortable(false)
-                        ->searchable(false),
-                    Tables\Columns\TextColumn::make('reviewers.name')
-                        ->label('Reviewers')
-                        ->searchable(false)
-                        ->visible(fn (DisplaySettings $displaySettings) => $displaySettings->display_project_reviewers || auth()->user()->isAdministrator())
                         ->sortable(false),
                     Tables\Columns\TextColumn::make('professors')
                         ->label('Assigned by')
@@ -220,13 +220,12 @@ class ProjectsTable
                         ->formatStateUsing(function ($record) {
                             return $record->professors
                                 ->map(function ($professor) {
-                                    return $professor->pivot?->createdBy?->name ?? 'Unknown'; // change this to any pivot attribute you wish to show
+                                    return $professor->pivot?->createdBy?->name ?? 'Unknown';
                                 })
                                 ->implode(', ');
                         })
                         ->badge()
                         ->visible(fn ($record) => auth()->user()->isAdministrator()),
-
                     Tables\Columns\TextColumn::make('language')
                         ->toggleable(isToggledHiddenByDefault: true)
                         ->label('Detected language')
@@ -238,68 +237,10 @@ class ProjectsTable
                         ->sortable(false)
                         ->visible(fn (DisplaySettings $displaySettings) => $displaySettings->display_plannings || auth()->user()->isAdministrator())
                         ->searchable(false),
-                    Tables\Columns\TextColumn::make('timetable.timeslot.start_time')
-                        ->toggleable(isToggledHiddenByDefault: true)
-                        ->label('Defense Start DateTime')
-                        ->searchable(false)
-                        ->sortable(true)
-                        ->dateTime('Y-m-d H:i:s')
-                        ->formatStateUsing(function ($state) {
-                            return $state ? Carbon::parse($state)->format('Y-m-d H:i:s') : null;
-                        })
-                        ->visible(fn (DisplaySettings $displaySettings) => $displaySettings->display_plannings || auth()->user()->isAdministrator()),
-                    Tables\Columns\TextColumn::make('timetable.timeslot.defense_day')
-                        ->toggleable(isToggledHiddenByDefault: true)
-                        ->label('Defense Day')
-                        ->searchable(false)
-                        ->sortable(false)
-                        ->visible(fn (DisplaySettings $displaySettings) => $displaySettings->display_plannings || auth()->user()->isAdministrator()),
-                    Tables\Columns\TextColumn::make('timetable.timeslot.defense_time')
-                        ->label('Defense Time')
-                        ->searchable(false)
-                        ->sortable(false)
-                        ->visible(fn (DisplaySettings $displaySettings) => $displaySettings->display_plannings || auth()->user()->isAdministrator())
-                        ->toggleable(isToggledHiddenByDefault: true),
-                    // Tables\Columns\TextColumn::make('defense_start_time')
-                    //     ->toggleable(isToggledHiddenByDefault: true)
-                    //     ->label('Defense start time')
-                    //     ->searchable(false)
-                    //     ->sortable(false)
-                    //     ->formatStateUsing(function ($record) {
-                    //         return $record->timetable->timeslot->start_time ? Carbon::parse($record->timetable->timeslot->start_time)->format('H:i') : __('not defined');
-                    //     }),
-                    // Tables\Columns\TextColumn::make('defense_end_time')
-                    //     ->label('Defense end time')
-                    //     ->searchable(false)
-                    //     ->sortable(false)
-                    //     ->toggleable(isToggledHiddenByDefault: true)
-                    //     ->formatStateUsing(function ($record) {
-                    //         return $record->timetable->timeslot->end_time ? Carbon::parse($record->timetable->timeslot->end_time)->format('H:i') : __('not defined');
-                    //     }),
-                    Tables\Columns\TextColumn::make('timetable.room.name')
-                        ->toggleable(isToggledHiddenByDefault: true)
-                        ->searchable(false)
-                        ->sortable(false)
-                        ->visible(fn (DisplaySettings $displaySettings) => $displaySettings->display_plannings || auth()->user()->isAdministrator())
-                        ->label('Room'),
                 ]),
 
-            // Tables\Columns\TextColumn::make('professors.department')
-            //     ->label('department of supervisor'),
-
-            Tables\Columns\ColumnGroup::make(__('Entreprise information'))
+            Tables\Columns\ColumnGroup::make(__('Enterprise Information'))
                 ->columns([
-                    Tables\Columns\TextColumn::make('organization.name')
-                        ->label('Organization')
-                        ->searchable(false)
-                        ->sortable(false)
-                        ->description(fn ($record) => ($record->organization?->city ?? '') . ', ' . ($record->organization?->country ?? ''))
-                        ->tooltip(fn ($record) => __('Organization Representative') . ': ' . ($record->parrain?->full_name ?? '')),
-                    // Tables\Columns\TextColumn::make('organization.address')
-                    //     ->toggleable(isToggledHiddenByDefault: true)
-                    //     ->label('Address')
-                    //     ->searchable(false)
-                    //     ->sortable(false),
                     Tables\Columns\TextColumn::make('parrain.full_name')
                         ->toggleable(isToggledHiddenByDefault: true)
                         ->label('Le Parrain')

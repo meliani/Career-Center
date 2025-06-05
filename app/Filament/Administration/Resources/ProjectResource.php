@@ -100,7 +100,7 @@ class ProjectResource extends Core\BaseResource
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ])
-            ->with(['agreements.agreeable.student']);
+            ->with(['agreements.agreeable.student', 'timetable.timeslot', 'timetable.room']);
 
         $user = auth()->user();
 
@@ -258,7 +258,7 @@ class ProjectResource extends Core\BaseResource
             ->filtersLayout(FiltersLayout::AboveContentCollapsible)
             // ->striped()
             // ->deferLoading()
-            ->defaultSort('end_date', 'asc')
+            ->defaultSort('timetable.timeslot.start_time', 'desc')
             // ->defaultGroup('timetable.timeslot.start_time')
             ->groups([
                 // Tables\Grouping\Group::make('timetable.timeslot.start_time')
