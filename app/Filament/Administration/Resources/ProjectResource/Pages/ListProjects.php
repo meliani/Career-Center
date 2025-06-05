@@ -23,6 +23,10 @@ class ListProjects extends ListRecords
     use HasToggleableTable;
 
     protected static string $resource = ProjectResource::class;
+    
+    protected static string $view = 'filament.administration.resources.project-resource.pages.list-projects';
+
+    public ?string $defenseStatusTab = null;
 
     public function getDefaultLayoutView(): string
     {
@@ -137,12 +141,18 @@ class ListProjects extends ListRecords
 
     public function getTabs(): array
     {
+        // Return the programming status tabs as the primary tabs
+        return $this->getProgrammingStatusTabs();
+    }
+
+    public function getProgrammingStatusTabs(): array
+    {
         $baseQuery = static::getResource()::getEloquentQuery()->active();
         $tabs = [];
-        if (auth()->user()->isAdministrator()) {
 
+        if (auth()->user()->isAdministrator()) {
             // All Projects tab
-            $tabs['all'] = Tab::make('All Projects')
+            $tabs['all'] = Tab::make(__('All Projects'))
                 ->badge(
                     $baseQuery->clone()
                         ->whereHas('agreements', function ($query) {
@@ -155,30 +165,103 @@ class ListProjects extends ListRecords
                         })->count()
                 );
 
-            // Program specific tabs
-            foreach (Program::cases() as $program) {
-                $label = $program->getLabel();
-                $value = $program->value;
+            // Programmed Projects tab (projects with timetable)
+            $tabs['programmed'] = Tab::make(__('Programmed'))
+                ->badge(
+                    $baseQuery->clone()
+                        ->whereHas('agreements', function ($query) {
+                            $query->whereMorphRelation(
+                                'agreeable',
+                                [InternshipAgreement::class, FinalYearInternshipAgreement::class],
+                                'year_id',
+                                Year::current()->id
+                            );
+                        })
+                        ->whereHas('timetable')
+                        ->count()
+                )
+                ->badgeColor('info')
+                ->modifyQueryUsing(
+                    fn ($query) => $query->whereHas('timetable')
+                );
+
+            // Not Programmed Projects tab (projects without timetable)
+            $tabs['not_programmed'] = Tab::make(__('Not Programmed'))
+                ->badge(
+                    $baseQuery->clone()
+                        ->whereHas('agreements', function ($query) {
+                            $query->whereMorphRelation(
+                                'agreeable',
+                                [InternshipAgreement::class, FinalYearInternshipAgreement::class],
+                                'year_id',
+                                Year::current()->id
+                            );
+                        })
+                        ->whereDoesntHave('timetable')
+                        ->count()
+                )
+                ->badgeColor('warning')
+                ->modifyQueryUsing(
+                    fn ($query) => $query->whereDoesntHave('timetable')
+                );
+        }
+
+        return $tabs;
+    }
+
+    public function getDefenseStatusTabs(): array
+    {
+        $baseQuery = static::getResource()::getEloquentQuery()->active();
+        $tabs = [];
+
+        if (auth()->user()->isAdministrator()) {
+            // Defense Status specific tabs
+            foreach (\App\Enums\DefenseStatus::cases() as $status) {
+                $label = $status->getLabel();
+                $value = $status->value;
+                $color = $status->getColor();
 
                 $tabs[$value] = Tab::make($label)
                     ->badge(
                         $baseQuery->clone()
-                            ->whereHas('agreements', function ($query) use ($value) {
-                                $query->whereHas('agreeable', function ($q) use ($value) {
-                                    $q->whereHas('student', fn ($q) => $q->where('program', $value));
-                                });
-                            })->count()
+                            ->whereHas('agreements', function ($query) {
+                                $query->whereMorphRelation(
+                                    'agreeable',
+                                    [InternshipAgreement::class, FinalYearInternshipAgreement::class],
+                                    'year_id',
+                                    Year::current()->id
+                                );
+                            })
+                            ->where('defense_status', $value)
+                            ->count()
                     )
+                    ->badgeColor($color)
                     ->modifyQueryUsing(
-                        fn ($query) => $query->whereHas('agreements', function ($q) use ($value) {
-                            $q->whereHas('agreeable', function ($q) use ($value) {
-                                $q->whereHas('student', fn ($q) => $q->where('program', $value));
-                            });
-                        })
+                        fn ($query) => $query->where('defense_status', $value)
                     );
             }
         }
 
         return $tabs;
+    }
+
+    protected function getTableQuery(): \Illuminate\Database\Eloquent\Builder
+    {
+        $query = static::getResource()::getEloquentQuery();
+        
+        // Apply programming status filter (from primary tabs)
+        $activeTab = $this->activeTab ?? 'all';
+        if ($activeTab === 'programmed') {
+            $query->whereHas('timetable');
+        } elseif ($activeTab === 'not_programmed') {
+            $query->whereDoesntHave('timetable');
+        }
+        
+        // Apply defense status filter (from secondary tabs)
+        if ($this->defenseStatusTab) {
+            $query->where('defense_status', $this->defenseStatusTab);
+        }
+        
+        return $query;
     }
 }

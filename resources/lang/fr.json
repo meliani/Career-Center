@@ -1274,5 +1274,10 @@
     "Projects by assigned_department": "Projets par département_assigné",
     "Projects by professor department": "Projets par département d'enseignant",
     "Orphaned Projects": "Projets orphelins",
-    "projects exist without any internship agreements": "projets existent sans conventions de stage"
+    "projects exist without any internship agreements": "projets existent sans conventions de stage",
+    "Defense Status": "Statut de la soutenance",
+    "Not Programmed": "Non programmé",
+    "Programmed": "Programmé",
+    "Programming Status": "Statut de la programmation",
+    "Project Filters": "Filtres de projet"
 }

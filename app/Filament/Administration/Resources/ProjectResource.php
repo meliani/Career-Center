@@ -390,6 +390,28 @@ class ProjectResource extends Core\BaseResource
                             fn (Builder $query, $professor): Builder => $query->whereHas('professors', fn (Builder $query) => $query->where('professor_id', $professor))
                         ),
                     ),
+                Tables\Filters\SelectFilter::make('program')
+                    ->label(__('Program'))
+                    ->options(Enums\Program::class)
+                    ->query(
+                        fn (Builder $query, array $data) => $query->when(
+                            $data['value'],
+                            fn (Builder $query, $program): Builder => $query->whereHas('agreements', function ($query) use ($program) {
+                                $query->whereHas('agreeable', function ($q) use ($program) {
+                                    $q->whereHas('student', fn ($q) => $q->where('program', $program));
+                                });
+                            })
+                        ),
+                    ),
+                Tables\Filters\SelectFilter::make('defense_status')
+                    ->label(__('Defense Status'))
+                    ->options(Enums\DefenseStatus::class)
+                    ->query(
+                        fn (Builder $query, array $data) => $query->when(
+                            $data['value'],
+                            fn (Builder $query, $status): Builder => $query->where('defense_status', $status)
+                        ),
+                    ),
                 Tables\Filters\SelectFilter::make('Assigned department')
                     ->label(__('Assigned department'))
                     ->options(Enums\Department::class)
