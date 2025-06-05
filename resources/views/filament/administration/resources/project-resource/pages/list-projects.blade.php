@@ -67,35 +67,54 @@
             </div>
             
             <div class="flex items-center gap-2">
-                {{-- Collapse/Expand Toggle Button --}}
+                {{-- Optimized Collapse/Expand Toggle Button --}}
                 <button
-                    @click="isCollapsed = !isCollapsed; if (isCollapsed) isPinned = false;"
+                    @click="isCollapsed = !isCollapsed"
+                    x-show="!isPinned"
+                    x-transition:enter="transition ease-out duration-200"
+                    x-transition:enter-start="opacity-0 scale-95"
+                    x-transition:enter-end="opacity-100 scale-100"
+                    x-transition:leave="transition ease-in duration-150"
+                    x-transition:leave-start="opacity-100 scale-100"
+                    x-transition:leave-end="opacity-0 scale-95"
                     :class="{ 
-                        'bg-yellow-100 text-yellow-600 dark:bg-yellow-900/50 dark:text-yellow-400': isCollapsed,
+                        'bg-indigo-100 text-indigo-600 dark:bg-indigo-900/50 dark:text-indigo-400 shadow-md': isCollapsed,
                         'bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300': !isCollapsed 
                     }"
-                    class="flex h-8 w-8 items-center justify-center rounded-lg transition-all duration-200 shadow-sm"
-                    :title="isCollapsed ? 'Expand filters' : 'Collapse filters'"
+                    class="flex h-8 w-8 items-center justify-center rounded-lg transition-all duration-200 shadow-sm hover:shadow-md"
+                    :title="isCollapsed ? 'Expand filters panel' : 'Collapse filters panel'"
+                    :aria-label="isCollapsed ? 'Expand filters panel' : 'Collapse filters panel'"
                 >
-                    <svg class="h-4 w-4 transform transition-transform duration-200" :class="{ 'rotate-180': isCollapsed }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
+                    <svg 
+                        class="h-4 w-4 transform transition-transform duration-300 ease-in-out" 
+                        :class="{ 'rotate-180': isCollapsed }" 
+                        fill="none" 
+                        stroke="currentColor" 
+                        viewBox="0 0 24 24"
+                    >
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                     </svg>
                 </button>
                 
                 {{-- Enhanced Pin Button --}}
                 <button
-                    @click="isPinned = !isPinned; if (isPinned) isCollapsed = false;"
+                    @click="isPinned = !isPinned; if (isPinned) { isCollapsed = false }"
                     :class="{ 
-                        'bg-blue-100 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400': isPinned,
+                        'bg-blue-100 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400 shadow-md': isPinned,
                         'bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300': !isPinned 
                     }"
-                    class="flex h-8 w-8 items-center justify-center rounded-lg transition-all duration-200 shadow-sm"
-                    :title="isPinned ? 'Unpin filters' : 'Pin filters open'"
+                    class="flex h-8 w-8 items-center justify-center rounded-lg transition-all duration-200 shadow-sm hover:shadow-md"
+                    :title="isPinned ? 'Unpin filters - allow auto-collapse' : 'Pin filters - keep always open'"
+                    :aria-label="isPinned ? 'Unpin filters panel' : 'Pin filters panel'"
                 >
-                    <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M10 2L13 5H11V9H9V5H7L10 2Z" />
-                        <path d="M4 10H16V12H4V10Z" />
-                        <path d="M7 15H13V17H7V15Z" />
+                    <svg 
+                        class="h-4 w-4 transition-transform duration-200" 
+                        :class="{ 'rotate-45': isPinned }" 
+                        fill="none" 
+                        stroke="currentColor" 
+                        viewBox="0 0 24 24"
+                    >
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
                     </svg>
                 </button>
             </div>
