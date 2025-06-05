@@ -78,7 +78,12 @@ trait ProjectAttributes
             return __('Undefined Defense Date');
         }
 
-        return "{$this->timetable->timeslot->end_time->format('d M Y')} de {$this->timetable->timeslot->start_time->format('H:i')} à {$this->timetable->timeslot->end_time->format('H:i')}, {$this->timetable->room->name}";
+        return __(':date from :start_time to :end_time, :room', [
+            'date' => $this->timetable->timeslot->end_time->format('d M Y'),
+            'start_time' => $this->timetable->timeslot->start_time->format('H:i'),
+            'end_time' => $this->timetable->timeslot->end_time->format('H:i'),
+            'room' => $this->timetable->room->name
+        ]);
     }
 
     public function getProjectDatesAttribute()

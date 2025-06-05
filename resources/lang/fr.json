@@ -380,6 +380,7 @@
     "Name": "Nom",
     "Projects Participations": "Participations aux projets",
     "Undefined Defense Date": "Date de soutenance non définie",
+    ":date from :start_time to :end_time, :room": "le :date de :start_time à :end_time, salle :room",
     "External supervisor": "Encadrant externe",
     "Subject": "Sujet",
     "Defense plan": "Plan de soutenance",
