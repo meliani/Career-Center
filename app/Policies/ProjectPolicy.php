@@ -74,6 +74,11 @@ class ProjectPolicy extends CorePolicy
     {
         return $user->isAdministrator() || $user->isAdministrativeSupervisor();
     }
+
+    public function authorizeDefense(User $user, Project $project)
+    {
+        return $user->isAdministrator();
+    }
     // public function viewSome(User $user, Project $project)
     // {
     //     if ($user->hasAnyRole($this->professors) && $project->student->program === $user->assigned_program) {

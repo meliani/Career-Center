@@ -129,7 +129,7 @@ class AuthServiceProvider extends ServiceProvider
             return false;
         });
         Gate::define('validate-project', [ProjectPolicy::class, 'update']);
-        Gate::define('authorize-defense', [ProjectPolicy::class, 'update']);
+        Gate::define('authorize-defense', [ProjectPolicy::class, 'authorizeDefense']);
         Gate::define('send-defense-email', [ProjectPolicy::class, 'sendDefenseEmail']);
         Gate::define('manage-planning', [TimetablePolicy::class, 'update']);
         Gate::define('manage-supervision', [ProjectPolicy::class, 'update']);
