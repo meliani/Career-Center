@@ -24,15 +24,18 @@ use Filament\Tables;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Filament\Notifications\Notification;
 use Guava\FilamentModalRelationManagers\Actions\Infolist\RelationManagerAction as InfolistRelationManagerAction;
 use Guava\FilamentModalRelationManagers\Actions\Table\RelationManagerAction;
 use Hydrat\TableLayoutToggle\Facades\TableLayoutToggle;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 use pxlrbt\FilamentExcel;
 use App\Settings\DisplaySettings;
+use App\Filament\Actions\Action\SeparateBinomeAction;
 class ProjectResource extends Core\BaseResource
 {
     protected static ?string $model = Project::class;
@@ -579,6 +582,133 @@ class ProjectResource extends Core\BaseResource
                         ->color('success')
                         // ->disabled(fn ($record): bool => $record['validated_at'] !== null)
                         ->hidden(fn ($record) => auth()->user()->can('authorize-defense', $record) === false),
+                    Tables\Actions\Action::make('separate_binome')
+                        ->label(__('Separate Binome'))
+                        ->icon('heroicon-o-scissors')
+                        ->color('warning')
+                        ->requiresConfirmation(false)
+                        ->modalHeading(__('Separate Binome'))
+                        ->modalDescription(__('Choose which student will keep the original project with its current supervisor, timetable, and settings. The other students will get new individual projects.'))
+                        ->modalSubmitActionLabel(__('Separate'))
+                        ->visible(fn ($record) => $record->agreements()->count() > 1)
+                        ->hidden(fn ($record) => auth()->user()->isAdministrator() === false)
+                        ->form(function ($record) {
+                            $agreements = $record->agreements()->with('agreeable.student')->get();
+                            $studentOptions = [];
+                            
+                            foreach ($agreements as $agreement) {
+                                $student = $agreement->agreeable->student ?? null;
+                                if ($student) {
+                                    $studentOptions[$agreement->id] = $student->name . ' (' . $student->id_pfe . ')';
+                                }
+                            }
+                            
+                            return [
+                                Forms\Components\Select::make('keep_agreement_id')
+                                    ->label(__('Student to keep with original project'))
+                                    ->options($studentOptions)
+                                    ->required()
+                                    ->default(array_key_first($studentOptions))
+                                    ->helperText(__('This student will keep the original project with its supervisor, timetable, and all settings. Other students will get new projects.')),
+                                Forms\Components\Checkbox::make('copy_timetable')
+                                    ->label(__('Copy timetable to new projects'))
+                                    ->default(true)
+                                    ->helperText(__('If checked, the timetable will be copied to the new projects (may need adjustment later).')),
+                                Forms\Components\Checkbox::make('copy_professors')
+                                    ->label(__('Copy jury members to new projects'))
+                                    ->default(true)
+                                    ->helperText(__('If checked, the same jury members will be assigned to all new projects.')),
+                            ];
+                        })
+                        ->action(function ($record, array $data) {
+                            \Log::info('Separate binome action started for project: ' . $record->id, $data);
+                            
+                            try {
+                                DB::transaction(function () use ($record, $data) {
+                                    $agreements = $record->agreements()->with('agreeable.student')->get();
+                                    
+                                    if ($agreements->count() <= 1) {
+                                        Notification::make()
+                                            ->title(__('Cannot separate'))
+                                            ->body(__('This project does not have multiple students to separate.'))
+                                            ->warning()
+                                            ->send();
+                                        return;
+                                    }
+
+                                    $keepAgreementId = $data['keep_agreement_id'];
+                                    $copyTimetable = $data['copy_timetable'] ?? true;
+                                    $copyProfessors = $data['copy_professors'] ?? true;
+
+                                    // Find the agreement to keep with original project
+                                    $keepAgreement = $agreements->where('id', $keepAgreementId)->first();
+                                    $moveAgreements = $agreements->where('id', '!=', $keepAgreementId);
+
+                                    if (!$keepAgreement) {
+                                        throw new \Exception('Selected student agreement not found.');
+                                    }
+
+                                    $newProjects = [];
+
+                                    foreach ($moveAgreements as $agreement) {
+                                        // Create a new project for each agreement to move
+                                        $newProject = $record->replicate();
+                                        $newProject->save();
+                                        $newProjects[] = $newProject;
+
+                                        // Move the agreement to the new project
+                                        $agreement->update(['project_id' => $newProject->id]);
+
+                                        // Copy professors if requested
+                                        if ($copyProfessors) {
+                                            foreach ($record->professors as $professor) {
+                                                $newProject->professors()->attach($professor->id, [
+                                                    'jury_role' => $professor->pivot->jury_role ?? null,
+                                                    'created_by' => $professor->pivot->created_by ?? null,
+                                                    'updated_by' => $professor->pivot->updated_by ?? null,
+                                                    'approved_by' => $professor->pivot->approved_by ?? null,
+                                                    'is_president' => $professor->pivot->is_president ?? false,
+                                                    'votes' => $professor->pivot->votes ?? null,
+                                                    'was_present' => $professor->pivot->was_present ?? false,
+                                                ]);
+                                            }
+                                        }
+
+                                        // Copy timetable if requested and exists
+                                        if ($copyTimetable && $record->timetable) {
+                                            $newTimetable = $record->timetable->replicate();
+                                            $newTimetable->project_id = $newProject->id;
+                                            $newTimetable->save();
+                                        }
+
+                                        // Copy comments (always copy for continuity)
+                                        foreach ($record->filamentComments as $comment) {
+                                            $newComment = $comment->replicate();
+                                            $newComment->commentable_id = $newProject->id;
+                                            $newComment->save();
+                                        }
+                                    }
+
+                                    \Log::info('Binome separation completed successfully. Created ' . count($newProjects) . ' new projects.');
+                                });
+
+                                Notification::make()
+                                    ->title(__('Binome separated successfully'))
+                                    ->body(__('The binome has been separated into individual projects. The selected student kept the original project.'))
+                                    ->success()
+                                    ->send();
+
+                            } catch (\Exception $e) {
+                                \Log::error('Error separating binome: ' . $e->getMessage());
+                                \Log::error('Stack trace: ' . $e->getTraceAsString());
+                                
+                                Notification::make()
+                                    ->title(__('Error separating binome'))
+                                    ->body(__('An error occurred: ') . $e->getMessage())
+                                    ->danger()
+                                    ->send();
+                            }
+                        }),
                     Tables\Actions\Action::make('Postpone')
                         ->label('Postpone defense')
                         ->icon('heroicon-o-clock')

@@ -4,5 +4,14 @@
     "ThirdYear": "Third Year",
     "Dashboards": "Dashboards",
     "Students": "Students",
-    "Calendars": "Calendars"
+    "Calendars": "Calendars",
+    "Separate Binome": "Separate Binome",
+    "This will separate the binome into individual projects. Each student will have their own project with the same details.": "This will separate the binome into individual projects. Each student will have their own project with the same details.",
+    "Separate": "Separate",
+    "Cannot separate": "Cannot separate",
+    "This project does not have multiple students to separate.": "This project does not have multiple students to separate.",
+    "Binome separated successfully": "Binome separated successfully",
+    "The binome has been separated into individual projects.": "The binome has been separated into individual projects.",
+    "Error separating binome": "Error separating binome",
+    "An error occurred while separating the binome: ": "An error occurred while separating the binome: "
 }
