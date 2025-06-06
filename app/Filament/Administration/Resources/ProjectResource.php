@@ -744,14 +744,14 @@ class ProjectResource extends Core\BaseResource
                         ->label('Authorize selection')
                         ->icon('heroicon-o-check')
                         ->color('success')
-                        ->hidden(auth()->user()->cannot('manage-projects'))
+                        ->hidden(auth()->user()->cannot('authorize-defenses'))
                         ->requiresConfirmation()
                         ->action(fn ($records) => $records->each->authorizeDefense()),
                     Tables\Actions\BulkAction::make('postpone')
                         ->label('Postpone selection')
                         ->icon('heroicon-o-clock')
                         ->color('warning')
-                        ->hidden(auth()->user()->cannot('manage-projects'))
+                        ->hidden(auth()->user()->cannot('authorize-defenses'))
                         ->requiresConfirmation()
                         ->action(fn ($records) => $records->each->postponeDefense()),
                     ScheduleProfessorDefensesBulkAction::make()
