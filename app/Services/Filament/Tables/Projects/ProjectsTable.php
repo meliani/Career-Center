@@ -23,21 +23,21 @@ class ProjectsTable
             // Primary columns in the requested order
             // Date de soutenance
             Tables\Columns\TextColumn::make('timetable.timeslot.defense_day')
-                ->label(__('Defense Date'))
+                ->label('Defense Date')
                 ->searchable(false)
                 ->sortable(false)
                 ->visible(fn (DisplaySettings $displaySettings) => $displaySettings->display_plannings || auth()->user()->isAdministrator()),
             
             // Heure de soutenance  
             Tables\Columns\TextColumn::make('timetable.timeslot.defense_time')
-                ->label(__('Defense Time'))
+                ->label('Defense Time')
                 ->searchable(false)
                 ->sortable(false)
                 ->visible(fn (DisplaySettings $displaySettings) => $displaySettings->display_plannings || auth()->user()->isAdministrator()),
             
             // Defense DateTime (sortable)
             Tables\Columns\TextColumn::make('timetable.timeslot.start_time')
-                ->label(__('Defense Date/Time'))
+                ->label('Defense Date/Time')
                 ->searchable(false)
                 ->sortable(true)
                 ->dateTime('d/m/Y H:i')
@@ -46,14 +46,14 @@ class ProjectsTable
             
             // Salle
             Tables\Columns\TextColumn::make('timetable.room.name')
-                ->label(__('Room'))
+                ->label('Room')
                 ->searchable(false)
                 ->sortable(false)
                 ->visible(fn (DisplaySettings $displaySettings) => $displaySettings->display_plannings || auth()->user()->isAdministrator()),
             
             // Defense plan
             Tables\Columns\TextColumn::make('defense_plan')
-                ->label(__('Defense plan'))
+                ->label('Defense plan')
                 ->sortable(false)
                 ->visible(fn (DisplaySettings $displaySettings) => $displaySettings->display_plannings || auth()->user()->isAdministrator())
                 ->searchable(false),
@@ -77,7 +77,7 @@ class ProjectsTable
                         })
                 )
                 ->wrap()
-                ->label(__('PFE ID'))
+                ->label('PFE ID')
                 ->sortable(query: function (Builder $query, string $direction) {
                     return $query->orderBy(
                         ProjectAgreement::query()
@@ -93,14 +93,14 @@ class ProjectsTable
             
             // Nom de l'étudiant
             Tables\Columns\TextColumn::make('agreements.agreeable.student.full_name')
-                ->label(__('Student Name'))
+                ->label('Student Name')
                 ->searchable(false)
                 ->sortable(false)
                 ->description(fn ($record) => $record->id_pfe),
             
             // Filière
             Tables\Columns\TextColumn::make('agreements.agreeable.student.program')
-                ->label(__('Program'))
+                ->label('Program')
                 ->searchable(false)
                 ->sortable(query: function (Builder $query, string $direction) {
                     return $query->orderBy(
@@ -118,7 +118,7 @@ class ProjectsTable
             
             // Organisme d'accueil
             Tables\Columns\TextColumn::make('organization.name')
-                ->label(__('Host Organization'))
+                ->label('Host Organization')
                 ->searchable(false)
                 ->sortable(false)
                 ->description(fn ($record) => ($record->organization?->city ?? '') . ', ' . ($record->organization?->country ?? ''))
@@ -126,7 +126,7 @@ class ProjectsTable
             
             // Sujet de stage PFE
             Tables\Columns\TextColumn::make('title')
-                ->label(__('Final Project Subject'))
+                ->label('Final Project Subject')
                 ->searchable()
                 ->limit(50)
                 ->tooltip(fn ($record) => $record->title)
@@ -134,20 +134,20 @@ class ProjectsTable
             
             // Encadrant interne
             Tables\Columns\TextColumn::make('academic_supervisor_name')
-                ->label(__('Internal Supervisor'))
+                ->label('Internal Supervisor')
                 ->sortable(false)
                 ->searchable(false),
             
             // Examinateurs
             Tables\Columns\TextColumn::make('reviewers.name')
-                ->label(__('Reviewers'))
+                ->label('Reviewers')
                 ->searchable(false)
                 ->visible(fn (DisplaySettings $displaySettings) => $displaySettings->display_project_reviewers || auth()->user()->isAdministrator())
                 ->sortable(false),
             
             // Encadrant externe
             Tables\Columns\TextColumn::make('externalSupervisor.full_name')
-                ->label(__('External Supervisor'))
+                ->label('External Supervisor')
                 ->limit(30)
                 ->searchable(false)
                 ->sortable(false),
@@ -156,21 +156,21 @@ class ProjectsTable
             Tables\Columns\ColumnGroup::make(__('Additional Student Information'))
                 ->columns([
                     Tables\Columns\TextColumn::make('agreements.agreeable.student.email')
-                        ->label(__('Student emails'))
+                        ->label('Student emails')
                         ->copyable()
                         ->toggleable()
                         ->searchable(false)
                         ->sortable(false)
                         ->description(fn ($record) => $record->final_internship_agreements->first()?->student?->email_perso),
                     Tables\Columns\TextColumn::make('agreements.agreeable.student.phone')
-                        ->label(__('Student phone'))
+                        ->label('Student phone')
                         ->copyable()
                         ->toggleable()
                         ->searchable(false)
                         ->sortable(false),
                     Tables\Columns\TextColumn::make('assigned_departments')
                         ->toggleable(isToggledHiddenByDefault: true)
-                        ->label(__('Assigned department'))
+                        ->label('Assigned department')
                         ->searchable(false)
                         ->sortable(false),
                 ]),
@@ -178,7 +178,7 @@ class ProjectsTable
             Tables\Columns\ColumnGroup::make(__('Defense authorization'))
                 ->columns([
                     Tables\Columns\TextColumn::make('defense_status')
-                        ->label(__('Status'))
+                        ->label('Status')
                         ->searchable(false)
                         ->toggleable(isToggledHiddenByDefault: true)
                         ->badge(),
@@ -186,7 +186,7 @@ class ProjectsTable
                         ->toggleable(isToggledHiddenByDefault: true)
                         ->searchable(false)
                         ->sortable(false)
-                        ->label(__('Organization Evaluation Sheet'))
+                        ->label('Organization Evaluation Sheet')
                         ->action(AddOrganizationEvaluationSheetAction::make())
                         ->Placeholder(__('Click to add'))
                         ->icon('heroicon-o-document-magnifying-glass')
@@ -202,7 +202,7 @@ class ProjectsTable
                         ->toggleable(isToggledHiddenByDefault: true)
                         ->searchable(false)
                         ->sortable(false)
-                        ->label(__('Evaluation Sheet'))
+                        ->label('Evaluation Sheet')
                         ->Placeholder(__('Not generated yet'))
                         ->icon('heroicon-o-document-magnifying-glass')
                         ->color(fn ($record) => $record->evaluation_sheet_url ? 'info' : 'gray')
@@ -216,11 +216,11 @@ class ProjectsTable
                 ->columns([
                     Tables\Columns\TextColumn::make('external_supervisor_contact')
                         ->toggleable(isToggledHiddenByDefault: true)
-                        ->label(__('Contacts External Supervisor'))
+                        ->label('Contacts External Supervisor')
                         ->searchable(false)
                         ->sortable(false),
                     Tables\Columns\TextColumn::make('professors')
-                        ->label(__('Assigned by'))
+                        ->label('Assigned by')
                         ->toggleable(isToggledHiddenByDefault: true)
                         ->searchable(false)
                         ->sortable(false)
@@ -235,7 +235,7 @@ class ProjectsTable
                         ->visible(fn ($record) => auth()->user()->isAdministrator()),
                     Tables\Columns\TextColumn::make('language')
                         ->toggleable(isToggledHiddenByDefault: true)
-                        ->label(__('Detected language'))
+                        ->label('Detected language')
                         ->searchable(false)
                         ->sortable(),
                 ]),
@@ -244,13 +244,13 @@ class ProjectsTable
                 ->columns([
                     Tables\Columns\TextColumn::make('parrain.full_name')
                         ->toggleable(isToggledHiddenByDefault: true)
-                        ->label(__('Le Parrain'))
+                        ->label('Le Parrain')
                         ->searchable(false)
                         ->sortable(false),
                 ]),
 
             Tables\Columns\TextColumn::make('start_date')
-                ->label(__('Start Date'))
+                ->label('Start Date')
                 ->date('d/m/Y')
                 ->formatStateUsing(function ($record) {
                     return $record->start_date ? Carbon::parse($record->start_date)->format('d/m/Y') : __('not defined');
@@ -258,7 +258,7 @@ class ProjectsTable
                 ->toggleable(isToggledHiddenByDefault: true),
 
             Tables\Columns\TextColumn::make('end_date')
-                ->label(__('End Date'))
+                ->label('End Date')
                 ->date('d/m/Y')
                 ->formatStateUsing(function ($record) {
                     return $record->end_date ? Carbon::parse($record->end_date)->format('d/m/Y') : __('not defined');
@@ -276,13 +276,13 @@ class ProjectsTable
                 ->dateTime()
                 ->toggleable(isToggledHiddenByDefault: true),
             Tables\Columns\TextColumn::make('writing_language')
-                ->label(__('Writing Language'))
+                ->label('Writing Language')
                 ->badge()
                 ->formatStateUsing(fn ($state) => $state?->getLabel())
                 ->color(fn ($state) => $state?->getColor())
                 ->sortable(),
             Tables\Columns\TextColumn::make('presentation_language')
-                ->label(__('Presentation Language'))
+                ->label('Presentation Language')
                 ->badge()
                 ->formatStateUsing(fn ($state) => $state?->getLabel())
                 ->color(fn ($state) => $state?->getColor())
