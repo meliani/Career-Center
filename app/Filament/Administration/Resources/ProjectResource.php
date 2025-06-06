@@ -588,6 +588,35 @@ class ProjectResource extends Core\BaseResource
                         ->color('success')
                         // ->disabled(fn ($record): bool => $record['validated_at'] !== null)
                         ->hidden(fn ($record) => auth()->user()->can('authorize-defense', $record) === false),
+                    Tables\Actions\Action::make('regenerate_evaluation_sheet')
+                        ->label('Regenerate Evaluation Sheet')
+                        ->icon('heroicon-o-document-duplicate')
+                        ->color('info')
+                        ->requiresConfirmation()
+                        ->modalHeading('Regenerate Evaluation Sheet')
+                        ->modalDescription('This will regenerate the evaluation sheet for this project. Any previous evaluation sheet will be replaced.')
+                        ->modalSubmitActionLabel('Regenerate')
+                        ->modalIcon('heroicon-o-document-duplicate')
+                        ->action(function ($record) {
+                            try {
+                                $record->generateEvaluationSheet();
+                                
+                                Notification::make()
+                                    ->title('Evaluation sheet regenerated successfully')
+                                    ->body('The evaluation sheet has been regenerated for project: ' . $record->title)
+                                    ->success()
+                                    ->send();
+                            } catch (\Exception $e) {
+                                \Log::error('Error regenerating evaluation sheet for project ' . $record->id . ': ' . $e->getMessage());
+                                
+                                Notification::make()
+                                    ->title('Error regenerating evaluation sheet')
+                                    ->body('An error occurred while regenerating the evaluation sheet: ' . $e->getMessage())
+                                    ->danger()
+                                    ->send();
+                            }
+                        })
+                        ->visible(fn ($record) => auth()->user()->can('update', $record)),
                     Tables\Actions\Action::make('separate_binome')
                         ->label('Separate Binome')
                         ->icon('heroicon-o-scissors')
