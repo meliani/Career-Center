@@ -2,9 +2,18 @@
     {{-- Enhanced Beautiful Filter Widget --}}
     <div 
         x-data="{ 
-            isCollapsed: $persist(true).as('project-tabs-collapsed'),
-            isPinned: $persist(false).as('project-tabs-pinned'),
-            isHovered: false
+            isCollapsed: JSON.parse(localStorage.getItem('project-tabs-collapsed') ?? 'true'),
+            isPinned: JSON.parse(localStorage.getItem('project-tabs-pinned') ?? 'false'),
+            isHovered: false,
+            init() {
+                // Watch for changes and save to localStorage
+                this.$watch('isCollapsed', value => {
+                    localStorage.setItem('project-tabs-collapsed', JSON.stringify(value));
+                });
+                this.$watch('isPinned', value => {
+                    localStorage.setItem('project-tabs-pinned', JSON.stringify(value));
+                });
+            }
         }"
         @mouseenter="isHovered = true"
         @mouseleave="isHovered = false"
