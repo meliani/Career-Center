@@ -261,7 +261,13 @@ class ProjectResource extends Core\BaseResource
             ->filtersLayout(FiltersLayout::AboveContentCollapsible)
             // ->striped()
             // ->deferLoading()
-            ->defaultSort('timetable.timeslot.start_time', 'desc')
+            ->defaultSort('timetable.timeslot.start_time', 'asc')
+            ->modifyQueryUsing(fn (Builder $query) => $query
+                ->leftJoin('timetables', 'projects.id', '=', 'timetables.project_id')
+                ->leftJoin('timeslots', 'timetables.timeslot_id', '=', 'timeslots.id')
+                ->orderByRaw('timeslots.start_time IS NULL, timeslots.start_time ASC')
+                ->select('projects.*')
+            )
             // ->defaultGroup('timetable.timeslot.start_time')
             ->groups([
                 // Tables\Grouping\Group::make('timetable.timeslot.start_time')
