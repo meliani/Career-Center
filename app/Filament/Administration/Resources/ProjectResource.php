@@ -44,16 +44,6 @@ class ProjectResource extends Core\BaseResource
 
     protected static ?string $pluralModelLabel = 'Final projects';
 
-    public static function getModelLabel(): string
-    {
-        return __('Final project');
-    }
-
-    public static function getPluralModelLabel(): string
-    {
-        return __('Final projects');
-    }
-
     protected static ?string $title = 'title';
 
     protected static ?string $recordTitleAttribute = 'students_names';
@@ -179,7 +169,7 @@ class ProjectResource extends Core\BaseResource
         return $form
             ->schema([
 
-                Forms\Components\Section::make(__('Project information'))
+                Forms\Components\Section::make('Project information')
                     ->columnSpan(1)
                     ->schema([
                         Forms\Components\MarkdownEditor::make('title')

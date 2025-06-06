@@ -11,6 +11,7 @@ use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Storage;
 use App\Settings\DisplaySettings;
+use App\Enums\DefenseStatus;
 class ProjectsTable
 {
     public static function get()
@@ -59,7 +60,8 @@ class ProjectsTable
                 ->label('Defense plan')
                 ->sortable(false)
                 ->visible(fn (DisplaySettings $displaySettings) => $displaySettings->display_plannings || auth()->user()->isAdministrator())
-                ->searchable(false),
+                ->searchable(false)
+                ->color(fn ($record) => $record->defense_status?->getColor()),
             
             // ID PFE
             Tables\Columns\TextColumn::make('id_pfe')
