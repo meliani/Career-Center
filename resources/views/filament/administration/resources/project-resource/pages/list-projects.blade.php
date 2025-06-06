@@ -2,7 +2,7 @@
     {{-- Enhanced Beautiful Filter Widget --}}
     <div 
         x-data="{ 
-            isCollapsed: $persist(false).as('project-tabs-collapsed'),
+            isCollapsed: $persist(true).as('project-tabs-collapsed'),
             isPinned: $persist(false).as('project-tabs-pinned'),
             isHovered: false
         }"
@@ -10,7 +10,7 @@
         @mouseleave="isHovered = false"
         class="overflow-hidden rounded-xl bg-white shadow-lg ring-1 ring-gray-950/5 dark:bg-gray-900 dark:ring-white/10 mb-6 transition-all duration-300 border border-gray-200 dark:border-gray-700"
         :class="{ 
-            'h-auto': isPinned || (!isCollapsed && !isPinned) || (isCollapsed && isHovered),
+            'h-auto': isPinned || !isCollapsed || (isCollapsed && isHovered),
             'h-16': isCollapsed && !isPinned && !isHovered
         }"
     >
@@ -120,7 +120,7 @@
             </div>
         </div>        {{-- Enhanced Collapsible Content --}}
         <div 
-            x-show="isPinned || (!isCollapsed && !isPinned) || (isCollapsed && isHovered)"
+            x-show="isPinned || !isCollapsed || (isCollapsed && isHovered)"
             x-transition:enter="transition ease-out duration-300"
             x-transition:enter-start="opacity-0 -translate-y-4"
             x-transition:enter-end="opacity-100 translate-y-0"
