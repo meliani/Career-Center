@@ -1304,5 +1304,11 @@
     "Programmed": "Programmé",
     "Programming Status": "Statut de la programmation",
     "Project Filters": "Filtres de projet",
-    "No filters active": "Aucun filtre actif"
+    "No filters active": "Aucun filtre actif",
+    "Host Organization": "Organisation hôte",
+    "Internal Supervisor": "Encadrant interne",
+    "Final Project Subject": "Sujet de PFE",
+    "Student Name": "Nom de l'étudiant",
+    "Writing Language": "Langue d'écriture",
+    "Presentation Language": "Langue de présentation"
 }
