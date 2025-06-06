@@ -589,13 +589,13 @@ class ProjectResource extends Core\BaseResource
                         // ->disabled(fn ($record): bool => $record['validated_at'] !== null)
                         ->hidden(fn ($record) => auth()->user()->can('authorize-defense', $record) === false),
                     Tables\Actions\Action::make('separate_binome')
-                        ->label(__('Separate Binome'))
+                        ->label('Separate Binome')
                         ->icon('heroicon-o-scissors')
                         ->color('warning')
                         ->requiresConfirmation(false)
-                        ->modalHeading(__('Separate Binome'))
-                        ->modalDescription(__('Choose which student will keep the original project with its current supervisor, timetable, and settings. The other students will get new individual projects.'))
-                        ->modalSubmitActionLabel(__('Separate'))
+                        ->modalHeading('Separate Binome')
+                        ->modalDescription('Choose which student will keep the original project with its current supervisor, timetable, and settings. The other students will get new individual projects.')
+                        ->modalSubmitActionLabel('Separate')
                         ->visible(fn ($record) => $record->agreements()->count() > 1)
                         ->hidden(fn ($record) => auth()->user()->isAdministrator() === false)
                         ->form(function ($record) {
@@ -611,19 +611,19 @@ class ProjectResource extends Core\BaseResource
                             
                             return [
                                 Forms\Components\Select::make('keep_agreement_id')
-                                    ->label(__('Student to keep with original project'))
+                                    ->label('Student to keep with original project')
                                     ->options($studentOptions)
                                     ->required()
                                     ->default(array_key_first($studentOptions))
-                                    ->helperText(__('This student will keep the original project with its supervisor, timetable, and all settings. Other students will get new projects.')),
+                                    ->helperText('This student will keep the original project with its supervisor, timetable, and all settings. Other students will get new projects.'),
                                 Forms\Components\Checkbox::make('copy_timetable')
-                                    ->label(__('Copy timetable to new projects'))
+                                    ->label('Copy timetable to new projects')
                                     ->default(true)
-                                    ->helperText(__('If checked, the timetable will be copied to the new projects (may need adjustment later).')),
+                                    ->helperText('If checked, the timetable will be copied to the new projects (may need adjustment later).'),
                                 Forms\Components\Checkbox::make('copy_professors')
-                                    ->label(__('Copy jury members to new projects'))
+                                    ->label('Copy jury members to new projects')
                                     ->default(true)
-                                    ->helperText(__('If checked, the same jury members will be assigned to all new projects.')),
+                                    ->helperText('If checked, the same jury members will be assigned to all new projects.'),
                             ];
                         })
                         ->action(function ($record, array $data) {
@@ -635,8 +635,8 @@ class ProjectResource extends Core\BaseResource
                                     
                                     if ($agreements->count() <= 1) {
                                         Notification::make()
-                                            ->title(__('Cannot separate'))
-                                            ->body(__('This project does not have multiple students to separate.'))
+                                            ->title('Cannot separate')
+                                            ->body('This project does not have multiple students to separate.')
                                             ->warning()
                                             ->send();
                                         return;
@@ -699,8 +699,8 @@ class ProjectResource extends Core\BaseResource
                                 });
 
                                 Notification::make()
-                                    ->title(__('Binome separated successfully'))
-                                    ->body(__('The binome has been separated into individual projects. The selected student kept the original project.'))
+                                    ->title('Binome separated successfully')
+                                    ->body('The binome has been separated into individual projects. The selected student kept the original project.')
                                     ->success()
                                     ->send();
 
@@ -709,8 +709,8 @@ class ProjectResource extends Core\BaseResource
                                 \Log::error('Stack trace: ' . $e->getTraceAsString());
                                 
                                 Notification::make()
-                                    ->title(__('Error separating binome'))
-                                    ->body(__('An error occurred: ') . $e->getMessage())
+                                    ->title('Error separating binome')
+                                    ->body('An error occurred: ' . $e->getMessage())
                                     ->danger()
                                     ->send();
                             }

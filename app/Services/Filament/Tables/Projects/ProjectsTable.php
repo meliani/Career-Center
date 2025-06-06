@@ -37,7 +37,7 @@ class ProjectsTable
             
             // Defense DateTime (sortable)
             Tables\Columns\TextColumn::make('timetable.timeslot.start_time')
-                ->label('Défense Date/Heure')
+                ->label('Defense Date/Heure')
                 ->searchable(false)
                 ->sortable(true)
                 ->dateTime('d/m/Y H:i')
