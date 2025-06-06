@@ -1,22 +1,75 @@
 <x-filament-panels::page>
     {{-- Enhanced Beautiful Filter Widget --}}
+    <style>
+        /* Fallback styles for when Alpine.js is loading */
+        [x-cloak] { display: none !important; }
+        .filter-panel-collapsed { height: 4rem; }
+        .filter-panel-expanded { height: auto; }
+    </style>
+    
     <div 
         x-data="{ 
-            isCollapsed: JSON.parse(localStorage.getItem('project-tabs-collapsed') ?? 'true'),
-            isPinned: JSON.parse(localStorage.getItem('project-tabs-pinned') ?? 'false'),
+            isCollapsed: true,
+            isPinned: false,
             isHovered: false,
+            initialized: false,
             init() {
+                try {
+                    // Try to load from localStorage with fallback
+                    const savedCollapsed = localStorage.getItem('project-tabs-collapsed');
+                    const savedPinned = localStorage.getItem('project-tabs-pinned');
+                    
+                    this.isCollapsed = savedCollapsed ? JSON.parse(savedCollapsed) : true;
+                    this.isPinned = savedPinned ? JSON.parse(savedPinned) : false;
+                } catch (e) {
+                    // Fallback if localStorage fails
+                    this.isCollapsed = true;
+                    this.isPinned = false;
+                }
+                
+                this.initialized = true;
+                
                 // Watch for changes and save to localStorage
                 this.$watch('isCollapsed', value => {
-                    localStorage.setItem('project-tabs-collapsed', JSON.stringify(value));
+                    if (this.initialized) {
+                        try {
+                            localStorage.setItem('project-tabs-collapsed', JSON.stringify(value));
+                        } catch (e) {
+                            console.warn('Could not save to localStorage:', e);
+                        }
+                    }
                 });
                 this.$watch('isPinned', value => {
-                    localStorage.setItem('project-tabs-pinned', JSON.stringify(value));
+                    if (this.initialized) {
+                        try {
+                            localStorage.setItem('project-tabs-pinned', JSON.stringify(value));
+                        } catch (e) {
+                            console.warn('Could not save to localStorage:', e);
+                        }
+                    }
+                });
+            },
+            toggleCollapsed() {
+                this.isCollapsed = !this.isCollapsed;
+                this.$nextTick(() => {
+                    // Force a re-render
+                    this.$refs.content && this.$refs.content.getBoundingClientRect();
+                });
+            },
+            togglePin() {
+                this.isPinned = !this.isPinned;
+                if (this.isPinned) {
+                    this.isCollapsed = false;
+                }
+                this.$nextTick(() => {
+                    // Force a re-render
+                    this.$refs.content && this.$refs.content.getBoundingClientRect();
                 });
             }
         }"
         @mouseenter="isHovered = true"
         @mouseleave="isHovered = false"
+        x-cloak
         class="overflow-hidden rounded-xl bg-white shadow-lg ring-1 ring-gray-950/5 dark:bg-gray-900 dark:ring-white/10 mb-6 transition-all duration-300 border border-gray-200 dark:border-gray-700"
         :class="{ 
             'h-auto': isPinned || !isCollapsed || (isCollapsed && isHovered),
@@ -78,7 +131,7 @@
             <div class="flex items-center gap-2">
                 {{-- Optimized Collapse/Expand Toggle Button --}}
                 <button
-                    @click="isCollapsed = !isCollapsed"
+                    @click="toggleCollapsed()"
                     x-show="!isPinned"
                     x-transition:enter="transition ease-out duration-200"
                     x-transition:enter-start="opacity-0 scale-95"
@@ -107,7 +160,7 @@
                 
                 {{-- Enhanced Pin Button --}}
                 <button
-                    @click="isPinned = !isPinned; if (isPinned) { isCollapsed = false }"
+                    @click="togglePin()"
                     :class="{ 
                         'bg-blue-100 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400 shadow-md': isPinned,
                         'bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300': !isPinned 
@@ -129,6 +182,7 @@
             </div>
         </div>        {{-- Enhanced Collapsible Content --}}
         <div 
+            x-ref="content"
             x-show="isPinned || !isCollapsed || (isCollapsed && isHovered)"
             x-transition:enter="transition ease-out duration-300"
             x-transition:enter-start="opacity-0 -translate-y-4"
