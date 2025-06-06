@@ -150,7 +150,8 @@ class ListProjects extends ListRecords
         $baseQuery = static::getResource()::getEloquentQuery()->active();
         $tabs = [];
 
-        if (auth()->user()->isAdministrator()) {
+        // Allow all authorized users to see programming status tabs
+        if (auth()->user()->isAdministrator() || auth()->user()->isProfessor() || auth()->user()->isDepartmentHead() || auth()->user()->isProgramCoordinator() || auth()->user()->isDirection() || auth()->user()->isAdministrativeSupervisor()) {
             // All Projects tab
             $tabs['all'] = Tab::make(__('All Projects'))
                 ->badge(
@@ -214,7 +215,8 @@ class ListProjects extends ListRecords
         $baseQuery = static::getResource()::getEloquentQuery()->active();
         $tabs = [];
 
-        if (auth()->user()->isAdministrator()) {
+        // Allow all authorized users to see defense status tabs
+        if (auth()->user()->isAdministrator() || auth()->user()->isProfessor() || auth()->user()->isDepartmentHead() || auth()->user()->isProgramCoordinator() || auth()->user()->isDirection() || auth()->user()->isAdministrativeSupervisor()) {
             // Defense Status specific tabs
             foreach (\App\Enums\DefenseStatus::cases() as $status) {
                 $label = $status->getLabel();

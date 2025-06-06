@@ -461,8 +461,8 @@ class ProjectResource extends Core\BaseResource
                         );
                     })
                     ->indicateUsing(fn (array $data): ?string => $data['value'] ? __('Year') . ': ' . (Year::find($data['value'])?->title ?? 'Unknown') : null)
-                    ->visible(fn () => auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()),
-                // trashed filter visible by admins
+                    ->visible(fn () => auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor() || auth()->user()->isProgramCoordinator() || auth()->user()->isDepartmentHead()),
+                // trashed filter visible by admins and some supervisors
                 Tables\Filters\TrashedFilter::make()
                     ->visible(fn () => auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()),
 
