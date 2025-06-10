@@ -2,6 +2,7 @@
 
 namespace App\Filament\App\Widgets\Dashboards;
 
+use App\Models\Apprenticeship;
 use App\Models\FinalYearInternshipAgreement;
 use App\Models\InternshipApplication;
 use Filament\Widgets\Widget;
@@ -36,7 +37,7 @@ class StudentGettingStartedWidget extends Widget
                 'action' => 'redirectToOffers',
             ],
             [
-                'label' => 'Announce Internship',
+                'label' => 'Create Agreement',
                 'icon' => 'heroicon-o-document-text',
                 'color' => 'gray',
                 'action' => 'redirectToAnnounceInternship',
@@ -64,7 +65,17 @@ class StudentGettingStartedWidget extends Widget
         $hasCompleteProfile = $hasBasicProfile && $hasAvatar && $hasContactInfo && $hasDocuments;
 
         $hasApplications = InternshipApplication::where('student_id', $student->id)->exists();
-        $hasAgreement = FinalYearInternshipAgreement::where('student_id', $student->id)->exists();
+        
+        // Check for agreements based on student level
+        if ($student->level === \App\Enums\StudentLevel::FirstYear || 
+            $student->level === \App\Enums\StudentLevel::SecondYear) {
+            // For first and second year students, check for apprenticeship agreements
+            $hasAgreement = \App\Models\Apprenticeship::where('student_id', $student->id)->exists();
+        } else {
+            // For third year students, check for final year internship agreements
+            $hasAgreement = FinalYearInternshipAgreement::where('student_id', $student->id)->exists();
+        }
+        
         $this->hasAgreement = $hasAgreement;
 
         $this->steps = [
@@ -101,11 +112,15 @@ class StudentGettingStartedWidget extends Widget
                 'status' => $hasApplications ? 'completed' : ($hasViewedEnoughOffers ? 'current' : 'pending'),
             ],
             [
-                'title' => __('Announce Internship'),
+                'title' => $student->level === \App\Enums\StudentLevel::ThirdYear 
+                    ? __('Announce Internship') 
+                    : __('Create Apprenticeship'),
                 'status' => $hasAgreement ? 'completed' : ($hasApplications ? 'current' : 'pending'),
             ],
             [
-                'title' => __('Get your Internship Agreement'),
+                'title' => $student->level === \App\Enums\StudentLevel::ThirdYear 
+                    ? __('Get your Internship Agreement') 
+                    : __('Get your Apprenticeship Agreement'),
                 'status' => $hasAgreement ? 'completed' : 'pending',
             ],
         ];
@@ -176,12 +191,28 @@ class StudentGettingStartedWidget extends Widget
     {
         // Ensure the user is authenticated
         if (auth()->check()) {
-            // if has agreement redirect to the agreement page
+            $student = auth()->user();
+            
+            // Check student level and redirect accordingly
+            if ($student->level === \App\Enums\StudentLevel::FirstYear || 
+                $student->level === \App\Enums\StudentLevel::SecondYear) {
+                
+                // For first and second year students, redirect to apprenticeship
+                $hasApprenticeshipAgreement = \App\Models\Apprenticeship::where('student_id', $student->id)->exists();
+                
+                if ($hasApprenticeshipAgreement) {
+                    return redirect()->route('filament.app.resources.apprenticeships.index');
+                }
+                
+                return redirect()->route('filament.app.resources.apprenticeships.create');
+            }
+            
+            // For third year students, redirect to final year internship agreements
             if ($this->hasAgreement) {
-                return redirect()->route('filament.app.resources.final-year-internship-agreements.index'); // Update the route name if different
+                return redirect()->route('filament.app.resources.final-year-internship-agreements.index');
             }
 
-            return redirect()->route('filament.app.resources.final-year-internship-agreements.create'); // Update the route name if different
+            return redirect()->route('filament.app.resources.final-year-internship-agreements.create');
         }
 
         // Optionally, redirect to the login page if not authenticated
