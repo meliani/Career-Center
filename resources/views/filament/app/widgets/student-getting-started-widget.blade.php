@@ -14,7 +14,7 @@
                             <x-heroicon-o-academic-cap class="w-6 h-6 text-primary-500" />
                         </div>
                         <h2 class="text-xl font-bold text-gray-900">
-                            @if(auth()->user()->level === App\Enums\StudentLevel::ThirdYear)
+                            @if(auth()->user()->level === \App\Enums\StudentLevel::ThirdYear)
                                 {{ __('Your Internship Journey') }}
                             @else
                                 {{ __('Your Apprenticeship Journey') }}
