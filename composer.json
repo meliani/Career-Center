@@ -67,10 +67,10 @@
         "symfony/process": "^7.2",
         "webklex/laravel-imap": "^5.3",
         "willvincent/laravel-rateable": "^3.3",
+        "pxlrbt/filament-environment-indicator": "^2.1",
         "z3d0x/filament-logger": "^0.7.3"
     },
     "require-dev": {
-        "pxlrbt/filament-environment-indicator": "^2.1",
         "barryvdh/laravel-debugbar": "^3.12",
         "fakerphp/faker": "^1.9.1",
         "larastan/larastan": "^2.0",
