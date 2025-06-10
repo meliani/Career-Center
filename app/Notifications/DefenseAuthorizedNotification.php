@@ -37,6 +37,7 @@ class DefenseAuthorizedNotification extends Notification
             // Defense overview
             ->line(__('**Administrative supervisor:** ') . $this->project->administrative_supervisor)
             ->line(__('**Defense Date:** ') . $this->project->defense_plan)
+            ->lineIf($this->project->defense_link, __('**Defense Link:** ') . '[' . __('Join Defense') . '](' . $this->project->defense_link . ')')
             ->line('---')
             
             // Student information section

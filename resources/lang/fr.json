@@ -1310,5 +1310,7 @@
     "Final Project Subject": "Sujet de PFE",
     "Student Name": "Nom de l'étudiant",
     "Writing Language": "Langue d'écriture",
-    "Presentation Language": "Langue de présentation"
+    "Presentation Language": "Langue de présentation",
+    "**Defense Link:** ": "**Lien de soutenance :** ",
+    "Join Defense": "Rejoindre la soutenance"
 }
