@@ -14,6 +14,7 @@ use Filament\Infolists\Infolist;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Year;
@@ -133,6 +134,73 @@ class ApprenticeshipResource extends BaseResource
                                                 //     ->columnSpanFull(),
                                                 Forms\Components\MarkdownEditor::make('description')
                                                     ->columnSpanFull(),
+                                            ]),
+                                    ]),
+
+                                Forms\Components\Tabs\Tab::make(__('Supervisors'))
+                                    ->icon('heroicon-o-users')
+                                    ->schema([
+                                        Forms\Components\Section::make(__('External Supervisor'))
+                                            ->description(__('The student\'s supervisor from the organization'))
+                                            ->schema([
+                                                Forms\Components\Select::make('supervisor_id')
+                                                    ->label(__('External Supervisor'))
+                                                    ->preload()
+                                                    ->relationship(
+                                                        name: 'supervisor',
+                                                        titleAttribute: 'full_name',
+                                                        modifyQueryUsing: fn (Builder $query, Forms\Get $get) => $query->where('organization_id', $get('organization_id'))
+                                                    )
+                                                    ->getOptionLabelFromRecordUsing(
+                                                        fn (Model $record) => "{$record->full_name} - {$record->function}"
+                                                    )
+                                                    ->searchable(['first_name', 'last_name'])
+                                                    ->required()
+                                                    ->createOptionForm([
+                                                        Forms\Components\Grid::make(2)
+                                                            ->schema([
+                                                                Forms\Components\Select::make('title')
+                                                                    ->options(Enums\Title::class),
+                                                                Forms\Components\TextInput::make('first_name')
+                                                                    ->required()
+                                                                    ->formatStateUsing(fn (?string $state): ?string => $state !== null ? ucwords($state) : null),
+                                                                Forms\Components\TextInput::make('last_name')
+                                                                    ->required()
+                                                                    ->formatStateUsing(fn (?string $state): ?string => $state !== null ? ucwords($state) : null),
+                                                                Forms\Components\TextInput::make('email')
+                                                                    ->email()
+                                                                    ->required(),
+                                                                Forms\Components\TextInput::make('phone')->tel()->required(),
+                                                                Forms\Components\TextInput::make('function')->required(),
+                                                            ]),
+                                                    ])
+                                                    ->createOptionUsing(function ($data, Forms\Get $get) {
+                                                        $contact = new \App\Models\InternshipAgreementContact;
+                                                        $contact->fill($data);
+                                                        $contact->role = Enums\OrganizationContactRole::Mentor;
+                                                        $contact->organization_id = $get('organization_id');
+                                                        $contact->save();
+
+                                                        return $contact->getKey();
+                                                    })
+                                                    ->editOptionForm([
+                                                        Forms\Components\Grid::make(2)
+                                                            ->schema([
+                                                                Forms\Components\Select::make('title')
+                                                                    ->options(Enums\Title::class),
+                                                                Forms\Components\TextInput::make('first_name')
+                                                                    ->required()
+                                                                    ->formatStateUsing(fn (?string $state): ?string => $state !== null ? ucwords($state) : null),
+                                                                Forms\Components\TextInput::make('last_name')
+                                                                    ->required()
+                                                                    ->formatStateUsing(fn (?string $state): ?string => $state !== null ? ucwords($state) : null),
+                                                                Forms\Components\TextInput::make('email')
+                                                                    ->email()
+                                                                    ->required(),
+                                                                Forms\Components\TextInput::make('phone')->tel()->required(),
+                                                                Forms\Components\TextInput::make('function')->required(),
+                                                            ]),
+                                                    ]),
                                             ]),
                                     ]),
                             ]),
