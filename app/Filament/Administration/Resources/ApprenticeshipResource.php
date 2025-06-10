@@ -202,6 +202,69 @@ class ApprenticeshipResource extends BaseResource
                                                             ]),
                                                     ]),
                                             ]),
+
+                                        Forms\Components\Section::make(__('Organization Representative'))
+                                            ->description(__('The organization\'s main contact person'))
+                                            ->schema([
+                                                Forms\Components\Select::make('parrain_id')
+                                                    ->label(__('Organization Representative'))
+                                                    ->preload()
+                                                    ->relationship(
+                                                        name: 'parrain',
+                                                        titleAttribute: 'full_name',
+                                                        modifyQueryUsing: fn (Builder $query, Forms\Get $get) => $query->where('organization_id', $get('organization_id'))
+                                                    )
+                                                    ->getOptionLabelFromRecordUsing(
+                                                        fn (Model $record) => "{$record->full_name} - {$record->function}"
+                                                    )
+                                                    ->searchable(['first_name', 'last_name'])
+                                                    ->required()
+                                                    ->createOptionForm([
+                                                        Forms\Components\Grid::make(2)
+                                                            ->schema([
+                                                                Forms\Components\Select::make('title')
+                                                                    ->options(Enums\Title::class),
+                                                                Forms\Components\TextInput::make('first_name')
+                                                                    ->required()
+                                                                    ->formatStateUsing(fn (?string $state): ?string => $state !== null ? ucwords($state) : null),
+                                                                Forms\Components\TextInput::make('last_name')
+                                                                    ->required()
+                                                                    ->formatStateUsing(fn (?string $state): ?string => $state !== null ? ucwords($state) : null),
+                                                                Forms\Components\TextInput::make('email')
+                                                                    ->email()
+                                                                    ->required(),
+                                                                Forms\Components\TextInput::make('phone')->tel()->required(),
+                                                                Forms\Components\TextInput::make('function')->required(),
+                                                            ]),
+                                                    ])
+                                                    ->createOptionUsing(function ($data, Forms\Get $get) {
+                                                        $contact = new \App\Models\InternshipAgreementContact;
+                                                        $contact->fill($data);
+                                                        $contact->role = Enums\OrganizationContactRole::Representative;
+                                                        $contact->organization_id = $get('organization_id');
+                                                        $contact->save();
+
+                                                        return $contact->getKey();
+                                                    })
+                                                    ->editOptionForm([
+                                                        Forms\Components\Grid::make(2)
+                                                            ->schema([
+                                                                Forms\Components\Select::make('title')
+                                                                    ->options(Enums\Title::class),
+                                                                Forms\Components\TextInput::make('first_name')
+                                                                    ->required()
+                                                                    ->formatStateUsing(fn (?string $state): ?string => $state !== null ? ucwords($state) : null),
+                                                                Forms\Components\TextInput::make('last_name')
+                                                                    ->required()
+                                                                    ->formatStateUsing(fn (?string $state): ?string => $state !== null ? ucwords($state) : null),
+                                                                Forms\Components\TextInput::make('email')
+                                                                    ->email()
+                                                                    ->required(),
+                                                                Forms\Components\TextInput::make('phone')->tel()->required(),
+                                                                Forms\Components\TextInput::make('function')->required(),
+                                                            ]),
+                                                    ]),
+                                            ]),
                                     ]),
                             ]),
                     ]),
