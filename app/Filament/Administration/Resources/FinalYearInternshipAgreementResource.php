@@ -186,7 +186,25 @@ class FinalYearInternshipAgreementResource extends BaseResource
                                                         $contact->save();
 
                                                         return $contact->getKey();
-                                                    }),
+                                                    })
+                                                    ->editOptionForm([
+                                                        Forms\Components\Grid::make(2)
+                                                            ->schema([
+                                                                Forms\Components\Select::make('title')
+                                                                    ->options(Enums\Title::class),
+                                                                Forms\Components\TextInput::make('first_name')
+                                                                    ->required()
+                                                                    ->formatStateUsing(fn (?string $state): ?string => $state !== null ? ucwords($state) : null),
+                                                                Forms\Components\TextInput::make('last_name')
+                                                                    ->required()
+                                                                    ->formatStateUsing(fn (?string $state): ?string => $state !== null ? ucwords($state) : null),
+                                                                Forms\Components\TextInput::make('email')
+                                                                    ->email()
+                                                                    ->required(),
+                                                                Forms\Components\TextInput::make('phone')->tel()->required(),
+                                                                Forms\Components\TextInput::make('function')->required(),
+                                                            ]),
+                                                    ]),
                                             ]),
                                     ]),
 
