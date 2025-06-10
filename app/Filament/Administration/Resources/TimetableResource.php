@@ -167,7 +167,8 @@ class TimetableResource extends BaseResource
                         $organizations = $record->project?->final_internship_agreements?->pluck('organization.name')?->filter()?->unique();
                         return $organizations?->isNotEmpty() ? $organizations->implode(', ') : '-';
                     })
-                    ->sortable()
+                    ->sortable(false)
+                    ->searchable(false)
                     ->limit(40),
                 Tables\Columns\TextColumn::make('project_title')
                     ->label('Sujet de stage PFE')

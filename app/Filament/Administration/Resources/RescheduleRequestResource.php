@@ -145,6 +145,8 @@ class RescheduleRequestResource extends Resource
                     
                 Tables\Columns\TextColumn::make('current_defense_info')
                     ->label('Current Defense')
+                    ->sortable(false)
+                    ->searchable(false)
                     ->state(function (RescheduleRequest $record): string {
                         try {
                             if (!$record->timetable) {
@@ -165,6 +167,8 @@ class RescheduleRequestResource extends Resource
                     }),
                     
                 Tables\Columns\TextColumn::make('requested_defense_info')
+                    ->sortable(false)
+                    ->searchable(false)
                     ->label('Requested Time')
                     ->state(function (RescheduleRequest $record): string {
                         try {
