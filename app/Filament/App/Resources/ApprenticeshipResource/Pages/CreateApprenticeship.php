@@ -71,7 +71,7 @@ class CreateApprenticeship extends CreateRecord
                                 ->relationship('organization', 'name', fn (Builder $query) => $query->active())
                                 ->searchable()
                                 ->preload()
-                                ->getOptionLabelUsing(fn (Model $record) => $record->name . ' - ' . $record->country)
+                                ->getOptionLabelUsing(fn (?Model $record) => $record ? $record->name . ' - ' . $record->country : '')
                                 ->createOptionForm([
                                     Forms\Components\Grid::make(2)
                                         ->schema([
@@ -91,7 +91,7 @@ class CreateApprenticeship extends CreateRecord
                                                 ->maxLength(255),
                                             Forms\Components\TextInput::make('website')
                                                 ->placeholder('Enter website URL')
-                                                ->reactive()
+                                                ->live()
                                                 ->rules([
                                                     'nullable',
                                                     'regex:/^((https?:\/\/)?([\w\-]+\.)+[\w\-]+(\/[\w\-._~:?#[\]@!$&\'()*+,;=]*)?)$/i',
@@ -264,33 +264,33 @@ class CreateApprenticeship extends CreateRecord
                             DateRangePicker::make('internship_period')
                                 ->label(__('Apprenticeship Period'))
                                 ->required()
-                                ->afterStateHydrated(function ($component, $state, $get, $set) {
-                                    if (!empty($state)) {
-                                        $dates = explode(' - ', $state);
-                                        if (count($dates) === 2) {
-                                            $set('starting_at', $dates[0]);
-                                            $set('ending_at', $dates[1]);
-                                        }
-                                    }
-                                })
-                                ->afterStateUpdated(function (callable $set, $state, $get) {
-                                    if (!empty($state)) {
-                                        $dates = explode(' - ', $state);
-                                        if (count($dates) === 2) {
-                                            $start = \Carbon\Carbon::createFromFormat('d/m/Y', $dates[0]);
-                                            $end = \Carbon\Carbon::createFromFormat('d/m/Y', $dates[1]);
-                                            $weeks = ceil($start->floatDiffInRealWeeks($end));
-                                            if ($weeks > 8) {
-                                                $set('internship_period', null); 
-                                                Filament\Notifications\Notification::make()
-                                                    ->title('Internship period too long')
-                                                    ->body('The internship period cannot exceed 8 weeks.')
-                                                    ->danger()
-                                                    ->send();
-                                            }
-                                        }
-                                    }
-                                })
+                                // ->afterStateHydrated(function ($component, $state, $get, $set) {
+                                //     if (!empty($state)) {
+                                //         $dates = explode(' - ', $state);
+                                //         if (count($dates) === 2) {
+                                //             $set('starting_at', $dates[0]);
+                                //             $set('ending_at', $dates[1]);
+                                //         }
+                                //     }
+                                // })
+                                // ->afterStateUpdated(function (callable $set, $state, $get) {
+                                //     if (!empty($state)) {
+                                //         $dates = explode(' - ', $state);
+                                //         if (count($dates) === 2) {
+                                //             $start = \Carbon\Carbon::createFromFormat('d/m/Y', $dates[0]);
+                                //             $end = \Carbon\Carbon::createFromFormat('d/m/Y', $dates[1]);
+                                //             $weeks = ceil($start->floatDiffInRealWeeks($end));
+                                //             if ($weeks > 8) {
+                                //                 $set('internship_period', null); 
+                                //                 Filament\Notifications\Notification::make()
+                                //                     ->title('Internship period too long')
+                                //                     ->body('The internship period cannot exceed 8 weeks.')
+                                //                     ->danger()
+                                //                     ->send();
+                                //             }
+                                //         }
+                                //     }
+                                // })
                                 ->helperText(__('The internship period cannot exceed 8 weeks'))
                                 ->columnSpanFull(),
 

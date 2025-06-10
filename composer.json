@@ -27,7 +27,7 @@
         "cyrildewit/eloquent-viewable": "^7.0",
         "doctrine/dbal": "^3.8",
         "fauzie811/filament-list-entry": "^1.0",
-        "filament/filament": "^3.2",
+        "filament/filament": "^3.3",
         "filament/forms": "^3.2",
         "filament/notifications": "^3.2",
         "filament/spatie-laravel-settings-plugin": "^3.2",
@@ -52,7 +52,6 @@
         "parallax/filament-comments": "^1.4",
         "parfaitementweb/filament-country-field": "dev-dev",
         "propaganistas/laravel-phone": "^5.3",
-        "pxlrbt/filament-environment-indicator": "^2.1",
         "pxlrbt/filament-excel": "^2.3",
         "revolution/laravel-google-sheets": "^6.4",
         "saade/filament-fullcalendar": "^3.2.4",
@@ -71,6 +70,7 @@
         "z3d0x/filament-logger": "^0.7.3"
     },
     "require-dev": {
+        "pxlrbt/filament-environment-indicator": "^2.1",
         "barryvdh/laravel-debugbar": "^3.12",
         "fakerphp/faker": "^1.9.1",
         "larastan/larastan": "^2.0",
