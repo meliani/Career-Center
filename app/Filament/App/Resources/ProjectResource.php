@@ -14,6 +14,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use App\Settings\DisplaySettings;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Infolists\Components\TextEntry;
+
 class ProjectResource extends StudentBaseResource
 {
     protected static ?string $model = Project::class;
@@ -92,6 +95,13 @@ class ProjectResource extends StudentBaseResource
                     ->dateTime()
                     ->toggleable(false)
                     ->sortable(),
+                TextColumn::make('defense_link')
+                    ->label('Defense Link')
+                    ->url(fn ($state): ?string => $state)
+                    ->openUrlInNewTab()
+                    ->placeholder('N/A')
+                    ->toggleable(true)
+                    ->default('N/A'),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
@@ -158,6 +168,12 @@ class ProjectResource extends StudentBaseResource
                             ->url(fn ($state) => $state)
                             ->openUrlInNewTab()
                             ->visible(fn ($state) => $state !== null),
+                        TextEntry::make('defense_link')
+                            ->label('Defense Link')
+                            ->url(fn ($state): ?string => $state)
+                            ->openUrlInNewTab()
+                            ->placeholder('N/A')
+                            ->visible(fn ($state): bool => !empty($state)),
                     ]),
             ]);
     }

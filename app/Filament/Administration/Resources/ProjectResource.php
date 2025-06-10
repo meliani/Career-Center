@@ -162,79 +162,144 @@ class ProjectResource extends Core\BaseResource
             'view' => Pages\ViewProject::route('/{record}/view'),
 
         ];
-    }
-
-    public static function form(Form $form): Form
+    }    public static function form(Form $form): Form
     {
         return $form
             ->schema([
-
-                Forms\Components\Section::make('Project information')
-                    ->columnSpan(1)
+                Forms\Components\Grid::make(3)
                     ->schema([
-                        Forms\Components\MarkdownEditor::make('title')
-                            ->disabled(fn () => (auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()) === false)
-                            ->required()
-                            ->maxLength(255)
-                            ->columnspan(2),
-                        Forms\Components\DatePicker::make('start_date')
-                            ->native(false)
-                            ->disabled(fn () => (auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()) === false),
-                        Forms\Components\DatePicker::make('end_date')
-                            ->native(false)
-                            ->disabled(fn () => (auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()) === false),
-                        Forms\Components\DatePicker::make('midterm_due_date')
-                            ->label(__('Midterm Due Date'))
-                            ->native(false)
-                            ->disabled(fn () => (auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()) === false),
-                        Forms\Components\Select::make('midterm_report_status')
-                            ->label(__('Midterm Report Status'))
-                            ->options(\App\Enums\MidTermReportStatus::class)
-                            ->disabled(fn () => (auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()) === false),
-                    ])
+                        // Left Column - Main Project Information
+                        Forms\Components\Group::make()
+                            ->columnSpan(2)
+                            ->schema([
+                                // Project Details Section
+                                Forms\Components\Section::make(__('Project Details'))
+                                    ->description(__('Basic information about the project'))
+                                    ->icon('heroicon-o-document-text')
+                                    ->collapsible()
+                                    ->schema([
+                                        Forms\Components\MarkdownEditor::make('title')
+                                            ->label(__('Project Title'))
+                                            ->required()
+                                            ->maxLength(255)
+                                            ->columnSpanFull()
+                                            ->disabled(fn () => !(auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor())),
+                                    ])
+                                    ->columns(1),
+
+                                // Timeline Section
+                                Forms\Components\Section::make(__('Project Timeline'))
+                                    ->description(__('Important dates and deadlines'))
+                                    ->icon('heroicon-o-calendar')
+                                    ->collapsible()
+                                    ->schema([
+                                        Forms\Components\DatePicker::make('start_date')
+                                            ->label(__('Start Date'))
+                                            ->required()
+                                            ->native(false)
+                                            ->disabled(fn () => !(auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor())),
+                                        Forms\Components\DatePicker::make('end_date')
+                                            ->label(__('End Date'))
+                                            ->required()
+                                            ->native(false)
+                                            ->disabled(fn () => !(auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor())),
+                                        Forms\Components\DatePicker::make('midterm_due_date')
+                                            ->label(__('Midterm Due Date'))
+                                            ->native(false)
+                                            ->disabled(fn () => !(auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor())),
+                                        Forms\Components\Select::make('midterm_report_status')
+                                            ->label(__('Midterm Report Status'))
+                                            ->options(\App\Enums\MidTermReportStatus::class)
+                                            ->disabled(fn () => !(auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor())),
+                                    ])
+                                    ->columns(2),
+
+                                // Defense Section
+                                Forms\Components\Section::make(__('Defense Information'))
+                                    ->description(__('Defense scheduling and links'))
+                                    ->icon('heroicon-o-presentation-chart-line')
+                                    ->collapsible()
+                                    ->schema([
+                                        Forms\Components\TextInput::make('defense_link')
+                                            ->label(__('Defense Link'))
+                                            ->url()
+                                            ->placeholder(__('Enter the online defense meeting link if applicable'))
+                                            ->columnSpanFull()
+                                            ->disabled(fn () => !(auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor())),
+                                    ])
+                                    ->columns(1),
+                            ]),
+
+                        // Right Column - Documents and Files
+                        Forms\Components\Group::make()
+                            ->columnSpan(1)
+                            ->schema([
+                                // Documents Section
+                                Forms\Components\Section::make(__('Documents & Files'))
+                                    ->description(__('Upload and manage project documents'))
+                                    ->icon('heroicon-o-document-arrow-up')
+                                    ->collapsible()
+                                    ->schema([
+                                        Forms\Components\FileUpload::make('organization_evaluation_sheet_url')
+                                            ->label(__('Organization Evaluation Sheet'))
+                                            ->disk('public')
+                                            ->directory('document/organization_evaluation_sheet')
+                                            ->acceptedFileTypes(['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'])
+                                            ->maxSize(10240) // 10MB
+                                            ->downloadable()
+                                            ->openable()
+                                            ->deletable()
+                                            ->previewable()
+                                            ->columnSpanFull()
+                                            ->helperText(fn ($state) => $state ? __('Current file: :filename', ['filename' => basename($state)]) : __('No file uploaded yet'))
+                                            ->disabled(fn () => !(auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor())),
+                                    ])
+                                    ->columns(1),
+
+                                // Status Information (Read-only)
+                                Forms\Components\Section::make(__('Project Status'))
+                                    ->description(__('Current project status information'))
+                                    ->icon('heroicon-o-information-circle')
+                                    ->collapsible()
+                                    ->collapsed()
+                                    ->schema([
+                                        Forms\Components\Placeholder::make('defense_status')
+                                            ->label(__('Defense Status'))
+                                            ->content(fn ($record) => $record?->defense_status?->getLabel() ?? __('Not set')),
+                                        Forms\Components\Placeholder::make('defense_authorized_at')
+                                            ->label(__('Defense Authorized At'))
+                                            ->content(fn ($record) => $record?->defense_authorized_at?->format('M d, Y H:i') ?? __('Not authorized yet')),
+                                        Forms\Components\Placeholder::make('students_count')
+                                            ->label(__('Number of Students'))
+                                            ->content(fn ($record) => $record ? $record->agreements->count() : 0),
+                                    ])
+                                    ->columns(1),
+                            ]),
+                    ]),
+
+                // Hidden Defense Timetable Section (for admins only)
+                Forms\Components\Section::make(__('Defense Scheduling'))
+                    ->description(__('Schedule defense time and location'))
+                    ->icon('heroicon-o-clock')
+                    ->relationship('timetable')
+                    ->hidden(fn () => !auth()->user()->isAdministrator())
                     ->collapsible()
-                    ->columns(2),
-                Forms\Components\Section::make(__('Defense information'))
-                    ->label(__('Defense information'))
-                    ->columnSpan(1)
-                    ->hidden(fn () => auth()->user()->isAdministrator() === false)
-                    ->relationship('timetable') // Changed from 'currentYearTimetable' to just 'timetable'
-                    ->hidden(true)
-                    ->columns(3)
+                    ->collapsed()
                     ->schema([
-                        // Forms\Components\Fieldset::make('Time')
-                        //     ->relationship('timeslot')
-                        //     ->schema([
-                        //         Forms\Components\DateTimePicker::make('start_time')
-                        //             // ->format('m/d/Y hh:ii:ss')
-                        //             ->seconds(false)
-                        //             ->native(false)
-                        //             ->displayFormat('Y-m-d H:i:s')
-                        //             ->required(),
-                        //         // ->disabled(fn () => auth()->user()->isAdministrator() === false),
-                        //         Forms\Components\DateTimePicker::make('end_time')
-                        //             ->seconds(false)
-                        //             // ->native(false)
-                        //             ->displayFormat('Y-m-d H:i:s')
-                        //             ->required(),
-                        //         // ->disabled(fn () => auth()->user()->isAdministrator() === false),
-                        //     ]),
                         Forms\Components\Select::make('timeslot_id')
+                            ->label(__('Time Slot'))
                             ->relationship('timeslot', 'start_time')
-                            // ->required()
                             ->nullable()
                             ->dehydrated(fn ($state) => filled($state))
-                            ->disabled(fn () => auth()->user()->isAdministrator() === false),
+                            ->disabled(fn () => !auth()->user()->isAdministrator()),
                         Forms\Components\Select::make('room_id')
+                            ->label(__('Room'))
                             ->relationship('room', 'name')
-                            // ->required()
                             ->nullable()
                             ->dehydrated(fn ($state) => filled($state))
-
-                            ->disabled(fn () => auth()->user()->isAdministrator() === false),
+                            ->disabled(fn () => !auth()->user()->isAdministrator()),
                     ])
-                    ->columns(3),
-
+                    ->columns(2),
             ]);
     }
 
@@ -284,14 +349,7 @@ class ProjectResource extends Core\BaseResource
                         ? \App\Services\Filament\Tables\Projects\ProjectsGrid::get()
                         : \App\Services\Filament\Tables\Projects\ProjectsTable::get()
                 ),
-                Tables\Columns\TextColumn::make('midterm_due_date')
-                    ->label(__('Midterm Due Date'))
-                    ->date()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('midterm_report_status')
-                    ->label(__('Midterm Status'))
-                    ->badge()
-                    ->sortable(),
+
             ])
             ->contentGrid(
                 fn () => $livewire->isGridLayout()
@@ -1059,6 +1117,16 @@ class ProjectResource extends Core\BaseResource
                                     ->markdown()
                                     ->copyable(fn ($state) => (bool) $state)
                                     ->copyMessage('Link copied!')
+                                    ->copyMessageDuration(1500),
+                                Infolists\Components\TextEntry::make('defense_link')
+                                    ->label(__('Defense Link'))
+                                    ->icon('heroicon-o-link')
+                                    ->url(fn ($state): ?string => $state)
+                                    ->openUrlInNewTab()
+                                    ->placeholder(__('N/A'))
+                                    ->visible(fn ($state): bool => !empty($state))
+                                    ->copyable()
+                                    ->copyMessage(__('Link copied!'))
                                     ->copyMessageDuration(1500),
                             ]),
                     ]),

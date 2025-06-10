@@ -68,6 +68,7 @@ class Project extends Core\BackendBaseModel
         'organization_evaluation_sheet_url',
         'midterm_due_date',
         'midterm_report_status',
+        'defense_link',
     ];
 
     protected $appends = [
@@ -83,6 +84,7 @@ class Project extends Core\BackendBaseModel
         'start_date' => 'date',
         'end_date' => 'date',
         'midterm_due_date' => 'date',
+        'defense_authorized_at' => 'datetime',
         'language' => Enums\Language::class,
         'writing_language' => Enums\Language::class,
         'presentation_language' => Enums\Language::class,

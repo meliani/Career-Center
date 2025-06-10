@@ -54,7 +54,7 @@ class ProjectsTable
                 ->toggleable(isToggledHiddenByDefault: true)
                 ->sortable(false)
                 ->visible(fn (DisplaySettings $displaySettings) => $displaySettings->display_plannings || auth()->user()->isAdministrator()),
-            
+
             // Defense plan
             Tables\Columns\TextColumn::make('defense_plan')
                 ->label('Defense plan')
@@ -172,6 +172,15 @@ class ProjectsTable
                         ->badge()
                         ->tooltip(fn ($record) => $record->evaluation_sheet_url ? __('Open document in a new tab') : __('Click to view the project'))
                         ->url(fn ($record) => $record->evaluation_sheet_url, shouldOpenInNewTab: true),
+                    Tables\Columns\TextColumn::make('defense_link')
+                    ->label(__('Defense Link'))
+                    ->url(fn ($state): ?string => $state)
+                    ->openUrlInNewTab()
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false)
+                    ->placeholder(__('N/A')),
+                    // ->visible(fn () => auth()->user()->isAdministrator() || auth()->user()->isAdministrativeSupervisor()),
                 ]),
             // Sujet de stage PFE
             Tables\Columns\TextColumn::make('title')
@@ -308,6 +317,17 @@ class ProjectsTable
                 ->formatStateUsing(fn ($state) => $state?->getLabel())
                 ->color(fn ($state) => $state?->getColor())
                 ->sortable(),
+                Tables\Columns\TextColumn::make('midterm_due_date')
+                    ->label(__('Midterm Due Date'))
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->date()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('midterm_report_status')
+                    ->label(__('Midterm Status'))
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->badge()
+                    ->sortable(),
+
         ];
     }
 }
