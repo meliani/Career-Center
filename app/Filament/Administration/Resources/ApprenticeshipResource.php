@@ -286,7 +286,8 @@ class ApprenticeshipResource extends BaseResource
                 Tables\Columns\TextColumn::make('student.level')
                     ->label('Level')
                     ->badge()
-                    ->sortable(),
+                    ->sortable()
+                    ->formatStateUsing(fn ($state) => $state?->getLabel()),
 
                 Tables\Columns\TextColumn::make('organization.name')
                     ->description(fn ($record) => $record->organization->city . ', ' . $record->organization->country)
@@ -325,9 +326,21 @@ class ApprenticeshipResource extends BaseResource
                     ->options(Enums\InternshipType::class)
                     ->label('Work Modality'),
                 Tables\Filters\SelectFilter::make('student_level')
-                    ->relationship('student', 'level')
-                    ->options(Enums\StudentLevel::class)
-                    ->label('Level'),
+                    ->label('Level')
+                    ->options([
+                        'FirstYear' => __('FirstYear'),
+                        'SecondYear' => __('SecondYear'),
+                        // 'ThirdYear' => __('ThirdYear'),
+                        // 'MasterIoTBigData' => __('MasterIoTBigData'),
+                        // 'AlumniTransitional' => __('AlumniTransitional'),
+                        // 'Alumni' => __('Alumni'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query->when(
+                            $data['value'],
+                            fn (Builder $query, $value) => $query->whereHas('student', fn ($q) => $q->where('level', $value))
+                        );
+                    }),
                 Tables\Filters\SelectFilter::make('year')
                     ->label('Year')
                     ->options(Year::getYearsForSelect(1))
