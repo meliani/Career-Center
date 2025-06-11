@@ -6,6 +6,7 @@ use App\Enums;
 use App\Filament\App\Resources\ApprenticeshipResource;
 use App\Models\Apprenticeship;
 use App\Models\Organization;
+use App\Services\ApprenticeshipValidator;
 use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Components\SpatieTagsInput;
@@ -30,9 +31,10 @@ class CreateApprenticeship extends CreateRecord
 
     protected function getRedirectUrl(): string
     {
-        return $this->record
-            ? $this->getResource()::getUrl('view', ['record' => $this->record])
-            : $this->getResource()::getUrl('index');
+        if ($this->record && $this->record->getKey()) {
+            return $this->getResource()::getUrl('view', ['record' => $this->record->getKey()]);
+        }
+        return $this->getResource()::getUrl('index');
     }
     
     protected function getCreatedNotification(): ?Notification
@@ -374,29 +376,34 @@ class CreateApprenticeship extends CreateRecord
         ];
     }
 
-    protected function handleRecordCreation(array $data): Apprenticeship
+    protected function handleRecordCreation(array $data): Model
     {
         try {
-            return static::getModel()::create($data);
-        } catch (QueryException $e) {
-            // Check if it's a unique constraint violation
-            if (str_contains($e->getMessage(), 'student_id')) {
+            // Process internship_period to extract starting_at and ending_at for validation
+            if (!empty($data['internship_period']) && strpos($data['internship_period'], ' - ') !== false) {
+                [$start, $end] = explode(' - ', $data['internship_period']);
+                $data['starting_at'] = \Carbon\Carbon::createFromFormat('d/m/Y', $start);
+                $data['ending_at'] = \Carbon\Carbon::createFromFormat('d/m/Y', $end);
+            }
+            
+            // Validate using service
+            ApprenticeshipValidator::validate($data);
+            $record = static::getModel()::create($data);
+            if (! $record || ! $record->getKey()) {
                 Notification::make()
-                    ->title('You already have an apprenticeship agreement for this academic year')
-                    ->body('Only one apprenticeship agreement is allowed per academic year.')
+                    ->title('Could not save apprenticeship')
+                    ->body('Please check your data and ensure all requirements are met. If you see other error notifications above, please correct them.')
                     ->danger()
                     ->send();
-
                 $this->halt();
             }
-
-            throw $e;
+            return $record;
         } catch (\Exception $e) {
             Notification::make()
-                ->title($e->getMessage())
+                ->title('Validation Error')
+                ->body($e->getMessage())
                 ->danger()
                 ->send();
-
             $this->halt();
         }
     }
