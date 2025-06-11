@@ -525,6 +525,33 @@ class ApprenticeshipResource extends BaseResource
                                     ->icon('heroicon-o-calendar')
                                     ->badge(),
                             ]),
+
+                        Infolists\Components\Section::make(__('Cancellation Information'))
+                            ->icon('heroicon-o-x-circle')
+                            ->collapsible()
+                            ->collapsed()
+                            ->visible(fn ($record) => $record->cancelled_at !== null || $record->cancellation_reason !== null)
+                            ->schema([
+                                Infolists\Components\TextEntry::make('cancelled_at')
+                                    ->label(__('Cancelled At'))
+                                    ->icon('heroicon-o-calendar')
+                                    ->badge()
+                                    ->color('danger')
+                                    ->dateTime(),
+                                Infolists\Components\TextEntry::make('cancellation_reason')
+                                    ->label(__('Cancellation Reason'))
+                                    ->icon('heroicon-o-document-text')
+                                    ->markdown()
+                                    ->columnSpanFull(),
+                                Infolists\Components\TextEntry::make('verification_document_url')
+                                    ->label(__('Verification Document'))
+                                    ->icon('heroicon-o-document')
+                                    ->formatStateUsing(fn ($state) => $state ? __('View Document') : __('No document'))
+                                    ->badge()
+                                    ->color(fn ($state) => $state ? 'success' : 'gray')
+                                    ->url(fn ($record) => $verification_document_url, shouldOpenInNewTab: true)
+                                    ->visible(fn ($record) => $record->verification_document_url !== null),
+                            ]),
                     ]),
             ]);
     }
