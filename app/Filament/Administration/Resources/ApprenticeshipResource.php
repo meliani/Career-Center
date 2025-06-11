@@ -293,10 +293,20 @@ class ApprenticeshipResource extends BaseResource
                     ->description(fn ($record) => $record->organization->city . ', ' . $record->organization->country)
                     ->searchable(),
 
+                Tables\Columns\TextColumn::make('starting_at')
+                    ->label('Date Début')
+                    ->date('d/m/Y')
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('ending_at')
+                    ->label('Date Fin')
+                    ->date('d/m/Y')
+                    ->sortable(),
+
                 Tables\Columns\TextColumn::make('title')
                     ->searchable()
-                    ->limit(50)
-                    ->description(fn ($record) => __('Start date') . ': ' . $record->starting_at->format('d/m/Y') . ' - ' . __('End date') . ': ' . $record->ending_at->format('d/m/Y')),
+                    ->description(fn ($record) => __('Start date') . ': ' . $record->starting_at->format('d/m/Y') . ' - ' . __('End date') . ': ' . $record->ending_at->format('d/m/Y'))
+                    ->limit(50),
 
                 Tables\Columns\TextColumn::make('parrain.full_name')
                     ->searchable(false)
