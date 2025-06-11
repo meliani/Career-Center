@@ -117,30 +117,36 @@ class TimetableResource extends BaseResource
                 Tables\Columns\TextColumn::make('defense_date')
                     ->label('Date de soutenance')
                     ->getStateUsing(fn ($record) => $record->timeslot?->defense_date ?? '-')
-                    ->sortable(),
+                    ->searchable(false)
+                    ->sortable(false),
                 Tables\Columns\TextColumn::make('defense_time')
                     ->label('Heure de soutenance')
                     ->getStateUsing(fn ($record) => $record->timeslot?->defense_time ?? '-')
+                    ->searchable(false)
                     ->sortable(false),
                 Tables\Columns\TextColumn::make('room_name')
                     ->label('Salle')
                     ->getStateUsing(fn ($record) => $record->room?->name ?? '-')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('id_pfe')
+                    ->searchable(false)
+                    ->sortable(false),
+                // Calculable field: disable search/sort, enable sort/search via relationship below
+                Tables\Columns\TextColumn::make('project.final_internship_agreements.student.id_pfe')
                     ->label('ID PFE')
-                    ->getStateUsing(function ($record) {
-                        $students = $record->project?->final_internship_agreements?->pluck('student.id_pfe')?->filter();
-                        return $students?->isNotEmpty() ? $students->implode(', ') : '-';
-                    })
                     ->sortable()
-                    ->limit(20),
+                    ->searchable(),
+                // Calculable field: disable search/sort, enable sort/search via relationship below
+                Tables\Columns\TextColumn::make('project.final_internship_agreements.student.name')
+                    ->label('Nom de l\'étudiant')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('student_name')
                     ->label('Nom de l\'étudiant')
                     ->getStateUsing(function ($record) {
                         $students = $record->project?->final_internship_agreements?->pluck('student.name')?->filter();
                         return $students?->isNotEmpty() ? $students->implode(', ') : '-';
                     })
-                    ->sortable()
+                    ->sortable(false)
+                    ->searchable(false)
                     ->limit(30),
                 Tables\Columns\TextColumn::make('student_program')
                     ->label('Filière')
@@ -151,7 +157,8 @@ class TimetableResource extends BaseResource
                         return $programs?->isNotEmpty() ? $programs->implode(', ') : '-';
                     })
                     ->badge()
-                    ->sortable(),
+                    ->sortable(false)
+                    ->searchable(false),
                 Tables\Columns\TextColumn::make('organization_name')
                     ->label('Organisme d\'accueil')
                     ->getStateUsing(function ($record) {
@@ -164,7 +171,8 @@ class TimetableResource extends BaseResource
                 Tables\Columns\TextColumn::make('project_title')
                     ->label('Sujet de stage PFE')
                     ->getStateUsing(fn ($record) => $record->project?->title ?? '-')
-                    ->sortable()
+                    ->searchable(false)
+                    ->sortable(false)
                     ->limit(50),
                 Tables\Columns\TextColumn::make('academic_supervisor')
                     ->label('Encadrant interne')
@@ -172,6 +180,7 @@ class TimetableResource extends BaseResource
                         $prof->pivot->jury_role->value === JuryRole::Supervisor->value
                     )?->first()?->name ?? '-')
                     ->sortable(false)
+                    ->searchable(false)
                     ->limit(30),
                 Tables\Columns\TextColumn::make('reviewers')
                     ->label('Examinateurs')
@@ -182,59 +191,16 @@ class TimetableResource extends BaseResource
                         return $reviewers ?: '-';
                     })
                     ->sortable(false)
+                    ->searchable(false)
                     ->limit(40),
                 Tables\Columns\TextColumn::make('external_supervisor')
                     ->label('Encadrant externe')
                     ->getStateUsing(fn ($record) => $record->project?->externalSupervisor?->full_name ?? '-')
                     ->sortable(false)
+                    ->searchable(false)
                     ->limit(30),
 
-                // Tables\Columns\TextColumn::make('user_id')
-                //     ->numeric()
-                //     ->sortable(),
-                // Tables\Columns\IconColumn::make('is_enabled')
-                //     ->boolean(),
-                // Tables\Columns\IconColumn::make('is_taken')
-                //     ->boolean(),
-                // Tables\Columns\IconColumn::make('is_confirmed')
-                //     ->boolean(),
-                // Tables\Columns\IconColumn::make('is_cancelled')
-                //     ->boolean(),
-                // Tables\Columns\IconColumn::make('is_rescheduled')
-                //     ->boolean(),
-                // Tables\Columns\IconColumn::make('is_deleted')
-                //     ->boolean(),
-                // Tables\Columns\TextColumn::make('confirmed_at')
-                //     ->dateTime()
-                //     ->sortable(),
-                // Tables\Columns\TextColumn::make('cancelled_at')
-                //     ->dateTime()
-                //     ->sortable(),
-                // Tables\Columns\TextColumn::make('rescheduled_at')
-                //     ->dateTime()
-                //     ->sortable(),
-                // Tables\Columns\TextColumn::make('deleted_at')
-                //     ->dateTime()
-                //     ->sortable()
-                //     ->toggleable(isToggledHiddenByDefault: true),
-                // Tables\Columns\TextColumn::make('confirmed_by')
-                //     ->numeric()
-                //     ->sortable(),
-                // Tables\Columns\TextColumn::make('cancelled_by')
-                //     ->numeric()
-                //     ->sortable(),
-                // Tables\Columns\TextColumn::make('rescheduled_by')
-                //     ->numeric()
-                //     ->sortable(),
-                // Tables\Columns\TextColumn::make('deleted_by')
-                //     ->numeric()
-                //     ->sortable(),
-                // Tables\Columns\TextColumn::make('created_by')
-                //     ->numeric()
-                //     ->sortable(),
-                // Tables\Columns\TextColumn::make('updated_by')
-                //     ->numeric()
-                //     ->sortable(),
+                // ...existing code...
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
