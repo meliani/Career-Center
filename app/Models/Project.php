@@ -318,7 +318,8 @@ class Project extends Core\BackendBaseModel
         }
         $currentYearId = $currentYear->id;
         
-        return $query->whereNot('defense_status', Enums\DefenseStatus::Completed)
+        return $query
+        // ->whereNot('defense_status', Enums\DefenseStatus::Completed)
             ->whereHas('agreements', function ($query) use ($currentYearId) {
                 $query->whereMorphRelation(
                     'agreeable',
