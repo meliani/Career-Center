@@ -33,18 +33,9 @@ class TimetableResource extends BaseResource
 
     protected static ?string $navigationLabel = 'Defenses Timetable';
 
-    protected static ?string $navigationGroup = 'Internships and Projects';
+    protected static ?string $navigationGroup = 'Defense Management';
 
-    protected static ?string $navigationParentItem = 'Final Projects';
-
-    public static function canViewAny(): bool
-    {
-        if (auth()->check()) {
-            return auth()->user()->isAdministrator();
-        }
-
-        return false;
-    }
+    // protected static ?string $navigationParentItem = 'Final Projects';
 
     public static function getEloquentQuery(): Builder
     {

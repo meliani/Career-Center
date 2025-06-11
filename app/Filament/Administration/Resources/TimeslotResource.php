@@ -5,6 +5,7 @@ namespace App\Filament\Administration\Resources;
 use App\Filament\Administration\Resources\TimeslotResource\Pages;
 use App\Filament\Core\BaseResource as Resource;
 use App\Models\Timeslot;
+use App\Models\Year;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Tables;
@@ -21,9 +22,9 @@ class TimeslotResource extends Resource
     protected static ?string $title = 'Manage Timeslots';
 
     // protected static ?string $recordTitleAttribute = '';
-    protected static ?string $navigationParentItem = 'Defenses Timetable';
+    // protected static ?string $navigationParentItem = 'Defenses Timetable';
 
-    protected static ?string $navigationGroup = 'Internships and Projects';
+    protected static ?string $navigationGroup = 'Defense Management';
 
     protected static ?string $navigationIcon = 'heroicon-o-clock';
 
@@ -38,11 +39,17 @@ class TimeslotResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\DateTimePicker::make('start_time'),
-                Forms\Components\DateTimePicker::make('end_time'),
-                Forms\Components\Toggle::make('is_enabled'),
-                // Forms\Components\Toggle::make('is_taken'),
-
+                Forms\Components\Select::make('year_id')
+                    ->label('Academic Year')
+                    ->relationship('year', 'title')
+                    ->default(Year::current()?->id)
+                    ->required(),
+                Forms\Components\DateTimePicker::make('start_time')
+                    ->required(),
+                Forms\Components\DateTimePicker::make('end_time')
+                    ->required(),
+                Forms\Components\Toggle::make('is_enabled')
+                    ->default(true),
             ]);
     }
 
@@ -50,6 +57,9 @@ class TimeslotResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('year.title')
+                    ->label('Academic Year')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('start_time')
                     ->dateTime()
                     ->sortable(),
@@ -59,9 +69,6 @@ class TimeslotResource extends Resource
                 Tables\Columns\ToggleColumn::make('is_enabled')
                     ->label('Enabled')
                     ->sortable(),
-                // Tables\Columns\ToggleColumn::make('is_available')
-                //     ->label('Taken')
-                //     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -72,8 +79,12 @@ class TimeslotResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('year_id')
+                    ->label('Academic Year')
+                    ->relationship('year', 'title')
+                    ->default(Year::current()?->id),
             ])
+            ->defaultSort('start_time', 'asc')
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
