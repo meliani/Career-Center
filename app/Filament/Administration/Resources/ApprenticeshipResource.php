@@ -283,6 +283,11 @@ class ApprenticeshipResource extends BaseResource
                     ->label('Program')
                     ->tooltip(fn ($record) => $record->student?->program->getDescription()),
 
+                Tables\Columns\TextColumn::make('student.level')
+                    ->label('Level')
+                    ->badge()
+                    ->sortable(),
+
                 Tables\Columns\TextColumn::make('organization.name')
                     ->description(fn ($record) => $record->organization->city . ', ' . $record->organization->country)
                     ->searchable(),
@@ -319,10 +324,10 @@ class ApprenticeshipResource extends BaseResource
                 Tables\Filters\SelectFilter::make('internship_type')
                     ->options(Enums\InternshipType::class)
                     ->label('Work Modality'),
-                // Tables\Filters\SelectFilter::make('student_level')
-                //     ->relationship('student', 'level')
-                //     // ->options(Enums\StudentLevel::class)
-                //     ->label('Level'),
+                Tables\Filters\SelectFilter::make('student_level')
+                    ->relationship('student', 'level')
+                    ->options(Enums\StudentLevel::class)
+                    ->label('Level'),
                 Tables\Filters\SelectFilter::make('year')
                     ->label('Year')
                     ->options(Year::getYearsForSelect(1))
