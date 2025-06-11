@@ -303,6 +303,12 @@ class ApprenticeshipResource extends BaseResource
                     ->date('d/m/Y')
                     ->sortable(),
 
+                Tables\Columns\TextColumn::make('remuneration')
+                    ->label('Rémunération')
+                    ->money(fn ($record) => $record->currency?->value ?? 'MDH')
+                    ->sortable()
+                    ->toggleable(),
+
                 Tables\Columns\TextColumn::make('title')
                     ->searchable()
                     ->description(fn ($record) => __('Start date') . ': ' . $record->starting_at->format('d/m/Y') . ' - ' . __('End date') . ': ' . $record->ending_at->format('d/m/Y'))
