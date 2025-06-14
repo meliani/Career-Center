@@ -1,0 +1,176 @@
+[530199 ms] Stop: Run: docker buildx build --load --build-context dev_containers_feature_content_source=/tmp/devcontainercli-root/container-features/0.76.0-1749924301909 --build-arg _DEV_CONTAINERS_BASE_IMAGE=mcr.microsoft.com/devcontainers/php:8.3-bullseye --build-arg _DEV_CONTAINERS_IMAGE_USER=root --build-arg _DEV_CONTAINERS_FEATURE_CONTENT_SOURCE=dev_container_feature_content_temp --target dev_containers_target_stage -f /tmp/devcontainercli-root/container-features/0.76.0-1749924301909/Dockerfile.extended -t vsc-career-center-dd24c478494010c999d45436a540054939109cc76e6b6ee620f6c1bb666098e9-features /var/lib/docker/codespacemount/.persistedshare/empty-folder
+[533549 ms] Start: Run: docker run --sig-proxy=false -a STDOUT -a STDERR --mount type=bind,src=/var/lib/docker/codespacemount/workspace,dst=/workspaces --mount source=/root/.codespaces/shared,target=/workspaces/.codespaces/shared,type=bind --mount source=/var/lib/docker/codespacemount/.persistedshare,target=/workspaces/.codespaces/.persistedshare,type=bind --mount source=/.codespaces/agent/mount,target=/.codespaces/bin,type=bind --mount source=/mnt/containerTmp,target=/tmp,type=bind --mount type=bind,src=/.codespaces/agent/mount/cache,dst=/vscode -l Type=codespaces -e APP_ENV=local -e APP_DEBUG=******** -e CODESPACES=******** -e ContainerVersion=13 -e RepositoryName=Career-Center --label ContainerVersion=13 --hostname codespaces-5558fa --add-host codespaces-5558fa:127.0.0.1 --cap-add sys_nice --network host --entrypoint /bin/sh vsc-career-center-dd24c478494010c999d45436a540054939109cc76e6b6ee620f6c1bb666098e9-features -c echo Container started
+Container started
+Outcome: success User: vscode WorkspaceFolder: /workspaces/Career-Center
+devcontainer process exited with exit code 0
+Running blocking commands...
+$ devcontainer up --id-label Type=codespaces --workspace-folder /var/lib/docker/codespacemount/workspace/Career-Center --mount type=bind,source=/.codespaces/agent/mount/cache,target=/vscode --user-data-folder /var/lib/docker/codespacemount/.persistedshare --container-data-folder .vscode-remote/data/Machine --container-system-data-folder /var/vscode-remote --log-level trace --log-format json --update-remote-user-uid-default never --mount-workspace-git-root false --omit-config-remote-env-from-metadata --skip-non-blocking-commands --expect-existing-container --config "/var/lib/docker/codespacemount/workspace/Career-Center/.devcontainer/devcontainer.json" --override-config /root/.codespaces/shared/merged_devcontainer.json --default-user-env-probe loginInteractiveShell --container-session-data-folder /workspaces/.codespaces/.persistedshare/devcontainers-cli/cache --secrets-file /root/.codespaces/shared/user-secrets-envs.json
+[178 ms] @devcontainers/cli 0.76.0. Node.js v18.20.8. linux 6.8.0-1027-azure x64.
+Outcome: success User: vscode WorkspaceFolder: /workspaces/Career-Center
+devcontainer process exited with exit code 0
+Configuring codespace...
+Running commands...
+$ devcontainer up --id-label Type=codespaces --workspace-folder /var/lib/docker/codespacemount/workspace/Career-Center --expect-existing-container --skip-post-attach --mount type=bind,source=/.codespaces/agent/mount/cache,target=/vscode --container-data-folder .vscode-remote/data/Machine --container-system-data-folder /var/vscode-remote --log-level trace --log-format json --update-remote-user-uid-default never --mount-workspace-git-root false --config "/var/lib/docker/codespacemount/workspace/Career-Center/.devcontainer/devcontainer.json" --override-config /root/.codespaces/shared/merged_devcontainer.json --default-user-env-probe loginInteractiveShell --container-session-data-folder /workspaces/.codespaces/.persistedshare/devcontainers-cli/cache --secrets-file /root/.codespaces/shared/user-secrets-envs.json
+[230 ms] @devcontainers/cli 0.76.0. Node.js v18.20.8. linux 6.8.0-1027-azure x64.
+Running the postCreateCommand from devcontainer.json...
+
+bash .devcontainer/post-create-simple.sh
+🚀 Setting up Career Center development environment...
+[INFO] Skipping PHP extension installation; handled by devcontainer feature
+[INFO] Copying environment file...
+[SUCCESS] Environment file copied from .env.development
+[INFO] Installing PHP dependencies with Composer...
+Xdebug: [Step Debug] Could not connect to debugging client. Tried: localhost:9003 (through xdebug.client_host/xdebug.client_port).
+Installing dependencies from lock file (including require-dev)
+Verifying lock file contents can be installed on current platform.
+Your lock file does not contain a compatible set of packages. Please run composer update.
+
+  Problem 1
+    - filament/support is locked to version v3.3.20 and an update of this package was not requested.
+    - filament/support v3.3.20 requires ext-intl * -> it is missing from your system. Install or enable PHP's intl extension.
+  Problem 2
+    - mpdf/mpdf is locked to version v8.2.5 and an update of this package was not requested.
+    - mpdf/mpdf v8.2.5 requires ext-gd * -> it is missing from your system. Install or enable PHP's gd extension.
+  Problem 3
+    - openspout/openspout is locked to version v4.30.0 and an update of this package was not requested.
+    - openspout/openspout v4.30.0 requires ext-zip * -> it is missing from your system. Install or enable PHP's zip extension.
+  Problem 4
+    - phpoffice/phpspreadsheet is locked to version 1.29.10 and an update of this package was not requested.
+    - phpoffice/phpspreadsheet 1.29.10 requires ext-gd * -> it is missing from your system. Install or enable PHP's gd extension.
+  Problem 5
+    - spatie/laravel-backup is locked to version 9.3.3 and an update of this package was not requested.
+    - spatie/laravel-backup 9.3.3 requires ext-zip ^1.14.0 -> it is missing from your system. Install or enable PHP's zip extension.
+  Problem 6
+    - webklex/php-imap is locked to version 5.5.0 and an update of this package was not requested.
+    - webklex/php-imap 5.5.0 requires ext-zip * -> it is missing from your system. Install or enable PHP's zip extension.
+  Problem 7
+    - filament/widgets is locked to version v3.3.20 and an update of this package was not requested.
+    - filament/support v3.3.20 requires ext-intl * -> it is missing from your system. Install or enable PHP's intl extension.
+    - filament/widgets v3.3.20 requires filament/support v3.3.20 -> satisfiable by filament/support[v3.3.20].
+
+To enable extensions, verify that they are enabled in your .ini files:
+    - /usr/local/php/8.4.8/ini/php.ini
+    - /usr/local/php/8.4.8/ini/conf.d/xdebug.ini
+You can also run `php --ini` in a terminal to see which files are used by PHP in CLI mode.
+Alternatively, you can run Composer with `--ignore-platform-req=ext-intl --ignore-platform-req=ext-gd --ignore-platform-req=ext-zip` to temporarily ignore these required extensions.
+[WARNING] Some PHP dependencies may have failed to install
+[INFO] Installing Node.js dependencies...
+npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+npm warn deprecated puppeteer@18.2.1: < 22.8.2 is no longer supported
+
+added 198 packages, and audited 199 packages in 13s
+
+46 packages are looking for funding
+  run `npm fund` for details
+
+7 vulnerabilities (1 low, 2 moderate, 4 high)
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+npm notice
+npm notice New major version of npm available! 10.8.2 -> 11.4.2
+npm notice Changelog: ********/npm/cli/releases/tag/v11.4.2
+npm notice To update run: npm install -g npm@11.4.2
+npm notice
+[SUCCESS] Node.js dependencies installed successfully
+[INFO] Running database migrations...
+Xdebug: [Step Debug] Could not connect to debugging client. Tried: localhost:9003 (through xdebug.client_host/xdebug.client_port).
+PHP Warning:  require(/workspaces/Career-Center/vendor/autoload.php): Failed to open stream: No such file or directory in /workspaces/Career-Center/artisan on line 18
+PHP Fatal error:  Uncaught Error: Failed opening required '/workspaces/Career-Center/vendor/autoload.php' (include_path='.:/usr/local/php/8.4.8/lib/php') in /workspaces/Career-Center/artisan:18
+Stack trace:
+#0 {main}
+  thrown in /workspaces/Career-Center/artisan on line 18
+[WARNING] Database migrations failed. You may need to configure your database first.
+[INFO] Creating storage symbolic link...
+Xdebug: [Step Debug] Could not connect to debugging client. Tried: localhost:9003 (through xdebug.client_host/xdebug.client_port).
+PHP Warning:  require(/workspaces/Career-Center/vendor/autoload.php): Failed to open stream: No such file or directory in /workspaces/Career-Center/artisan on line 18
+PHP Fatal error:  Uncaught Error: Failed opening required '/workspaces/Career-Center/vendor/autoload.php' (include_path='.:/usr/local/php/8.4.8/lib/php') in /workspaces/Career-Center/artisan:18
+Stack trace:
+#0 {main}
+  thrown in /workspaces/Career-Center/artisan on line 18
+[WARNING] Storage link creation failed
+[INFO] Setting up shell aliases...
+[SUCCESS] Shell aliases configured
+[INFO] Building frontend assets...
+
+> build
+> vite build
+
+vite v5.4.19 building for production...
+✓ 1 modules transformed.
+x Build failed in 11.51s
+error during build:
+[vite:css] [postcss] ENOENT: no such file or directory, open '/vendor/filament/filament/resources/css/theme.css'
+file: /workspaces/Career-Center/resources/css/filament/app/theme.css:undefined:NaN
+    at async open (node:internal/fs/promises:639:25)
+    at async Object.readFile (node:internal/fs/promises:1246:14)
+    at async Object.load (file:///workspaces/Career-Center/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:36835:25)
+    at async loadImportContent (file:///workspaces/Career-Center/node_modules/vite/dist/node/chunks/dep-COdkJwUb.js:844:19)
+    at async Promise.all (index 0)
+    at async resolveImportId (file:///workspaces/Career-Center/node_modules/vite/dist/node/chunks/dep-COdkJwUb.js:800:27)
+    at async parseStyles$1 (file:///workspaces/Career-Center/node_modules/vite/dist/node/chunks/dep-COdkJwUb.js:708:5)
+    at async Object.Once (file:///workspaces/Career-Center/node_modules/vite/dist/node/chunks/dep-COdkJwUb.js:965:22)
+    at async LazyResult.runAsync (/workspaces/Career-Center/node_modules/postcss/lib/lazy-result.js:293:11)
+    at async compileCSS (file:///workspaces/Career-Center/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:36898:21)
+[WARNING] Frontend assets build failed. You may need to build them manually with 'npm run build'
+[INFO] Setting up VS Code workspace...
+[SUCCESS] VS Code workspace configured
+
+🎉 DevContainer setup completed successfully!
+
+📋 What's available:
+   🌐 Laravel Application: Run 'php artisan serve' then visit the forwarded port
+   📁 SQLite Database: database/database.sqlite
+   🎯 VS Code Tasks: Press Ctrl+Shift+P -> 'Tasks: Run Task'
+
+🔧 Useful commands:
+   art serve - Start Laravel development server
+   art migrate - Run database migrations
+   art tinker - Open Laravel REPL
+   npm run dev - Build assets for development
+   art test - Run tests
+
+🎯 Next steps:
+   1. Run 'php artisan serve --host=0.0.0.0' to start the server
+   2. Open the forwarded port to see your application
+   3. Happy coding!
+
+[SUCCESS] Career Center DevContainer is ready! 🚀
+Running the postStartCommand from devcontainer.json...
+
+bash .devcontainer/post-start-simple.sh
+🚀 Career Center DevContainer starting...
+[INFO] Clearing application caches...
+[SUCCESS] Application caches cleared
+
+🎉 DevContainer is ready!
+
+📋 Service Status:
+   ✅ PHP 8.3
+   ✅ Composer
+   ✅ Node.js & NPM
+   ✅ Laravel Application
+   ⚠️  Database (run migrations)
+
+🔗 Quick Commands:
+   art serve - Start development server
+   art migrate - Run database migrations
+   art tinker - Laravel REPL
+   npm run dev - Build frontend assets
+
+💡 Pro Tips:
+   • Use VS Code tasks (Ctrl+Shift+P → 'Tasks: Run Task')
+   • All Laravel aliases are available (art, migrate, etc.)
+   • Press F5 to start debugging if Xdebug is configured
+
+[SUCCESS] Happy coding! 🎯
+Outcome: success User: vscode WorkspaceFolder: /workspaces/Career-Center
+devcontainer process exited with exit code 0
+Finished configuring codespace.
