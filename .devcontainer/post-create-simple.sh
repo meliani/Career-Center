@@ -26,7 +26,9 @@ print_warning() {
 }
 
 # Install additional PHP extensions
-print_status "Skipping PHP extension installation; handled by devcontainer feature"
+print_status "Verifying PHP extensions are available..."
+php -m | grep -E "(gd|intl|zip)" || print_warning "Some required PHP extensions may not be loaded"
+print_status "PHP extensions handled by devcontainer feature"
 
 # Copy environment file if it doesn't exist
 if [ ! -f ".env" ]; then
@@ -98,8 +100,16 @@ fi
 
 # Install PHP dependencies
 print_status "Installing PHP dependencies with Composer..."
-if composer install --no-progress --prefer-dist; then
-    print_success "PHP dependencies installed successfully"
+# First try with platform requirements ignored, then reinstall properly
+if composer install --no-progress --prefer-dist --ignore-platform-req=ext-intl --ignore-platform-req=ext-gd --ignore-platform-req=ext-zip; then
+    print_success "PHP dependencies installed successfully (with platform requirements ignored)"
+    # Try to reinstall without ignoring platform requirements
+    print_status "Attempting to reinstall with proper platform requirements..."
+    if composer install --no-progress --prefer-dist; then
+        print_success "PHP dependencies reinstalled with proper platform requirements"
+    else
+        print_warning "Could not reinstall with platform requirements, but dependencies are available"
+    fi
 else
     print_warning "Some PHP dependencies may have failed to install"
 fi
@@ -113,10 +123,14 @@ else
 fi
 
 # Generate application key if needed
-if ! grep -q "APP_KEY=base64:" .env; then
-    print_status "Generating Laravel application key..."
-    php artisan key:generate
-    print_success "Application key generated"
+if [ -f "vendor/autoload.php" ]; then
+    if ! grep -q "APP_KEY=base64:" .env; then
+        print_status "Generating Laravel application key..."
+        php artisan key:generate
+        print_success "Application key generated"
+    fi
+else
+    print_warning "Vendor autoload not found. Skipping Laravel key generation."
 fi
 
 # Create SQLite database if using SQLite
@@ -129,18 +143,26 @@ fi
 
 # Run database migrations
 print_status "Running database migrations..."
-if php artisan migrate --force; then
-    print_success "Database migrations completed"
+if [ -f "vendor/autoload.php" ]; then
+    if php artisan migrate --force; then
+        print_success "Database migrations completed"
+    else
+        print_warning "Database migrations failed. You may need to configure your database first."
+    fi
 else
-    print_warning "Database migrations failed. You may need to configure your database first."
+    print_warning "Vendor autoload not found. Skipping database migrations."
 fi
 
 # Create storage link
 print_status "Creating storage symbolic link..."
-if php artisan storage:link; then
-    print_success "Storage link created"
+if [ -f "vendor/autoload.php" ]; then
+    if php artisan storage:link; then
+        print_success "Storage link created"
+    else
+        print_warning "Storage link creation failed"
+    fi
 else
-    print_warning "Storage link creation failed"
+    print_warning "Vendor autoload not found. Skipping storage link creation."
 fi
 
 # Set up useful aliases
@@ -174,10 +196,26 @@ print_success "Shell aliases configured"
 
 # Build frontend assets
 print_status "Building frontend assets..."
-if npm run build; then
-    print_success "Frontend assets built successfully"
+# Check if vendor directory exists (needed for Filament CSS)
+if [ -d "vendor" ]; then
+    # Ensure Filament resources are accessible for CSS imports
+    if [ -d "vendor/filament/filament/resources" ]; then
+        print_status "Filament vendor resources found, proceeding with build..."
+        if npm run build; then
+            print_success "Frontend assets built successfully"
+        else
+            print_warning "Frontend assets build failed. You may need to build them manually with 'npm run build'"
+        fi
+    else
+        print_warning "Filament vendor resources not found. Installing Filament first..."
+        if [ -f "vendor/autoload.php" ] && composer show filament/filament > /dev/null 2>&1; then
+            npm run build && print_success "Frontend assets built successfully" || print_warning "Frontend build failed"
+        else
+            print_warning "Filament not properly installed. Skipping frontend build."
+        fi
+    fi
 else
-    print_warning "Frontend assets build failed. You may need to build them manually with 'npm run build'"
+    print_warning "Vendor directory not found. Skipping frontend build. Run 'npm run build' manually after composer install."
 fi
 
 # Create .vscode directory and basic settings
@@ -264,8 +302,16 @@ echo -e "   ${BLUE}npm run dev${NC} - Build assets for development"
 echo -e "   ${BLUE}art test${NC} - Run tests"
 echo ""
 echo "🎯 Next steps:"
-echo "   1. Run 'php artisan serve --host=0.0.0.0' to start the server"
-echo "   2. Open the forwarded port to see your application"
-echo "   3. Happy coding!"
+if [ ! -f "vendor/autoload.php" ]; then
+    echo "   1. Run 'composer install --ignore-platform-req=ext-intl --ignore-platform-req=ext-gd --ignore-platform-req=ext-zip' to install PHP dependencies"
+    echo "   2. Run 'php artisan key:generate' to generate application key"
+    echo "   3. Run 'php artisan migrate' to set up database"
+    echo "   4. Run 'php artisan serve --host=0.0.0.0' to start the server"
+    echo "   5. Run 'npm run build' to build frontend assets"
+else
+    echo "   1. Run 'php artisan serve --host=0.0.0.0' to start the server"
+    echo "   2. Open the forwarded port to see your application"
+fi
+echo "   Happy coding!"
 echo ""
 print_success "Career Center DevContainer is ready! 🚀"

@@ -2,6 +2,8 @@
 	"name": "Career Center Laravel Development",
 	"image": "mcr.microsoft.com/devcontainers/php:8.3-bullseye",
 	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+	"runArgs": ["--init"],
+	"onCreateCommand": "sudo apt-get update && sudo apt-get install -y libzip-dev libicu-dev libpng-dev libjpeg-dev libfreetype6-dev",
 	"features": {
 		"ghcr.io/devcontainers/features/common-utils:2": {
 			"installZsh": true,
@@ -28,13 +30,18 @@
 			"phpVersion": "8.3",
 			"extensions": [
 				"gd",
-				"intl",
+				"intl", 
 				"zip",
 				"xml",
 				"mbstring",
 				"curl",
 				"mysql",
-				"redis"
+				"redis",
+				"sqlite3",
+				"pdo_sqlite",
+				"exif",
+				"fileinfo",
+				"bcmath"
 			]
 		}
 	},
@@ -128,6 +135,9 @@
 	"postCreateCommand": [
 		"bash",
 		".devcontainer/post-create-simple.sh"
+	],
+	"postAttachCommand": [
+		"bash", "-c", "if [ ! -f vendor/autoload.php ]; then echo '⚠️  Run: composer install --ignore-platform-req=ext-intl --ignore-platform-req=ext-gd --ignore-platform-req=ext-zip'; fi"
 	],
 	"postStartCommand": [
 		"bash",
