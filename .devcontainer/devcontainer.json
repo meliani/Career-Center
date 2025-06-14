@@ -2,8 +2,6 @@
 	"name": "Career Center Laravel Development",
 	"image": "mcr.microsoft.com/devcontainers/php:8.3-bullseye",
 	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
-
-	// Features to install
 	"features": {
 		"ghcr.io/devcontainers/features/common-utils:2": {
 			"installZsh": true,
@@ -26,199 +24,64 @@
 			"version": "20"
 		}
 	},
-
-	// VS Code extensions to install
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				// PHP Extensions
-				"bmewburn.vscode-intelephense-client",
-				"xdebug.php-debug",
-				"DEVSENSE.composer-php-vscode",
-
-				// Laravel Extensions
-				"onecentlin.laravel-blade",
-				"onecentlin.laravel5-snippets",
-				"ryannaddy.laravel-artisan",
-
-				// JavaScript/Node Extensions  
-				"bradlc.vscode-tailwindcss",
-				"esbenp.prettier-vscode",
-				"formulahendry.auto-rename-tag",
-
-				// Database Extensions
-				"mtxr.sqltools",
-				"mtxr.sqltools-driver-mysql",
-
-				// Git Extensions
-				"eamodio.gitlens",
-
-				// General Productivity
-				"streetsidesoftware.code-spell-checker",
-				"aaron-bond.better-comments",
-				"usernamehw.errorlens",
-
-				// API Development
-				"humao.rest-client",
-
-				// Theme & UI
-				"PKief.material-icon-theme",
-				"GitHub.github-vscode-theme"
-			],
-			"settings": {
-				// PHP Configuration
-				"php.validate.executablePath": "/usr/local/bin/php",
-				"php.debug.executablePath": "/usr/local/bin/php",
-				"intelephense.files.maxSize": 5000000,
-				"intelephense.format.enable": true,
-
-				// Editor Configuration
-				"editor.tabSize": 4,
-				"editor.insertSpaces": true,
-				"editor.formatOnSave": true,
-
-				// File Associations
-				"files.associations": {
-					"*.blade.php": "blade",
-					"*.php": "php",
-					"*.json": "jsonc"
-				},
-
-				// Terminal Configuration
-				"terminal.integrated.defaultProfile.linux": "zsh",
-
-				// Git Configuration
-				"git.enableSmartCommit": true,
-				"git.autofetch": true,
-
-				// Theme
-				"workbench.iconTheme": "material-icon-theme"
-			}
-		}
-	},
-
-	// Container environment variables for Codespaces
-	"containerEnv": {
-		"APP_ENV": "local",
-		"APP_DEBUG": "true"
-	},
-
-	// Ports to forward
-	"forwardPorts": [
-		8000,   // Laravel serve
-		3306,   // MySQL (if using external DB)
-		6379    // Redis (if using external cache)
-	],
-
-	// Port attributes
-	"portsAttributes": {
-		"8000": {
-			"label": "Laravel Application",
-			"onAutoForward": "openBrowser"
-		}
-	},
-
-	// Lifecycle scripts
-	"postCreateCommand": [
-		"bash",
-		".devcontainer/post-create-simple.sh"
-	],
-
-	// Run as non-root user
-	"remoteUser": "vscode"
-}
-
-	// VS Code extensions to install
-	"customizations": {
-		"vscode": {
-			"extensions": [
-				// PHP Extensions
 				"bmewburn.vscode-intelephense-client",
 				"xdebug.php-debug",
 				"wongjn.php-sniffer",
 				"phpstan.phpstan",
 				"recca0120.vscode-phpunit",
 				"DEVSENSE.composer-php-vscode",
-
-				// Laravel Extensions
 				"codingyu.laravel-blade-spacer",
 				"onecentlin.laravel-blade",
 				"onecentlin.laravel5-snippets",
 				"ryannaddy.laravel-artisan",
 				"open-southeners.laravel-pint",
 				"amiralizadeh9480.laravel-extra-intellisense",
-
-				// JavaScript/Node Extensions  
 				"bradlc.vscode-tailwindcss",
 				"esbenp.prettier-vscode",
 				"formulahendry.auto-rename-tag",
 				"christian-kohler.path-intellisense",
-
-				// Database Extensions
 				"mtxr.sqltools",
 				"mtxr.sqltools-driver-mysql",
 				"cweijan.vscode-redis-client",
-
-				// Docker & DevOps
 				"ms-azuretools.vscode-docker",
-
-				// Git Extensions
 				"eamodio.gitlens",
 				"mhutchie.git-graph",
 				"donjayamanne.githistory",
-
-				// General Productivity
 				"streetsidesoftware.code-spell-checker",
 				"aaron-bond.better-comments",
 				"oderwat.indent-rainbow",
 				"usernamehw.errorlens",
 				"christian-kohler.npm-intellisense",
-
-				// API Development
 				"humao.rest-client",
 				"rangav.vscode-thunder-client",
-
-				// Markdown & Documentation
 				"yzhang.markdown-all-in-one",
-
-				// Theme & UI
 				"PKief.material-icon-theme"
 			],
 			"settings": {
-				// PHP Configuration
 				"php.validate.executablePath": "/usr/local/bin/php",
 				"intelephense.files.maxSize": 5000000,
 				"intelephense.completion.triggerParameterHints": true,
 				"intelephense.completion.insertUseDeclaration": true,
 				"intelephense.format.enable": true,
-
-				// Editor Configuration
 				"editor.tabSize": 4,
 				"editor.insertSpaces": true,
 				"editor.formatOnSave": true,
 				"editor.codeActionsOnSave": {
 					"source.fixAll": "explicit"
 				},
-
-				// File Associations
 				"files.associations": {
 					"*.blade.php": "blade",
 					"*.php": "php"
 				},
-
-				// Emmet Configuration
 				"emmet.includeLanguages": {
 					"blade": "html"
 				},
-
-				// Terminal Configuration
 				"terminal.integrated.defaultProfile.linux": "zsh",
-
-				// Git Configuration
 				"git.enableSmartCommit": true,
 				"git.autofetch": true,
-
-				// Material Icon Theme
 				"workbench.iconTheme": "material-icon-theme",
 				"material-icon-theme.folders.associations": {
 					"app": "app",
@@ -233,39 +96,28 @@
 			}
 		}
 	},
-
-	// Container environment variables
 	"containerEnv": {
 		"APP_ENV": "local",
 		"APP_DEBUG": "true"
 	},
-
-	// Ports to forward
 	"forwardPorts": [
-		8000,   // Laravel Artisan Serve
-		3306,   // MySQL (if using external)
-		6379    // Redis (if using external)
+		8000,
+		3306,
+		6379
 	],
-
-	// Port attributes
 	"portsAttributes": {
 		"8000": {
 			"label": "Laravel Application",
 			"onAutoForward": "notify"
 		}
 	},
-
-	// Lifecycle scripts
 	"postCreateCommand": [
 		"bash",
 		".devcontainer/post-create-simple.sh"
 	],
-
 	"postStartCommand": [
 		"bash",
 		".devcontainer/post-start-simple.sh"
 	],
-
-	// Comment out to connect as root instead
 	"remoteUser": "vscode"
 }
