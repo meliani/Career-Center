@@ -1,0 +1,397 @@
+{
+    // PHP Configuration
+    "php.validate.executablePath": "/usr/local/bin/php",
+    "php.debug.executablePath": "/usr/local/bin/php",
+    "php.executablePath": "/usr/local/bin/php",
+    
+    // Intelephense Configuration
+    "intelephense.files.maxSize": 5000000,
+    "intelephense.completion.triggerParameterHints": true,
+    "intelephense.completion.insertUseDeclaration": true,
+    "intelephense.completion.fullyQualifyGlobalConstantsAndFunctions": false,
+    "intelephense.format.enable": true,
+    "intelephense.environment.includePaths": [
+        "vendor"
+    ],
+    "intelephense.stubs": [
+        "apache",
+        "bcmath", 
+        "bz2",
+        "calendar",
+        "com_dotnet",
+        "Core",
+        "ctype",
+        "curl",
+        "date",
+        "dba",
+        "dom",
+        "enchant",
+        "exif",
+        "FFI",
+        "fileinfo",
+        "filter",
+        "fpm",
+        "ftp",
+        "gd",
+        "gettext",
+        "gmp",
+        "hash",
+        "iconv",
+        "imap",
+        "intl",
+        "json",
+        "ldap",
+        "libxml",
+        "mbstring",
+        "meta",
+        "mysqli",
+        "oci8",
+        "odbc",
+        "openssl",
+        "pcntl",
+        "pcre",
+        "PDO",
+        "pdo_ibm",
+        "pdo_mysql",
+        "pdo_pgsql",
+        "pdo_sqlite",
+        "pgsql",
+        "Phar",
+        "posix",
+        "pspell",
+        "readline",
+        "Reflection",
+        "session",
+        "shmop",
+        "SimpleXML",
+        "snmp",
+        "soap",
+        "sockets",
+        "sodium",
+        "SPL",
+        "sqlite3",
+        "standard",
+        "superglobals",
+        "sysvmsg",
+        "sysvsem",
+        "sysvshm",
+        "tidy",
+        "tokenizer",
+        "xml",
+        "xmlreader",
+        "xmlrpc",
+        "xmlwriter",
+        "xsl",
+        "Zend OPcache",
+        "zip",
+        "zlib",
+        "redis"
+    ],
+
+    // Xdebug Configuration
+    "php.debug.port": [9003],
+    "php.debug.log": true,
+
+    // Laravel Configuration
+    "laravel_goto_view.folders": {
+        "default": "resources/views",
+        "js": "resources/js", 
+        "css": "resources/css"
+    },
+
+    // Editor Configuration
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": true,
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "editor.rulers": [80, 120],
+    "editor.wordWrap": "wordWrapColumn",
+    "editor.wordWrapColumn": 120,
+    "editor.codeActionsOnSave": {
+        "source.fixAll": "explicit",
+        "source.organizeImports": "explicit"
+    },
+    "editor.suggestSelection": "first",
+    "editor.acceptSuggestionOnCommitCharacter": false,
+    "editor.acceptSuggestionOnEnter": "on",
+
+    // File Associations
+    "files.associations": {
+        "*.blade.php": "blade",
+        "*.php": "php",
+        "*.json": "jsonc",
+        "*.env": "dotenv",
+        ".env.*": "dotenv",
+        "*.yml": "yaml",
+        "*.yaml": "yaml",
+        "composer.lock": "json",
+        "*.md": "markdown"
+    },
+
+    // Files to exclude from explorer
+    "files.exclude": {
+        "**/vendor": true,
+        "**/node_modules": true,
+        "**/storage/logs": true,
+        "**/storage/framework": true,
+        "**/.git": false,
+        "**/bootstrap/cache": true,
+        "**/public/build": true,
+        "**/public/hot": true
+    },
+
+    // Files to exclude from search
+    "search.exclude": {
+        "**/vendor": true,
+        "**/node_modules": true,
+        "**/storage": true,
+        "**/bootstrap/cache": true,
+        "**/public/build": true,
+        "**/*.min.js": true,
+        "**/*.min.css": true
+    },
+
+    // Emmet Configuration
+    "emmet.includeLanguages": {
+        "blade": "html",
+        "vue-html": "html",
+        "vue": "html",
+        "php": "html"
+    },
+    "emmet.triggerExpansionOnTab": true,
+
+    // Terminal Configuration  
+    "terminal.integrated.defaultProfile.linux": "zsh",
+    "terminal.integrated.profiles.linux": {
+        "zsh": {
+            "path": "/bin/zsh"
+        },
+        "bash": {
+            "path": "/bin/bash"
+        }
+    },
+    "terminal.integrated.cwd": "/var/www/html",
+
+    // Git Configuration
+    "git.enableSmartCommit": true,
+    "git.confirmSync": false,
+    "git.autofetch": true,
+    "git.detectSubmodules": false,
+    "git.enableStatusBarSync": true,
+
+    // GitLens Configuration
+    "gitlens.advanced.messages": {
+        "suppressCommitHasNoPreviousCommitWarning": true,
+        "suppressCommitNotFoundWarning": true,
+        "suppressFileNotUnderSourceControlWarning": true,
+        "suppressGitVersionWarning": true,
+        "suppressLineUncommittedWarning": true,
+        "suppressNoRepositoryWarning": true
+    },
+
+    // Prettier Configuration
+    "prettier.requireConfig": true,
+    "prettier.useEditorConfig": false,
+    "prettier.tabWidth": 4,
+    "prettier.printWidth": 120,
+
+    // ESLint Configuration
+    "eslint.workingDirectories": ["./"],
+    "eslint.validate": [
+        "javascript",
+        "javascriptreact", 
+        "vue"
+    ],
+
+    // Tailwind CSS Configuration
+    "tailwindCSS.includeLanguages": {
+        "blade": "html",
+        "vue": "html",
+        "php": "html"
+    },
+    "tailwindCSS.experimental.classRegex": [
+        "class[:]\\s*['\"]([^'\"]*)['\"]",
+        "class\\s*=\\s*['\"]([^'\"]*)['\"]",
+        "classList\\.add\\(['\"]([^'\"]*)['\"]\\)"
+    ],
+
+    // CSS Configuration
+    "css.validate": false,
+    "scss.validate": false,
+
+    // HTML Configuration
+    "html.format.indentInnerHtml": true,
+    "html.format.wrapLineLength": 120,
+
+    // JSON Configuration
+    "json.schemaDownload.enable": true,
+
+    // Error Lens Configuration
+    "errorLens.enabledDiagnosticLevels": ["error", "warning"],
+    "errorLens.exclude": ["never (read|used)", "is assigned a value but never used"],
+
+    // Bracket Pair Colorizer
+    "editor.bracketPairColorization.enabled": true,
+    "editor.guides.bracketPairs": true,
+
+    // Material Icon Theme Configuration
+    "workbench.iconTheme": "material-icon-theme",
+    "material-icon-theme.folders.associations": {
+        "app": "app",
+        "config": "config", 
+        "database": "database",
+        "public": "public",
+        "resources": "resource",
+        "routes": "routes",
+        "storage": "temp",
+        "tests": "test",
+        "vendor": "lib",
+        "bootstrap": "config",
+        "docker": "docker",
+        "packages": "lib",
+        "lang": "locale",
+        "Http": "controller",
+        "Controllers": "controller",
+        "Models": "model",
+        "Views": "view",
+        "Console": "command",
+        "Jobs": "job",
+        "Mail": "mail",
+        "Notifications": "notification",
+        "Policies": "policy",
+        "Providers": "provider",
+        "Middleware": "middleware",
+        "migrations": "database",
+        "seeders": "database",
+        "factories": "database"
+    },
+    "material-icon-theme.files.associations": {
+        "artisan": "php",
+        "*.blade.php": "blade",
+        ".env.example": "tune",
+        ".env.local": "tune",
+        ".env.development": "tune",
+        ".env.docker": "tune",
+        "composer.json": "composer",
+        "composer.lock": "composer",
+        "package.json": "nodejs",
+        "package-lock.json": "nodejs",
+        "webpack.mix.js": "webpack",
+        "vite.config.js": "vite",
+        "tailwind.config.js": "tailwindcss",
+        "phpunit.xml": "phpunit",
+        "pest.php": "pest"
+    },
+
+    // Theme Configuration
+    "workbench.colorTheme": "Material Theme Darker High Contrast",
+
+    // SQLTools Configuration
+    "sqltools.connections": [
+        {
+            "name": "Career Center MySQL",
+            "driver": "MySQL",
+            "server": "localhost",
+            "port": 3306,
+            "database": "career_center_dev",
+            "username": "career_user",
+            "password": "dev_password"
+        }
+    ],
+
+    // Thunder Client Configuration
+    "thunder-client.workspaceRelativePath": "tests/api",
+
+    // Code Spell Checker Configuration
+    "cSpell.words": [
+        "laravel",
+        "artisan",
+        "eloquent",
+        "livewire",
+        "tailwindcss",
+        "phpunit",
+        "phpstan",
+        "filament",
+        "intelephense",
+        "xdebug",
+        "composer",
+        "devcontainer",
+        "mailhog"
+    ],
+    "cSpell.enableFiletypes": [
+        "blade",
+        "php",
+        "javascript",
+        "vue"
+    ],
+
+    // Auto Save Configuration
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 1000,
+
+    // Breadcrumb Configuration
+    "breadcrumbs.enabled": true,
+    "breadcrumbs.showFiles": true,
+    "breadcrumbs.showFunctions": true,
+
+    // Minimap Configuration
+    "editor.minimap.enabled": true,
+    "editor.minimap.showSlider": "always",
+
+    // PHP Specific Settings
+    "[php]": {
+        "editor.defaultFormatter": "bmewburn.vscode-intelephense-client",
+        "editor.formatOnSave": true,
+        "editor.tabSize": 4
+    },
+
+    // Blade Specific Settings
+    "[blade]": {
+        "editor.autoClosingBrackets": "always",
+        "editor.formatOnSave": true,
+        "editor.tabSize": 4
+    },
+
+    // JavaScript Specific Settings
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true,
+        "editor.tabSize": 2
+    },
+
+    // JSON Specific Settings
+    "[json]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true,
+        "editor.tabSize": 2
+    },
+
+    // CSS Specific Settings
+    "[css]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true,
+        "editor.tabSize": 2
+    },
+
+    // SCSS Specific Settings
+    "[scss]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true,
+        "editor.tabSize": 2
+    },
+
+    // HTML Specific Settings
+    "[html]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true,
+        "editor.tabSize": 2
+    },
+
+    // Markdown Specific Settings
+    "[markdown]": {
+        "editor.wordWrap": "on",
+        "editor.formatOnSave": true,
+        "editor.tabSize": 2
+    }
+}

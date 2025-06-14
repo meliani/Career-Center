@@ -1,0 +1,168 @@
+# Multi-stage Docker build for Laravel application
+FROM php:8.3-fpm-alpine AS base
+
+# Set working directory
+WORKDIR /var/www/html
+
+# Install system dependencies
+RUN apk add --no-cache \
+    git \
+    curl \
+    libpng-dev \
+    libxml2-dev \
+    zip \
+    unzip \
+    sqlite \
+    sqlite-dev \
+    oniguruma-dev \
+    nodejs \
+    npm \
+    supervisor \
+    libzip-dev \
+    icu-dev \
+    linux-headers
+
+# Install PHP extensions
+RUN docker-php-ext-install \
+    pdo_mysql \
+    pdo_sqlite \
+    mbstring \
+    exif \
+    pcntl \
+    bcmath \
+    gd \
+    xml \
+    zip \
+    intl \
+    opcache
+
+# Install Redis extension
+RUN pecl install --onlyreqdeps --nobuild redis \
+    && cd "$(pecl config-get temp_dir)/redis" \
+    && phpize \
+    && ./configure \
+    && make -j$(nproc) \
+    && make install \
+    && docker-php-ext-enable redis
+
+# Configure opcache for production
+RUN echo "opcache.memory_consumption=128" >> /usr/local/etc/php/conf.d/opcache.ini \
+    && echo "opcache.interned_strings_buffer=8" >> /usr/local/etc/php/conf.d/opcache.ini \
+    && echo "opcache.max_accelerated_files=4000" >> /usr/local/etc/php/conf.d/opcache.ini \
+    && echo "opcache.revalidate_freq=2" >> /usr/local/etc/php/conf.d/opcache.ini \
+    && echo "opcache.fast_shutdown=1" >> /usr/local/etc/php/conf.d/opcache.ini \
+    && echo "opcache.enable_cli=1" >> /usr/local/etc/php/conf.d/opcache.ini
+
+# Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Install Puppeteer dependencies
+RUN apk add --no-cache \
+    chromium \
+    nss \
+    freetype \
+    freetype-dev \
+    harfbuzz \
+    ca-certificates \
+    ttf-freefont
+
+# Set Puppeteer to use installed Chromium
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
+    PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+
+# Development stage
+FROM base AS development
+
+# Install Xdebug for development
+RUN apk add --no-cache $PHPIZE_DEPS \
+    && pecl install xdebug \
+    && docker-php-ext-enable xdebug
+
+# Copy composer files first for better layer caching
+COPY composer.json composer.lock ./
+
+# Copy packages directory (needed for local path dependencies)
+COPY packages/ ./packages/
+
+# Install PHP dependencies
+RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist
+
+# Copy package.json and package-lock.json for better layer caching
+COPY package*.json ./
+
+# Install Node.js dependencies
+RUN npm ci
+
+# Copy application code
+COPY . .
+
+# Complete composer installation
+RUN composer dump-autoload --optimize --classmap-authoritative
+
+# Create storage symlink
+RUN php artisan storage:link
+
+# Build assets
+RUN npm run build
+
+# Set permissions
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 775 /var/www/html/storage \
+    && chmod -R 775 /var/www/html/bootstrap/cache
+
+# Production stage
+FROM base AS app
+
+# Copy composer files first for better layer caching
+COPY composer.json composer.lock ./
+
+# Copy packages directory (needed for local path dependencies)
+COPY packages/ ./packages/
+
+# Install PHP dependencies (production only)
+RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist --optimize-autoloader
+
+# Copy package.json and package-lock.json for better layer caching
+COPY package*.json ./
+
+# Install Node.js dependencies
+RUN npm ci
+
+# Copy application code
+COPY . .
+
+# Complete composer installation
+RUN composer dump-autoload --optimize --classmap-authoritative
+
+# Create storage symlink
+RUN php artisan storage:link
+
+# Build assets
+RUN npm run build
+
+# Remove node_modules after build to reduce image size
+RUN rm -rf node_modules
+
+# Create Laravel storage and cache directories
+RUN mkdir -p storage/logs storage/framework/sessions storage/framework/views storage/framework/cache \
+    && mkdir -p bootstrap/cache
+
+# Set permissions
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 775 /var/www/html/storage \
+    && chmod -R 775 /var/www/html/bootstrap/cache
+
+# Copy supervisor configuration
+COPY docker/supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# Copy PHP-FPM pool configuration
+COPY docker/php/www.conf /usr/local/etc/php-fpm.d/www.conf
+
+# Copy PHP configuration
+COPY docker/php/php.ini /usr/local/etc/php/conf.d/99-custom.ini
+
+# Expose port 9000 for PHP-FPM
+EXPOSE 9000
+
+# Use supervisor to manage processes
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]

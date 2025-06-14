@@ -1,0 +1,107 @@
+# Development Docker Compose for Career Center
+
+services:  # Web application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      target: development
+    image: career-center:dev
+    container_name: career-center-app-dev
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      # Only mount essential directories to avoid performance issues
+      - ./app:/var/www/html/app
+      - ./config:/var/www/html/config
+      - ./database:/var/www/html/database
+      - ./resources:/var/www/html/resources
+      - ./routes:/var/www/html/routes
+      - ./public:/var/www/html/public
+      - ./storage:/var/www/html/storage
+      - ./bootstrap/cache:/var/www/html/bootstrap/cache
+      - ./.env.development:/var/www/html/.env
+      # Create named volumes for vendor and node_modules to improve performance
+      - vendor_volume:/var/www/html/vendor
+      - node_modules_volume:/var/www/html/node_modules
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+    env_file:
+      - .env.development
+    depends_on:
+      - db
+      - redis
+    networks:
+      - career-center-network
+  # Nginx web server
+  nginx:
+    image: nginx:1.21-alpine
+    container_name: career-center-nginx-dev
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./public:/var/www/html/public:ro
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./docker/nginx/sites/default.conf:/etc/nginx/sites-available/default.conf:ro
+    depends_on:
+      - app
+    networks:
+      - career-center-network
+
+  # Database
+  db:
+    image: mysql:8.0
+    container_name: career-center-db-dev
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: career_center_dev
+      MYSQL_USER: career_user
+      MYSQL_PASSWORD: dev_password
+      MYSQL_ROOT_PASSWORD: root_password
+    volumes:
+      - db_data_dev:/var/lib/mysql
+      - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf:ro
+    ports:
+      - "3306:3306"
+    networks:
+      - career-center-network
+
+  # Redis for caching and sessions
+  redis:
+    image: redis:7-alpine
+    container_name: career-center-redis-dev
+    restart: unless-stopped
+    command: redis-server --appendonly yes --requirepass dev_redis_password
+    volumes:
+      - redis_data_dev:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - career-center-network
+
+  # MailHog for email testing
+  mailhog:
+    image: mailhog/mailhog
+    container_name: career-center-mailhog
+    restart: unless-stopped
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - career-center-network
+
+volumes:
+  db_data_dev:
+    driver: local
+  redis_data_dev:
+    driver: local
+  vendor_volume:
+    driver: local
+  node_modules_volume:
+    driver: local
+
+networks:
+  career-center-network:
+    driver: bridge

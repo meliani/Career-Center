@@ -1,0 +1,106 @@
+# Development-optimized Docker build for Laravel application
+FROM php:8.3-fpm-alpine AS base
+
+# Set working directory
+WORKDIR /var/www/html
+
+# Install system dependencies with performance optimizations
+RUN apk add --no-cache \
+    git \
+    curl \
+    libpng-dev \
+    libxml2-dev \
+    zip \
+    unzip \
+    sqlite \
+    sqlite-dev \
+    oniguruma-dev \
+    nodejs \
+    npm \
+    supervisor \
+    libzip-dev \
+    icu-dev \
+    linux-headers \
+    shadow
+
+# Install PHP extensions with optimizations
+RUN docker-php-ext-install -j$(nproc) \
+    pdo_mysql \
+    pdo_sqlite \
+    mbstring \
+    exif \
+    pcntl \
+    bcmath \
+    gd \
+    xml \
+    zip \
+    intl \
+    opcache
+
+# Install Redis extension
+RUN apk add --no-cache autoconf gcc g++ make \
+    && pecl install redis \
+    && docker-php-ext-enable redis \
+    && apk del autoconf gcc g++ make
+
+# Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Development stage - optimized for speed
+FROM base AS development
+
+# Install Xdebug for development
+RUN apk add --no-cache $PHPIZE_DEPS \
+    && pecl install xdebug \
+    && docker-php-ext-enable xdebug
+
+# Configure Xdebug for development
+RUN echo "xdebug.mode=develop,debug" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.client_host=host.docker.internal" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.client_port=9003" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.start_with_request=yes" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+
+# Copy composer files first for better layer caching
+COPY composer.json composer.lock ./
+
+# Copy packages directory (needed for local path dependencies)
+COPY packages/ ./packages/
+
+# Install PHP dependencies with development packages
+RUN composer install --prefer-dist --no-scripts --no-autoloader
+
+# Copy package.json and package-lock.json for better layer caching
+COPY package*.json ./
+
+# Install Node.js dependencies
+RUN npm ci
+
+# Copy application code
+COPY . .
+
+# Complete composer installation with optimizations
+RUN composer dump-autoload --optimize
+
+# Create storage and cache directories
+RUN mkdir -p storage/logs storage/framework/sessions storage/framework/views storage/framework/cache \
+    && mkdir -p bootstrap/cache
+
+# Set proper permissions for www-data user
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 775 /var/www/html/storage \
+    && chmod -R 775 /var/www/html/bootstrap/cache
+
+# Copy supervisor configuration
+COPY docker/supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# Copy PHP-FPM pool configuration
+COPY docker/php/www.conf /usr/local/etc/php-fpm.d/www.conf
+
+# Copy PHP configuration
+COPY docker/php/php.ini /usr/local/etc/php/conf.d/99-custom.ini
+
+# Expose port 9000 for PHP-FPM
+EXPOSE 9000
+
+# Use supervisor to manage processes
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]

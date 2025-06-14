@@ -1,0 +1,104 @@
+# Docker ignore file for Career Center
+# This file specifies which files and directories should be excluded from the Docker build context
+
+# Environment files
+.env*
+!.env.docker
+!.env.development
+
+# Git
+.git
+.gitignore
+
+# Documentation
+README.md
+DOCS-*.md
+INSTALL.md
+LICENSE.md
+SUPPORT.md
+TODO.md
+docs/
+team_docs/
+
+# Node modules and build artifacts
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# PHP dependencies
+vendor/
+
+# Laravel specific
+storage/logs/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/debugbar/*
+bootstrap/cache/*
+!storage/logs/.gitkeep
+!storage/framework/cache/.gitkeep
+!storage/framework/sessions/.gitkeep
+!storage/framework/views/.gitkeep
+!bootstrap/cache/.gitkeep
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Testing
+tests/
+phpunit.xml
+pest.php
+.phpunit.result.cache
+
+# Development tools
+phpstan.neon
+pint.json
+styleci.yml
+
+# Docker files (exclude from context except the ones we need)
+Dockerfile.old
+docker-compose.override.yml
+docker-setup.sh
+docker-setup.ps1
+
+# System directories
+sys/
+remote-database-backup/
+
+# Backup files
+*.bak
+*.backup
+*.sql
+
+# Temporary files
+*.tmp
+*.temp
+
+# Cache files
+*.cache
+
+# Build artifacts
+public/build/
+public/hot
+public/storage
+
+# Deployment scripts
+deploy*.sh
+deploy*.ps1
+
+# Statistics and monitoring
+STATISTICS_SERVICE_DOCUMENTATION.md
