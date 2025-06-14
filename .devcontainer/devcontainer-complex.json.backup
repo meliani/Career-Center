@@ -1,7 +1,12 @@
 {
 	"name": "Career Center Laravel Development",
-	"image": "mcr.microsoft.com/devcontainers/php:8.3-bullseye",
-	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+	"dockerComposeFile": [
+		"../docker-compose.dev.yml",
+		"docker-compose.devcontainer.yml"
+	],
+	"service": "app",
+	"workspaceFolder": "/var/www/html",
+	"shutdownAction": "stopCompose",
 
 	// Features to install
 	"features": {
@@ -9,124 +14,31 @@
 			"installZsh": true,
 			"configureZshAsDefaultShell": true,
 			"installOhMyZsh": true,
+			"installOhMyZshConfig": true,
 			"upgradePackages": true,
 			"username": "vscode",
-			"userUid": "automatic",
-			"userGid": "automatic"
+			"userUid": "1000",
+			"userGid": "1000"
 		},
 		"ghcr.io/devcontainers/features/git:1": {
 			"ppa": true,
 			"version": "latest"
 		},
 		"ghcr.io/devcontainers/features/github-cli:1": {
+			"installDirectlyFromGitHubRelease": true,
 			"version": "latest"
+		},
+		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+			"version": "latest",
+			"enableNonRootDocker": "true",
+			"moby": "true"
 		},
 		"ghcr.io/devcontainers/features/node:1": {
 			"nodeGypDependencies": true,
-			"version": "20"
+			"version": "20",
+			"nvmVersion": "latest"
 		}
 	},
-
-	// VS Code extensions to install
-	"customizations": {
-		"vscode": {
-			"extensions": [
-				// PHP Extensions
-				"bmewburn.vscode-intelephense-client",
-				"xdebug.php-debug",
-				"DEVSENSE.composer-php-vscode",
-
-				// Laravel Extensions
-				"onecentlin.laravel-blade",
-				"onecentlin.laravel5-snippets",
-				"ryannaddy.laravel-artisan",
-
-				// JavaScript/Node Extensions  
-				"bradlc.vscode-tailwindcss",
-				"esbenp.prettier-vscode",
-				"formulahendry.auto-rename-tag",
-
-				// Database Extensions
-				"mtxr.sqltools",
-				"mtxr.sqltools-driver-mysql",
-
-				// Git Extensions
-				"eamodio.gitlens",
-
-				// General Productivity
-				"streetsidesoftware.code-spell-checker",
-				"aaron-bond.better-comments",
-				"usernamehw.errorlens",
-
-				// API Development
-				"humao.rest-client",
-
-				// Theme & UI
-				"PKief.material-icon-theme",
-				"GitHub.github-vscode-theme"
-			],
-			"settings": {
-				// PHP Configuration
-				"php.validate.executablePath": "/usr/local/bin/php",
-				"php.debug.executablePath": "/usr/local/bin/php",
-				"intelephense.files.maxSize": 5000000,
-				"intelephense.format.enable": true,
-
-				// Editor Configuration
-				"editor.tabSize": 4,
-				"editor.insertSpaces": true,
-				"editor.formatOnSave": true,
-
-				// File Associations
-				"files.associations": {
-					"*.blade.php": "blade",
-					"*.php": "php",
-					"*.json": "jsonc"
-				},
-
-				// Terminal Configuration
-				"terminal.integrated.defaultProfile.linux": "zsh",
-
-				// Git Configuration
-				"git.enableSmartCommit": true,
-				"git.autofetch": true,
-
-				// Theme
-				"workbench.iconTheme": "material-icon-theme"
-			}
-		}
-	},
-
-	// Container environment variables for Codespaces
-	"containerEnv": {
-		"APP_ENV": "local",
-		"APP_DEBUG": "true"
-	},
-
-	// Ports to forward
-	"forwardPorts": [
-		8000,   // Laravel serve
-		3306,   // MySQL (if using external DB)
-		6379    // Redis (if using external cache)
-	],
-
-	// Port attributes
-	"portsAttributes": {
-		"8000": {
-			"label": "Laravel Application",
-			"onAutoForward": "openBrowser"
-		}
-	},
-
-	// Lifecycle scripts
-	"postCreateCommand": [
-		"bash",
-		".devcontainer/post-create-simple.sh"
-	],
-
-	// Run as non-root user
-	"remoteUser": "vscode"
-}
 
 	// VS Code extensions to install
 	"customizations": {
@@ -137,6 +49,7 @@
 				"xdebug.php-debug",
 				"wongjn.php-sniffer",
 				"phpstan.phpstan",
+				"ValeryanM.vscode-phpsab",
 				"recca0120.vscode-phpunit",
 				"DEVSENSE.composer-php-vscode",
 
@@ -153,6 +66,7 @@
 				"esbenp.prettier-vscode",
 				"formulahendry.auto-rename-tag",
 				"christian-kohler.path-intellisense",
+				"ms-vscode.vscode-typescript-next",
 
 				// Database Extensions
 				"mtxr.sqltools",
@@ -161,6 +75,7 @@
 
 				// Docker & DevOps
 				"ms-azuretools.vscode-docker",
+				"ms-vscode-remote.remote-containers",
 
 				// Git Extensions
 				"eamodio.gitlens",
@@ -173,6 +88,9 @@
 				"oderwat.indent-rainbow",
 				"usernamehw.errorlens",
 				"christian-kohler.npm-intellisense",
+				"formulahendry.code-runner",
+				"ms-vscode.live-server",
+				"ritwickdey.liveserver",
 
 				// API Development
 				"humao.rest-client",
@@ -180,43 +98,90 @@
 
 				// Markdown & Documentation
 				"yzhang.markdown-all-in-one",
+				"shd101wyy.markdown-preview-enhanced",
 
 				// Theme & UI
-				"PKief.material-icon-theme"
+				"PKief.material-icon-theme",
+				"zhuangtongfa.material-theme",
+				"GitHub.github-vscode-theme"
 			],
 			"settings": {
 				// PHP Configuration
 				"php.validate.executablePath": "/usr/local/bin/php",
+				"php.debug.executablePath": "/usr/local/bin/php",
 				"intelephense.files.maxSize": 5000000,
 				"intelephense.completion.triggerParameterHints": true,
 				"intelephense.completion.insertUseDeclaration": true,
+				"intelephense.completion.fullyQualifyGlobalConstantsAndFunctions": false,
 				"intelephense.format.enable": true,
+
+				// Xdebug Configuration
+				"php.debug.port": [9003],
+				"php.debug.log": true,
+
+				// Laravel Configuration
+				"laravel_goto_view.folders": {
+					"default": "resources/views",
+					"js": "resources/js",
+					"css": "resources/css"
+				},
 
 				// Editor Configuration
 				"editor.tabSize": 4,
 				"editor.insertSpaces": true,
+				"editor.detectIndentation": true,
 				"editor.formatOnSave": true,
+				"editor.formatOnPaste": true,
 				"editor.codeActionsOnSave": {
-					"source.fixAll": "explicit"
+					"source.fixAll": "explicit",
+					"source.organizeImports": "explicit"
 				},
 
 				// File Associations
 				"files.associations": {
 					"*.blade.php": "blade",
-					"*.php": "php"
+					"*.php": "php",
+					"*.json": "jsonc"
 				},
 
 				// Emmet Configuration
 				"emmet.includeLanguages": {
-					"blade": "html"
+					"blade": "html",
+					"vue-html": "html",
+					"vue": "html"
 				},
 
 				// Terminal Configuration
 				"terminal.integrated.defaultProfile.linux": "zsh",
+				"terminal.integrated.profiles.linux": {
+					"zsh": {
+						"path": "/bin/zsh"
+					}
+				},
 
 				// Git Configuration
 				"git.enableSmartCommit": true,
+				"git.confirmSync": false,
 				"git.autofetch": true,
+
+				// Prettier Configuration
+				"prettier.requireConfig": true,
+				"prettier.useEditorConfig": false,
+
+				// ESLint Configuration
+				"eslint.workingDirectories": ["./"],
+
+				// Tailwind CSS
+				"tailwindCSS.includeLanguages": {
+					"blade": "html",
+					"vue": "html"
+				},
+				"tailwindCSS.experimental.classRegex": [
+					"class[:]\\s*['\"]([^'\"]*)['\"]"
+				],
+
+				// Error Lens
+				"errorLens.enabledDiagnosticLevels": ["error", "warning"],
 
 				// Material Icon Theme
 				"workbench.iconTheme": "material-icon-theme",
@@ -229,7 +194,10 @@
 					"routes": "routes",
 					"storage": "temp",
 					"tests": "test"
-				}
+				},
+
+				// Theme
+				"workbench.colorTheme": "GitHub Dark Default"
 			}
 		}
 	},
@@ -237,35 +205,73 @@
 	// Container environment variables
 	"containerEnv": {
 		"APP_ENV": "local",
-		"APP_DEBUG": "true"
+		"APP_DEBUG": "true",
+		"XDEBUG_MODE": "develop,debug",
+		"XDEBUG_CONFIG": "client_host=host.docker.internal client_port=9003 start_with_request=yes",
+		"PHP_IDE_CONFIG": "serverName=laravel"
 	},
 
 	// Ports to forward
 	"forwardPorts": [
-		8000,   // Laravel Artisan Serve
-		3306,   // MySQL (if using external)
-		6379    // Redis (if using external)
+		80,     // Nginx
+		3306,   // MySQL
+		6379,   // Redis
+		8025,   // MailHog Web UI
+		1025,   // MailHog SMTP
+		9003    // Xdebug
 	],
 
 	// Port attributes
 	"portsAttributes": {
-		"8000": {
+		"80": {
 			"label": "Laravel Application",
 			"onAutoForward": "notify"
+		},
+		"3306": {
+			"label": "MySQL Database"
+		},
+		"6379": {
+			"label": "Redis Cache"
+		},
+		"8025": {
+			"label": "MailHog Web Interface",
+			"onAutoForward": "openBrowser"
+		},
+		"1025": {
+			"label": "MailHog SMTP"
+		},
+		"9003": {
+			"label": "Xdebug"
 		}
 	},
 
 	// Lifecycle scripts
+	"initializeCommand": [
+		"bash",
+		"-c",
+		"if [ ! -f .env ]; then cp .env.development .env; fi"
+	],
+
 	"postCreateCommand": [
 		"bash",
-		".devcontainer/post-create-simple.sh"
+		".devcontainer/post-create.sh"
 	],
 
 	"postStartCommand": [
 		"bash",
-		".devcontainer/post-start-simple.sh"
+		".devcontainer/post-start.sh"
 	],
 
-	// Comment out to connect as root instead
-	"remoteUser": "vscode"
+	// Mount the Docker socket to enable docker commands
+	"mounts": [
+		"source=/var/run/docker.sock,target=/var/run/docker-host.sock,type=bind"
+	],
+
+	// Use 'postAttachCommand' to run commands after the container is running
+	"postAttachCommand": {
+		"server": "echo 'Laravel Career Center DevContainer is ready! 🚀'"
+	},
+
+	// Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
+	"remoteUser": "www-data"
 }

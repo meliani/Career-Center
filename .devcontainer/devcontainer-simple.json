@@ -1,0 +1,129 @@
+{
+	"name": "Career Center Laravel Development",
+	"image": "mcr.microsoft.com/devcontainers/php:8.3-bullseye",
+	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+
+	// Features to install
+	"features": {
+		"ghcr.io/devcontainers/features/common-utils:2": {
+			"installZsh": true,
+			"configureZshAsDefaultShell": true,
+			"installOhMyZsh": true,
+			"upgradePackages": true,
+			"username": "vscode",
+			"userUid": "automatic",
+			"userGid": "automatic"
+		},
+		"ghcr.io/devcontainers/features/git:1": {
+			"ppa": true,
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers/features/github-cli:1": {
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers/features/node:1": {
+			"nodeGypDependencies": true,
+			"version": "20"
+		}
+	},
+
+	// VS Code extensions to install
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				// PHP Extensions
+				"bmewburn.vscode-intelephense-client",
+				"xdebug.php-debug",
+				"DEVSENSE.composer-php-vscode",
+
+				// Laravel Extensions
+				"onecentlin.laravel-blade",
+				"onecentlin.laravel5-snippets",
+				"ryannaddy.laravel-artisan",
+
+				// JavaScript/Node Extensions  
+				"bradlc.vscode-tailwindcss",
+				"esbenp.prettier-vscode",
+				"formulahendry.auto-rename-tag",
+
+				// Database Extensions
+				"mtxr.sqltools",
+				"mtxr.sqltools-driver-mysql",
+
+				// Git Extensions
+				"eamodio.gitlens",
+
+				// General Productivity
+				"streetsidesoftware.code-spell-checker",
+				"aaron-bond.better-comments",
+				"usernamehw.errorlens",
+
+				// API Development
+				"humao.rest-client",
+
+				// Theme & UI
+				"PKief.material-icon-theme",
+				"GitHub.github-vscode-theme"
+			],
+			"settings": {
+				// PHP Configuration
+				"php.validate.executablePath": "/usr/local/bin/php",
+				"php.debug.executablePath": "/usr/local/bin/php",
+				"intelephense.files.maxSize": 5000000,
+				"intelephense.format.enable": true,
+
+				// Editor Configuration
+				"editor.tabSize": 4,
+				"editor.insertSpaces": true,
+				"editor.formatOnSave": true,
+
+				// File Associations
+				"files.associations": {
+					"*.blade.php": "blade",
+					"*.php": "php",
+					"*.json": "jsonc"
+				},
+
+				// Terminal Configuration
+				"terminal.integrated.defaultProfile.linux": "zsh",
+
+				// Git Configuration
+				"git.enableSmartCommit": true,
+				"git.autofetch": true,
+
+				// Theme
+				"workbench.iconTheme": "material-icon-theme"
+			}
+		}
+	},
+
+	// Container environment variables for Codespaces
+	"containerEnv": {
+		"APP_ENV": "local",
+		"APP_DEBUG": "true"
+	},
+
+	// Ports to forward
+	"forwardPorts": [
+		8000,   // Laravel serve
+		3306,   // MySQL (if using external DB)
+		6379    // Redis (if using external cache)
+	],
+
+	// Port attributes
+	"portsAttributes": {
+		"8000": {
+			"label": "Laravel Application",
+			"onAutoForward": "openBrowser"
+		}
+	},
+
+	// Lifecycle scripts
+	"postCreateCommand": [
+		"bash",
+		".devcontainer/post-create-simple.sh"
+	],
+
+	// Run as non-root user
+	"remoteUser": "vscode"
+}
