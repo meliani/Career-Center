@@ -26,10 +26,7 @@ print_warning() {
 }
 
 # Install additional PHP extensions
-print_status "Installing additional PHP extensions..."
-sudo apt-get update -qq
-sudo apt-get install -y -qq php-redis php-gd php-zip php-xml php-mbstring php-curl php-mysql php-intl
-print_success "PHP extensions installed"
+print_status "Skipping PHP extension installation; handled by devcontainer feature"
 
 # Copy environment file if it doesn't exist
 if [ ! -f ".env" ]; then
