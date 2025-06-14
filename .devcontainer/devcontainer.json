@@ -22,6 +22,20 @@
 		"ghcr.io/devcontainers/features/node:1": {
 			"nodeGypDependencies": true,
 			"version": "20"
+		},
+		"ghcr.io/devcontainers/features/php:1": {
+			"installComposer": true,
+			"phpVersion": "8.3",
+			"extensions": [
+				"gd",
+				"intl",
+				"zip",
+				"xml",
+				"mbstring",
+				"curl",
+				"mysql",
+				"redis"
+			]
 		}
 	},
 	"customizations": {
